@@ -132,17 +132,12 @@ elseif any( sum(H,1)>1 )
     x = find( sum(H,1)>1,1 );
     overlap = find(H(:,x));    
     error('Observations cannot overlap in space. Observations %.f and %.f overlap.',overlap(1),overlap(2));
-end    
-
 end
 
+if ~isequal( size(obsDetails), [size(D,1), 2] )
+    error('obsDetails must have 2 columns and the same number of rows (observations) as D');
+elseif any( obsDetails(:,1)<1 | obsDetails(:,2)<0 | mod(obsDetails(:),1)~=0 )
+    error('obsDetails must only contain integers. The first column must be > 0, while the second column must be >= 0.');
+end
 
-
-
-    
-    
-    
-
-
-
-
+end
