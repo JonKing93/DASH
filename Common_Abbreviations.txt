@@ -1,0 +1,25 @@
+These are some common abbreviations I use in my code:
+
+doff: Dynamic Offline
+soff: Static Offline
+
+obs: Observations
+ave: Average
+inst: Instantaneous
+
+curr: Current
+prev: Previous
+
+mean: A mean
+dev: Deviations from a mean
+var: Variance
+
+nX: The number of Xs
+Xdex: The indices of Xs
+
+t: Time
+tSpan: Length of an averaging period
+ens: Ensemble
+N: Length of a state vector
+
+
