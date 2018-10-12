@@ -1,6 +1,6 @@
-function[] = ensrfDriver
-%% Implements data assimilation for a dynamic offline model ensemble. Uses
-% an ensemble square root filter to perform updates.
+function[] = doffENSRF(M, D, R, H, obsDetails)
+%% Implements data assimilation for a (d)ynamic (off)line model ensemble. 
+% Uses an ensemble square root filter to perform updates.
 %
 % Handles seasonally dependent observations.
 %
@@ -29,14 +29,11 @@ function[] = ensrfDriver
 %
 % H: Sampling Matrix (nObs x N)
 %
-% sdex: A logical matrix that indexes the season of each observation. Each
-% column is one season. Time averages should have markers in multiple
-% seasons.
-%
-% sTime: A vector containing the season of each time step
-%
+% obsDetails
 % 
 
+% Do some error checking
+errCheck(M, D, R, H)
 
 % !!!!!
 % We should implement error checks here.
@@ -99,8 +96,33 @@ end
     
     
     
-    
-    
+% Does error checking
+function[] = errCheck(M, D, R, obsDetails)
+
+if ndims(M) ~= 3 
+    error('M must be a 3 dimensional array, N x nEns x time');
+elseif any(isnan(M(:))) || any(isInf(M(:)))
+    error('M should not contain NaN or Inf');
+end
+
+if any(isInf(D))
+    error('D should not contain Inf');
+end
+
+if any(R(:)<=0)
+    error('All values in R must be positive.');
+end
+
+if size(M,3)~=size(D,2)
+    error('The time dimension in M and D are not of equal length.');
+elseif size(M,3)~=size(R,2)
+    error('The time dimension in M and R are not of equal length.');
+end
+
+
+
+
+
     
     
     
