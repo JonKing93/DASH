@@ -29,7 +29,7 @@ Knum = unbias * Mdev * Ydev';
 % Get the alpha values for each column of K
 % Multiply through K to get K_ensrf   (need to check that this is the same)
 % Update deviations with a single matrix multiplication.
-%
+% Test edit
 for k = 1:nObs
     
     % Get the innovation vector
