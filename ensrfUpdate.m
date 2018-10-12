@@ -30,6 +30,7 @@ Knum = unbias * Mdev * Ydev';
 % Multiply through K to get K_ensrf   (need to check that this is the same)
 % Update deviations with a single matrix multiplication.
 % Test edit
+% Second test
 for k = 1:nObs
     
     % Get the innovation vector
