@@ -1,8 +1,7 @@
 function[M] = ensrfUpdate( Mcell, Ycell, Knum, D, R)
-% Implements an EnSRF update for a static model ensemble. Since a static
-% ensemble is unchanging in time, ensemble means/deviations, Kalman
-% numerators and estimate means/deviations/variance are fixed, and should
-% be calculated outside of the function.
+% Implements an EnSRF update. To enable functionality for static ensembles,
+% ensemble means/deviations, estimate means/deviations/variance are fixed, 
+% and Kalman numerators are calculated separately.
 %
 % A = ensrfUpdate( Mcell, Ycell, Knum, D, R )
 %

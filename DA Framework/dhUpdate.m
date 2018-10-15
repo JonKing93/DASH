@@ -49,7 +49,8 @@ Mmean = mean(M,3);
 Mdev = M - Mmean;
 
 % Update the time mean using an ensemble square root filter
-Mmean = ensrfUpdate( Mmean, D, R, H);
+[Mcell, Ycell, Knum] = kalmanSetup(M,H);
+Mmean = ensrfUpdate( Mcell, Ycell, Knum, D, R);
 
 % Add the updated means to the time deviations
 M = Mmean + Mdev;
