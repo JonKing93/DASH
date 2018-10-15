@@ -50,7 +50,7 @@ function[H] = buildH( modelGridEdges, siteCoords)
 % H: The sampling matrix for the observation sites in the model grid. This
 %   is a logical matrix that is the number of observations x number of
 %   variables in the state vector. Each row is all false except for one
-%   index corresponding to a sample stie. 
+%   index corresponding to a sample site. 
 %
 %
 % ----- Written By -----
