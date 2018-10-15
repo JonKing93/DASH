@@ -1,10 +1,13 @@
-function[M] = ensrfStatic( Mcell, Ycell, Knum, D, R)
+function[M] = ensrfUpdate( Mcell, Ycell, Knum, D, R)
 % Implements an EnSRF update for a static model ensemble. Since a static
 % ensemble is unchanging in time, ensemble means/deviations, Kalman
 % numerators and estimate means/deviations/variance are fixed, and should
 % be calculated outside of the function.
 %
-% A = ensrfStatic( {Mmean, Mdev}, {Ymean, Ydev, Yvar}, Knum, D, R )
+% A = ensrfUpdate( Mcell, Ycell, Knum, D, R )
+%
+% this is identical to: 
+% A = ensrfUpdate( {Mmean, Mdev}, {Ymean, Ydev, Yvar}, Knum, D, R )
 %
 %
 % ----- Inputs -----

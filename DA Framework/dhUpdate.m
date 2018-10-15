@@ -46,7 +46,7 @@ function[M] = dhUpdate( M, D, R, H)
 
 % Split the models into a time mean and deviations
 Mmean = mean(M,3);
-Mdev = M - M_tmean;
+Mdev = M - Mmean;
 
 % Update the time mean using an ensemble square root filter
 Mmean = ensrfUpdate( Mmean, D, R, H);

@@ -1,4 +1,4 @@
-function[M] = ensrfUpdate(M, D, R, H)
+function[M] = ensrfUpdateOld(M, D, R, H)
 %% Implements an EnSRF update for a dynamic model ensemble. Uses a
 % vectorized version of EnSRF serial updates. Observational uncertainties
 % are assumed to be Gaussian.
