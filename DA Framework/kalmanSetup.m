@@ -7,9 +7,9 @@ function[Mcell, Ycell, Knum] = kalmanSetup( M, H )
 %
 % ----- Inputs -----
 %
-% % M: A 3D array of time-propagating model ensemble states. Each dim1 x dim2
+% % M: A matrix of model ensemble states. Each dim1 x dim2
 % matrix is an ensemble of column state vectors at a point in time. Time (dim3)
-% extends for the length of the observation averaging period. (N x nEns x tspan)
+% extends for the length of the observation averaging period. (N x nEns)
 %
 % H: The sampling matrix. A boolean/logical matrix for which each row
 % records the index of a single observation. (nObs x N)
