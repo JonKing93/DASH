@@ -1,7 +1,9 @@
 function[Dseas] = cyclic2Seasonal(D, R, obSeason)
 % Converts D recorded in cyclic time to seasonal time.
 %
-% D: 
+% D: A set of observations in cyclic time.
+%
+% R: A set of observational uncertainties in cyclic time.
 %
 % sTimeM: The season of each time step from the model ensemble. Must begin
 %         on the first season. 
