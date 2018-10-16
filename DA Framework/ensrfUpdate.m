@@ -1,12 +1,15 @@
-function[M] = ensrfUpdate( Mcell, Ycell, Knum, D, R)
-% Implements an EnSRF update. To enable functionality for static ensembles,
-% ensemble means/deviations, estimate means/deviations/variance are fixed, 
-% and Kalman numerators are calculated separately.
+function[M] = ensrfUpdate( D, R, varargin)
+% Implements an EnSRF update.
 %
-% A = ensrfUpdate( Mcell, Ycell, Knum, D, R )
+% For dynamic ensembles:
+% A = ensrfUpdate( D, R, M, H)
 %
-% this is identical to: 
-% A = ensrfUpdate( {Mmean, Mdev}, {Ymean, Ydev, Yvar}, Knum, D, R )
+% For static ensembles:
+% A = ensrfUpdate( D, R, Mcell, Ycell, Knum )
+% 
+% which is equivalent to: 
+% 
+% A = ensrfUpdate( D, R, {Mmean, Mdev}, {Ymean, Ydev, Yvar}, Knum )
 %
 %
 % ----- Inputs -----
@@ -36,6 +39,15 @@ function[M] = ensrfUpdate( Mcell, Ycell, Knum, D, R)
 % ----- Written By -----
 %
 % Jonathan King, 2018, University of Arizona.
+
+% If a dynamic ensemble, do the setup for the update
+if nargin == 4
+    [Mcell, Ycell, Knum] = kalmanSetup(varargin{1}, varargin{2});
+else
+    Mcell = varargin{1};
+    Ycell = varargin{2};
+    Knum = varargin{3};
+end
 
 % Get the Kalman Gain denominators for each time update
 % (Covariance of estimates + observation uncertainty)

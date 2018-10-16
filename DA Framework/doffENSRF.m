@@ -73,8 +73,7 @@ for t = 1:nTime
                 
                 % Then this is the set of instantaneous obs. Get the
                 % updated state.
-                [Mcell, Ycell, Knum] = kalmanSetup( M(:,:,t), H(currset,:) );
-                M(:,:,t) = ensrfUpdate( Mcell, Ycell, Knum, D(currSet,t), R(currSet,t) );
+                M(:,:,t) = ensrfUpdate( D, R, M, H );
                 
             % Otherwise, this is a time-average
             % !!!!!!
