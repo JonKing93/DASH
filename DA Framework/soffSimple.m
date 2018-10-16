@@ -1,12 +1,34 @@
-function[] = soffSimple(M, D, R, H, varargin)
+function[A] = soffSimple(M, D, R, H, sTime, obSets, sObs)
 % Implements ensrf updates for a static ensemble with INSTANTANEOUS obs.
 %
+% A = soffSimple(M, D, R, H, sTime, obSets, sObs)
 %
 %
+% ----- Inputs -----
 %
-% sTime: The season of each time step
+% M: The static model ensemble. (nState x nRun x nTime)
 %
-% obSets: The set of observational types. (All instantaneous...)
+% D: The set of observations. (nObs x nTime)
+%
+% R: The observation uncertainty variance. (nObs x nTime)
+%
+% H: The sampling matrix. (nObs x nState)
+%
+% sTime: The season of each time step. (nTime x 1)
+%
+% obSets: The list of observational sets (nSets x nInstSeas)
+%
+% sObs: The season that each observation records (nObs x 1)
+%
+%
+% ----- Outputs -----
+%
+% A: The updated states through time.
+%
+%
+% ----- Written By -----
+%
+% Jonathan King, 2018, University of Arizona
 
 % Get some sizes 
 nState = size(M,1);   % Length of the state vector
@@ -27,7 +49,7 @@ nSets = size(obSets,1);
 % Determine which seasons have observations
 hasObs = find( sum(obSets)>0 );
 
-% For each season that has obs
+% For each set of seasonal observations...
 for s = 1:nSets
     
     % Get the season
@@ -42,7 +64,7 @@ for s = 1:nSets
     Mseas = reshape( M(:,:,currSeason), [nState, nEnsS]);
     
     % Do the static part of the Kalman Updates
-    [Mcell, Ycell, Knum] = kalmanSetup( Mseas, H(hasObs,:) );
+    [Mcell, Ycell, Knum] = kalmanSetup( Mseas, H(sObs==season,:) );
     
     % For each time step that is during the desired season...
     for k = 1:nTimeS
