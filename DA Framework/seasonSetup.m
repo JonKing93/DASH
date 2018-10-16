@@ -1,4 +1,4 @@
-function[sObs, sActive, sFinal] = seasonSetup(obSeason)
+function[sObs, sActive, sFinal, nPrev] = seasonSetup(obSeason)
 % Formats inputs for seasonally sensitive observations.
 % 
 %
@@ -17,7 +17,7 @@ function[sObs, sActive, sFinal] = seasonSetup(obSeason)
 %
 % nPrev: The number of previous states recorded in each observational set.
 %
-% sRecord: A cell containing the time indices of all active seasons
+% sActive: A cell containing the time indices of all active seasons
 % relative to the final recording season.
 
 % !!! Should implement some error checking
@@ -29,12 +29,16 @@ nSeas = size(obSets,2);
 
 % !!!!!
 % To do averaging over multiple cycles, you would need to increase the
-% number of columns in obSeason, for example, to every two years
+% number of columns in obSeason, for example, to every two years. Although
+% this probably wouldn't work well with the cyclic -> seasonal time
+% conversion.
 
 % Get the season on which each set ends. Also get time indices of each
-% active season relative to the final season.
+% active season relative to the final season. Also record the number of
+% previous states needed for each record.
 sFinal = NaN(nSets,1);
 sActive = cell(nSets,1);
+nPrev = NaN(nSets,1);
 
 for s = 1:nSets
     sFinal(s) = find( obSets(s,:)==max(obSets(s,:)) );
@@ -45,6 +49,8 @@ for s = 1:nSets
     % Get time indices of each active season relative to the final season.
     sActive{s} = sort(  mod( sActive{s}-sFinal(s), -nSeas )  );
     
+    % Get the maximum number of previous states
+    nPrev(s) = abs( min(sActive{s}) );
 end
 
 end
