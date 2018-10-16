@@ -12,6 +12,8 @@ function[M] = doffENSRF(M, D, R, H, obsDetails)
 %
 % Handles time-averages that occur within a larger time-average
 %
+% IN PROCESS: Non-consecutive observational sets
+%
 % DOES NOT handle overlapping time averages. (Explicitly checks to make
 % sure these do not occur) (Still need to code this)
 %
@@ -53,9 +55,9 @@ for t = 1:nTime
     % the model prior will be the final state.
     if any(currObs)
         
-        % Get all the sets of current observations. This may include
-        % instantaneous observations and time-averaged observations of
-        % different lengths. Note that time-averages all end on this time step.
+        % Get all observational sets that end on the current time step.
+        % This may include both instantaneous and time-averaged
+        % observations.
         obsSets = unique( obsDetails(currObs,:), 'rows');
         nSets = size(obsSets,1);
 
