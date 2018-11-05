@@ -63,7 +63,7 @@ innov = D - Ycell{1};
 Mcell{1} = Mcell{1} + K*innov;
 
 % Calculate the scaling factors for the ensemble square root gain
-alpha = 1 ./ (1 + sqrt( R./(Ycell{3} + R) ) );
+alpha = 1 ./ (1 + sqrt( R ./ Kdenom ) );
 
 % Get the ensemble square root gain
 K_ensrf = alpha' .* K;

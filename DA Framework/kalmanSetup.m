@@ -19,7 +19,7 @@ function[Mcell, Ycell, Knum] = kalmanSetup( M, H )
 %
 % Mcell: A cell containing the model ensemble mean and deviations {Mmean, Mdev}
 %
-% Ycell: A cell containing the ensemble esimate mean, deviations, and
+% Ycell: A cell containing the ensemble estimate mean, deviations, and
 % variance {Ymean, Ydev, Yvar}
 %
 % Knum: The numerator for the Kalman gain matrix.
