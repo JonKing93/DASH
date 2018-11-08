@@ -1,4 +1,4 @@
-% Part 1: Prepare all the data
+% Part 1: Load all the data
 
 % Load the NTREND Data
 [crn, siteYear, lonSite, latSite] = loadNTREND;
@@ -17,3 +17,14 @@ siteYear = siteYear(treeDex);
 ensDex = ( timeM>=datetime(850,1,1) & timeM<=datetime(2001,1,0) );
 T = T(:,:,ensDex);
 timeM = timeM(ensDex);
+
+% Get the coordinates of each model state variable
+latGrid = repmat( latM', length(lonM), 1);
+lonGrid = repmat( lonM, 1, length(latM) );
+MGrid = cat(3, latGrid, lonGrid);
+
+coordM = reshape(MGrid, [length(lonM)*length(latM), 2]);
+
+% Also get the site coordinates
+coordSite = [latSite, lonSite];
+
