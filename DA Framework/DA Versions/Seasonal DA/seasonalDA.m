@@ -37,16 +37,13 @@ function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
 % Dsite: A cell containing the indices in the state vector needed to run
 %        the forward model at a node.  {nObs x 1}
 %
-%
 % ----- Outputs -----
 %
 % A: Information on the updated model.
 %
-%
 % ----- Written By -----
 %
 % Jonathan King, University of Arizona, 2018
-%
 %
 % ----- Acknowledgements -----
 %
@@ -55,30 +52,35 @@ function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
 % Error-checking
 % errorCheck();
 
-% Get the covariance localization
-% write this....
+% For no covariance 
+if strcmpi(adjustCov, 'none')
+    % 
+
+loc = covLocalization( D{2}, coords, rLoc )
+
+
 
 % Run the DA. Use different functions for different Ye updating schemes to
 % optimize parallelization efficiency.
 
 % Linear Ye updates. (Appended state, Tardif et al., 2018)
 if strcmpi(YUpdate, 'linear')
-    A = linearDA(M, Ye, D, R, loc);
+    A = linearDA(M, Ye, D{1}, R, loc);
     
 % Full PSM Ye update
 elseif strcmpi(YUpdate, 'full')
-    A = fullDA(M, D, Dsite, H, R, loc);
+    A = fullDA(M, D{1}, D{3}, H, R, loc);
     
 % Vectorized EnSRF scheme. (No Ye update)
 elseif strcmpi(YUpdate, 'vector')
     
     % For static R
     if rfixed
-        A = vectorDAfixedR(M, Ye, D, R, loc);
+        A = vectorDAfixedR(M, Ye, D{1}, R, loc);
         
     % Dynamic R
     else
-        A = vectorDA(M, Ye, D, R, loc)l
+        A = vectorDA(M, Ye, D{1}, R, loc);
     end
 end
         
