@@ -1,4 +1,4 @@
-function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
+function[A] = seasonalDA( M, D, R, Ye, YUpdate, H)
 %% Performs static seasonal data assimilation. Targeted toward VS-Lite.
 %
 % A = seasonalDA(M, D, R, Ye, loc, 'linear')
@@ -21,7 +21,11 @@ function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
 %
 % M: A static model ensemble state vector. (nState x nEns)
 %
-% D: Observations. (nObs x nTime)
+% D: A cell with observation data. The cell array should be formatted a
+%   TS: This is the matrix of observation time series. (nObs x nTime)
+%   coords: The (lat, lon) coordinates of each site. (nObs x 2)
+%   stateVars: A logical array containing the indices of state variables needed
+%             to run a forward model for a particular site. (nState x nObs)
 %
 % R: Observation uncertainty. (nObs x nTime)
 %
@@ -29,13 +33,8 @@ function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
 % 
 % Ye: Model estimates of the observations. (nObs x nEns)
 %
-% loc: A covariance localization. (nState x nObs)
-%
 % H: A forward model used to calculate new model estimates from a state
 %    vector ensemble.
-%
-% Dsite: A cell containing the indices in the state vector needed to run
-%        the forward model at a node.  {nObs x 1}
 %
 % ----- Outputs -----
 %
@@ -52,114 +51,31 @@ function[A] = seasonalDA( M, D, R, Ye, loc, YUpdate, H, Dsite)
 % Error-checking
 % errorCheck();
 
-% For no covariance 
-if strcmpi(adjustCov, 'none')
-    % 
-
-loc = covLocalization( D{2}, coords, rLoc )
-
-
+% Get the weights for covariance adjustments.
+w = covWeights( covArgs );
 
 % Run the DA. Use different functions for different Ye updating schemes to
 % optimize parallelization efficiency.
-
+%
 % Linear Ye updates. (Appended state, Tardif et al., 2018)
 if strcmpi(YUpdate, 'linear')
-    A = linearDA(M, Ye, D{1}, R, loc);
+    A = linearDA(M, Ye, D{1}, R, w);
     
 % Full PSM Ye update
 elseif strcmpi(YUpdate, 'full')
-    A = fullDA(M, D{1}, D{3}, H, R, loc);
+    A = fullDA(M, D{1}, D{3}, H, R, w);
     
 % Vectorized EnSRF scheme. (No Ye update)
 elseif strcmpi(YUpdate, 'vector')
     
     % For static R
     if rfixed
-        A = vectorDAfixedR(M, Ye, D{1}, R, loc);
+        A = vectorDAfixedR(M, Ye, D{1}, R, w);
         
     % Dynamic R
     else
-        A = vectorDA(M, Ye, D{1}, R, loc);
+        A = vectorDA(M, Ye, D{1}, R, w);
     end
 end
         
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% Decompose into ensemble mean and deviations
-Mmean = mean(M,2);
-Mdev = M - Mmean;
-
-% Get the scaling factor for unbiased covariance calculations
-unbias = 1 ./ (nEns-1);
-
-% If vectorized...
-if strcmpi(YUpdate, 'vector')
-    
-    % Decompose the model estimates
-    Ymean = mean(Ye,2);
-    Ydev = Y - Ymean;
-    Yvar = var(Y,0,2);
-    
-    % Get the Kalman numerator
-    Knum = unbias * Mdev * Ydev';
-    Knum = loc .* Knum;
-    
-    % Get the innovation vector
-    innov = D - Mmean;
-    
-    % If R is fixed...
-    if rFixed
-        
-        % Get the adjusted gain for EnSRF
-        Kdenom = Yvar + R;
-        
-        % Get the Kalman Gain
-        K = Knum ./ Kdenom';
-        
-        % Calculate scaling factors for EnSRF
-        alpha = 1 ./ (1 + sqrt(R ./ Kdenom) );
-        
-        % Get the adjusted gain
-        Kadj = alpha' .* K;
-    end
-end
-
-% For each time step
-parfor t = 1:nTime
-    
-    % Get sliced variables
-    
-    
-    
-    
-    
-    
-    
-    
-
