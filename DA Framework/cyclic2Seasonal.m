@@ -5,9 +5,7 @@ function[Dseas] = cyclic2Seasonal(D, R, obSeason)
 %
 % R: A set of observational uncertainties in cyclic time.
 %
-% sTimeM: The season of each time step from the model ensemble. Must begin
-%         on the first season. 
-%
+% obSeason
 
 % Get some sizes
 nTime = length(sTimeM);
