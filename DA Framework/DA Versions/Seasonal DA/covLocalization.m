@@ -27,17 +27,14 @@ function[weights] = covLocalization( site, coords, R, scale)
 %        localization radius. If unspecified, scale is set to 0.5 and the
 %        localization radius is equivalent to R.
 %
-%
 % ----- Outputs -----
 %
-% weights: The localization weights for each site. (nState x nObs)%
-%
+% weights: The localization weights for each site. (nState x nObs)
 %
 % ----- Sources -----
 % 
 % Based on the approach of Hamill et al., 2001
 % https://doi.org/10.1175/1520-0493(2001)129<2776:DDFOBE>2.0.CO;2
-%
 %
 % ----- Written By -----
 % 
@@ -47,7 +44,7 @@ function[weights] = covLocalization( site, coords, R, scale)
 % Adapted for MATLAB by Jonathan King, Dept. Geoscience, University of
 % Arizona, 08 Nov 2018.
 %
-% Modified to included variable/optimal length scale. 
+% Modified to included variable/optimal length scales. 
 
 % If not specified, set the length scale to 1/2 the localization radius
 if ~exist('scale','var')
@@ -62,7 +59,10 @@ else
 end       
 
 % Get the distance between the site and the state vector grid nodes
-dist = haversine( site, coords);
+dist = NaN(nState, nObs);
+for k = 1:nObs
+    dist(:,k) = haversine(site(k,:), coords);
+end
 
 % Get the length scale and covariance localization radius.
 c = scale * R;
@@ -76,8 +76,8 @@ outRloc = (dist > Rloc);
 inScale = (dist <= c);
 outScale = (dist > c) & (dist <= Rloc);
 
-% Preallocate the covariance localization weights. Use 1 instead of NaN so
-% that non-localizable sites are not affected by the localization.
+% Preallocate the covariance localization weights. Use 1 as the fill value
+% so non-localizable sites are not affected by the localization.
 weights = ones( nState,1 );
 
 % Get the weights for each set of points
