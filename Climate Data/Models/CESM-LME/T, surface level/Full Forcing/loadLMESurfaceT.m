@@ -1,40 +1,41 @@
 function[Tmeta, T] = loadLMESurfaceT( stateDex, runDex, timeDex)
 %% Loads the state vectors of LME Surface temperature data for specified 
 % locations, LME runs, and time indices. Supports partial loading to limit
-% memory constraints.
+% memory constraints, which requires consistent incrementing for each index
+% array.
 %
 % [Tmeta, T] = loadLMESurfaceT( stateDex, runDex, timeDex )
 % 
 % ----- Inputs -----
 %
-% stateDex: A logical array indicating the state vector locations to be
-%      loaded. Leave empty to use all state vector locations.
+% stateDex: A vector with the indices of state vector locations to be loaded.
+%      Leave empty to load all locations. Must have consistent incrementing.
 %
-% runDex: A logical array indicating the LME runs to be loaded. Leave empty
-%      to load all runs.
+% runDex: A vector with the indices of LME runs to be loaded. Leave empty
+%      to load all runs. Must have consistent incrementing.
 %
-% timeDex: A logical array indicating the time points to be loaded. Leave
-%      empty to load all time points.
+% timeDex: A vector with the indices of time point ot be loaded. Leave
+%      empty to load all time points. Must have consistent incrementing.
 %
 % ----- Outputs -----
 %
 % Tmeta: Metadata on the Surface T output. Includes run number, date, lat,
 %      and lon.
 %
-% T: The output 
+% T: The output temperature.
 
 % Load the metadata
 Tmeta = load('LME_Tsurface_Full_metadata.mat');
 
 % Get defaults if unspecified
-if ~exist(timeDex,'var') || isempty(timeDex)
-    timeDex = true( numel(Tmeta.date),1);
+if ~exist('timeDex','var') || isempty(timeDex)
+    timeDex = 1:numel(Tmeta.date);
 end
-if ~exist(runDex,'var') || isempty(runDex)
-    runDex = true( numel(Tmeta.run), 1);
+if ~exist('runDex','var') || isempty(runDex)
+    runDex = 1:numel(Tmeta.run);
 end
-if ~exist(stateDex,'var') || isempty(stateDex)
-    stateDex = true( numel(Tmeta.lat), 1);
+if ~exist('stateDex','var') || isempty(stateDex)
+    stateDex = 1:numel(Tmeta.lat);
 end
 
 % Load the T data
