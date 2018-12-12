@@ -49,13 +49,16 @@ for f = 1:numel(run)
         lat = ncread(fName{1}, 'lat');
         lon = ncread(fName{1}, 'lon');
         
+        % Record the initial size
+        iSize = [numel(lon), numel(lat)];
+        
         % Convert the lat lon coordinates to a vector
         [lat, lon] = meshgrid(lat, lon);
         lat = lat(:);
         lon = lon(:);
         
         % Save the metadata file
-        save(metaFile, 'lat','lon','date','run');
+        save(metaFile, 'lat','lon','date','run','iSize');
         
         % Get some sizes for T output
         nTime = numel(date);
