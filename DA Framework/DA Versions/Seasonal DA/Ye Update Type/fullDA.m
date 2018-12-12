@@ -1,13 +1,35 @@
-function[A] = fullDA( M, D, Dsite, H, R, loc)
+function[A] = fullDA( M, meta, D, R, H, F, w)
 % This is a script that does seasonal updates and reruns the output using a
 % forward model.
 %
-% 1. Can call multiple values from the state vector.
 %
-% 2. Uses a dynamic R
+% !!!!!!!!! Need to hunt down complex numbers.
 %
 %
-% H: Function call to a forward model.
+% M: The model ensemble. (nState x nEns)
+%
+% meta: A structure with metadata for the PSM. Must contain two fields:
+%    coords: An array of coordinates for each state variable. (nState x nAxes)
+%    time: A vector with the date of each observation. (nTime x 1)
+%
+% D: The observations. (nObs x nTime)
+%
+% R: Observation uncertainty (nObs x nTime)
+%    !!!!!!!!!!!!! We should implement dynamic R
+%
+% H: A cell with the indices needed to run the PSM at each time step.
+%      time step. Each site may use multiple state variables to run the
+%      forward model. {nSite x 1}
+%      !!!!!!!!!!!!! We should implement dynamic H
+%
+% F: A forward model. Must inherit the superclass PSM.m
+%
+% w: Covariance weights
+
+% Check that F is a PSM
+if ~isa(F, 'PSM')
+    error('F must be a PSM class.');
+end
 
 % Get some sizes
 nTime = size(D,2);
@@ -40,16 +62,16 @@ parfor t = 1:nTime
         % Get the positions in the state vector needed to run the forward
         % model.
         obDex = currObs(d);       
-        obSite = Dsite{ obDex }; %#ok<PFBNS>
+        obSite = H{ obDex }; %#ok<PFBNS>
         
         % Run the forward model to get the model estimate
-        Ye = H( Amean(obSite,:) + Adev(obSite,:) ); %#ok<PFBNS>
+        Ye = F.runPSM( Amean(obSite,:) + Adev(obSite,:), meta.coord(obSite,:), meta.time(t) ); %#ok<PFBNS>
         
         % Decompose the model estimate. 
         [Ymean, Ydev, Yvar] = decomposeEnsemble(Ye);
         
         % Get the Kalman numerator
-        Knum = kalmanNumerator( Adev, Ydev, loc);
+        Knum = kalmanNumerator( Adev, Ydev, w);
         
         % Calculate the Kalman Gain
         [K, alpha] = kalmanENSRF( Yvar, tR(obDex), Knum);
@@ -58,7 +80,7 @@ parfor t = 1:nTime
         innov = tD(obDex) - Ymean;
         
         % Update
-        [Amean, Adev] = updateA( Amean, K, innov, Adev, alpha, Ydev );        
+        [Amean, Adev] = updateA( Amean, K, innov, Adev, alpha, Ydev );
     end
     
     % For now, just record the variance of the updated deviations
@@ -66,7 +88,6 @@ parfor t = 1:nTime
     
     % Save the updated mean and variance
     A(:,:,t) = [Amean, Avar];
-    
 end
 
 end

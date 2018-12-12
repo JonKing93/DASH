@@ -1,4 +1,4 @@
-function[A] = vectorDAfixedR(M, Ye, D, R, loc)
+function[A] = vectorDAfixedR(M, Ye, D, R, w)
 % This is a modification to the setup by Tardiff et al., 2018. It uses my
 % vectorization of the Kalman updates to avoid serial processing.
 % Consequently, the model estimates are never updated thus are not
@@ -38,7 +38,7 @@ A = NaN( nState, 2, nTime);
 [Ymean, Ydev, Yvar] = decomposeEnsemble(Ye);
 
 % Get the Kalman numerator
-Knum = kalmanNumerator(Mdev, Ydev, loc);
+Knum = kalmanNumerator(Mdev, Ydev, w);
 
 % Get the innovation vector for the means
 innov = D - Ymean;

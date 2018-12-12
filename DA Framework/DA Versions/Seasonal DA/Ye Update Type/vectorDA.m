@@ -1,5 +1,15 @@
-function[A] = vectorDA(M, Ye, D, R, loc)
+function[A] = vectorDA(M, Ye, D, R, w)
 % A modification using vectorized updates but for time-dependent R.
+%
+% M: Model Ensemble (nState x nEns)
+%
+% Ye: Model estimates (nObs x nEns)
+%
+% D: Observations (nObs x nTime)
+%
+% R: Observational Uncertainty (nObs x nTime)
+%
+% w: Covariance weights
 
 % Get some sizes
 nTime = size(D,2);
@@ -15,7 +25,7 @@ A = NaN( nState, 2, nTime);
 [Ymean, Ydev, Yvar] = decomposeEnsemble(Ye);
 
 % Get the Kalman numerator
-Knum = kalmanNumerator( Mdev, Ydev, loc);
+Knum = kalmanNumerator( Mdev, Ydev, w);
 
 % Get the innovation vector for the means
 innov = D - Ymean;

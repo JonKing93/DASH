@@ -2,7 +2,7 @@ function[w] = covWeights( covArgs )
 
 % Use unadjusted covariance
 if strcmpi( covArgs{1}, 'none' )
-    w = ones(nState, nObs);
+    w = 1; %ones(nState, nObs);
 
 % Doing covariance inflation
 elseif strcmpi( covArgs{1}, 'inflate' )

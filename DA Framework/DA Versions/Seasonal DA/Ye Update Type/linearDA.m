@@ -1,4 +1,4 @@
-function[A] = linearDA(M, Ye, D, R, loc)
+function[A] = linearDA(M, Ye, D, R, w)
 % This is a seasonal updater for the NTREND experiment
 % It strictly follows the setup by Tardiff et al., 2018
 % It has the following properties
@@ -17,7 +17,7 @@ function[A] = linearDA(M, Ye, D, R, loc)
 %
 % R: (nObs x nTime)
 %
-% loc: The set of covariance localizations (nState x p)
+% w: Covariance weights
 
 % Get some sizes
 nState = size(M,1);
@@ -34,7 +34,7 @@ M = [M;Ye];
 Mmean = mean(M,2);
 Mdev = M - Mmean;
 
-% Each time step is treated as independent, process in parallel
+% Each time step is treated as independent, so process in parallel
 parfor t = 1:nTime
 
     % Get sliced variables for D and R for this time step to minimize parallel overhead
@@ -62,7 +62,7 @@ parfor t = 1:nTime
         Yvar = var( Ydev, 0, 2 );
 
         % Calculate the Kalman numerator
-        Knum = kalmanNumerator(Adev, Ydev, loc);
+        Knum = kalmanNumerator(Adev, Ydev, w);
         
         % Get the innovation vector for the means
         innov = tD(obDex) - Ymean;
