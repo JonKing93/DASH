@@ -86,4 +86,7 @@ for s = 1:nSite
     gPseudo(:,s) = linReg(s,1) + ( linReg(s,2) * Tseas(:,s) );
 end
 
+% Add temperature data to the gPseduo record
+gPseudo = {gPseudo, Tseas};
+
 end
