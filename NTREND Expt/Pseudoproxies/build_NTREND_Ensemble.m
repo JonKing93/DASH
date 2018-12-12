@@ -1,4 +1,4 @@
-function[M] = build_NTREND_Ensemble( nEns, season )
+function[M, Tmeta] = build_NTREND_Ensemble( nEns, season )
 %% Builds the static ensemble for the NTREND experiment.
 %
 % M = build_NTREND_Ensemble( nEns, season )
@@ -61,5 +61,9 @@ for rdex = 2:nRun+1
         mdex = mdex + 1;
     end
 end
+
+% Remove time and run from metadata output
+Tmeta.date = [];
+Tmeta.run = [];
         
 end

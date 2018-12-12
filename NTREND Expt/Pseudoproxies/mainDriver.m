@@ -11,6 +11,7 @@ Rfrac = 0.01;
 
 %%%%%
 
+%% Build the "true" pseudo proxies
 
 % Do the initial linear regression
 [linReg, gPseudo] = build_GHCN_linear_model;
@@ -19,35 +20,43 @@ Rfrac = 0.01;
 % pseudo-proxies.
 [linMod, trueProxy] = build_LME_Pseudos(linReg, gPseudo);
 
+% Save the linear model for use with the linearPSM class
+[~,~,~,lon,lat] = loadNTREND;
+save('linear_T_model.mat','linMod','lat','lon');
+
+% Create a linear model
+linPSM = linearPSM;
+
+%% Setup for DA
+
 % Next step is actual data assimilation. Get all the pieces needed for DA
-M = buildNTRENDEnsemble(nEns);
-D = trueProxy{1};
+[M, Mmeta] = build_NTREND_Ensemble(nEns);
+D = trueProxy{1}';
 R = Rfrac .* D;
-Ye = applyPSM(linMod, M);
 
+% Get the sampling indices
+[~,~,~,sLon,sLat] = loadNTREND;
+H = samplingMatrix( [sLat, sLon], [Mmeta.lat, Mmeta.lon], 'linear' );
 
+% Get the Ye estimates
+Ye = linPSM.buildYe( M(H,:) );
 
-% Preallocate the static ensemble
-Tmeta = loadLMESurfaceT;
-nState = numel(Tmeta.lat);
-nEns = nDraw * 11;
-M = NaN( nState, nEns );
+%% Run DA
 
-% Fill the static ensemble by drawing 10 random years from each model run,
-% not including run 2.
-rng('default');
-nYear = size(Tmeta.date) ./ 12;
-nRun = numel(Tmeta.run);
+% Activate the parallel pool
+gcp;
 
-for r = 2:nRun
-    
-    % Load T from a run
-    Trun = loadLMESurfaceT([],r);
-    
-    % Draw random time slices
-    draw = ceil( randInterval(0, nTime, [nDraw,1]) );
+% Run vector DA
+tic
+Avec = vectorDA(M, Ye, D, R, 1);
+tvec = toc;
 
+% Run full DA
+tic
+Afull = fullDA( M, meta, D, R, Hcell, F, 1);
+tfull = toc;
 
-
-
-
+% Run linear update DA
+tic
+Alin = linearDA( M, Ye, D, R, 1);
+tlin = toc;
