@@ -5,7 +5,7 @@ Ymean = mean(Ye,2);
 Ydev = Ye - Ymean;
 
 % If only doing mean and deviation
-if nargout==2
+if nargout<3
     varargout = {Ymean, Ydev};
     
 % If also returning variance
