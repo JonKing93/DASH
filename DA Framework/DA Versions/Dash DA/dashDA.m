@@ -48,7 +48,7 @@ parfor t = 1:nTime
         [Ymean, Ydev] = decomposeEnsemble(Ye);
         
         % Get the Kalman gain and alpha
-        [K, a] = kalmanENSRF( Adev, Ydev, tR(obDex), w, currInflate);
+        [K, a] = kalmanENSRF( Adev, Ydev, tR(obDex), w(obDex), currInflate); %#ok<PFBNS>
         
         % Update
         Amean = Amean + K*( tD(obDex) - Ymean );

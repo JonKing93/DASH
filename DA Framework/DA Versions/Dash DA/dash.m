@@ -1,9 +1,9 @@
-function[] = dash
+function[] = dash( M, D, R, locArgs, inflate, F, H, meta)
 %
-% A = dash( M, D, R, w, inflate, Ye)
+% A = dash( M, D, R, locArgs, inflate, Ye)
 % Runs the DA using the tardif method.
 %
-% A = dash( M, D, R, w, inflate, F, H, meta)
+% A = dash( M, D, R, locArgs, inflate, F, H, meta)
 % Runs the DA using a PSM.
 %
 
@@ -21,10 +21,10 @@ if nargin < 7
 end
 
 % Get the weights for covariance localization
-if ~exist(w, 'var') || isempty(w)
-    w = ones(nState, nObs);
+if strcmpi( locArgs, 'none')
+    w = ones(1, nObs);
 else
-    w = covLocalization(); % !!!!!!
+    w = covLocalization( locArgs{:} );
 end
 
 % If doing Tardif...
@@ -34,9 +34,6 @@ if ~fullPSM
     F = trivialPSM;
     
     % Determine the sampling indices for the Ye
-    nState = size(M,1);
-    nObs = size(Ye,1);
-    
     H = nState + (1:nObs)';
     H = num2cell(H);
     
