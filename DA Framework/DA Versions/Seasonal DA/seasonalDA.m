@@ -34,6 +34,7 @@ function[A] = seasonalDA( M, Ye, D, R, covArgs, updateType, H)
 % Rfix: Constant observation uncertainty. (nObs x 1)
 %
 % covArgs: Inputs used to calculate covariance weights.
+%    
 %
 % F: A forward model of the "PSM" class.
 %

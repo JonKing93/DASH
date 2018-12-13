@@ -1,16 +1,31 @@
-function[weights] = covLocalization( site, coords, R, scale)
-%
-% weights = covLocalization( site, coords, R )
+function[weights] = covLocalization( siteCoord, stateCoord, R, scale)
+%% Calculates the weights for covariance localization at a site.
+% 
+% weights = covLocalization( siteCoord, stateCoord, R )
 % Creates a covariance localization with a cutoff radius R. Based on a
 % Gaspari-Cohn function.
 %
-% weights = covLocalization( site, coords, R, 'optimal')
+% weights = covLocalization( siteCoord, stateCoord, R, 'optimal')
 % Uses an optimal length scale of sqrt(10/3) for the localization radius
 % based on Lorenc, 2003.
 %
-% weights = covLocalization( site, coords, R, scale)
+% weights = covLocalization( siteCoord, stateCoord, R, scale)
 % User specified length scale. Scale must be a scalar on the interval (0, 0.5].
 %
+% ***** Explanation of length scales and R
+%
+% The length scale c, is used to define the behavior of the localization.
+% For |  distance <= c,       Full covariance is retained
+%     |  c < distance < 2*c,  Covariance retention decreases from 1 to 0 with distance
+%     |  2c < distance,       No covariance is retained
+%
+% Rloc = 2c is the localization radius. It is a more stringent requirement
+% than R, the cutoff radius. Thus, Rloc <= R, which requires  0 < scale <= 1/2
+%
+% Essentially, R is the radius at which covariance is required to be zero,
+% while Rloc is the (more strict) radius at which covariance actually is 0.
+%
+% *****
 %
 % ----- Inputs -----
 % 
@@ -44,10 +59,10 @@ function[weights] = covLocalization( site, coords, R, scale)
 % Adapted for MATLAB by Jonathan King, Dept. Geoscience, University of
 % Arizona, 08 Nov 2018.
 %
-% Modified to included variable/optimal length scales. 
+% Modified to included variable/optimal length scales by Jonathan King.
 
 % If not specified, set the length scale to 1/2 the localization radius
-if ~exist('scale','var')
+if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
 else
     % If optimal scale is selected (Lorenc, 2003)
@@ -61,17 +76,16 @@ end
 % Get the distance between the site and the state vector grid nodes
 dist = NaN(nState, nObs);
 for k = 1:nObs
-    dist(:,k) = haversine(site(k,:), coords);
+    dist(:,k) = haversine(siteCoord(k,:), stateCoord);
 end
 
-% Get the length scale and covariance localization radius.
+% Get the length scale and covariance localization radius. 
 c = scale * R;
 Rloc = 2*c;    % Note that Rloc <= R, they are not strictly equal
 
 % Get the indices of sites that are outside/inside the localization radius,
 % which is defined as twice the length scale. Split the points inside the 
 % radius into values inside or outside length scale.
-% (Note that the localization radius <= R, it is not strictly equal.)
 outRloc = (dist > Rloc);
 inScale = (dist <= c);
 outScale = (dist > c) & (dist <= Rloc);
