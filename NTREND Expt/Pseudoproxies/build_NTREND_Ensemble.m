@@ -62,8 +62,9 @@ for rdex = 2:nRun+1
     end
 end
 
-% Remove time and run from metadata output
-Tmeta.date = [];
-Tmeta.run = [];
+% Remove time and run from metadata output. Adjust the 2D size
+Tmeta = rmfield(Tmeta, 'run');
+Tmeta = rmfield(Tmeta, 'date');
+Tmeta.iSize = Tmeta.iSize ./ [1 2];
         
 end

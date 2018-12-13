@@ -8,6 +8,8 @@ nEns = 11 * 10;
 % Percent of standard deviation set to R
 Rfrac = 0.01;
 
+% Set the months in the seasonal mean
+season = [6 7 8];
 
 %%%%%
 
@@ -22,15 +24,17 @@ Rfrac = 0.01;
 
 % Save the linear model for use with the linearPSM class
 [~,~,~,lon,lat] = loadNTREND;
-save('linear_T_model.mat','linMod','lat','lon');
+% save('linear_T_model.mat','linMod','lat','lon');
 
 % Create a linear model
 linPSM = linearPSM;
 
 %% Setup for DA
 
-% Next step is actual data assimilation. Get all the pieces needed for DA
-[M, Mmeta] = build_NTREND_Ensemble(nEns);
+% Build (or load) the static ensemble
+% [M, Mmeta] = build_NTREND_Ensemble(nEns, season);
+load('testEnsemble_JJA.mat');
+
 D = trueProxy{1}';
 R = Rfrac .* D;
 
