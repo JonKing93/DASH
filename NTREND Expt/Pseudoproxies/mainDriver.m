@@ -5,8 +5,8 @@
 % Size of the static ensemble.
 nEns = 11 * 10;
 
-% Percent of standard deviation set to R
-Rfrac = 0.01;
+% Percent of variance set to R
+Rfrac = 1;
 
 % Set the months in the seasonal mean
 season = [6 7 8];
@@ -22,12 +22,8 @@ season = [6 7 8];
 % pseudo-proxies.
 [linMod, trueProxy] = build_LME_Pseudos(linReg, gPseudo);
 
-% Save the linear model for use with the linearPSM class
-[~,~,~,lon,lat] = loadNTREND;
-% save('linear_T_model.mat','linMod','lat','lon');
-
-% Create a linear model
-linPSM = linearPSM;
+% Create the linear PSM
+linPSM = linearPSM( linMod(:,2), linMod(:,1) );
 
 %% Setup for DA
 
@@ -35,32 +31,69 @@ linPSM = linearPSM;
 % [M, Mmeta] = build_NTREND_Ensemble(nEns, season);
 load('testEnsemble_JJA.mat');
 
+% Get D
 D = trueProxy{1}';
-R = Rfrac .* D;
+
+% Get R
+R = Rfrac .* var(D,[],2);
+R = repmat(R, [1 size(D,2)]);
 
 % Get the sampling indices
-[~,~,~,sLon,sLat] = loadNTREND;
+[~,year,~,sLon,sLat] = loadNTREND;
 H = samplingMatrix( [sLat, sLon], [Mmeta.lat, Mmeta.lon], 'linear' );
 
 % Get the Ye estimates
-Ye = linPSM.buildYe( M(H,:) );
+Ye = linPSM.runPSM( M(H,:) );
+
+% Creat the sampling array for dashDA
+Hcell = mat2cell(H, ones(size(D,1),1), 1);
 
 %% Run DA
 
 % Activate the parallel pool
 gcp;
 
-% Run vector DA
-tic
-Avec = vectorDA(M, Ye, D, R, 1);
-tvec = toc;
+% Run the DA using the full PSM
+% Alin = dash( M, D, R, 'none', 1, linPSM, Hcell, []);
 
-% Run full DA
-tic
-Afull = fullDA( M, meta, D, R, Hcell, F, 1);
-tfull = toc;
+% Also run using the Tardif method
+Atar = dash( M, D, R, 'none', 1, Ye, [], []);
 
-% Run linear update DA
-tic
-Alin = linearDA( M, Ye, D, R, 1);
-tlin = toc;
+
+%% Compare to the true run
+
+% Get the ensemble mean and variance
+[Mmean, ~, Mvar] = decomposeEnsemble(M);
+
+% Get the DA mean in the first time step
+% A1mean = Alin(:,1,1);
+Atarmean = Atar(1:size(Mmean,1),1,1);
+
+% Get the true value in the first time step
+[Tmeta, T1] = loadLMESurfaceT( [], 1, season);
+T1 = squeeze(T1);
+
+NHdex = Tmeta.lat > 0;
+T1 = T1(NHdex);
+Tmeta.iSize = Tmeta.iSize ./ [1 2];
+
+T1 = mean(T1,2);
+
+% Get the error in M and A
+% Aerr = A1mean - T1;
+Merr = Mmean - T1;
+Atarerr = Atarmean - T1;
+
+% Plot the errors
+figure
+subplot(1,3,1);
+mapState(Merr, Tmeta.iSize);
+title('Error in initial ensemble mean');
+
+subplot(1,3,2)
+% mapState(Aerr, Tmeta.iSize);
+title('Error in output analysis mean');
+
+subplot(1,3,3)
+mapState(Atarerr, Tmeta.iSize)
+title('Error in Tardif output');

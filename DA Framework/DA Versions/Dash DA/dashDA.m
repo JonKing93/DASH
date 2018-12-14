@@ -1,4 +1,36 @@
 function[A] = dashDA( M, D, R, w, inflate, F, H, meta )
+%
+% A = dashDA( M, D, R, w, inflate, F, H, meta )
+% Performs data assimilation.
+%
+% ----- Inputs -----
+%
+% M: The model ensemble. (nState x nEns)
+%
+% D: The observations. (nObs x nTime)
+%
+% R: Observation uncertainty. NaN values will be determined via dynamic R
+%    generation by the PSM. (nObs x nTime)
+%    !!!!! Need to implement a more general R calculation
+%
+% w: Covariance localization weights. (nState x nObs)
+%      !!! Could this be dynamic?
+%
+% inflate: A scalar inflation factor
+%
+% F: A forward model of the "PSM" class
+%   !!! Eventually, this should be an array of PSMs
+%
+% H: A cell of state variable indices needed to run the forward model for
+%      each site. {nObs x 1}
+%      !!! Could this be dynamic?
+%
+% meta: Metadata required to run PSMs. Please see individual PSMs for
+%      metadata requirements.
+%
+% ----- Outputs -----
+%
+% A: The output analysis.
 
 % Get some sizes
 nTime = size(D,2);
@@ -35,17 +67,21 @@ parfor t = 1:nTime
         obSite = H{ obDex }; %#ok<PFBNS>
         
         % Determine what to give the forward model
-        if strcmpi( F.space, 'anomaly' ) %#ok<PFBNS>
-            Mpsm = Adev(obSite,:);
-        elseif strcmpi( F.space, 'full')
-            Mpsm = Amean(obSite) + Adev(obSite,:);
-        end
+        % !!!!! Should implement anomaly options?
+        Mpsm = Amean(obSite) + Adev(obSite,:);
         
-        % Run the DA
-        Ye = F.runPSM( Mpsm, meta, obSite, t);
+        % Run the PSM
+        [Ye] = F.runPSM( Mpsm, meta, obDex, obSite, t);
        
         % Decompose the model estimate
         [Ymean, Ydev] = decomposeEnsemble(Ye);
+        
+        % If the user-specified R is NaN, calculate from the variance of
+        % the Ye
+        if isnan( tR(obDex) )
+            % !!!!!!!!!!!!! This should support a general method.
+            tR(obDex) = var( Ye );
+        end
         
         % Get the Kalman gain and alpha
         [K, a] = kalmanENSRF( Adev, Ydev, tR(obDex), w(obDex), currInflate); %#ok<PFBNS>
@@ -63,7 +99,6 @@ parfor t = 1:nTime
     % Record the mean and variance
     Avar = var( Adev, 0, 2 );
     A(:,t,:) = [Amean, Avar];
-    
 end
 
 end

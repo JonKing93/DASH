@@ -45,8 +45,8 @@ if strcmpi( varargin{1}, 'none' )
     w = 1; %ones(nState, nObs);
 
 % Doing covariance inflation
-elseif strcmpi( covArgs{1}, 'inflate' )
-    factor = covArgs{2};
+elseif strcmpi( varargin{1}, 'inflate' )
+    factor = varargin{2};
     w = factor * ones(nState, nObs);
     
 % Covariance localizaton

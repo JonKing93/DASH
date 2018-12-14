@@ -3,7 +3,6 @@ function[A] = fullDA( M, meta, D, R, H, F, w)
 % forward model.
 %
 %
-% !!!!!!!!! Need to hunt down complex numbers.
 %
 %
 % M: The model ensemble. (nState x nEns)
