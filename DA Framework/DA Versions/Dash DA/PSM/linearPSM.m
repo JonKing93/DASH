@@ -5,7 +5,6 @@ classdef linearPSM < PSM
     properties (SetAccess = immutable)
         slope;        % The slope of the linear models.
         intercept;    % The intercept of the linear models.
-        nModel;       % The number of linear models.
     end
     
     % It implements the abstract method runPSM
@@ -27,6 +26,8 @@ classdef linearPSM < PSM
         % This is a constructor of a linearPSM. It sets the slope and
         % intercept.
         function obj = linearPSM(slope, intercept)
+        %% obj = linearPSM(slope, intercept)
+        
             % Set the values
             obj.slope = slope;
             obj.intercept = intercept;

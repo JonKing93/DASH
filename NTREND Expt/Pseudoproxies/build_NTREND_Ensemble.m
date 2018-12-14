@@ -45,7 +45,7 @@ mdex = 1;
 for rdex = 2:nRun+1
     
     % Load the temperature variable from the run
-    [~, T] = loadLMESurfaceT( [], rdex );
+    [~, T] = loadLMESurfaceT( [], rdex, 1:1200 );
     
     % Restrict to the Northern Hemisphere
     T = squeeze( T(NHdex,:,:) );

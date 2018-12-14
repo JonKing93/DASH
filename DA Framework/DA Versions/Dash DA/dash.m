@@ -1,4 +1,4 @@
-function[A] = dash( M, D, R, locArgs, inflate, F, H, meta)
+function[A] = dash( M, D, R, w, inflate, F, H, meta)
 %
 % A = dash( M, D, R, locArgs, inflate, Ye)
 % Runs the DA using the tardif method.
@@ -20,10 +20,7 @@ function[A] = dash( M, D, R, locArgs, inflate, F, H, meta)
 %       Matrix of size (nObs x nTime): Specify R
 %       []: Dynamically generate R from forward models and Ye
 %
-% locArgs: Inputs for covariance localization
-%       'none': No localization
-%       {siteCoords, stateCoords, R, scaleArg}: Apply localization. Please
-%               see covarianceLocalization.m for details on inputs.
+% w: Covariance localization weights. Leave empty for no localization.
 %
 % inflate: A scalar inflation factor. Leave empty for no inflation.
 %
@@ -55,11 +52,9 @@ if ~isa(F, 'PSM')
     Ye = F;
 end
 
-% Get the weights for covariance localization
-if ischar(locArgs) && strcmpi( locArgs, 'none')
-    w = ones(1, nObs);
-else
-    w = covLocalization( locArgs{:} );
+% Get the defualt weights for covariance localization
+if isempty(w)
+    w = ones(nState, nObs);
 end
 
 % If doing Tardif...

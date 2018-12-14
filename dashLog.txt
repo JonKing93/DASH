@@ -1,0 +1,10 @@
+% Log of DASH
+
+12 Dec. 2018
+Made a new build of the DA after scrapping vectorDA and combining linearDA and fullDA.
+
+14 Dec. 2018:
+The DA has negative skill for the NTREND data. Why?
+
+-Check the covariance matrix. See what happens if you do direct averaging of the covariance for a single site.
+

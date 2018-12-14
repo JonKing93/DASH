@@ -1,21 +1,21 @@
-function[linModel, lmeProxy] = build_LME_Pseudos(linReg, gPseudo, T)
+function[linModel, lmeProxy] = build_LME_Pseudos(linReg, gPseudo, season)
 %% Builds the "true" pseudo-proxies from LME run 2 after tuning the linear model.
 %
 % [linModel, lPseudo] = build_LME_Pseudos(linReg, gPseudo)
 % 
 
-%%%%% User Specified
-season = [6 7 8];
-%%%%%
-
 % Load the T data
 Tmeta = loadLMESurfaceT;
 
 % If not provided, load T from run 2
-if nargin<3
-    runDex = find(Tmeta.run == 2);
-    [Tmeta, T] = loadLMESurfaceT( [], runDex );
-end
+runDex = find(Tmeta.run == 2);
+[Tmeta, T] = loadLMESurfaceT( [], runDex, 1:1200 );
+    
+% Remove the Southern hemisphere
+NHdex = Tmeta.lat>0;
+T = squeeze( T(NHdex,:,:) );
+Tmeta.lat = Tmeta.lat(NHdex);
+Tmeta.lon = Tmeta.lon(NHdex);    
     
 % Load NTREND
 [crn, sYear, ~, sLon, sLat] = loadNTREND;
@@ -26,19 +26,14 @@ H = samplingMatrix( [sLat, sLon], [Tmeta.lat, Tmeta.lon], 'linear' );
 % Restrict the LME data to the spatial sites. Convert to 2D matrix.
 T = squeeze( T(H,:,:) )';
 
-% Further restrict LME data to JJA
-seasonDex = ismember( month(Tmeta.date), season );
-T = T(seasonDex,:);
-
-% Preallocate the seasonal mean of T
-nMonth = numel(season);
-nYear = size(T,1) / nMonth;
+% Preallocate the seasonal mean
+nYear = size(T,1) / 12;
 nSite = size(T,2);
-Tseas = NaN(nYear, nSite);
+Tseas = NaN( nYear, nSite);
 
 % Get the seasonal mean
 for t = 1:nYear
-    Tseas(t,:) = mean(  T( (t-1)*nMonth+1:t*nMonth, :)  );
+    Tseas(t,:) = mean( T((t-1)*12+season, :), 1 );
 end
 
 % Tune the linear regression intercept to account for model bias
@@ -61,6 +56,9 @@ end
 
 % Add temperature seasonal mean data for future reference
 lmeProxy = {lmeProxy, Tseas};
+
+% Do a second build using the linearPSM class
+linPSM = linearPSM( linModel(:,2), linModel(:,1) );
 
 end
 % 

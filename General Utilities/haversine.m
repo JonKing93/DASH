@@ -1,13 +1,20 @@
 function[D] = haversine( lli, llf )
+%% Calculate the surface distance between lat-lon coordinates (in kilometers).
 %
 % D = haversine( lli, llf )
 % Computes the distance between sets of lat, lon coordinates. Vectorized.
 %
-% lli: Initial lat lon coordinates.
+% ----- Inputs -----
+% 
+% lli: Initial lat lon coordinates. Lat is first column, lon is second.
 %
-% llf: Final coordinates.
+% llf: Final lat-lon coordinates. Lat is first column, lon is second.
+%
+% ----- Outputs -----
+%
+% D: The distance between initial and final coordinates in kilometers.
 
-% Set the radius of the Earth
+% Set the radius of the Earth (in kilometers)
 R = 6371;
 
 % Convert latitude to radians

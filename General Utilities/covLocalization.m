@@ -73,9 +73,13 @@ else
     end
 end       
 
+% Preallocate the distance between site and nodes
+nState = size(stateCoord,1);
+nSite = size(siteCoord,1);
+dist = NaN(nState, nSite);
+
 % Get the distance between the site and the state vector grid nodes
-dist = NaN(nState, nObs);
-for k = 1:nObs
+for k = 1:nSite
     dist(:,k) = haversine(siteCoord(k,:), stateCoord);
 end
 
@@ -92,12 +96,12 @@ outScale = (dist > c) & (dist <= Rloc);
 
 % Preallocate the covariance localization weights. Use 1 as the fill value
 % so non-localizable sites are not affected by the localization.
-weights = ones( nState,1 );
+weights = ones( nState, nSite );
 
 % Get the weights for each set of points
 x = dist / c;
-weights(inScale) = polyval([-.25,.5,.625,-5/3,0,1], x);
-weights(outScale) = polyval([1/12,-.5,.625,5/3,-5,4],x) - 2/(3*x);
+weights(inScale) = polyval([-.25,.5,.625,-5/3,0,1], x(inScale));
+weights(outScale) = polyval([1/12,-.5,.625,5/3,-5,4], x(outScale)) - 2./(3*x(outScale));
 weights(outRloc) = 0;
 
 % Weights should always be positive. Round-off errors may result in
