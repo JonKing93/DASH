@@ -43,7 +43,7 @@ A = NaN( nState, nTime, 2 );
 [Mmean, Mdev] = decomposeEnsemble(M);
 
 % Each time step is independent, process in parallel
-parfor t = 1:nTime
+for t = 1:nTime
     
     % Slice variables to minimize parallel overhead
     tD = D(:,t);
@@ -88,7 +88,7 @@ parfor t = 1:nTime
         
         % Update
         Amean = Amean + K*( tD(obDex) - Ymean );
-        Adev = Adev + (a * K * Ydev);
+        Adev = Adev - (a * K * Ydev);
         
         % Only inflate covariance in the first time step
         if d == 1

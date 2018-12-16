@@ -8,3 +8,7 @@ The DA has negative skill for the NTREND data. Why?
 
 -Check the covariance matrix. See what happens if you do direct averaging of the covariance for a single site.
 
+Okay, found the problem. We are overcorrecting because the variance of the
+proxies is too low.
+
+So the next question is, what sort of proxy coordinate system would be ideal?

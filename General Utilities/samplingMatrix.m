@@ -1,11 +1,11 @@
-function[H] = samplingMatrix( siteCoord, gridCoord, indexType )
+function[H] = samplingMatrix( siteCoord, stateCoord, indexType )
 %% Creates a sampling matrix or vector that maps site (lat-lon) coordinates
 % to the nearest set of (lat-lon) coordinates on a grid or set of stations.
 %
-% H = samplingMatrix( siteCoord, gridCoord )
+% H = samplingMatrix( siteCoord, stateCoord )
 % Returns a logical sampling matrix.
 %
-% Hvec = samplingMatrix( siteCoord, gridCoord, 'linear' )
+% Hvec = samplingMatrix( siteCoord, stateCoord, 'linear' )
 % Returns a vector of linear indices.
 %
 % Hvec = samplingMatrix( siteCoord, {gridLat, {gridLat, gridLon}, 'linear' )
@@ -20,7 +20,7 @@ function[H] = samplingMatrix( siteCoord, gridCoord, indexType )
 % siteCoord: A two column matrix of site latitude (column 1) and longitude
 %      (column 2) coordinates. (nSite x 2)
 %
-% gridCoord: A two column matrix of grid/station/domain coordinates. (nGrid x 2)
+% stateCoord: A two column matrix of grid/station/domain coordinates. (nState x 2)
 %
 % gridLat: A 2D matrix of grid latitudes.
 %
@@ -42,11 +42,11 @@ if nargin == 2
 end
 
 % If 2D grid coordinates, convert to a vector
-if iscell(gridCoord)
-    lat = gridCoord{1}(:);
-    lon = gridCoord{2}(:);
+if iscell(stateCoord)
+    lat = stateCoord{1}(:);
+    lon = stateCoord{2}(:);
     
-    gridSize = size( gridCoord{1} );
+    gridSize = size( stateCoord{1} );
 end
 
 % Preallocate
@@ -57,7 +57,7 @@ Hvec = NaN( nSite, 1);
 for s = 1:nSite
     
     % Get the distance between the site and grid coords
-    dist = haversine( siteCoord(s,:), gridCoord );
+    dist = haversine( siteCoord(s,:), stateCoord );
     
     % Get the index of the minimum distance
     Hvec(s) = find( dist == min(dist), 1 );
@@ -67,7 +67,7 @@ end
 if strcmpi( indexType, 'logical')
     
     % Preallocate
-    nGrid = size( gridCoord, 1);
+    nGrid = size( stateCoord, 1);
     H = false( nSite, nGrid);
     
     % For each site...

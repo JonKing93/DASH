@@ -1,4 +1,4 @@
-function[linReg, gPseudo] = build_GHCN_linear_model( ghcn )
+function[linReg, ghcnProxy, Tghcn ] = build_GHCN_linear_model
 
 %%%%%%% User specified
 
@@ -11,13 +11,8 @@ nanfrac = 0.33;
 
 %%%%%%%%
 
-
 % Load the GHCN data
-if nargin == 1
-    gmeta = loadGHCN;
-else
-    [gmeta, ghcn] = loadGHCN;
-end
+[gmeta, ghcn] = loadGHCN;
 gDate = gmeta.date;
 gmeta = gmeta.ghcnMeta;
 
@@ -50,6 +45,7 @@ gmeta(nandex,:) = [];
 % Map each NTREND site to the closest station 
 H = samplingMatrix( [sLat, sLon], [gmeta.lat, gmeta.lon], 'linear');
 ghcn = ghcn(:,H);
+gmeta = gmeta(H,:);
 
 % Preallocate the JJA mean
 nYear = nVals / 12;
@@ -65,7 +61,7 @@ end
 
 % Preallocate the linear regression and GHCN pseduoproxies
 linReg = NaN( nSite, 3);
-gPseudo = NaN( nYear, nSite);
+ghcnProxy = NaN( nYear, nSite);
 
 % For each site
 for s = 1:nSite
@@ -83,10 +79,11 @@ for s = 1:nSite
     
     % Create a pseudo proxy from the linear regression on the GHCN data.
     % Also record the GHCN data.
-    gPseudo(:,s) = linReg(s,1) + ( linReg(s,2) * Tseas(:,s) );
+    ghcnProxy(:,s) = linReg(s,1) + ( linReg(s,2) * Tseas(:,s) );
 end
 
-% Add temperature data to the gPseduo record
-gPseudo = {gPseudo, Tseas};
+% Make the output in the same dimensions as Kalman D
+ghcnProxy = ghcnProxy';
+Tghcn = struct('T',Tseas', 'meta', gmeta);
 
 end

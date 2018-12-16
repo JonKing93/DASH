@@ -1,7 +1,6 @@
 % This is the driver for the pseudo proxy experiment
 
-%%%%% User specified
-
+%%%%% User specified %%%%%
 % Size of the static ensemble.
 nEns = 11 * 10;
 
@@ -11,110 +10,66 @@ Rfrac = 1;
 % Set the months in the seasonal mean
 season = [6 7 8];
 
-%%%%%
+% Set which years to use in the DA
+yearLim = [850 950];
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Calculate the time indices of the year limits
+timeDex = yearLim - 850;
+timeDex = timeDex(1)*12+1 : (timeDex(2)+1)*12;
 
 %% Build the "true" pseudo proxies
 
-% Build or load the pseudo proxies
+% Do a linear regression against GHCN to get realistic values for the
+% slope of a linear model.
+[linReg, ghcnProxy, Tghcn] = build_GHCN_linear_model;
 
-% % Do the initial linear regression
-% [linReg, gPseudo] = build_GHCN_linear_model;
-% 
-% % Tune the linear model to the CESM LME means and calculate the
-% % pseudo-proxies.
-[linMod, trueProxy] = build_LME_Pseudos(linReg, gPseudo, season);
+% Load the "true" data. So, run 2 of the LME. Use a set of years that 
+% avoids possible climate biases (such as global warming post-1850). Also,
+% restrict to the Northern Hemisphere.
+[Tmeta, Ttrue] = getTruthRun( timeDex, season );
 
-% Load
-load('testPseudos.mat');
+% Get the sampling indices of the NTREND sites
+[~,~,~,sLon,sLat] = loadNTREND;
+H = samplingMatrix( [sLat, sLon], [Tmeta.lat, Tmeta.lon], 'linear' );
 
-% Create the linear PSM
-linPSM = linearPSM( linMod(:,2), linMod(:,1) );
+% Create a linear model by adjusting the intercept of the linear regression
+% to account for different mean values in the LME and GHCN data. This is
+% will force the LME proxies from the linear model to have the same mean as
+% the GHCN proxies from the regression.
+linModel = tuneLinearModel( linReg, Ttrue(H,:), Tghcn.T );
 
-%% Setup for DA
+% Create a proxy model object.
+linPSM = linearPSM( linModel(:,1), linModel(:,2) );
 
-% Build (or load) the static ensemble
-[M, Mmeta] = build_NTREND_Ensemble(nEns, season);
-% load('testEnsemble_JJA.mat');
+% Calculate the "true" proxy values. These are the observations, D.
+D = linPSM.runPSM( Ttrue(H,:) );
 
-% Get D
-D = trueProxy{1}';
+% Now, build a model ensemble for DA
+[Mmeta, M] = build_NTREND_Ensemble( nEns, season, timeDex);
 
-% Get R
-R = Rfrac .* var(D,[],2);
-R = repmat(R, [1 size(D,2)]);
-
-% Get the sampling indices
-[~,year,~,sLon,sLat] = loadNTREND;
-H = samplingMatrix( [sLat, sLon], [Mmeta.lat, Mmeta.lon], 'linear' );
+% Do a sanity check and ensure that Ttrue and M are using the same sites
+if ~isequal(Mmeta.lat, Tmeta.lat) || ~isequal(Mmeta.lon, Tmeta.lon)
+    error('Tmeta and Mmeta don''t record the same sites!');
+end
 
 % Get the Ye estimates
 Ye = linPSM.runPSM( M(H,:) );
 
-% Creat the sampling array for dashDA
-Hcell = num2cell(H);
+%% Run dash on the first time step
+tDex = 1;
+w = covLocalization([sLat, sLon], [Mmeta.lat, Mmeta.lon], 1000);
+A1 = dash( M, D(:,tDex), zeros(size(D(:,tDex))), [], 1, linPSM, num2cell(H), []);
 
-% Create the covariance localization
-w = covLocalization( [sLat, sLon], [Mmeta.lat, Mmeta.lon], 25000);
-% w = [];
+% Get the error of the initial and analysis ensembles
+Mmean = mean(M,2);
+Merr = Mmean - Ttrue(:,tDex);
+Aerr = A1(:,1,1) - Ttrue(:,tDex);
 
-%% Run DA
-
-% Activate the parallel pool
-gcp;
-
-% Run the DA using the full PSM
-Alin = dash( M, D(:,1), R(:,1), w, 1, linPSM, Hcell, []);
-
-% Also run using the Tardif method
-% Atar = dash( M, D(:,1), R(:,1), 'none', 1, Ye, [], []);
-
-
-%% Compare to the true run
-
-% Get the ensemble mean and variance
-[Mmean, ~, Mvar] = decomposeEnsemble(M);
-
-% Get the DA mean in the first time step
-A1mean = Alin(:,1,1);
-
-% Get the true value in the first time step
-[Tmeta, T1] = loadLMESurfaceT( [], 1, season);
-T1 = squeeze(T1);
-
-NHdex = Tmeta.lat > 0;
-T1 = T1(NHdex);
-Tmeta.iSize = Tmeta.iSize ./ [1 2];
-
-T1 = mean(T1,2);
-
-% Get the error in M and A
-Aerr = A1mean - T1;
-Merr = Mmean - T1;
-% Atarerr = Atarmean - T1;
-
-% Get the skill improvement
 skill = abs(Merr) - abs(Aerr);
 
-% Plot the skill improvement.
 figure
-mapState( skill, Tmeta.iSize);
-title('Skill Improvement');
-scicolor;
+mapState(skill, Tmeta.iSize);
+scicolor('flip');
 
-% % subplot(1,2,1);
-% % mapState(Merr, Tmeta.iSize);
-% % title('Error in initial ensemble mean');
-% % clim = get(gca,'clim');
-% % scicolor;
-% % 
-% % subplot(1,2,2)
-% % mapState(Aerr, Tmeta.iSize);
-% % title('Error in output analysis mean');
-% % set(gca,'clim',clim);
-% % scicolor;
-% % 
-% % % subplot(1,3,3)
-% % % mapState(Atarerr, Tmeta.iSize)
-% % % title('Error in Tardif output');
-% % % set(gca,'clim',clim);
-% % % scicolor;
+

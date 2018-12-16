@@ -25,7 +25,7 @@ classdef linearPSM < PSM
         
         % This is a constructor of a linearPSM. It sets the slope and
         % intercept.
-        function obj = linearPSM(slope, intercept)
+        function obj = linearPSM(intercept, slope)
         %% obj = linearPSM(slope, intercept)
         
             % Set the values

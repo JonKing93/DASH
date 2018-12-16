@@ -2,7 +2,7 @@ function[D] = haversine( lli, llf )
 %% Calculate the surface distance between lat-lon coordinates (in kilometers).
 %
 % D = haversine( lli, llf )
-% Computes the distance between sets of lat, lon coordinates. Vectorized.
+% Computes the distance between sets of lat, lon coordinates.
 %
 % ----- Inputs -----
 % 

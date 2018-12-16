@@ -1,4 +1,4 @@
-function[A] = dash( M, D, R, w, inflate, F, H, meta)
+function[varargout] = dash( M, D, R, w, inflate, F, H, meta)
 %
 % A = dash( M, D, R, locArgs, inflate, Ye)
 % Runs the DA using the tardif method.
@@ -74,5 +74,20 @@ end
 
 % Now, run the DA
 A = dashDA( M, D, R, w, inflate, F, H, meta );
+
+% If doing tardif
+if ~fullPSM
     
+    % Unappend the Ye
+    nState = size(M,1) - size(Ye,1);
+    
+    Ya = A(nState+1:end,:,:);
+    A = A(1:nState,:,:);
+    
+    % Set the output
+    varargout = {A, Ya};
+else
+    varargout = {A};
+end
+
 end
