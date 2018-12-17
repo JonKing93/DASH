@@ -43,7 +43,7 @@ A = NaN( nState, nTime, 2 );
 [Mmean, Mdev] = decomposeEnsemble(M);
 
 % Each time step is independent, process in parallel
-for t = 1:nTime
+parfor t = 1:nTime
     
     % Slice variables to minimize parallel overhead
     tD = D(:,t);
