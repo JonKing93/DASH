@@ -115,57 +115,45 @@ function [trw,varargout] = VSLite_v2_5(syear,eyear,phi,T1,T2,M1,M2,T,P,varargin)
 iyear = syear:eyear;
 nyrs = length(syear:eyear);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Set parameter defaults
+
+% Parameters of the Leaky Bucket model:
+Mmax = 0.76;
+Mmin = 0.01;
+alph = 0.093;
+m_th = 4.886;
+mu_th = 5.80;
+rootd = 1000;
+M0 = 0.2;
+substep = 0;
+% Integration window parameters:
+I_0 = 1;
+I_f = 12;
+% Hydroclimate variable:
+hydroclim = 'P';
+
 % Read in advanced inputs if user-specified; else read in parameter defaults:
 if nargin > 9 
-    %%%% First fill parameter values in with defaults: %%%%%
-    % Parameters of the Leaky Bucket model:
-    Mmax = 0.76;
-    Mmin = 0.01;
-    alph = 0.093;
-    m_th = 4.886;
-    mu_th = 5.80;
-    rootd = 1000;
-    M0 = 0.2;
-    substep = 0;
-    % Integration window parameters:
-    I_0 = 1;
-    I_f = 12;
-    % Hydroclimate variable:
-    hydroclim = 'P';
-    for i = 1:nargin/2-1
+    for i = 1:nargin-10
         namein = varargin{i};
         switch namein
             case 'lbparams'
-                Mmax = varargin{i+1};
-                Mmin = varargin{i+2};
-                alph = varargin{i+3};
-                m_th = varargin{i+4};
-                mu_th = varargin{i+5};
-                rootd = varargin{i+6};
-                M0 = varargin{i+7};
-                substep = varargin{i+8};
+                Mmax = varargin{i+1}(1);
+                Mmin = varargin{i+1}(2);
+                alph = varargin{i+1}(3);
+                m_th = varargin{i+1}(4);
+                mu_th = varargin{i+1}(5);
+                rootd = varargin{i+1}(6);
+                M0 = varargin{i+1}(7);
+                substep = varargin{i+1}(8);
             case 'intwindow'
-                I_0 = varargin{i+1};
-                I_f = varargin{i+2};
+                I_0 = varargin{i+1}(1);
+                I_f = varargin{i+1}(2);
             case 'hydroclim'
                 hydroclim = varargin{i+1};
         end
     end
-else % otherwise, read in defaults:
-    % Parameters of the Leaky Bucket model:
-    Mmax = 0.76;
-    Mmin = 0.01;
-    alph = 0.093;
-    m_th = 4.886;
-    mu_th = 5.80;
-    rootd = 1000;
-    M0 = 0.2;
-    substep = 0;
-    % Integration window parameters:
-    I_0 = 1;
-    I_f = 12;
-    % Hydroclimate variable:
-    hydroclim = 'P';
 end
 %%% Pre-allocate storage for outputs: %%%%
 Gr = NaN(12,nyrs);
@@ -498,7 +486,7 @@ nhrs = 24*acosd(1-mmm)/180; % the number of hours in the day in the middle of th
 L = (ndays(2:13)/30).*(nhrs/12); % mean daylength in each month.
 
 % Pre-calculation of istar and I, using input T to compute the climatology:
-Tm=nanmean(T');
+Tm=nanmean(T',1);
 if length(Tm) ~=12,
     error(['problem with creating T climatology for computing istar ' ...
            'and I'])

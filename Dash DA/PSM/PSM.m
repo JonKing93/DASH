@@ -7,7 +7,7 @@ classdef (Abstract) PSM
         % This is the basic function used in the dashDA code. The PSM is
         % given state variables, and any other information known by dashDA,
         % and returns model estimates, Ye.
-        Ye = runPSM( obj, M, meta, obDex, site, time );
+        Ye = runPSM( obj, M, obDex, site, time );
     end
     
 end

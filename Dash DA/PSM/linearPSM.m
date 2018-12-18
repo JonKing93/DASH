@@ -11,7 +11,7 @@ classdef linearPSM < PSM
     methods
         
         % Implement runPSM for a single linear model
-        function[Ye] = runPSM( obj, M, ~, obDex, ~, ~)
+        function[Ye] = runPSM( obj, M, obDex, ~, ~)
             
             % If no specific index is given, use all models
             if ~exist('obDex','var') || isempty(obDex)

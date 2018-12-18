@@ -6,7 +6,7 @@ classdef trivialPSM < PSM
     methods     
         % Implement the runPSM method. No metadata is needed. Simply return
         % the input value.
-        function[Ye] = runPSM( ~, M, ~, ~, ~, ~ )
+        function[Ye] = runPSM( ~, M, ~, ~, ~ )
             Ye = M;
         end
         
