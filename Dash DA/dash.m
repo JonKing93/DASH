@@ -1,9 +1,9 @@
-function[varargout] = dash( M, D, R, w, inflate, F, H, meta)
+function[varargout] = dash( M, D, R, w, inflate, F, H)
 %
 % A = dash( M, D, R, locArgs, inflate, Ye)
 % Runs the DA using the tardif method.
 %
-% A = dash( M, D, R, locArgs, inflate, F, H, meta)
+% A = dash( M, D, R, locArgs, inflate, F, H)
 % Runs the DA using a PSM.
 %
 % A = dash( M, D, [], ...)
@@ -31,9 +31,6 @@ function[varargout] = dash( M, D, R, w, inflate, F, H, meta)
 % H: A cell of state variable indices needed to run the forward model for
 %      each site. {nObs x 1}
 %
-% meta: Metadata required to run PSMs. Please see individual PSMs for
-%      metadata requirements.
-%    
 % ----- Outputs -----
 %
 % A: Output Analysis
@@ -73,7 +70,7 @@ if ~fullPSM
 end
 
 % Now, run the DA
-A = dashDA( M, D, R, w, inflate, F, H, meta );
+A = dashDA( M, D, R, w, inflate, F, H );
 
 % If doing tardif
 if ~fullPSM

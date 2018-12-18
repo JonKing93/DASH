@@ -1,6 +1,6 @@
-function[A] = dashDA( M, D, R, w, inflate, F, H, meta )
+function[A] = dashDA( M, D, R, w, inflate, F, H )
 %
-% A = dashDA( M, D, R, w, inflate, F, H, meta )
+% A = dashDA( M, D, R, w, inflate, F, H )
 % Performs data assimilation.
 %
 % ----- Inputs -----
@@ -24,9 +24,6 @@ function[A] = dashDA( M, D, R, w, inflate, F, H, meta )
 % H: A cell of state variable indices needed to run the forward model for
 %      each site. {nObs x 1}
 %      !!! Could this be dynamic?
-%
-% meta: Metadata required to run PSMs. Please see individual PSMs for
-%      metadata requirements.
 %
 % ----- Outputs -----
 %
@@ -71,7 +68,7 @@ parfor t = 1:nTime
         Mpsm = Amean(obSite) + Adev(obSite,:);
         
         % Run the PSM
-        [Ye] = F.runPSM( Mpsm, meta, obDex, obSite, t);
+        [Ye] = F.runPSM( Mpsm, obDex, obSite, t);
        
         % Decompose the model estimate
         [Ymean, Ydev] = decomposeEnsemble(Ye);
