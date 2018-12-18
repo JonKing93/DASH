@@ -1,4 +1,5 @@
 %% This PSM implements VS-Lite for a single site.
+% !!! Should implement later for multiple sites
 classdef vslitePSM < PSM
     
     % Properties that cannot change once specified
