@@ -41,7 +41,7 @@ classdef vslitePSM < PSM
             end
                         
             % If specified, set some advanced parameters.
-            if nargin > 4
+            if nargin > 5
                 obj.advArgs = varargin;
             end
         end
