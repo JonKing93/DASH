@@ -1,14 +1,12 @@
-function[varargout] = dash( M, D, R, w, inflate, F, H, meta)
+function[A, Ye] = dash( M, D, R, w, inflate, daType, F, H, Fobs)
+%% Implements data assimilation using dynamic PSMs or the tardif method.
 %
-% A = dash( M, D, R, locArgs, inflate, Ye)
-% Runs the DA using the tardif method.
-%
-% A = dash( M, D, R, locArgs, inflate, F, H, meta)
-% Runs the DA using a PSM.
-%
-% A = dash( M, D, [], ...)
-% Dynamically generates R from forward models.
-%
+% [A, Ye] = dash( M, D, R, w, inflate, 'full', H, F)
+% Runs the DA using a dynamic PSM. Returns analysis ensemble mean and
+% variance, and the dynamically calculated Ye values.
+% 
+% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Ha, Fa, Fobs)
+% Runs the DA using the appended Ye method.
 %
 % ----- Inputs -----
 %
@@ -16,78 +14,114 @@ function[varargout] = dash( M, D, R, w, inflate, F, H, meta)
 %
 % D: The observations. (nObs x nTime)
 %
-% R: Observation uncertainty. (nObs x nTime) OR [] for dynamic generation
-%       Matrix of size (nObs x nTime): Specify R
-%       []: Dynamically generate R from forward models and Ye
+% R: Observation uncertainty. (nObs x nTime) OR [] for dynamic generation.
+%      NaN elements will be dynamically generated.
 %
 % w: Covariance localization weights. Leave empty for no localization.
 %
 % inflate: A scalar inflation factor. Leave empty for no inflation.
 %
-% Ye: Model estimates. (nObs x nEns)
+% F: An array of proxy system models for each observation. (nObs x 1)
 %
-% F: A proxy system model of the "PSM" class
+% Fa: An array of proxy system models for ??? How best to implement...
 %
 % H: A cell of state variable indices needed to run the forward model for
-%      each site. {nObs x 1}
+%      each site. {nObs x 1}(nSite x 1)
 %
-% meta: Metadata required to run PSMs. Please see individual PSMs for
-%      metadata requirements.
-%    
+% Ha: State variable indices needed to run the forward model for each site.
+%      A cell array (for serial Ye calculation) {nObs x 1}(nSite x 1)
+%      OR a matrix (for bulk Ye calculation) (nObs x nSite)
+%
 % ----- Outputs -----
 %
-% A: Output Analysis
+% A: Output Analysis mean and variance. (nState x nTime x 2)
+%
+% Ye: Dynamically generated model estimates for sequential updates. (nObs x nEns x nTime)
+%
+% Yi: The initial Ye values calculated for the appended method. (nObs x nEns x nTime)
+%
+% Ymv: The mean and variance of Ye values used for each serial update in
+%      the appended method. The first element of dim3 is the mean, and the
+%      second element is the variance. (nObs x nTime x 2)
+%
+% Yf: The final Ye values at the end of the appended method. (nObs x nEns x nTime)
 
 % Error checking
-% errorCheck();
+% errorCheck(); 
 
 % Get some sizes
-nState = size(M,1);
+[nState, nEns] = size(M);
 nObs = size(D,1);
 
-% Set the toggle for tardif vs full PSM
-fullPSM = true;
-if ~isa(F, 'PSM')
-    fullPSM = false;
-    Ye = F;
-end
-
-% Get the defualt weights for covariance localization
+% Get the default weights for covariance localization
 if isempty(w)
     w = ones(nState, nObs);
 end
 
-% If doing Tardif...
-if ~fullPSM
+% Get default weights for inflation
+if isempty(inflate)
+    inflate = 1;
+end
+
+% Set the toggle for the appended method vs dynamic PSM
+if strcmpi(daType, 'append')
+    append = true;
+elseif strcmpi( daType, 'full')
+    append = false;
+else
+    error('Unrecognized daType');
+end
+
+% Apply the inflation factor
+[Mmean, Mdev] = decomposeEnsemble( M );
+Mdev = sqrt(inflate) .* Mdev;
+M = Mmean + Mdev;
+
+% If doing the appended method.
+if append
     
-    % Get the trivial PSM. Just going to return the Ye values in the
-    % appended state as the PSM output.
-    F = trivialPSM;
+    % Check that Fa is an appendPSM
+    if ~isa(Fa, 'appendPSM')
+        error('Fa must be of the class "appendPSM"');
+    end
     
-    % Determine the sampling indices for the Ye
+    % Preallocate the Y estimates
+    Yi = NaN( nObs, nEns );
+    
+    % For each type of forward model...
+    for m = 1:numel(Fa)
+        
+        % Get the associated observations
+        currObs = Fobs{m};
+        
+        % Generate the associated Y estimates
+        Yi(currObs,:) = Fa.calculateYe( M, H{m}, currObs );
+    end
+    
+    % Use the trivial PSM for the DA. Just going to return the Ye values in
+    % the appended state as the PSM output.
+    F = repmat( trivialPSM, nObs, 1);
+    
+    % Determine the sampling indices for the appended Ye
     H = nState + (1:nObs)';
     H = num2cell(H);
     
     % Append Ye to M
-    M = [M;Ye];
+    M = [M;Yi];
 end
 
 % Now, run the DA
-A = dashDA( M, D, R, w, inflate, F, H, meta );
+[A, Ye] = dashDA( M, D, R, w, F, H );
 
-% If doing tardif
-if ~fullPSM
+% If using the appended method...
+if append
     
-    % Unappend the Ye
-    nState = size(M,1) - size(Ye,1);
-    
-    Ya = A(nState+1:end,:,:);
+    % Unappend the Ymeans    
+    Yf = A(nState+1:end,:,1);
     A = A(1:nState,:,:);
     
-    % Set the output
-    varargout = {A, Ya};
-else
-    varargout = {A};
+    % Create the output cell
+    Ye = {Yi, Ye, Yf};
 end
 
 end

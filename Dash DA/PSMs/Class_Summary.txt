@@ -1,0 +1,19 @@
+Here is an overview of the currently available classes.
+
+Abstract:
+PSM: A class for a PSM using a full PSM during DA. Requires the runPSM method.
+
+appendDA: A class for a PSM used to calculate Ye values for the appended method.
+          Requires the calculateYe method.
+
+UnivarVectorPSM: Implements calculateYe for univariate, vectorizable PSMs.
+
+
+Concrete:
+trivialPSM: Returns whatever value it is given. Useful for the appended DA method.
+
+linearPSM: Implements a univariate, linear PSM. Y = A + Bx
+
+simpleExpPSM: Implements a simple exponential model, Y = Ae^(Bx)
+
+vslitePSM: Implements VS-Lite.

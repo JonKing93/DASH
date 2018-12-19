@@ -1,6 +1,9 @@
-function[A] = dashDA( M, D, R, w, inflate, F, H, meta )
+function[A] = dashDA( M, D, R, w, F, H )
+%% Implements data assimilation using an ensemble square root filter with serial
+% updates for individual observations. Time steps are assumed independent
+% and processed in parallel.
 %
-% A = dashDA( M, D, R, w, inflate, F, H, meta )
+% [A, Y] = dashDA( M, D, R, w, F, H )
 % Performs data assimilation.
 %
 % ----- Inputs -----
@@ -16,21 +19,23 @@ function[A] = dashDA( M, D, R, w, inflate, F, H, meta )
 % w: Covariance localization weights. (nState x nObs)
 %      !!! Could this be dynamic?
 %
-% inflate: A scalar inflation factor
-%
-% F: A forward model of the "PSM" class
-%   !!! Eventually, this should be an array of PSMs
+% F: An array of proxy system models of the "PSM" class. One model for each
+%      observation. (nObs x 1)
 %
 % H: A cell of state variable indices needed to run the forward model for
 %      each site. {nObs x 1}
 %      !!! Could this be dynamic?
 %
-% meta: Metadata required to run PSMs. Please see individual PSMs for
-%      metadata requirements.
-%
 % ----- Outputs -----
 %
-% A: The output analysis.
+% A: The mean and variance of the analysis ensemble. (nState x nTime x 2)
+%
+% Y: The model estimates used for each update. (nObs x nEns x nTime)
+
+% Ensure the PSMs are allowed
+if ~isa( F, 'PSM' )
+    error('F must be of the the "PSM" class');
+end
 
 % Get some sizes
 nTime = size(D,2);
@@ -56,44 +61,36 @@ parfor t = 1:nTime
     % Get the observations that are not NaN in this time step
     currObs = find( ~isnan(tD) );
     
-    % Initialize the inflation factor
-    currInflate = inflate;
-    
     % For each observation
     for d = 1:numel(currObs)
 
-        % Get the sampling indices
-        obDex = currObs(d);
-        obSite = H{ obDex }; %#ok<PFBNS>
+        % Get the observation index and sampling indices
+        obNum = currObs(d);
+        obSite = H{ obNum }; %#ok<PFBNS>
         
         % Determine what to give the forward model
         % !!!!! Should implement anomaly options?
         Mpsm = Amean(obSite) + Adev(obSite,:);
         
         % Run the PSM
-        [Ye] = F.runPSM( Mpsm, meta, obDex, obSite, t);
+        [Ye] = F(obNum).runPSM( Mpsm, obNum, obSite, t); %#ok<PFBNS>
        
         % Decompose the model estimate
         [Ymean, Ydev] = decomposeEnsemble(Ye);
         
         % If the user-specified R is NaN, calculate from the variance of
         % the Ye
-        if isnan( tR(obDex) )
+        if isnan( tR(obNum) )
             % !!!!!!!!!!!!! This should support a general method.
-            tR(obDex) = var( Ye );
+            tR(obNum) = var( Ye );
         end
         
         % Get the Kalman gain and alpha
-        [K, a] = kalmanENSRF( Adev, Ydev, tR(obDex), w(obDex), currInflate); %#ok<PFBNS>
+        [K, a] = kalmanENSRF( Adev, Ydev, tR(obNum), w(obNum), currInflate); %#ok<PFBNS>
         
         % Update
-        Amean = Amean + K*( tD(obDex) - Ymean );
+        Amean = Amean + K*( tD(obNum) - Ymean );
         Adev = Adev - (a * K * Ydev);
-        
-        % Only inflate covariance in the first time step
-        if d == 1
-            currInflate = 1;
-        end
     end
     
     % Record the mean and variance

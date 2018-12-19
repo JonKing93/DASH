@@ -47,7 +47,7 @@ classdef vslitePSM < PSM
         end
         
         % Run VS-Lite
-        function[Ye] = runPSM( obj, M, ~, ~, ~, tdex )
+        function[Ye] = runPSM( obj, M, ~, ~, tdex )
             
             % Start by getting the start / end years from the time indexing
             simYear = obj.time(tdex);

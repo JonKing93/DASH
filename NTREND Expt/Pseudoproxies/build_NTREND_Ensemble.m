@@ -1,7 +1,7 @@
 function[Tmeta, M] = build_NTREND_Ensemble( nEns, season, timeDex )
 %% Builds the static ensemble for the NTREND experiment.
 %
-% M = build_NTREND_Ensemble( nEns, season )
+% M = build_NTREND_Ensemble( nEns, season, timeDex )
 %
 % ----- Inputs -----
 %
@@ -9,6 +9,8 @@ function[Tmeta, M] = build_NTREND_Ensemble( nEns, season, timeDex )
 %
 % season: The months over which to take the seasonal mean. E.g. [6 7 8]
 %      for JJA
+%
+% timeDex: The time indices to consider. Leave blank for all.
 %
 % ----- Outputs -----
 %
