@@ -1,11 +1,11 @@
-function[A, Ye] = dash( M, D, R, w, inflate, daType, F, H, Fobs)
+function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
 %% Implements data assimilation using dynamic PSMs or the tardif method.
 %
 % [A, Ye] = dash( M, D, R, w, inflate, 'full', H, F)
-% Runs the DA using a dynamic PSM. Returns analysis ensemble mean and
+% Runs the DA using dynamic PSMs. Returns analysis ensemble mean and
 % variance, and the dynamically calculated Ye values.
 % 
-% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Ha, Fa, Fobs)
+% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Ha, Fa )
 % Runs the DA using the appended Ye method.
 %
 % ----- Inputs -----
@@ -46,22 +46,14 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, F, H, Fobs)
 %
 % Yf: The final Ye values at the end of the appended method. (nObs x nEns x nTime)
 
+%% Setup 
+
 % Error checking
 % errorCheck(); 
 
 % Get some sizes
 [nState, nEns] = size(M);
 nObs = size(D,1);
-
-% Get the default weights for covariance localization
-if isempty(w)
-    w = ones(nState, nObs);
-end
-
-% Get default weights for inflation
-if isempty(inflate)
-    inflate = 1;
-end
 
 % Set the toggle for the appended method vs dynamic PSM
 if strcmpi(daType, 'append')
@@ -72,30 +64,48 @@ else
     error('Unrecognized daType');
 end
 
+
+%% Covariance adjustments. Inflation.
+
+% If unspecified, do no covariance localization.
+if isempty(w)
+    w = ones(nState, nObs);
+end
+
+% If unspecified, do no covariance inflation.
+if isempty(inflate)
+    inflate = 1;
+end
+
 % Apply the inflation factor
 [Mmean, Mdev] = decomposeEnsemble( M );
 Mdev = sqrt(inflate) .* Mdev;
 M = Mmean + Mdev;
 
+
+%% Appended method
+%
+% Decided to remove the requirement of supporting bulk calculations.
+% Instead, going to just generate the Ye serially, as you would with the
+% normal DA.
+%
+% If this is a problem, we can implement the appendPSM class later.
+
 % If doing the appended method.
 if append
     
-    % Check that Fa is an appendPSM
-    if ~isa(F, 'appendPSM')
-        error('Fa must be of the class "appendPSM"');
+    % Check that F is a PSM
+    if ~isa(F, 'PSM')
+        error('Fa must be of the class "PSM"');
     end
     
     % Preallocate the Y estimates
     Yi = NaN( nObs, nEns );
     
-    % For each type of forward model...
-    for m = 1:numel(F)
-        
-        % Get the associated observations
-        currObs = Fobs{m};
-        
+    % For each observation
+    for d = 1:nObs        
         % Generate the associated Y estimates
-        Yi(currObs,:) = F.calculateYe( M, H(currObs), currObs );
+        Yi(d,:) = F(d).runPSM( M(H{d},:), d, H{d} );
     end
     
     % Use the trivial PSM for the DA. Just going to return the Ye values in
@@ -108,20 +118,22 @@ if append
     
     % Append Ye to M
     M = [M;Yi];
-end
-
-% Now, run the DA
-[A, Ye] = dashDA( M, D, R, w, F, H );
-
-% If using the appended method...
-if append
     
-    % Unappend the Ymeans    
-    Yf = A(nState+1:end,:,1);
+    % Run the DA
+    [A, Ye] = dashDA( M, D, R, w, F, H );
+    
+    % Unappend
+    Yf = A(nState+1:end,:,:);
     A = A(1:nState,:,:);
     
-    % Create the output cell
+    % Get the Y output cell
     Ye = {Yi, Ye, Yf};
+
+    
+%% Full DA
+% Super simple, just run DA directly.
+else
+    [A, Ye] = dashDA( M, D, R, w, F, H );
 end
 
 end
