@@ -23,7 +23,7 @@ classdef simpleExpPSM < UnivarVectorPSM
             obDex = obj.getObIndex(obNum);
             
             % Implement the model
-            Ye = obj.scale(obDex) .* exp( obj.B(obDex) .* M );
+            Ye = 1./ (obj.scale(obDex) .* exp( obj.B(obDex) .* M ));
         end 
     end
 end

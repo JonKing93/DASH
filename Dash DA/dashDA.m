@@ -1,4 +1,4 @@
-function[A] = dashDA( M, D, R, w, F, H )
+function[A, Y] = dashDA( M, D, R, w, F, H )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -38,8 +38,8 @@ if ~isa( F, 'PSM' )
 end
 
 % Get some sizes
-nTime = size(D,2);
-nState = size(M,1);
+[nObs, nTime] = size(D);
+[nState, nEns] = size(M);
 
 % Preallocate the output
 A = NaN( nState, nTime, 2 );
@@ -47,8 +47,13 @@ A = NaN( nState, nTime, 2 );
 % Decompose the ensemble
 [Mmean, Mdev] = decomposeEnsemble(M);
 
+% Preallocate Ye if it is desired as output.
+if nargout>1
+    Y = NaN( nObs, nEns, nTime);
+end
+
 % Each time step is independent, process in parallel
-parfor t = 1:nTime
+for t = 1:nTime
     
     % Slice variables to minimize parallel overhead
     tD = D(:,t);
@@ -58,42 +63,47 @@ parfor t = 1:nTime
     Amean = Mmean;
     Adev = Mdev;
     
-    % Get the observations that are not NaN in this time step
-    currObs = find( ~isnan(tD) );
-    
-    % For each observation
-    for d = 1:numel(currObs)
-
-        % Get the observation index and sampling indices
-        obNum = currObs(d);
-        obSite = H{ obNum }; %#ok<PFBNS>
-        
-        % Determine what to give the forward model
-        % !!!!! Should implement anomaly options?
-        Mpsm = Amean(obSite) + Adev(obSite,:);
-        
-        % Run the PSM
-        [Ye] = F(obNum).runPSM( Mpsm, obNum, obSite, t); %#ok<PFBNS>
-       
-        % Decompose the model estimate
-        [Ymean, Ydev] = decomposeEnsemble(Ye);
-        
-        % If the user-specified R is NaN, calculate from the variance of
-        % the Ye
-        if isnan( tR(obNum) )
-            % !!!!!!!!!!!!! This should support a general method.
-            tR(obNum) = var( Ye );
-        end
-        
-        % Get the Kalman gain and alpha
-        [K, a] = kalmanENSRF( Adev, Ydev, tR(obNum), w(obNum), currInflate); %#ok<PFBNS>
-        
-        % Update
-        Amean = Amean + K*( tD(obNum) - Ymean );
-        Adev = Adev - (a * K * Ydev);
+    % If recording Ye, preallocate all Ye for the current time step to
+    % allow sliced output for minimal parallel overhead.
+    if nargout>1
+        Ycurr = NaN(nObs, nEns);
     end
     
-    % Record the mean and variance
+    % For each observation that is not a NaN
+    for d = 1:nObs
+        if ~isnan(tD)
+            
+            % Get the state variables required to run the PSM.
+            obSites = H{d};
+        
+            % Run the PSM
+            Ye = F(d).runPSM( Amean(obSites)+Adev(obSites,:), d, obSites, t);
+       
+            % Decompose the model estimate
+            [Ymean, Ydev] = decomposeEnsemble( Ye );
+            
+            % Somewhere around here should be the option for DA derived
+            % values for R
+            % !!!!! So implement it.
+        
+            % Get the Kalman gain and alpha
+            [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
+        
+            % Update
+            Amean = Amean + K*( tD(d) - Ymean );
+            Adev = Adev - (a * K * Ydev);
+            
+            % Record Y if desired as output
+            if nargout>1
+                Ycurr(d,:) = Ye;
+            end     
+        end
+    end
+    
+    % Record the Y estimates for this time step
+    Y(:,:,t) = Ye;
+    
+    % Record the mean and variance of the analysis.
     Avar = var( Adev, 0, 2 );
     A(:,t,:) = [Amean, Avar];
 end

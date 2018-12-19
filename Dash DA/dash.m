@@ -81,7 +81,7 @@ M = Mmean + Mdev;
 if append
     
     % Check that Fa is an appendPSM
-    if ~isa(Fa, 'appendPSM')
+    if ~isa(F, 'appendPSM')
         error('Fa must be of the class "appendPSM"');
     end
     
@@ -89,13 +89,13 @@ if append
     Yi = NaN( nObs, nEns );
     
     % For each type of forward model...
-    for m = 1:numel(Fa)
+    for m = 1:numel(F)
         
         % Get the associated observations
         currObs = Fobs{m};
         
         % Generate the associated Y estimates
-        Yi(currObs,:) = Fa.calculateYe( M, H{m}, currObs );
+        Yi(currObs,:) = F.calculateYe( M, H(currObs), currObs );
     end
     
     % Use the trivial PSM for the DA. Just going to return the Ye values in
