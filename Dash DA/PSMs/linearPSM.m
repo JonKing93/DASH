@@ -12,22 +12,32 @@ classdef linearPSM < PSM
     methods
         
         % Run a univariate linear model.
-        function[Ye] = runPSM( obj, M, obNum, ~, ~)
+        function[Ye] = runPSM( obj, M, obDex, ~, ~)
             
-            % Get the indices of the current observation
-            obDex = obj.getObIndex( obNum );
+            % Set obDex if it does not exist
+            if ~exist('obDex','var')
+                obDex = [];
+            end
+            
+            % Get the indices of the model variables to use
+            varDex = obj.getObIndex( obDex );
             
             % Apply the linear model to all relevant observations.
-            Ye = obj.intercept(obDex) + (obj.slope(obDex) .* M);
+            Ye = obj.intercept(varDex) + (obj.slope(varDex) .* M);
         end
         
         % This is a constructor of a linearPSM. It sets the slope and
         % intercept.
-        function obj = linearPSM(intercept, slope, obNum)
+        function obj = linearPSM(intercept, slope, obDex)
             % Set the values
             obj.slope = slope;
             obj.intercept = intercept;
-            obj.obNum = obNum;
+            
+            % Set the obDex to the linear index if unspecified.
+            if ~exist('obDex','var')
+                obDex = 1:numel(slope);
+            end
+            obj.obDex = obDex;
         end
     end  
 end   

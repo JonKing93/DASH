@@ -8,7 +8,11 @@ classdef (Abstract) PSM < handle
     properties
         % This is the index of each observation that uses the PSM within
         % the array of all observations.
-        obNum;
+        obDex;
+        
+        % This is the number of models contained within a single PSM handle
+        % object.
+        nModels;
     end
     
     % A method that all proxy system models must implement
@@ -25,10 +29,14 @@ classdef (Abstract) PSM < handle
         
         % Gets the index of the values in a forward model that are specific
         % to a particular observation.
-        function[obDex] = getObIndex( obj, currObNum )
-            obDex = find( obj.obNum == currObNum );
+        function[obDex] = getObIndex( obj, obDex )
+            % If empty, use all variables
+            if isempty(obDex)
+                obDex = 1:obj.nModels;
+            else
+                obDex = find( obj.obNum == currObNum );
+            end
         end
-        
+ 
     end
-    
 end
