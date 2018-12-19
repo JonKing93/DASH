@@ -1,5 +1,5 @@
 %% This defines a simple exponential model where Y = Ae^(Bx)
-classdef simpleExpPSM < UnivarVectorPSM
+classdef simpleExpPSM < PSM
     % This is a univariate, vectorizable equation.
     
     properties

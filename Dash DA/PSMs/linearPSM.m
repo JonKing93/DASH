@@ -1,5 +1,5 @@
 %% This class implements a linear, univariate PSM
-classdef linearPSM < UnivarVectorPSM
+classdef linearPSM < PSM
     % This is a univariate, vectorizable PSM.
     
     % The slope and intercept should be fixed values for the PSM
