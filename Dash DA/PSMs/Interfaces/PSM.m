@@ -22,6 +22,10 @@ classdef (Abstract) PSM < handle
         % given state variables, and any other information known by dashDA,
         % and returns model estimates, Ye.
         Ye = runPSM( obj, M, obNum, site, time );
+        
+        % This function determines which state variables are required to
+        % run the PSM for a particular observation site.
+        H = getStateIndices( obj, siteMeta, stateMeta );
     end
     
     % This is a utility for all PSMs
