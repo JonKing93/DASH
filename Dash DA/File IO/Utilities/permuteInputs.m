@@ -9,7 +9,7 @@ gridData = permute(gridData, permDex);
 % Permute the locs
 dimLoc = [];
 if exist('loc','var')
-    dimLoc = NaN( 2, numel(permDex) );
+    dimLoc = NaN( size(loc,1), numel(permDex) );
     dimLoc(:, permDex(1:size(loc,2))) = loc;
 end
 
