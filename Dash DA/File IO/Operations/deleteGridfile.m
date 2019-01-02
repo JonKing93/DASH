@@ -9,7 +9,7 @@ nDim = numel(m.dimID);
 if ~ismember(dim, m.dimID)
     error('Unrecognized dimension for deletion.');
 else
-    delDim = find( ismember(dim, m.dimID) );
+    [~, delDim] = ismember(dim, m.dimID);
 end
 
 % Get the size of the existing data
@@ -31,7 +31,7 @@ dimLoc = NaN( 3, numel(m.dimID) );
 dimLoc(:,delDim) = loc;
 
 % Get the cell of indices
-[ic, nAdd] = getIndexCell( m, dimLoc(3,:), dimLoc );
+[ic, nAdd] = getIndexCell( m, dimLoc(3,:), dimLoc(1:2,:) );
 
 % Get metadata for the existing data
 oldMeta = m.meta;

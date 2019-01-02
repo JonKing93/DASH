@@ -8,7 +8,8 @@ dimID = m.dimID;
 for d = 1:numel(dimID)
     if ~isfield( meta, dimID{d})
         error('The new metadata does not contain the %s field', dimID{d});
-    elseif ~isequal( oldMeta.(dimID{d})(ic{d}), meta.(dimID{d}) )
+    elseif ~isequaln( oldMeta.(dimID{d})(ic{d}), meta.(dimID{d}) ) && ...
+            ~isequaln( oldMeta.(dimID{d})(ic{d})', meta.(dimID{d}) )
         error('Metadata for %s does not match the values in the existing file.', dimID{d});
     end
 end

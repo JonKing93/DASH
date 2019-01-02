@@ -3,16 +3,17 @@ function[] = extendGridfile( file, gridData, gridDims, dim, loc, meta )
 
 % Error check the file
 m = fileCheck(file);
+dimID = m.dimID;
 nDim = numel( m.dimID );
 
 % Permute the inputs
 [gridData] = permuteInputs( m, gridDims, gridData );
 
 % Get the extended dimension
-if ~ismember( dim, m.dimID )
+if ~ismember( dim, dimID )
     error('Unrecognized dimension for extension.');
 else
-    exDim = find( ismember(dim, m.dimID) );
+    [~, exDim] = ismember(dim, dimID);
 end
 
 % Get the size of the existing extended dimension

@@ -100,8 +100,10 @@ for t = 1:nTime
         end
     end
     
-    % Record the Y estimates for this time step
-    Y(:,:,t) = Ye;
+    % Record the Y estimates for this time step.
+    if nargout > 1
+        Y(:,:,t) = Ye;
+    end
     
     % Record the mean and variance of the analysis.
     Avar = var( Adev, 0, 2 );

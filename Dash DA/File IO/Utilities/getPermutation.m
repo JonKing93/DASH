@@ -1,5 +1,5 @@
 %% This gets the permutation index for two datasets
-function[dimDex] = getPermutation( X, Y, knownID )
+function[permDex] = getPermutation( X, Y, knownID )
 %% Gets the dimension permutation ordering.
 
 % Check that the values are all recognized
@@ -14,13 +14,13 @@ end
 nDim = numel(knownID);
 
 % Create an index to order the permutation
-dimDex = NaN( nDim, 1 );
+permDex = NaN( nDim, 1 );
 
 % Get the location of each X in Y
-for d = 1:numel(X)
+for d = 1:numel(Y)
     
-    % Get the location of X in Y
-    [~, loc] = ismember( X{d}, Y );
+    % Get the location of Y in X
+    [~, loc] = ismember( Y{d}, X );
     
     % If empty, mark with NaN
     if loc==0
@@ -28,15 +28,16 @@ for d = 1:numel(X)
     end
     
     % Prevent repeated dimensions
-    if numel(loc)>1 || (~isnan(loc) && ismember(loc, dimDex))
+    if numel(loc)>1 || (~isnan(loc) && ismember(loc, permDex))
         error('A dimension ID is repeated.');
     end
     
-    dimDex(d) = loc;
+    % Save the permutation index
+    permDex(d) = loc;
 end
 
 % Fill in singleton dimensions
 dims = 1:nDim;
-dimDex(isnan(dimDex)) = dims( ~ismember(dims,dimDex) );
+permDex(isnan(permDex)) = dims( ~ismember(dims,permDex) );
 
 end

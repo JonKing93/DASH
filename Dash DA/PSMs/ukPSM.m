@@ -46,7 +46,7 @@ classdef ukPSM < PSM
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    % Some useful variables...
+    % These are variables used to run the actual calculations.
     properties
         % Store bayes posterior variables so they are not reloaded each
         % time
@@ -56,9 +56,15 @@ classdef ukPSM < PSM
         
         % Record the name of the posterior file to facilitate replication.
         postFile;
-        
-        % Store the name of the SST variable in state variable metadata.
+    end
+    
+    % These are variables used to find state variable indices
+    properties
+        % Store the name of the SST variable in state variable metadata
         sstName;
+        
+        % Metadata for each observation using the PSM
+        psmMeta;
     end
     
     % Some useful functions...
@@ -89,11 +95,21 @@ classdef ukPSM < PSM
             Ye = UK_forward_model( sst, obj.b_draws_final, obj.knots, obj.tau2_draws_final );
         end
         
+        % Adds a particular observation to the PSM
+        function[] = addObservation( timeMeta, 
+        
+        
+        
+        
         % Determines the state indices needed to run the PSM for a site
         function[H] = getStateIndices( obj, siteMeta, stateMeta )
         
-            % Get the lat-lon coordinates of state variables
-            stateCoord = [stateMeta.lat, stateMeta.lon];
+            % Get the lat-lon coordinates of the site
+            siteCoord = [siteMeta.lat, siteMeta.lon];
+            
+            % Get the state indices
+            H = findStateIndices( siteMeta, stateMeta );
+            
             
             % Determine the state variables that are SSTs
             sstDex = strcmpi( stateMeta.var, obj.sstName );

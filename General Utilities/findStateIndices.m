@@ -1,4 +1,4 @@
-function[H] = findStateIndices( siteCoord, stateMeta, vars, timeSpec, levels)
+function[H] = findStateIndices( siteCoord, stateMeta, vars, timeSpec, levels, run, misc)
 
 % Lat-lon: Find closest
 %

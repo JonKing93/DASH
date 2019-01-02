@@ -23,14 +23,8 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
 %
 % F: An array of proxy system models for each observation. (nObs x 1)
 %
-% Fa: An array of proxy system models for ??? How best to implement...
-%
 % H: A cell of state variable indices needed to run the forward model for
-%      each site. {nObs x 1}(nSite x 1)
-%
-% Ha: State variable indices needed to run the forward model for each site.
-%      A cell array (for serial Ye calculation) {nObs x 1}(nSite x 1)
-%      OR a matrix (for bulk Ye calculation) (nObs x nSite)
+%      each site. {nObs x 1}(nVars x 1)
 %
 % ----- Outputs -----
 %

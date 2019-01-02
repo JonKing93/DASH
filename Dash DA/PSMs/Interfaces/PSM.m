@@ -13,6 +13,10 @@ classdef (Abstract) PSM < handle
         % This is the number of models contained within a single PSM handle
         % object.
         nModels;
+        
+        % This is a struct array. Each element contains the metadata needed
+        % to run the PSM for a particular observation. (coordinates, time
+        % specifications, level, variables, etc.)
     end
     
     % A method that all proxy system models must implement
@@ -40,7 +44,7 @@ classdef (Abstract) PSM < handle
             else
                 obDex = find( obj.obNum == currObNum );
             end
-        end
+        end 
  
     end
 end

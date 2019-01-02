@@ -39,8 +39,8 @@ for d = 1:nDim
         end
         
         % Record any new indices.
-        nDex = numel(ic{d});
-        nAdd = sum( ic{d} > sData(d) );
+        nDex(d) = numel(ic{d});
+        nAdd(d) = max(ic{d}) - sData(d);
     end
 end
 

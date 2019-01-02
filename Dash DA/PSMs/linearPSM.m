@@ -1,6 +1,7 @@
-%% This class implements a linear, univariate PSM
+%% This class implements a linear, univariate PSM. Y = A + Bx
+%
+% obj = linearPSM(
 classdef linearPSM < PSM
-    % This is a univariate, vectorizable PSM.
     
     % The slope and intercept should be fixed values for the PSM
     properties
@@ -8,7 +9,6 @@ classdef linearPSM < PSM
         intercept;    % The intercept of the linear models.
     end
     
-    % It implements the abstract method runPSM
     methods
         
         % Run a univariate linear model.
@@ -39,5 +39,7 @@ classdef linearPSM < PSM
             end
             obj.obDex = obDex;
         end
+        
+        %
     end  
 end   

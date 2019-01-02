@@ -1,4 +1,4 @@
-function[dimID, meta] = metaGridfile( file )
+function[meta, dimID] = metaGridfile( file )
 
 % Error check the file.
 m = fileCheck( file );
