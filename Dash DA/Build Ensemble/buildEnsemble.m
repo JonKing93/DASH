@@ -1,4 +1,6 @@
-%% This is the basic for loop that will build each ensemble member 
+function[M] = buildEnsemble( nEns, fixDex, seqDex, meanDex )
+
+%% This is the basic loop that will build the ensemble 
 
 % Preallocate the ensemble
 M = NaN( nState, nEns );
@@ -51,3 +53,5 @@ for m = 1:nEns
     % Add to the ensemble as a state vector
     M(:,m) = Mseq(:);
 end    
+
+end
