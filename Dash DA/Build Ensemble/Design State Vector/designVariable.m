@@ -33,9 +33,23 @@ function[design] = designVariable( design, var, dim, dimType, index, varargin )
 % Indicates to draw random ensemble members with replacement.
 %
 % design = designVariable( design, var, dim, 'ens', ..., 'noFill', 'any' )
-% Does not select state vectors in which any element is NaN.
+% Does not select state vectors in which any element along the dimension is
+% NaN.
 %
 % design = designVariable( design, var, dim, 'ens', ..., 'noFill', 'all' )
-% Does not select state vectors in which all elements are NaN.
+% Does not select state vectors in which all the elements along the
+% dimension are NaN.
 
+% Parse the inputs
+[takeMean, meanMeta, meanDex, flag, seqDex, replace, nofill] = parseInputs;
 
+% Get the index of the variable in the design
+varDex = find( strcmpi( design.var ) );
+if isempty(varDex)
+    error('The design structure does not contain the specified variable.');
+end
+
+% Add to the design
+design.varDesign(varDex).specifyDim( dim, takeMean, meanMeta, nanflag, index,...
+                                     seqDex, meanDex, replace, nofill);
+end

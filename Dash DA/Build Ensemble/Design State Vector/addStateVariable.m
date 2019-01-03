@@ -23,13 +23,13 @@ if isempty(name)
 end
 
 % Create the design structure for the variable
-newDesign = varDesign( file, name, dimID );
+newDesign = varDesign( file, dimID );
 
 % Set the output
 if append
-    design = [design;newDesign];
+    design = design.addVar( newDesign, name );
 else
-    design = newDesign;
+    design = stateDesign(newDesign, name);
 end
 
 end
@@ -54,7 +54,7 @@ for v = 1:numel(varargin)
     if ~skip
         inArg = varargin{v};
     
-        if isa( inArg, 'varDesign' ) && ~setAppend
+        if isa( inArg, 'stateDesign' ) && ~setAppend
             append = true;
             setAppend = true;
             design = inArg;
