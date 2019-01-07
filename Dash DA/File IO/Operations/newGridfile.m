@@ -1,5 +1,24 @@
-%% This creates a new .mat file.
 function[] = newGridfile( file, gridData, gridDims, meta )
+%% Creates a new gridded .mat file.
+%
+% newGridfile( file, gridData, gridDims, meta )
+% Creates a new gridded .mat file. Checks that metadata matches data size
+% in all dimensions.
+%
+% ----- Inputs -----
+%
+% file: The name of the gridded .mat file. A string.
+%
+% gridData: A gridded data set.
+%
+% gridDims: A cell of dimension IDs indicating the order of dimensions in
+%       the gridded data.
+%
+% meta: A metadata structure for the gridded data. See the buildMetadata.m
+%       function.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check that the file is a .mat file
 if isstring(file)

@@ -1,5 +1,38 @@
 %% This adds data and extends a dimension.
 function[] = extendGridfile( file, gridData, gridDims, dim, loc, meta )
+%% This adds data to a gridded .mat file and extends the length of a specified
+% dimension.
+%
+% extendGridfile( file, gridData, gridDims, dim, [], meta )
+% Appends new data to the end of the specified dimension. Adds metadata for
+% the new indices.
+%
+% extendGridfile( file, gridData, gridDims, dim, loc, meta )
+% Writes new data to specific indices along the specified dimension. Adds
+% metadata for all new indices, including those unspecified during writing.
+%
+% ----- Inputs -----
+% 
+% file: The name of the gridded .mat file. A string.
+%
+% gridData: A gridded dataset
+%
+% gridDims: A cell of dimension IDs indicating the order of dimensions in
+%       the gridded data.
+%
+% dim: An ID for the dimension to be extended. A string.
+%
+% loc: A (2x1) vector or (1x1) scalar specifying which indices to delete.
+%       Format is [START; STRIDE]. START is the index at which to begin
+%       writing. STRIDE is the interval spacing between indices. If a
+%       scalar, STRIDE is set to 1.
+%
+% meta: A vector containing metadata for the new indices along the 
+%       extended dimension. (NOT a metadata structure) If STRIDE > 1, must
+%       include metadata for extended indices at which data is not written.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check the file
 m = fileCheck(file);

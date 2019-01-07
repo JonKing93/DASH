@@ -1,7 +1,34 @@
 function[meta] = buildMetadata( gridData, gridDims, varName, varargin)
+%% This converts user metadata to the structure used by dash. Metadata in
+% unspecified dimensions is set to NaN. Checks that metadata size matches
+% the size of gridded data.
 %
+% meta = buildMetadata( gridData, gridDims, dim1, val1, dim2, val2, ... )
+% Converts user metadata to a metadata structure used by dash.
 %
-% meta = buildMetadata( gridData, gridDims, varName, ...)
+% ----- Inputs -----
+%
+% gridData: A gridded dataset
+%
+% gridDims: A cell of dimension IDs indicating the order of dimensions in
+%       the gridded data.
+%
+% varName: A string with the name of the data variable.
+%
+% dimN: A dimension ID for the Nth input dimension.
+%
+% valN: The metadata for the Nth input dimension. Must be a vector whose
+%       length matches the size of the corresponding dimension in the
+%       gridded data.
+%
+% ----- Outputs -----
+%
+% meta: The metadata structure used by dash.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+%
+% 
 
 % Get the known dimension IDs
 knownID = getKnownIDs;

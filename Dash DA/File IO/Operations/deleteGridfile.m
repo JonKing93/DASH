@@ -1,5 +1,32 @@
-%% This deletes data from a .mat file.
 function[] = deleteGridfile( file, dim, loc, meta )
+%% Deletes data from a gridded .mat file.
+%
+% deleteGridfile( file, dim, loc )
+% Deletes data from a gridfile at the selected locations along the
+% specified dimension
+%
+% deleteGridfile( file, dim, loc, meta )
+% Checks that gridfile metadata matches the input metadata at the specified
+% locations before deleting. Aborts the deletion if the metadata do not
+% match.
+%
+% ----- Inputs -----
+%
+% file: The name of the gridded .mat file. A string.
+%
+% dim: The ID of the dimension along which to delete. A string.
+%
+% loc: A (3x1) vector specifying which indices to delete. Format is 
+%       [START; STRIDE; NDELETE]. START is the index at which to begin
+%       deletion. STRIDE is the interval spacing between deleted indices.
+%       NDELETE is the number of indices to delete.
+%
+% meta: A metadata structure built for Dash. Metadata at the indices for
+%       deletion are compared to this structure. If the metadata do not 
+%       match, the deletion is aborted.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check the file
 m = fileCheck(file);
