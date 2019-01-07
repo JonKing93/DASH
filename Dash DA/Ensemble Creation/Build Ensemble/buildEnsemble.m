@@ -22,10 +22,13 @@ for v = 1:nVar
     % Get an index cell to use for loading fixed indices
     [ic, ix] = getFixedIndexCell( var.fixDex, var.fixed );
 
+    % Select ensemble members
+    ensMember = drawEnsembleMembers( nEns, var.ensDex, overlap );
+    
     % Get the sequence array
     seqArray = buildSequenceArray( var.fixed, var.seqDex );
     
-    % Preallocate a collection of all sequences
+    % Preallocate a full sequence set.
     Mseq = NaN( nFixed, numel(seqArray) );
     
     % For each ensemble member
@@ -40,7 +43,7 @@ for v = 1:nVar
             % Get the load indices for each ensemble variable
             for d = 1:nDim
                 if ~var.fixed
-                    ic{d} = var.ensDex(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
+                    ic{d} = ensMember(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
                 end
             end
         
