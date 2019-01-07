@@ -1,4 +1,21 @@
 function[ic, nAdd] = getIndexCell( m, sCurr, loc )
+%% Gets the cell of data indices based on specified indices.
+%
+% [ic, nAdd] = getIndexCell( m, sCurr, loc )
+% 
+% ----- Inputs -----
+%
+% m: A matfile object for a gridded .mat file.
+%
+% sCurr: The size of the new data through all dimensions.
+%
+% loc: The locations for the fileIO operation.
+%
+% ----- Outputs -----
+%
+% ic: The cell of indices
+%
+% nAdd: The number of new indices added in each dimension.
 
 % Get the size of the existing data
 sData = size( m.gridData );

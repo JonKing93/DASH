@@ -1,4 +1,16 @@
 function[] = compareMetadata( m, meta, ic )
+%% Compares two metadata structures. Throws error if they do not match at
+% specified indices.
+%
+% compareMetadata( m, meta, ic )
+%
+% ----- Inputs -----
+%
+% m: A metadata structure for a full gridded .mat file.
+%
+% meta: A metadata structure for specific indices.
+%
+% ic: A cell of indices specifying metadata indices in m.
 
 % Get the existing metadata
 oldMeta = m.meta;

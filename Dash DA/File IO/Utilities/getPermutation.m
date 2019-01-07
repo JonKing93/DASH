@@ -1,6 +1,21 @@
-%% This gets the permutation index for two datasets
 function[permDex] = getPermutation( X, Y, knownID )
-%% Gets the dimension permutation ordering.
+%% Gets a permutation ordering mapping dimension ordering X to dimension
+% ordering Y.
+%
+% permDex = getPermutation(X, Y, knownID)
+% Gets the permutation mapping the dimensions of X to the dimensions of Y.
+%
+% ----- Inputs -----
+%
+% X: A set of dimension IDs. A cell of strings.
+%
+% Y: A set of dimension IDs. A cell of strings.
+%
+% knownID: The set of all recognized dimension IDs.
+%
+% ----- Output -----
+%
+% permDex: The permutation index.
 
 % Check that the values are all recognized
 allVals = [X(:);Y(:)];

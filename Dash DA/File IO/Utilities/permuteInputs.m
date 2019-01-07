@@ -1,4 +1,23 @@
 function[gridData, dimLoc] = permuteInputs( m, gridDims, gridData, loc )
+%% Permutes gridded data to match the dimensional ordering in a gridded .mat file.
+%
+% [gridData, dimLoc] = permuteInputs( m, gridDims, gridData, loc )
+%
+% ----- Inputs -----
+%
+% m: A matfile object for a gridded .mat file.
+%
+% gridDims: A cell of dimension IDs listing the ordering of input data.
+%
+% gridData: A gridded data set.
+%
+% loc: Indexing locations.
+%
+% ----- Outputs -----
+%
+% gridData: The permuted, gridded data.
+%
+% dimLoc: Permuted indexing locations.
 
 % Get the permutation ordering
 permDex = getPermutation( gridDims, m.dimID, getKnownIDs );

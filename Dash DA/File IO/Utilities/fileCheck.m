@@ -1,4 +1,20 @@
-function[m] = fileCheck( file )
+function[m] = fileCheck( file, readOnly )
+%% Checks that a gridded .mat file exists. Returns a writable or read-only 
+% matfile object, as required.
+%
+% m = fileCheck( file )
+% Returns a writable matfile object.
+%
+% m = fileCheck( file, 'readOnly' )
+% Returns a read-only matfile object.
+%
+% ----- Inputs -----
+%
+% file: The name of a gridded .mat file. A string.
+%
+% ----- Outputs -----
+%
+% m: A matfile object for a gridded .mat file.
 
 % Check that the file is a .mat file
 if isstring(file)
@@ -9,7 +25,13 @@ if ~strcmpi( file(end-3:end), '.mat' )
 end
 
 % Get the matfile
-m = matfile( file, 'Writable', true );
+if exist('readOnly', 'var') && strcmpi(readOnly, 'readOnly')
+    m = matfile(file);
+elseif exist('readOnly', 'var')
+    error('Unrecognized input');
+else
+    m = matfile( file, 'Writable', true );
+end
 
 % Check that it contains the required fields
 vars = who(m);
