@@ -21,6 +21,18 @@ for v = 1:nVar
 
     % Get an index cell to use for loading fixed indices
     [ic, ix] = getFixedIndexCell( var.fixDex, var.fixed );
+    
+    % Get the metadata for fixed indices
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     % Select ensemble members
     ensMember = drawEnsembleMembers( nEns, var.ensDex, overlap );
@@ -28,43 +40,69 @@ for v = 1:nVar
     % Get the sequence array
     seqArray = buildSequenceArray( var.fixed, var.seqDex );
     
-    % Preallocate a full sequence set.
+    % Preallocate a full sequence.
     Mseq = NaN( nFixed, numel(seqArray) );
     
     % For each ensemble member
     for m = 1:nEns
+        
+        % Set some switches
+        runLoop = 2000;
+        redraw = -1;
     
-        % For each sequence
-        for s = 1:max(seqArray)
-        
-            % Get the index of the current sequence for each dimension
-            currSeq = getCurrSequence( var.fixed, seqArray, s );
-        
-            % Get the load indices for each ensemble variable
-            for d = 1:nDim
-                if ~var.fixed
-                    ic{d} = ensMember(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
-                end
+        % Try ensemble members until one is found without NaN elements.
+        while redraw
+            
+            % Time out error
+            if ~runLoop
+                error('Could not select non-NaN state vector in the allotted time.');
             end
-        
-            % Do the initial load from the .mat file
-            Mcurr = grid.gridData( ic{:} );
-    
-            % Restrict any fixed indices that were not equally spaced
-            Mcurr = Mcurr( ix{:} );
+            runLoop = runLoop-1;
+            
+            % If there was a NaN element
+            if redraw>0
+                % Draw a new ensemble member
+                ensMember(m,:) = drawEnsembleMembers( 1, var.ensDex, overlap, [ensMember(1:m-1,:); ensMember(m+1:end,:)] );
+            end
+            
+            % For each sequence
+            for s = 1:max(seqArray)
+            
+                % Get the index of the current sequence for each dimension
+                currSeq = getCurrSequence( var.fixed, seqArray, s );
+            
+                % Get the load indices for each ensemble variable
+                for d = 1:nDim
+                    if ~var.fixed
+                        ic{d} = ensMember(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
+                    end
+                end
 
-            % Take the mean in any relevant dimension
-            for d = 1:nDim
-                if var.takeMean(d)
-                    Mcurr = mean( Mcurr, d, var.nanflag{d} );
+                % Do the initial load from the .mat file
+                Mcurr = grid.gridData( ic{:} );
+
+                % Restrict any fixed indices that were not equally spaced
+                Mcurr = Mcurr( ix{:} );
+
+                % Take any means
+                for d = 1:nDim
+                    if var.takeMean(d)
+                        Mcurr = mean( Mcurr, d, var.nanflag{d} );
+                    end
                 end
-            end
-        
-            % Add to the collection of sequences
-            Mseq(:,s) = Mcurr(:);
+                
+                % Check for unallowed values
+                if any( isnan(Mcurr(:)) | iscomplex(Mcurr(:)) | isinf(Mcurr(:)) )
+                    redraw = 1;
+                    break;
+                end
+
+                % Add to the collection of sequences
+                Mseq(:,s) = Mcurr(:);
+            end 
         end
 
-        % Add the set of sequences to the ensemble as a state vector in the
+        % Add the full sequence to the ensemble as a state vector in the
         % indices for the variable.
         M( varCell{v}, m ) = Mseq(:);
     end

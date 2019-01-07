@@ -1,10 +1,10 @@
-%% This is an array of variable designs that permits variable indexing for
-% the larger state vector.
+%% This is a custom structure that stores an array of variable designs and 
+% allows indexing by variable name.
 classdef stateDesign < handle
     
     properties
-        varDesign;
-        var;
+        varDesign;  % The array of variable designs
+        var;        % The indexing
     end
     
     methods

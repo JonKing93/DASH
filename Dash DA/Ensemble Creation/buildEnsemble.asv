@@ -1,4 +1,6 @@
 function[M] = buildEnsemble( nEns, design )
+%
+% Should probably pass in a 'design' struct
 %% This is the basic loop that will build the ensemble
 
 % Get the state variable indices for each variable
@@ -14,10 +16,6 @@ for v = 1:nVar
 
     % Get the variable design
     var = design.varDesign(v);
-    nDim = numel( var.dimID );
-    
-    % Get a read-only matfile
-    grid = matfile( var.file );
 
     % Get an index cell to use for each ensemble member
     [ic, ix] = getFixedIndexCell( var.fixDex, var.fixed );
@@ -40,20 +38,20 @@ for v = 1:nVar
             % Get the load indices for each ensemble variable
             for d = 1:nDim
                 if ~var.fixed
-                    ic{d} = var.ensDex(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
+                    ic{d} = ensDex(m,d) + seqDex{d}(currSeq(d)) + meanDex{d};
                 end
             end
         
             % Do the initial load from the .mat file
-            Mcurr = grid.gridData( ic{:} );
+            Mcurr = m.gridFile( ic{:} );
     
             % Restrict any fixed indices that were not equally spaced
             Mcurr = Mcurr( ix{:} );
 
             % Take the mean in any relevant dimension
             for d = 1:nDim
-                if var.takeMean(d)
-                    Mcurr = mean( Mcurr, d, var.nanflag{d} );
+                if takeMean(d)
+                    Mcurr = mean( Mcurr, d, nanflag );
                 end
             end
         

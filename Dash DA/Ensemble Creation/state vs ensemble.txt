@@ -1,0 +1,34 @@
+Here, I want to differentiate between state dimensions and ensemble
+dimensions. A state dimension is a dimension that is used to define any
+instance of the climate. Typically, the lat, lon, and lev dimensions are
+state dimensions because they are used to define the "value" of the climate
+for ANY realization of the climate.
+
+Conversely, an ensemble dimension is a dimension that is used to define a
+particular realization of the climate. The time and run dimensions are
+often ensemble dimensions because each time step in a different run details
+one possible climate state.
+
+For practical purposes, the key difference between state and ensemble
+dimensions is that the indices of state dimensions are fixed for every
+ensemble member, while the indices of ensemble dimensions are different for
+every ensemble member.
+
+For example: If I use a state vector that is all grid points in the
+Northern Hemisphere at all longitudes at the surface, then lat lon and lev
+all have fixed values for each element in the state vector regardless of
+which ensemble member we are looking at. (True, lat and lon will have
+different values at different grid points, but their values at each
+individual grid point is unchanging.)
+
+If I build an ensemble of such state vectors drawn from random time
+steps in random model runs, then time and run will have different values
+for the elements in different state vectors in the ensemble. Thus, time and
+run are ensemble dimensions.
+
+
+Here's a different example for contrast:
+Let's say I'm doing a study on volcanic impacts, and I look at the same
+state vectors as before, except that I only look at annual mean of 1893 in
+each ensemble run. In this case, time is a state dimension, NOT an ensemble
+dimensions, because the value of time is fixed across every ensemble member.
