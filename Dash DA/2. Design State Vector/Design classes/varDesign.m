@@ -176,6 +176,13 @@ classdef varDesign < handle
             obj.dimSet = false(nDim,1);
             obj.isState = true(nDim,1);
             obj.ensMeta = cell(nDim,1);
+            
+            % Initialize all dimensions as state dimensions with all
+            % indices selected            
+            [~,~,gridSize] = metaGridfile(file);
+            for d = 1:nDim
+                obj.fixDex{d} = 1:gridSize(d);
+            end
         end
     end
     
