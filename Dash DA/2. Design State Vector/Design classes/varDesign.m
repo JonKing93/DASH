@@ -56,7 +56,7 @@ classdef varDesign < handle
         end
         
         %% Does an error check dimension design parameters
-        function[] = errorCheck( obj, index, d, takeMean, nanflag )
+        function[] = errorCheck( obj, indices, d, takeMean, nanflag )
             
             % Check that takeMean is a scalar logical
             if ~isscalar(takeMean) || ~islogical(takeMean)
@@ -72,30 +72,33 @@ classdef varDesign < handle
             errStr = {'ensemble','sequence','mean'};
             
             % Note if state indices
-            if isvector(index) && ~iscell(index)
-                index = {index,[],[]};
+            if isvector(indices) && ~iscell(indices)
+                indices = {indices,[],[]};
                 errStr{1} = 'state';
             end
             
             % Check that indices are formatted correctly
-            if ~iscell(index) || ~isvector(index) || length(index)~=3
+            if ~iscell(indices) || ~isvector(indices) || length(indices)~=3
                 error('Unrecognized indices');
             end
   
             % For each set of indices
-            for k = 1:numel(index)
+            for k = 1:numel(indices)
                 
                 % Check for numeric vector
-                if ~isnumeric(index{k}) || ~isvector(index{k})
+                if ~isnumeric(indices{k}) || ~isvector(indices{k})
                     error('The %s indices must be a numeric vector.', errStr{k});
                 end
                 
-                % Increment the mean and sequence indices to match the size
-                % of gridded data
-                if k > 1
-                    currDex = index{k} + 1;
+                % Require mean and sequence indices to contain the 0 index.
+                % Increment to match the gridded data sizes.
+                if ~isempty(indices{k}) && k>1
+                    if ~ismember(0, indices{k})
+                        error('The %s indices should contain the 0 index.', errStr{k});
+                    end
+                    currDex = indices{k} + 1;
                 else
-                    currDex = index{k};
+                    currDex = indices{k};
                 end
                 
                 % Check that all are positive integers
@@ -134,6 +137,9 @@ classdef varDesign < handle
             % Check that the dimension is recognized and if overwriting
             d = obj.checkDim(dim);
             
+            % Error check
+            obj.errorCheck( {ensDex, seqDex, meanDex}, d, takeMean, nanflag );
+                        
             % Set the values
             obj.ensDex{d} = ensDex;
             obj.seqDex{d} = seqDex;
