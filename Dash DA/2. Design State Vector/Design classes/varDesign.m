@@ -55,11 +55,68 @@ classdef varDesign < handle
             end
         end
         
+        %% Does an error check dimension design parameters
+        function[] = errorCheck( obj, index, d, takeMean, nanflag )
+            
+            % Check that takeMean is a scalar logical
+            if ~isscalar(takeMean) || ~islogical(takeMean)
+                error('takeMean must be a scalar logical.');
+            elseif ~ismember( nanflag, {'omitnan','includenan'})
+                error('Unrecognized NaN flag.');
+            end
+            
+            % Get the size of the gridded data
+            [~,~,gridSize] = metaGridfile( obj.file );
+            
+            % Get a label for indices for errors
+            errStr = {'ensemble','sequence','mean'};
+            
+            % Note if state indices
+            if isvector(index) && ~iscell(index)
+                index = {index,[],[]};
+                errStr{1} = 'state';
+            end
+            
+            % Check that indices are formatted correctly
+            if ~iscell(index) || ~isvector(index) || length(index)~=3
+                error('Unrecognized indices');
+            end
+  
+            % For each set of indices
+            for k = 1:numel(index)
+                
+                % Check for numeric vector
+                if ~isnumeric(index{k}) || ~isvector(index{k})
+                    error('The %s indices must be a numeric vector.', errStr{k});
+                end
+                
+                % Increment the mean and sequence indices to match the size
+                % of gridded data
+                if k > 1
+                    currDex = index{k} + 1;
+                else
+                    currDex = index{k};
+                end
+                
+                % Check that all are positive integers
+                if any( currDex <= 0 ) || any( mod(currDex,1)~=0 )
+                    error('Not all %s indices are positive integers.', errStr{k});
+                    
+                % Check that all are within the bounds of the gridFile
+                elseif any( ~ismember( currDex, 1:gridSize(d) ) )
+                    error('Some %s indices exceed the size of the gridded data.', errStr{k});
+                end 
+            end
+        end
+        
         %% Design a state dimension
         function obj = stateDim( obj, dim, fixDex, takeMean, nanflag )
             
             % Get the dimension, check if overwriting
             d = obj.checkDim(dim);
+            
+            % Error check the inputs
+            obj.errorCheck( fixDex, d, takeMean, nanflag );
             
             % Set the values
             obj.fixDex{d} = fixDex;
@@ -91,7 +148,7 @@ classdef varDesign < handle
             obj.isState(d) = false;
         end
 
-        %% This is the constructor that builds the design structure
+        %% This is the constructor that builds the design object
         function obj = varDesign( file, dimID )
             
             % Set the file and var fields

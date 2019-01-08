@@ -8,19 +8,34 @@ classdef stateDesign < handle
     end
     
     methods
-        % Constructor
+        %% Error checks the inputs
+        function[] = errorCheck( ~, varDesign, var )
+            if ~isa(varDesign, 'varDesign')
+                error('varDesign must be of the ''varDesign'' class.');
+            elseif ~(isstring(var) && isscalar(var)) && ~(ischar(var) && isvector(var))
+                error('var must be a string.');
+            end
+        end 
+        
+        %% Constructor
         function obj = stateDesign( varDesign, var )
+            obj.errorCheck(varDesign, var);
             obj.varDesign = varDesign;
             obj.var = {var};
         end
         
-        % Adds another variable
+        %% Adds another variable
         function[obj] = addVar( obj, varDesign, var )
+            
+            % Error check
+            obj.errorCheck(varDesign, var);
+            
             % Check that the variable is not a repeat
             if ismember(var, obj.var)
                 error('Cannot repeat variable names.');
             end
             
+            % Add the variable
             obj.varDesign = [obj.varDesign; varDesign];
             obj.var = [obj.var; {var}];
         end 
