@@ -2,6 +2,9 @@ function[design] = designVariable( design, var, dim, dimType, index, varargin )
 %% A user interface for specifying design parameters for a dimension of a
 % variable in a state vector design.
 %
+% *** Note: This method DOES NOT support logical indexing. Numeric indices
+% are required.
+%
 % STATE DIMENSIONS
 % design = designVariable( design, var, dim, 'state', index )
 % Specifies indices to use for a dimension in the state vector.
@@ -25,7 +28,7 @@ function[design] = designVariable( design, var, dim, dimType, index, varargin )
 % design = designVariable( design, var, dim, 'ens', index, meta, ..., 'mean', meanDex )
 % Takes the mean along the specified indices for each member in a sequence.
 %
-% design = designVariable( design, var, dim, 'ens', index, ..., 'nanflag', flag)
+% design = designVariable( design, var, dim, 'ens', index, meta..., 'nanflag', flag)
 % Specifies how to treat NaN values in a mean.
 %
 % ----- Inputs -----
@@ -51,10 +54,10 @@ end
 if strcmpi(dimType, 'state')
        
     % Parse the inputs
-    [takeMean, nanflag] = parseInputs( varargin{:}, {'mean','nanflag'}, {false, 'includenan'}, {'b',{'omitnan','includenan'}} );
+    [takeMean, nanflag] = parseInputs( varargin, {'mean','nanflag'}, {false, 'includenan'}, {'b',{'omitnan','includenan'}} );
     
     % Add the state dimension design
-    design.var(v).stateDim( dim, index, takeMean, nanflag );
+    design.varDesign(v).stateDim( dim, index, takeMean, nanflag );
     
 % For ensemble dimensions
 elseif strcmpi(dimType, 'ens')
@@ -62,6 +65,11 @@ elseif strcmpi(dimType, 'ens')
     % Throw error if the meta field is not provided
     if isempty(varargin)
         error('The ''meta'' inputs was not specified.');
+        
+    % Check that the meta arg was not forgotten
+    elseif length(varargin)>1 && ( (~ischar(varargin{2}) && ~isstring(varargin{2})) || ...
+            ~ismember(varargin{2},{'mean','seq','nanflag'}) )
+        error('String flags are unrecognized or misaligned. The ''meta'' input may be missing.');
     end
     
     % Get the meta arg
@@ -69,7 +77,7 @@ elseif strcmpi(dimType, 'ens')
     varargin(1) = [];
     
     % Parse the inputs
-    [seqDex, meanDex, nanflag] = parseInputs( varargin{:}, {'seq','mean','nanflag'}, {0,0,'includenan'}, {[],[],{'includenan','omitnan'}} );
+    [seqDex, meanDex, nanflag] = parseInputs( varargin, {'seq','mean','nanflag'}, {0,0,'includenan'}, {[],[],{'includenan','omitnan'}} );
     
     % Note if taking a mean
     takeMean = false;
@@ -78,7 +86,7 @@ elseif strcmpi(dimType, 'ens')
     end
     
     % Add an ensemble dimension
-    design.var(v).ensembleDim( dim, meta, index, seqDex, meanDex, takeMean, nanflag )
+    design.varDesign(v).ensembleDim( dim, meta, index, seqDex, meanDex, takeMean, nanflag );
     
 % Error for unrecognized.
 else
