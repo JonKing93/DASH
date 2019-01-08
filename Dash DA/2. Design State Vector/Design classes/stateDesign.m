@@ -8,15 +8,6 @@ classdef stateDesign < handle
     end
     
     methods
-        %% Error checks the inputs
-        function[] = errorCheck( ~, varDesign, var )
-            if ~isa(varDesign, 'varDesign')
-                error('varDesign must be of the ''varDesign'' class.');
-            elseif ~(isstring(var) && isscalar(var)) && ~(ischar(var) && isvector(var))
-                error('var must be a string.');
-            end
-        end 
-        
         %% Constructor
         function obj = stateDesign( varDesign, var )
             obj.errorCheck(varDesign, var);
@@ -38,6 +29,17 @@ classdef stateDesign < handle
             % Add the variable
             obj.varDesign = [obj.varDesign; varDesign];
             obj.var = [obj.var; {var}];
+        end 
+    end
+    
+    methods (Static = true)
+        %% Error checks the inputs
+        function[] = errorCheck( varDesign, var )
+            if ~isa(varDesign, 'varDesign')
+                error('varDesign must be of the ''varDesign'' class.');
+            elseif ~(isstring(var) && isscalar(var)) && ~(ischar(var) && isvector(var))
+                error('var must be a string.');
+            end
         end 
     end
 end

@@ -39,12 +39,12 @@ classdef varDesign < handle
             % If the dimension is already set, query the user if they wish
             % to overwrite
             elseif obj.dimSet(d)
-                fprinf( [sprintf('The %s dimension has already been set for this variable.', obj.dimID{d} ), ...
+                fprintf( [sprintf('The %s dimension has already been set for this variable.', obj.dimID{d} ), ...
                                   newline, 'Continuing will overwrite the previous design for this dimension.', newline]);
                 yn = input('Do you want to continue? (y/n): ', 's');
 
                 while ~ismember(yn, {'y','n','Y','N','yes','no','YES','NO','Yes','No'})
-                    yn = input( ['Please enter (y)es or (n)o.', newline, ...
+                    yn = input( [newline, 'Please enter (y)es or (n)o.', newline, ...
                         sprintf('Do you want to overwrite the previous design for the %s dimension? (y/n): ', obj.dimID{d})],...
                         's');
                 end
@@ -55,7 +55,8 @@ classdef varDesign < handle
             end
         end
         
-        %% Does an error check dimension design parameters
+        %% Does an error check dimension design parameters. Trims the
+        % ensemble indices to only allow full sequences.
         function[] = errorCheck( obj, indices, d, takeMean, nanflag )
             
             % Check that takeMean is a scalar logical
@@ -85,20 +86,32 @@ classdef varDesign < handle
             % For each set of indices
             for k = 1:numel(indices)
                 
-                % Check for numeric vector
-                if ~isnumeric(indices{k}) || ~isvector(indices{k})
-                    error('The %s indices must be a numeric vector.', errStr{k});
-                end
+                % The first set of indices...
+                if k==1
+                    % Cannot be empty
+                    if isempty( indices{k} )
+                        error('The %s indices cannot be empty.', errStr{k});
+                    % Numeric vector
+                    elseif ~isnumeric(indices{k}) || ~isvector(indices{k})
+                        error('The %s indices must be a numeric vector.', errStr{k});
+                    end
+                    
+                    % Indices are 1 indexed, so use exact values.
+                    currDex = indices{k};
                 
-                % Require mean and sequence indices to contain the 0 index.
-                % Increment to match the gridded data sizes.
-                if ~isempty(indices{k}) && k>1
-                    if ~ismember(0, indices{k})
+                % Mean and sequence indices (only if not empty)
+                elseif ~isempty( indices{k} )
+
+                    % Check for numeric vector
+                    if ~isnumeric(indices{k}) || ~isvector(indices{k})
+                        error('The %s indices must be a numeric vector.', errStr{k});
+                    % Must contain the 0 index
+                    elseif ~ismember(0, indices{k})
                         error('The %s indices should contain the 0 index.', errStr{k});
                     end
+                    
+                    % Zero indexed. Increment to match data size
                     currDex = indices{k} + 1;
-                else
-                    currDex = indices{k};
                 end
                 
                 % Check that all are positive integers
@@ -110,6 +123,18 @@ classdef varDesign < handle
                     error('Some %s indices exceed the size of the gridded data.', errStr{k});
                 end 
             end
+        end
+        
+        %% Trims ensemble indices to only allow full sequences and means
+        function[ensDex] = trimEnsemble( obj, ensDex, seqDex, meanDex, d )
+            % Get the gridded data size
+            [~,~,gridSize] = metaGridfile(obj.file);
+
+            % Get the maximum number of additional indices for a full sequence
+            seqSize = max(seqDex) + max(meanDex);
+
+            % Trim the ensemble indices
+            ensDex( ensDex >= gridSize(d) - seqSize ) = [];
         end
         
         %% Design a state dimension
@@ -139,6 +164,10 @@ classdef varDesign < handle
             
             % Error check
             obj.errorCheck( {ensDex, seqDex, meanDex}, d, takeMean, nanflag );
+            
+            % Trim the ensemble indices so that only full sequences can be
+            % selected
+            ensDex = obj.trimEnsemble( ensDex, seqDex, meanDex, d);
                         
             % Set the values
             obj.ensDex{d} = ensDex;
