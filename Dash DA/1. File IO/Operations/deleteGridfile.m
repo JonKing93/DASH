@@ -74,7 +74,7 @@ end
 % Delete the metadata and data
 oldMeta.(dimID{delDim})(ic{delDim}) = [];
 m.meta = oldMeta;
-m.gridSize(delDim) = m.gridSize(delDim) - loc(3);
+m.gridSize(1,delDim) = m.gridSize(1,delDim) - loc(3);
 
 % Delete the data
 m.gridData( ic{:} ) = [];

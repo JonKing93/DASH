@@ -87,7 +87,7 @@ fillDex = newDex( ~ismember(newDex, ic{exDim}) );
 % Add the new data
 oldMeta.(dimID{exDim})(newDex) = meta;
 m.meta = oldMeta;
-m.gridSize(exDim) = m.gridSize(exDim) + nAdd;
+m.gridSize(1,exDim) = m.gridSize(1,exDim) + nAdd;
 
 m.gridData( ic{:} ) = gridData;
 

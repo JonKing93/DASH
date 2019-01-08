@@ -1,7 +1,7 @@
-function[meta, dimID] = metaGridfile( file )
+function[meta, dimID, gridSize] = metaGridfile( file )
 %% Returns the metadata for a gridded .mat file.
 % 
-% [meta, dimID] = metaGridfile( file )
+% [meta, dimID, gridSize] = metaGridfile( file )
 %
 % ----- Inputs -----
 %
@@ -13,6 +13,8 @@ function[meta, dimID] = metaGridfile( file )
 %
 % dimID: The order of the dimensions of the saved gridded data.
 %
+% gridSize: The size of the gridded data.
+%
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
@@ -22,5 +24,6 @@ m = fileCheck( file, 'readOnly' );
 % Get the metadata
 dimID = m.dimID;
 meta = m.meta;
+gridSize = m.gridSize;
 
 end
