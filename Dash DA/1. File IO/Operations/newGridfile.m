@@ -36,7 +36,7 @@ end
 minDim = numel(gridSize);
 
 % Ensure all dimensions that are not trailing singletons have IDs
-if minDim < numel(gridDims)
+if numel(gridDims) < minDim
     error('All dimensions that are not a trailing singleton must have IDs.');
 end
 
