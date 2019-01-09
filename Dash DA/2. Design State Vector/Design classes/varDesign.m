@@ -91,6 +91,9 @@ classdef varDesign < handle
                     % Cannot be empty
                     if isempty( indices{k} )
                         error('The %s indices cannot be empty.', errStr{k});
+                    % If 'all' or ':', convert to actual indices
+                    elseif ischar(indices{k}) && isvector(indices{k}) && (strcmpi(indices{k},'all') || strcmp(indices{k},':') )
+                        indices{k} = 1:gridSize(d);
                     % Numeric vector
                     elseif ~isnumeric(indices{k}) || ~isvector(indices{k})
                         error('The %s indices must be a numeric vector.', errStr{k});
@@ -134,7 +137,7 @@ classdef varDesign < handle
             seqSize = max(seqDex) + max(meanDex);
 
             % Trim the ensemble indices
-            ensDex( ensDex >= gridSize(d) - seqSize ) = [];
+            ensDex( ensDex > gridSize(d) - seqSize ) = [];
         end
         
         %% Design a state dimension
@@ -156,14 +159,35 @@ classdef varDesign < handle
             obj.dimSet(d) = true;
         end
         
+        %% Get all indices in a dimension
+        function[ensDex] = getAllIndices( obj, d )
+            [~,~,gridSize] = metaGridfile(obj.file);
+            ensDex = 1:gridSize(d);
+        end
+        
         %% Design an ensemble dimension
         function obj = ensembleDim( obj, dim, meta, ensDex, seqDex, meanDex, takeMean, nanflag )
             
             % Check that the dimension is recognized and if overwriting
             d = obj.checkDim(dim);
             
-            % Error check
+            % Convert 'all' or ':' to all indices
+            if (ischar(ensDex) || isstring(ensDex)) && (strcmpi(ensDex, 'all') || strcmp(ensDex,':'))
+                ensDex = obj.getAllIndices(d);
+            end
+            
+            % Error check indices and mean arguments
             obj.errorCheck( {ensDex, seqDex, meanDex}, d, takeMean, nanflag );
+            
+            % Check the metadata
+            if ~isvector(meta) || length(meta)~=length(seqDex)
+                error('The metadata must be a vector with a value for each sequence member.');
+            end
+            
+            % Convert a metadata array to a cell
+            if ~iscell(meta)
+                meta = num2cell( meta );
+            end
             
             % Trim the ensemble indices so that only full sequences can be
             % selected
