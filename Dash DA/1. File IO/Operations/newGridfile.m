@@ -28,6 +28,18 @@ if ~strcmp( file(end-3:end), '.mat' )
     error('The file must be a .mat file.');
 end
 
+% Get the size of all non-trailing singletons
+gridSize = size(gridData);
+if iscolumn(gridData)
+    gridSize = gridSize(1);
+end
+minDim = numel(gridSize);
+
+% Ensure all dimensions that are not trailing singletons have IDs
+if minDim < numel(gridDims)
+    error('All dimensions that are not a trailing singleton must have IDs.');
+end
+
 % Get the known dimension IDs
 knownID = getKnownIDs;
 
