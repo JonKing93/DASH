@@ -2,11 +2,11 @@ function[] = coupleVariables( design, templateVar, coupledVars, varargin )
 %% This couples the ensemble indices for specified variables in a state vector design.
 %
 % coupleVariables( design, templateVar, coupledVars )
-% Couples the ensemble, sequence, and mean indices of variables in a state
-% vector design. Coupled variables will be selected from the same values of
-% ensemble dimensions in individual ensemble members.
+% Couples the indices of two variables. Restricts ensemble indices to
+% values with equal metadata. Requires ensemble members to use dimension
+% values with the 
 %
-% coupleVariables( design, templateVar, coupledVars, ..., 'includeState' )
+% coupleVariables( design, templateVar, coupledVar, ..., 'includeState' )
 % Also couples the indices of state dimensions.
 %
 % coupleVariables( design, templateVar, coupledVars, ..., 'seq', {seqDex1, seqDex2, ..., seqDexN} )
@@ -71,5 +71,18 @@ for d = 1:numel(var.dimID)
         k = k + 2;
     end
 end
+
+% Create the metadata structure for the template
+tMeta = struct( metaArg{:} );
+
+% Preallocate indices for each variable
+nVar = numel( coupledVars );
+varSeq = cell( nVar, 1 );
+varMean = cell( nVar, 1 );
+
+% For each variable
+for v = 1:nVar
+    
+    % Get the associated metadata
 
 

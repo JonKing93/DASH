@@ -79,21 +79,38 @@ function[design] = designVariable( design, var, dim, dimType, index, varargin )
 % Jonathan King, University of Arizona, 2019
 
 % Check that design and var are allowed
-if ~isa( design, 'stateDesign')
-    error('Design must be a stateDesign object.');
-elseif ~ismember( var, design.var )
-    error(['The specified variable is not in the state variable design.', newline, ...
-          'Consider using the addStateVariable.m function to initialize it.']);
-end
-
-% Get the variable index
-[~,v] = ismember(var, design.var);
+v = checkDesignVars(design, var);
 
 % For state dimensions
 if strcmpi(dimType, 'state')
        
     % Parse the inputs
     [takeMean, nanflag] = parseInputs( varargin, {'mean','nanflag'}, {false, 'includenan'}, {'b',{'omitnan','includenan'}} );
+    
+    % Get any variables with coupled state indices
+    coupled = find( design.coupleState );
+    
+    % Make sure that the indices are allowed in all coupled variables
+    checkCoupledStateIndex( design.varDesign(v), design.varDesign(coupled), index )
+    
+    
+    
+    
+    % Check if the state indices are permitted for coupled variables.
+    checkStateCoupling();
+    
+    %
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     % Add the state dimension design
     design.varDesign(v).stateDim( dim, index, takeMean, nanflag );

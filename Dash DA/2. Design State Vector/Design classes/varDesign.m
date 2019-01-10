@@ -7,6 +7,7 @@ classdef varDesign < handle
         % Grid file properties
         file; % File name
         dimID; % Dimensional ordering
+        name;
         
         % Index properties
         indices;  % The allowed indices for state or ensemble dimensions
@@ -54,8 +55,7 @@ classdef varDesign < handle
             end
         end
         
-        %% Does an error check dimension design parameters. Trims the
-        % ensemble indices to only allow full sequences.
+        %% Does an error check dimension design parameters. 
         function[] = errorCheck( obj, indices, d, takeMean, nanflag )
             
             % Check that takeMean is a scalar logical
@@ -144,6 +144,12 @@ classdef varDesign < handle
             end
         end
         
+        %% Get all indices in a dimension
+        function[ensDex] = getAllIndices( obj, d )
+            [~,~,gridSize] = metaGridfile(obj.file);
+            ensDex = 1:gridSize(d);
+        end
+        
         %% Design a state dimension
         function obj = stateDim( obj, dim, stateDex, takeMean, nanflag )
             
@@ -161,12 +167,6 @@ classdef varDesign < handle
             % Note that the dimension has been set as a state dimension
             obj.isState(d) = true;
             obj.dimSet(d) = true;
-        end
-        
-        %% Get all indices in a dimension
-        function[ensDex] = getAllIndices( obj, d )
-            [~,~,gridSize] = metaGridfile(obj.file);
-            ensDex = 1:gridSize(d);
         end
         
         %% Design an ensemble dimension
@@ -206,7 +206,7 @@ classdef varDesign < handle
             ensDex = obj.trimEnsemble( ensDex, seqDex, meanDex, d);
                         
             % Set the values
-            obj.ensDex{d} = ensDex;
+            obj.indices{d} = ensDex;
             obj.seqDex{d} = seqDex;
             obj.meanDex{d} = meanDex;
             
