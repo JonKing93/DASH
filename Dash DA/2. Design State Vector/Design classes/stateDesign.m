@@ -3,8 +3,15 @@
 classdef stateDesign < handle
     
     properties
+        % Variable properties
         varDesign;  % The array of variable designs
         var;        % The variable names. Used for indexing.
+        
+        % Coupler properties
+        isCoupled;  % Whether ensemble indices are coupled.
+        coupleState;   % Whether state indices are coupled
+        coupleSeq;   % Whether sequence indices are coupled
+        coupleMean;  % Whether mean indices are coupled
     end
     
     methods
@@ -13,6 +20,12 @@ classdef stateDesign < handle
             obj.errorCheck(varDesign, var);
             obj.varDesign = varDesign;
             obj.var = {var};
+            
+            % Initialize the coupler properties.
+            obj.isCoupled = false;
+            obj.coupleState = false;
+            obj.coupleSeq = false;
+            obj.coupleMean = false;
         end
         
         %% Adds another variable
@@ -29,6 +42,12 @@ classdef stateDesign < handle
             % Add the variable
             obj.varDesign = [obj.varDesign; varDesign];
             obj.var = [obj.var; {var}];
+            
+            % Adds coupler indices
+            obj.isCoupled(end+1,end+1) = false;
+            obj.coupleState(end+1,end+1) = false;
+            obj.coupleSeq(end+1,end+1) = false;
+            obj.coupleMean(end+1,end+1) = false;
         end 
     end
     

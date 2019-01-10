@@ -9,8 +9,7 @@ classdef varDesign < handle
         dimID; % Dimensional ordering
         
         % Index properties
-        fixDex;  % Indices for state dimensions
-        ensDex;  % The allowed indices for drawing ensemble members
+        indices;  % The allowed indices for state or ensemble dimensions
         seqDex;  % The indices used to get dimensional sequences
         meanDex; % The indices used to take a mean
         
@@ -138,19 +137,24 @@ classdef varDesign < handle
 
             % Trim the ensemble indices
             ensDex( ensDex > gridSize(d) - seqSize ) = [];
+            
+            % Ensure that there are remaining indices
+            if isempty(ensDex)
+                error('The sequence length is longer than the size of the gridded data.');
+            end
         end
         
         %% Design a state dimension
-        function obj = stateDim( obj, dim, fixDex, takeMean, nanflag )
+        function obj = stateDim( obj, dim, stateDex, takeMean, nanflag )
             
             % Get the dimension, check if overwriting
             d = obj.checkDim(dim);
             
             % Error check the inputs
-            obj.errorCheck( fixDex, d, takeMean, nanflag );
+            obj.errorCheck( stateDex, d, takeMean, nanflag );
             
             % Set the values
-            obj.fixDex{d} = fixDex;
+            obj.indices{d} = stateDex;
             obj.takeMean(d) = takeMean;
             obj.nanflag{d} = nanflag;
             
@@ -167,6 +171,14 @@ classdef varDesign < handle
         
         %% Design an ensemble dimension
         function obj = ensembleDim( obj, dim, meta, ensDex, seqDex, meanDex, takeMean, nanflag )
+            
+            % If seqDex or meanDex are empty, set to defaults
+            if isempty(seqDex)
+                seqDex = 0;
+            end
+            if isempty(meanDex)
+                meanDex = 0;
+            end
             
             % Check that the dimension is recognized and if overwriting
             d = obj.checkDim(dim);
@@ -218,8 +230,7 @@ classdef varDesign < handle
             nDim = numel(dimID);
             
             % Preallocate dimensional quantities
-            obj.fixDex = cell(nDim,1);
-            obj.ensDex = cell(nDim,1);
+            obj.indices = cell(nDim,1);
             obj.seqDex = cell(nDim,1);
             obj.meanDex = cell(nDim,1);
             
@@ -234,7 +245,7 @@ classdef varDesign < handle
             % indices selected            
             [~,~,gridSize] = metaGridfile(file);
             for d = 1:nDim
-                obj.fixDex{d} = 1:gridSize(d);
+                obj.indices{d} = 1:gridSize(d);
             end
         end
     end
