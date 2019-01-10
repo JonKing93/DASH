@@ -19,9 +19,10 @@ d = checkVarDim( var, dim );
 % Check the indices are allowed
 checkIndices(var, d, index);
 
-% Get the metadata for the variable
+% Get the metadata for the variable at the indices
 meta = metaGridfile( var.file );
 meta = meta.( var.dimID{d} );
+meta = meta(index);
 
 % Get the variables with coupled state indices.
 coupled = design.coupleState(v,:);
@@ -34,7 +35,7 @@ stateDex = cell(nCoup,1);
 % Get the state indices for each coupled variable. (But don't set any
 % values until every variable successfully generates indices.)
 for c = 1:nCoup
-    stateDex{c} = getCoupledStateIndex( coupVars(c), dim, meta );
+    stateDex{c} = getCoupledIndex( coupVars(c), dim, meta );
 end
 
 % Set the values.

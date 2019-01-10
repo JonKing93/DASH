@@ -1,4 +1,4 @@
-function[stateDex] = getCoupledStateIndex( var, dim, meta )
+function[ensDex, ix] = getCoupledEnsIndex( var, dim, meta )
 %% This gets the coupled state indices for a dimension of a variable by 
 % matching a metadata template.
 
@@ -16,15 +16,15 @@ end
 
 % Singleton dimensions are allowed to use NaN metadata
 if numel(dimMeta)==1 && isequaln(meta, dimMeta)
-    stateDex = 1;
+    ensDex = 1;
     
 % Otherwise, get the intersecting values
 else
-    [~, stateDex] = intersect( dimMeta, meta );
+    [~, ensDex, ix] = intersect( dimMeta, meta );
     
-    % Throw error if there are missing indices
-    if numel(stateDex) ~= numel(meta)
-        error('The %s variable does not have metadata matching all state indices of the template variable.', var.name );
+    % Throw error if there are no indices
+    if isempty(ensDex)
+        error('The %s variable does not have metadata matching any state indices of the template variable.', var.name );
     end
 end
 end
