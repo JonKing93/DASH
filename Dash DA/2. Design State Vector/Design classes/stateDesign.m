@@ -3,6 +3,9 @@
 classdef stateDesign
     
     properties
+        % State vector properties
+        name;  % An identifier for the state vector.
+        
         % Variable properties
         varDesign;  % The array of variable designs
         var;        % The variable names. Used for indexing.
@@ -16,11 +19,16 @@ classdef stateDesign
     
     methods
         %% Constructor
-        function obj = stateDesign( varDesign )
+        function obj = stateDesign( varDesign, name )
             
             % Ensure we are storing a variable design
             if ~isa(varDesign, 'varDesign')
                 error('varDesign must be of the ''varDesign'' class.');
+            end
+            
+            % Store the name
+            if exist('name','var')
+                obj.name = name;
             end
             
             % Save the design and variable name

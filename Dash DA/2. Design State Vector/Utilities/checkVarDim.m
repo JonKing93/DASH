@@ -6,7 +6,7 @@ if ~isa(var, 'varDesign')
 end
 [ismem, d] = ismember(dim,var);
 if any(~ismem)
-    error('Unrecognized dimension %s.', dim(find(~ismem,1)) );
+    error('Variable %s does not contain dimension %s.', var.name, dim(find(~ismem,1)) );
 end
 
 end

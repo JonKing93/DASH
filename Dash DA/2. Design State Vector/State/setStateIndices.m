@@ -9,9 +9,9 @@ checkIndices( var, d, index );
 
 % Error check the mean and nanflag
 if ~islogical(takeMean) || ~isscalar(takeMean)
-    error('takeMean must be a logical scalar.');
+    error('takeMean for variable %s is not a logical scalar.', var.name);
 elseif ~ischar(nanflag) || ~isvector(nanflag) || ~ismember(nanflag, {'omitnan','includenan'})
-    error('nanflag must be either ''omitnan'' or ''includenan''.');
+    error('nanflag for variable %s is neither ''omitnan'' nor ''includenan''.', var.name);
 end
     
 % Set the values

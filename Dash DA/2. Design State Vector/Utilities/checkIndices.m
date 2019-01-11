@@ -7,19 +7,19 @@ dimSize = dimSize(d);
 
 % Indices cannot be empty
 if isempty( index )
-    error('The %s indices are empty.', d);
+    error('The %s indices of variable %s are empty.', d, var.name);
     
 % Must be numeric vectors
 elseif ~isnumeric(index) || ~isvector(index)
-    error('The %s indices must be numeric vectors.', d);
+    error('The %s indices of variable %s are not numeric vectors.', d, var.name);
     
 % Must be positive integers
 elseif any(index<=0) || any( mod(index,1)~=0 )
-    error('The %s indices must be positive integers.', d);
+    error('The %s indices of variable %s are not positive integers.', d, var.name);
     
 % Cannot be larger than the dimension
 elseif any( index>dimSize )
-    error('Some %s indices are larger than the dimension size.', d);
+    error('Some %s indices in variable %s are larger than the dimension size.', d, var.name);
 end
 
 end

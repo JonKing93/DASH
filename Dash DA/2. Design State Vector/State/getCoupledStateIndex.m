@@ -11,7 +11,7 @@ dimMeta = dimMeta.( var.dimID{d} );
 
 % Check for repeated metadata
 if numel(unique(dimMeta)) ~= numel(dimMeta)
-    error('The template metadata contains repeat values.');
+    error('The template metadata contains repeat values in the %s dimension.', dim);
 end
 
 % Singleton dimensions are allowed to use NaN metadata
