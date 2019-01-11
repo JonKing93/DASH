@@ -16,10 +16,16 @@ classdef stateDesign
     
     methods
         %% Constructor
-        function obj = stateDesign( varDesign, var )
-            obj.errorCheck(varDesign, var);
+        function obj = stateDesign( varDesign )
+            
+            % Ensure we are storing a variable design
+            if ~isa(varDesign, 'varDesign')
+                error('varDesign must be of the ''varDesign'' class.');
+            end
+            
+            % Save the design and variable name
             obj.varDesign = varDesign;
-            obj.var = {var};
+            obj.var = varDesign.name;
             
             % Initialize the coupler properties.
             obj.isCoupled = false;
@@ -29,36 +35,27 @@ classdef stateDesign
         end
         
         %% Adds another variable
-        function[obj] = addVar( obj, varDesign, var )
+        function[obj] = addVar( obj, varDesign )
             
-            % Error check
-            obj.errorCheck(varDesign, var);
+            % Ensure we are storing a variable design
+            if ~isa(varDesign, 'varDesign')
+                error('varDesign must be of the ''varDesign'' class.');
+            end
             
             % Check that the variable is not a repeat
-            if ismember(var, obj.var)
+            if ismember(varDesign.name, obj.var)
                 error('Cannot repeat variable names.');
             end
             
             % Add the variable
             obj.varDesign = [obj.varDesign; varDesign];
-            obj.var = [obj.var; {var}];
+            obj.var = [obj.var; varDesign.name];
             
             % Adds coupler indices
             obj.isCoupled(end+1,end+1) = false;
             obj.coupleState(end+1,end+1) = false;
             obj.coupleSeq(end+1,end+1) = false;
             obj.coupleMean(end+1,end+1) = false;
-        end 
-    end
-    
-    methods (Static = true)
-        %% Error checks the inputs
-        function[] = errorCheck( varDesign, var )
-            if ~isa(varDesign, 'varDesign')
-                error('varDesign must be of the ''varDesign'' class.');
-            elseif ~(isstring(var) && isscalar(var)) && ~(ischar(var) && isvector(var))
-                error('var must be a string.');
-            end
         end 
     end
 end
