@@ -35,11 +35,11 @@ for c = 1:numel(coupled)
     stateDex = getCoupledIndex( coupVars(c), dim, meta );
     
     % Set the values
-    newVar = setStateIndices( coupVars(c), dim, stateDex{c}, takeMean, nanflag );
-    design.varDesign(coupled(c)) = newVar;
+    coupVars(c) = setStateIndices( coupVars(c), dim, stateDex{c}, takeMean, nanflag );
 end
 
-% Also set values for the template variable
+% Set the values in the design. Also set the template variable
 design.varDesign(v) = setStateIndices( var, dim, index );
+design.varDesign(coupled) = coupVars;
 
 end

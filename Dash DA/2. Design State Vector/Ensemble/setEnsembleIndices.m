@@ -1,4 +1,4 @@
-function[] = setEnsembleIndices( var, dim, index, seq, mean, nanflag )
+function[var] = setEnsembleIndices( var, dim, index, seq, mean, nanflag )
 %% Actually sets the ensemble indices for a variable
 
 % Get the dimension index
