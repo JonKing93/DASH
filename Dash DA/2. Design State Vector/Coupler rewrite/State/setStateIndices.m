@@ -1,4 +1,4 @@
-function[] = setStateIndices( var, dim, index, takeMean, nanflag )
+function[var] = setStateIndices( var, dim, index, takeMean, nanflag )
 %% Actually sets the state indices for a variable.
 
 % Get the dimension index

@@ -1,6 +1,6 @@
 %% This is a custom structure that holds the design parameters for a single
 % variable in a state vector.
-classdef varDesign < handle
+classdef varDesign
     
     % The values needed for each variable.
     properties

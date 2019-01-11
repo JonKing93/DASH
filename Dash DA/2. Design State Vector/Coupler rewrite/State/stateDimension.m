@@ -1,4 +1,4 @@
-function[] = stateDimension( design, var, dim, index, takeMean, nanflag )
+function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
 
 %%%%% Defaults
 if ~exist('takeMean','var')
@@ -25,23 +25,21 @@ meta = meta.( var.dimID{d} );
 meta = meta(index);
 
 % Get the variables with coupled state indices.
-coupled = design.coupleState(v,:);
+coupled = find( design.coupleState(v,:) );
 coupVars = design.varDesign(coupled);
 
-% Preallocate state indices for each coupled variable
-nCoup = sum(coupled);
-stateDex = cell(nCoup,1);
-
-% Get the state indices for each coupled variable. (But don't set any
-% values until every variable successfully generates indices.)
-for c = 1:nCoup
-    stateDex{c} = getCoupledIndex( coupVars(c), dim, meta );
+% For each coupled variable
+for c = 1:numel(coupled)
+    
+    % Get the state indices
+    stateDex = getCoupledIndex( coupVars(c), dim, meta );
+    
+    % Set the values
+    newVar = setStateIndices( coupVars(c), dim, stateDex{c}, takeMean, nanflag );
+    design.varDesign(coupled(c)) = newVar;
 end
 
-% Set the values.
-setStateIndices( var, dim, index );
-for c = 1:nCoup
-    setStateIndices( coupVars(c), dim, stateDex{c}, takeMean, nanflag );
-end
+% Also set values for the template variable
+design.varDesign(v) = setStateIndices( var, dim, index );
 
 end

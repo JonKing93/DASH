@@ -1,6 +1,6 @@
 %% This is a custom structure that stores an array of variable designs and 
 % allows indexing by variable name.
-classdef stateDesign < handle
+classdef stateDesign
     
     properties
         % Variable properties
