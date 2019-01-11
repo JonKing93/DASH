@@ -5,7 +5,7 @@ function[varDex] = checkDesignVar( design, var )
 if ~isa( design, 'stateDesign')
     error('design must be a stateDesign object.');
 end
-[ismem, varDex] = ismember(var, design.var);
+[ismem, varDex] = ismember(var, design.varName);
 if any(~ismem)
     error('Variable %s is not in the state design.', var(find(~ismem,1)));
 end

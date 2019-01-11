@@ -7,8 +7,8 @@ classdef stateDesign
         name;  % An identifier for the state vector.
         
         % Variable properties
-        varDesign;  % The array of variable designs
-        var;        % The variable names. Used for indexing.
+        var;  % The array of variable designs
+        varName;        % The variable names. Used for indexing.
         
         % Coupler properties
         isCoupled;  % Whether ensemble indices are coupled.
@@ -19,45 +19,31 @@ classdef stateDesign
     
     methods
         %% Constructor
-        function obj = stateDesign( varDesign, name )
-            
-            % Ensure we are storing a variable design
-            if ~isa(varDesign, 'varDesign')
-                error('varDesign must be of the ''varDesign'' class.');
-            end
-            
-            % Store the name
-            if exist('name','var')
-                obj.name = name;
-            end
-            
-            % Save the design and variable name
-            obj.varDesign = varDesign;
-            obj.var = varDesign.name;
-            
-            % Initialize the coupler properties.
-            obj.isCoupled = false;
-            obj.coupleState = false;
-            obj.coupleSeq = false;
-            obj.coupleMean = false;
+        function obj = stateDesign( name )
+            % Set the name
+            obj.name = name;
         end
         
         %% Adds another variable
-        function[obj] = addVar( obj, varDesign )
+        function[obj] = addVar( obj, file, name )
             
-            % Ensure we are storing a variable design
-            if ~isa(varDesign, 'varDesign')
-                error('varDesign must be of the ''varDesign'' class.');
+            % Get the name if not specified
+            if ~exist('name','var')
+                meta = metaGridfile( file );
+                name = meta.var;
             end
             
             % Check that the variable is not a repeat
-            if ismember(varDesign.name, obj.var)
+            if ismember(name, obj.var)
                 error('Cannot repeat variable names.');
             end
             
+            % Initialize the varDesign
+            newVar = varDesign(file, name);           
+            
             % Add the variable
-            obj.varDesign = [obj.varDesign; varDesign];
-            obj.var = [obj.var; varDesign.name];
+            obj.var = [obj.var; newVar];
+            obj.varName = [obj.var; name];
             
             % Adds coupler indices
             obj.isCoupled(end+1,end+1) = false;

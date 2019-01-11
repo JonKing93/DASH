@@ -35,10 +35,7 @@ classdef varDesign
             [meta, dimID, gridSize] = metaGridfile( file );
             obj.dimID = dimID;
             
-            % Get the name if not specified
-            if ~exist('name','var')
-                name = meta.var;
-            end
+            % Get the name
             obj.name = name;
                 
             % Get the number of dimensions

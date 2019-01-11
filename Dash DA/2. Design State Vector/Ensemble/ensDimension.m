@@ -14,7 +14,7 @@ end
 
 % Get the variable design
 v = checkDesignVar(design, var);
-var = design.varDesign(v);
+var = design.var(v);
 
 % Get the dimension index
 d = checkVarDim(var, dim);
@@ -34,7 +34,7 @@ meta = meta.(var.dimID{d});
 
 % Get the variables with coupled ensemble indices
 coupled = find( design.isCoupled(v,:) );
-coupVars = design.varDesign(coupled);
+coupVars = design.var(coupled);
 
 % Preallocate an index array to track overlapping metadata
 nCoup = sum(coupled);
@@ -59,7 +59,7 @@ for c = 1:nCoup
     % Get synced properties
     syncSeq = design.coupleSeq(v, coupled(c));
     syncMean = design.coupleMean(v, coupled(c));
-    [seqDex{c}, meanDex{c}, nanflag{c}] = getSyncedProperties( var, coupVars(c), dim, syncSeq, syncMean );
+    [seqDex{c}, meanDex{c}, nanDex{c}] = getSyncedProperties( var, coupVars(c), dim, syncSeq, syncMean );
     
     % Trim the indices to only allow full sequences
     trimDex = trimEnsemble( coupVars(c), dim, iy, seqDex{c}, meanDex{c} );
@@ -76,11 +76,11 @@ end
 
 % Indices now overlap ALL coupled variables. Set the indices for each variable.
 for c = 1:nCoup   
-    coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanflag{c});
+    coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c});
 end
 
 % Save the values in the design
-design.varDesign(coupled) = coupVars;
-design.varDesign(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag );
+design.var(coupled) = coupVars;
+design.var(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag );
 
 end

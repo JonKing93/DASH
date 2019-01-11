@@ -5,10 +5,10 @@ function[design] = coupler(design, X, Y, varargin)
 
 % Get the variables
 xv = checkDesignVar(design, X);
-X = design.designVar(xv);
+X = design.var(xv);
 
 yv = checkDesignVar(design, Y);
-Y = design.designVar(yv);
+Y = design.var(yv);
 
 % Get the X metadata
 xmeta = metaGridfile(X.file);

@@ -11,7 +11,7 @@ end
 
 % Get the variable design
 v = checkDesignVar(design, var);
-var = design.varDesign(v);
+var = design.var(v);
 
 % Get the dimension index
 d = checkVarDim( var, dim );
@@ -26,7 +26,7 @@ meta = meta(index);
 
 % Get the variables with coupled state indices.
 coupled = find( design.coupleState(v,:) );
-coupVars = design.varDesign(coupled);
+coupVars = design.var(coupled);
 
 % For each coupled variable
 for c = 1:numel(coupled)
@@ -39,7 +39,7 @@ for c = 1:numel(coupled)
 end
 
 % Set the values in the design. Also set the template variable
-design.varDesign(v) = setStateIndices( var, dim, index );
-design.varDesign(coupled) = coupVars;
+design.var(v) = setStateIndices( var, dim, index );
+design.var(coupled) = coupVars;
 
 end
