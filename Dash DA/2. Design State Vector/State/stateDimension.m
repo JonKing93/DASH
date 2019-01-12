@@ -1,10 +1,10 @@
 function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
 
 %%%%% Defaults
-if ~exist('takeMean','var')
+if ~exist('takeMean','var') || isempty(takeMean)
     takeMean = false;
 end
-if ~exist('nanflag','var')
+if ~exist('nanflag','var') || isempty(nanflag)
     nanflag = 'includenan';
 end
 %%%%%
@@ -39,7 +39,7 @@ for c = 1:numel(coupled)
 end
 
 % Set the values in the design. Also set the template variable
-design.var(v) = setStateIndices( var, dim, index );
+design.var(v) = setStateIndices( var, dim, index, takeMean, nanflag );
 design.var(coupled) = coupVars;
 
 end

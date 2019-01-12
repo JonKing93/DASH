@@ -14,7 +14,7 @@ Y = design.var(yv);
 xmeta = metaGridfile(X.file);
 
 % For each dimension of X
-for d = 1:nDim
+for d = 1:numel(X.dimID)
     
     % If a state dimension and need to sync state dimensions.
     if X.isState(d) && syncState
@@ -37,7 +37,7 @@ for d = 1:nDim
         [seq, mean, nanflag] = getSyncedProperties( X, Y, dim, syncSeq, syncMean );
         
         % Set the ensemble indices
-        design = ensDimension( design, Y.name, X.dimID{d}, index, seq, mean, nanflag );
+        design = ensDimension( design, Y.name, X.dimID{d}, index, seq, mean, nanflag, X.ensMeta{d} );
     end
 end
 

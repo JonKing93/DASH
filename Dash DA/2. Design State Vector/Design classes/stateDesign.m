@@ -23,33 +23,5 @@ classdef stateDesign
             % Set the name
             obj.name = name;
         end
-        
-        %% Adds another variable
-        function[obj] = addVar( obj, file, name )
-            
-            % Get the name if not specified
-            if ~exist('name','var')
-                meta = metaGridfile( file );
-                name = meta.var;
-            end
-            
-            % Check that the variable is not a repeat
-            if ismember(name, obj.var)
-                error('Cannot repeat variable names.');
-            end
-            
-            % Initialize the varDesign
-            newVar = varDesign(file, name);           
-            
-            % Add the variable
-            obj.var = [obj.var; newVar];
-            obj.varName = [obj.var; name];
-            
-            % Adds coupler indices
-            obj.isCoupled(end+1,end+1) = false;
-            obj.coupleState(end+1,end+1) = false;
-            obj.coupleSeq(end+1,end+1) = false;
-            obj.coupleMean(end+1,end+1) = false;
-        end 
     end
 end

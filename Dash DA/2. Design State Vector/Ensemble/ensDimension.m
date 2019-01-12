@@ -1,16 +1,4 @@
-function[design] = ensDimension( design, var, dim, index, seq, mean, nanflag )
-
-%%%%% Defaults
-if ~exist('seq','var') || isempty(seq)
-    seq = 0;
-end
-if ~exist('mean','var') || isempty(mean)
-    mean = 0;
-end
-if ~exist('nanflag','var')
-    nanflag = 'includenan';
-end
-%%%%%
+function[design] = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta )
 
 % Get the variable design
 v = checkDesignVar(design, var);
@@ -26,7 +14,7 @@ trimDex = trimEnsemble(var, d, index, seq, mean);
 index = index(~trimDex);
 
 % Do initial build of template variable
-var = setEnsembleIndices( var, dim, index, seq, mean, nanflag );
+var = setEnsembleIndices( var, dim, index, seq, mean, nanflag, ensMeta );
 
 % Get the metadata for the dimension
 meta = metaGridfile( var.file );
@@ -76,11 +64,13 @@ end
 
 % Indices now overlap ALL coupled variables. Set the indices for each variable.
 for c = 1:nCoup   
-    coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c});
+    coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c}, ensMeta);
 end
+
+% Set the value of the metadata in all coupled variables
 
 % Save the values in the design
 design.var(coupled) = coupVars;
-design.var(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag );
+design.var(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag, ensMeta );
 
 end
