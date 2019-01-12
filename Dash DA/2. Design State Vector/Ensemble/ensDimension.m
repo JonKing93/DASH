@@ -67,7 +67,7 @@ for c = 1:nCoup
     coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c}, ensMeta);
 end
 
-% Set the value of the metadata in all coupled variables
+% Set
 
 % Save the values in the design
 design.var(coupled) = coupVars;

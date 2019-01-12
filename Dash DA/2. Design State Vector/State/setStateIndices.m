@@ -19,4 +19,8 @@ var.indices{d} = index;
 var.takeMean(d) = takeMean;
 var.nanflag{d} = nanflag;
 
+% Set the dimension as a state dimension
+var.isState(d) = true;
+var.dimSet(d) = true;
+
 end

@@ -38,4 +38,8 @@ var.takeMean(d) = takeMean;
 var.nanflag{d} = nanflag;
 var.ensMeta{d} = meta;
 
+% Set the dimension as an ensemble dimension
+var.isState(d) = false;
+var.dimSet(d) = true;
+
 end

@@ -1,14 +1,5 @@
 function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
 
-%%%%% Defaults
-if ~exist('takeMean','var') || isempty(takeMean)
-    takeMean = false;
-end
-if ~exist('nanflag','var') || isempty(nanflag)
-    nanflag = 'includenan';
-end
-%%%%%
-
 % Get the variable design
 v = checkDesignVar(design, var);
 var = design.var(v);
