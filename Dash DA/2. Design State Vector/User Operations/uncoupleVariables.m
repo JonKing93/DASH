@@ -1,4 +1,4 @@
-function[design] = uncoupler( design, vars, varargin )
+function[design] = uncoupleVariables( design, vars, varargin )
 
 % Parse the inputs
 [state, ens, seq, mean] = parseInputs( varargin, {'state','ens','seq','mean'}, {false, false, false, false}, {'b','b','b','b'} );

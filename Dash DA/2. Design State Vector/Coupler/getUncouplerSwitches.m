@@ -1,7 +1,7 @@
 function[toggle] = getUncouplerSwitches( state, ens, seq, mean )
     
 % If ensemble is toggled, uncouple seq and mean as well
-if ens
+if ens   
     ens = true;
     seq = true;
     mean = true;

@@ -7,6 +7,18 @@ var = design.var(v);
 % Get the dimension index
 d = checkVarDim( var, dim );
 
+% Check if the variable is changing type but is coupled
+if strcmpi(dimType,'state') && ~var.isState(d)
+    fprintf('Dimension %s of variable %s is an ensemble dimension coupled to the variables ', dim, var.name);
+    fprintf(['%s', newline], 
+
+
+
+
+
+
+
+
 % Get file metadata
 [meta, dimID, dimSize] = metaGridfile( var.file );
 
@@ -22,7 +34,7 @@ checkIndices(var, d, index);
 meta = meta.(dimID{d});
 
 % Get the coupling field name
-field = isCoupled;
+field = 'isCoupled';
 if strcmpi(dimType,'state')
     field = 'coupleState';
 end

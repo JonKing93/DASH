@@ -1,36 +1,29 @@
-function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
+function[d] = stateDimension( d, var, dim, index, takeMean, nanflag )
 
-% Get the variable design
-v = checkDesignVar(design, var);
-var = design.var(v);
+% Setup for the edit. Get indices, metadata, template variable, coupled
+% variables.
+[v, var, meta, index, coupled] = setupEdit( d, var, dim, index, 'state' );
 
-% Get the dimension index
-d = checkVarDim( var, dim );
-
-% Check the indices are allowed
-checkIndices(var, d, index);
-
-% Get the metadata for the variable at the indices
-meta = metaGridfile( var.file );
-meta = meta.( var.dimID{d} );
-meta = meta(index);
-
-% Get the variables with coupled state indices.
-coupled = find( design.coupleState(v,:) );
-coupVars = design.var(coupled);
-
-% For each coupled variable
-for c = 1:numel(coupled)
-    
-    % Get the state indices
-    stateDex = getCoupledIndex( coupVars(c), dim, meta );
-    
-    % Set the values
-    coupVars(c) = setStateIndices( coupVars(c), dim, stateDex{c}, takeMean, nanflag );
+% If a coupled ensemble dimension, ask the user to continue and uncouple
+if ~var.isState(d) && any(d.isCoupled(v,:))
+    flipDimWarning('ensemble', 'state', dim, var, d, d.isCoupled(v,:));    
+    d = uncoupleVariables( d, [var.name; d.varName(d.isCoupled(v,:))], 'ens' ); 
 end
 
-% Set the values in the design. Also set the template variable
-design.var(v) = setStateIndices( var, dim, index, takeMean, nanflag );
-design.var(coupled) = coupVars;
+% Restrict the metadata to the state indices
+meta = meta(index);
+
+% For each coupled variable
+for c = coupled
+    
+    % Get the state indices
+    stateDex = getCoupledIndex( d.var(c), dim, meta );
+    
+    % Set the values
+    d.var(c) = setStateIndices( d.var(c), dim, stateDex{c}, takeMean, nanflag );
+end
+
+% Set the values template variable
+d.var(v) = setStateIndices( var, dim, index, takeMean, nanflag );
 
 end

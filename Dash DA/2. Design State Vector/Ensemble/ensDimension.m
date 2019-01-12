@@ -1,31 +1,27 @@
-function[design] = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta )
+function[d] = ensDimension( d, var, dim, index, seq, mean, nanflag, ensMeta )
 
-% Get the variable design
-v = checkDesignVar(design, var);
-var = design.var(v);
+% Setup the edit. Get the template variable, metadata, indices, and coupled
+% variables.
+[v, var, meta, index, coupled] = setupEdit( d, var, dim, index, 'ens');
 
-% Get the dimension index
-d = checkVarDim(var, dim);
+% If a coupled state dimension, ask the user to continue and uncouple
+if var.isState(d) && any(d.coupleState(v,:))
+    flipDimWarning('state', 'ensemble', dim, var, d, d.coupleState(v,:));    
+    d = uncoupleVariables( d, [var.name; d.varName(d.coupleState(v,:))], 'state' ); 
+end
 
-% Check that the indices are allowed and trim to only allow full sequences
-checkIndices(var, d, index)
-
-trimDex = trimEnsemble(var, d, index, seq, mean);
+% Trim indices to only allow full sequences
+trimDex = trimEnsemble(var, dim, index, seq, mean);
 index = index(~trimDex);
 
 % Do initial build of template variable
 var = setEnsembleIndices( var, dim, index, seq, mean, nanflag, ensMeta );
 
-% Get the metadata for the dimension
-meta = metaGridfile( var.file );
-meta = meta.(var.dimID{d});
-
-% Get the variables with coupled ensemble indices
-coupled = find( design.isCoupled(v,:) );
-coupVars = design.var(coupled);
+% Get the metadata at the indices
+meta = meta(index);
 
 % Preallocate an index array to track overlapping metadata
-nCoup = sum(coupled);
+nCoup = numel(coupled);
 ensDex = NaN(numel(index),nCoup+1);
 ensDex(:,1) = index;
 
@@ -37,20 +33,23 @@ nanDex = cell(nCoup,1);
 % Get the ensemble indices for each variable. Trim and propagate through
 % the ensemble indices of all coupled variables.
 for c = 1:nCoup
+
+    % Get the coupled variable index
+    vc = coupled(c);
     
     % Get the indices with matching metadata
-    [iy, ix] = getCoupledEnsIndex( coupVars(c), dim, meta(ensDex(:,1)) );
+    [iy, ix] = getCoupledEnsIndex( d.var(vc), dim, meta );
     
     % Set the values in the index array
     ensDex(ix,c+1) = iy;
     
     % Get synced properties
-    syncSeq = design.coupleSeq(v, coupled(c));
-    syncMean = design.coupleMean(v, coupled(c));
-    [seqDex{c}, meanDex{c}, nanDex{c}] = getSyncedProperties( var, coupVars(c), dim, syncSeq, syncMean );
+    syncSeq = d.coupleSeq(v, coupled(c));
+    syncMean = d.coupleMean(v, coupled(c));
+    [seqDex{c}, meanDex{c}, nanDex{c}] = getSyncedProperties( var, d.var(vc), dim, syncSeq, syncMean );
     
     % Trim the indices to only allow full sequences
-    trimDex = trimEnsemble( coupVars(c), dim, iy, seqDex{c}, meanDex{c} );
+    trimDex = trimEnsemble( d.var(vc), dim, iy, seqDex{c}, meanDex{c} );
     ensDex(ix(trimDex),:) = [];
     
     % Remove any non-overlapping values 
@@ -64,13 +63,10 @@ end
 
 % Indices now overlap ALL coupled variables. Set the indices for each variable.
 for c = 1:nCoup   
-    coupVars(c) = setEnsembleIndices(coupVars(c), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c}, ensMeta);
+    d.var(vc) = setEnsembleIndices(d.var(vc), dim, ensDex(:,c+1), seqDex{c}, meanDex{c}, nanDex{c}, ensMeta);
 end
 
-% Set
-
-% Save the values in the design
-design.var(coupled) = coupVars;
-design.var(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag, ensMeta );
+% Set the value for the template variable
+d.var(v) = setEnsembleIndices( var, dim, ensDex(:,1), seq, mean, nanflag, ensMeta );
 
 end

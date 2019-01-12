@@ -1,4 +1,4 @@
-function[design] = coupler(design, X, Y, varargin)
+function[design] = coupleVariables(design, X, Y, varargin)
 
 % Parse the synced variable inputs
 [syncState, syncSeq, syncMean] = parseInputs( varargin, {'nostate','noseq','nomean'}, {true, true, true}, {'b','b','b'} );
