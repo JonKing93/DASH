@@ -17,7 +17,7 @@ end
 % If syncing means
 if syncMean
     mean = X.meanDex{xd};
-    nanflag = X.nanflag{d};
+    nanflag = X.nanflag{xd};
 end
 
 end

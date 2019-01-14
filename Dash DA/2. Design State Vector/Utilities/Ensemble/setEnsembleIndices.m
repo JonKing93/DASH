@@ -6,8 +6,8 @@ d = checkVarDim(var, dim);
 
 % Error check the indices
 checkIndices(var, d, index);
-checkIndices(seq+1, d, index);
-checkIndices(mean+1, d, index);
+checkIndices(var, d, seq+1);
+checkIndices(var, d, mean+1);
 
 % Error check the nanflag
 if ~ischar(nanflag) || ~isvector(nanflag) || ~ismember(nanflag, {'omitnan','includenan'})

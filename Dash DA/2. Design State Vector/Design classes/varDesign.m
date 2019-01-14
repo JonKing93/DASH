@@ -57,6 +57,7 @@ classdef varDesign
             % indices selected            
             for d = 1:nDim
                 obj.indices{d} = 1:gridSize(d);
+                obj.nanflag{d} = 'includenan';
             end
         end
     end

@@ -2,13 +2,7 @@ function[d] = ensDimension( d, var, dim, index, seq, mean, nanflag, ensMeta )
 
 % Setup the edit. Get the template variable, metadata, indices, and coupled
 % variables.
-[v, var, meta, index, coupled] = setupEdit( d, var, dim, index, 'ens');
-
-% If a coupled state dimension, ask the user to continue and uncouple
-if var.isState(d) && any(d.coupleState(v,:))
-    flipDimWarning('state', 'ensemble', dim, var, d, d.coupleState(v,:));    
-    d = uncoupleVariables( d, [var.name; d.varName(d.coupleState(v,:))], 'state' ); 
-end
+[v, var, meta, index, coupled, d] = setupEdit( d, var, dim, index, 'ens');
 
 % Trim indices to only allow full sequences
 trimDex = trimEnsemble(var, dim, index, seq, mean);

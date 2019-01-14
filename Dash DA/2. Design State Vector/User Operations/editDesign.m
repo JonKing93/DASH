@@ -1,5 +1,10 @@
 function[design] = editDesign( design, var, dim, dimType, index, varargin )
 
+% Use all indices if unspecified
+if ~exist('index','var')
+    index = 'all';
+end
+
 % State dimension
 if strcmpi(dimType, 'state')
     

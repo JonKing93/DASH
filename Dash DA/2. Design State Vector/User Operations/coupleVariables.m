@@ -34,7 +34,7 @@ for d = 1:numel(X.dimID)
         index = getCoupledEnsIndex( Y, X.dimID{d}, xmeta.(X.dimID{d})(X.indices{d}) );
         
         % Get synced ensemble properties
-        [seq, mean, nanflag] = getSyncedProperties( X, Y, dim, syncSeq, syncMean );
+        [seq, mean, nanflag] = getSyncedProperties( X, Y, X.dimID{d}, syncSeq, syncMean );
         
         % Set the ensemble indices
         design = ensDimension( design, Y.name, X.dimID{d}, index, seq, mean, nanflag, X.ensMeta{d} );
