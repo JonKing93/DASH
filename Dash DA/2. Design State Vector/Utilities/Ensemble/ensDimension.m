@@ -6,7 +6,7 @@ function[d] = ensDimension( d, var, dim, index, seq, mean, nanflag, ensMeta )
 
 % Trim indices to only allow full sequences
 trimDex = trimEnsemble(var, dim, index, seq, mean);
-index = index(~trimDex);
+index(trimDex) = [];
 
 % Do initial build of template variable
 var = setEnsembleIndices( var, dim, index, seq, mean, nanflag, ensMeta );

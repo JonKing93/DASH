@@ -7,6 +7,6 @@ if ~isa( design, 'stateDesign')
 end
 [ismem, varDex] = ismember(var, design.varName);
 if any(~ismem)
-    error('Variable %s is not in the state design.', var(find(~ismem,1)));
+    error('Variable is not in the state design.', var(find(~ismem,1)));
 end
 end

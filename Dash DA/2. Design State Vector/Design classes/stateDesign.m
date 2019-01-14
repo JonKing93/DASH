@@ -1,5 +1,9 @@
-%% This is a custom structure that stores an array of variable designs and 
-% allows indexing by variable name.
+%% Creates a custom structure that stores design parameters for state
+% vector variables.
+%
+% design = stateDesign( designName )
+% Initializes a state vector design with no variables and an identifying
+% name.
 classdef stateDesign
     
     properties

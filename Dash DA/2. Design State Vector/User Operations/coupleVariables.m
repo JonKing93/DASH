@@ -1,43 +1,43 @@
-function[design] = coupleVariables(design, X, Y, varargin)
+function[design] = coupleVariables(design, var, template, varargin)
 
 % Parse the synced variable inputs
 [syncState, syncSeq, syncMean] = parseInputs( varargin, {'nostate','noseq','nomean'}, {true, true, true}, {'b','b','b'} );
 
 % Get the variables
-xv = checkDesignVar(design, X);
-X = design.var(xv);
+xv = checkDesignVar(design, template);
+template = design.var(xv);
 
-yv = checkDesignVar(design, Y);
-Y = design.var(yv);
+yv = checkDesignVar(design, var);
+var = design.var(yv);
 
 % Get the X metadata
-xmeta = metaGridfile(X.file);
+xmeta = metaGridfile(template.file);
 
 % For each dimension of X
-for d = 1:numel(X.dimID)
+for d = 1:numel(template.dimID)
     
     % If a state dimension and need to sync state dimensions.
-    if X.isState(d) && syncState
+    if template.isState(d) && syncState
         
         % Get the state indices for Y
-        index = getCoupledStateIndex( Y, X.dimID{d}, xmeta.(X.dimID{d})(X.indices{d}) );
-        takeMean = X.takeMean(d);
-        nanflag = X.nanflag{d};
+        index = getCoupledStateIndex( var, template.dimID{d}, xmeta.(template.dimID{d})(template.indices{d}) );
+        takeMean = template.takeMean(d);
+        nanflag = template.nanflag{d};
         
         % Set the state indices
-        design = stateDimension( design, Y.name, X.dimID{d}, index, takeMean, nanflag );
+        design = stateDimension( design, var.name, template.dimID{d}, index, takeMean, nanflag );
     
     % If an ensemble dimension
     else
         
         % Get the ensemble indices
-        index = getCoupledEnsIndex( Y, X.dimID{d}, xmeta.(X.dimID{d})(X.indices{d}) );
+        index = getCoupledEnsIndex( var, template.dimID{d}, xmeta.(template.dimID{d})(template.indices{d}) );
         
         % Get synced ensemble properties
-        [seq, mean, nanflag] = getSyncedProperties( X, Y, X.dimID{d}, syncSeq, syncMean );
+        [seq, mean, nanflag] = getSyncedProperties( template, var, template.dimID{d}, syncSeq, syncMean );
         
         % Set the ensemble indices
-        design = ensDimension( design, Y.name, X.dimID{d}, index, seq, mean, nanflag, X.ensMeta{d} );
+        design = ensDimension( design, var.name, template.dimID{d}, index, seq, mean, nanflag, template.ensMeta{d} );
     end
 end
 

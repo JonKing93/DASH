@@ -54,10 +54,12 @@ classdef varDesign
             obj.ensMeta = cell(nDim,1);
             
             % Initialize all dimensions as state dimensions with all
-            % indices selected            
+            % indices selected. Set seq and mean to 0.            
             for d = 1:nDim
                 obj.indices{d} = 1:gridSize(d);
                 obj.nanflag{d} = 'includenan';
+                obj.seqDex{d} = 0;
+                obj.meanDex{d} = 0;
             end
         end
     end

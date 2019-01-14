@@ -11,10 +11,10 @@ meta = meta(index);
 for c = coupled
     
     % Get the state indices
-    stateDex = getCoupledIndex( d.var(c), dim, meta );
+    stateDex = getCoupledStateIndex( d.var(c), dim, meta );
     
     % Set the values
-    d.var(c) = setStateIndices( d.var(c), dim, stateDex{c}, takeMean, nanflag );
+    d.var(c) = setStateIndices( d.var(c), dim, stateDex, takeMean, nanflag );
 end
 
 % Set the values template variable
