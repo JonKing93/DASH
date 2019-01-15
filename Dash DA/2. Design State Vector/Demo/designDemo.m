@@ -1,6 +1,6 @@
 % This is a demo for designing a state vector.
 
-% Please read the State Vector Design Documentation before using.
+% Please read the State Vector Design Documentation before using. 
 
 % I suggest placing breakpoints at lines: 
 
