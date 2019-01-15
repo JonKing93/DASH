@@ -1,13 +1,17 @@
 function[M] = buildEnsemble( nEns, design )
 %% This is the basic loop that will build the ensemble
 
-% Get the state variable indices for each variable
-[varCell, nEls] = getVariableIndices( design );
-nState = sum(nEls);
-nVar = numel( design.varDesign );
+% Get the indices of each variable in the state vector.
+[varIndex] = getVariableIndices( design );
+nState = max( varIndex{end} );
+nVar = numel( design.var );
 
 % Preallocate the ensemble
-M = NaN( nState, nEns ); 
+M = NaN( nState, nEns );
+
+
+
+
 
 % For each variable
 for v = 1:nVar

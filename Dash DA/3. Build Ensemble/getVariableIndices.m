@@ -2,7 +2,7 @@ function[varCell, nEls] = getVariableIndices( design )
 %% Get the number of elements in the total state vector
 
 % Get a cell to hold the state vector indices for each variable
-nVar = numel( design.varDesign );
+nVar = numel( design.varD );
 varCell = cell( nVar, 1 );
 nEls = NaN( nVar, 1 );
 
@@ -19,11 +19,10 @@ for v = 1:nVar
     % Preallocate the number of indices in each dimension
     nIndex = NaN(nDim,1);
     
-    % For each dimension
+    % Get the number of indices for each dimension
     for d = 1:nDim
-        % Get the number of indices
-        if ~isnan( var.fixDex{d} )
-            nIndex(d) = numel( var.fixDex{d} );
+        if var.isState(d) 
+            nIndex(d) = numel( var.indices{d} );
         else
             nIndex(d) = numel( var.seqDex{d} );
         end
