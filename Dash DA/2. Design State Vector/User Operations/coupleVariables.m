@@ -1,4 +1,33 @@
 function[design] = coupleVariables(design, var, template, varargin)
+%% Couples variable indices in a state vector design.
+%
+% design = coupleVariables( design, var, template )
+% Couples the ensemble, state, sequence, and mean indices of two variables.
+%
+% design = coupleVariables( ..., 'nostate' )
+% Does not couple state indices.
+%
+% design = coupleVariables( ..., 'noseq' )
+% Does not couple sequence indices.
+%
+% design = coupleVariables( ..., 'nomean' )
+% Does not couple mean indices.
+%
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% var: The name of the variable that is being coupled to another variable.
+%
+% template: The name of the template variable. This is the variable to
+%      which the first variable is being coupled.
+%
+% ----- Outputs -----
+%
+% design: The updated state vector design.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Parse the synced variable inputs
 [syncState, syncSeq, syncMean] = parseInputs( varargin, {'nostate','noseq','nomean'}, {true, true, true}, {'b','b','b'} );

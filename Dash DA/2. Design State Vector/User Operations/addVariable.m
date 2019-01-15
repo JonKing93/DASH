@@ -1,5 +1,26 @@
 function[design] = addVariable( design, file, name )
+%% Add a variable to a state vector design
+%
 % design = addVariable( design, file, name )
+% Adds a variable with a user-specified name to a state vector design.
+%
+% design = addVariable( design, file )
+% Names the variable after the 'var' field in gridfile metadata.
+%
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% file: The name of the gridfile containing data for the variable.
+%
+% name: A name for the variable
+%
+% ----- Outputs -----
+%
+% design: The updated state vector design.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % File check, get default name
 meta = metaGridfile(file);
