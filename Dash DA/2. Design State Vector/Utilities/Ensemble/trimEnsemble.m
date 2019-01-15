@@ -1,6 +1,5 @@
 function[trimDex] = trimEnsemble( var, dim, index, seq, mean )
-%
-% Can leave seq and mean unspecified to ull from variable
+%% Trims ensemble indices to only allow complete sequences.
 
 % Get the dimension index
 d = checkVarDim(var, dim);

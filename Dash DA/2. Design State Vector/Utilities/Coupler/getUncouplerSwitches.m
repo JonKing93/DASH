@@ -1,4 +1,7 @@
 function[toggle] = getUncouplerSwitches( state, ens, seq, mean )
+%% Determines which indices to uncouple based on the uncoupler string flags.
+%
+% toggle = getUncouplerSwitches( state, ens, seq, mean )
     
 % If ensemble is toggled, uncouple seq and mean as well
 if ens   

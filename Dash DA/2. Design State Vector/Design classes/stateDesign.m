@@ -4,6 +4,9 @@
 % design = stateDesign( designName )
 % Initializes a state vector design with no variables and an identifying
 % name.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef stateDesign
     
     properties

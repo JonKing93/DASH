@@ -1,4 +1,5 @@
 function[d] = stateDimension( d, var, dim, index, takeMean, nanflag )
+%% Edits a state dimension.
 
 % Setup for the edit. Get indices, metadata, template variable, coupled
 % variables.

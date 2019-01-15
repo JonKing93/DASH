@@ -1,5 +1,8 @@
 %% This is a custom structure that holds the design parameters for a single
 % variable in a state vector.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef varDesign
     
     % The values needed for each variable.

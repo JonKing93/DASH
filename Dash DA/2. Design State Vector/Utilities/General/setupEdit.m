@@ -1,4 +1,5 @@
 function[v, var, meta, index, coupled, design] = setupEdit( design, var, dim, index, dimType )
+%% Setup for an edit of an ensemble or state dimension.
 
 % Get the variable design
 v = checkDesignVar(design, var);

@@ -1,4 +1,5 @@
 function[d] = ensDimension( d, var, dim, index, seq, mean, nanflag, ensMeta )
+%% Edits an ensemble dimension.
 
 % Setup the edit. Get the template variable, metadata, indices, and coupled
 % variables.
