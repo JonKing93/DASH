@@ -28,6 +28,17 @@ if any( trimEnsemble(var,dim,index,seq,mean) )
     error('Not all ensemble indices in the %s dimension of the %s variable permit a full sequence.', dim, var.name);
 end
 
+% Convert index to column, seq and mean to row
+if ~iscolumn(index)
+    index = index';
+end
+if ~isrow(seq)
+    seq = seq';
+end
+if ~isrow(mean)
+    mean = mean';
+end
+
 % Set the values
 var.indices{d} = index;
 var.seqDex{d} = seq;
