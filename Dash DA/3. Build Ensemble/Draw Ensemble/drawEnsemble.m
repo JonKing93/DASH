@@ -1,9 +1,10 @@
-function[sampDex] = drawEnsemble( coupVars )
+function[sampDex, dimID] = drawEnsemble( coupVars, nEns, overlap )
 %% Draws the ensemble indices for a set of coupled variables.
 
 % Get the ensemble dimensions
 ensDim = find( ~coupVars(1).isState );
 dimID = coupVars(1).dimID(ensDim);
+nDim = numel(ensDim);
 
 % Get the set of all possible draws
 [allDraws, ensSize] = getAllCombIndex( coupVars(1).indices(ensDim) );
@@ -23,7 +24,7 @@ sampDex = NaN(nSeq*nEns, nDim);
 nDraw = nEns;
 
 % Initialize while loop toggles
-timeOut = 500;
+timeOut = 1000;
 
 % Until are the draws are made...
 while nDraw > 0
@@ -31,7 +32,7 @@ while nDraw > 0
     % If the method timed out, ask the user to continue
     timeOut = timeOut-1;
     if timeOut < 0
-        userContinueQuery;
+        userContinueQuery(nEns);
         timeOut = Inf;
     end
     

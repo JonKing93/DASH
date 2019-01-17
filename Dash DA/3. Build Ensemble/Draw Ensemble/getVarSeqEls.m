@@ -1,4 +1,5 @@
 function[seqEls] = getVarSeqEls( var, dimDex )
+%% Get the sequence elements for a variable
 
 % Get an index for all sequence elements
 [allEls, seqSize] = getAllCombIndex( var.seqDex(dimDex) );
