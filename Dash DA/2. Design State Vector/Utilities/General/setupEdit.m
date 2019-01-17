@@ -8,9 +8,6 @@ var = design.var(v);
 % Get the dimension index
 d = checkVarDim( var, dim );
 
-% Get file metadata
-meta = metaGridfile( var.file );
-
 % Index must be a vector
 if ~isvector(index)
     error('Indices must be a vector.');
@@ -36,7 +33,7 @@ end
 checkIndices(var, d, index);
 
 % Get the metadata for the dimension
-meta = meta.(var.dimID{d});
+meta = var.meta.(var.dimID{d});
 
 % Get some state vs ensemble values
 if strcmpi(dimType, 'state')
