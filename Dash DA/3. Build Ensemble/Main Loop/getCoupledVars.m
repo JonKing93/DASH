@@ -1,5 +1,8 @@
-function[coupleSet] = getCoupledVars( isCoupled )
+function[coupleSet] = getCoupledVars( design )
 %% Gets the sets of coupled variables
+
+% Get the coupling array
+isCoupled = design.isCoupled;
 
 % Initialize a cell to hold var indices
 coupleSet = {};
