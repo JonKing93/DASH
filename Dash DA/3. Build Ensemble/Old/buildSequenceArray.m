@@ -2,7 +2,7 @@ function[seqArray] = buildSequenceArray( fixed, seqDex )
 %% Build an array to subscript into each sequence
 
 % Initialize the array size
-arraySize = NaN( sum(~fixed),1);
+arraySize = NaN( 1, sum(~fixed));
 k = 1;
 
 % For each dimension that is an ensemble dimension
