@@ -42,6 +42,8 @@ elseif ~ismember( 'dimID', vars )
     error('The %s file is missing the ''dimID'' variable.', file);
 elseif ~ismember( 'meta', vars )
     error('The %s file is missing the ''meta'' variable.', file);
+elseif ~ismember( 'gridSize', vars )
+    error('The %s file is missing the ''gridSize'' variable.', file );
 end
 
 end

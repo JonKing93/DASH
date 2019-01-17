@@ -12,6 +12,7 @@ classdef varDesign
         dimID; % Dimensional ordering
         dimSize; % Dimension size
         name;  % Variable name
+        meta; % Metadata
         
         % Index properties
         indices;  % The allowed indices for state or ensemble dimensions
@@ -36,11 +37,15 @@ classdef varDesign
             obj.file = file;
             
             % Get the dimID
-            [~, dimID, dimSize] = metaGridfile( file );
+            [meta, dimID, dimSize] = metaGridfile( file );
             obj.dimID = dimID;
             obj.dimSize = dimSize;
+            obj.meta = meta;
             
             % Get the name
+            if ~exist('name','var')
+                name = meta.var;
+            end
             obj.name = name;
                 
             % Get the number of dimensions
