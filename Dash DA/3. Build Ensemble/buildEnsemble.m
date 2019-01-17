@@ -1,19 +1,25 @@
-function[M] = buildEnsemble( design, nEns, file )
+function[M] = buildEnsemble( design, nEns, overlap )
 %% Builds an ensemble from a state vector design
+
+% Set default overlap
+if ~exist('overlap','var') || isempty(overlap)
+    overlap = false;
+end
 
 % Get the set of coupled variables
 varSets = getCoupledVars( design );
 
 % Assign the ensemble indices for each set
 for s = 1:numel(varSets)
-    design.var(varSets{v}) = assignEnsIndices( design.var(varSets{v}), nEns, overlap );
+    design.var(varSets{s}) = assignEnsIndices( design.var(varSets{s}), nEns, overlap );
 end
 
 % Get the size of a final state vector
-nState = getStateSize( design );
+[nState, varDex] = getStateVarDex( design );
+nState = sum(nState);
 
-% Get the indices for each variable
-varDex = getVarStatevecDex( design );
+% Create the metadata container
+ensMeta = createEnsembleMeta( design, nState, varDex );
 
 % Preallocate the ensemble
 M = NaN(nState, nEns);
@@ -34,7 +40,7 @@ for v = 1:numel(design.var)
     end
         
     % Build the ensemble for the variable
-    M(varDex(v), :) = buildVarEnsemble( design.var(v), nEns, ic, ix );
+    M(varDex{v}, :) = buildVarEnsemble( design.var(v), nEns, ic, ix );
 end
 
 end

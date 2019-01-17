@@ -1,4 +1,4 @@
-function[] = assignEnsIndices( coupVars, nEns, overlap )
+function[coupVars] = assignEnsIndices( coupVars, nEns, overlap )
 %% Sets the ensemble indices that will be used in constructing an ensemble.
 
 % Get the sampling indices for the variables

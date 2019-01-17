@@ -1,4 +1,4 @@
-function[ic] = getEnsLoadIndex( var, ic, m, s )
+function[ic] = getEnsLoadIndex( var, ic, subSeq, m )
 %% Gets the load indices for ensemble dimensions for a particular sequence
 % element of a particular ensemble member.
 %
@@ -14,7 +14,7 @@ nDim = numel(ensDim);
 for d = 1:nDim
     
     % Assign the indices
-    ic{ensDim(d)} = var.indices{ensDim(d)}(m) + var.seqDex{ensDim(d)}(s) + var.meanDex{ensDim(d)};
+    ic{ensDim(d)} = var.indices{ensDim(d)}(m) + var.seqDex{ensDim(d)}(subSeq(d)) + var.meanDex{ensDim(d)};
 end
 
 end

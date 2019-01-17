@@ -36,6 +36,11 @@ while nDraw > 0
         timeOut = Inf;
     end
     
+    % Check that the draws can be made
+    if nDraw > numel(allDraws)
+        error('Cannot draw %0.f non-overlapping ensemble members. Use a smaller ensemble.',nEns);
+    end
+    
     % Make random draws from the ensemble members
     newDraws = randsample( allDraws, nDraw );
     

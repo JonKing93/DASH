@@ -8,6 +8,12 @@ grid = matfile( var.file );
 % sequence elements
 [nState, nSeq] = countVarStateSeq( var );
 
+% Get the collection of all sequences
+[allSeq, siz] = getAllCombIndex( var.seqDex(~var.isState) );
+
+% Subscript to ensemble dimensions
+subSeq = subdim( siz, allSeq );
+
 % Preallocate the variable ensemble
 M = NaN( nState*nSeq, nEns );
 
@@ -21,7 +27,7 @@ for m = 1:nEns
     for s = 1:nSeq
         
         % Get the ensemble indices
-        ic = getEnsLoadIndex( var, ic );
+        ic = getEnsLoadIndex( var, ic, subSeq(s,:), m);
         
         % Load the data
         sM = grid.gridData( ic{:} );
