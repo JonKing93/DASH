@@ -1,5 +1,12 @@
-function[M] = buildEnsemble( design, nEns, overlap )
+function[M, ensMeta] = buildEnsemble( design, nEns, overlap )
 %% Builds an ensemble from a state vector design
+%
+% [M, meta] = buildEnsemble( design, nEns )
+% Builds a state vector ensemble according to a state vector design.
+%
+% [M, meta] = buildEnsemble( design, nEns, overlap )
+% Specifies whether to allow overlapping, non-duplicate ensemble members.
+
 
 % Set default overlap
 if ~exist('overlap','var') || isempty(overlap)
