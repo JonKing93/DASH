@@ -6,7 +6,7 @@ grid = matfile( var.file );
 
 % Get the number of state elements per sequence, and the total number of
 % sequence elements
-[nState, nSeq] = getVarStateSeq( var );
+[nState, nSeq] = countVarStateSeq( var );
 
 % Preallocate the variable ensemble
 M = NaN( nState*nSeq, nEns );

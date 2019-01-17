@@ -1,4 +1,5 @@
 function[nState, varDex] = getStateVarDex( design )
+%% Gets indices of a variable in a state vector
 
 % Record the number of state elements for each variable
 nVar = numel(design.var);
