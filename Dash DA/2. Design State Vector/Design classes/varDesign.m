@@ -10,6 +10,7 @@ classdef varDesign
         % Grid file properties
         file; % File name
         dimID; % Dimensional ordering
+        dimSize; % Dimension size
         name;  % Variable name
         
         % Index properties

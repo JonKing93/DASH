@@ -9,7 +9,7 @@ var = design.var(v);
 d = checkVarDim( var, dim );
 
 % Get file metadata
-[meta, dimID, dimSize] = metaGridfile( var.file );
+meta = metaGridfile( var.file );
 
 % Index must be a vector
 if ~isvector(index)
@@ -18,13 +18,13 @@ end
 
 % Convert 'all' to every dimension index
 if strcmpi(index, 'all')
-    index = 1:dimSize(d);
+    index = 1:var.dimSize(d);
 
 % If the indices are logicals...
 elseif islogical(index)
     
     % Check that they match the dimension size
-    if length(index) ~= dimSize(d)
+    if length(index) ~= var.dimSize(d)
         error('The length of the logical index vector does not match the size of dimension %s in variable %s.', dim, var.name);
     end    
     
@@ -36,7 +36,7 @@ end
 checkIndices(var, d, index);
 
 % Get the metadata for the dimension
-meta = meta.(dimID{d});
+meta = meta.(var.dimID{d});
 
 % Get some state vs ensemble values
 if strcmpi(dimType, 'state')
