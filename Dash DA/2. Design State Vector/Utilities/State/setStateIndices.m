@@ -14,6 +14,11 @@ elseif ~ischar(nanflag) || ~isvector(nanflag) || ~ismember(nanflag, {'omitnan','
     error('nanflag for variable %s is neither ''omitnan'' nor ''includenan''.', var.name);
 end
     
+% Convert indices to column
+if ~iscolumn(index)
+    index = index';
+end
+
 % Set the values
 var.indices{d} = index;
 var.takeMean(d) = takeMean;

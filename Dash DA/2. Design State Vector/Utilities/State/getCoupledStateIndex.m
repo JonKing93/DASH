@@ -6,8 +6,7 @@ function[stateDex] = getCoupledStateIndex( var, dim, meta )
 d = checkVarDim( var, dim );
 
 % Get the metadata for the variable in the correct dimension
-dimMeta = metaGridfile( var.file );
-dimMeta = dimMeta.( var.dimID{d} );
+dimMeta = var.meta.(var.dimID{d});
 
 % Check for repeated metadata
 if numel(unique(dimMeta)) ~= numel(dimMeta)

@@ -1,4 +1,4 @@
-function[design] = addVariable( design, file, name )
+function[design] = addVariable( design, file, varargin )
 %% Add a variable to a state vector design
 %
 % design = addVariable( design, file, name )
@@ -22,25 +22,17 @@ function[design] = addVariable( design, file, name )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% File check, get default name
-meta = metaGridfile(file);
-
- % Get the name if not specified
-if ~exist('name','var')
-    name = meta.var;
-end
+% Initialize the varDesign
+newVar = varDesign(file, varargin{:});   
 
 % Check that the variable is not a repeat
-if ismember(name, design.varName)
+if ismember(newVar.name, design.varName)
     error('Cannot repeat variable names.');
-end
-
-% Initialize the varDesign
-newVar = varDesign(file, name);           
+end        
 
 % Add the variable
 design.var = [design.var; newVar];
-design.varName = [design.varName; {name}];
+design.varName = [design.varName; {newVar.name}];
 
 % Adds coupler indices
 design.isCoupled(end+1,end+1) = false;

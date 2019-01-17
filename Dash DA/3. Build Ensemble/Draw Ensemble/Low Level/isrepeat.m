@@ -12,12 +12,9 @@ function[ir] = isrepeat( A, varargin )
 [~,ia,ic] = unique(A, varargin{:});
 
 % Get the set of all indices
-allIndex = 1:numel(ic);
+allIndex = (1:numel(ic))';
 
 % Get the indices that were not unique
 ir = ~ismember( allIndex, ia );
-
-end
-
 
 end

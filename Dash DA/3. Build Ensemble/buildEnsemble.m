@@ -1,111 +1,53 @@
-function[M] = buildEnsemble( nEns, design )
-%% This is the basic loop that will build the ensemble
+function[M, ensMeta] = buildEnsemble( design, nEns, overlap )
+%% Builds an ensemble from a state vector design
+%
+% [M, meta] = buildEnsemble( design, nEns )
+% Builds a state vector ensemble according to a state vector design.
+%
+% [M, meta] = buildEnsemble( design, nEns, overlap )
+% Specifies whether to allow overlapping, non-duplicate ensemble members.
 
-% Get the state variable indices for each variable
-[varCell, nEls] = getVariableIndices( design );
-nState = sum(nEls);
-nVar = numel( design.varDesign );
+
+% Set default overlap
+if ~exist('overlap','var') || isempty(overlap)
+    overlap = false;
+end
+
+% Get the set of coupled variables
+varSets = getCoupledVars( design );
+
+% Assign the ensemble indices for each set
+for s = 1:numel(varSets)
+    design.var(varSets{s}) = assignEnsIndices( design.var(varSets{s}), nEns, overlap );
+end
+
+% Get the size of a final state vector
+[nState, varDex] = getStateVarDex( design );
+nState = sum(nState);
+
+% Create the metadata container
+ensMeta = createEnsembleMeta( design, nState, varDex );
 
 % Preallocate the ensemble
-M = NaN( nState, nEns ); 
+M = NaN(nState, nEns);
 
 % For each variable
-for v = 1:nVar
-
-    % Get the variable design
-    var = design.varDesign(v);
-    nDim = numel( var.dimID );
+for v = 1:numel(design.var)
     
-    % Get a read-only matfile
-    grid = matfile( var.file );
-
-    % Get an index cell to use for loading fixed indices
-    [ic, ix] = getFixedIndexCell( var.fixDex, var.fixed );
+    % Create an index cell for loading from the gridfile
+    nDim = numel(design.var(v).dimID);
+    ic = repmat( {}, [1, nDim]);
     
-    % Get the metadata for fixed indices
+    % Also create an index cell for trimming unequally spaced indices
+    ix = repmat( {':'}, [1, nDim]);
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-    % Select ensemble members
-    ensMember = drawEnsembleMembers( nEns, var.ensDex, overlap );
-    
-    % Get the sequence array
-    seqArray = buildSequenceArray( var.fixed, var.seqDex );
-    
-    % Preallocate a full sequence.
-    Mseq = NaN( nFixed, numel(seqArray) );
-    
-    % For each ensemble member
-    for m = 1:nEns
-        
-        % Set some switches
-        runLoop = 2000;
-        redraw = -1;
-    
-        % Try ensemble members until one is found without NaN elements.
-        while redraw
-            
-            % Time out error
-            if ~runLoop
-                error('Could not select non-NaN state vector in the allotted time.');
-            end
-            runLoop = runLoop-1;
-            
-            % If there was a NaN element
-            if redraw>0
-                % Draw a new ensemble member
-                ensMember(m,:) = drawEnsembleMembers( 1, var.ensDex, overlap, [ensMember(1:m-1,:); ensMember(m+1:end,:)] );
-            end
-            
-            % For each sequence
-            for s = 1:max(seqArray)
-            
-                % Get the index of the current sequence for each dimension
-                currSeq = getCurrSequence( var.fixed, seqArray, s );
-            
-                % Get the load indices for each ensemble variable
-                for d = 1:nDim
-                    if ~var.fixed
-                        ic{d} = ensMember(m,d) + var.seqDex{d}(currSeq(d)) + var.meanDex{d};
-                    end
-                end
-
-                % Do the initial load from the .mat file
-                Mcurr = grid.gridData( ic{:} );
-
-                % Restrict any fixed indices that were not equally spaced
-                Mcurr = Mcurr( ix{:} );
-
-                % Take any means
-                for d = 1:nDim
-                    if var.takeMean(d)
-                        Mcurr = mean( Mcurr, d, var.nanflag{d} );
-                    end
-                end
-                
-                % Check for unallowed values
-                if any( isnan(Mcurr(:)) | iscomplex(Mcurr(:)) | isinf(Mcurr(:)) )
-                    redraw = 1;
-                    break;
-                end
-
-                % Add to the collection of sequences
-                Mseq(:,s) = Mcurr(:);
-            end 
-        end
-
-        % Add the full sequence to the ensemble as a state vector in the
-        % indices for the variable.
-        M( varCell{v}, m ) = Mseq(:);
+    % Get the load and trim indices for each dimension
+    for d = 1:nDim
+        [ic{d}, ix{d}] = getLoadTrimIndex( design.var(v), d );
     end
+        
+    % Build the ensemble for the variable
+    M(varDex{v}, :) = buildVarEnsemble( design.var(v), nEns, ic, ix );
 end
 
 end

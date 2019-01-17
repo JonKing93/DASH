@@ -5,8 +5,7 @@ function[trimDex] = trimEnsemble( var, dim, index, seq, mean )
 d = checkVarDim(var, dim);
 
 % Get the data size
-[~,~,dimSize] = metaGridfile( var.file );
-dimSize = dimSize(d);
+dimSize = var.dimSize(d);
 
 % Get the sequence size
 seqSize = max(seq) + max(mean);

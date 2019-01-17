@@ -39,8 +39,8 @@ template = design.var(xv);
 yv = checkDesignVar(design, var);
 var = design.var(yv);
 
-% Get the X metadata
-xmeta = metaGridfile(template.file);
+% Get the x metadata
+xmeta = template.meta;
 
 % For each dimension of X
 for d = 1:numel(template.dimID)

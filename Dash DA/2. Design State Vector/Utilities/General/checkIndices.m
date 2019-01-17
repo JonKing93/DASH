@@ -2,8 +2,7 @@ function[] = checkIndices(var, d, index)
 %% Low level error checking for indices for a dimension.
 
 % Get the size of the data
-[~,dimID,dimSize] = metaGridfile( var.file );
-dimSize = dimSize(d);
+dimSize = var.dimSize(d);
 
 % Indices cannot be empty
 if isempty( index )
