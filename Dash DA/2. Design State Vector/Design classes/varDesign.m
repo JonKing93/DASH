@@ -36,8 +36,9 @@ classdef varDesign
             obj.file = file;
             
             % Get the dimID
-            [meta, dimID, gridSize] = metaGridfile( file );
+            [~, dimID, dimSize] = metaGridfile( file );
             obj.dimID = dimID;
+            obj.dimSize = dimSize;
             
             % Get the name
             obj.name = name;
@@ -60,7 +61,7 @@ classdef varDesign
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to 0.            
             for d = 1:nDim
-                obj.indices{d} = 1:gridSize(d);
+                obj.indices{d} = 1:dimSize(d);
                 obj.nanflag{d} = 'includenan';
                 obj.seqDex{d} = 0;
                 obj.meanDex{d} = 0;
