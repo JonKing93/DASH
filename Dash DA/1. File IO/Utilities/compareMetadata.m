@@ -41,7 +41,7 @@ end
 [~, var] = getKnownIDs;
 if ~isfield(meta, var)
     error('The new metadata does not contain the ''%s'' field', var);
-elseif ~isequal( oldMeta.var, meta.var )
+elseif ~isequal( oldMeta.(var), meta.(var) )
     error('The metadata ''var'' field does not match the existing file.');
 end
 
