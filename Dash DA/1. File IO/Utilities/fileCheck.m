@@ -19,6 +19,8 @@ function[m] = fileCheck( file, readOnly )
 % Check that the file is a .mat file
 if isstring(file)
     file = char(file);
+elseif ~ischar(file) || ~isvector(file)
+    error('File name must be a character vector.');
 end
 if ~strcmpi( file(end-3:end), '.mat' )
     error('File must be a .mat file.');
