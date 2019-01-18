@@ -43,7 +43,7 @@ if numel(gridDims) < minDim
 end
 
 % Get the known dimension IDs
-knownID = getKnownIDs;
+[knownID, var] = getKnownIDs;
 
 % Permute the knownIDs to match the data ordering
 permDex = getPermutation( knownID, gridDims, knownID );
@@ -58,17 +58,29 @@ gridData = permute( gridData, permDex );
 dimID = dimID(permDex);
 
 % Error check the metadata
-if any( ~isfield(meta, [dimID, 'var']) )
+if any( ~isfield(meta, [dimID, var]) )
     error('Metadata does not contain all required fields.');
-elseif ~( (isstring(meta.var) && isscalar(meta.var)) || (ischar(meta.var) && isvector(meta.var)) )
-    error('The ''var'' field of the metadata must be a string ID.');
+elseif ~( (isstring(meta.(var)) && isscalar(meta.(var))) || (ischar(meta.(var)) && isvector(meta.(var))) )
+    error('The %s field of the metadata must be a string ID.', var);
 end
+
+% Convert all metadata to cell arrays
 for d = 1:numel(dimID)        
     if ~isvector( meta.(dimID{d}) )
         error('Metadata field %s must be a vector.', dimID{d});
     elseif length( meta.(dimID{d}) ) ~= sData(d)
         error('Metadata for %s does not match the size of the dimension in the gridded data.', dimID{d});
     end
+    
+    % Convert all metadata to column arrays
+    if isrow( meta.(dimID{d}) )
+        meta.(dimID{d}) = meta.(dimID{d})';
+    end
+    
+    % Convert non-cells to cells
+    if ~iscell( meta.(dimID{d}) )
+        meta.(dimID{d}) = num2cell( meta.(dimID{d}) );
+    end 
 end
 
 % Get the size of the gridded data

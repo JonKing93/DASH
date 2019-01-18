@@ -1,5 +1,6 @@
-function[knownID] = getKnownIDs
+function[dimID, varName] = getKnownIDs
 
-knownID = {'lat','lon','time','lev','run'};
+dimID = {'lat','lon','time','lev','run'};
+varName = 'var';
 
 end

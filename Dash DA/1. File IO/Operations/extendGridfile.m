@@ -75,8 +75,14 @@ if sum(nAdd>0) > 1
 elseif ~isvector(meta) || length(meta)~=nAdd(nAdd>0)
     error(['The extended metadata must be a vector the length of the number of new indices.',...
            newline, 'This includes indices with unspecified data.'] );
-elseif ~isequal( class(oldMeta.(dimID{exDim})), class(meta) )
-    error('The new metadata is a different class than the field in the existing metadata.');
+end
+
+% Convert new metadata to a cell column
+if isrow(meta)
+    meta = meta';
+end
+if ~iscell(meta)
+    meta = num2cell(meta);
 end
 
 % Get the indices of any fill values
