@@ -44,7 +44,8 @@ classdef varDesign
             
             % Get the name
             if ~exist('name','var')
-                name = meta.var;
+                [~,var] = getKnownIDs;
+                name = meta.(var);
             end
             obj.name = name;
                 

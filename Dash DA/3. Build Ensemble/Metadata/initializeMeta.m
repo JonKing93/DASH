@@ -13,7 +13,8 @@ for v = 1:numel(design.var)
 end
 
 % Add the variable name as metadata
-dimID = ['var', dimID];
+[~,var] = getKnownIDs;
+dimID = [var, dimID];
 
 % Create an input cell for the metadata structure
 inArgs = cell(numel(dimID)*2,1);
