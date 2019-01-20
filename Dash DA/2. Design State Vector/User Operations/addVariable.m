@@ -40,4 +40,11 @@ design.coupleState(end+1,end+1) = false;
 design.coupleSeq(end+1,end+1) = false;
 design.coupleMean(end+1,end+1) = false;
 
+% Revert to logical
+if numel(design.var)==1
+    design.isCoupled = logical(design.isCoupled);
+    design.coupleState = logical(design.coupleState);
+    design.coupleSeq = logical(design.coupleSeq);
+    design.coupleMean = logical(design.coupleMean);
+end
 end
