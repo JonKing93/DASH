@@ -29,6 +29,11 @@ function[design] = editDesign( design, var, dim, dimType, index, varargin )
 % design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'nanflag', flag)
 % Specifies how to treat NaN elements in a mean.
 %
+% design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'overlap', overlap )
+% Specifies whether the variable (and coupled variables) permit or prohibit
+% overlapping, non-duplicate sequences in the ensemble. By default,
+% overlapping sequences are prohibited. 
+%
 % ----- Inputs -----
 %
 % design: A state vector design
@@ -39,6 +44,7 @@ function[design] = editDesign( design, var, dim, dimType, index, varargin )
 %
 % stateIndex: A list of state indices. May use logical or linear indices.
 %      If the string 'all', then all indices in the dimension are selected.
+%      If NaN or [], does not alter the current indices.
 %
 % ensIndex: A list of ensemble indices. May use logical or linear indices.
 %      If the string 'all', then all indices in the dimension are selected. 
@@ -53,6 +59,9 @@ function[design] = editDesign( design, var, dim, dimType, index, varargin )
 % flag: A string flag specifying how to treat NaN elements in means.
 %      'includenan' (Default): Include NaN values.
 %      'omitnan': Remove NaN values before taking means.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Use all indices if unspecified
 if ~exist('index','var')
