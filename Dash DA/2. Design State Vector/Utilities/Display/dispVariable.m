@@ -19,18 +19,18 @@ if any( d.isCoupled(v,:) )
 end
 
 % Synced Variables
-if any(d.coupleMean(v,:)) || any(d.coupleState(v,:)) || any(d.coupleSeq(v,:))
+if any(d.syncMean(v,:)) || any(d.syncState(v,:)) || any(d.syncSeq(v,:))
     fprintf('\t\tSynced Variables:\n');
     
     if any(d.coupleState(v,:))
         fprintf('\t\t\tstate:    ');
-        disp( d.varName( d.coupleState(v,:) )' );
+        disp( d.varName( d.syncState(v,:) )' );
         fprintf('\b');
     end
     
     if any(d.coupleSeq(v,:))
         fprintf('\t\t\tsequence: ');
-        disp( d.varName( d.coupleSeq(v,:))');
+        disp( d.varName( d.syncSeq(v,:))');
         fprintf('\b');
     end
     

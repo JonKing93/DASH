@@ -9,4 +9,8 @@ end
 if any(~ismem)
     error('Variable is not in the state design.', var(find(~ismem,1)));
 end
+
+% Convert to column
+varDex = varDex(:);
+
 end

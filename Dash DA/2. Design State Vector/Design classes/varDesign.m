@@ -38,15 +38,21 @@ classdef varDesign
             
             % Get the dimID
             [meta, dimID, dimSize] = metaGridfile( file );
+            
+            % Ensure that the gridfile contains all known IDs
+            [allID] = getKnownIDs;
+            if any(~ismember(allID, dimID))
+                missing = allID{ find(~ismember(allID, dimID),1) };
+                error(['The gridfile %s is missing the dimension %s.\n',...
+                       'The function getKnownIDs.m may have been edited after the gridfile was created.'], file, missing);
+            end
+                
+            % Set metadata
             obj.dimID = dimID;
             obj.dimSize = dimSize;
             obj.meta = meta;
             
             % Get the name
-            if ~exist('name','var')
-                [~,var] = getKnownIDs;
-                name = meta.(var);
-            end
             obj.name = name;
                 
             % Get the number of dimensions

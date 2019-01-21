@@ -16,6 +16,10 @@ end
 % Convert 'all' to every dimension index
 if strcmpi(index, 'all')
     index = 1:var.dimSize(d);
+    
+% For [], leave as current setting
+elseif isempty(index)
+    index = var.indices{d};
 
 % If the indices are logicals...
 elseif islogical(index)
@@ -37,7 +41,7 @@ meta = var.meta.(var.dimID{d});
 
 % Get some state vs ensemble values
 if strcmpi(dimType, 'state')
-    field = 'coupleState';
+    field = 'syncState';
     fromTo = {'ensemble','state'};
     flip = ~var.isState(d);
     uncoup = 'ens';

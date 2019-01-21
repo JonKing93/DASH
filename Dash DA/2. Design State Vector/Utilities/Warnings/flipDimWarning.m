@@ -7,16 +7,8 @@ fprintf(['but it is coupled to the %s indices of the following variables:', newl
 fprintf(['%s',newline], d.varName{coupled});
 fprintf(newline)
 
-yn = input( sprintf('Continuing will uncouple %s from these variables. Do you want to continue? (yes/no): ', ...
-                     var.name), 's');
-                 
-while ~ismember(yn, {'y','n','Y','N','yes','no','YES','NO','Yes','No'})
-    yn = input('Unrecognized input. Do you want to continue? (yes/no): ','s');
-end
-
-if ~yn
-    error('Aborting dimension conversion.');
-end
+fprintf('Continuing will uncouple %s from these variables.\n', var.name);
+queryContinue('dimension conversion');
 
 end
 

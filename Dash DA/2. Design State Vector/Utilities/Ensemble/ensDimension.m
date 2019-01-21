@@ -33,7 +33,7 @@ for c = 1:nCoup
     vc = coupled(c);
     
     % Get the indices with matching metadata
-    [iy, ix] = getCoupledEnsIndex( d.var(vc), dim, meta );
+    [iy, ix] = getMatchingMetaDex( d.var(vc), dim, meta, false );
     
     % Set the values in the index array
     ensDex(ix,c+1) = iy;
