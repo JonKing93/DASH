@@ -54,7 +54,6 @@ design.syncMean(end+1,end+1) = false;
 
 % Mark the default coupling choice for the variable
 design.defCouple(end+1) = couple;
-design.overlap(end+1) = false;
 
 % Initialize the iscoupled field
 design.isCoupled(end+1,end+1) = false;
@@ -91,8 +90,15 @@ if couple
             % Flip the isState toggle in the new variable
             design.var(end).isState(dim) = false;
             
+            % Get the overlap value
+            design.var(end).overlap(dim) = X.overlap(d);
+            
             % Notify user
-            fprintf('\tConverting %s to an ensemble dimension.\n', X.dimID{ensDim(d)} );
+            overStr = '';
+            if X.overlap(d)
+                overStr = ' and enabling overlap';
+            end
+            fprintf('\tConverting %s to an ensemble dimension%s.\n', X.dimID{ensDim(d)}, overStr );
         end
     end
 end

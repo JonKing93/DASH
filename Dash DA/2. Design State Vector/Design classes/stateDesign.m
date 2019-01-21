@@ -19,7 +19,6 @@ classdef stateDesign
         
         % Coupler properties
         isCoupled;  % Whether ensemble indices are synced.
-        overlap;    % Whether the variable permits overlapping, non-duplicate sequences
         defCouple;  % Whether the variable should be coupled by default
         
         % Synced indices
@@ -36,7 +35,6 @@ classdef stateDesign
             
             % Initialize logical arrays as logical
             obj.isCoupled = logical([]);
-            obj.overlap = logical([]);
             obj.defCouple = logical([]);
             
             obj.syncState = logical([]);

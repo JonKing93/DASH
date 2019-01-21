@@ -27,6 +27,9 @@ classdef varDesign
         dimSet;  % Whether the dimension was previously set
         isState; % Whether a dimension is a state dimension.
         ensMeta; % The metadata value for ensemble dimensions
+        
+        % Coupler property
+        overlap; % Whether an ensemble dimension permits non-duplicate overlapping sequences
     end
         
     methods
@@ -69,6 +72,8 @@ classdef varDesign
             obj.dimSet = false(nDim,1);
             obj.isState = true(nDim,1);
             obj.ensMeta = cell(nDim,1);
+            
+            obj.overlap = false(nDim,1);
             
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to 0.            

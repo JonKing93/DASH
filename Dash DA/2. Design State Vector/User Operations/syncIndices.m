@@ -33,6 +33,9 @@ for v = 1:numel(Y)
             
             % Set the state indices
             design = stateDimension( design, Y(v).name, X.dimID{d}, index, takeMean, nanflag ); 
+            
+            % Mark as coupled
+            design = markSynced( design, v, 'syncState', nowarn );
         
         % If an ensemble dimension and syncing seq or mean
         elseif (seq || mean) && ~X.isState(d)
@@ -43,35 +46,20 @@ for v = 1:numel(Y)
             % Set synced ensemble properties
             design = ensDimension( design, Y(v).name, X.dimID{d}, [], seqDex, meanDex, nanflag, X.ensMeta{d} );
             
-            % If copying metadata is allowed and both seq and mean are synced
-            if ~nocopy && (seq || design.syncSeq(yv(v),xv)) && (mean || design.syncMean(yv(v),xv)) && 
+            % Mark as synced
+            if seq
+                design = markSynced( design, v, 'syncSeq', nowarn);
+            end
+            if mean
+                design = markSynced( design, v, 'syncMean', nowarn );
+            end
             
-                % Get the dimension index
-                dim = checkVarDim( Y(v), X.dimID{d} );
-                
-                % If ensMeta is empty, copy from the template variable
-                if isempty( Y(v).ensMeta(dim) )
-                    Y(v).ensMeta(dim) = X.ensMeta(d);
-                    fprintf('%s\tCopying ensMeta for %s from variable %s\n', notify, X.dimID{d}, X.name);
-                    notify = '';
-                end
+            % Copy metadata if appropriate
+            if ~nocopy 
+                design = checkCopyMeta( design, Y(v).name, X.name, X.dimID{d} );
             end
         end
     end
-end
-
-% Get the set of all synced vars
-v = [xv;yv];
-
-% Mark whatever was synced
-if state
-    design = markSynced( design, v, 'syncState', nowarn );
-end
-if seq
-    design = markSynced( design, v, 'syncSeq', nowarn);
-end
-if mean
-    design = markSynced( design, v, 'syncMean', nowarn );
 end
 
 end

@@ -81,7 +81,7 @@ if strcmpi(dimType, 'state')
 elseif strcmpi(dimType, 'ens')
     
     % Parse inputs
-    [seq, mean, nanflag, ensMeta] = parseInputs( varargin, {'seq','mean','nanflag','meta'}, ...
+    [seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, {'seq','mean','nanflag','meta'}, ...
                                  {0,0,'includenan',NaN}, {{},{},{'omitnan','includenan'},{}} );
     
     % Edit ensemble dimension
