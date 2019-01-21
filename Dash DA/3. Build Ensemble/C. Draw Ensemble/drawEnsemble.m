@@ -26,7 +26,7 @@ nDraw = nEns;
 % Initialize while loop toggles
 timeOut = 1000;
 
-% Until are the draws are made...
+% Until all the draws are made...
 while nDraw > 0
     
     % If the method timed out, ask the user to continue

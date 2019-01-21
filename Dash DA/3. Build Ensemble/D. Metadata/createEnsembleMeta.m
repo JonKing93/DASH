@@ -16,19 +16,34 @@ for v = 1:numel(design.var)
     % Get the set of dimensionally subscripted state indices
     stateDim = var.isState;
     [combDex, siz] = getAllCombIndex( var.indices(stateDim) );
-    subState = subdim(siz, combDex);    
-    
-    % Replicate of the set of sequence elements
-    [~,nSeq] = countVarStateSeq(var);
+    subState = subdim(siz, combDex);
+
+    % Get dimensionally subscripted indices for each sequence element
+    [combDex, siz] = getAllCombIndex( var.seqDex(~stateDim) );
+    subSeq = subdim(siz, combDex);
+
+    % Get the number of state and sequence elements
+    nState = size(subState, 1);
+    [nSeq, nDim] = size(subSeq);
+
+    % Replicate the state indices over each sequence element
     subState = repmat(subState, [nSeq,1]);
+
+    % Replicate the sequence indices over each state element
+    subSeq = repmat( subSeq(:)', [nState,1] );
+    subSeq = reshape( subSeq(:), [nState*nSeq, nDim]);
     
     % For each dimension
     k = 1;
+    j = 1;
     for d = 1:numel(var.dimID)
         
-        % If an ensemble dimension, use the value in ensMeta
+        % If an ensemble dimension, use the sequence values in ensMeta
         if ~var.isState(d)
-            meta.(var.dimID{d})(varDex{v}) = var.ensMeta(d);
+
+            % Get the ensemble metadata for each sequence element
+            meta.(var.dimID{d})(varDex{v}) = var.ensMeta{d}(subSeq(:,j));
+            j = j+1;
         
         % If a state dimension...
         else
@@ -44,7 +59,7 @@ for v = 1:numel(design.var)
                 varMeta = num2cell(varMeta);
             end
             
-            % Add the ensemble metadata
+            % Add to the ensemble metadata
             meta.(var.dimID{d})(varDex{v}) = varMeta;
         end
     end
