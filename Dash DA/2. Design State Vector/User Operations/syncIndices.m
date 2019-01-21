@@ -7,6 +7,13 @@ function[design] = syncIndices( design, vars, template, varargin )
 % Parse the inputs
 [state, seq, mean, nowarn, nocopy] = parseInputs( varargin, {'state','seq','mean','nowarn','nocopy'}, {false, false, false, false, false}, {'b','b','b','b','b'} );
 
+% If neither state, seq, nor mean were specified, then sync everything
+if ~state && ~seq && ~mean
+    state = true;
+    seq = true;
+    mean = true;
+end
+
 % Get the template variable and synced variables
 xv = checkDesignVar( design, template );
 X = design.var(xv);
@@ -16,9 +23,6 @@ Y = design.var(yv);
 
 % For each sync variable
 for v = 1:numel(Y)
-    
-    % An alarm to notify the user if metadata is being copied.
-    notify = sprintf('Variable %s: \n', Y(v).name);
     
     % For each template dimension
     for d = 1:numel(X.dimID)
@@ -35,7 +39,7 @@ for v = 1:numel(Y)
             design = stateDimension( design, Y(v).name, X.dimID{d}, index, takeMean, nanflag ); 
             
             % Mark as coupled
-            design = markSynced( design, v, 'syncState', nowarn );
+            design = markSynced( design, v, 'syncState', true, nowarn );
         
         % If an ensemble dimension and syncing seq or mean
         elseif (seq || mean) && ~X.isState(d)
@@ -48,10 +52,10 @@ for v = 1:numel(Y)
             
             % Mark as synced
             if seq
-                design = markSynced( design, v, 'syncSeq', nowarn);
+                design = markSynced( design, v, 'syncSeq', true, nowarn);
             end
             if mean
-                design = markSynced( design, v, 'syncMean', nowarn );
+                design = markSynced( design, v, 'syncMean', true, nowarn );
             end
             
             % Copy metadata if appropriate

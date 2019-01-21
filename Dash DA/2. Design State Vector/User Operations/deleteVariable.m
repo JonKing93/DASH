@@ -33,6 +33,5 @@ end
 
 % Delete default couple and overlap
 design.defCouple(v) = [];
-design.overlap(v) = [];
 
 end

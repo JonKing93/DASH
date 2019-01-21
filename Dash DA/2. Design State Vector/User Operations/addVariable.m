@@ -64,42 +64,9 @@ if couple
     % Get the indices of variables that are coupled by default
     v = find( design.defCouple )';
     
-    % If there are other coupled variables
-    if numel(v)>1
-    
-        % Mark the variables as coupled
-        design = markSynced(design, v, 'isCoupled', true);
-    
-        % Get one of the variables as a template for coupling ensemble
-        % indices.
-        X = design.var(v(1));
-        
-        % Get the ensemble dimensions
-        ensDim = find( ~X.isState );
-    
-        % For each ensemble dimension
-        for d = 1:numel(ensDim)
-            % Notify user of coupling.
-            if d == 1
-                fprintf('Coupling variable %s: \n', design.varName{end});
-            end
-            
-            % Get the index in the new variable
-            dim = checkVarDim( design.var(end), X.dimID{ensDim(d)} );
-            
-            % Flip the isState toggle in the new variable
-            design.var(end).isState(dim) = false;
-            
-            % Get the overlap value
-            design.var(end).overlap(dim) = X.overlap(d);
-            
-            % Notify user
-            overStr = '';
-            if X.overlap(d)
-                overStr = ' and enabling overlap';
-            end
-            fprintf('\tConverting %s to an ensemble dimension%s.\n', X.dimID{ensDim(d)}, overStr );
-        end
+    % If there are other variables, couple
+    if numel(v) > 1
+        design = coupleVariables( design, design.varName(v(2:end)), design.varName(v(1)), 'nowarn' );
     end
 end
 

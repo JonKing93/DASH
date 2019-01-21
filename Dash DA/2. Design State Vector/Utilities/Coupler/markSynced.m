@@ -1,4 +1,4 @@
-function[design] = markSynced( design, v, field, nowarn )
+function[design, v] = markSynced( design, v, field, tf, nowarn )
 %% Marks synced indices for variables in a state vector design.
 %
 % design = markSynced( design, v, field, nowarn )
@@ -7,36 +7,42 @@ function[design] = markSynced( design, v, field, nowarn )
 % 
 % design: A state vector design.
 %
-% xv: The index of the template variable in the design
+% ----- Outputs -----
 %
-% yv: The index of the synced variables in the design.
-%
-% syncState / syncSeq / syncMean: Logical for whether the indices are synced.
+% v: The full set of synced variables
 
-% Get all previously synced variables
-prevSync = design.(field)(v,:);
-[~,prevSync] = ind2sub( size(design.(field)), find(prevSync) );
+% Error check
+if ~islogical(tf) || ~isscalar(tf)
+    error('tf must be a logical scalar.');
+end
+ 
+% If syncing
+if tf
+    % Get all previously synced variables
+    prevSync = design.(field)(v,:);
+    [~,prevSync] = ind2sub( size(design.(field)), find(prevSync) );
 
-% Get previously synced variables not in the current list
-nv = prevSync( ~ismember(prevSync,v) );
+    % Get previously synced variables not in the current list
+    nv = prevSync( ~ismember(prevSync,v) );
 
-% Notify user that these variables will also be synced
-if ~nowarn && ~isempty(nv)
-    prevSyncWarning( design.varName(nv), field );
+    % Notify user that these variables will also be synced
+    if ~nowarn && ~isempty(nv)
+        prevSyncWarning( design.varName(nv), field );
+    end
+
+    % Get the full set of synced variables
+    v = unique([v;nv]);
 end
 
-% Get the full set of synced variables
-v = unique([v;nv]);
-
-% For each synced variable...
+% For each variable...
 for sv = 1:numel(v)
     
     % Get the other variables
-    otherVar = [1:sv-1, sv+1:numel(v)];
+    otherVar = v([1:sv-1, sv+1:numel(v)]);
     
     % Mark as synced
-    design.(field)(sv, otherVar) = true;
-    design.(field)(otherVar, sv) = true;
+    design.(field)(v(sv), otherVar) = tf;
+    design.(field)(otherVar, v(sv)) = tf;
 end
 
 end
