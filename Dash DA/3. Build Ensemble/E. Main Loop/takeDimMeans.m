@@ -1,14 +1,14 @@
-function[sM] = takeDimMeans(sM, takeMean)
+function[sM] = takeDimMeans(sM, takeMean, nanflag)
 
 % Get the mean dimensions
 meanDim = find(takeMean);
-nDim = numel(meanDim);
+nanflag = nanflag(meanDim);
 
 % For each dimension
-for d = 1:nDim
+for m = 1:numel(meanDim)
     
     % Take the mean
-    sM = mean( sM, meanDim(d) );
+    sM = mean( sM, meanDim(m), nanflag{m} );
 end
 
 end

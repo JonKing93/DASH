@@ -17,7 +17,7 @@ end
 
 %% Metadata
 
-% Get the size of a final state vector
+% Get the size of a final state vector. Get an index for each variable.
 [nState, varDex] = getStateVarDex( design );
 nState = sum(nState);
 
@@ -34,18 +34,18 @@ for v = 1:numel(design.var)
     
     % Create an index cell for loading from the gridfile
     nDim = numel(design.var(v).dimID);
-    ic = repmat( {}, [1, nDim]);
+    iLoad = repmat( {}, [1, nDim]);
     
     % Also create an index cell for trimming unequally spaced indices
-    ix = repmat( {':'}, [1, nDim]);
+    iTrim = repmat( {':'}, [1, nDim]);
     
     % Get the load and trim indices for each dimension
     for d = 1:nDim
-        [ic{d}, ix{d}] = getLoadTrimIndex( design.var(v), d );
+        [iLoad{d}, iTrim{d}] = getLoadTrimIndex( design.var(v), d );
     end
         
     % Build the ensemble for the variable
-    M(varDex{v}, :) = buildVarEnsemble( design.var(v), nEns, ic, ix );
+    M(varDex{v}, :) = buildVarEnsemble( design.var(v), nEns, iLoad, iTrim );
 end
 
 end

@@ -1,4 +1,4 @@
-function[M] = buildVarEnsemble(var, nEns, ic, ix)
+function[M] = buildVarEnsemble(var, nEns, iLoad, iTrim)
 %% Builds the ensemble for a single variable
 
 % Get a read-only matfile
@@ -8,10 +8,8 @@ grid = matfile( var.file );
 % sequence elements
 [nState, nSeq] = countVarStateSeq( var );
 
-% Get the collection of all sequences
+% Subscript sequence elements to all dimensions
 [allSeq, siz] = getAllCombIndex( var.seqDex(~var.isState) );
-
-% Subscript to ensemble dimensions
 subSeq = subdim( siz, allSeq );
 
 % Preallocate the variable ensemble
@@ -27,16 +25,16 @@ for m = 1:nEns
     for s = 1:nSeq
         
         % Get the ensemble indices
-        ic = getEnsLoadIndex( var, ic, subSeq(s,:), m);
+        iLoad = getEnsLoadIndex( var, iLoad, subSeq(s,:), m);
         
         % Load the data
-        sM = grid.gridData( ic{:} );
+        sM = grid.gridData( iLoad{:} );
         
         % Trim the data
-        sM = sM( ix{:} );
+        sM = sM( iTrim{:} );
         
         % Take the mean in appropriate dimensions
-        sM = takeDimMeans(sM, var.takeMean);
+        sM = takeDimMeans(sM, var.takeMean, var.nanflag);
         
         % Place as state vector in the full sequence
         seqM( (s-1)*nState+1:s*nState ) = sM(:);
