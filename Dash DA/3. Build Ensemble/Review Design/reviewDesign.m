@@ -12,4 +12,7 @@ for v = 1:nVar
     reviewIndices( design.var(v) );
 end
     
-% Check that coupled/synced toggles are correct.
+% Check that coupled toggles are correct and get the sets of coupled
+% variables
+coupleSet = reviewCoupling( design.isCoupled );
+
