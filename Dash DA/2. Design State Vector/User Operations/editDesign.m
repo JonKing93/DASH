@@ -65,7 +65,7 @@ function[design] = editDesign( design, var, dim, dimType, index, varargin )
 
 % Use all indices if unspecified
 if ~exist('index','var')
-    index = 'all';
+    index = [];
 end
 
 % State dimension
@@ -85,7 +85,7 @@ elseif strcmpi(dimType, 'ens')
                                  {0,0,'includenan',NaN}, {{},{},{'omitnan','includenan'},{}} );
     
     % Edit ensemble dimension
-    design = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta );
+    design = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta, overlap );
 
 % Error
 else

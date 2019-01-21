@@ -45,7 +45,7 @@ for v = 1:numel(Y)
         elseif (seq || mean) && ~X.isState(d)
          
             % Get synced ensemble properties
-            [seqDex, meanDex, nanflag] = getSyncedProperties( X, Y(v), X.dimID{d}, seq, mean );
+            [seqDex, meanDex, nanflag] = getSyncedProperties( X, Y(v), X.dimID{d}, seq, mean, false );
         
             % Set synced ensemble properties
             design = ensDimension( design, Y(v).name, X.dimID{d}, [], seqDex, meanDex, nanflag, X.ensMeta{d} );

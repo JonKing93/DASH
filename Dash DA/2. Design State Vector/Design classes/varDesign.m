@@ -7,11 +7,12 @@ classdef varDesign
     
     % The values needed for each variable.
     properties
+        name;  % Variable name
+        
         % Grid file properties
         file; % File name
         dimID; % Dimensional ordering
         dimSize; % Dimension size
-        name;  % Variable name
         meta; % Metadata
         
         % Index properties
@@ -24,7 +25,6 @@ classdef varDesign
         nanflag;  % How to treat NaN
         
         % State vs Ensemble properties
-        dimSet;  % Whether the dimension was previously set
         isState; % Whether a dimension is a state dimension.
         ensMeta; % The metadata value for ensemble dimensions
         
@@ -69,7 +69,6 @@ classdef varDesign
             obj.takeMean = false(nDim,1);
             obj.nanflag = cell(nDim,1);
             
-            obj.dimSet = false(nDim,1);
             obj.isState = true(nDim,1);
             obj.ensMeta = cell(nDim,1);
             

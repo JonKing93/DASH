@@ -1,4 +1,4 @@
-function[var] = setEnsembleIndices( var, dim, index, seq, mean, nanflag, meta )
+function[var] = setEnsembleIndices( var, dim, index, seq, mean, nanflag, meta, overlap )
 %% Actually sets the ensemble indices for a variable
 
 % Get the dimension index
@@ -46,9 +46,9 @@ var.meanDex{d} = mean;
 var.takeMean(d) = takeMean;
 var.nanflag{d} = nanflag;
 var.ensMeta{d} = meta;
+var.overlap(d) = overlap;
 
 % Set the dimension as an ensemble dimension
 var.isState(d) = false;
-var.dimSet(d) = true;
 
 end

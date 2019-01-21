@@ -1,6 +1,6 @@
-function[seq, mean, nanflag] = getSyncedProperties( var, template, dim, syncSeq, syncMean )
+function[seq, mean, nanflag, varargout] = getSyncedProperties( var, template, dim, syncSeq, syncMean, isCoupled )
 % Returns sequence, mean, and nanflag values for a variable after checking
-% whether it is coupled to a changed variable.
+% whether it is synced to a changed variable.
 %
 % [seq, mean, nanflag] = getSyncedProperties( var, template, dim, syncSeq, syncMean )
 %
@@ -22,6 +22,7 @@ yd = checkVarDim(var,dim);
 seq = var.seqDex{yd};
 mean = var.meanDex{yd};
 nanflag = var.nanflag{yd};
+ensMeta = var.ensMeta{yd};
 
 % If syncing sequences
 if syncSeq
@@ -32,6 +33,11 @@ end
 if syncMean
     mean = template.meanDex{xd};
     nanflag = template.nanflag{xd};
+end
+
+% If both sequence and mean are synced, AND the variables are coupled
+if syncMean && syncSeq && isCoupled
+    ensMeta = template.ensMeta{xd};
 end
 
 end

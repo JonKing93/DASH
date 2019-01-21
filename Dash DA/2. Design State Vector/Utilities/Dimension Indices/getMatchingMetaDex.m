@@ -17,9 +17,9 @@ end
 if numel(dimMeta)==1 && isequaln(meta, dimMeta)
     index = 1;
     
-    % Otherwise, get intersecting value
+% Otherwise, get intersecting value
 else
-    [~, index, ix] = intersect( dimMeta, meta );
+    [~, ix, index] = intersect( meta, dimMeta, 'stable' );
     
     % Throw error if there are no indices
     if isempty(ensDex)
