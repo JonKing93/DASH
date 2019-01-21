@@ -1,4 +1,4 @@
-function[design] = coupler( design, cv )
+function[design] = coupler( design, cv, nEns )
 %
 % cv: Variable indices of the coupled variables
 

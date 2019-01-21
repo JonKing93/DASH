@@ -5,7 +5,7 @@ function[ensDim] = checkOverlap( coupVars )
 ensDim = coupVars(1).dimID( ~coupVars(1).isState );
 
 % Get the master set of overlap permissions
-overlap = coupVars(1).overlap( ~coupVars(1).isState );
+overlap = coupVars(1).overlap;
 
 % For each variable
 for v = 2:numel(coupVars)
@@ -18,17 +18,10 @@ for v = 2:numel(coupVars)
     if any(~ismember(ensDim, currDim)) || any(~ismember(currDim,ensDim))
         error('Coupled variables must have the same ensemble dimensions.');
     end
-    
-    % Get the permutation index mapping the current dimensions to
-    % the master list of ensemble dimensions.
-    [~, ensOrder] = ismember( coupVars(v).dimID, ensDim );
-    
-    % Get the current overlap
-    currOver = coupVars(v).overlap;
-    
-    % Check that the overlap permissions match the master list
-    if ~isequal( overlap, currOver(ensOrder) )
-        error('Coupled variables must have the same overlap permissions.');
+
+    % Check that overlap is the same
+    if ~isequal( overlap, coupVars(v).overlap )
+        error('Coupled variables must have the same overlap permissions.';
     end
 end
 
