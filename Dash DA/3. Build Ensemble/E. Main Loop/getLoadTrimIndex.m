@@ -24,7 +24,7 @@ else
     
     % Load everything on the interval and trim later
     load = min(index):max(index);
-    trim = find( ismember(index, load) );
+    [~, trim] = ismember(index, load);
 end
 
 end

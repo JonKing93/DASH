@@ -24,11 +24,11 @@ for m = 1:nEns
     % For each sequence element
     for s = 1:nSeq
         
-        % Get the ensemble indices
-        iLoad = getEnsLoadIndex( var, iLoad, subSeq(s,:), m);
+        % Get the index cell
+        ic = getEnsLoadIndex( var, iLoad, subSeq(s,:), m);
         
         % Load the data
-        sM = grid.gridData( iLoad{:} );
+        sM = grid.gridData( ic{:} );
         
         % Trim the data
         sM = sM( iTrim{:} );

@@ -13,8 +13,8 @@ nDim = numel(ensDim);
 % For each dimension
 for d = 1:nDim
     
-    % Assign the indices
-    ic{ensDim(d)} = var.indices{ensDim(d)}(m) + var.seqDex{ensDim(d)}(subSeq(d)) + var.meanDex{ensDim(d)};
+    % Assign the indices. (Recall that iLoad is holding the mean indices)
+    ic{ensDim(d)} = var.indices{ensDim(d)}(m) + var.seqDex{ensDim(d)}(subSeq(d)) + ic{ensDim(d)};
 end
 
 end
