@@ -1,4 +1,4 @@
-%% Implements a PSM for UK37
+%% Implements a PSM for UK 37
 classdef ukPSM < PSM
     
     properties
@@ -14,11 +14,11 @@ classdef ukPSM < PSM
     methods
         % Run the PSM
         function[uk] = runPSM( obj, M )
-            uk = UK_forward_model( M, obj.bayes ); 
+            uk = UK_forward_model( M, obj.bayes );
         end
         
         % Get the sample indices
-        function[H] = sampleIndices( ~, ensMeta, sstName, obLat, obLon )
+        function[H] = getStateIndices( ~, ensMeta, sstName, obLat, obLon, time )
         %% Gets the sampling indices within a state vector for an
         % observation using the UK 37 forward model.
         %
@@ -34,27 +34,25 @@ classdef ukPSM < PSM
         %
         % obLon: The longitude of the observation
         
-        % Check that the ensemble metadata has lat and lon fields
-        if ~isfield(ensMeta,'lat') || ~isfield(ensMeta,'lon')
-            error('Ensemble metadata must contain ''lat'' and ''lon'' fields.');
-        end
+        % Ensure there is a variable field and get the indices of the SST
+        % variable. Also check for lat, lon metadata.
+        sstDex = varCheck(ensMeta, sstName);
+        dimCheck(ensMeta,'lat');
+        dimCheck(ensMeta, 'lon');
         
-        % Check that the name is a string
-        if ~(isstring(sstName)&&isscalar(sstName)) && ~(ischar(sstName)&&isvector(sstName))
-            error('sstName must be a string.');
-        end
+        % Specify time requirements
+        if exist('time','var')
+            dimCheck(ensMeta, 'time');
+            
+            % Limit to the specified time value
+            timeDex = 
         
-        % Get the name of the variable field
-        [~,var] = getKnownIDs;
-        
-        % Find the indices of the variable
-        sstDex = find( ismember( ensMeta.(var), sstName ) );
-        
-        % Get the metadata coords
-        stateCoord = [cell2mat(ensMeta.lat(sstDex)), cell2mat(ensMeta.lon(sstDex))];
-        
+        % Get lat and lon for the SST variable
+        lat = cell2mat( ensMeta.lat(sstDex) );
+        lon = cell2mat( ensMeta.lon(sstDex) );
+                
         % Get the closest lat-lon SST coordinate to the site
-        H = samplingMatrix( [obLat, obLon], stateCoord, 'linear' );
+        H = samplingMatrix( [obLat, obLon], [lat, lon], 'linear' );
         
         % Get the location within the entire state vector
         H = sstDex(H);

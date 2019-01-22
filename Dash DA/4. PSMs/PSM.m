@@ -5,10 +5,22 @@ classdef (Abstract) PSM
     methods (Abstract = true)
         
         % This is the basic function used in the dashDA code to run a PSM.
+        % 
+        % ----- Inputs -----
+        %
+        % obj: The PSM
+        %
+        % M: State elements required to run the PSM
+        %
+        % d: The index of the observation being processed.
+        %
+        % H: The sampling indices used to select state elements
+        %
+        % t: The time step being processed in the DA
         Ye = runPSM( obj, M, d, H, t);
 
         % This generates the sampling indices for a site
-        H = sampleIndices( obj, ensMeta );
+        H = getStateIndices( obj, ensMeta );
     end
     
 end
