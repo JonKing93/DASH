@@ -3,7 +3,7 @@ function [uk] = UK_forward_model(ssts, bayes)
 %INPUTS:
 %ssts = N x 1 vector of ssts
 %OUTPUTS:
-%uk = N x 1 ensemble mean estimates of ssts
+%uk = N x 1500 ensemble estimates of ssts
 %
 
 % Convert to column vector
@@ -29,7 +29,6 @@ mean_now=fnval(bs,ssts);
 %draw from the distribution:
 uk=normrnd(mean_now,repmat(sqrt(bayes.tau2),1,length(ssts)));
 
-% Take the ensemble mean
-uk = mean(uk,1);
-
+% Convert N x 1500
+uk = uk';
 end

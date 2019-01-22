@@ -104,7 +104,7 @@ if append
     
     % Use the trivial PSM for the DA. Just going to return the Ye values in
     % the appended state as the PSM output.
-    F = repmat( trivialPSM, nObs, 1);
+    F = repmat( appendPSM, [nObs, 1]);
     
     % Determine the sampling indices for the appended Ye
     H = nState + (1:nObs)';

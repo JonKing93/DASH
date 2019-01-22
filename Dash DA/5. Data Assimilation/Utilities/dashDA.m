@@ -73,7 +73,7 @@ for t = 1:nTime
     for d = 1:nObs
         if ~isnan(tD)
             
-            % Get the state variables required to run the PSM.
+            % Get the state elements required to run the PSM.
             obSites = H{d};
         
             % Run the PSM

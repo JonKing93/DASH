@@ -2,9 +2,6 @@ function[index, ix] = getMatchingMetaDex( var, dim, meta, isState )
 %% This gets indices of a dimensions of a specific variables that match a
 % metadata template.
 
-% Get the dimension index
-d = checkVarDim( var, dim );
-
 % Get the metadata for the variable in the dimension
 dimMeta = var.meta.(dim);
 
@@ -22,7 +19,7 @@ else
     [~, ix, index] = intersect( meta, dimMeta, 'stable' );
     
     % Throw error if there are no indices
-    if isempty(ensDex)
+    if isempty(index)
         error('The %s variable does not have metadata matching any of the template metadata.');
     end
     
