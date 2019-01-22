@@ -1,4 +1,4 @@
-function[ensDim] = checkOverlap( coupVars )
+function[ensDim, overlap] = checkOverlap( coupVars )
 
 % Get the master set of ensemble dimensions from the first variable. These
 % should be identical in all coupled vars.
@@ -21,7 +21,7 @@ for v = 2:numel(coupVars)
 
     % Check that overlap is the same
     if ~isequal( overlap, coupVars(v).overlap )
-        error('Coupled variables must have the same overlap permissions.';
+        error('Coupled variables must have the same overlap permissions.');
     end
 end
 

@@ -11,7 +11,7 @@ dimSize = var.dimSize(d);
 seqSize = max(var.seqDex{d}) + max(var.meanDex{d});
 
 % Get the indices that are too large
-trimDex = (index > dimSize - seqSize); 
+trimDex = (var.indices{d} > dimSize - seqSize); 
 
 % Remove from indices
 var.indices{d}(trimDex) = [];

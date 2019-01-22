@@ -36,8 +36,11 @@ for dim = 1:numel(ensDim)
     % Now assign the overlap indices to each variable
     for k = 1:numel(cv)
         Y = design.var(cv(k));
+        yd = checkVarDim(Y, ensDim{dim});
         
         % Assign the indices
-        design.var(cv(k)).indices{d} = getMatchingMetaDex( Y, ensDim{dim}, allowMeta{dim}, false );
+        design.var(cv(k)).indices{yd} = getMatchingMetaDex( Y, ensDim{dim}, allowMeta{dim}, false );
     end
+end
+
 end

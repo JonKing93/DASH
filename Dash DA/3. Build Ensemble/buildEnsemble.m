@@ -34,7 +34,7 @@ for v = 1:numel(design.var)
     
     % Create an index cell for loading from the gridfile
     nDim = numel(design.var(v).dimID);
-    iLoad = repmat( {}, [1, nDim]);
+    iLoad = repmat( {[]}, [1, nDim]);
     
     % Also create an index cell for trimming unequally spaced indices
     iTrim = repmat( {':'}, [1, nDim]);
