@@ -77,13 +77,8 @@ elseif ~isvector(meta) || length(meta)~=nAdd(nAdd>0)
            newline, 'This includes indices with unspecified data.'] );
 end
 
-% Convert new metadata to a cell column
-if isrow(meta)
-    meta = meta';
-end
-if ~iscell(meta)
-    meta = num2cell(meta);
-end
+% Convert new metadata to a column
+meta = meta(:);
 
 % Get the indices of any fill values
 nAdd = nAdd(nAdd>0);

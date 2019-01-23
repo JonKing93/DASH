@@ -65,13 +65,8 @@ for v = 1:2:numel(varargin)
         error('The size of the %s metadata does not match the size of the dimension in the gridded data.', dimID{index} );
     end
     
-    % Convert to column cell
-    if isrow(value)
-        value = value';
-    end
-    if ~iscell(value)
-        value = num2cell(value);
-    end
+    % Convert to column
+    value = value(:);
     
     % Add the value to the cell
     metaCell{index*2} = value;

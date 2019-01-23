@@ -76,11 +76,6 @@ for d = 1:numel(dimID)
     if isrow( meta.(dimID{d}) )
         meta.(dimID{d}) = meta.(dimID{d})';
     end
-    
-    % Convert non-cells to cells
-    if ~iscell( meta.(dimID{d}) )
-        meta.(dimID{d}) = num2cell( meta.(dimID{d}) );
-    end 
 end
 
 % Get the size of the gridded data
