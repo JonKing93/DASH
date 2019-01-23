@@ -75,12 +75,9 @@ end
 
 % State dimension
 if strcmpi(dimType, 'state')
-    
-    % Parse inputs
-    [index, takeMean, nanflag] = parseInputs( varargin, {'index','mean','nanflag'},{false,'includenan'},{'b',{'omitnan','includenan'}} );
-    
+        
     % Edit state dimension
-    design = stateDimension( design, var, dim, index, takeMean, nanflag );
+    design = stateDimension( design, var, dim, varargin{:} );
     
 % Ensemble dimension
 elseif strcmpi(dimType, 'ens')

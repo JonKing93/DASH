@@ -1,4 +1,4 @@
-function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
+function[design] = stateDimension( design, var, dim, varargin )
 %% Edits a state dimension.
 
 % Parse the inputs
@@ -18,6 +18,7 @@ if isempty(index)
 elseif strcmpi(index, 'all')
     index = 1:design.var(v).dimSize(d);
 end
+checkIndices( design.var(v), d, index);
 
 % Get the value of takeMean
 if isempty(takeMean)
@@ -65,7 +66,7 @@ for k = 1:nVar
         
         % Get the matching indices
         design.var(av(k)).indices{ad} = getMatchingMetaDex( design.var(av(k)), ...
-                                         dim, design.var(v).meta.(dim), true );
+                                         dim, design.var(v).meta.(dim)(index), true );
                                      
         % Set the mean and nanflag values
         design.var(av(k)).nanflag{ad} = nanflag;
