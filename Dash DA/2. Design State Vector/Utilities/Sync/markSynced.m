@@ -16,6 +16,8 @@ if ~islogical(tf) || ~isscalar(tf)
     error('tf must be a logical scalar.');
 end
  
+% Get any variabes with an existing relationship
+
 % If syncing
 if tf
     % Get all previously synced variables
