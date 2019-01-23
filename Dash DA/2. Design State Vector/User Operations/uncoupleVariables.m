@@ -1,4 +1,4 @@
-function[design] = uncoupleVariables( design, vars, varargin )
+function[design] = uncoupleVariables( design, vars, template, varargin )
 %% Uncouples variable indices in a state vector design. Uncoupled variables
 % cannot be synced, so also unsyncs variables.
 %
@@ -35,6 +35,12 @@ xv = checkDesignVar(design, template);
 % Mark as uncoupled and get any secondary coupled variables.
 [design, rv] = unrelateVars( design, v, xv, 'isCoupled', nowarn);
 
+% If the template is a default couple, remove the other variables from the
+% default coupling
+if design.defCouple(xv)
+    design.defCouple(v) = false;
+end
+
 % Uncoupled variables cannot be synced, so unsync from any variables that
 % were uncoupled.
 for k = 1:numel(rv)
@@ -43,6 +49,6 @@ end
 
 % Notify user of uncoupling
 fprintf(['Uncoupled variables ', sprintf('%s, ', design.varName(v)'), ...
-         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n']);
+         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n\n']);
 
 end

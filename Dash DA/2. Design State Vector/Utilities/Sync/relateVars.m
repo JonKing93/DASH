@@ -28,15 +28,15 @@ end
     
 % Get all variables with a positive relationship with the variables
 prevRelate = find( design.(field)(v,:) );
-[~,prevRelate] = ind2sub( size(design.(field)), prevRelate );
-prevRelate = unique(prevRelate);
+[~,prevRelate] = ind2sub( size(design.(field)(v,:)), prevRelate );
+prevRelate = unique(prevRelate,'stable');
 
 % Get secondary variables. (Those with a relationship not in the specified list)
 sv = prevRelate( ~ismember(prevRelate,v) );
 
 % Warn that these will also be altered
 if ~nowarn && ~isempty(sv)
-    prevSyncWarning( design.varName(sv), field );
+    prevSyncWarning( design.varName(v), design.varName(sv), field );
 end
 
 % Get the full set of related variables
@@ -50,8 +50,8 @@ for k = 1:nVar
     otherVar = v([1:k-1, k+1:nVar]);
     
     % Mark the relationship
-    design.(field)(v(sv), otherVar) = true;
-    design.(field)(otherVar, v(sv)) = true;
+    design.(field)(v(k), otherVar) = true;
+    design.(field)(otherVar, v(k)) = true;
 end
     
 end

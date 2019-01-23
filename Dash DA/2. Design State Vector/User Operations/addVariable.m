@@ -31,7 +31,7 @@ nocouple = parseInputs(varargin, {'nocouple'}, {false}, {'b'});
 newVar = varDesign(file, name);   
 
 % Check that the variable is not a repeat
-if ismember(newVar.name, design.varName)
+if ~isempty(design.varName) && ismember(newVar.name, design.varName)
     error('Cannot repeat variable names.');
 end        
 
@@ -43,7 +43,7 @@ design.varName = [design.varName; newVar.name];
 design.isSynced(end+1,end+1) = false;
 
 % Mark the default coupling choice for the variable
-design.defCouple(end+1) = couple;
+design.defCouple(end+1) = ~nocouple;
 
 % Initialize the iscoupled field
 design.isCoupled(end+1,end+1) = false;

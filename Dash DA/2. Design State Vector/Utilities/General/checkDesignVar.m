@@ -9,18 +9,14 @@ if ~isa( design, 'stateDesign') || ~isscalar(design)
 end
 
 % Ensure the variable is a string
-if ischar(var) && isrow(var)
-    var = string(var);
-elseif ~isstring(var)
-    error('var must be a string');
-end
+var = string(var);
 
 % Get the variable location
 [ismem, varDex] = ismember(var, design.varName);
 
 % Check every variable is present
 if any(~ismem)
-    error('Variable %s is not in the ''%s'' state vector design.', var(find(~ismem,1)).name, design.name );
+    error('Variable %s is not in the ''%s'' state vector design.', var(find(~ismem,1)), design.name );
 end
 
 % Convert to column

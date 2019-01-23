@@ -33,7 +33,7 @@ if ~isscalar(xv)
 end
 
 % Get the full set of variable indices
-v = unique([xv; yv]);
+v = unique([xv; yv],'stable');
 
 % Mark the variables as coupled and get any secondary coupled variables.
 [design, v] = relateVars( design, v, 'isCoupled', nowarn);
@@ -45,7 +45,8 @@ ensDim = find( ~design.var(xv).isState );
 for k = 2:numel(v)
     
     % Notify user of coupling
-    fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))' ), '\b\b\n']);
+    fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))' ), '\b\b\n'],...
+        design.varName(v(k)));
     
     % Set the overlap value
     design.var(v(k)).overlap = design.var(xv).overlap;
@@ -69,6 +70,17 @@ for k = 2:numel(v)
             fprintf('\tConverting %s to an ensemble dimension.\n', design.var(xv).dimID{ensDim(d)} );
         end
     end
+    
+    % Set the default coupler status
+    design.defCouple(v(k)) = design.defCouple(xv); 
+    
+    % Coupler notification
+    defStr = 'Enabling';
+    if ~design.defCouple(xv)
+        defStr = 'Disabling';
+    end
+    fprintf('\t%s default coupling.\n\n', defStr);
+    
 end
 
 end

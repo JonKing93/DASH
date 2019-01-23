@@ -8,7 +8,7 @@ function[design] = stateDimension( design, var, dim, varargin )
 v = checkDesignVar( design, var );
 
 % Get the dimension index
-d = checkVarDim( var, dim );
+d = checkVarDim( design.var(v), dim );
 
 %% Get the values to use
 
@@ -17,6 +17,14 @@ if isempty(index)
     index = design.var(v).indices{d};
 elseif strcmpi(index, 'all')
     index = 1:design.var(v).dimSize(d);
+elseif islogical(index)
+    % Must be a vector length of dimSize
+    if ~isvector(index) || numel(index)~=design.var(v).dimSize(d)
+        error('Logical indices must be a vector the length of the dimension size.');
+    end
+    index = find(index(:));
+else % Ensure is column
+    index = index(:);
 end
 checkIndices( design.var(v), d, index);
 
@@ -38,14 +46,14 @@ end
 
 % Get all coupled variables
 av = [find(design.isCoupled(v,:)), v];
-nVar = numel(a);
+nVar = numel(av);
 
 % Get any synced variables
-sv = find( design.isSynced(v,:) );
+sv = [find( design.isSynced(v,:) ), v];
 
 % Notify user if changing from ens to state dimension
-if ~design.var(v).isState(d)
-    flipDimWarning(dim, var, {'ensemble','state'}, design.varName(av));
+if ~design.var(v).isState(d) && numel(av)>1
+    flipDimWarning(dim, var, {'ensemble','state'}, design.varName(av(1:end-1)));
 end
 
 % For each associated variable

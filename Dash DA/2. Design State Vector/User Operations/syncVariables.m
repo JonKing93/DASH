@@ -43,7 +43,7 @@ if ~isscalar(xv)
 end
 
 % Get the full set of variable indices
-v = unique([xv;yv]);
+v = unique([xv;yv],'stable');
 
 % Mark as synced and get any secondary synced variables
 [design, v] = relateVars( design, v, 'isSynced', nowarn );
@@ -72,7 +72,7 @@ for k = 1:numel(Y)
             Y(k).isState(d) = true;
             
             % Get the state indices with matching metadata
-            Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID{dim}, X.meta.(X.dimID{dim})(X.indices{dim}) );
+            Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID{dim}, X.meta.(X.dimID{dim})(X.indices{dim}), true );
             
         % If an ensemble dimension and syncing seq or mean
         else
@@ -93,12 +93,12 @@ for k = 1:numel(Y)
 end
 
 % Notify user
-fprintf(['Syncing variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n']);
+fprintf(['Syncing variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n\n']);
 
 % Save edited variables to design
 design.var(v(2:end)) = Y;
 
 % Couple the variables
-design = coupleVariables(design, design.varName(2:end), design.varName(xv), warnArg{:} );
+design = coupleVariables(design, design.varName(v(2:end)), design.varName(xv), warnArg{:} );
 
 end

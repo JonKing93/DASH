@@ -29,8 +29,8 @@ for k = 1:nVar
     rvCurr = rv( rv~=v(k) );
     
     % Unmark the relationship
-    design.(field)([v, rvCurr]) = false;
-    design.(field)([rvCurr, v]) = false;
+    design.(field)([v(k), rvCurr]) = false;
+    design.(field)([rvCurr, v(k)]) = false;
 end
 
 end

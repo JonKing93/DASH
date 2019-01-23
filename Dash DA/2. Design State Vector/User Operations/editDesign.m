@@ -87,7 +87,7 @@ if strcmpi(dimType, 'state')
 elseif strcmpi(dimType, 'ens')
     
     % Edit ensemble dimension
-    design = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta, overlap );
+    design = ensDimension( design, var, dim, varargin{:} );
 
 % Error
 else

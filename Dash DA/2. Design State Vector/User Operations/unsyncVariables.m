@@ -35,6 +35,6 @@ xv = checkDesignVar(design, template);
 
 % Notify user of uncoupling
 fprintf(['Unsyncing variables ', sprintf('%s, ', design.varName(v)), ...
-         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n']);
+         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n\n']);
 
 end
