@@ -55,7 +55,12 @@ classdef varDesign
             obj.dimSize = dimSize;
             obj.meta = meta;
             
-            % Get the name
+            % Get the name. Convert to string
+            if ischar(name) && isrow(name)
+                name = string(name);
+            elseif ~isstring(name) || ~isscalar(name)
+                error('name must be a string.');
+            end
             obj.name = name;
                 
             % Get the number of dimensions

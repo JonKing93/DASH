@@ -20,11 +20,7 @@ classdef stateDesign
         % Coupler properties
         isCoupled;  % Whether ensemble indices are synced.
         defCouple;  % Whether the variable should be coupled by default
-        
-        % Synced indices
-        syncState;   % Whether state indices are synced
-        syncSeq;   % Whether sequence indices are synced
-        syncMean;  % Whether mean indices are synced
+        isSynced;   % Whether other variables are synced to the variable
     end
     
     methods
@@ -36,10 +32,7 @@ classdef stateDesign
             % Initialize logical arrays as logical
             obj.isCoupled = logical([]);
             obj.defCouple = logical([]);
-            
-            obj.syncState = logical([]);
-            obj.syncSeq = logical([]);
-            obj.syncMean = logical([]);
+            obj.isSynced = logical([]);
         end
     end
 end
