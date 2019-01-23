@@ -1,35 +1,38 @@
-function[design] = editDesign( design, var, dim, dimType, index, varargin )
+function[design] = editDesign( design, var, dim, dimType, varargin )
 %% Edits the indices of a dimension for a variable in a state vector design.
 %
-%
 % STATE DIMENSIONS:
-% design = editDesign( design, var, dim, 'state', stateIndex )
-% Specifies a state indices.
+% design = editDesign( design, var, dim, 'state' )
+% Sets a dimension as a state dimension and selects all indices. If any
+% additional inputs are provided, does not automatically select all indices.
 %
-% design = editDesign( design, var, dim, 'state', stateIndex, 'mean')
-% Specifies state indices over which to take a mean.
+% design = editDesign( design, var, dim, 'state', ...., 'index', stateIndex )
+% Specifies the state indices.
 %
-% design = editDesign( design, var, dim, 'state', stateIndex, 'mean', 'nanflag', flag)
-% Specifies state indices over which to take a mean. Specifies how to treat
-% NaN values in the mean.
+% design = editDesign( design, var, dim, 'state', ..., 'mean', takeMean )
+% Specifies whether to take a mean over the state indices.
+%
+% design = editDesign( design, var, dim, 'state', ..., 'nanflag', nanflag )
+% Specifies how to treat NaN values in a mean.
 %
 % ENSEMBLE DIMENSIONS:
 % design = editDesign( design, var, dim, 'ens' )
-% Specifies a dimension as an ensemble dimension with all indices enabled.
+% Specifies a dimension as an ensemble dimension and selects all indices.
+% If additional inputs are provided, does not automatically select all indices.
 %
-% design = editDesign( design, var, dim, 'ens', ensIndex )
-% Specifies ensemble indices.
+% design = editDesign( design, var, dim, 'ens', ..., 'index', ensIndex )
+% Specifies the ensemble indices.
 %
-% design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'seq', seqIndex )
+% design = editDesign( design, var, dim, 'ens', ..., 'seq', seqIndex )
 % Specifies the sequence indices to use for an ensemble dimension.
 %
-% design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'mean', 'meanIndex' )
+% design = editDesign( design, var, dim, 'ens', ..., 'mean', meanIndex )
 % Specifies the mean indices to use for an ensemble dimension.
 %
-% design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'nanflag', flag)
+% design = editDesign( design, var, dim, 'ens', ..., 'nanflag', flag)
 % Specifies how to treat NaN elements in a mean.
 %
-% design = editDesign( design, var, dim, 'ens', ensIndex, ..., 'overlap', overlap )
+% design = editDesign( design, var, dim, 'ens', ..., 'overlap', overlap )
 % Specifies whether the variable (and coupled variables) permit or prohibit
 % overlapping, non-duplicate sequences in the ensemble. By default,
 % overlapping sequences are prohibited. 
@@ -43,36 +46,38 @@ function[design] = editDesign( design, var, dim, dimType, index, varargin )
 % dim: The name of the dimension to edit
 %
 % stateIndex: A list of state indices. May use logical or linear indices.
-%      If the string 'all', then all indices in the dimension are selected.
-%      If NaN or [], does not alter the current indices.
 %
 % ensIndex: A list of ensemble indices. May use logical or linear indices.
-%      If the string 'all', then all indices in the dimension are selected. 
+%       These are the reference indices used for sequences.
 %
 % seqIndex: A list of sequence indices. These are the number of indices to
-%      add to a reference ensemble index to obtain a sequence member.
+%      add to a reference ensemble index to obtain a sequence element.
 %
-% meanIndex: A list of mean indices. These are the number of indices to add
-%      add to a reference sequence element to use in taking a mean. Must
-%      include the 0 index.
+% meanIndex: A list of mean indices. These are the indices from each
+%       sequence element over which to take a mean. Must include the 0 index.
 %
+% takeMean: A scalar logical indicating whether to take a mean over a state dimension.
+% 
 % flag: A string flag specifying how to treat NaN elements in means.
 %      'includenan' (Default): Include NaN values.
 %      'omitnan': Remove NaN values before taking means.
 %
+% overlap: A scalar logical indicating whether to allow non-duplicate,
+%       overlapping sequences in the ensemble.
+%
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Use all indices if unspecified
-if ~exist('index','var')
-    index = [];
+% Use all indices if no more inputs
+if isempty(varargin)
+    varargin = {'index','all'};
 end
 
 % State dimension
 if strcmpi(dimType, 'state')
     
     % Parse inputs
-    [takeMean, nanflag] = parseInputs( varargin, {'mean','nanflag'},{false,'includenan'},{'b',{'omitnan','includenan'}} );
+    [index, takeMean, nanflag] = parseInputs( varargin, {'index','mean','nanflag'},{false,'includenan'},{'b',{'omitnan','includenan'}} );
     
     % Edit state dimension
     design = stateDimension( design, var, dim, index, takeMean, nanflag );
@@ -81,8 +86,8 @@ if strcmpi(dimType, 'state')
 elseif strcmpi(dimType, 'ens')
     
     % Parse inputs
-    [seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, {'seq','mean','nanflag','meta'}, ...
-                                 {0,0,'includenan',NaN}, {{},{},{'omitnan','includenan'},{}} );
+    [seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, {'seq','mean','nanflag','meta','overlap'}, ...
+                                 {0,0,'includenan',NaN,false}, {{},{},{'omitnan','includenan'},{}} );
     
     % Edit ensemble dimension
     design = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta, overlap );

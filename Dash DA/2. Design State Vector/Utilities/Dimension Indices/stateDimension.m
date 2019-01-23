@@ -1,6 +1,56 @@
 function[design] = stateDimension( design, var, dim, index, takeMean, nanflag )
 %% Edits a state dimension.
 
+% Parse the inputs
+[index, takeMean, nanflag] = parseInputs( varargin, {'index','mean','nanflag'}, {[],[],[]}, {[],[],{'omitnan','includenan'}} );
+
+% Get the variable index
+v = checkDesignVar( design, var );
+
+% Get the dimension index
+d = checkVarDim( var, dim );
+
+%% Get the values to use
+
+% Get the indices to use
+if isempty(index)
+    index = design.var(v).indices{d};
+elseif strcmpi(index, 'all')
+    index = 1:design.var(v).dimSize(d);
+end
+
+% Get the value of takeMean
+if isempty(takeMean)
+    takeMean = design.var(v).takeMean(d);
+end
+if ~islogical(takeMean) || ~isscalar(takeMean)
+    error('takeMean must be a logical scalar.');
+end
+
+% Get the nanflag
+if isempty(nanflag)
+    nanflag = design.var(v).nanflag{d};
+end
+
+
+%% Sync / Couple
+
+% Get any coupled variables
+cv = design.isCoupled(v,:);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 % Setup for the edit. Get indices, metadata, template variable, coupled
 % variables.
 [v, index, d] = setupEdit( design, var, dim, index, 'state' );

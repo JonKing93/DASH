@@ -30,6 +30,10 @@ function[design] = syncVariables( design, vars, template, varargin )
 
 % Parse the inputs
 [nowarn, nocopy] = parseInputs( varargin, {'nowarn','nocopy'}, {false, false}, {'b','b'} );
+warnArg = {};
+if nowarn
+    warnArg = {'nowarn'};
+end
 
 % Get the template variable and synced variables
 yv = unique( checkDesignVar(design, vars) );
@@ -42,7 +46,7 @@ end
 v = unique([xv;yv]);
 
 % Mark as synced and get any secondary synced variables
-[design, v] = relateVars( design, v, 'isSynced', true, nowarn );
+[design, v] = relateVars( design, v, 'isSynced', nowarn );
 
 % Get the template and sync variables
 X = design.var(xv);
@@ -95,10 +99,6 @@ fprintf(['Syncing variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n']);
 design.var(v(2:end)) = Y;
 
 % Couple the variables
-warnArg = {};
-if nowarn
-    warnArg = {'nowarn'};
-end
 design = coupleVariables(design, design.varName(2:end), design.varName(xv), warnArg{:} );
 
 end

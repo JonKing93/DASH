@@ -1,4 +1,4 @@
-function[design] = unsyncVariables( design, vars, varargin )
+function[design] = unsyncVariables( design, vars, template, varargin )
 %% Unsyncs variable indices in a state vector design.
 %
 % unsyncVariables( design, vars )
@@ -14,6 +14,8 @@ function[design] = unsyncVariables( design, vars, varargin )
 %
 % vars: A set of variables to unsync
 %
+% template: The variable from which to unsync
+%
 % ----- Outputs -----
 %
 % design: The updated state vector design.
@@ -26,11 +28,13 @@ nowarn = parseInputs( varargin, {'nowarn'}, {false}, {'b'} );
 
 % Get the variable indices
 v = unique( checkDesignVar(design, vars) );
+xv = checkDesignVar(design, template);
 
 % Mark as synced and get any secondary unsynced variables.
-[design, v] = relateVars( design, v, 'isSynced', false, nowarn);
+[design, rv] = unrelateVars( design, v, xv, 'isSynced', nowarn);
 
 % Notify user of uncoupling
-fprintf(['Unsyncing variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n']);
+fprintf(['Unsyncing variables ', sprintf('%s, ', design.varName(v)), ...
+         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n']);
 
 end
