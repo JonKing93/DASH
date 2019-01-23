@@ -36,16 +36,12 @@ end
 
 %% Sync / Couple
 
+% Get all coupled variables
+av = [find(design.isCoupled(v,:)), v];
+nVar = numel(a);
+
 % Get any synced variables
 sv = find( design.isSynced(v,:) );
-
-% Get any variables that are just coupled, not synced
-cv = find( design.isCoupled(v,:) );
-cv = cv( ~ismember(cv, sv) );
-
-% Get the set of all associated variables
-av = [sv;cv];
-nVar = numel(av);
 
 % Notify user if changing from ens to state dimension
 if ~design.var(v).isState(d)
