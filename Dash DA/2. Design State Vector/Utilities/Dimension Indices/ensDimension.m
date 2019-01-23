@@ -32,7 +32,11 @@ checkIndices(design.var(v), d, seq+1);
 if isempty(mean)
     mean = design.var(v).meanDex{d};
 end
+if ~ismember( 0, mean )
+    error('Mean indices must include the 0 index');
+end
 checkIndices(design.var(v), d, mean+1);
+
 
 % Takemean
 takeMean = true;
