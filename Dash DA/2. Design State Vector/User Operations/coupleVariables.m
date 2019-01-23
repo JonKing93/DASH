@@ -45,7 +45,7 @@ ensDim = find( ~design.var(xv).isState );
 for k = 2:numel(v)
     
     % Notify user of coupling
-    fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))), '\b\b\n']);
+    fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))' ), '\b\b\n']);
     
     % If not already coupled to the template
     if ~design.isCoupled(xv, v(k))

@@ -88,4 +88,17 @@ for k = 1:numel(Y)
     end
 end
 
+% Notify user
+fprintf(['Syncing variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n']);
+
+% Save edited variables to design
+design.var(v(2:end)) = Y;
+
+% Couple the variables
+warnArg = {};
+if nowarn
+    warnArg = {'nowarn'};
+end
+design = coupleVariables(design, design.varName(2:end), design.varName(xv), warnArg{:} );
+
 end

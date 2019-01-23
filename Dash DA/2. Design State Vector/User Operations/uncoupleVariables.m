@@ -30,6 +30,6 @@ v = unique( checkDesignVar(design, vars) );
 [design, v] = relateVars( design, v, 'isCoupled', false, nowarn);
 
 % Notify user of uncoupling
-fprintf(['Uncoupled variables ', sprintf('%s, ', design.varName(v)), '\b\b\n']);
+fprintf(['Uncoupled variables ', sprintf('%s, ', design.varName(v)'), '\b\b\n']);
 
 end
