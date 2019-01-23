@@ -25,7 +25,7 @@ design.var(v) = [];
 design.varName(v) = [];
 
 % Delete coupler and sync indices
-field = {'isCoupled','syncState','syncSeq','syncMean'};
+field = {'isCoupled','isSynced'};
 for f = 1:numel(field)
     design.(field{f})(v,:) = [];
     design.(field{f})(:,v) = [];

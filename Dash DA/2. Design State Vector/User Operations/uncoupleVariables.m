@@ -1,27 +1,17 @@
 function[design] = uncoupleVariables( design, vars, varargin )
 %% Uncouples variable indices in a state vector design.
 %
-% design = uncoupleVariables( design, {var1, var2, ..., varN} )
-% Uncouples the ensemble, state, sequence, and mean indices of a set a
-% variables.
+% design = uncoupleVariables( design, vars )
+% Uncouples a set of variables.
 %
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'state' )
-% Only uncouples the state indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'seq' )
-% Only uncouples the sequence indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'mean' )
-% Only uncouples the mean indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'ens' )
-% Uncouples the ensemble, mean, and sequence indices for a set of variables
+% design = uncoupleVariables( design, vars, 'nowarn' )
+% Does not notify the user about secondary uncoupled variables.
 %
 % ---- Inputs -----
 % 
 % design: A state vector design
 %
-% varN: The name of the Nth variable to uncouple.
+% vars: The variables being uncoupled.
 %
 % ----- Outputs -----
 %
@@ -30,10 +20,16 @@ function[design] = uncoupleVariables( design, vars, varargin )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Get the variable indices
-v = checkDesignVar(design, vars);
+% Get the nowarn toggle
+nowarn = parseInputs( varargin, {'nowarn'}, {false}, {'b'} );
 
-% Uncouple
-design = markSynced( design, v, 'isCoupled', false, true);
+% Get the variable indices
+v = unique( checkDesignVar(design, vars) );
+
+% Mark as uncoupled and get any secondary coupled variables.
+[design, v] = relateVars( design, v, 'isCoupled', false, nowarn);
+
+% Notify user of uncoupling
+fprintf(['Uncoupled variables ', sprintf('%s, ', design.varName(v)), '\b\b\n']);
 
 end

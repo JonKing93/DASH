@@ -1,11 +1,11 @@
-function[design] = addVariable( design, file, name, couple )
+function[design] = addVariable( design, file, name, varargin )
 %% Add a variable to a state vector design
 %
 % design = addVariable( design, file, name )
 % Adds a variable to a state vector design.
 %
-% design = addVariable( design, file, name, couple )
-% Specifies whether to couple the variable by default.
+% design = addVariable( design, file, name, 'nocouple' )
+% Does not couple the variable to other variables by default.
 %
 % ----- Inputs -----
 %
@@ -15,7 +15,7 @@ function[design] = addVariable( design, file, name, couple )
 %
 % name: A name for the variable
 %
-% couple: 'couple','nocouple'
+% couple: A flag that specifies whether to couple the variable by default.'couple','nocouple'
 %
 % ----- Outputs -----
 %
@@ -23,6 +23,9 @@ function[design] = addVariable( design, file, name, couple )
 %
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
+
+% Get the coupling toggle
+nocouple = parseInputs(varargin, {'nocouple'}, {false}, {'b'});
 
 % Initialize the varDesign
 newVar = varDesign(file, name);   
@@ -32,25 +35,12 @@ if ismember(newVar.name, design.varName)
     error('Cannot repeat variable names.');
 end        
 
-% Get the nocouple toggle
-if ~exist('couple','var')
-    couple = true;
-elseif strcmpi(couple, 'nocouple')
-    couple = false;
-elseif strcmpi(couple,'couple')
-    couple = true;
-else
-    error('Unrecognized ''couple'' input.');
-end
-
 % Add the variable
 design.var = [design.var; newVar];
-design.varName = [design.varName; {newVar.name}];
+design.varName = [design.varName; newVar.name];
 
 % Synced indices
-design.syncState(end+1,end+1) = false;
-design.syncSeq(end+1,end+1) = false;
-design.syncMean(end+1,end+1) = false;
+design.isSynced(end+1,end+1) = false;
 
 % Mark the default coupling choice for the variable
 design.defCouple(end+1) = couple;
@@ -59,7 +49,7 @@ design.defCouple(end+1) = couple;
 design.isCoupled(end+1,end+1) = false;
 
 % If a default coupled variable
-if couple
+if ~nocouple
     
     % Get the indices of variables that are coupled by default
     v = find( design.defCouple )';
