@@ -35,46 +35,42 @@ end
 
 %% Sync / Couple
 
-% Get any coupled variables
-cv = design.isCoupled(v,:);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% Setup for the edit. Get indices, metadata, template variable, coupled
-% variables.
-[v, index, d] = setupEdit( design, var, dim, index, 'state' );
-
 % Get any synced variables
-synced = find( design.syncState(v,:) );
+sv = find( design.isSynced(v,:) );
 
-% Check for changing type
+% Get any variables that are just coupled, not synced
+cv = find( design.isCoupled(v,:) );
+cv = cv( ~ismember(cv, sv) );
 
-% Get the metadata for the dimension
-meta = design.var(v).meta.( design.var(v).dimID{d} );
-meta = meta(index);
+% Get the set of all associated variables
+av = [sv;cv];
+nVar = numel(av);
 
-% For each synced variable
-for k = 1:numel(synced)
-    
-    % Get the state indices with matching metadata
-    stateDex = getMatchingMetaDex( design.var(synced(k)), dim, meta, true );
-    
-    % Set the values
-    design.var(synced(k)) = setStateIndices( design.var(sv), dim, stateDex, takeMean, nanflag );
+% Notify user if changing from ens to state dimension
+if ~design.var(v).isState(d)
+    flipDimWarning(dim, var, {'ensemble','state'}, design.varName(av));
 end
 
-% Set the values for the variable.
-design.var(v) = setStateIndices( design.var(v), dim, index, takeMean, nanflag );
+% For each associated variable
+for k = 1:nVar
+    
+    % Get the dimension index for the associated variable
+    ad = checkVarDim( design.var(av(k)), dim );
+    
+    % Change dimension to state dimension
+    design.var(av(k)).isState(ad) = true;
+    
+    % If a synced variable
+    if ismember(av(k),sv)
+        
+        % Get the matching indices
+        design.var(av(k)).indices{ad} = getMatchingMetaDex( design.var(av(k)), ...
+                                         dim, design.var(v).meta.(dim), true );
+                                     
+        % Set the mean and nanflag values
+        design.var(av(k)).nanflag{ad} = nanflag;
+        design.var(av(k)).takeMean(ad) = takeMean;
+    end
+end
 
 end
