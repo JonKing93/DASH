@@ -68,6 +68,10 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
+% (This is really just an interface so the user doesn't need to remember
+% the name of two different fxns. The main utility is to select
+% ensDimension of stateDimension).
+
 % Use all indices if no more inputs
 if isempty(varargin)
     varargin = {'index','all'};
@@ -81,10 +85,6 @@ if strcmpi(dimType, 'state')
     
 % Ensemble dimension
 elseif strcmpi(dimType, 'ens')
-    
-    % Parse inputs
-    [seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, {'seq','mean','nanflag','meta','overlap'}, ...
-                                 {0,0,'includenan',NaN,false}, {{},{},{'omitnan','includenan'},{}} );
     
     % Edit ensemble dimension
     design = ensDimension( design, var, dim, index, seq, mean, nanflag, ensMeta, overlap );
