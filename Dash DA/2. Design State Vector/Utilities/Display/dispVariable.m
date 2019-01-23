@@ -19,27 +19,19 @@ if any( d.isCoupled(v,:) )
 end
 
 % Synced Variables
-if any(d.syncMean(v,:)) || any(d.syncState(v,:)) || any(d.syncSeq(v,:))
+if any(d.isSynced(v,:))
     fprintf('\t\tSynced Variables:\n');
-    
-    if any(d.coupleState(v,:))
-        fprintf('\t\t\tstate:    ');
-        disp( d.varName( d.syncState(v,:) )' );
-        fprintf('\b');
-    end
-    
-    if any(d.coupleSeq(v,:))
-        fprintf('\t\t\tsequence: ');
-        disp( d.varName( d.syncSeq(v,:))');
-        fprintf('\b');
-    end
-    
-    if any(d.coupleMean(v,:))
-        fprintf('\t\t\tmean:     ');
-        disp( d.varName( d.coupleMean(v,:))');
-        fprintf('\b');
-    end
+    disp( d.varName( d.isSynced(v,:) ) );
+    fprintf('\b');
 end
+
+% Overlap
+if d.var(v).overlap
+    overStr = 'Allowed';
+else
+    overStr = 'Forbidden';
+end
+fprintf('\t\tEnsemble overlap: %s\n', overStr);
 
 % Dimensions
 fprintf('\t\tDimensions:\n');

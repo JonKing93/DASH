@@ -4,20 +4,13 @@ function[] = dispDimension(var, d, long)
 fprintf('\t\t\t%s\n', var.dimID{d});
 
 % Size
-fprintf('\t\t\t\tSize: %0.f\n', var.dimSize(d) );
+fprintf('\t\t\t\tSize: %0.f\n', numel(var.indices{d}) );
 
 % State dimensions
 if var.isState(d)
     
     % Type
     fprintf('\t\t\t\tType: State\n');
-    
-    % Set by
-    if var.dimSet(d)
-        fprintf('\t\t\t\tSet By: User\n');
-    else
-        fprintf('\t\t\t\tSet By: Default\n');
-    end
     
     % Mean
     if var.takeMean(d)
@@ -36,17 +29,14 @@ else
     % Type
     fprintf('\t\t\t\tType: Ensemble\n');
     
-    % Set by
-    if var.dimSet(d)
-        fprintf('\t\t\t\tSet By: User\n');
-    else
-        fprintf('\t\t\t\tSet By: Default\n');
-    end
-    
     % Metadata
     fprintf('\t\t\t\tMetadata Value: ');
-    disp( var.ensMeta{d} );
-    fprintf('\b');
+    if isempty(var.ensMeta{d})
+        fprintf('\n');
+    else
+        disp( var.ensMeta{d} );
+        fprintf('\b');
+    end
     
     % Sequence indices
     if ~isequal(var.seqDex{d}, 0)
