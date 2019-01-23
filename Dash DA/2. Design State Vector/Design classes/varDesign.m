@@ -77,7 +77,7 @@ classdef varDesign
             obj.isState = true(nDim,1);
             obj.ensMeta = cell(nDim,1);
             
-            obj.overlap = false(nDim,1);
+            obj.overlap = false;
             
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to 0.            

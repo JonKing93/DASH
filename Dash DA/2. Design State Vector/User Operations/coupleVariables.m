@@ -47,6 +47,12 @@ for k = 2:numel(v)
     % Notify user of coupling
     fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))' ), '\b\b\n']);
     
+    % Set the overlap value
+    design.var(v(k)).overlap = design.var(xv).overlap;
+    if design.var(v(k)).overlap
+        fprintf('\tEnabling overlap.');
+    end
+    
     % If not already coupled to the template
     if ~design.isCoupled(xv, v(k))
     
@@ -59,14 +65,8 @@ for k = 2:numel(v)
             % Flip the isState toggle to ensemble
             design.var(v(k)).isState(dim) = false;
 
-            % Set the overlap value
-            design.var(v(k)).overlap(dim) = design.var(xv).overlap(d);
-
             % Notify user
-            if design.var(xv).overlap(d)
-                overStr = ' and enabling overlap';
-            end
-            fprintf('\tConverting %s to an ensemble dimension%s.\n', design.var(xv).dimID{ensDim(d)}, overStr );
+            fprintf('\tConverting %s to an ensemble dimension.\n', design.var(xv).dimID{ensDim(d)} );
         end
     end
 end
