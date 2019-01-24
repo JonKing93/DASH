@@ -1,5 +1,5 @@
 function[trw] = vsTemp(phi, T1, T2, T, varargin)
-%% Like VS-Lite, but does not consider moisture sensitivity.
+%% Like VS-Lite, but only for temperature sensitive trees.
 %
 % trw = vsTemp(syear, eyear, phi, T1, T2, T)
 % Calculates tree ring width based on temperature

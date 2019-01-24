@@ -11,7 +11,7 @@ for v = 1:numel(design.var)
     var = design.var(v);
     
     % Set the value of the variable name metadata
-    meta.(varName)( varDex{v} ) = {var.name};
+    meta.(varName)( varDex{v} ) = var.name;
     
     % Get the set of dimensionally subscripted state indices
     stateDim = var.isState;

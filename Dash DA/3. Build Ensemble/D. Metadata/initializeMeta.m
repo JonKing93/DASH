@@ -29,8 +29,11 @@ meta = struct( inArgs{:} );
 emptyMeta = cell( nState,1 );
 
 % Now add the empty metadata
-for d = 1:numel(dimID)
+for d = 2:numel(dimID)
     meta.(dimID{d}) = emptyMeta;
 end
+
+% Get the empty variable name placeholder
+meta.(dimID{1}) = repmat( "", [nState,1]);
 
 end

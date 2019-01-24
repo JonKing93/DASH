@@ -57,13 +57,13 @@ classdef ukPSM < PSM
     
     methods
         % Run the PSM
-        function[uk] = runPSM( obj, T )
+        function[uk] = runPSM( obj, T, ~, ~, ~ )
             
             % Convert T to Celsius
             T = T + obj.convertT;
             
             % Run the forward model
-            uk = UK_forward_model( M, obj.bayes );
+            uk = UK_forward_model( T, obj.bayes );
             
             % Take the ensemble mean
             uk = mean(uk,2);

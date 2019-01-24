@@ -21,7 +21,7 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
 %
 % inflate: A scalar inflation factor. Leave empty for no inflation.
 %
-% F: An array of proxy system models for each observation. (nObs x 1)
+% F: A cell vector of proxy system models for each observation. {nObs x 1}
 %
 % H: A cell of state variable indices needed to run the forward model for
 %      each site. {nObs x 1}(nVars x 1)
@@ -88,23 +88,24 @@ M = Mmean + Mdev;
 % If doing the appended method.
 if append
     
-    % Check that F is a PSM
-    if ~isa(F, 'PSM')
-        error('Fa must be of the class "PSM"');
-    end
-    
     % Preallocate the Y estimates
     Yi = NaN( nObs, nEns );
     
     % For each observation
-    for d = 1:nObs        
+    for d = 1:nObs 
+        
+        % Ensure that F is a PSM
+        if ~isa(F{d}, 'PSM')
+            error('Element %0.f of F is not of the "PSM" class', d);
+        end
+        
         % Generate the associated Y estimates
-        Yi(d,:) = F(d).runPSM( M(H{d},:), d, H{d} );
+        Yi(d,:) = F{d}.runPSM( M(H{d},:), d, H{d} );
     end
     
     % Use the trivial PSM for the DA. Just going to return the Ye values in
     % the appended state as the PSM output.
-    F = repmat( appendPSM, [nObs, 1]);
+    F = repmat( {appendPSM}, [nObs, 1]);
     
     % Determine the sampling indices for the appended Ye
     H = nState + (1:nObs)';

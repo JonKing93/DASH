@@ -32,14 +32,16 @@ function[A, Y] = dashDA( M, D, R, w, F, H )
 %
 % Y: The model estimates used for each update. (nObs x nEns x nTime)
 
-% Ensure the PSMs are allowed
-if ~isa( F, 'PSM' )
-    error('F must be of the the "PSM" class');
-end
-
 % Get some sizes
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
+
+% Ensure the PSMs are allowed
+for d = 1:nObs
+    if ~isa( F{d}, 'PSM' )
+        error('F must be of the the "PSM" class');
+    end
+end
 
 % Preallocate the output
 A = NaN( nState, nTime, 2 );
@@ -77,7 +79,7 @@ for t = 1:nTime
             obSites = H{d};
         
             % Run the PSM
-            Ye = F(d).runPSM( Amean(obSites)+Adev(obSites,:), d, obSites, t);
+            Ye = F{d}.runPSM( Amean(obSites)+Adev(obSites,:), d, obSites, t);
        
             % Decompose the model estimate
             [Ymean, Ydev] = decomposeEnsemble( Ye );
@@ -102,7 +104,7 @@ for t = 1:nTime
     
     % Record the Y estimates for this time step.
     if nargout > 1
-        Y(:,:,t) = Ye;
+        Y(:,:,t) = Ycurr;
     end
     
     % Record the mean and variance of the analysis.

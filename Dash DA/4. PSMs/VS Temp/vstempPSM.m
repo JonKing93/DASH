@@ -1,4 +1,4 @@
-%% Creates a PSM for temperature sensitive trees using the vsTemp forward model.
+%% Implements a PSM for temperature sensitive trees using the vsTemp forward model.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONSTRUCTOR:
@@ -102,13 +102,13 @@ classdef vstempPSM < PSM
             end            
             
             % Run vsTemp
-            trw = vsTemp( obj.lat, obj.T1, obj.T2, Tfull, obj.intwindow{:} );
+            trw = vsTemp( obj.lat, obj.T1, obj.T2, Tfull, obj.intwindowArg{:} );
         end
             
         % Get the state vector indices
         function[H] = getStateIndices( obj, ensMeta, Tname, time )
             
-            % Ensure that time has 12 elements
+            % Ensure that time has an element for each integration month
             if ~isvector(time) || numel(time)~=numel(obj.intwindow)
                 error('Time must be a vector with an element for each month in the integration window.');
             end
@@ -120,7 +120,7 @@ classdef vstempPSM < PSM
             H = NaN(numel(time),1);
             
             % For each month
-            for t = 1:12
+            for t = 1:numel(obj.intwindow)
                 
                 % Find the indices of the variables in the current time
                 Ttime = findincell( time(t), ensMeta.time(Tdex) );

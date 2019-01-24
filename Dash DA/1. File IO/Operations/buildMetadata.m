@@ -35,7 +35,7 @@ if ~(isstring(varName) && isscalar(varName)) && ~(ischar(varName) && isvector(va
 end
 
 % Get the known dimension IDs
-knownID = getKnownIDs;
+[knownID, var] = getKnownIDs;
 nDim = numel(knownID);
 
 % Permute the knownIDs to match the data order
@@ -80,11 +80,11 @@ for m = 2:2:numel(metaCell)
 end
 
 % Create the metadata structure
-meta = struct('var', varName );
+meta = struct(var, varName );
 
 % Fill in the cell metadata
 if numel(metaCell)>2
-    for m = 3:2:numel(metaCell)
+    for m = 1:2:numel(metaCell)
         meta.(metaCell{m}) = metaCell{m+1};
     end
 end

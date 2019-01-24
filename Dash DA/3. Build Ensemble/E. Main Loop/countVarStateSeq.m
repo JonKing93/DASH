@@ -7,8 +7,11 @@ nSeq = 1;
 % For each dimension
 for d = 1:numel(var.dimID)
     % If a state vector
-    if var.isState(d)
+    if var.isState(d) && ~var.takeMean(d)
         nState = nState .* numel(var.indices{d});
+        
+    elseif var.isState(d)
+        nState = nState .* 1;
         
     % If an ensemble vector
     else
