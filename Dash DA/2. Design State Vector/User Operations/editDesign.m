@@ -77,6 +77,13 @@ if isempty(varargin)
     varargin = {'index','all'};
 end
 
+% Check that the dim is a single string
+if ischar(dim) && isrow(dim)
+    dim = string(dim);
+elseif ~isstring(dim) || ~isscalar(dim)
+    error('dim must be a single string.')
+end
+
 % State dimension
 if strcmpi(dimType, 'state')
         
