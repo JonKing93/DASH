@@ -1,4 +1,19 @@
 function[] = dispDimension(var, d, long)
+%% Displays the design of a dimension in a variable in a state vector design.
+%
+% dispDimension( var, d, long )
+%
+% ----- Inputs -----
+%
+% var: A varDesign
+%
+% d: The index of the dimension in the varDesign
+%
+% long: Logical scalar indicating whether to display indexed metadata. True
+%   to display, false (default) to not display.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Dimension name
 fprintf('\t\t\t%s\n', var.dimID{d});

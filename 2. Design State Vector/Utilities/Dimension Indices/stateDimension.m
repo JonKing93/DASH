@@ -1,5 +1,19 @@
 function[design] = stateDimension( design, var, dim, varargin )
 %% Edits a state dimension.
+%
+% See editDesign for use.
+%
+% ----- Inputs ----- 
+% design: state vector design
+%
+% var: Variable name
+%
+% dim: Dimension name
+%
+% flags: 'index','mean','nanflag'
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Parse the inputs
 [index, takeMean, nanflag] = parseInputs( varargin, {'index','mean','nanflag'}, {[],[],[]}, {[],[],{'omitnan','includenan'}} );

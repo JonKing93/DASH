@@ -1,4 +1,15 @@
 function[combDex, ensSize] = getAllCombIndex( indices )
+%% Returns an index for every possible combination of dimension indices
+%
+% ----- Inputs -----
+%
+% indices: The indices in each dimension
+%
+% ----- Outputs -----
+%
+% combDex: An index for each dimension. Just a long vector.
+%
+% ensSize: The number of indices in each dimension.
 
 % Preallocate the size of each dimension
 nDim = numel(indices);

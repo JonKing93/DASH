@@ -1,5 +1,14 @@
 function[design] = restrictMeta( design, cv, ensDim )
 %% Gets the most restrictive metadata for a set of coupled variables.
+%
+% design: stateDesign
+%
+% cv: Variable indices of coupled variables
+%
+% ensDim: Name of ensemble dimensions
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Initialize a cell to hold allowed metadata for each ensemble dimension
 allowMeta = cell( numel(ensDim), 1 );

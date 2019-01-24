@@ -1,4 +1,11 @@
 %% This is an interface that ensures that proxy models can interact with dashDA.
+%
+% Methods:
+%   runPSM( obj, M, d, H, t )
+%   getStateIndices( obj, ensMeta )
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef (Abstract) PSM
     
     % A method that all proxy system models must implement

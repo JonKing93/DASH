@@ -14,7 +14,7 @@ function[meta, dimID, gridSize] = metaGridfile( file )
 % dimID: The order of the dimensions of the saved gridded data.
 %
 % gridSize: The size of the gridded data.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

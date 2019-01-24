@@ -1,4 +1,12 @@
 function[load, trim] = getLoadTrimIndex( var, d )
+%% Gets the initial load and trim index indices for a dimension in a variable.
+%
+% var: varDesing
+%
+% d: Dimension index
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % For state dimensions, loading batches of state indices
 if var.isState(d)

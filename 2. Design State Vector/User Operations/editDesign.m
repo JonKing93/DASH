@@ -65,6 +65,10 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 % overlap: A scalar logical indicating whether to allow non-duplicate,
 %       overlapping sequences in the ensemble.
 %
+% ----- Outputs -----
+%
+% design: The updated state vector design.
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

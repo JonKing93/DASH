@@ -1,4 +1,14 @@
 function[meta] = createEnsembleMeta( design, nState, varDex )
+%% Creates metadata for an ensemble
+%
+% design: State vector design
+%
+% nState: Number of state elements
+%
+% varDex: State vector indices of each variable
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get a new metadata container
 meta = initializeMeta( design, nState );

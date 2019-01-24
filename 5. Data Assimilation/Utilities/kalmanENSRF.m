@@ -1,4 +1,26 @@
 function[K,a] = kalmanENSRF( Mdev, Ydev, R, w )
+%% Gets the Kalman Gain and alpha for a Kalman Ensemble Square Root Filter
+%
+% [K, a] = kalmanENSRF( Mdev, Ydev, R, w )
+%
+% ----- Inputs -----
+%
+% Mdev: Model deviations
+%
+% Y: Observation deviations
+%
+% R: Observation uncertainty
+%
+% w: A covariance localization
+%
+% ----- Outputs -----
+%
+% K: The kalman gain
+%
+% a: alpha values. The weights for the adjusted kalman gain.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the coefficient for an unbiased estimator
 nEns = size(Mdev,2);

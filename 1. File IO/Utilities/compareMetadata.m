@@ -12,6 +12,9 @@ function[] = compareMetadata( m, meta, ic )
 %
 % ic: A cell of indices specifying metadata indices in m.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Get the existing metadata
 oldMeta = m.meta;
 dimID = m.dimID;

@@ -16,6 +16,20 @@ function[] = dispDesign( d, var, dim, longform )
 % dispDesign( d, var, dim, longform )
 % Specifies whether to display all metadata values in the state or ensemble
 % indices of a specific dimension of a variable in a state vector design.
+%
+% ----- Inputs -----
+%
+% d: A state vector design
+%
+% var: The name of a variable in the design
+%
+% dim: The name of a dimension in the variable
+%
+% longform: A scalar logical. If true, displays all dimension metadata at
+%       the state or ensemble indices.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check the design is a design
 if ~isa(d, 'stateDesign')

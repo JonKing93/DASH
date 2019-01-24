@@ -24,7 +24,7 @@ function[meta] = buildMetadata( gridData, gridDims, varName, varargin)
 % ----- Outputs -----
 %
 % meta: The metadata structure used by dash.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 %

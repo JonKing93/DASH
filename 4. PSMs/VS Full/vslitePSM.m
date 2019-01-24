@@ -45,7 +45,9 @@
 %
 % time: A 12 element vector containing the metadata value for time in each
 %       month from January to December. May be a cell or numeric vector.
-%
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef vslitePSM < PSM
     
     properties

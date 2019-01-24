@@ -4,9 +4,18 @@ function[ir] = isrepeat( A, varargin )
 %
 % C = isRepeat( A, uniqArgs )
 %
+% ----- Inputs -----
+%
 % A: Values
 %
 % uniqArgs: Arguments for the unique function
+%
+% ----- Outputs -----
+%
+% C: A Logical array for whether each element is a repeat.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Find the unique elements
 [~,ia,ic] = unique(A, varargin{:});

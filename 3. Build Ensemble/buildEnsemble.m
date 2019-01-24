@@ -4,6 +4,20 @@ function[M, ensMeta] = buildEnsemble( design, nEns )
 % [M, meta] = buildEnsemble( design, nEns )
 % Builds a state vector ensemble according to a state vector design.
 %
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% nEns: The number of ensemble members
+%
+% ----- Outputs -----
+%
+% M: The ensemble
+%
+% ensMeta: Metadata for each state element.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 %% Coupler
 

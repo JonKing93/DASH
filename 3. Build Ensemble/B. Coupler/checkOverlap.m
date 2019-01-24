@@ -1,4 +1,10 @@
 function[ensDim, overlap] = checkOverlap( coupVars )
+%% Checks that coupled variables share overlap permissions
+%
+% coupVars: Coupled varDesigns
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the master set of ensemble dimensions from the first variable. These
 % should be identical in all coupled vars.

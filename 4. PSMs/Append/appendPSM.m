@@ -1,4 +1,7 @@
 %% Defines a PSM for the "append" (Tardif) DA method. Returns whatever value it is given.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef appendPSM < PSM
     
     methods

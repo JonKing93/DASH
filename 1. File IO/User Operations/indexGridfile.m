@@ -1,4 +1,3 @@
-%% This adds new data to indices.
 function[] = indexGridfile( file, gridData, gridDims, loc, meta )
 %% Writes data to specified exisiting indices in a gridded .mat file.
 %
@@ -28,7 +27,7 @@ function[] = indexGridfile( file, gridData, gridDims, loc, meta )
 % meta: A metadata structure built for dash. Metadata at the write indices
 %       are compared to this structure. If the metadata do not match, the
 %       write is aborted.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

@@ -1,5 +1,12 @@
 function[meta] = initializeMeta( design, nState )
 %% Builds an empty metadata container
+%
+% design: stateDesign
+%
+% nState: Size of the state vector
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the collection of all unique dimensions
 dimID = {};

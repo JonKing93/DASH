@@ -1,7 +1,10 @@
 function[varDex] = checkDesignVar( design, var )
 %% Ensures a design contains the vars
 %
-% varDex: The variable indices
+% var: Variable name
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check there is a variable design
 if ~isa( design, 'stateDesign') || ~isscalar(design)

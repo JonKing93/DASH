@@ -1,6 +1,14 @@
 function[design] = coupler( design, cv, nEns )
+%% Gets ensemble indices for coupled variables.
+%
+% design: State vector design
 %
 % cv: Variable indices of the coupled variables
+%
+% nEns: Number of ensemble members.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check that the coupled variables all share the same ensemble dimensions
 % and overlap permissions. Return these values.

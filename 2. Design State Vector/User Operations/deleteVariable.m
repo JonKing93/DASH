@@ -13,7 +13,7 @@ function[design] = deleteVariable( design, var )
 % ----- Outputs -----
 %
 % design: The updated state vector design.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

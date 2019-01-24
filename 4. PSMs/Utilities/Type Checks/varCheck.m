@@ -1,5 +1,12 @@
 function[nameDex] = varCheck( ensMeta, name )
 %% Checks for a variable name field and returns variable indices
+%
+% ensMeta: Ensemble metadata
+%
+% name: Variable name
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check that the metadata has a variable name field
 [~,var] = getKnownIDs;

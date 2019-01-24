@@ -1,5 +1,10 @@
 function[] = queryContinue(opStr)
-% opStr: String for the operation being aborted
+%% Asks the user if they want to continue
+%
+% opStr: String for the operation being continued / aborted
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 yn = input('Do you want to continue? (yes/no): ', 's');
 

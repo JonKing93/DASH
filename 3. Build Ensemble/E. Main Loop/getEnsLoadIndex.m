@@ -2,9 +2,16 @@ function[ic] = getEnsLoadIndex( var, ic, subSeq, m )
 %% Gets the load indices for ensemble dimensions for a particular sequence
 % element of a particular ensemble member.
 %
-% m: Ensemble member
+% var: varDesign
 %
-% s: Sequence element
+% ic: Index cell of fixed load indices.
+%
+% subSeq: Dimensionally subscripted sequence element
+%
+% m: Ensemble member enumeration
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the ensemble dimensions
 ensDim = find( ~var.isState );

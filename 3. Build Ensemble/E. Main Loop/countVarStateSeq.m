@@ -1,4 +1,11 @@
 function[nState, nSeq] = countVarStateSeq( var )
+%% Counts the number sequences and number of state elements per sequence
+% for a variable
+%
+% var: varDesign
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Initialize the number of state elements and sequences
 nState = 1;

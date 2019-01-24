@@ -16,7 +16,7 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 %
 % meta: A metadata structure for the gridded data. See the buildMetadata.m
 %       function.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

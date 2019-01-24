@@ -3,6 +3,27 @@ function[design, rv] = unrelateVars( design, v, xv, field, nowarn )
 % design = unrelateVars( design, v, xv, field, nowarn )
 % Removes a relationship between variables and 1. a template variable, 2.
 % all secondary template variables.
+%
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% v: Index of variables being unrelated
+%
+% xv: Index of template variable from which variables are being unrelated.
+%
+% field: 'isCoupled' or 'isSynced'
+%
+% nowarn: Logical scalar for whether to warn about secondary variables.
+%
+% ----- Outputs -----
+%
+% design: Updated design
+%
+% rv: The template variable and its secondary variables.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check
 if ~isscalar(xv)

@@ -38,7 +38,9 @@
 % time: A vector containing the metadata value for time in each integration
 %       month. Must contain an element for each month in the integration
 %       window. May be a cell or numeric vector.
-%
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef vstempPSM < PSM
     
     properties

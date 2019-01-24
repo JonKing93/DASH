@@ -16,6 +16,8 @@ function[varargout] = decomposeEnsemble( X )
 %
 % Xvar: Ensemble variance
 %
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Mean
 Xmean = mean(X,2);

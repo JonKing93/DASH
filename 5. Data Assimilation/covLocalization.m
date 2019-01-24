@@ -45,7 +45,7 @@ function[weights] = covLocalization( siteCoord, stateCoord, R, scale)
 % ----- Outputs -----
 %
 % weights: The localization weights for each site. (nState x nObs)
-%
+
 % ----- Sources -----
 % 
 % Based on the approach of Hamill et al., 2001

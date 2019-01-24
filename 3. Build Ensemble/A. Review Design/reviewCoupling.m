@@ -1,4 +1,10 @@
 function[coupleSet] = reviewCoupling( isCoupled )
+%% Check the coupling matrix is legal
+%
+% isCoupled: A coupling matrix
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check for a square matrix
 [row,col] = size( isCoupled );

@@ -24,7 +24,7 @@ function[] = deleteGridfile( file, dim, loc, meta )
 % meta: A metadata structure built for Dash. Metadata at the indices for
 %       deletion are compared to this structure. If the metadata do not 
 %       match, the deletion is aborted.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

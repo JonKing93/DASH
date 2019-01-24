@@ -13,6 +13,9 @@ function[D] = haversine( lli, llf )
 % ----- Outputs -----
 %
 % D: The distance between initial and final coordinates in kilometers.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Set the radius of the Earth (in kilometers)
 R = 6371;

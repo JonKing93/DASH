@@ -1,6 +1,28 @@
 function[index, ix] = getMatchingMetaDex( var, dim, meta, isState )
 %% This gets indices of a dimensions of a specific variables that match a
 % metadata template.
+%
+% [index, ix] = getMatchingMetaDex( var, dim, meta, isState )
+% Returns indices that match a metadata template.
+%
+% ----- Inputs -----
+%
+% var: A varDesign
+%
+% dim: Dimension name
+%
+% meta: Metadata template for the dimension.
+%
+% isState: Scalar logical. True if for state dimensions, false for ens.
+%
+% ----- Outputs -----
+%
+% index: The indices in the variable that match the metadata
+% 
+% ix: The indices in the template that the variable matches.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the metadata for the variable in the dimension
 dimMeta = var.meta.(dim);

@@ -1,5 +1,5 @@
-%% Setup
-
+% This is a quickstart demo for DASH.
+%
 % Before running this quickstart, you will need to place the files:
 % 
 % surface.b.e11.BLMTRC5CN.f19_g16.003.cam.h0.T.085001-184912.nc    AND

@@ -1,32 +1,49 @@
-function[] = dispVariable( d, v, dim, longform )
+function[] = dispVariable( design, v, dim, longform )
+%% Displays a variable in a state vector design.
+%
+% dispVariable( design, v, dim, longform )
+%
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% v: The index of a variable in the design.
+%
+% dim: The name of a dimension to display or 'all' to display all
+%   dimensions.
+%
+% long: Logical scalar for whether to display indexed dimensional metadata.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the variables
 if strcmp(dim,'all')
-    dim = 1:numel(d.var(v).dimID);
+    dim = 1:numel(design.var(v).dimID);
 end
 
 % Variable name 
-fprintf('\t%s\n', d.var(v).name  );
+fprintf('\t%s\n', design.var(v).name  );
 
 % Reference file
-fprintf( '\t\tGridfile: %s\n', d.var(v).file );
+fprintf( '\t\tGridfile: %s\n', design.var(v).file );
 
 % Coupled Varialbes
-if any( d.isCoupled(v,:) )
+if any( design.isCoupled(v,:) )
     fprintf( '\t\tCoupled Variables: ' );
-    disp( d.varName( d.isCoupled(v,:) ) );
+    disp( design.varName( design.isCoupled(v,:) ) );
     fprintf('\b');
 end
 
 % Synced Variables
-if any(d.isSynced(v,:))
+if any(design.isSynced(v,:))
     fprintf('\t\tSynced Variables:\n');
-    disp( d.varName( d.isSynced(v,:) ) );
+    disp( design.varName( design.isSynced(v,:) ) );
     fprintf('\b');
 end
 
 % Overlap
-if d.var(v).overlap
+if design.var(v).overlap
     overStr = 'Allowed';
 else
     overStr = 'Forbidden';
@@ -38,7 +55,7 @@ fprintf('\t\tDimensions:\n');
 
 % Display the dimensions
 for k = 1:numel(dim)
-    dispDimension( d.var(v), dim(k), longform );
+    dispDimension( design.var(v), dim(k), longform );
 end
 
 end

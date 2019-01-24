@@ -24,7 +24,7 @@ function[] = fillGridfile( file, dims, loc, meta )
 % meta: A metadata structure built for dash. Metadata at the fill
 %       indices are compared to this structure. If the metadata do not 
 %       match, the fill is aborted.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

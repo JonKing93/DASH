@@ -1,5 +1,12 @@
 function[var] = trimEnsemble( var, dim )
 %% Trims ensemble indices to only allow complete sequences.
+%
+% var: varDesign
+%
+% dim: Dimension name
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the dimension index
 d = checkVarDim(var, dim);

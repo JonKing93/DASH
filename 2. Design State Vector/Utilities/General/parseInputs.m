@@ -3,10 +3,9 @@ function[varargout] = parseInputs( inArgs, flags, defaults, switches )
 %
 % [values] = parseInputs( inArgs, flags, defaults, switches )
 %
-%
 % ----- Inputs -----
 %
-% inArgs: typically, varargin for a function calla
+% inArgs: typically, varargin for a function call
 %
 % flags: All the possible string flags
 %
@@ -16,15 +15,13 @@ function[varargout] = parseInputs( inArgs, flags, defaults, switches )
 %           boolean string switches, OR an empty array if neither of these
 %           options is applicable.
 %
-%
 % ----- Outputs -----
 %
 % values: The values for each string flag in order of flag input.
 %
+% ----- Written By -----
 %
-% ----- Author -----
-%
-% Jonathan King, 2017, University of Arizona, jonking93@email.arizona.edu
+% Jonathan King, 2017, University of Arizona
 
 % Make sure everything is formatted correctly
 errorCheck(flags, defaults, switches);

@@ -1,4 +1,12 @@
 function[sampDex] = eraseRepeat( sampDex, nSeq )
+%% Removes a sequence overlap
+%
+% sampDex: Ensemble draws
+%
+% nSeq: Size of a sequence
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Find the indices of draws with repeat elements
 repeat = find( isrepeat( sampDex, 'rows', 'stable' ) );

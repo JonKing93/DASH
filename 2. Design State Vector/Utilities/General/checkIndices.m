@@ -1,5 +1,12 @@
 function[] = checkIndices(var, d, index)
 %% Low level error checking for indices for a dimension.
+%
+% var: varDesign
+%
+% d: Dimension index
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the size of the data
 dimSize = var.dimSize(d);

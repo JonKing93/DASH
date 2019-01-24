@@ -16,6 +16,9 @@ function[m] = fileCheck( file, readOnly )
 %
 % m: A matfile object for a gridded .mat file.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Check that the file is a .mat file
 if isstring(file)
     file = char(file);

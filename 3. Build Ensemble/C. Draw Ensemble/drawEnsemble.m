@@ -1,5 +1,14 @@
 function[sampDex, dimID] = drawEnsemble( coupVars, nEns, overlap )
 %% Draws the ensemble indices for a set of coupled variables.
+%
+% coupVars: coupled varDesigns
+%
+% nEns: Ensemble size
+%
+% overlap: True/False for whether overlap is allowed
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the ensemble dimensions
 ensDim = find( ~coupVars(1).isState );

@@ -17,6 +17,9 @@ function[ic, nAdd] = getIndexCell( m, sCurr, loc )
 %
 % nAdd: The number of new indices added in each dimension.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Get the size of the existing data
 sData = size( m.gridData );
 nDim = numel(sData);   

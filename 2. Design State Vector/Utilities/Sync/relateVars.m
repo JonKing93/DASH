@@ -18,6 +18,9 @@ function[design, v] = relateVars( design, v, field, nowarn )
 % design: The edited design
 %
 % allvar: The full set of specified and secondary variables.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check
 if ~islogical(nowarn) || ~isscalar(nowarn)

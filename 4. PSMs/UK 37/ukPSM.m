@@ -40,7 +40,9 @@
 % time: A time metadata value from which indices should be selected.
 %
 % lev: A lev metadata values from which indices should be selected.
-%
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 classdef ukPSM < PSM
     
     properties

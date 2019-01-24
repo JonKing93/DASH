@@ -30,7 +30,7 @@ function[] = extendGridfile( file, gridData, gridDims, dim, loc, meta )
 % meta: A vector containing metadata for the new indices along the 
 %       extended dimension. (NOT a metadata structure) If STRIDE > 1, must
 %       include metadata for extended indices at which data is not written.
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 

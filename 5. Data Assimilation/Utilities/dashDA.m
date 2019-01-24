@@ -31,6 +31,9 @@ function[A, Y] = dashDA( M, D, R, w, F, H )
 % A: The mean and variance of the analysis ensemble. (nState x nTime x 2)
 %
 % Y: The model estimates used for each update. (nObs x nEns x nTime)
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get some sizes
 [nObs, nTime] = size(D);

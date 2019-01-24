@@ -19,6 +19,9 @@ function[gridData, dimLoc] = permuteInputs( m, gridDims, gridData, loc )
 %
 % dimLoc: Permuted indexing locations.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Get the permutation ordering
 permDex = getPermutation( gridDims, m.dimID, getKnownIDs );
 

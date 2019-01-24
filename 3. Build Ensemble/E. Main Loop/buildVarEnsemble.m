@@ -1,5 +1,16 @@
 function[M] = buildVarEnsemble(var, nEns, iLoad, iTrim)
 %% Builds the ensemble for a single variable
+%
+% var: varDesign
+%
+% nEns: Ensemble size
+%
+% iLoad: index cell for loading
+%
+% iTrim: index cell for reducing loaded data with non-uniform spacing
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get a read-only matfile
 grid = matfile( var.file );

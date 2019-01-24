@@ -1,5 +1,10 @@
 function[] = userContinueQuery(nEns)
-%% Asks the user if they wish to keep searching
+%% Asks the user if they wish to keep searching for non-overlapping indices
+%
+% nEns: Ensemble size
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 fprintf(['It is difficult to find %0.f non-overlapping sequences.', newline], nEns);
 fprintf(['Would you like to continue searching through all possible sequences?', newline]);

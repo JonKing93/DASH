@@ -1,5 +1,18 @@
 function[subDex] = subdim( siz, linDex )
-%% Subscripts indices for an N-dimensional array
+%% Subscripts linear indices to an N-dimensional array
+%
+% ----- Inputs -----
+% 
+% siz: The size of the N-dimensional array
+%
+% linDex: Linear indices.
+%
+% ----- Outputs -----
+%
+% subDex: The subscripted indices.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Ensure linDex is column
 if ~iscolumn(linDex)

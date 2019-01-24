@@ -17,6 +17,9 @@ function[permDex] = getPermutation( X, Y, knownID )
 %
 % permDex: The permutation index.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Check that the values are all recognized
 allVals = [X(:);Y(:)];
 for d = 1:numel(allVals)

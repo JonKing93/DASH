@@ -1,4 +1,14 @@
 function[] = prevSyncWarning( var, secondVar, field )
+%% Warns the user for secondary variables being synced or coupled.
+%
+% var: The variable name
+%
+% secondVar: Names of secondary variables
+%
+% field: 'isCoupled' or 'isSynced'
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Switch for coupled vs synced in the warning message
 scd = 'synced';

@@ -1,4 +1,10 @@
 function[] = checkVarMatchesGrid( var )
+%% Ensure the gridfile has not been altered since the design was created.
+%
+% var: varDesign
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get gridfile metadata
 [meta, dimID, dimSize] = metaGridfile( var.file );

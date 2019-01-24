@@ -1,5 +1,20 @@
 function[design] = ensDimension( design, var, dim, varargin )
 %% Edits an ensemble dimension.
+%
+% See editDesign for use.
+%
+% ----- Inputs -----
+%
+% design: the state vector design
+%
+% var: Variable name
+%
+% dim: Dimension name
+%
+% flags: 'index','seq','mean','nanflag','meta','overlap'
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
  % Parse inputs
 [index, seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, ...

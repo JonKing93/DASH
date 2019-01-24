@@ -1,5 +1,12 @@
 function[d] = checkVarDim( var, dim )
 %% Error check a variable design and dimension and gets the dimension index.
+%
+% var: varDesign
+%
+% dim: Dimension name
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check the variable
 if ~isa(var, 'varDesign') || ~isscalar(var)

@@ -40,6 +40,9 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
 %
 % Yf: The final Ye values at the end of the appended method. (nObs x nEns x nTime)
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 %% Setup 
 
 % Error checking

@@ -14,6 +14,9 @@ function[siz] = fullSize( X, d )
 %
 % siz: The size of the array.
 
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+
 % Get the size
 siz = size(X);
 nDim = numel(siz);

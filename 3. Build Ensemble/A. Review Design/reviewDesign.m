@@ -1,5 +1,8 @@
 function[coupleSet] = reviewDesign( design )
 %% Error checks a state vector design.
+%
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 nVar = numel(design.var);
 
