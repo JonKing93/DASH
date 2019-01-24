@@ -8,7 +8,9 @@
 % particular order. For the demo, we're going to pretend that the user is
 % not aware of the lev dimension to illustrate that the code can process
 % unknown singleton dimensions.
-file = 'Ttest.mat';
+%
+% (This data can be created by running the quickstart function.)
+file = 'T.mat';
 
 %% Initialize
 

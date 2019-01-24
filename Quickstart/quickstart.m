@@ -50,7 +50,7 @@ altLon = 1:2:numel(meta.lon); % Use alternate longitudes for a smaller state vec
 
 % Create a state vector design and add a variable
 d = stateDesign('test');
-d = addVariable(d, 'Ttest.mat', 'T');
+d = addVariable(d, 'T.mat', 'T');
 
 % Edit the design
 d = editDesign(d, 'T', 'run', 'ens');
