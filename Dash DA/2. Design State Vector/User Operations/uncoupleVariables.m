@@ -1,27 +1,18 @@
-function[design] = uncoupleVariables( design, vars, varargin )
-%% Uncouples variable indices in a state vector design.
+function[design] = uncoupleVariables( design, vars, template, varargin )
+%% Uncouples variable indices in a state vector design. Uncoupled variables
+% cannot be synced, so also unsyncs variables.
 %
-% design = uncoupleVariables( design, {var1, var2, ..., varN} )
-% Uncouples the ensemble, state, sequence, and mean indices of a set a
-% variables.
+% design = uncoupleVariables( design, vars )
+% Uncouples a set of variables.
 %
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'state' )
-% Only uncouples the state indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'seq' )
-% Only uncouples the sequence indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'mean' )
-% Only uncouples the mean indices of a set of variables.
-%
-% design = uncoupleVariables( design, {var1, var2, ..., varN}, 'ens' )
-% Uncouples the ensemble, mean, and sequence indices for a set of variables
+% design = uncoupleVariables( design, vars, 'nowarn' )
+% Does not notify the user about secondary uncoupled variables.
 %
 % ---- Inputs -----
 % 
 % design: A state vector design
 %
-% varN: The name of the Nth variable to uncouple.
+% vars: The variables being uncoupled.
 %
 % ----- Outputs -----
 %
@@ -30,27 +21,34 @@ function[design] = uncoupleVariables( design, vars, varargin )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Parse the inputs
-[state, ens, seq, mean] = parseInputs( varargin, {'state','ens','seq','mean'}, {false, false, false, false}, {'b','b','b','b'} );
-
-% Determine which indices to uncouple
-toggle = getUncouplerSwitches(state, ens, seq, mean);
+% Get the nowarn toggle
+nowarn = parseInputs( varargin, {'nowarn'}, {false}, {'b'} );
+warnArg = {};
+if nowarn
+    warnArg = {'nowarn'};
+end
 
 % Get the variable indices
-varDex = checkDesignVar(design, vars);
+v = unique( checkDesignVar(design, vars) );
+xv = checkDesignVar(design, template);
 
-% Get the field names
-field = {'isCoupled','coupleState','coupleSeq','coupleMean'};
+% Mark as uncoupled and get any secondary coupled variables.
+[design, rv] = unrelateVars( design, v, xv, 'isCoupled', nowarn);
 
-% For each field being uncoupled
-for f = 1:numel(field)
-    if toggle(f)
-        
-        % Uncouple each variable
-        for v = 1:numel(varDex)
-            design.(field{f})(v, [1:v-1, v+1:end]) = false;
-        end
-    end
+% If the template is a default couple, remove the other variables from the
+% default coupling
+if design.defCouple(xv)
+    design.defCouple(v) = false;
 end
+
+% Uncoupled variables cannot be synced, so unsync from any variables that
+% were uncoupled.
+for k = 1:numel(rv)
+    design = unsyncVariables( design, design.varName(v), design.varName(rv(k)), warnArg{:} );
+end
+
+% Notify user of uncoupling
+fprintf(['Uncoupled variables ', sprintf('%s, ', design.varName(v)'), ...
+         'from ', sprintf('%s, ', design.varName(rv)), '\b\b\n\n']);
 
 end

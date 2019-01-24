@@ -7,11 +7,12 @@ classdef varDesign
     
     % The values needed for each variable.
     properties
+        name;  % Variable name
+        
         % Grid file properties
         file; % File name
         dimID; % Dimensional ordering
         dimSize; % Dimension size
-        name;  % Variable name
         meta; % Metadata
         
         % Index properties
@@ -24,9 +25,11 @@ classdef varDesign
         nanflag;  % How to treat NaN
         
         % State vs Ensemble properties
-        dimSet;  % Whether the dimension was previously set
         isState; % Whether a dimension is a state dimension.
         ensMeta; % The metadata value for ensemble dimensions
+        
+        % Coupler property
+        overlap; % Whether an ensemble dimension permits non-duplicate overlapping sequences
     end
         
     methods
@@ -38,13 +41,25 @@ classdef varDesign
             
             % Get the dimID
             [meta, dimID, dimSize] = metaGridfile( file );
+            
+            % Ensure that the gridfile contains all known IDs
+            [allID] = getKnownIDs;
+            if any(~ismember(allID, dimID))
+                missing = allID{ find(~ismember(allID, dimID),1) };
+                error(['The gridfile %s is missing the dimension %s.\n',...
+                       'The function getKnownIDs.m may have been edited after the gridfile was created.'], file, missing);
+            end
+                
+            % Set metadata
             obj.dimID = dimID;
             obj.dimSize = dimSize;
             obj.meta = meta;
             
-            % Get the name
-            if ~exist('name','var')
-                name = meta.var;
+            % Get the name. Convert to string
+            if ischar(name) && isrow(name)
+                name = string(name);
+            elseif ~isstring(name) || ~isscalar(name)
+                error('name must be a string.');
             end
             obj.name = name;
                 
@@ -59,9 +74,10 @@ classdef varDesign
             obj.takeMean = false(nDim,1);
             obj.nanflag = cell(nDim,1);
             
-            obj.dimSet = false(nDim,1);
             obj.isState = true(nDim,1);
             obj.ensMeta = cell(nDim,1);
+            
+            obj.overlap = false;
             
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to 0.            

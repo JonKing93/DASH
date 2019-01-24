@@ -1,26 +1,19 @@
-function[design] = coupleVariables(design, var, template, varargin)
-%% Couples variable indices in a state vector design.
+function[design] = coupleVariables(design, vars, template, varargin )
+%% Couples specified variables in a state vector design.
 %
-% design = coupleVariables( design, var, template )
-% Couples the ensemble, state, sequence, and mean indices of two variables.
+% design = coupleVariables( design, vars, template )
+% Couples variables to a template variable.
 %
-% design = coupleVariables( ..., 'nostate' )
-% Does not couple state indices.
-%
-% design = coupleVariables( ..., 'noseq' )
-% Does not couple sequence indices.
-%
-% design = coupleVariables( ..., 'nomean' )
-% Does not couple mean indices.
+% design = coupleVariables( design, vars, template, 'nowarn' )
+% Does not notify the user about secondary coupled variables.
 %
 % ----- Inputs -----
 %
 % design: A state vector design
 %
-% var: The name of the variable that is being coupled to another variable.
+% vars: The names of the variables that are being coupled to the template.
 %
-% template: The name of the template variable. This is the variable to
-%      which the first variable is being coupled.
+% template: The name of the template variable.
 %
 % ----- Outputs -----
 %
@@ -29,47 +22,65 @@ function[design] = coupleVariables(design, var, template, varargin)
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Parse the synced variable inputs
-[syncState, syncSeq, syncMean] = parseInputs( varargin, {'nostate','noseq','nomean'}, {true, true, true}, {'b','b','b'} );
+% Parse Inputs
+[nowarn] = parseInputs( varargin, {'nowarn'}, {false}, {'b'} );
 
-% Get the variables
+% Get variable indices
+yv = checkDesignVar(design, vars);
 xv = checkDesignVar(design, template);
-template = design.var(xv);
-
-yv = checkDesignVar(design, var);
-var = design.var(yv);
-
-% Get the x metadata
-xmeta = template.meta;
-
-% For each dimension of X
-for d = 1:numel(template.dimID)
-    
-    % If a state dimension and need to sync state dimensions.
-    if template.isState(d) && syncState
-        
-        % Get the state indices for Y
-        index = getCoupledStateIndex( var, template.dimID{d}, xmeta.(template.dimID{d})(template.indices{d}) );
-        takeMean = template.takeMean(d);
-        nanflag = template.nanflag{d};
-        
-        % Set the state indices
-        design = stateDimension( design, var.name, template.dimID{d}, index, takeMean, nanflag );
-    
-    % If an ensemble dimension
-    else
-        
-        % Get the ensemble indices
-        index = getCoupledEnsIndex( var, template.dimID{d}, xmeta.(template.dimID{d})(template.indices{d}) );
-        
-        % Get synced ensemble properties
-        [seq, mean, nanflag] = getSyncedProperties( template, var, template.dimID{d}, syncSeq, syncMean );
-        
-        % Set the ensemble indices
-        design = ensDimension( design, var.name, template.dimID{d}, index, seq, mean, nanflag, template.ensMeta{d} );
-    end
+if ~isscalar(xv)
+    error('Template must be a single variable.');
 end
 
-% Mark the variables as coupled
-design = markCoupled( design, xv, yv, syncState, syncSeq, syncMean );
+% Get the full set of variable indices
+v = unique([xv; yv],'stable');
+
+% Mark the variables as coupled and get any secondary coupled variables.
+[design, v] = relateVars( design, v, 'isCoupled', nowarn);
+
+% Get the ensemble dimensions in the template variable
+ensDim = find( ~design.var(xv).isState );
+
+% For each variable that is not the template
+for k = 2:numel(v)
+    
+    % Notify user of coupling
+    fprintf(['Coupling variable %s to ', sprintf('%s, ', design.varName(v([1:k-1,k+1:end]))' ), '\b\b\n'],...
+        design.varName(v(k)));
+    
+    % Set the overlap value
+    design.var(v(k)).overlap = design.var(xv).overlap;
+    if design.var(v(k)).overlap
+        fprintf('\tEnabling overlap.');
+    end
+    
+    % If not already coupled to the template
+    if ~design.isCoupled(xv, v(k))
+    
+        % For each ensemble dimension
+        for d = 1:numel( ensDim ) 
+
+            % Get the dimension index in the coupling variable
+            dim = checkVarDim( design.var(v(k)), design.var(xv).dimID{d} );
+
+            % Flip the isState toggle to ensemble
+            design.var(v(k)).isState(dim) = false;
+
+            % Notify user
+            fprintf('\tConverting %s to an ensemble dimension.\n', design.var(xv).dimID{ensDim(d)} );
+        end
+    end
+    
+    % Set the default coupler status
+    design.defCouple(v(k)) = design.defCouple(xv); 
+    
+    % Coupler notification
+    defStr = 'Enabling';
+    if ~design.defCouple(xv)
+        defStr = 'Disabling';
+    end
+    fprintf('\t%s default coupling.\n\n', defStr);
+    
+end
+
 end

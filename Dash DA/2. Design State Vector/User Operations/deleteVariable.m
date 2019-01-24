@@ -24,11 +24,14 @@ v = checkDesignVar( design, var );
 design.var(v) = [];
 design.varName(v) = [];
 
-% Delete coupler indices
-field = {'isCoupled','coupleState','coupleSeq','coupleMean'};
+% Delete coupler and sync indices
+field = {'isCoupled','isSynced'};
 for f = 1:numel(field)
     design.(field{f})(v,:) = [];
     design.(field{f})(:,v) = [];
 end
+
+% Delete default couple and overlap
+design.defCouple(v) = [];
 
 end
