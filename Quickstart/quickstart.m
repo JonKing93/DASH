@@ -67,7 +67,7 @@ input('Please examine the design. Press enter to continue: ');
 %% Build an ensemble
 
 fprintf('Building Ensemble: ');
-nEns = 20;
+nEns = 100;
 [M, ensMeta] = buildEnsemble( d, 15 );
 fprintf('Finished.\n');
 
