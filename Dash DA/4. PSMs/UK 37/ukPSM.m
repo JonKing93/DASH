@@ -6,14 +6,19 @@
 % obj = ukPSM( obCoord )
 % Creates a ukPSM for an observation at specific coordinates.
 %
-% obj = ukPSM( obCoord, bayesFile )
+% obj = ukPSM( ..., 'bayesFile', file )
 % Uses a non-default bayes posterior file.
+%
+% obj = ukPSM( ..., 'convertT', convertT )
+% Specifies a value to ADD to DA T values to convert to Celsius.
 %
 % ----- Inputs -----
 %
 % obCoord: [lat, lon] coordinate of an observation.
 %
 % bayesFile: The name of a bayes posterior file.
+%
+% convertT: A value to ADD to DA temperatures to convert to Celsius.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATE INDICES:
@@ -42,6 +47,7 @@ classdef ukPSM < PSM
         bayes; % The bayes prior
         bayesFile; % The bayes file used
         coord; % The object coordinates
+        convertT; % Temperature conversion to Celsius
     end
     
     properties (Constant, Hidden)
@@ -51,7 +57,10 @@ classdef ukPSM < PSM
     
     methods
         % Run the PSM
-        function[uk] = runPSM( obj, M )
+        function[uk] = runPSM( obj, T )
+            
+            % Convert T to Celsius
+            T = T + obj.convertT;
             
             % Run the forward model
             uk = UK_forward_model( M, obj.bayes );
@@ -105,7 +114,7 @@ classdef ukPSM < PSM
         function obj = ukPSM( obCoord, varargin )
             
             % Check for alternate bayes file
-            [file] = parseInputs(varargin, {'bayesFile'}, {[]}, {[]});
+            [file, convertT] = parseInputs(varargin, {'bayesFile','convertT'}, {[],0}, {[],[]});
             
             % Load the bayes parameters
             if isempty(file)
@@ -114,8 +123,9 @@ classdef ukPSM < PSM
             obj.bayes = load(file);
             obj.bayesFile = file;
             
-            % Set the coordinates
+            % Set the coordinates and temperature conversion
             obj.coord = obCoord;
+            obj.convertT = convertT;
         end  
     end
     
