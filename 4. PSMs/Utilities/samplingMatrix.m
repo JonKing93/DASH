@@ -46,10 +46,12 @@ end
 
 % If 2D grid coordinates, convert to a vector
 if iscell(stateCoord)
+    gridSize = size( stateCoord{1} );
+    
     lat = stateCoord{1}(:);
     lon = stateCoord{2}(:);
     
-    gridSize = size( stateCoord{1} );
+    stateCoord = [lat, lon];
 end
 
 % Preallocate

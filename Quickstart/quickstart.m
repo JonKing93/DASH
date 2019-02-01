@@ -48,6 +48,7 @@ latNH = meta.lat>0;
 june = month(time)==6;
 altLon = 1:2:numel(meta.lon); % Use alternate longitudes for a smaller state vector.
 
+
 % Create a state vector design and add a variable
 d = stateDesign('test');
 d = addVariable(d, 'T.mat', 'T');
@@ -102,6 +103,7 @@ H = cell(nObs,1);
 for k = 1:nObs
     
     % First 3 obs are UK 37
+    
     if k < 4
         newPSM = ukPSM( obCoord(k,:), 'convertT', -273.15 );
         H{k} = newPSM.getStateIndices( ensMeta, 'T', 'time', 'June' );

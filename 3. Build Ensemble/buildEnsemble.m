@@ -62,4 +62,9 @@ for v = 1:numel(design.var)
     M(varDex{v}, :) = buildVarEnsemble( design.var(v), nEns, iLoad, iTrim );
 end
 
+% Remove any columns with NaN
+hasNaN = isnan(M);
+M(:,hasNaN) = [];
+fprintf('Found and removed %0.f ensemble members with NaN elements.', sum(hasNaN));
+
 end
