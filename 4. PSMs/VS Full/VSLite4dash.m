@@ -1,34 +1,40 @@
-function [trw,varargout] = VSLite_v2_5(phi,T1,T2,M1,M2,T,P,varargin)
-% VSLite_v2_5.m - Simulate tree ring width index given monthly climate inputs.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Basic Usage:
-%    trw = VSLite_v2_5(syear,eyear,phi,T1,T2,M1,M2,T,P)
-%    gives just simulated tree ring as ouput.
+function [trw] = VSLite4dash(phi,T1,T2,M1,M2,T,P,standard,varargin)
+%% VS-Lite optimized for the Dash framework
 %
-%   [trw,gT,gM,gE,Gr,M] =
-%    VSLite_v2_5(syear,eyear,phi,T1,T2,M1,M2,T,P)) also includes
-%    growth response to temperature, growth response to soil moisture,
-%    scaled insolation index, overall growth function = gE*min(gT,gM),
-%    and soil moisture estimate in outputs.
+% trw = VSLite4dash(phi,T1,T2,M1,M2,T,P)
+% gives just simulated tree ring as ouput.
 %
-% Basic Inputs:
-%   syear = start year of simulation.
-%   eyear = end year of simulation.
-%   phi = latitude of site (in degrees N)
-%   T1 = scalar temperature threshold below which temp. growth response is zero (in deg. C)
-%   T2 = scalar temperature threshold above which temp. growth response is one (in deg. C)
-%   M1 = scalar soil moisture threshold below which moist. growth response is zero (in v/v)
-%   M2 = scalar soil moisture threshold above which moist. growth response is one (in v/v)
-%     (Note that optimal growth response parameters T1, T2, M1, M2 may be estimated
-%      using code estimate_vslite_params_v2_5.m also freely available at
-%      the NOAA NCDC Paleoclimatology software library.)
-%   T = (12 x Nyrs) matrix of ordered mean monthly temperatures (in degEes C)
-%   P = (12 x Nyrs) matrix of ordered accumulated monthly precipitation (in mm)
+% [...] = VSLite4dash( ..., 'lbparams', lbparams )
+% Specifies the parameters of the leaky bucket model.
 %
-% Advanced Inputs (must be specified as property/value pairs):
-%   'lbparams':  Parameters of the Leaky Bucket model of soil moisture.
-%                These may be specified in an 8 x 1 vector in the following
-%                order (otherwise the default values are read in):
+% [...] = VSLite4dash( ..., 'intwindow', intwindow )
+% Specify the growth response window. This is the window used to determine
+% seasonal sensitivity.
+%
+% [...] = VSLite4dash( ..., 'hydroclim', H )
+% Specifies whether P or M is provided as input.
+%
+% ----- Inputs -----
+%
+% phi: Site latitude in degrees N
+%
+% T1: Scalar temperature threshold below which growth response is 0. (in Degrees C)
+% T2: Scalar temperature threshold above which growth response is 1. (degrees C)
+% M1: Scalar soil moisture threshold below which growth response is 0. (in v/v)
+% M2: Scalar soil moisture threshold above which growth response is 1. (in v/v)
+% *** Note that T1, T2, M1, and M2 may be estimated using estimate_vslite_params_v2_5.m 
+%
+% T = (12 x nEns) matrix of ordered mean monthly temperatures (in
+% degrees C). For a Northern Hemisphere site, the months should be in order
+% from January to December in the year of growth. For a Southern Hemisphere
+% site the months should be in order from July in the starting year of
+% growth to June of the next year.
+%
+% P = (nMonth x nEns) matrix of ordered accumulated monthly precipitation
+% (in mm). Follows the same month ordering scheme as T.
+%
+% lbparams:  Parameters of the Leaky Bucket model of soil moisture. An
+%           8 x 1 vector in the following order.
 %                   Mmax: scalar maximum soil moisture content (in v/v),
 %                     default value is 0.76
 %                   Mmin: scalar minimum soil moisture (in v/v), default
@@ -44,25 +50,17 @@ function [trw,varargout] = VSLite_v2_5(phi,T1,T2,M1,M2,T,P,varargin)
 %                   M0: initial value for previous month's soil moisture at
 %                     t = 1 (in v/v), default value is 0.2
 %                   substep: logical 1 or 0; perform monthly substepping in
-%                     leaky bucket (1) or not (0)? Default value is 0.
-%   'intwindow': Integration window. Which months' growth responses should
-%                be intregrated to compute the annual ring-width index?
-%                Specified as a 2 x 1 vector of integer values. Both
-%                elements are given in integer number of months since January
-%                (July) 1st of the current year in the Northern (Southern)
-%                hemisphere, and specify the beginning and end of the integration
-%                window, respectively. Defaults is [1 ; 12] (eg. integrate
-%                response to climate over the corresponding calendar year,
-%                assuming location is in the northern hemisphere).
-%   'hydroclim': Value is a single character either taking value ['P'] or ['M'].
-%                If ['M'], then 9th input is interpreted as an estimate of
-%                soil moisture content (in v/v) rather than as precipitation.
-%                Model default is to read in precipitation and use the CPC's
-%                Leaky Bucket model of hydrology to estimate soil moisture,
-%                however if soil moisture observations or a more sophisticated
-%                estimate of moisture accounting for snow-related processes
-%                is available, then using these data directly are recommended
-%                (and will also speed up code).
+%                     leaky bucket (1) or not (0). Default value is 0.
+%
+%   intwindow: A 2x1 vector indicating which month's growth responses should
+%              be integrated. 
+%
+%   H: A single character indicating whether P (precipitation) or M (soil
+%   moisture) is provided as input. If M, then the leaky bucket model is
+%   disabled and the value of M is used to calculate growth.
+
+
+% ----- References -----
 %
 % For more detailed documentation, see:
 % 1) Tolwinski-Ward et al., An efficient forward model of the climate
@@ -78,86 +76,39 @@ function [trw,varargout] = VSLite_v2_5(phi,T1,T2,M1,M2,T,P,varargin)
 % (2013), DOI: 10.5194/cp-9-1-2013
 %
 % 4) Documentation available with the model at http://www.ncdc.noaa.gov/paleo/softlib/softlib.html
-%
-% Revision History
-% v0.1 - Original coding at monthly timestep from full daily timestep model (SETW, 4/09)
-% v1.0 - Changed soil moisture module to the CPC Leaky Bucket model (SETW, 5/09)
-% v1.1 - No upper parametric bounds for gT, gW as in full model; no density module (SETW, 9/09)
-% v1.2 - Added adjustable integration window parameters (SETW, 1/10)
-% v2.0 - Minor debugging for Octave compatibility, final version for publication (SETW, 10/10)
-% v2.1 - Error in evapotranspiration calculation corrected (SETW, 7/11)
-% v2.2 - Add switch to allow for monthly sub-stepping in soil moisture computation (SETW, N.Graham, K.Georgakaos, 9/11)
-% v2.3 - Add switch to allow moisture M to be given as input rather than estimated
-%        from T and P; add variable input options and improve
-%        commenting (SETW, 7/13)
-% v2.4 MNE debugged for using soil moisture inputs at l. 97-131
-% v2.5 Nick Graham (7/31/14) pointed out mistake in calculation of istar and
-% I at l. 350-352 and l. 484-486 in version 2.3, following Huang et al (1996), Equ. 3a:
-%
-%  i = (Tm/5) ** 1.514
-% 
-% - Here Tm is the climatological long-term monthly mean temperature
-% for month m - calculated over some suitable period. so there are
-% implicitly 12 values of i, and these are summed to give the
-% climatological value I for that site -
-%
-%  I = sum over 1-12 i(m)
-%
-% Note that this value could be calculated prior to beginning the
-% actual simulation.
-%
-% implemented by MNE (8/6/14).
-%
-% v2.5: also added Gr as an output, as varargout(5), and shuffling
-% varargout(4-8) to varargout(5-9). 
-%
-% v2.?: Jonathan King: Fixed leaky bucket inputs and replaced years with
-% nEns
 
-% Parameters of the Leaky Bucket model:
-Mmax = 0.76;
-Mmin = 0.01;
-alph = 0.093;
-m_th = 4.886;
-mu_th = 5.80;
-rootd = 1000;
-M0 = 0.2;
-substep = 0;
-% Integration window parameters:
-I_0 = 1;
-I_f = 12;
-% Hydroclimate variable:
-hydroclim = 'P';
+% Parse the inputs and set the defaults
+[lbparams, intwindow, hydroclim] = parseInputs( varargin, {'lbparams','intwindow','hydroclim'}, ...
+        {[0.76, 0.01, 0.093, 4.886, 5.80, 1000, 0.2, 0], [1 12], 'P'}, ...
+        {[],[],{'P','M'}} );
+    
+% Error check the inputs
+errCheck( phi, T1, T2, M1, M2, T, P, standard, lbparams, intwindow );
+    
+% Use the original VSLite variable names
+Mmax = lbparams(1);
+Mmin = lbparams(2);
+alph = lbparams(3);
+m_th = lbparams(4);
+mu_th = lbparams(5);
+rootd = lbparams(6);
+M0 = lbparams(7);
+substep = lbparams(8);
 
-% Read in advanced inputs if user-specified:
-if nargin > 9
-    for i = 1:nargin-10
-        namein = varargin{i};
-        switch namein
-            case 'lbparams'
-                Mmax = varargin{i+1}(1);
-                Mmin = varargin{i+1}(2);
-                alph = varargin{i+1}(3);
-                m_th = varargin{i+1}(4);
-                mu_th = varargin{i+1}(5);
-                rootd = varargin{i+1}(6);
-                M0 = varargin{i+1}(7);
-                substep = varargin{i+1}(8);
-            case 'intwindow'
-                I_0 = varargin{i+1}(1);
-                I_f = varargin{i+1}(2);
-            case 'hydroclim'
-                hydroclim = varargin{i+1};
-        end
-    end
+% Preallocate growth responses and soil moisture variables.
+nEns = size(T,2);
+gT = NaN(12,nEns);
+gM = NaN(12,nEns);
+M = NaN(12,nEns);
+
+% Permute SH months to match the original VS-Lite scheme
+if phi < 0
+    T = T([7:12, 1:6], :);
+    P = P([7:12, 1:6], :);
+    intwindow(intwindow>6) = intwindow(intwindow>6)-6;
+    intwindow(intwindow<6) = intwindow(intwindow<6)+6;
 end
-%%% Pre-allocate storage for outputs: %%%%
-Gr = NaN(12,nyrs);
-gT = NaN(12,nyrs);
-gM = NaN(12,nyrs);
-M = NaN(12,nyrs);
-potEv = NaN(12,nyrs);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Load in or estimate soil moisture:
 if strcmp(hydroclim,'M')
     % Read in soil moisture:
@@ -173,98 +124,80 @@ else
         return
     end
 end
+
 % Compute gE, the scaled monthly proxy for insolation:
 gE = Compute_gE(phi);
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Now compute growth responses to climate, and simulate proxy:
-%%%%%%%%%%%%%%%%
-% syear = start (first) year of simulation
-% eyear = end (last) year of simulation
-% cyear = year the model is currently working on
-% iyear = index of simulation year
-% Compute monthly growth response to T & M, and overall growth response G:
-for cyear=1:nEns      % begin cycling over years
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    for t = 1:12  % begin cycling over months in a year
-        %%% Calculate Growth Response functions gT(t) and gM(t)
-        % First, temperature growth response:
-        x = T(t,cyear);
-        if (x < T1)
-            gT(t,cyear) = 0;
-        elseif (x >= T1) && (x <= T2)
-            gT(t,cyear) = (x - T1)/(T2 - T1);
-        elseif (x >= T2)
-            gT(t,cyear) = 1;
-        end
-        % Next, Soil moisture growth response:
-        x = M(t,cyear);
-        if (x < M1)
-            gM(t,cyear) = 0;
-        elseif (x >= M1) && (x <= M2)
-            gM(t,cyear) = (x - M1)/(M2 - M1);
-        elseif (x >= M2)
-            gM(t,cyear) = 1;
-        end
-    end % end month (t) cycle
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Compute overall growth rate:
-    Gr(:,cyear) = gE.*min(gT(:,cyear),gM(:,cyear));
-end % end year cycle
-%%%%%%%%%%%%%% Compute proxy quantity from growth responses %%%%%%%%%%%%%%%
-width = NaN*ones(nEns,1);
-if phi>0 % if site is in the Northern Hemisphere:
-    if I_0<0 % if we include part of the previous year in each year's modeled growth:
-        startmo = 13+I_0;
-        endmo = I_f;
-        % use average of growth data across modeled years to estimate first year's growth due
-        % to previous year:
-        width(1) = sum(Gr(1:endmo,1)) + sum(mean(Gr(startmo:12,:),2));
-        for cyear = 2:nEns
-            width(cyear) = sum(Gr(startmo:12,cyear-1)) + sum(Gr(1:endmo,cyear));
-        end
-    else % no inclusion of last year's growth conditions in estimates of this year's growth:
-        startmo = I_0+1;
-        endmo = I_f;
-        for cyear = 1:nEns
-            width(cyear) = sum(Gr(startmo:endmo,cyear));
-        end
-    end
-elseif phi<0 % if site is in the Southern Hemisphere:
-    % (Note: in the Southern Hemisphere, ring widths are dated to the year in which growth began!)
-    startmo = 7+I_0; % (eg. I_0 = -4 in SH corresponds to starting integration in March of cyear)
-    endmo = I_f-6; % (eg. I_f = 12 in SH corresponds to ending integraion in June of next year)
-    for cyear = 1:nEns-1
-        width(cyear) = sum(Gr(startmo:12,cyear)) + sum(Gr(1:endmo,cyear+1));
-    end
-    % use average of growth data across modeled years to estimate last year's growth due
-    % to the next year:
-    width(nEns) = sum(Gr(startmo:12,nEns))+...
-        sum(mean(Gr(1:endmo,:),2));
-end
-%
-trw = ((width-mean(width))/std(width))'; % proxy series is standardized width.
-%
-if nargout >=1
-    varargout(1) = {gT};
-    varargout(2) = {gM};
-    varargout(3) = {gE};
-    varargout(4) = {Gr};
-    varargout(5) = {M};
-    varargout(6) = {potEv};
-    varargout{7} = {width};
-    varargout{8} = {mean(width)};
-    varargout{9} = {std(width)};
-end
-%
-end
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%% SUBROUTINES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%% LEAKY BUCKET WITH SUBSTEPPING %%%%%%%%%%%%%%%%%%%%%%%%
+% Permute gE for the southern hemisphere
+if phi < 0
+    gE = gE([7:12, 1:6]);
+end
+
+% Get the months that are below T1 and above T2
+lessT1 = T < T1;
+greatT2 = T > T2;
+
+% Get the temperature growth responses
+gT( lessT1 ) = 0;
+gT( greatT2 ) = 1;
+gT( ~lessT1 & ~greatT2 ) = ( T(~lessT1 & ~greatT2) - T1 ) ./ (T2 - T1);
+
+% Get the months that are below M1 and above M2
+lessM1 = M < M1;
+greatM2 = M > M2;
+
+% Get the moisture growth responses
+gM(lessM1) = 0;
+gM(greatM2) = 1;
+gM(~lessM1 & ~greatM2) = ( M(~lessM1 & ~greatM2) - M1 ) ./ (M2 - M1);
+
+% Compute Growth rate
+Gr = gE .* min( gT, gM );
+
+% Grow the tree rings
+width = sum( Gr(intwindow,:) );
+
+% Standardize the proxy series based on the initial ensemble
+trw = (width - standard(1)) / standard(2);
+
+end
+
+
+%% Subroutines
+
+% Error check
+function[] = errCheck( phi, T1, T2, M1, M2, T, P, standard, lbparams, intwindow )
+
+if ~isscalar(phi) || phi<-90 || phi>90
+    error('phi must be a scalar on the interval [-90, 90]');
+end
+if ~isscalar(T1) || ~isscalar(T2) || ~isscalar(M1) || ~isscalar(M2)
+    error('T1, T2, M1, and M2 must all be scalars.');
+end
+if size(T,1)~=12
+    error('T must have 12 rows. (One for each month).');
+elseif size(P,1)~=12
+    error('P must have 12 rows. (One for each month).');
+elseif size(T,2) ~= size(P,2)
+    error('T and P must have the same number of columns. (One for each ensemble member.');
+elseif numel(standard)~=2 || ~isnumeric(standard)
+    error('standard must be a numeric vector with two elements.');
+elseif numel(lbparams)~=8 || ~isvector(lbparams) || ~isnumeric(lbparams)
+    error('lbparams must be a numeric vector with 8 elements.');
+end
+
+% Int window
+if ~isvector(intwindow) || ~isnumeric(intwindow) || any(intwindow<1) || any(intwindow>12)
+    error('intwindow must be a numeric vector on the interval [1, 12]');
+elseif any( mod(intwindow,1)~=0 )
+    error('All elements in intwindow must be integers.');
+elseif numel(unique(intwindow)) ~= numel(intwindow)
+    error('intwindow cannot contain duplicate elements.');
+end
+    
+end
+
+% Leaky Bucket with substepping
 function [M,potEv,ndl,cdays] = leakybucket_submonthly(nEns,phi,T,P,...
     Mmax,Mmin,alph,m_th,mu_th,rootd,M0)
 % leackybucket_submonthly.m - Simulate soil moisture; substeps within monthly timesteps
@@ -278,8 +211,8 @@ function [M,potEv,ndl,cdays] = leakybucket_submonthly(nEns,phi,T,P,...
 %   syear = start year of simulation.
 %   eyear = end year of simulation.
 %   phi = latitude of site (in degrees N)
-%   T = (12 x Nyrs) matrix of ordered mean monthly temperatures (in degEes C)
-%   P = (12 x Nyrs) matrix of ordered accumulated monthly precipitation (in mm)
+%   T = (12 x nEns) matrix of ordered mean monthly temperatures (in degEes C)
+%   P = (12 x nEns) matrix of ordered accumulated monthly precipitation (in mm)
 %   Mmax = scalar maximum soil moisture held by the soil (in v/v)
 %   Mmin = scalar minimum soil moisture (for error-catching) (in v/v)
 %   alph = scalar runoff parameter 1 (in inverse months)
@@ -289,7 +222,7 @@ function [M,potEv,ndl,cdays] = leakybucket_submonthly(nEns,phi,T,P,...
 %   M0 = initial value for previous month's soil moisture at t = 1 (in v/v)
 %
 % Outputs:
-%   M = soil moisture computed via the CPC Leaky Bucket model (in v/v, 12 x Nyrs)
+%   M = soil moisture computed via the CPC Leaky Bucket model (in v/v, 12 x nEns)
 %   potEv = potential evapotranspiration computed via Thornthwaite's 1947 scheme (in mm)
 %
 % SETW+ N. Graham and K. Georgakakos 2011
@@ -413,8 +346,8 @@ for cyear=1:nEns      % begin cycling over years
 end % end year cycle
 
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%% LEAKY BUCKET WITHOUT SUBSTEPPING %%%%%%%%%%%%%%%%%%%%%
+
+% Leaky Bucket without substepping
 function [M,potEv,ndl,cdays] =...
     leakybucket_monthly(nEns,phi,T,P,Mmax,Mmin,alph,m_th,mu_th,rootd,M0)
 % leackybucket_monthly.m - Simulate soil moisture with coarse monthly time step.
@@ -426,8 +359,8 @@ function [M,potEv,ndl,cdays] =...
 %   syear = start year of simulation.
 %   eyear = end year of simulation.
 %   phi = latitude of site (in degrees N)
-%   T = (12 x Nyrs) matrix of ordered mean monthly temperatures (in degEes C)
-%   P = (12 x Nyrs) matrix of ordered accumulated monthly precipitation (in mm)
+%   T = (12 x nEns) matrix of ordered mean monthly temperatures (in degEes C)
+%   P = (12 x nEns) matrix of ordered accumulated monthly precipitation (in mm)
 %   Mmax = scalar maximum soil moisture held by the soil (in v/v)
 %   Mmin = scalar minimum soil moisture (for error-catching) (in v/v)
 %   alph = scalar runoff parameter 1 (in inverse months)
@@ -437,7 +370,7 @@ function [M,potEv,ndl,cdays] =...
 %   M0 = initial value for previous month's soil moisture at t = 1 (in v/v)
 %
 % Outputs:
-%   M = soil moisture computed via the CPC Leaky Bucket model (in v/v, 12 x Nyrs)
+%   M = soil moisture computed via the CPC Leaky Bucket model (in v/v, 12 x nEns)
 %   potEv = potential evapotranspiration computed via Thornthwaite's 1947 scheme (in mm)
 %
 % SETW 2011
@@ -551,8 +484,8 @@ for cyear=1:nEns     % begin cycling over years
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end % end year cycle
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%% SCALED DAYLENGTH %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Insolation growth response
 function [gE] = Compute_gE(phi)
 % Just what it sounds like... computes just gE from latitude a la VS-Lite,
 % but without all the other stuff.
@@ -601,5 +534,3 @@ for t = 1:12
 end
 %%%%%%%%%%%%%%%
 end
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
