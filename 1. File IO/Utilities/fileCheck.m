@@ -20,13 +20,12 @@ function[m] = fileCheck( file, readOnly )
 % Jonathan King, University of Arizona, 2019
 
 % Check that the file is a .mat file
-if isstring(file)
-    file = char(file);
-elseif ~ischar(file) || ~isvector(file)
-    error('File name must be a character vector.');
+if ~isstrflag(file)
+    error('File name must be a string.');
 end
-if ~strcmpi( file(end-3:end), '.mat' )
-    error('File must be a .mat file.');
+file = char(file);
+if ~strcmpi( file(end-4:end), '.grid' )
+    error('File must be a .grid file.');
 end
 
 % Get the matfile

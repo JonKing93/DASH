@@ -20,14 +20,13 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check that the file is a .mat file
-if isstring(file)
-    file = char(file);
-elseif ~ischar(file) || ~isvector(file)
-    error('File name must be a character vector.');
+% Check that the file is a string
+if ~isstrflag(file)
+    error('File name must be a string.');
 end
-if ~strcmp( file(end-3:end), '.mat' )
-    error('The file must be a .mat file.');
+file = char(file);
+if strcmp( file(end-4:end), '.grid' )
+    error('File must end in a .grid extension.');
 end
 
 % Get the size of all non-trailing singletons
@@ -82,6 +81,6 @@ end
 gridSize = size(gridData);
 
 % Save a v7.3 matfile to enable partial loading
-save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-v7.3');
+save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
 
 end
