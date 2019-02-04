@@ -21,7 +21,7 @@ function[ic, nAdd] = getIndexCell( m, sCurr, loc )
 % Jonathan King, University of Arizona, 2019
 
 % Get the size of the existing data
-sData = size( m.gridData );
+sData = m.gridSize;
 nDim = numel(sData);   
 dimID = m.dimID;
 
