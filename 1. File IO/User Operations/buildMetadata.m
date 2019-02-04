@@ -1,4 +1,4 @@
-function[meta] = buildMetadata( gridData, gridDims, varName, varargin)
+function[meta] = buildMetadata( gridSize, gridDims, varName, varargin)
 %% This converts user metadata to the structure used by dash. Metadata in
 % unspecified dimensions is set to NaN. Checks that metadata size matches
 % the size of gridded data.
@@ -42,8 +42,8 @@ nDim = numel(knownID);
 permDex = getPermutation( knownID, gridDims, knownID );
 dimID = knownID(permDex);
 
-% Get the size of the gridded data
-sData = fullSize( gridData, nDim );
+% Get the size of the gridded data including singleton dimensions
+gridSize( end+1:nDim ) = 1;
 
 % Create a cell to hold the metadata fields
 metaCell = cell( nDim*2, 1 );
@@ -61,7 +61,7 @@ for v = 1:2:numel(varargin)
     value = varargin{v+1};
     if ~isvector( value )
         error('Metadata must be a vector');
-    elseif numel(value) ~= sData(index)
+    elseif numel(value) ~= gridSize(index)
         error('The size of the %s metadata does not match the size of the dimension in the gridded data.', dimID{index} );
     end
     
@@ -75,7 +75,7 @@ end
 % Fill any unspecified metadata with NaN
 for m = 2:2:numel(metaCell)
     if isempty( metaCell{m} )
-        metaCell{m} = NaN( sData(m/2), 1 );
+        metaCell{m} = NaN( gridSize(m/2), 1 );
     end
 end
 
