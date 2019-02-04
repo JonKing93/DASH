@@ -1,11 +1,11 @@
-function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
+function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
 %% Implements data assimilation using dynamic PSMs or the tardif method.
 %
-% [A, Ye] = dash( M, D, R, w, inflate, 'full', H, F)
+% [A, Ye] = dash( M, D, R, w, inflate, 'full', F)
 % Runs the DA using dynamic PSMs. Returns analysis ensemble mean and
 % variance, and the dynamically calculated Ye values.
 % 
-% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Ha, Fa )
+% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Fa )
 % Runs the DA using the appended Ye method.
 %
 % ----- Inputs -----
@@ -22,9 +22,6 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, H, F)
 % inflate: A scalar inflation factor. Leave empty for no inflation.
 %
 % F: A cell vector of proxy system models for each observation. {nObs x 1}
-%
-% H: A cell of state variable indices needed to run the forward model for
-%      each site. {nObs x 1}(nVars x 1)
 %
 % ----- Outputs -----
 %
@@ -103,7 +100,7 @@ if append
         end
         
         % Generate the associated Y estimates
-        Yi(d,:) = F{d}.runPSM( M(H{d},:), d, H{d} );
+        Yi(d,:) = F{d}.runPSM( M(F{d}.H, :), d, 1 );
     end
     
     % Use the trivial PSM for the DA. Just going to return the Ye values in

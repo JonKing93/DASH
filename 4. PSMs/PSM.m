@@ -1,12 +1,17 @@
 %% This is an interface that ensures that proxy models can interact with dashDA.
 %
 % Methods:
-%   runPSM( obj, M, d, H, t )
+%   runPSM( obj, M, d, t )
 %   getStateIndices( obj, ensMeta )
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 classdef (Abstract) PSM
+    
+    % Each PSM should store its own sampling indices
+    properties
+        H
+    end
     
     % A method that all proxy system models must implement
     methods (Abstract = true)
@@ -21,13 +26,11 @@ classdef (Abstract) PSM
         %
         % d: The index of the observation being processed.
         %
-        % H: The sampling indices used to select state elements
-        %
         % t: The time step being processed in the DA
-        Ye = runPSM( obj, M, d, H, t);
+        Ye = runPSM( obj, M, d, t);
 
         % This generates the sampling indices for a site
-        H = getStateIndices( obj, ensMeta );
+        getStateIndices( obj, ensMeta );
     end
     
 end

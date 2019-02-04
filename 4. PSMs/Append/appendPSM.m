@@ -9,9 +9,9 @@ classdef appendPSM < PSM
         function obj = appendPSM
         end
         
-        % Place holder for the getSampleIndices method. The sample indices
-        % are calculated by dash.m, so no method is needed here.
-        function[] = getSampleIndices(~)
+        % Set the value of H
+        function[] = getSampleIndices(obj, H)
+            obj.H = H;
         end
         
         % Run the PSM. Simply return whatever value is input.

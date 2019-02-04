@@ -1,9 +1,9 @@
-function[A, Y] = dashDA( M, D, R, w, F, H )
+function[A, Y] = dashDA( M, D, R, w, F )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
 %
-% [A, Y] = dashDA( M, D, R, w, F, H )
+% [A, Y] = dashDA( M, D, R, w, F )
 % Performs data assimilation.
 %
 % ----- Inputs -----
@@ -21,10 +21,6 @@ function[A, Y] = dashDA( M, D, R, w, F, H )
 %
 % F: An array of proxy system models of the "PSM" class. One model for each
 %      observation. (nObs x 1)
-%
-% H: A cell of state variable indices needed to run the forward model for
-%      each site. {nObs x 1}
-%      !!! Could this be dynamic?
 %
 % ----- Outputs -----
 %
@@ -78,11 +74,11 @@ for t = 1:nTime
     for d = 1:nObs
         if ~isnan(tD)
             
-            % Get the state elements required to run the PSM.
-            obSites = H{d};
+            % Get the portion of the model to pass to the PSM
+            Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
         
-            % Run the PSM
-            Ye = F{d}.runPSM( Amean(obSites)+Adev(obSites,:), d, obSites, t);
+            % Run the PSM and get the model estimates.
+            Ye = F{d}.runPSM( Mpsm, d, t);
        
             % Decompose the model estimate
             [Ymean, Ydev] = decomposeEnsemble( Ye );

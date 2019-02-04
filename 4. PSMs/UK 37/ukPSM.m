@@ -23,11 +23,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATE INDICES:
 %
-% H = getStateIndices( ensMeta, sstName )
+% getStateIndices( ensMeta, sstName )
 % Gets state indices needed to run the PSM.
 %
-% H = getStateIndices( ..., 'lev', lev)
-% H = getStateIndices( ..., 'time', time)
+% getStateIndices( ..., 'lev', lev)
+% getStateIndices( ..., 'time', time)
 % Further restricts state indices to specific time or lev points.
 % (For SST variables with multiple levels or a time sequence.)
 %
@@ -52,14 +52,14 @@ classdef ukPSM < PSM
         convertT; % Temperature conversion to Celsius
     end
     
+    % Filename for the Bayes posterior
     properties (Constant, Hidden)
-        % Filename for the Bayes posterior
         bayesDefault = 'bayes_posterior_v2.mat';
     end
     
     methods
         % Run the PSM
-        function[uk] = runPSM( obj, T, ~, ~, ~ )
+        function[uk] = runPSM( obj, T, ~, ~ )
             
             % Convert T to Celsius
             T = T + obj.convertT;
@@ -75,7 +75,7 @@ classdef ukPSM < PSM
         end
         
         % Get the sample indices
-        function[H] = getStateIndices( obj, ensMeta, sstName, varargin )
+        function[] = getStateIndices( obj, ensMeta, sstName, varargin )
 
             % Parse inputs
             [time, lev] = parseInputs(varargin, {'time','lev'}, {[],[]}, {[],[]} );
@@ -109,7 +109,7 @@ classdef ukPSM < PSM
             sstSite = samplingMatrix( obj.coord, [lat, lon], 'linear');
 
             % Get the location within the whole state vector
-            H = sstVar(sstSite);
+            obj.H = sstVar(sstSite);
         end
         
         % Constructor 
