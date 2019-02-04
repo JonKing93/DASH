@@ -50,7 +50,7 @@ else
 end
 
 % Get the size of the existing extended dimension
-nOld = m.gridSize(exDim);
+nOld = m.gridSize(1,exDim);
 
 % Set a loc for the extended dimension if unspecified
 if isempty(loc)
