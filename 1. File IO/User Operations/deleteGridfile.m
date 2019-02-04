@@ -40,7 +40,7 @@ else
 end
 
 % Get the size of the existing data
-sData = size(m.gridData);
+sData = m.gridSize;
 
 % Error check the number of indices deleted
 if ~isvector(loc) || numel(loc)~=3

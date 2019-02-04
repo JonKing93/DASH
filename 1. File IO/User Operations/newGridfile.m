@@ -25,7 +25,7 @@ if ~isstrflag(file)
     error('File name must be a string.');
 end
 file = char(file);
-if strcmp( file(end-4:end), '.grid' )
+if numel(file)<5 || ~strcmp( file(end-4:end), '.grid' )
     error('File must end in a .grid extension.');
 end
 
@@ -50,8 +50,8 @@ dimID = knownID(permDex);
 
 % Then permute the data from smallest to largest dimension to optimize
 % use with matfile indexing.
-sData = fullSize(gridData, numel(dimID));
-[sData, permDex] = sort( sData, 'ascend' );
+gridSize = fullSize(gridData, numel(dimID));
+[gridSize, permDex] = sort( gridSize, 'ascend' );
 
 gridData = permute( gridData, permDex );
 dimID = dimID(permDex);
@@ -67,7 +67,7 @@ end
 for d = 1:numel(dimID)        
     if ~isvector( meta.(dimID{d}) )
         error('Metadata field %s must be a vector.', dimID{d});
-    elseif length( meta.(dimID{d}) ) ~= sData(d)
+    elseif length( meta.(dimID{d}) ) ~= gridSize(d)
         error('Metadata for %s does not match the size of the dimension in the gridded data.', dimID{d});
     end
     
@@ -76,9 +76,6 @@ for d = 1:numel(dimID)
         meta.(dimID{d}) = meta.(dimID{d})';
     end
 end
-
-% Get the size of the gridded data
-gridSize = size(gridData);
 
 % Save a v7.3 matfile to enable partial loading
 save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
