@@ -1,4 +1,23 @@
 function[rA, dimID] = regridAnalysis( A, var, ensMeta, design )
+%% Regrids a variable from a particular time step for an update analysis.
+%
+% [rA, dimID] = regridAnalysis( A, var, ensMeta, design )
+%
+% ----- Inputs -----
+%
+% A: The mean or variance state vector from a particular time step of an
+%   udpate analysis.
+%
+% var: The name of a variable. Must be a string.
+%
+% ensMeta: Ensemble metadata
+%
+% design: A state vector design.
+%
+% ----- Outputs -----
+% rA: A regridded analysis for one variable.
+%
+% dimID: The dimensional ordering of the regridded variable.
 
 % Get the indices of the variable in the state vector
 varDex = varCheck(ensMeta, var);
@@ -31,7 +50,3 @@ rA = reshape( A(varDex), gridSize );
 dimID = var.dimID;
 
 end
-        
-    
-    
-    

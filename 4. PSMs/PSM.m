@@ -6,7 +6,7 @@
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
-classdef (Abstract) PSM
+classdef (Abstract) PSM < handle
     
     % Each PSM should store its own sampling indices
     properties
