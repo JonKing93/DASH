@@ -13,12 +13,9 @@ nSeq = 1;
 
 % For each dimension
 for d = 1:numel(var.dimID)
-    % If a state vector
+    % If a state vector and not a mean
     if var.isState(d) && ~var.takeMean(d)
         nState = nState .* numel(var.indices{d});
-        
-    elseif var.isState(d)
-        nState = nState .* 1;
         
     % If an ensemble vector
     else
