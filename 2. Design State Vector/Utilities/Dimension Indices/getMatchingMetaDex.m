@@ -42,12 +42,12 @@ else
     
     % Throw error if there are no indices
     if isempty(index)
-        error('The %s variable does not have metadata matching any of the template metadata.');
+        error('The %s variable does not have metadata matching any of the template metadata in the %s dimension.', var.name, dim);
     end
     
     % If a state index, throw error if there are missing indices
     if isState && numel(index)~=numel(meta)
-        error('The %s variable does not have metadata matching all state indices of the template variable.', var.name );
+        error('The %s variable does not have metadata matching all state indices of the template variable in the %s dimension.', var.name, dim );
     end
 end
 
