@@ -35,6 +35,9 @@ end
 % Get the full set of variable indices
 v = unique([xv; yv],'stable');
 
+% Get the prior relationship of variables
+prevCouple = design.isCoupled;
+
 % Mark the variables as coupled and get any secondary coupled variables.
 [design, v] = relateVars( design, v, 'isCoupled', nowarn);
 
@@ -55,13 +58,13 @@ for k = 2:numel(v)
     end
     
     % If not already coupled to the template
-    if ~design.isCoupled(xv, v(k))
+    if ~prevCouple(xv, v(k))
     
         % For each ensemble dimension
         for d = 1:numel( ensDim ) 
 
             % Get the dimension index in the coupling variable
-            dim = checkVarDim( design.var(v(k)), design.var(xv).dimID{d} );
+            dim = checkVarDim( design.var(v(k)), design.var(xv).dimID{ensDim(d)} );
 
             % Flip the isState toggle to ensemble
             design.var(v(k)).isState(dim) = false;

@@ -15,6 +15,10 @@ classdef varDesign
         dimSize; % Dimension size
         meta; % Metadata
         
+        % State vs Ensemble properties
+        isState; % Whether a dimension is a state dimension.
+        ensMeta; % The metadata value for ensemble dimensions
+        
         % Index properties
         indices;  % The allowed indices for state or ensemble dimensions
         seqDex;  % The indices used to get dimensional sequences
@@ -23,10 +27,6 @@ classdef varDesign
         % Mean properties
         takeMean; % Toggle to take a mean
         nanflag;  % How to treat NaN
-        
-        % State vs Ensemble properties
-        isState; % Whether a dimension is a state dimension.
-        ensMeta; % The metadata value for ensemble dimensions
         
         % Coupler property
         overlap; % Whether an ensemble dimension permits non-duplicate overlapping sequences
