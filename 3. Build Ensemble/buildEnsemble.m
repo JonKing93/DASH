@@ -63,8 +63,8 @@ for v = 1:numel(design.var)
 end
 
 % Remove any columns with NaN
-hasNaN = isnan(M);
+hasNaN = any( isnan(M) );
 M(:,hasNaN) = [];
-fprintf('Found and removed %0.f ensemble members with NaN elements.', sum(hasNaN));
+fprintf('Found and removed %0.f ensemble members with NaN elements.\n', sum(hasNaN));
 
 end

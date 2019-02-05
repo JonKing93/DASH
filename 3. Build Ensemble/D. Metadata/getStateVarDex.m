@@ -25,8 +25,8 @@ for v = 1:nVar
     % For each dimension
     for d = 1:nDim
         
-        % If a state dimension, mutliply by the number of state elts
-        if var.isState(d)
+        % If a state dimension and not a mean, mutliply by the number of state elts
+        if var.isState(d) && ~var.takeMean(d)
             nState(v) = nState(v) .* numel(var.indices{d});
         % If an ensemble dimension, mutliply by the sequence size
         else

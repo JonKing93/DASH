@@ -23,9 +23,11 @@ for v = 1:numel(design.var)
     % Set the value of the variable name metadata
     meta.(varName)( varDex{v} ) = var.name;
     
-    % Get the set of dimensionally subscripted state indices
+    % Get the number of state indices in each dimensionset of dimensionally subscripted state indices
+    index = var.indices;
     stateDim = var.isState;
-    [combDex, siz] = getAllCombIndex( var.indices(stateDim) );
+    index( var.isState & var.takeMean ) = {0};
+    [combDex, siz] = getAllCombIndex( index(stateDim) );
     subState = subdim(siz, combDex);
 
     % Get dimensionally subscripted indices for each sequence element
