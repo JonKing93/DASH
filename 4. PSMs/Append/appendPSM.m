@@ -10,7 +10,7 @@ classdef appendPSM < PSM
         end
         
         % Set the value of H
-        function[] = getSampleIndices(obj, H)
+        function[] = getStateIndices(obj, H)
             obj.H = H;
         end
         
