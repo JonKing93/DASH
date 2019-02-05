@@ -85,8 +85,13 @@ nAdd = nAdd(nAdd>0);
 newDex = nOld+1 : nOld+nAdd;
 fillDex = newDex( ~ismember(newDex, ic{exDim}) );
 
-% Add the new data
+% Set the new metadata
 oldMeta.(dimID{exDim})(newDex) = meta;
+
+% Convert to column
+oldMeta.(dimID{exDim}) = oldMeta.(dimID{exDim})(:);
+
+% Add to the grid file
 m.meta = oldMeta;
 m.gridSize(1,exDim) = m.gridSize(1,exDim) + nAdd;
 
