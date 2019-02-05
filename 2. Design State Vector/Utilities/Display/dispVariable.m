@@ -31,15 +31,17 @@ fprintf( '\t\tGridfile: %s\n', design.var(v).file );
 % Coupled Varialbes
 if any( design.isCoupled(v,:) )
     fprintf( '\t\tCoupled Variables: ' );
-    disp( design.varName( design.isCoupled(v,:) ) );
-    fprintf('\b');
+    disp( design.varName( design.isCoupled(v,:) )' );
+
+    if sum( design.isCoupled(v,:)) > 1
+        fprintf('\b');
+    end
 end
 
 % Synced Variables
 if any(design.isSynced(v,:))
-    fprintf('\t\tSynced Variables:\n');
-    disp( design.varName( design.isSynced(v,:) ) );
-    fprintf('\b');
+    fprintf('\t\tSynced Variables: ');
+    disp( design.varName( design.isSynced(v,:) )' );
 end
 
 % Overlap
