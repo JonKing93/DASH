@@ -61,6 +61,23 @@ function[weights] = covLocalization( siteCoord, stateCoord, R, scale)
 %
 % Modified to included variable/optimal length scales by Jonathan King.
 
+% !!! This sequence could be more efficient.
+% State Coord is the ensemble metadata. Find locations that are means and
+% convert to NaN.
+if ~iscell(stateCoord) || size(stateCoord,2)~=2
+    error('stateCoord must be lat and lon from the ensemble metadata.');
+end
+nState = size(stateCoord,1);
+for n = 1:nState
+    if numel(stateCoord{n,1})>1
+        stateCoord{n,1} = NaN;
+    end
+    if numel(stateCoord{n,2})>1
+        stateCoord{n,2} = NaN;
+    end
+end
+stateCoord = cell2mat(stateCoord);
+
 % If not specified, set the length scale to 1/2 the localization radius
 if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
