@@ -29,7 +29,7 @@ for v = 1:nVar
         if var.isState(d) && ~var.takeMean(d)
             nState(v) = nState(v) .* numel(var.indices{d});
         % If an ensemble dimension, mutliply by the sequence size
-        else
+        elseif ~var.isState(d)
             nState(v) = nState(v) .* numel(var.seqDex{d});
         end
     end

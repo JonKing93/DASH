@@ -18,7 +18,7 @@ for d = 1:numel(var.dimID)
         nState = nState .* numel(var.indices{d});
         
     % If an ensemble vector
-    else
+    elseif ~var.isState(d)
         nSeq = nSeq .* numel(var.seqDex{d});
     end
 end

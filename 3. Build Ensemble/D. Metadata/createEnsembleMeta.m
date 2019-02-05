@@ -52,34 +52,47 @@ for v = 1:numel(design.var)
     % For each dimension
     for d = 1:numel(var.dimID)
         
-        % If an ensemble dimension, use the sequence values in ensMeta
-        if ~var.isState(d)
-
-            % Get the ensemble metadata, convert to cell if a single sequence
+        % If a state dimension, get metadata from grid metadata
+        if var.isState(d)
+            ensMeta = var.meta.(var.dimID{d});
+            ensMeta = ensMeta( var.indices{d} );
+            
+        % If an ensemble dimension, get the ensemble metadata
+        else
             ensMeta = var.ensMeta{d};
-            if ~iscell(ensMeta)
+            
+            % !!!!!! This line is could be better. Improve it in V2
+            % If no metadata was provided, just set as NaN
+            if isempty(ensMeta)
+                ensMeta = NaN( max(subDex(:,d)), 1);
+            end
+        end
+        
+        % If taking a mean
+        if var.takeMean(d)
+            
+            % Place the metadata collection in a cell
+            if ~iscell(ensMeta) || numel(ensMeta)>1
                 ensMeta = {ensMeta};
             end
             
-            % Do the dimensional subscripting
-            meta.(var.dimID{d})(varDex{v}) = ensMeta(subDex(:,d));
-        
-        % If a state dimension...
+            % Replicate over the variable indices
+            ensMeta = repmat( ensMeta, [numel(varDex{v}), 1] );
+            
+        % If not taking a mean
         else
             
-            % Get the variable metadata at each state element
-            varMeta = var.meta.(var.dimID{d});
-            varMeta = varMeta( var.indices{d} );
-            varMeta = varMeta(subDex(:,d));
+            % Index to the appropriate metadata value for each element
+            ensMeta = ensMeta( subDex(:,d) );
             
-            % If not a cell, convert to a cell
-            if ~iscell(varMeta)
-                varMeta = num2cell(varMeta);
+            % Convert to cell if numeric
+            if ~iscell(ensMeta)
+                ensMeta = num2cell(ensMeta);
             end
-            
-            % Add to the ensemble metadata
-            meta.(var.dimID{d})(varDex{v}) = varMeta;
         end
+        
+        % Save to the ensemble metadata
+        meta.(var.dimID{d})(varDex{v}) = ensMeta;
     end
 end
 
