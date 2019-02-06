@@ -72,7 +72,7 @@ for t = 1:nTime
     
     % For each observation that is not a NaN
     for d = 1:nObs
-        if ~isnan(tD)
+        if ~isnan(tD(d))
             
             % Get the portion of the model to pass to the PSM
             Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
@@ -92,7 +92,13 @@ for t = 1:nTime
         
             % Update
             Amean = Amean + K*( tD(d) - Ymean );
+            if any(isnan(Amean))
+                'hie';
+            end
             Adev = Adev - (a * K * Ydev);
+            if any(isnan(Adev(:)))
+                'hui';
+            end
             
             % Record Y if desired as output
             if nargout>1
@@ -108,7 +114,11 @@ for t = 1:nTime
     
     % Record the mean and variance of the analysis.
     Avar = var( Adev, 0, 2 );
+    try
     A(:,t,:) = [Amean, Avar];
+    catch
+        'hi';
+    end
 end
 
 end
