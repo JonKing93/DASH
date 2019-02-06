@@ -3,10 +3,13 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
 %
 % [A, Ye] = dash( M, D, R, w, inflate, 'full', F)
 % Runs the DA using dynamic PSMs. Returns analysis ensemble mean and
-% variance, and the dynamically calculated Ye values.
+% variance, and the PSM-calculated Ye values.
 % 
-% [A, {Yi, Ymv, Yf}]  = dash( M, D, R, w, inflate, 'append', Fa )
-% Runs the DA using the appended Ye method.
+% [A, Yi, Yu, Yf]  = dash( M, D, R, w, inflate, 'append', Fa )
+% Runs the DA using the appended Ye method. Returns ensemble analysis mean
+% and variance. Also returns the initial Ye (calculated using the PSMs),
+% the linearly updated Ye used in each serial update, and the final value
+% Ye for each time step. 
 %
 % ----- Inputs -----
 %
@@ -14,28 +17,27 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
 %
 % D: The observations. (nObs x nTime)
 %
-% R: Observation uncertainty. (nObs x nTime) OR [] for dynamic generation.
-%      NaN elements will be dynamically generated.
+% R: Observation uncertainty. (nObs x nTime).
 %
-% w: Covariance localization weights. Leave empty for no localization.
+% w: Covariance localization weights. Use [] for no localization.
 %
-% inflate: A scalar inflation factor. Leave empty for no inflation.
+% inflate: A scalar inflation factor. Use [] for no inflation.
 %
-% F: A cell vector of proxy system models for each observation. {nObs x 1}
+% F: A cell vector of PSM objects for each observation. {nObs x 1}
 %
 % ----- Outputs -----
 %
-% A: Output Analysis mean and variance. (nState x nTime x 2)
+% A: Update analysis mean and variance. (nState x nTime x 2). The first
+%       element of dim3 is mean, the second element is variance.
 %
 % Ye: Dynamically generated model estimates for sequential updates. (nObs x nEns x nTime)
 %
-% Yi: The initial Ye values calculated for the appended method. (nObs x nEns x nTime)
+% Yi: The initial Ye values for the appended method calculated using PSMs. (nObs x nEns)
 %
-% Ymv: The mean and variance of Ye values used for each serial update in
-%      the appended method. The first element of dim3 is the mean, and the
-%      second element is the variance. (nObs x nTime x 2)
+% Yu: The linearly updated Ye value used in each serial update of the 
+%      appended method. (nObs x nEns x nTime)
 %
-% Yf: The final Ye values at the end of the appended method. (nObs x nEns x nTime)
+% Yf: The final Ye values at each time step for the appended method. (nObs x nEns x nTime)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -115,7 +117,7 @@ if append
     M = [M;Yi];
     
     % Run the DA
-    [A, Ye] = dashDA( M, D, R, w, F, H );
+    [A, Ye] = dashDA( M, D, R, w, F );
     
     % Unappend
     Yf = A(nState+1:end,:,:);
@@ -128,7 +130,7 @@ if append
 %% Full DA
 % Super simple, just run DA directly.
 else
-    [A, Ye] = dashDA( M, D, R, w, F, H );
+    [A, Ye] = dashDA( M, D, R, w, F );
 end
 
 end

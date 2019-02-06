@@ -49,26 +49,26 @@ A = NaN( nState, nTime, 2 );
 [Mmean, Mdev] = decomposeEnsemble(M);
 
 % Preallocate Ye if it is desired as output.
+recordYe = false;
 if nargout>1
     Y = NaN( nObs, nEns, nTime);
+    recordYe = true;
 end
 
 % Each time step is independent, process in parallel
 for t = 1:nTime
     
-    % Slice variables to minimize parallel overhead
+    % Slice variables to minimize parallel overhead. Preallocate Ye for the
+    % time step to slice Ye output.
     tD = D(:,t);
     tR = R(:,t);
+    if recordYe
+        Ycurr = NaN(nObs, nEns);
+    end
     
     % Initialize the update for this time step
     Amean = Mmean;
-    Adev = Mdev;
-    
-    % If recording Ye, preallocate all Ye for the current time step to
-    % allow sliced output for minimal parallel overhead.
-    if nargout>1
-        Ycurr = NaN(nObs, nEns);
-    end
+    Adev = Mdev;    
     
     % For each observation that is not a NaN
     for d = 1:nObs
@@ -76,49 +76,42 @@ for t = 1:nTime
             
             % Get the portion of the model to pass to the PSM
             Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
-        
-            % Run the PSM and get the model estimates.
-            Ye = F{d}.runPSM( Mpsm, d, t);
-       
-            % Decompose the model estimate
-            [Ymean, Ydev] = decomposeEnsemble( Ye );
             
-            % Somewhere around here should be the option for DA derived
-            % values for R
-            % !!!!! So implement it.
-        
-            % Get the Kalman gain and alpha
-            [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
-        
-            % Update
-            Amean = Amean + K*( tD(d) - Ymean );
-            if any(isnan(Amean))
-                'hie';
-            end
-            Adev = Adev - (a * K * Ydev);
-            if any(isnan(Adev(:)))
-                'hui';
-            end
+            % Run the PSM.
+            [Ye, update] = getPSMOutput( F{d}, Mpsm, d, t, nEns );
             
-            % Record Y if desired as output
-            if nargout>1
-                Ycurr(d,:) = Ye;
-            end     
+            % If no errors occured in the PSM, update the analysis
+            if update
+
+                % Decompose the model estimate
+                [Ymean, Ydev] = decomposeEnsemble( Ye );
+
+                % !!! Somewhere around here should be the option
+                % to dynamically generate R.
+
+                % Get the Kalman gain and alpha
+                [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
+
+                % Update
+                Amean = Amean + K*( tD(d) - Ymean );
+                Adev = Adev - (a * K * Ydev);
+
+                % Record Y if desired as output
+                if recordYe
+                    Ycurr(d,:) = Ye;
+                end     
+            end
         end
     end
     
     % Record the Y estimates for this time step.
-    if nargout > 1
+    if recordYe
         Y(:,:,t) = Ycurr;
     end
     
     % Record the mean and variance of the analysis.
     Avar = var( Adev, 0, 2 );
-    try
     A(:,t,:) = [Amean, Avar];
-    catch
-        'hi';
-    end
 end
 
 end
