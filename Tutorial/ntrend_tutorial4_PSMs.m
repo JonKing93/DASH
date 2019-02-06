@@ -129,7 +129,7 @@ Tclim(:,del) = [];
 % the remaining 51 sites. It is important to use a cell array and not a
 % numeric array because dash assumes that all PSMs are in a cell array.
 % This is because you cannot concatenate different PSM types in a [] array.
-F = cell(51,1);
+F = cell(numel(lat),1);
 
 % Now, I'm going to use the constructor function for each NTREND site. Each
 % time I call it, I will give it the coordinates, T and M thresholds, the

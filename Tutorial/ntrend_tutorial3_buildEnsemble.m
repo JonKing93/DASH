@@ -46,7 +46,7 @@
 % module.
 
 % So, to create the model ensemble, do:
-nEns = 1000;
+nEns = 10;
 [M, ensMeta] = buildEnsemble(d, nEns);
 
 % So, this says: Build an ensemble of model state vectors using the

@@ -16,6 +16,12 @@
 % We'll transpose them so that they are obs x time, rather than vice versa
 RW = RW';
 
+% Also delete the bad sites
+del = [52;2;20;9];
+RW(del,:) = [];
+treeLon(del) = [];
+treeLat(del) = [];
+
 % We also need some observation uncertainty. Here, we'll just use 10% of
 % the standard deviation at each site.
 r = 0.1 * nanstd(RW, [], 2);
@@ -109,10 +115,32 @@ disp( w(end,:) );
 % Kalman Gain. This is known as the 'append' DA method. When we call dash,
 % we will need to specify which method we want.
 
-% Okay, let's run dash
-A = dash( M, RW, r, w, inflate, 'full', F);
+% Okay, let's run dash. For the sake of the tutorial, we'll just do a
+% single timestep
+tstep = 800;
+A = dash( M, RW(:,tstep), r(:,tstep), w, inflate, 'full', F);
 
 % Aaaaaand we're done!
+
+% You may have noticed output in the terminal indicating that some of the
+% PSMs failed to run. This is because the LME models are biased relative to
+% the CRU data that I used to generate T and M thresholds. vslitePSMs
+% actually have a bias correct option, but I did not use them in this
+% tutorial in order to illustrate this point:
+%
+% It is alright for a PSM to fail or throw an error during a dash analysis.
+% Obviously, it would be better if the PSM did not fail, but if a failure
+% does occur you will not lose the analysis. Instead, dash will simply skip
+% the observation with the failed PSM and not use it in the serial
+% observations of the current time step. 
+%
+% In this tutorial, we only ran a single timestep, but in real analyses we
+% will probably want to run over 100s or 1000s of time steps. It would be
+% terrible if we ran 999 out of 1000 time steps (which would take a long
+% time to run), only to have a PSM crash and lose the entire analysis.
+%
+% Additionally, this allows the user to use PSMs "out of the box" without
+% needing to know how to debug them / edit their code to prevent errors.
 
 %% Regridding.
 
@@ -127,7 +155,7 @@ A = dash( M, RW, r, w, inflate, 'full', F);
 
 % So we're going to extract the mean of the update analysis at time step
 % 800 for regridding
-rA = A(:,800,1);
+rA = A(:,:,1);
 
 % That is, we select all state vector elements in time step 800 of the
 % first statistic (the mean) in the output.
@@ -149,6 +177,10 @@ size(rA)
 
 % We are now free to process or map this grid however we like.
 
+% It's important to note that the dimensional ordering may be different for
+% different analyses. So you should always check dimID to see the ordering
+% of your data after regridding.
+
 %% Notes
 
 % If you don't want to apply an inflation factor or a covariance
@@ -160,5 +192,5 @@ size(rA)
 % this NTREND experiment, the time dimension for gridded data is May - September,
 % whereas the time dimension of the DA is for observation years 750 - 2011.
 %
-% This couled result in an ambiguity, so the user is required to track DA time.
+% This could result in an ambiguity, so the user is required to track DA time.
 % Future releases may attempt to resolve this...
