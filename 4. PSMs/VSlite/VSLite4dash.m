@@ -164,7 +164,7 @@ gM(~lessM1 & ~greatM2) = ( M(~lessM1 & ~greatM2) - M1 ) ./ (M2 - M1);
 Gr = gE .* min( gT, gM );
 
 % Grow the tree rings
-width = sum( Gr(intwindow,:) );
+width = sum( Gr(intwindow,:), 1);
 
 % Standardize the proxy series if a standardization is provided
 if ~isempty(standard)
