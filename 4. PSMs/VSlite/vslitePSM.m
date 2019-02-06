@@ -15,6 +15,11 @@
 % Specify a value to use to convert T or P in the DA to the units required
 % for VS-Lite.
 %
+% obj = vslitePSM( ..., 'Tbias', Tbias )
+% obj.vslitePSM( ..., 'Pbias', Pbias )
+% Specify a value to add to T or P in the DA to apply additive bias
+% correction.
+%
 % ----- Inputs -----
 % obCoord: [lat, lon] coordinates for the observation site.
 %
@@ -38,6 +43,10 @@
 % convertT: A value that will be ADDED to DA T values to convert them to C
 %
 % convertP: A value that will be MULTIPLIED by DA P values to convert to mm / month
+%
+% Tbias: A scalar in Celsius that will be ADDED to DA T values for bias correction.
+%
+% Pbias: A scalar in mm / month that will be ADDED to DA P values for bias correction.
 %
 % ----- Outputs -----
 % obj: An instance of the vslitePSM class.
@@ -109,6 +118,10 @@ classdef vslitePSM < PSM
         % DA unit conversions.
         convertT; % Added to DA T
         convertP; % Multiplied by DA P
+        
+        % Bias correction
+        Tbias;
+        Pbias;
     end
         
     methods
@@ -117,9 +130,9 @@ classdef vslitePSM < PSM
         function obj = vslitePSM( obCoord, T1, T2, M1, M2, Tclim, varargin )
             
             % Parse the advanced inputs
-            [lbparams, hydroclim, intwindow, convertT, convertP] = ...
-                parseInputs( varargin, {'lbparams','hydroclim','intwindow','convertT','convertP'},...
-                           {[],[],1:12,0,1}, {[], {'P','M'}, [], [], []} );
+            [lbparams, hydroclim, intwindow, convertT, convertP, Tbias, Pbias] = ...
+                parseInputs( varargin, {'lbparams','hydroclim','intwindow','convertT','convertP', 'Tbias', 'Pbias'},...
+                           {[],[],1:12,0,1,0,0}, {[], {'P','M'}, [], [], [],[],[]} );
             
             % Defaults
             obj.lbparams = {};
@@ -142,6 +155,10 @@ classdef vslitePSM < PSM
             % Set the T and P conversions
             obj.convertT = convertT;
             obj.convertP = convertP;
+            
+            % Add the bias corrections
+            obj.Tbias = Tbias;
+            obj.Pbias = Pbias;
             
             % Initialize the standardization
             obj.standard = [];
@@ -243,11 +260,11 @@ classdef vslitePSM < PSM
             T(obj.intwindow,:) = M(1:nMonth,:);
             P(obj.intwindow,:) = M(nMonth+1:end,:);
             
-            % Convert T to Celsius
-            T = T + obj.convertT;
+            % Convert T to Celsius and apply bias correction
+            T = T + obj.convertT; + obj.Tbias;
             
-            % Convert P to mm / month
-            P = P .* obj.convertP;
+            % Convert P to mm / month and apply bias correction
+            P = P .* obj.convertP + obj.Pbias;
             
             % Run VS-Lite
             trw = VSLite4dash( obj.lat, obj.T1, obj.T2, obj.M1, obj.M2, ...
