@@ -115,7 +115,7 @@ disp( w(end,:) );
 % Kalman Gain. This is known as the 'append' DA method. When we call dash,
 % we will need to specify which method we want.
 
-% Okay, let's run dash. For the sake of the tutorial, we'll just do a
+% Okay, let's run dash. For the sake of a fast tutorial, we'll just do a
 % single timestep
 tstep = 800;
 A = dash( M, RW(:,tstep), r(:,tstep), w, inflate, 'full', F);
@@ -136,11 +136,13 @@ A = dash( M, RW(:,tstep), r(:,tstep), w, inflate, 'full', F);
 %
 % In this tutorial, we only ran a single timestep, but in real analyses we
 % will probably want to run over 100s or 1000s of time steps. It would be
-% terrible if we ran 999 out of 1000 time steps (which would take a long
+% terrible if we ran 999 out of 1000 time steps (which could take a long
 % time to run), only to have a PSM crash and lose the entire analysis.
 %
 % Additionally, this allows the user to use PSMs "out of the box" without
-% needing to know how to debug them / edit their code to prevent errors.
+% needing to debug them or even understand the internal code of the PSM.
+% (Although, to permanently fix a crashing PSM, you may need to investigate
+% its code.)
 
 %% Regridding.
 
@@ -153,12 +155,14 @@ A = dash( M, RW(:,tstep), r(:,tstep), w, inflate, 'full', F);
 % with observations. Let's do time step 800, since there were few NaN data
 % points.
 
-% So we're going to extract the mean of the update analysis at time step
-% 800 for regridding
-rA = A(:,:,1);
+% So we're going to extract the mean of the update analysis at the first
+% time step (recall that we only ran a single time step.
+rA = A(:,1,1);
 
-% That is, we select all state vector elements in time step 800 of the
-% first statistic (the mean) in the output.
+% That is, we select all state vector elements in time step 1 of the
+% statistic 1 (the mean) in the output. Just to note, the third dimension
+% of the output specifies different ensemble statistics. A(:,:,1) shows
+% ensemble mean values, A(:,:,2) shows ensemble variance.
 
 % Now we want to regrid. We will need to specify which variable we want to
 % regrid, and provide the ensemble metadata (which tells where the variable
