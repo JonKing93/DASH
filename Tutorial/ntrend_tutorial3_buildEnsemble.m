@@ -50,7 +50,7 @@ nEns = 10;
 [M, ensMeta] = buildEnsemble(d, nEns);
 
 % So, this says: Build an ensemble of model state vectors using the
-% instructions in the stateDesign d. The ensemble should have 1000 members.
+% instructions in the stateDesign d. The ensemble should have 10 members.
 
 %% Notes on NaN
 
@@ -94,7 +94,7 @@ nEns = 10;
 disp( size(M) );
 
 % We can see that the ensemble is a collection of state vectors with 69121
-% elements. And there are 1000 ensemble members of these state vectors.
+% elements. And there are 10 ensemble members of these state vectors.
 
 % If we look at the ensemble metadata
 disp( ensMeta );
