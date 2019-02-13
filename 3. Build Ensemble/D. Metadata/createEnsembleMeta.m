@@ -23,7 +23,7 @@ for v = 1:numel(design.var)
     % Set the value of the variable name metadata
     meta.(varName)( varDex{v} ) = var.name;
     
-    % Get the number of state indices in each dimensionset of dimensionally subscripted state indices
+    % Get the set of dimensionally subscripted state indices
     index = var.indices;
     stateDim = var.isState;
     index( var.isState & var.takeMean ) = {0};
@@ -55,7 +55,12 @@ for v = 1:numel(design.var)
         % If a state dimension, get metadata from grid metadata
         if var.isState(d)
             ensMeta = var.meta.(var.dimID{d});
-            ensMeta = ensMeta( var.indices{d} );
+            
+            % Get the metadata in the indices. (Subscript to allow for
+            % n-dimensional metadata arrays.
+            metaDex = repmat( {':'}, [1, ndims(ensMeta)] );
+            metaDex{1} = var.indices{d};
+            ensMeta = ensMeta( metaDex{:} );
             
         % If an ensemble dimension, get the ensemble metadata
         else
