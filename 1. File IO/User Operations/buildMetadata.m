@@ -63,6 +63,11 @@ for v = 1:2:numel(varargin)
         error('The number of rows of the %s metadata does not match the size of the dimension in the gridded data.', dimID{index} );
     end
     
+    % If a cell, must be a vector
+    if iscell(value) && ~isvector(value)
+        error('Cell metadata must be a vector.');
+    end
+    
     % Add the value to the cell
     metaCell{index*2} = value;
 end

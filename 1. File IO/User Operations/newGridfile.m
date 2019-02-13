@@ -63,17 +63,17 @@ elseif ~( (isstring(meta.(var)) && isscalar(meta.(var))) || (ischar(meta.(var)) 
     error('The %s field of the metadata must be a string ID.', var);
 end
 
-% Convert all metadata to cell arrays
-for d = 1:numel(dimID)        
-    if ~isvector( meta.(dimID{d}) )
-        error('Metadata field %s must be a vector.', dimID{d});
-    elseif length( meta.(dimID{d}) ) ~= gridSize(d)
+% Error check the metadata
+for d = 1:numel(dimID)   
+    
+    % Check the size
+    if size(meta.(dimID{d}),1) ~= gridSize(d)
         error('Metadata for %s does not match the size of the dimension in the gridded data.', dimID{d});
     end
     
-    % Convert all metadata to column arrays
-    if isrow( meta.(dimID{d}) )
-        meta.(dimID{d}) = meta.(dimID{d})';
+    % If cell, check for vector
+    if iscell(meta.dimID{d}) && ~isvector(meta.dimID{d})
+        error('Metadata for %s is a cell but is not a vector.', dimID{d});
     end
 end
 

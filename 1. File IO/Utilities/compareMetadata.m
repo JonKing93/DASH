@@ -21,17 +21,14 @@ dimID = m.dimID;
 
 % Check the indexed values match in the metadata
 for d = 1:numel(dimID)
-    % Check that the dimension is in the metadata.
+    % Check that the dimension is in the new metadata.
     if ~isfield( meta, dimID{d})
         error('The new metadata does not contain the %s field', dimID{d});
     end
     
-    % Convert to cell column
-    if isrow(meta.(dimID{d}))
-        meta.(dimID{d}) = meta.(dimID{d})';
-    end
-    if ~iscell(meta.(dimID{d}))
-        meta.(dimID{d}) = num2cell( meta.(dimID{d}) );
+    % Check that the sizes of the two metadata are the same
+    if size(meta.(dimID{d})) ~= size(oldMeta.(dimID{d})(ic{d})
+        error('The size of the metadata for dimension %s do not match the size of the exisiting metadata in the indexed locations.', dimID{d});
     end
     
     % Check that the new metadata matches the old   
