@@ -28,7 +28,8 @@ function[index, ix] = getMatchingMetaDex( var, dim, meta, isState )
 dimMeta = var.meta.(dim);
 
 % Check for repeated metadata
-if numel(unique(dimMeta)) ~= numel(dimMeta)
+if ( iscell(dimMeta) && numel(unique(dimMeta))~=size(dimMeta,1) ) || ...
+        numel(unique(dimMeta,'rows'))~=size(dimMeta,1)  
     error('The metadata template contains repeat values in the %s dimension.', dim);
 end
 
@@ -38,7 +39,13 @@ if numel(dimMeta)==1 && isequaln(meta, dimMeta)
     
 % Otherwise, get intersecting value
 else
-    [~, ix, index] = intersect( meta, dimMeta, 'stable' );
+    
+    % Cell metadata cannot be sorted by rows but is necessarily a column
+    if iscell(dimMeta)
+        [~, ix, index] = intersect( meta, dimMeta, 'stable' );
+    else
+        [~, ix, index] = intersect( meta, dimMeta, 'stable', 'rows' );
+    end
     
     % Throw error if there are no indices
     if isempty(index)
