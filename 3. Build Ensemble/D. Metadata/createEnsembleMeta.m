@@ -56,11 +56,8 @@ for v = 1:numel(design.var)
         if var.isState(d)
             ensMeta = var.meta.(var.dimID{d});
             
-            % Get the metadata in the indices. (Subscript to allow for
-            % n-dimensional metadata arrays.
-            metaDex = repmat( {':'}, [1, ndims(ensMeta)] );
-            metaDex{1} = var.indices{d};
-            ensMeta = ensMeta( metaDex{:} );
+            % Get the metadata in the indices.
+            ensMeta = indexMetadata( ensMeta, var.indices{d} );
             
         % If an ensemble dimension, get the ensemble metadata
         else
