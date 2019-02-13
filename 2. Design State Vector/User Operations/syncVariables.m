@@ -51,12 +51,15 @@ v = unique([xv;yv],'stable');
 % Get the template and sync variables
 X = design.var(xv);
 Y = design.var(v(2:end));
-
-% For each sync variable
-for k = 1:numel(Y)
     
-    % For each template dimension
-    for dim = 1:numel(X.dimID)
+% For each template dimension
+for dim = 1:numel(X.dimID)
+        
+    % Get the indexed metadata
+    meta = indexMetadata( X.meta.(X.dimID{dim}), X.indices{dim} );
+    
+    % For each sync variable
+    for k = 1:numel(Y)
         
         % Get a dimension index for the sync variable
         d = checkVarDim( Y(k), X.dimID{dim} );
@@ -72,7 +75,7 @@ for k = 1:numel(Y)
             Y(k).isState(d) = true;
             
             % Get the state indices with matching metadata
-            Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID{dim}, X.meta.(X.dimID{dim})(X.indices{dim}), true );
+            Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID{dim}, meta, true );
             
         % If an ensemble dimension and syncing seq or mean
         else

@@ -26,7 +26,6 @@ dimID = [var, dimID];
 % Create an input cell for the metadata structure
 inArgs = cell(numel(dimID)*2,1);
 inArgs(1:2:end) = dimID;
-inArgs(2:2:end) = [];
 
 % Create the structure (Not going to add the empty metadata because would
 % switch from scalar structure to structure array)

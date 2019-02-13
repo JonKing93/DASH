@@ -29,7 +29,7 @@ dimMeta = var.meta.(dim);
 
 % Check for repeated metadata
 if ( iscell(dimMeta) && numel(unique(dimMeta))~=size(dimMeta,1) ) || ...
-        numel(unique(dimMeta,'rows'))~=size(dimMeta,1)  
+        size(unique(dimMeta,'rows'),1)~=size(dimMeta,1)  
     error('The metadata template contains repeat values in the %s dimension.', dim);
 end
 
@@ -53,7 +53,7 @@ else
     end
     
     % If a state index, throw error if there are missing indices
-    if isState && numel(index)~=numel(meta)
+    if isState && numel(index)~=size(meta,1)
         error('The %s variable does not have metadata matching all state indices of the template variable in the %s dimension.', var.name, dim );
     end
 end

@@ -1,6 +1,12 @@
-function[dimID, varName] = getKnownIDs
+function[dimID, varName, triDim] = getKnownIDs
 
-dimID = {'lat','lon','time','lev','run','tripole'};
+% Tripolar dimension
+triDim = 'tripole';
+
+% All dimensions
+dimID = {'lat','lon','time','lev','run', triDim};
+
+% Variable name
 varName = 'varnam';
 
 end

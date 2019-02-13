@@ -70,6 +70,9 @@ if ~design.var(v).isState(d) && numel(av)>1
     flipDimWarning(dim, var, {'ensemble','state'}, design.varName(av(1:end-1)));
 end
 
+% Get the indexed metadata
+meta = indexMetadata( design.var(v).meta.(dim), index );
+
 % For each associated variable
 for k = 1:nVar
     
@@ -83,8 +86,8 @@ for k = 1:nVar
     if ismember(av(k),sv)
         
         % Get the matching indices
-        design.var(av(k)).indices{ad} = getMatchingMetaDex( design.var(av(k)), ...
-                                         dim, design.var(v).meta.(dim)(index), true );
+        design.var(av(k)).indices{ad} = ...
+                   getMatchingMetaDex( design.var(av(k)),dim, meta, true );
                                      
         % Set the mean and nanflag values
         design.var(av(k)).nanflag{ad} = nanflag;

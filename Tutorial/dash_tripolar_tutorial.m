@@ -145,3 +145,41 @@ d = editDesign(d, 'SST', 'tripole', 'state', 'index', ocnDex );
 % (Edit the design for the "tripole" dimension of the SST variable. The
 % tripole dimension is a state dimension. The state indices are these
 % values that only point to the ocean grid cells.)
+
+% and don't forget to specify that time is the ensemble dimension
+d = editDesign(d, 'SST', 'time', 'ens' );
+
+%% Regridding
+
+% So we would then build an ensemble
+[M, ensMeta] = buildEnsemble(d, 5);
+
+% Build some proxies
+% (Your favorite proxies here)
+
+% And run a DA
+% (Your favorite analysis here)
+
+% At the end of the DA, we'll have some mean climate state. It will be
+% the length of our state vector, so I'm just going to use the first
+% ensemble member as our DA output to keep the tutorial simple.
+A = M(:,1);
+
+% We can use the regridTripolar function to extract a tripolar variable
+% from a DA analysis and covert back to the orignal grid dimensions. To do
+% so we will need to specify the ocean indices, as well as the original
+% grid size.
+[rA, dimID] = regridTripolar( A, 'SST', ensMeta, d, ocnDex, [320 384] );
+
+% We can look at the dimension IDs
+disp(dimID);
+
+% And see that this grid is tri1 x tri2. That is, tripolar coordinate 1,
+% and tripolar coordinate 2. Dash is designed to regrid generally to any
+% input tripolar grid, so it is the user's responsibility to know that tri1
+% is TLAT, and tri2 is TLONG.
+%
+% Note that if we had used any sequences (like a series of months) in the
+% state design, then the dimension with sequences (time) would not be a
+% singleton, and the grid might be tri1 x tri2 x time. This would be
+% recorded in the dimID output variable.
