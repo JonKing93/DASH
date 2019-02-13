@@ -57,16 +57,11 @@ for v = 1:2:numel(varargin)
     % Find the index of the matching field name
     [~, index] = ismember( varargin{v}, dimID );
     
-    % Error check the input value
+    % Check that the metadata size matches the dimension size
     value = varargin{v+1};
-    if ~isvector( value )
-        error('Metadata must be a vector');
-    elseif numel(value) ~= gridSize(index)
-        error('The size of the %s metadata does not match the size of the dimension in the gridded data.', dimID{index} );
+    if size(value,1) ~= gridSize(index)
+        error('The number of rows of the %s metadata does not match the size of the dimension in the gridded data.', dimID{index} );
     end
-    
-    % Convert to column
-    value = value(:);
     
     % Add the value to the cell
     metaCell{index*2} = value;

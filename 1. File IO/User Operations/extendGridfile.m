@@ -66,33 +66,34 @@ dimLoc(:, exDim) = loc;
 
 % Get some metadata values for the existing data
 dimID = m.dimID;
-oldMeta = m.meta;
+fullMeta = m.meta;
 
 % Error checking
 if sum(nAdd>0) > 1
     error('Can only extend one dimension. Currently, the %s and %s dimensions are both being extended.', ...
         dimID{find(nAdd>0,1,'first')}, dimID{find(nAdd>0,1,'last')} );
-elseif ~isvector(meta) || length(meta)~=nAdd(nAdd>0)
-    error(['The extended metadata must be a vector the length of the number of new indices.',...
+elseif size(meta,1) ~= nAdd(nAdd>0)
+    error(['The extended metadata must have a row for all new indices.',...
            newline, 'This includes indices with unspecified data.'] );
 end
 
-% Convert new metadata to a column
-meta = meta(:);
+% Check that the new metadata can be concatenated with the old
+sizNew = size(meta);
+sizOld = size( fullMeta.(dimID{exDim}) );
+if ~isequal( sizNew(2:end), sizOld(2:end) )
+    error('The new metadata has different dimensions than the metadata in the gridfile.');
+end
 
 % Get the indices of any fill values
 nAdd = nAdd(nAdd>0);
 newDex = nOld+1 : nOld+nAdd;
 fillDex = newDex( ~ismember(newDex, ic{exDim}) );
 
-% Set the new metadata
-oldMeta.(dimID{exDim})(newDex) = meta;
-
-% Convert to column
-oldMeta.(dimID{exDim}) = oldMeta.(dimID{exDim})(:);
+% Get the new, full set of metadata
+fullMeta.(dimID{exDim}) = cat(1, fullMeta.(dimID{exDim}), meta);
 
 % Add to the grid file
-m.meta = oldMeta;
+m.meta = fullMeta;
 m.gridSize(1,exDim) = m.gridSize(1,exDim) + nAdd;
 
 m.gridData( ic{:} ) = gridData;
