@@ -72,7 +72,7 @@ for d = 1:numel(dimID)
     end
     
     % If cell, check for vector
-    if iscell(meta.dimID{d}) && ~isvector(meta.dimID{d})
+    if iscell(meta.(dimID{d})) && ~isvector(meta.(dimID{d}))
         error('Metadata for %s is a cell but is not a vector.', dimID{d});
     end
 end

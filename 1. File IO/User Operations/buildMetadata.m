@@ -3,7 +3,7 @@ function[meta] = buildMetadata( gridSize, gridDims, varName, varargin)
 % unspecified dimensions is set to NaN. Checks that metadata size matches
 % the size of gridded data.
 %
-% meta = buildMetadata( gridData, gridDims, dim1, val1, dim2, val2, ... )
+% meta = buildMetadata( gridData, gridDims, varName, dim1, val1, dim2, val2, ... )
 % Converts user metadata to a metadata structure used by dash.
 %
 % ----- Inputs -----
