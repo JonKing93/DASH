@@ -1,12 +1,16 @@
-function[rA, dimID] = regridAnalysis( A, var, ensMeta, design )
-%% Regrids a variable from a particular time step for an update analysis.
+function[rA, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
+%% Regrids a variable from a particular time step for a DA analysis.
 %
 % [rA, dimID] = regridAnalysis( A, var, ensMeta, design )
+% Regrids a variable from output. Removes any singleton dimensions.
+%
+% [rA, dimID] = regridAnalysis( A, var, ensMeta, design, 'nosqueeze' )
+% Preserves all singleton dimensions.
 %
 % ----- Inputs -----
 %
 % A: The mean or variance state vector from a particular time step of an
-%   udpate analysis.
+%   udpate analysis. (nState x 1)
 %
 % var: The name of a variable. Must be a string.
 %
@@ -18,6 +22,9 @@ function[rA, dimID] = regridAnalysis( A, var, ensMeta, design )
 % rA: A regridded analysis for one variable.
 %
 % dimID: The dimensional ordering of the regridded variable.
+
+% Check for nosqueeze
+nosqueeze = parseInputs( varargin, {'nosqueeze'}, {false}, {'b'} );
 
 % Get the indices of the variable in the state vector
 varDex = varCheck(ensMeta, var);
@@ -49,4 +56,17 @@ rA = reshape( A(varDex), gridSize );
 % Get the dimension ordering
 dimID = var.dimID;
 
+% If reducing dimensions
+if ~nosqueeze
+    
+    % Get the singular dimensions
+    singDim = size(rA)==1;
+    
+    % Remove their dimIDs
+    dimID(singDim) = [];
+    
+    % Reduce the dataset
+    rA = squeeze(rA);
+end
+    
 end
