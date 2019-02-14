@@ -27,7 +27,7 @@ classdef (Abstract) PSM < handle
         % d: The index of the observation being processed.
         %
         % t: The time step being processed in the DA
-        Ye = runPSM( obj, M, d, t);
+        [Ye, R] = runPSM( obj, M, d, t);
 
         % This generates the sampling indices for a site
         getStateIndices( obj, ensMeta );

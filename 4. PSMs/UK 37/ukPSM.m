@@ -59,13 +59,16 @@ classdef ukPSM < PSM
     
     methods
         % Run the PSM
-        function[uk] = runPSM( obj, T, ~, ~ )
+        function[uk,R] = runPSM( obj, T, ~, ~ )
             
             % Convert T to Celsius
             T = T + obj.convertT;
             
             % Run the forward model
             uk = UK_forward_model( T, obj.bayes );
+            
+            % Estimate R from variance
+            R = mean( var(uk,1) ,2);
             
             % Take the ensemble mean
             uk = mean(uk,2);
@@ -75,15 +78,11 @@ classdef ukPSM < PSM
         end
         
         % Get the sample indices
-        function[] = getStateIndices( obj, ensMeta, sstName, varargin )
+        function[] = getStateIndices( obj, ensMeta, sstName, gridType, varargin )
 
             % Parse inputs
             [time, lev] = parseInputs(varargin, {'time','lev'}, {[],[]}, {[],[]} );
             
-            % Check the metadata fields are present
-            dimCheck(ensMeta,'lat');
-            dimCheck(ensMeta, 'lon');
-
             % Get the variable's indices
             sstVar = varCheck(ensMeta, sstName);
 
@@ -100,13 +99,31 @@ classdef ukPSM < PSM
                 sstLev = findincell( lev, ensMeta.lev(sstVar) );
                 sstVar = sstVar(sstLev);
             end
-
-            % Get the lat and lon coords
-            lat = cell2mat(ensMeta.lat(sstVar));
-            lon = cell2mat(ensMeta.lon(sstVar));
+            
+            % For tripolar grids
+            if strcmpi(gridType, 'tripolar')
+                
+                % Check for the metadata field
+                dimCheck(ensMeta, 'tripole');
+                
+                % Get the lat, lon coordinates
+                latlon = cell2mat( ensMeta.tripole(sstVar) );
+                
+            % For lat x lon grids
+            elseif strcmpi(gridType, 'latxlon')
+                
+                % Check the metadata fields
+                dimCheck(ensMeta, 'lat');
+                dimCheck(ensMeta, 'lon');
+                
+                % Get the lat lon coordinates
+                latlon = [cell2mat(ensMeta.lat(sstVar)), cell2mat(ensMeta.lon(sstVar))];
+            else
+                error('Unrecognized grid type');
+            end
 
             % Get the closest site to the observation
-            sstSite = samplingMatrix( obj.coord, [lat, lon], 'linear');
+            sstSite = samplingMatrix( obj.coord, latlon, 'linear');
 
             % Get the location within the whole state vector
             obj.H = sstVar(sstSite);
