@@ -68,7 +68,7 @@ classdef ukPSM < PSM
             uk = UK_forward_model( T, obj.bayes );
             
             % Estimate R from variance
-            R = mean( var(uk,1) ,2);
+            R = mean( var(uk,[],2) ,1);
             
             % Take the ensemble mean
             uk = mean(uk,2);
