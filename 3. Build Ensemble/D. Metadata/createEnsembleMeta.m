@@ -85,11 +85,12 @@ for v = 1:numel(design.var)
         else
             
             % Index to the appropriate metadata value for each element
-            ensMeta = ensMeta( subDex(:,d) );
+            ensMeta = indexMetadata( ensMeta, subDex(:,d) );
             
             % Convert to cell if numeric
             if ~iscell(ensMeta)
-                ensMeta = num2cell(ensMeta);
+                groupDim = 2:ndims(ensMeta);
+                ensMeta = num2cell(ensMeta, groupDim);
             end
         end
         
