@@ -77,8 +77,8 @@ for t = 1:nTime
             % Get the portion of the model to pass to the PSM
             Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
             
-            % Run the PSM.
-            [Ye, update] = getPSMOutput( F{d}, Mpsm, d, t, nEns );
+            % Run the PSM. Optionally get R from the PSM.
+            [Ye, R, update] = getPSMOutput( F{d}, Mpsm, d, t, nEns, tR(d) );
             
             % If no errors occured in the PSM, update the analysis
             if update
@@ -86,11 +86,8 @@ for t = 1:nTime
                 % Decompose the model estimate
                 [Ymean, Ydev] = decomposeEnsemble( Ye );
 
-                % !!! Somewhere around here should be the option
-                % to dynamically generate R.
-
                 % Get the Kalman gain and alpha
-                [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
+                [K, a] = kalmanENSRF( Adev, Ydev, R, w(:,d));
 
                 % Update
                 Amean = Amean + K*( tD(d) - Ymean );

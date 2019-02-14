@@ -1,11 +1,20 @@
-function[Ye, update] = getPSMOutput( F, Mpsm, d, t, nEns )
+function[Ye, update, R] = getPSMOutput( F, Mpsm, d, t, nEns, R )
 
 % Attempt to run the PSM
 try
-    Ye = F.runPSM( Mpsm, d, t );
+    
+    % Run with or without R calculation
+    if isnan(R)
+        [Ye, R] = F.runPSM( Mpsm, d, t );
+    else
+        Ye = F.runPSM( Mpsm, d, t );
+    end
     
     % Also check that the outputs were valid
     checkYe( Ye, nEns );
+    if ~isscalar(R) || isnan(R) || isinf(R) || ~isreal(R) || R<=0
+        error('R must be a real scalar that is neither NaN nor Inf and is larger than 0.');
+    end
     
     % No errors were thrown, so use to update
     update = true;
