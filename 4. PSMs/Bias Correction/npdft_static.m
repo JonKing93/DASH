@@ -27,7 +27,7 @@ function[X] = npdft_static( Xd, Xt, R, rXs, normS )
 [~, N, nIter] = size(rXs);
 
 % Standardize Xd relative to Xs
-Xd = (Xd - normS(1)) / normS(2);
+Xd = (Xd - normS(1,:)) ./ normS(2,:);
 
 % Standardize the observations
 [Xt, meanT, stdT] = zscore(Xt);
@@ -37,6 +37,7 @@ for j = 1:nIter
     
     % Apply the appropriate rotation matrix
     rXd = Xd * R(:,:,j);
+    rXt = Xt * R(:,:,j);
     
     % For each rotated channel
     for k = 1:N
@@ -49,7 +50,7 @@ for j = 1:nIter
         tau = interp1( rXs(:,k,j), tau, rXd(:,k) ); 
         
         % Do the quantile mapping against the observations
-        rXd(:,k) = quantile( Xt, tau ); 
+        rXd(:,k) = quantile( rXt(:,k), tau ); 
     end
     
     % Apply the inverse rotation

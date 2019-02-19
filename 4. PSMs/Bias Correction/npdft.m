@@ -60,7 +60,7 @@ end
 % Initialize static output
 if nargout > 2
     forStatic = cell(3,1);
-    forStatic{3} = [meanS, stdS];
+    forStatic{3} = [meanS; stdS];
 end
 E = [];
 
@@ -102,6 +102,12 @@ while ~converge
     elseif nIter <= 0
         converge = true;
     end
+end
+
+% Remove 0 allocation from static output
+if nargout > 2
+    forStatic{1}(:,:,1) = [];
+    forStatic{2}(:,:,1) = [];
 end
 
 % Restore the mean and standard deviation from the target

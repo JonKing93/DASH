@@ -5,8 +5,8 @@ if ~isvector(X)
     error('X must be a vector');
 end
 
-% Get sorting indices for Xs
-[~, sortDex] = sort(Xs);
+% Get sorting indices for X
+[~, sortDex] = sort(X);
 
 % Get the quantile for each value
 N = numel(X);
