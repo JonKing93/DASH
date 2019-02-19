@@ -14,7 +14,7 @@ function[X, E, forStatic] = npdft( Xs, Xt, tol, nIter )
 % [X, E] = npdft( ... )
 % Also returns the energy statistic for each iteration.
 %
-% [X, E, {jR, jXs, normS, normT}] = npdft( ... )
+% [X, E, {jR, jXs, normS}] = npdft( ... )
 % Returns values to allow a static npdft.
 %
 % ----- Inputs -----
@@ -59,9 +59,8 @@ end
 
 % Initialize static output
 if nargout > 2
-    forStatic = cell(4,1);
+    forStatic = cell(3,1);
     forStatic{3} = [meanS, stdS];
-    forStatic{4} = [meanT, stdT];
 end
 E = [];
 

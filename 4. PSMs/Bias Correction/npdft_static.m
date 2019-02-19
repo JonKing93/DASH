@@ -1,10 +1,13 @@
-function[Xd] = npdft_static( Xd, R, rXs, Xo)
+function[X] = npdft_static( Xd, R, rXs, Xo, normS )
 
 % Get the number of iterations and channels
 [~, N, nIter] = size(rXs);
 
 % Standardize Xd relative to Xs
-Xd = (Xd - meanS) / stdS;
+Xd = (Xd - normS(1)) / normS(2);
+
+% Get the observation standardization
+[~, meanT, stdT] = zscore(Xo);
 
 % For each iteration
 for j = 1:nIter
@@ -29,5 +32,8 @@ for j = 1:nIter
     % Apply the inverse rotation
     Xd = rXd / R(:,:,j);
 end
+
+% Restore mean and standard deviation from the target
+X = Xd .* stdT + meanT;
 
 end   
