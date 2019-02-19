@@ -2,9 +2,7 @@
 classdef biasCorrector < PSM
     
     properties
-        jR;  % The saved rotation matrices
-        jXs; % The save rotated Xs values.
-        
+        staticNPDFT; % The iteration values needed to run a static npdft
         Xo;  % The observations
     end
     
@@ -12,20 +10,17 @@ classdef biasCorrector < PSM
         
         % Does the initial mapping and saves iteration variables
         function[] = initialMapping( obj, Xm, Xo, tol )
-            
             % Run the Npdft
-            [~, ~, obj.jR, obj.jXs] = npdft( Xm, Xo, tol );
+            [~, ~, obj.staticArgs] = npdft( Xm, Xo, tol );
             
             % Also save the observations for future reference
             obj.Xo = Xo;
         end
             
-        function[] = biasCorrect( obj, 
-            
-            
-            
-            
+        function[X] = biasCorrect( obj, Xd )
+            % Run a static npdft
+            X = npdft_static( Xd, obj.Xo, obj.staticArgs{:} );
         end
+    end
     
 end
-    
