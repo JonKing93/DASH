@@ -89,7 +89,7 @@
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
-classdef vslitePSM < PSM
+classdef vslitePSM < PSM & biasCorrector
     
     properties
         % Site coordinates
@@ -248,23 +248,26 @@ classdef vslitePSM < PSM
         % Run the PSM
         function[trw] = runPSM( obj, M, ~, ~ )
             
+            % Get some sizes
+            [nMonth, nEns] = size(M);
+            nMonth = nMonth / 2;
+            
+            % Convert T to Celsius and P to mm/month
+            M(1:nMonth,:) = M(1:nMonth,:) + obj.convertT;
+            M(nMonth+1:end,:) = M(nMonth+1:end,:) .* obj.convertP;
+            
+            % Apply bias correction
+            M = obj.biasCorrect( M );
+            
             % Preallocate T and P
-            nEns = size(M,2);
             T = NaN(12, nEns);
             P = NaN(12, nEns);
             
             % Split the state vector into T and P for the seasonally
             % sensitive months.
             nMonth = size(M,1) / 2;
-            
             T(obj.intwindow,:) = M(1:nMonth,:);
             P(obj.intwindow,:) = M(nMonth+1:end,:);
-            
-            % Convert T to Celsius and apply bias correction
-            T = T + obj.convertT; + obj.Tbias;
-            
-            % Convert P to mm / month and apply bias correction
-            P = P .* obj.convertP + obj.Pbias;
             
             % Run VS-Lite
             trw = VSLite4dash( obj.lat, obj.T1, obj.T2, obj.M1, obj.M2, ...
