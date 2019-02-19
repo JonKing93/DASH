@@ -1,4 +1,4 @@
-function[X, E, jR, jXs] = npdft( Xs, Xt, tol, nIter )
+function[X, E, forStatic] = npdft( Xs, Xt, tol, nIter )
 %% Performs the N-pdft algorithm.
 % Applies bias correction by equating the CDF of N-dimensional source data 
 % with an N-dimensional target. Uses the energy distance statistic to
@@ -14,8 +14,8 @@ function[X, E, jR, jXs] = npdft( Xs, Xt, tol, nIter )
 % [X, E] = npdft( ... )
 % Also returns the energy statistic for each iteration.
 %
-% [X, E, jR, jXs] = npdft( ... )
-% Also returns the rotation matrix and rotated Xs values for each iteration
+% [X, E, {jR, jXs, normS, normT}] = npdft( ... )
+% Returns values to allow a static npdft.
 %
 % ----- Inputs -----
 %
@@ -53,14 +53,17 @@ if nargin < 4
     nIter = Inf;
 end
 
-% Initialize optional outputs
-E = [];
-jR = [];
-jXs = [];
-
 % Standardize both datasets
-Xs = zscore(Xs);
+[Xs, meanS, stdS] = zscore(Xs);
 [Xt, meanT, stdT] = zscore(Xt);
+
+% Initialize static output
+if nargout > 2
+    forStatic = cell(4,1);
+    forStatic{3} = [meanS, stdS];
+    forStatic{4} = [meanT, stdT];
+end
+E = [];
 
 % For each iteration
 converge = false;
@@ -68,15 +71,15 @@ while ~converge
     
     % Get a random orthogonal rotation matrix.
     R = getRandRot(N);
-    if nargout > 2
-        jR(:,:,end+1) = R; %#ok<*AGROW>
-    end
     
     % Rotate the two datasets
     rXs = Xs * R;
     rXt = Xt * R;
-    if nargout > 3
-        jXs(:,:,end+1) = rXs;
+    
+    % Record static output
+    if nargout > 2
+        forStatic{1}(:,:,end+1) = R;
+        forStatic{2}(:,:,end+1) = rXs;
     end
     
     % Do a quantile mapping of each column of rXs to rXt
@@ -88,17 +91,14 @@ while ~converge
     Xs = rXs / R;
     
     % Get the squared energy distance
-    D2 = estat( Xs, Xt );
-    if nargout > 1
-        E(end+1) = D2;
-    end
+    E(end+1) = estat( Xs, Xt ); %#ok<AGROW>
     
     % Decrement
     nIter = nIter - 1;
     
     % Continue until the PDFs have converged or the maximum number of
     % iterations is reached.
-    if D2 < tol
+    if E(end) < tol
         converge = true;
     elseif nIter <= 0
         converge = true;
