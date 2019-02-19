@@ -48,6 +48,16 @@ if N ~= size(Xt,2)
     error('Xs and Xt must have the same number variables (columns).');
 end
 
+% Set nIter to infinite if not specified
+if nargin < 4
+    nIter = Inf;
+end
+
+% Initialize optional outputs
+E = [];
+jR = [];
+jXs = [];
+
 % Standardize both datasets
 Xs = zscore(Xs);
 [Xt, meanT, stdT] = zscore(Xt);
@@ -58,10 +68,16 @@ while ~converge
     
     % Get a random orthogonal rotation matrix.
     R = getRandRot(N);
+    if nargout > 2
+        jR(:,:,end+1) = R; %#ok<*AGROW>
+    end
     
     % Rotate the two datasets
     rXs = Xs * R;
     rXt = Xt * R;
+    if nargout > 3
+        jXs(:,:,end+1) = rXs;
+    end
     
     % Do a quantile mapping of each column of rXs to rXt
     for k = 1:N
@@ -72,19 +88,21 @@ while ~converge
     Xs = rXs / R;
     
     % Get the squared energy distance
-    E = estat( Xs, Xt );
+    D2 = estat( Xs, Xt );
+    if nargout > 1
+        E(end+1) = D2;
+    end
     
     % Decrement
     nIter = nIter - 1;
     
     % Continue until the PDFs have converged or the maximum number of
     % iterations is reached.
-    if E < tol
+    if D2 < tol
         converge = true;
     elseif nIter <= 0
         converge = true;
     end
-     
 end
 
 % Restore the mean and standard deviation from the target
