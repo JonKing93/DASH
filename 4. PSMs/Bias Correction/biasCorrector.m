@@ -20,8 +20,15 @@ classdef biasCorrector < PSM
         end
             
         function[X] = biasCorrect( obj, Xd )
+            
+            % Ensemble members become samples
+            Xd = Xd';
+            
             % Run a static npdft
             X = npdft_static( Xd, obj.Xo, obj.staticNPDFT{:} );
+            
+            % Flip back to state vector format
+            X = X';
         end
     end
     
