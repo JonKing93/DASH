@@ -1,33 +1,31 @@
 %% This class implements a bias-correcting plugin for the PSM class.
-classdef biasCorrector < handle
+classdef biasCorrector < PSM
     
     properties
-        rFo; % The CDF of the rotated observations
-        rFm; % The CDF of the rotated model values
-        R;   % The saved rotation matrices
+        jR;  % The saved rotation matrices
+        jXs; % The save rotated Xs values.
         
         Xo;  % The observations
     end
     
     methods
         
-        function[] = initialMapping( obj, )
+        % Does the initial mapping and saves iteration variables
+        function[] = initialMapping( obj, Xm, Xo, tol )
             
             % Run the Npdft
-            [Xs, R] = npdft( Xm, Xo, tol );
+            [~, ~, obj.jR, obj.jXs] = npdft( Xm, Xo, tol );
             
-            % 
+            % Also save the observations for future reference
+            obj.Xo = Xo;
+        end
             
-            
-            
-            
-            
+        function[] = biasCorrect( obj, 
             
             
             
             
         end
-    end
     
 end
     

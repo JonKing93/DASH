@@ -25,18 +25,8 @@ if ~isvector(Xs) || ~isvector(Xt)
     error('Xs and Xt must be vectors.')
 end
 
-% Get sorting indices for Xs
-[~, sortDex] = sort(Xs);
-
-% Get the quantile for each source value
-N = numel(Xs);
-tau(sortDex,1) = 1:N;
-tau = (tau - 0.5) ./ N;
-
-% Use the highest quantile for duplicate values
-[~, uA, uC] = unique(Xs, 'last');
-tau = tau(uA);
-tau = tau(uC);
+% Get the tau values
+tau = getTau(Xs);
 
 % Lookup the tau values against the target distribution
 X = quantile( Xt, tau );
