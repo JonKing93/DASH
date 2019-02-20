@@ -19,10 +19,16 @@ if nargin < 4
     nIter = Inf;
 end
 
-% Do an initial QDM for each variable
+% For each variable
 X = NaN( size(Xp) );
 for k = 1:N
+    
+    % Do an initial qdm and use these values to initialize the iterations
     X(:,k) = qdm( Xo(:,k), Xm(:,k), Xp(:,k), type );
+    Xp(:,k) = X(:,k);
+    
+    % Do an initial quantile map to initialize the Xm
+    Xm(:,k) = quantMap( Xo(:,k), Xm(:,k) );
 end
 
 % Standardize the datasets. Use the same standardization for both
@@ -51,7 +57,7 @@ while ~converge
         rXp(:,k) = qdm( rXo(:,k), rXm(:,k), rXp(:,k), 'abs' );
         
         % Then get the quantile mapping from Xm to Xo
-        rXm(:,k) = quantMap( rXm(:,k), rXo(:,k) );
+        rXm(:,k) = quantMap(  rXo(:,k), rXm(:,k) );
     end
     
     % Do the inverse rotation. (For a random orthogonal rotation matrix,
@@ -74,12 +80,12 @@ end
 % For each variable
 for k = 1:N
     
-    % Sort the variable from the original QDM
+    % Sort the projected variables from the original QDM
     X(:,k) = sort( X(:,k) );
     
     % Order the sorted variables according to the rank of each element in
     % the final transformed set of projected values
-    [~,rankOrder] = sort( Xp );
+    [~,rankOrder] = sort( Xp(:,k) );
     X(:,k) = X(rankOrder,k);
 end
 

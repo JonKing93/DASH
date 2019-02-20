@@ -83,7 +83,7 @@ while ~converge
     
     % Do a quantile mapping of each column of rXs to rXt
     for k = 1:N
-        rXs(:,k) = quantMap( rXs(:,k), rXt(:,k) );
+        rXs(:,k) = quantMap( rXt(:,k), rXs(:,k) );
     end
     
     % Do inverse rotation of the quantile mapping to get the new Xs

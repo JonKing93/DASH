@@ -1,4 +1,4 @@
-function[X] = qdm(Xo, Xm, Xp, type)
+function[X] = qdm(Xo, Xm, Xp, type, Xd)
 %% Quantile delta mapping
 %
 % X = qdm(Xo, Xm, Xp)
@@ -27,34 +27,46 @@ function[X] = qdm(Xo, Xm, Xp, type)
 if ~isvector(Xs) || ~isvector(Xt) || ~isvector(Xp)
     error('Xs, Xt, and Xp must all be vectors.');
 end
+if exist('Xd','var') && ~isvector(Xd)
+    error('Xd must be a vector.');
+end
 
 % Use relative qdm by default
 if ~exist(type, 'var')
     type = 'rel';
-elseif ~ismember( type, {'rel','abs'} )
-    error('Unrecognized qdm type');
 end
 
 % Get the tau values (quantiles) for the projected values
 tau = getTau(Xp);
 
+% If static, lookup the tau values from Xd, and use Xd as the values for
+% bias correction
+if exist('Xd','var')
+    tau = interp1( Xp, tau, Xd );
+    Xp = Xd;
+end
+
 % If preserving relative changes
-if strcmpi(type, 'rel')
+if strcmpi( type, 'rel' )
     
-    % Get the relative change in the value associated with the quantile
+    % Get the relative change
     delta = Xp ./ quantile(Xm, tau);
     
     % Get the bias corrected values
     X = quantile(Xo, tau) .* delta;
-    
+
 % If preserving absolute changes
 elseif strcmpi(type, 'abs')
     
     % Get the absolute change
-    delta = Xp - quantile(Xm,tau);
+    delta = Xp - quantile(Xm, tau);
     
     % Get the bias corrected values
     X = quantile(Xo, tau) + delta;
+
+% Unrecognized type
+else
+    error('Unrecognized input');
 end
 
 end
