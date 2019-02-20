@@ -11,7 +11,7 @@ if N ~= size(Xt,2) || N ~= size(Xd,2)
     error('Xs, Xt, and Xd must have the same number of columns.');
 end
 
-% Get indices to concatenate all the observations
+% Get indices to concatenate all the data
 t = 1:size(Xt,1);
 s = max(t)+1:max(t)+size(Xs,1);
 d = max(s)+1:max(s)+size(Xt,1);
@@ -27,7 +27,7 @@ X([s,d],:) = ( X([s,d],:) - normS(1) ) ./ normS(2);
 for j = 1:size(R,3)
     
     % Rotate the datasets
-    X = X * R;
+    X = X * R(:,:,j);
     
     % For each variable
     for k = 1:N
