@@ -1,4 +1,4 @@
-function[X] = MBCn( Xo, Xm, Xp, tol, nIter )
+function[X] = MBCn( Xo, Xm, Xp, type, tol, nIter )
 %% Performs the MBCn algorithm
 % Applies bias correction to projected N-dimensional values by quantile
 % delta mapping to observations and modeled historical values.
@@ -19,10 +19,18 @@ if nargin < 4
     nIter = Inf;
 end
 
-% Standardize the datasets
-[Xo, meanXo, stdXo] = zscore(Xo);
-Xm = zscore(Xm);
-Xp = zscore(Xp);
+% Do an initial QDM for each variable
+X = NaN( size(Xp) );
+for k = 1:N
+    X(:,k) = qdm( Xo(:,k), Xm(:,k), Xp(:,k), type );
+end
+
+% Standardize the datasets. Use the same standardization for both
+% historical modeled and projected variables. Use the Xm standardization to
+% avoid inequally weighted variables in the convergence tests.
+[Xo, meanO, stdO] = zscore(Xo);
+[Xm, meanM, stdM] = zscore(Xm);
+Xp = (Xp - meanM) ./ stdM;
 
 % For each iteration
 converge = false;
@@ -46,9 +54,10 @@ while ~converge
         rXm(:,k) = quantMap( rXm(:,k), rXo(:,k) );
     end
     
-    % Do the inverse rotation
-    Xp = rXp / R;
-    Xm = rXm / R;
+    % Do the inverse rotation. (For a random orthogonal rotation matrix,
+    % the transpose is equal to the inverse)
+    Xp = rXp * R';
+    Xm = rXm * R';
     
     % Get the squared energy distance
     E = estat(Xm, Xo);
@@ -60,9 +69,21 @@ while ~converge
     if E < tol || nIter <= 0
         converge = true;
     end
-end 
+end
 
-% Restore the mean and standard deviation from the observations
-X = Xp .* stdXo + meanXo;
+% For each variable
+for k = 1:N
+    
+    % Sort the variable from the original QDM
+    X(:,k) = sort( X(:,k) );
+    
+    % Order the sorted variables according to the rank of each element in
+    % the final transformed set of projected values
+    [~,rankOrder] = sort( Xp );
+    X(:,k) = X(rankOrder,k);
+end
+
+% Restore the standardization from the observations
+X = X .* stdO + meanO;
 
 end
