@@ -8,10 +8,14 @@ elseif size(x,2) ~= size(x,2)
     error('x and y must have the same number of columns.');
 end
 
+% Get the number of samples in each distribution
+n = size(x,1);
+m = size(y,1);
+
 % Get the pairwise distance terms
-A = pairdist(x,y);
-B = pairdist(x,x);
-C = pairdist(y,y);
+A = (1/(n*m)) * pairdist(x,y);
+B = (1/n^2) * pairdist(x,x);
+C = (1/m^2) * pairdist(y,y);
 
 % Compute the E statistic
 E = 2*A - B - C;

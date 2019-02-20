@@ -1,4 +1,15 @@
 function[tau] = getTau(X)
+%% Calculates the tau quantile value for each element in vector X
+%
+% tau = getTau(X)
+%
+% ----- Inputs -----
+%
+% X: A vector of values
+%
+% ----- Outputs -----
+%
+% tau
 
 % Ensure is vector
 if ~isvector(X)
