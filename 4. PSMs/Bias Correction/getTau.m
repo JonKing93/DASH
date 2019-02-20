@@ -9,7 +9,10 @@ function[tau] = getTau(X)
 %
 % ----- Outputs -----
 %
-% tau
+% tau: The empirical quantile value of each element in X.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Ensure is vector
 if ~isvector(X)
