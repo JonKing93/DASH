@@ -78,8 +78,10 @@ for k = 1:N
     Xq(:,k) = Xq(rankOrder,k);
 end
 
-% Extract the static variables and restore the standardization from the
-% observations.
-X = Xq .* normO(2) + normO(1);
+% Extract the static variables
+X = Xq( size(Xp,1)+1:end, : );
+
+% Restore the standardization from the observations.
+X = X .* normO(2) + normO(1);
 
 end

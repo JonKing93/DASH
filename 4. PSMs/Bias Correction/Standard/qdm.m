@@ -24,15 +24,15 @@ function[X] = qdm(Xo, Xm, Xp, type, Xd)
 % X: The bias-corrected future values
 
 % Check that Xs and Xt and Xp are vectors
-if ~isvector(Xs) || ~isvector(Xt) || ~isvector(Xp)
-    error('Xs, Xt, and Xp must all be vectors.');
+if ~isvector(Xo) || ~isvector(Xm) || ~isvector(Xp)
+    error('Xo, Xm, and Xp must all be vectors.');
 end
 if exist('Xd','var') && ~isvector(Xd)
     error('Xd must be a vector.');
 end
 
 % Use relative qdm by default
-if ~exist(type, 'var')
+if ~exist('type', 'var')
     type = 'rel';
 end
 

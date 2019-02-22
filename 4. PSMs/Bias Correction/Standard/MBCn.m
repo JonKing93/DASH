@@ -15,7 +15,7 @@ if N ~= size(Xm,2) || N ~= size(Xp,2)
 end
 
 % Set nIter to infinite if not specified
-if nargin < 4
+if ~exist('nIter','var')
     nIter = Inf;
 end
 
@@ -77,19 +77,24 @@ while ~converge
     end
 end
 
-% For each variable
-for k = 1:N
-    
-    % Sort the projected variables from the original QDM
-    X(:,k) = sort( X(:,k) );
-    
-    % Order the sorted variables according to the rank of each element in
-    % the final transformed set of projected values
-    [~,rankOrder] = sort( Xp(:,k) );
-    X(:,k) = X(rankOrder,k);
-end
+% % % For each variable
+% % for k = 1:N
+% %     
+% %     % Sort the projected variables from the original QDM
+% %     X(:,k) = sort( X(:,k) );
+% %     
+% %     % Order the sorted variables according to the rank of each element in
+% %     % the final transformed set of projected values
+% %     [~,rankOrder] = sort( Xp(:,k) );
+% %     X(:,k) = X(rankOrder,k);
+% % end
+% % 
+% % % Restore the standardization from the observations
+% % X = X .* stdO + meanO;
 
-% Restore the standardization from the observations
-X = X .* stdO + meanO;
+warning('You modified the algorithm!');
+
+% Directly return Xp
+X = Xp .* stdO + meanO;
 
 end

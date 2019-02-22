@@ -1,4 +1,4 @@
-function[X, E, forStatic] = npdft( Xs, Xt, tol, nIter )
+function[X, E, forStatic] = npdft( Xt, Xs, tol, nIter )
 %% Performs the N-pdft algorithm.
 % Applies bias correction by equating the CDF of N-dimensional source data 
 % with an N-dimensional target. Uses the energy distance statistic to
