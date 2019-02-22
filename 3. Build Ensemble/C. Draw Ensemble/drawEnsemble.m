@@ -53,14 +53,20 @@ while nDraw > 0
     % Make random draws from the ensemble members
     newDraws = randsample( allDraws, nDraw );
     
-    % Subscript to ensemble dimensions
+    % Subscript to grid dimensions
     subDraws = subdim( ensSize, newDraws );
+    
+    % Index from draws to ensemble indices
+    ensDex = NaN( size(subDraws) );
+    for k = 1:nDim
+        ensDex(:,k) = coupVars(1).indices{ensDim(k)}( subDraws(:,k) );
+    end
 
     % Get sequence elements for each draw
     currSeq = repmat( seqEls, [nDraw,1]);
-    currDraw = reshape(  repmat(subDraws(:)', [nSeq,1]), [nSeq*nDraw, nDim] );
+    currDraw = reshape(  repmat(ensDex(:)', [nSeq,1]), [nSeq*nDraw, nDim] );
     
-    % Get the sample indices
+    % Get the full set of data indices
     sampDex( (end - nDraw*nSeq + 1):end, : ) = currSeq + currDraw;
     
     % Erase repeat indices with NaN and move to the end of the sampling indices
@@ -77,4 +83,4 @@ end
 % Only return the sequence reference indices
 sampDex = sampDex(1:nSeq:end,:) - seqEls(1,:);
     
-end   
+end  

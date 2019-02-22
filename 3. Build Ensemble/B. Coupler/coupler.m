@@ -24,8 +24,7 @@ end
 % Restrict to overlapping metadata
 design = restrictMeta( design, cv, ensDim );
 
-% Do the random draws. Get the SAMPLING indices of the ensemble indices.
-% (The indices of the ensemble indices, very meta...)
+% Do the random draws. Get the ensemble indices to actually use.
 [sampDex, ensID] = drawEnsemble( design.var(cv), nEns, overlap );
 
 % Apply the sampling indices to get the final ensemble indices.

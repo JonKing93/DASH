@@ -20,7 +20,7 @@ for v = 1:numel(coupVars)
     for d = 1:numel(dims)
         
         % Sample the ensemble indices
-        coupVars(v).indices{dims(d)} = coupVars(v).indices{dims(d)}(sampDex(:,d));
+        coupVars(v).indices{dims(d)} = sampDex(:,d);
     end
 end
 

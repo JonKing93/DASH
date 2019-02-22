@@ -1,4 +1,4 @@
-function[sampDex] = eraseRepeat( sampDex, nSeq )
+function[sampDex] = eraseRepeat( sampDex, nSeq, ensDex )
 %% Removes a sequence overlap
 %
 % sampDex: Ensemble draws
