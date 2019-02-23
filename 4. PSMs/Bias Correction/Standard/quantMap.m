@@ -37,6 +37,12 @@ tau = getTau(Xs);
 
 % If a static lookup, interpolate to the tau values for Xd
 if exist('Xd','var')
+    
+    % Convert any Xd outside of the range of Xs to the min or max of Xs
+    Xd(Xd>max(Xs)) = max(Xs);
+    Xd(Xd<min(Xs)) = min(Xs);
+    
+    % Interpolate to tau values.
     tau = interp1( Xs, tau, Xd );
 end
 

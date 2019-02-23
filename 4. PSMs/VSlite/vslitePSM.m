@@ -15,11 +15,6 @@
 % Specify a value to use to convert T or P in the DA to the units required
 % for VS-Lite.
 %
-% obj = vslitePSM( ..., 'Tbias', Tbias )
-% obj.vslitePSM( ..., 'Pbias', Pbias )
-% Specify a value to add to T or P in the DA to apply additive bias
-% correction.
-%
 % ----- Inputs -----
 % obCoord: [lat, lon] coordinates for the observation site.
 %
@@ -43,10 +38,6 @@
 % convertT: A value that will be ADDED to DA T values to convert them to C
 %
 % convertP: A value that will be MULTIPLIED by DA P values to convert to mm / month
-%
-% Tbias: A scalar in Celsius that will be ADDED to DA T values for bias correction.
-%
-% Pbias: A scalar in mm / month that will be ADDED to DA P values for bias correction.
 %
 % ----- Outputs -----
 % obj: An instance of the vslitePSM class.
@@ -118,10 +109,6 @@ classdef vslitePSM < PSM & biasCorrector
         % DA unit conversions.
         convertT; % Added to DA T
         convertP; % Multiplied by DA P
-        
-        % Bias correction
-        Tbias;
-        Pbias;
     end
         
     methods
@@ -155,10 +142,6 @@ classdef vslitePSM < PSM & biasCorrector
             % Set the T and P conversions
             obj.convertT = convertT;
             obj.convertP = convertP;
-            
-            % Add the bias corrections
-            obj.Tbias = Tbias;
-            obj.Pbias = Pbias;
             
             % Initialize the standardization
             obj.standard = [];

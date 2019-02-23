@@ -3,30 +3,30 @@ classdef biasCorrector < PSM
     
     properties
         Xo; % Observations
-        Xm; % Calibration period
-        Xp; % Initial ensemble
+        Xm; % Initial ensemble
         
         R; % Saved rotation matrices
+        E; % Energy statistic
         
         normO; % Normalization for the observations
         normM; % Normalization for the historical values
-        
-        type; % Type of qdm
     end
     
     methods
         
         % Does the initial mapping and saves iteration variables
-        function[] = initialMapping( obj, Xo, Xm, Xp, type, tol, varargin )
+        function[] = initialNPDFT( obj, Xo, Xm, tol )
             
-            % Run MBCn on the values
-            [~, obj.R, obj.normO, obj.normM] = MBCn( Xo, Xm, Xp, type, tol, varargin{:} );
+            % Transpose from state vector
+            Xo = Xo';
+            Xm = Xm';
             
-            % Also save the input values
+            % Run Npdft. Record static iteration values.
+            [~, obj.E, obj.R, obj.normO, obj.normM] = npdft( Xo, Xm, tol );
+            
+            % Save input values
             obj.Xo = Xo;
             obj.Xm = Xm;
-            obj.Xp = Xp;
-            obj.type = type;
         end
             
         function[X] = biasCorrect( obj, Xd )
@@ -34,9 +34,8 @@ classdef biasCorrector < PSM
             % Ensemble members become samples
             Xd = Xd';
             
-            % Run a static MBCn
-            X = MBCn_static( obj.Xo, obj.Xm, obj.Xp, Xd, obj.R, ...
-                             obj.type, obj.normO, obj.normM );
+            % Run a static npdft
+            X = npdft_static( obj.Xo, obj.Xm, Xd, obj.R, obj.normO, obj.normM );
             
             % Flip back to state vector format
             X = X';

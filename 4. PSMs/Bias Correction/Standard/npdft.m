@@ -1,4 +1,4 @@
-function[X, E, forStatic] = npdft( Xt, Xs, tol, nIter )
+function[X, E, jR, normT, normS] = npdft( Xt, Xs, tol, nIter )
 %% Performs the N-pdft algorithm.
 % Applies bias correction by equating the CDF of N-dimensional source data 
 % with an N-dimensional target. Uses the energy distance statistic to
@@ -14,7 +14,7 @@ function[X, E, forStatic] = npdft( Xt, Xs, tol, nIter )
 % [X, E] = npdft( ... )
 % Also returns the energy statistic for each iteration.
 %
-% [X, E, {jR, jXs, normS}] = npdft( ... )
+% [X, E, jR, normT, normS] = npdft( ... )
 % Returns values to allow a static npdft.
 %
 % ----- Inputs -----
@@ -35,7 +35,9 @@ function[X, E, forStatic] = npdft( Xt, Xs, tol, nIter )
 %
 % jR: The rotation matrix used for each iteration.
 %
-% jXs: The rotated source data for each iteration.
+% normT: The standardization applied to the target
+%
+% normS: The standardization applied to the source.
 
 % Check that Xs and Xt are matrices
 if ~ismatrix(Xs) || ~ismatrix(Xt)
@@ -57,15 +59,17 @@ end
 [Xs, meanS, stdS] = zscore(Xs);
 [Xt, meanT, stdT] = zscore(Xt);
 
-% Initialize static output
+% Create / Preallocate static output
 if nargout > 2
-    forStatic = cell(3,1);
-    forStatic{3} = [meanS; stdS];
+    normT = [meanT; stdT];
+    normS = [meanS; stdS];
+    jR = [];
 end
 E = [];
 
 % For each iteration
 converge = false;
+j = 1;
 while ~converge
     
     % Get a random orthogonal rotation matrix.
@@ -77,8 +81,8 @@ while ~converge
     
     % Record static output
     if nargout > 2
-        forStatic{1}(:,:,end+1) = R;
-        forStatic{2}(:,:,end+1) = rXs;
+        jR(:,:,j) = R; %#ok<AGROW>
+        j = j+1;
     end
     
     % Do a quantile mapping of each column of rXs to rXt
@@ -87,7 +91,7 @@ while ~converge
     end
     
     % Do inverse rotation of the quantile mapping to get the new Xs
-    Xs = rXs / R;
+    Xs = rXs * R';
     
     % Get the squared energy distance
     E(end+1) = estat( Xs, Xt ); %#ok<AGROW>
@@ -100,12 +104,6 @@ while ~converge
     if E(end) < tol || nIter <= 0
         converge = true;
     end
-end
-
-% Remove 0 allocation from static output
-if nargout > 2
-    forStatic{1}(:,:,1) = [];
-    forStatic{2}(:,:,1) = [];
 end
 
 % Restore the mean and standard deviation from the target

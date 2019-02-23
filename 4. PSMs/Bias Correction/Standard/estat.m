@@ -25,20 +25,21 @@ end
 function[dist] = pairdist(x,y)
 % Computes the average pairwise distance between two vectors
 
-% Get the number of samples in each distribution
-[n, nVar] = size(x);
-m = size(y,1);
+% Swap x and y so that x has fewer rows
+if size(x,1) > size(y,1)
+    swap = x;
+    x = y;
+    y = swap;
+end
 
-% Vectorize the calculation
-x = repmat( x', [m,1]);
-x = reshape(x, [nVar, n*m])';
-y = repmat(y, [n, 1]);
+% Initialize the sum distance
+dist = 0;
 
-% Compute the distance between every pair of samples. This is the 2-norm
-% (Euclidean distance) between each row of the vectorized matrices.
-dist = sqrt( sum( (x-y).^2, 2) );
-
-% Get the total distance component
-dist = sum(dist);
+% For each row of x
+for k = 1:size(x,1)
+    
+    % Get the distance with each row of y
+    dist = dist + sum( sqrt( sum( (x(k,:)-y).^2, 2 ) ) );
+end
 
 end 
