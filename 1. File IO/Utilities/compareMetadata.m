@@ -41,8 +41,8 @@ end
 [~, var] = getDimIDs;
 if ~isfield(meta, var)
     error('The new metadata does not contain the ''%s'' field', var);
-elseif ~isequal( oldMeta.(var), meta.(var) )
-    error('The metadata ''var'' field does not match the existing file.');
+elseif ~isequaln( oldMeta.(var), meta.(var) )
+    error('The metadata %s field does not match the existing file.', var);
 end
 
 end
