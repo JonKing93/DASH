@@ -9,3 +9,5 @@ if ischar(str) && isrow(str)
 elseif isstring(str) && isscalar(str)
     tf = true;
 end
+
+end
