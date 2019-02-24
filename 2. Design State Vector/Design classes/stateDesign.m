@@ -18,9 +18,8 @@ classdef stateDesign
         varName;        % The variable names. Used for indexing.
         
         % Coupler properties
-        isCoupled;  % Whether ensemble indices are synced.
+        isCoupled;  % Whether ensemble indices are coupled.
         defCouple;  % Whether the variable should be coupled by default
-        isSynced;   % Whether other variables are synced to the variable
     end
     
     methods
@@ -32,7 +31,6 @@ classdef stateDesign
             % Initialize logical arrays as logical
             obj.isCoupled = logical([]);
             obj.defCouple = logical([]);
-            obj.isSynced = logical([]);
         end
     end
 end

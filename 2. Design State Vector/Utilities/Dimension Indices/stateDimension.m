@@ -56,22 +56,16 @@ if isempty(nanflag)
 end
 
 
-%% Sync / Couple
+%% Coupled variables
 
 % Get all coupled variables
 av = [find(design.isCoupled(v,:)), v];
 nVar = numel(av);
 
-% Get any synced variables
-sv = [find( design.isSynced(v,:) ), v];
-
 % Notify user if changing from ens to state dimension
 if ~design.var(v).isState(d) && numel(av)>1
     flipDimWarning(dim, var, {'ensemble','state'}, design.varName(av(1:end-1)));
 end
-
-% Get the indexed metadata
-meta = indexMetadata( design.var(v).meta.(dim), index );
 
 % For each associated variable
 for k = 1:nVar
@@ -81,18 +75,14 @@ for k = 1:nVar
     
     % Change dimension to state dimension
     design.var(av(k)).isState(ad) = true;
-    
-    % If a synced variable
-    if ismember(av(k),sv)
-        
-        % Get the matching indices
-        design.var(av(k)).indices{ad} = ...
-                   getMatchingMetaDex( design.var(av(k)),dim, meta, true );
-                                     
-        % Set the mean and nanflag values
-        design.var(av(k)).nanflag{ad} = nanflag;
-        design.var(av(k)).takeMean(ad) = takeMean;
-    end
 end
+
+% Set the values
+design.var(v).indices{d} = index;
+design.var(v).takeMean(d) = takeMean;
+design.var(v).nanflag{d} = nanflag;
+design.var(v).seqDex{d} = [];
+design.var(v).meanDex{d} = [];
+design.var(v).ensMeta{d} = [];
 
 end

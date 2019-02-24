@@ -85,14 +85,11 @@ if isempty(ensMeta)
     ensMeta = design.var(v).ensMeta{d};
 end
 
-%% Sync / Couple
+%% Coupler
 
 % Get all coupled variables
 av = [find(design.isCoupled(v,:)), v];
 nVar = numel(av);
-
-% Get any synced variables
-sv = [find( design.isSynced(v,:) ), v];
 
 % Notify user if changing from state to ens
 if design.var(v).isState(d) && numel(av)>1
@@ -104,26 +101,18 @@ for k = 1:nVar
     
     % Get the dimension index
     ad = checkVarDim( design.var(av(k)), dim );
-    
-    % Change to ensemble dimension. Set coupling
+
+    % Change to ensemble dimension. Set coupler
     design.var(av(k)).isState(ad) = false;
     design.var(av(k)).overlap = overlap;
-    
-    % If a synced variable
-    if ismember(av(k), sv)
-        
-        % Set the indices
-        design.var(av(k)).seqDex{ad} = seq;
-        design.var(av(k)).meanDex{ad} = mean;
-        
-        % Set the mean and nanflag, metadata
-        design.var(av(k)).nanflag{ad} = nanflag;
-        design.var(av(k)).takeMean(ad) = takeMean;
-        design.var(av(k)).ensMeta{ad} = ensMeta;
-    end
 end
 
-% Set the ensemble indices
+% Set the values 
 design.var(v).indices{d} = index;
+design.var(v).seqDex{d} = seq;
+design.var(v).meanDex{d} = mean;
+design.var(v).nanflag{d} = nanflag;
+design.var(v).takeMean(d) = takeMean;
+design.var(v).ensMeta{d} = ensMeta;
 
 end

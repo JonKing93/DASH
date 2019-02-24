@@ -38,12 +38,6 @@ if any( design.isCoupled(v,:) )
     end
 end
 
-% Synced Variables
-if any(design.isSynced(v,:))
-    fprintf('\t\tSynced Variables: ');
-    disp( design.varName( design.isSynced(v,:) )' );
-end
-
 % Overlap
 if design.var(v).overlap
     overStr = 'Allowed';

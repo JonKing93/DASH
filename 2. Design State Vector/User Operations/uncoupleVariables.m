@@ -1,6 +1,5 @@
 function[design] = uncoupleVariables( design, vars, template, varargin )
-%% Uncouples variable indices in a state vector design. Uncoupled variables
-% cannot be synced, so also unsyncs variables.
+%% Uncouples variable indices in a state vector design. 
 %
 % design = uncoupleVariables( design, vars )
 % Uncouples a set of variables.
@@ -39,12 +38,6 @@ xv = checkDesignVar(design, template);
 % default coupling
 if design.defCouple(xv)
     design.defCouple(v) = false;
-end
-
-% Uncoupled variables cannot be synced, so unsync from any variables that
-% were uncoupled.
-for k = 1:numel(rv)
-    design = unsyncVariables( design, design.varName(v), design.varName(rv(k)), warnArg{:} );
 end
 
 % Notify user of uncoupling

@@ -39,9 +39,6 @@ end
 design.var = [design.var; newVar];
 design.varName = [design.varName; newVar.name];
 
-% Synced indices
-design.isSynced(end+1,end+1) = false;
-
 % Mark the default coupling choice for the variable
 design.defCouple(end+1) = ~nocouple;
 
