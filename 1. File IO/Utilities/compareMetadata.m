@@ -37,8 +37,8 @@ for d = 1:numel(dimID)
     end
 end
 
-% Also ensure that the var field matches
-[~, var] = getKnownIDs;
+% Also ensure that the varSpecs field matches
+[~, var] = getDimIDs;
 if ~isfield(meta, var)
     error('The new metadata does not contain the ''%s'' field', var);
 elseif ~isequal( oldMeta.(var), meta.(var) )

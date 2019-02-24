@@ -23,7 +23,7 @@ function[gridData, dimLoc] = permuteInputs( m, gridDims, gridData, loc )
 % Jonathan King, University of Arizona, 2019
 
 % Get the permutation ordering
-permDex = getPermutation( gridDims, m.dimID, getKnownIDs );
+permDex = getPermutation( gridDims, m.dimID, getDimIDs );
 
 % Permute the gridded data
 gridData = permute(gridData, permDex);

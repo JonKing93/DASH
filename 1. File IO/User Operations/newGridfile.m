@@ -42,7 +42,7 @@ if numel(gridDims) < minDim
 end
 
 % Get the known dimension IDs
-[knownID, var] = getKnownIDs;
+[knownID, var] = getDimIDs;
 
 % Permute the knownIDs to match the data ordering
 permDex = getPermutation( knownID, gridDims, knownID );

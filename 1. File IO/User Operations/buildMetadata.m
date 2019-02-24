@@ -35,7 +35,7 @@ if ~(isstring(varName) && isscalar(varName)) && ~(ischar(varName) && isvector(va
 end
 
 % Get the known dimension IDs
-[knownID, var] = getKnownIDs;
+[knownID, var] = getDimIDs;
 nDim = numel(knownID);
 
 % Permute the knownIDs to match the data order
