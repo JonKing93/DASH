@@ -1,4 +1,4 @@
-function[index, ix] = getMatchingMetaDex( var, dim, meta, isState )
+function[index, ix] = getMatchingMetaDex( var, dim, meta )
 %% This gets indices of a dimensions of a specific variables that match a
 % metadata template.
 %
@@ -45,16 +45,6 @@ else
         [~, ix, index] = intersect( meta, dimMeta, 'stable' );
     else
         [~, ix, index] = intersect( meta, dimMeta, 'stable', 'rows' );
-    end
-    
-    % Throw error if there are no indices
-    if isempty(index)
-        error('The %s variable does not have metadata matching any of the template metadata in the %s dimension.', var.name, dim);
-    end
-    
-    % If a state index, throw error if there are missing indices
-    if isState && numel(index)~=size(meta,1)
-        error('The %s variable does not have metadata matching all state indices of the template variable in the %s dimension.', var.name, dim );
     end
 end
 

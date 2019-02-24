@@ -43,11 +43,11 @@ classdef varDesign
             [meta, dimID, dimSize] = metaGridfile( file );
             
             % Ensure that the gridfile contains all known IDs
-            [allID] = getKnownIDs;
+            [allID] = getDimIDs;
             if any(~ismember(allID, dimID))
                 missing = allID{ find(~ismember(allID, dimID),1) };
                 error(['The gridfile %s is missing the dimension %s.\n',...
-                       'The function getKnownIDs.m may have been edited after the gridfile was created.'], file, missing);
+                       'The function getDimIDs.m may have been edited after the gridfile was created.'], file, missing);
             end
                 
             % Set metadata
