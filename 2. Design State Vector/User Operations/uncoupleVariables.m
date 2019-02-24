@@ -32,7 +32,7 @@ v = unique( checkDesignVar(design, vars) );
 xv = checkDesignVar(design, template);
 
 % Mark as uncoupled and get any secondary coupled variables.
-[design, rv] = unrelateVars( design, v, xv, 'isCoupled', nowarn);
+[design, rv] = unrelateVars( design, v, xv, nowarn);
 
 % If the template is a default couple, remove the other variables from the
 % default coupling

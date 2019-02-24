@@ -39,7 +39,7 @@ v = unique([xv; yv],'stable');
 prevCouple = design.isCoupled;
 
 % Mark the variables as coupled and get any secondary coupled variables.
-[design, v] = markCoupled( design, v, 'isCoupled', nowarn);
+[design, v] = markCoupled( design, v, nowarn);
 
 % Get the ensemble dimensions in the template variable
 ensDim = find( ~design.var(xv).isState );
