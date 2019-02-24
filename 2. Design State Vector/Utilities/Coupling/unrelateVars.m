@@ -1,6 +1,6 @@
-function[design, rv] = unrelateVars( design, v, xv, field, nowarn )
+function[design, rv] = unmarkCoupled( design, v, xv, nowarn )
 %
-% design = unrelateVars( design, v, xv, field, nowarn )
+% design = unrelateVars( design, v, xv, nowarn )
 % Removes a relationship between variables and 1. a template variable, 2.
 % all secondary template variables.
 %
@@ -11,8 +11,6 @@ function[design, rv] = unrelateVars( design, v, xv, field, nowarn )
 % v: Index of variables being unrelated
 %
 % xv: Index of template variable from which variables are being unrelated.
-%
-% field: 'isCoupled' or 'isSynced'
 %
 % nowarn: Logical scalar for whether to warn about secondary variables.
 %
@@ -32,12 +30,10 @@ elseif ismember(xv, v)
     error('The template cannot be in the list of variables.');
 elseif ~islogical(nowarn) || ~isscalar(nowarn)
     error('nowarn must be a logical scalar.');
-elseif ~ismember(field, {'isCoupled','isSynced'})
-    error('field must be ''isCoupled'' or ''isSynced''');
 end
 
 % Get all secondary template variables
-sv = find( design.(field)(v,:) );
+sv = find( design.isCoupled(v,:) );
 
 % Get the set of all variables from which to remove the relationship
 rv = [xv, sv];
@@ -50,8 +46,8 @@ for k = 1:nVar
     rvCurr = rv( rv~=v(k) );
     
     % Unmark the relationship
-    design.(field)([v(k), rvCurr]) = false;
-    design.(field)([rvCurr, v(k)]) = false;
+    design.isCoupled([v(k), rvCurr]) = false;
+    design.isCoupled([rvCurr, v(k)]) = false;
 end
 
 end
