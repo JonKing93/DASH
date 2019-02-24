@@ -35,7 +35,7 @@ Y = design.var(yv);
 for dim = 1:numel(X.dimID)
     
     % Get the indexed metadata
-    meta = indexMetadata( X.meta.(D.dimID{dim}), X.indices{dim} );
+    meta = indexMetadata( X.meta.(X.dimID{dim}), X.indices{dim} );
     
     % For each copying variable
     for k = 1:numel(Y)
@@ -55,6 +55,11 @@ for dim = 1:numel(X.dimID)
             
             % Flip the isState toggle
             Y(k).isState(d) = true;
+            
+            % Delete seq, mean, and ensMeta
+            Y(k).seqDex{k} = [];
+            Y(k).meanDex{k} = [];
+            Y(k).ensMeta{k} = [];
             
         % If an ensemble dimension and syncing seq or mean
         else
