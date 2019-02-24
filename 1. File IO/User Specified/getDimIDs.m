@@ -17,7 +17,7 @@ levDim = 'lev';
 timeDim = 'time';
 
 % Ensemble
-ensDim = 'ens';
+ensDim = 'run';
 
 % Tripole
 triDim = 'tripole';
