@@ -8,12 +8,13 @@ function[X, tau] = quantMap( Xt, Xs, Xd )
 % [X, tau] = quantMap( Xt, Xs, Xd )
 % Does a static quantile mapping for the values in Xd
 %
-%
 % ----- Inputs -----
 %
 % Xs: A vector containing the source dataset.
 %
 % Xt: A vector containing the target dataset.
+%
+% Xd: Values to correct in a static quantile mapping.
 %
 % ----- Outputs -----
 %
@@ -32,9 +33,9 @@ if exist('Xd','var') && ~isvector(Xd)
     error('Xd must be a vector.');
 end
 
-% Get the tau values from the source data
+% Get the tau values 
 tau = getTau(Xs);
-
+    
 % If a static lookup, interpolate to the tau values for Xd
 if exist('Xd','var')
     

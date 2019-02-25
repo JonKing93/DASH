@@ -1,4 +1,29 @@
 function[X] = npdft_static( Xt, Xs, Xd, R, normT, normS )
+%% This performs a static npdft. Applies the mapping from a prior npdft to
+% bias-correct new values in a deterministic manner.
+%
+% X = npdft_static( Xt, Xs, Xd, R, normT, normS )
+%
+% ----- Inputs -----
+%
+% Xt: Saved target data from an initial Npdft
+%
+% Xs: Saved source data from an initial Npdft
+%
+% Xd: The values being bias-corrected
+%
+% R: Saved rotation matrices from initial npdft
+%
+% normT: The normalization used on Xt.
+%
+% normS: The normalization used on Xs.
+%
+% ----- Outputs -----
+%
+% X: Bias corrected values for Xd.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check everything is a matrix
 if ~ismatrix(Xs) || ~ismatrix(Xt) || ~ismatrix(Xd)

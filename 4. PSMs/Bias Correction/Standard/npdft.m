@@ -19,11 +19,11 @@ function[X, E, jR, normT, normS] = npdft( Xt, Xs, tol, nIter )
 %
 % ----- Inputs -----
 %
-% Xs: Source data
+% Xt: Target data. (nSample x nVariables)
 %
-% Xt: Target data
+% Xs: Source data being bias corrected. (nSample x nVariables)
 %
-% tol: threshold to use for convergence.
+% tol: Energy distance threshold to use for convergence.
 %
 % nIter: A maximum number of iterations.
 %
@@ -38,6 +38,9 @@ function[X, E, jR, normT, normS] = npdft( Xt, Xs, tol, nIter )
 % normT: The standardization applied to the target
 %
 % normS: The standardization applied to the source.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check that Xs and Xt are matrices
 if ~ismatrix(Xs) || ~ismatrix(Xt)

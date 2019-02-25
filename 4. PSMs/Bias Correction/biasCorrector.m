@@ -15,18 +15,21 @@ classdef biasCorrector < PSM
     methods
         
         % Does the initial mapping and saves iteration variables
-        function[] = initialNPDFT( obj, Xo, Xm, tol )
+        function[X] = initialNPDFT( obj, Xo, Xm, tol, varargin )
             
             % Transpose from state vector
             Xo = Xo';
             Xm = Xm';
             
             % Run Npdft. Record static iteration values.
-            [~, obj.E, obj.R, obj.normO, obj.normM] = npdft( Xo, Xm, tol );
+            [X, obj.E, obj.R, obj.normO, obj.normM] = npdft( Xo, Xm, tol, varargin{:} );
             
             % Save input values
             obj.Xo = Xo;
             obj.Xm = Xm;
+            
+            % Transpose output
+            X = X';
         end
             
         function[X] = biasCorrect( obj, Xd )
