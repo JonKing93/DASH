@@ -231,6 +231,8 @@ classdef vslitePSM < PSM & biasCorrector
         % Run the PSM
         function[trw] = runPSM( obj, M, ~, ~ )
             
+            warning('Need to error check conversions');
+            
             % Get some sizes
             [nMonth, nEns] = size(M);
             nMonth = nMonth / 2;
