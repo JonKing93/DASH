@@ -48,7 +48,7 @@ for dim = 1:numel(ensDim)
         yd = checkVarDim(Y, ensDim{dim});
         
         % Assign the indices
-        design.var(cv(k)).indices{yd} = getMatchingMetaDex( Y, ensDim{dim}, allowMeta{dim}, false );
+        design.var(cv(k)).indices{yd} = getMatchingMetaDex( Y, ensDim{dim}, allowMeta{dim} );
     end
 end
 

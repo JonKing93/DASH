@@ -13,15 +13,12 @@ function[meta] = createEnsembleMeta( design, nState, varDex )
 % Get a new metadata container
 meta = initializeMeta( design, nState );
 
-% Get the name of the variable name field
-[~,varName] = getKnownIDs;
-
 % For each variable
 for v = 1:numel(design.var)
     var = design.var(v);
     
     % Set the value of the variable name metadata
-    meta.(varName)( varDex{v} ) = var.name;
+    meta.var( varDex{v} ) = var.name;
     
     % Get the set of dimensionally subscripted state indices
     index = var.indices;
