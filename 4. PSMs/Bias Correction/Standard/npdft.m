@@ -56,6 +56,13 @@ end
 % Set nIter to infinite if not specified
 if nargin < 4
     nIter = Inf;
+elseif ~isscalar(nIter) || nIter<1 || mod(nIter,1)~=0
+    error('nIter must be a positive scalar integer.');
+end
+
+% Error check tol
+if ~isscalar(tol) || tol<0
+    error('tol must be a scalar that is not less than 0.');
 end
 
 % Standardize both datasets
