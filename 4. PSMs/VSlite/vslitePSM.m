@@ -117,9 +117,9 @@ classdef vslitePSM < PSM & biasCorrector
         function obj = vslitePSM( obCoord, T1, T2, M1, M2, Tclim, varargin )
             
             % Parse the advanced inputs
-            [lbparams, hydroclim, intwindow, convertT, convertP, Tbias, Pbias] = ...
-                parseInputs( varargin, {'lbparams','hydroclim','intwindow','convertT','convertP', 'Tbias', 'Pbias'},...
-                           {[],[],1:12,0,1,0,0}, {[], {'P','M'}, [], [], [],[],[]} );
+            [lbparams, hydroclim, intwindow, convertT, convertP] = ...
+                parseInputs( varargin, {'lbparams','hydroclim','intwindow','convertT','convertP'},...
+                           {[],[],1:12,0,1}, {[], {'P','M'}, [], [], []} );
             
             % Defaults
             obj.lbparams = {};
@@ -139,6 +139,17 @@ classdef vslitePSM < PSM & biasCorrector
             % Set the temperature climatology
             obj.Tclim = Tclim;
             
+            % Error check the T and P conversions
+            if ~isscalar(convertT) && (~isvector(convertT) || length(convertT)~=length(intwindow))
+                error('Temperature conversion must be a scalar or a column vector the length of the intwindow.');
+            elseif ~isscalar(convertP) && (~isvector(convertP) || length(convertP)~=length(intwindow))
+                error('Precipitaton conversion must be a scalar or a column vector the length of the intwindow.');
+            end
+            
+            % Set conversions as column
+            convertT = convertT(:);
+            convertP = convertP(:);
+
             % Set the T and P conversions
             obj.convertT = convertT;
             obj.convertP = convertP;
@@ -230,18 +241,12 @@ classdef vslitePSM < PSM & biasCorrector
         
         % Run the PSM
         function[trw] = runPSM( obj, M, ~, ~ )
-            
-            warning('Need to error check conversions');
-            
+                        
             % Get some sizes
             [nMonth, nEns] = size(M);
             nMonth = nMonth / 2;
             
-            % Convert T to Celsius and P to mm/month
-            M(1:nMonth,:) = M(1:nMonth,:) + obj.convertT;
-            M(nMonth+1:end,:) = M(nMonth+1:end,:) .* obj.convertP;
-            
-            % Apply bias correction
+            % Apply bias correction (this will also convert units)
             M = obj.biasCorrect( M );
             
             % Preallocate T and P
@@ -250,7 +255,6 @@ classdef vslitePSM < PSM & biasCorrector
             
             % Split the state vector into T and P for the seasonally
             % sensitive months.
-            nMonth = size(M,1) / 2;
             T(obj.intwindow,:) = M(1:nMonth,:);
             P(obj.intwindow,:) = M(nMonth+1:end,:);
             
@@ -260,5 +264,17 @@ classdef vslitePSM < PSM & biasCorrector
                                obj.lbparams{:}, obj.hydroclim{:} );
         end
         
+        % Converts DA units
+        function[M] = convertM(M)
+            
+            % Get the number of elements per variable
+            nEls = size(M,1) / 2;
+            
+            % Convert T
+            M(1:nEls,:) = M(1:nEls,:) + obj.convertT;
+            
+            % Convert P
+            M(nEls+1:end,:) = M(nEls+1:end,:) .* obj.convertP;
+        end
     end
 end
