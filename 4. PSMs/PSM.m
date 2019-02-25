@@ -10,7 +10,7 @@ classdef (Abstract) PSM < handle
     
     % Each PSM should store its own sampling indices
     properties
-        H
+        H; % Sampling indices
     end
     
     % A method that all proxy system models must implement
