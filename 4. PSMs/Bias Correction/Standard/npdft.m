@@ -4,11 +4,11 @@ function[X, E, jR, normT, normS] = npdft( Xt, Xs, tol, nIter )
 % with an N-dimensional target. Uses the energy distance statistic to
 % monitor algorithm convergence.
 %
-% X = npdft( Xs, Xt, tol )
+% X = npdft( Xt, Xs, tol )
 % Applies the N-pdft alogrithm until the energy distance of the source and
 % target data falls below a threshold. Returns the bias-corrected output.
 %
-% X = npdft( Xs, Xt, tol, nIter )
+% X = npdft( Xt, Xs, tol, nIter )
 % Sets a maximum number of allowed iterations.
 %
 % [X, E] = npdft( ... )
