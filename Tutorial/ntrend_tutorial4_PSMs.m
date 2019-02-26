@@ -94,7 +94,7 @@ help vslitePSM
 % So, let's use the PSM constructors for NTREND.
 
 % I'm going to start by loading information about the NTREND sites
-[~,~,season, lon, lat] = loadNTREND;
+[crnMeta, crn] = loadNTREND;
 
 % I'm also going to load some temperature and moisture thresholds that I
 % calculated using the estimate_vslite_params.m script trained on CRU data.
@@ -116,9 +116,9 @@ Tclim = Tclim.Tclim;
 % to months outside of May - September, and VS-Lite has negative skill at
 % reconstructing tree rings at site 9 using CRU data.
 del = [52;2;20;9];
-season(del) = [];
-lon(del) = [];
-lat(del) = [];
+crnMeta.season(del) = [];
+crnMeta.lon(del) = [];
+crnMeta.lat(del) = [];
 T1(del) = [];
 T2(del) = [];
 M1(del) = [];
@@ -145,8 +145,8 @@ F = cell(numel(lat),1);
 % Similarly, I'm also going to give each PSM a precipitation conversion.
 % The data in the grid file is in m/s, but VS-Lite uses mm/month.
 for s = 1:numel(F)
-    F{s} = vslitePSM( [lat(s), lon(s)], T1(s), T2(s), M1(s), M2(s), Tclim(:,s), ...
-        'intwindow', season{s}, 'convertT', -273.15, 'convertP', 2.592E9 );
+    F{s} = vslitePSM( [crnMeta.lat(s), crnMeta.lon(s)], T1(s), T2(s), M1(s), M2(s), Tclim(:,s), ...
+        'intwindow', crnMeta.season{s}, 'convertT', -273.15, 'convertP', 2.592E9 );
 end
 
 % If you are familiar with VS-Lite, this code should look mostly familiar. It is
