@@ -58,11 +58,9 @@ for j = 1:size(R,3)
     for k = 1:N
         
         % Do a static quantile mapping for Xd
-        X(d,k) = quantMap( X(t,k), X(s,k), X(d,k) );
-        
-        % Do a standard quantile mapping for Xs
-        X(s,k) = quantMap( X(t,k), X(s,k) );
+        [X(s,k), X(d,k)] = quantmap_static( X(t,k), X(s,k), X(d,k) );
     end
+    
     % Do the inverse rotation
     X = X * R(:,:,j)';
 end

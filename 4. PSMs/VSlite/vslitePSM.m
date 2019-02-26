@@ -265,7 +265,7 @@ classdef vslitePSM < PSM & biasCorrector
         end
         
         % Converts DA units
-        function[M] = convertM(M)
+        function[M] = convertM(obj, M)
             
             % Get the number of elements per variable
             nEls = size(M,1) / 2;

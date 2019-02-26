@@ -41,6 +41,9 @@ catch ME
         tau = tau(uA);
         tau = tau(uC);
         
+        % Retry the interpolation
+        tau = interp1( Xs, tau, Xd );
+    
     % If the error was for something else, rethrow the error
     else
         rethrow(ME);

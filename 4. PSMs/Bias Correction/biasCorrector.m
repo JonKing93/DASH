@@ -62,12 +62,13 @@ classdef biasCorrector < PSM
                 error('Cannot run an initial NPDFT until the sample indices are generated.');
             end            
                            
-            % Transpose from state vector and select at sampling indices.
-            Xo = Xo';
-            M = M( obj.H, : )';
-            
-            % Convert any units of M
+            % Select at sampling indices and convert units
+            M = M( obj.H, : );
             M = obj.convertM(M);
+            
+            % Transpose from state vector for npdft
+            Xo = Xo';
+            M = M';
             
             % Run Npdft. Record static iteration values.
             [~, obj.E, obj.R, obj.normO, obj.normM] = npdft( Xo, M, tol, varargin{:} );

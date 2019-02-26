@@ -1,20 +1,15 @@
-function[X, tau] = quantMap( Xt, Xs, Xd )
+function[X, tau] = quantMap( Xt, Xs )
 %% Quantile mapping
 % Maps a value from a dataset to the value of analogous quantile in a 
 % second dataset.
 %
 % [X, tau] = quantMap( Xt, Xs )
 %
-% [X, tau] = quantMap( Xt, Xs, Xd )
-% Does a static quantile mapping for the values in Xd
-%
 % ----- Inputs -----
 %
 % Xs: A vector containing the source dataset.
 %
 % Xt: A vector containing the target dataset.
-%
-% Xd: Values to correct in a static quantile mapping.
 %
 % ----- Outputs -----
 %
@@ -29,9 +24,6 @@ function[X, tau] = quantMap( Xt, Xs, Xd )
 if ~isvector(Xs) || ~isvector(Xt)
     error('Xs and Xt must be vectors.')
 end
-if exist('Xd','var') && ~isvector(Xd)
-    error('Xd must be a vector.');
-end
 
 % Get the tau values
 [~,sortDex] = sort(Xs);
@@ -41,16 +33,10 @@ N = numel(Xs);
 tau(sortDex,1) = 1:N;
 tau = (tau-0.5) ./ N;
     
-% If a static lookup, interpolate to the tau values for Xd
-if exist('Xd','var')
-    
-    % Convert any Xd outside of the range of Xs to the min or max of Xs
-    Xd(Xd>max(Xs)) = max(Xs);
-    Xd(Xd<min(Xs)) = min(Xs);
-    
-    % Interpolate to the tau values for Xd.
-    tau = interpTau( Xs, tau, Xd );    
-end
+% Use the highest tau value for duplicate quantiles
+[~, uA, uC] = unique(Xs, 'last');
+tau = tau(uA);
+tau = tau(uC);
 
 % Lookup the tau values against the target distribution
 X = quantile( Xt, tau );
