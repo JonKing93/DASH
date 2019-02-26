@@ -33,8 +33,13 @@ if exist('Xd','var') && ~isvector(Xd)
     error('Xd must be a vector.');
 end
 
-% Get the tau values 
-tau = getTau(Xs);
+% Get the tau values
+[~,sortDex] = sort(Xs);
+
+% Get the quantile for each value
+N = numel(Xs);
+tau(sortDex,1) = 1:N;
+tau = (tau-0.5) ./ N;
     
 % If a static lookup, interpolate to the tau values for Xd
 if exist('Xd','var')
@@ -43,8 +48,8 @@ if exist('Xd','var')
     Xd(Xd>max(Xs)) = max(Xs);
     Xd(Xd<min(Xs)) = min(Xs);
     
-    % Interpolate to tau values.
-    tau = interp1( Xs, tau, Xd );
+    % Interpolate to the tau values for Xd.
+    tau = interpTau( Xs, tau, Xd );    
 end
 
 % Lookup the tau values against the target distribution
