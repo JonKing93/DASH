@@ -26,7 +26,8 @@ function[K,a] = kalmanENSRF( Mdev, Ydev, R, w )
 nEns = size(Mdev,2);
 unbias = 1 / (nEns-1);
 
-% Get the numerator
+% Get the numerator. This is the covariance of each state vector element
+% with each Ye.
 Knum = unbias * Mdev * Ydev';
 
 % Get variance of the deviations

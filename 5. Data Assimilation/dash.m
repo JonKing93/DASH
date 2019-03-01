@@ -1,4 +1,4 @@
-function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
+function[A, Ye] = dash( M, D, R, w, inflate, daType, F, varargin)
 %% Implements data assimilation using dynamic PSMs or the tardif method.
 %
 % [A, Ye] = dash( M, D, R, w, inflate, 'full', F)
@@ -10,6 +10,9 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
 % and variance. Also returns the initial Ye (calculated using the PSMs),
 % the linearly updated Ye used in each serial update, and the final value
 % Ye for each time step. 
+% 
+% [...] = dash(..., 'maxUpdate', Kmax)
+% Sets a maximum update size to monitor for ensemble convergence.
 %
 % ----- Inputs -----
 %
@@ -24,6 +27,9 @@ function[A, Ye] = dash( M, D, R, w, inflate, daType, F)
 % inflate: A scalar inflation factor. Use [] for no inflation.
 %
 % F: A cell vector of PSM objects for each observation. {nObs x 1}
+%
+% Kmax: A scalar value used to test for ensemble convergence. An
+% unreareasonably large update for the variable with the largest units.
 %
 % ----- Outputs -----
 %
@@ -61,7 +67,7 @@ else
 end
 
 
-%% Covariance adjustments. Inflation.
+%% Covariance adjustments. Inflation. Convergence monitor
 
 % If unspecified, do no covariance localization.
 if isempty(w)
@@ -78,6 +84,11 @@ end
 Mdev = sqrt(inflate) .* Mdev;
 M = Mmean + Mdev;
 
+% Convergence monitor
+Kmax = parseInputs( varargin, 'maxUpdate', {Inf}, {[]} );
+if ~isscalar( Kmax) || Kmax <= 0
+    error('Kmax must be a scalar larger than 0.');
+end
 
 %% Appended method
 %
@@ -117,7 +128,7 @@ if append
     M = [M;Yi];
     
     % Run the DA
-    [A, Ye] = dashDA( M, D, R, w, F );
+    [A, Ye] = dashDA( M, D, R, w, F, Kmax );
     
     % Unappend
     Yf = A(nState+1:end,:,:);
@@ -130,7 +141,7 @@ if append
 %% Full DA
 % Super simple, just run DA directly.
 else
-    [A, Ye] = dashDA( M, D, R, w, F );
+    [A, Ye] = dashDA( M, D, R, w, F, Kmax );
 end
 
 end

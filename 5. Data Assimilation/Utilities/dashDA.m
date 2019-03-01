@@ -1,4 +1,4 @@
-function[A, Y] = dashDA( M, D, R, w, F )
+function[A, Y] = dashDA( M, D, R, w, F, Kmax )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -21,6 +21,9 @@ function[A, Y] = dashDA( M, D, R, w, F )
 %
 % F: An array of proxy system models of the "PSM" class. One model for each
 %      observation. (nObs x 1)
+%
+% maxKalman: A maximum allowed adjustment. Used to monitor for ensemble
+% convergence.
 %
 % ----- Outputs -----
 %
@@ -77,7 +80,8 @@ for t = 1:nTime
             % Get the portion of the model to pass to the PSM
             Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
             
-            % Run the PSM. Optionally get R from the PSM.
+            % Run the PSM. Optionally get R from the PSM. Check if the PSM
+            % ran successfully and the analysis should be updated.
             [Ye, tR(d), update] = getPSMOutput( F{d}, Mpsm, d, t, nEns, tR(d) );
             
             % If no errors occured in the PSM, update the analysis
@@ -88,6 +92,9 @@ for t = 1:nTime
 
                 % Get the Kalman gain and alpha
                 [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
+                
+                % Get the innovation
+                innov = tD(d) - Ymean;                    
 
                 % Update
                 Amean = Amean + K*( tD(d) - Ymean );

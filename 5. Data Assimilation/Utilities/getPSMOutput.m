@@ -1,4 +1,4 @@
-function[Ye, update, R] = getPSMOutput( F, Mpsm, d, t, nEns, R )
+function[Ye, R, update] = getPSMOutput( F, Mpsm, d, t, nEns, R )
 
 % Attempt to run the PSM
 try
@@ -12,8 +12,8 @@ try
     
     % Also check that the outputs were valid
     checkYe( Ye, nEns );
-    if ~isscalar(R) || isnan(R) || isinf(R) || ~isreal(R) || R<=0
-        error('R must be a real scalar that is neither NaN nor Inf and is larger than 0.');
+    if ~isscalar(R) || isnan(R) || isinf(R) || ~isreal(R) || R<0
+        error('R must be a real scalar that is neither NaN nor Inf and is not negative.');
     end
     
     % No errors were thrown, so use to update
