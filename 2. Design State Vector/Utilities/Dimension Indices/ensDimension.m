@@ -81,8 +81,15 @@ if ~islogical(overlap) || ~isscalar(overlap)
 end
 
 % Metadata
+
+% If no metadata is provided, copy the old metadata
 if isempty(ensMeta)
     ensMeta = design.var(v).ensMeta{d};
+end
+
+% If there is no pre-exisiting metadata, just use NaN
+if isempty(ensMeta)
+    ensMeta = NaN;
 end
 
 %% Coupler
