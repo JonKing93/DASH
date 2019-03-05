@@ -15,7 +15,7 @@ function[K, Ka] = kalmanENSRF( Mdev, Ydev, R, w, yloc )
 % Ydev: Ye deviations. (nObs x nEns)
 %
 % r: Uncertainty for a single observation. (1 x 1)
-% R: Ye error covariance matrix. (nObs x nObs)
+% R: Ye error variances. (nObs x 1)
 %
 % w: A covariance localization for a single observation. (nState x 1)
 % W: Covariance localization for multiple observations. (nState x nObs)

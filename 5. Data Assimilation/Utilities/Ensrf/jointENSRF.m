@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye] = jointENSRF( M, D, R, F, w )
+function[Amean, Avar, Ye] = tiJointENSRF( M, D, R, F, w, yloc )
 %% Does data assimilation using the Ensemble square root method (ENSRF).
 % Runs all observations jointly. Does not use serial updates.
 
@@ -6,70 +6,50 @@ function[Amean, Avar, Ye] = jointENSRF( M, D, R, F, w )
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
 
-% Preallocate the output
-Amean = NaN(nState, nTime);
-Avar = NaN(nState, nTime);
-Ye = NaN(nObs, nEns);
+% Preallocate Ye and a check for PSM success
+Ye = NaN( nObs, nEns );
+update = false(nObs, 1);
 
-% Keep track of 
-
-% Precalculate Ye for time-independent PSMs.
+% For each observation
 for d = 1:nObs
-    if ~F{d}.timeDependent
     
-        % Get the model values to pass to the PSM
-        Mpsm = Mmean(F{d}.H) + Mdev(F{d}.H,:);
+    % Get the model values being passed
+    Mpsm = M(F{d}.H, :);
     
-        % Run the PSM
-        [Ye(d,:), R(d,:), update] = getPSMOutput( F{d}, Mpsm, d, R(d,:) )
+    % Run the PSM
+    [Ye(d,:), R(d), update(d)] = getPSMOutput( F{d}, Mpsm, R(d), d, NaN  );
+end
 
-
-% Decompose the initial ensemble
+% Decompose the ensemble
 [Mmean, Mdev] = decomposeEnsemble(M);
 clearvars M;
 
-% Each time step is independent. Process in parallel
+% Decompose the model estimates
+[Ymean, Ydev] = decomposeEnsemble( Ye );
+
+% Preallocate the output
+Amean = NaN(nState, nTime);
+Avar = NaN(nState, nTime);
+
+% Do the update in each time step
 for t = 1:nTime
     
-    % Slice observations. Get values that are non NaN
+    % Slice variables
     tD = D(:,t);
-    obs = ~isnan(tD);
-    
-    % Slice the R values and Ye output.
     tR = R(:,t);
-    Ycurr = NaN(nObs, nEns);
     
-    % For each observation that is not NaN
-    for d = 1:nObs
-        if obs(d)
-        
-            % Get the model elements needed to run the PSM
-
-            % Run the PSM
-            [Ycurr(d,:), tR(d), update] = getPSMOutput( F{d}, Mpsm, d, t, tR(d) );
-            
-            % Remove the observation if the PSM failed
-            if ~update
-                obs(d) = false;
-            end
-        end
-    end
+    % Only use obs that are not NaN, have an R value, and successfully ran
+    % the PSM.
+    obs = ~isnan(tD) & ~isnan(tR) & update;
     
-    % Decompose the model estimates for the observations
-    [Ymean, Ydev] = decomposeEnsemble( Ycurr(obs,:) );
+    % Calculate Kalman gain and adjusted gain.
+    % (Must do this each time step to account for variable D and changing
+    % R). However, we can precalculate the numerator.
+    [K, Ka] = kalmanENSRF( Mdev, Ydev(obs,:), tR(obs), w(:,obs), yloc(obs,obs) );
     
-    % Convert R to a diagonal matrix
-    tR = diag( tR(obs) );
-    
-    % Get the kalman gain and adjusted gain
-    error('Covariance localization is broken.');
-    [K, Khat] = kalmanENSRF( Adev, Ydev, tR, w(:,obs) );
-    
-    % Update. Save mean, variance, and Ye
-    Amean(:,t) = Mmean + K*( tD(obs) - Ymean );
-    Avar(:,t) = var(   Mdev - Khat * Ydev,   0, 2 );
-    Ye(:,:,t) = Ycurr;
+    % Update
+    Amean(:,t) = Mmean + K * ( tD(obs) - Ymean(obs) );
+    Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 );
 end
 
 end
-    

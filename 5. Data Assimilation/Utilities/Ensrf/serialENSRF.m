@@ -1,4 +1,4 @@
-function[A, Y] = serialENSRF( M, D, R, F, w )
+function[Amean, Avar, Ye] = serialENSRF( M, D, R, F, w )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -14,10 +14,8 @@ function[A, Y] = serialENSRF( M, D, R, F, w )
 %
 % R: Observation uncertainty. NaN values will be determined via dynamic R
 %    generation by the PSM. (nObs x nTime)
-%    !!!!! Need to implement a more general R calculation
 %
 % w: Covariance localization weights. (nState x nObs)
-%      !!! Could this be dynamic?
 %
 % F: An array of proxy system models of the "PSM" class. One model for each
 %      observation. (nObs x 1)
@@ -47,56 +45,48 @@ Ye = NaN( nObs, nEns, nTime );
 % Each time step is independent, process in parallel
 for t = 1:nTime
     
-    % Slice variables to minimize parallel overhead. Preallocate Ye for the
-    % time step to slice Ye output.
+    % Slice variables to minimize parallel overhead.
     tD = D(:,t);
     tR = R(:,t);
     Ycurr = NaN(nObs, nEns);
     
     % Initialize the update for this time step
-    Amean = Mmean;
-    Adev = Mdev;    
+    Am = Mmean;
+    Ad = Mdev;    
     
-    % For each observation that is not a NaN
+    % For each observation that is not a NaN and has an R value
     for d = 1:nObs
         if ~isnan(tD(d))
             
             % Get the model elements to pass to the PSM
-            Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
+            Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);
             
-            % Run the PSM. Optionally get R from the PSM. Check if the PSM
-            % ran successfully and the analysis should be updated.
-            [Ye, tR(d), update] = getPSMOutput( F{d}, Mpsm, d, t, tR(d) );
+            % Run the PSM. Generate R. Error check.
+            [Ycurr(d,:), tR(d), update] = getPSMOutput( F{d}, Mpsm, tR(d), d, t );
             
-            % If no errors occured in the PSM, update the analysis
-            if update
+            % If no errors occured in the PSM, and the R value is valid,
+            % update the analysis
+            if update && ~isnan(tR(d))
 
                 % Decompose the model estimate
-                [Ymean, Ydev] = decomposeEnsemble( Ye );
+                [Ymean, Ydev] = decomposeEnsemble( Ycurr(d,:) );
 
                 % Get the Kalman gain and alpha
-                [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));                
+                [K, a] = kalmanENSRF( Ad, Ydev, tR(d), w(:,d), 1 );                
 
                 % Update
-                Amean = Amean + K*( tD(d) - Ymean );
-                Adev = Adev - (a * K * Ydev);
-
-                % Record Y if desired as output
-                if recordYe
-                    Ycurr(d,:) = Ye;
-                end     
+                Am = Am + K*( tD(d) - Ymean );
+                Ad = Ad - (a * K * Ydev);    
             end
         end
-    end
+    end   % End serial updates
     
     % Record the Y estimates for this time step.
-    if recordYe
-        Y(:,:,t) = Ycurr;
-    end
+    Ye(:,:,t) = Ycurr;
     
     % Record the mean and variance of the analysis.
-    Avar = var( Adev, 0, 2 );
-    A(:,t,:) = [Amean, Avar];
+    Amean(:,t) = Am;
+    Avar(:,t) = var( Ad, 0 ,2 );
 end
 
 end
