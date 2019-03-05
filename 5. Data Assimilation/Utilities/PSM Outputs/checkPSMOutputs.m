@@ -1,8 +1,5 @@
-function[hasError] = checkYe( Ye, nEns )
+function[] = checkPSMOutputs( Ye, nEns )
 %% Error checks Ye output from a PSM
-
-% Initialize the error flag
-hasError = false;
 
 % Check that the size is correct
 if ~isequal( size(Ye), [1, nEns] )
@@ -24,7 +21,6 @@ elseif any(isinf(Ye))
 % to Inf)
 elseif numel(unique(Ye))==1
     error( 'PSM returned Ye values that are all identical.\n(This would magnify the Kalman Gain to infinity).' );
-
 end
 
 end
