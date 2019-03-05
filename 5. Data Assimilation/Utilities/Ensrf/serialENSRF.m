@@ -1,9 +1,9 @@
-function[A, Y] = dashDA( M, D, R, w, F, Kmax )
+function[A, Y] = serialENSRF( M, D, R, F, w )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
 %
-% [A, Y] = dashDA( M, D, R, w, F )
+% [A, Y] = dashDA( M, D, R, F, w )
 % Performs data assimilation.
 %
 % ----- Inputs -----
@@ -22,15 +22,12 @@ function[A, Y] = dashDA( M, D, R, w, F, Kmax )
 % F: An array of proxy system models of the "PSM" class. One model for each
 %      observation. (nObs x 1)
 %
-% maxKalman: A maximum allowed adjustment. Used to monitor for ensemble
-% convergence.
-%
 % ----- Outputs -----
 %
 % A: The mean and variance of the analysis ensemble. (nState x nTime x 2)
 %
 % Y: The model estimates used for each update. (nObs x nEns x nTime)
-%
+
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
@@ -38,25 +35,14 @@ function[A, Y] = dashDA( M, D, R, w, F, Kmax )
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
 
-% Ensure the PSMs are allowed
-for d = 1:nObs
-    if ~isa( F{d}, 'PSM' )
-        error('F must be of the the "PSM" class');
-    end
-end
+% Decompose the initial ensemble. Clear the ensemble to free memory.
+[Mmean, Mdev] = decomposeEnsemble(M);
+clearvars M;
 
 % Preallocate the output
-A = NaN( nState, nTime, 2 );
-
-% Decompose the ensemble
-[Mmean, Mdev] = decomposeEnsemble(M);
-
-% Preallocate Ye if it is desired as output.
-recordYe = false;
-if nargout>1
-    Y = NaN( nObs, nEns, nTime);
-    recordYe = true;
-end
+Amean = NaN( nState, nTime );
+Avar = NaN( nState, nTime );
+Ye = NaN( nObs, nEns, nTime );
 
 % Each time step is independent, process in parallel
 for t = 1:nTime
@@ -65,9 +51,7 @@ for t = 1:nTime
     % time step to slice Ye output.
     tD = D(:,t);
     tR = R(:,t);
-    if recordYe
-        Ycurr = NaN(nObs, nEns);
-    end
+    Ycurr = NaN(nObs, nEns);
     
     % Initialize the update for this time step
     Amean = Mmean;
@@ -77,12 +61,12 @@ for t = 1:nTime
     for d = 1:nObs
         if ~isnan(tD(d))
             
-            % Get the portion of the model to pass to the PSM
+            % Get the model elements to pass to the PSM
             Mpsm = Amean(F{d}.H) + Adev(F{d}.H,:);
             
             % Run the PSM. Optionally get R from the PSM. Check if the PSM
             % ran successfully and the analysis should be updated.
-            [Ye, tR(d), update] = getPSMOutput( F{d}, Mpsm, d, t, nEns, tR(d) );
+            [Ye, tR(d), update] = getPSMOutput( F{d}, Mpsm, d, t, tR(d) );
             
             % If no errors occured in the PSM, update the analysis
             if update
@@ -91,10 +75,7 @@ for t = 1:nTime
                 [Ymean, Ydev] = decomposeEnsemble( Ye );
 
                 % Get the Kalman gain and alpha
-                [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));
-                
-                % Get the innovation
-                innov = tD(d) - Ymean;                    
+                [K, a] = kalmanENSRF( Adev, Ydev, tR(d), w(:,d));                
 
                 % Update
                 Amean = Amean + K*( tD(d) - Ymean );

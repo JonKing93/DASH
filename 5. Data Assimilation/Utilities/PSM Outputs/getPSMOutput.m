@@ -1,7 +1,12 @@
-function[Ye, R, update] = getPSMOutput( F, Mpsm, d, t, nEns, R )
+function[Ye, R, update] = getPSMOutput( F, Mpsm, d, t, R )
+
+% Get the ensemble size
+nEns = size(Mpsm,2);
 
 % Attempt to run the PSM
 try
+    
+    error('test error');
     
     % Run with or without R calculation
     if isnan(R)
@@ -26,6 +31,9 @@ catch ME
         ME.message, '\n', ...
         'Dash will not use observation %0.f to update the analysis in time step %0.f.\n\n'], ...
         d, t, d, t );
+    
+    % Create NaN Ye output
+    Ye = NaN(1, nEns);
     
     % Block the PSM from updating the analysis
     update = false;

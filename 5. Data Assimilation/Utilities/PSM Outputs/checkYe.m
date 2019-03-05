@@ -23,7 +23,8 @@ elseif any(isinf(Ye))
 % Check if the values are all the same. (This would explode the Kalman Gain
 % to Inf)
 elseif numel(unique(Ye))==1
-    error( sprintf('PSM returned Ye values that are all identical.\n(This would magnify the Kalman Gain to infinity).') );
+    error( 'PSM returned Ye values that are all identical.\n(This would magnify the Kalman Gain to infinity).' );
+
 end
 
 end
