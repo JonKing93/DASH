@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye] = tiJointENSRF( M, D, R, F, w, yloc )
+function[Amean, Avar, Ye] = jointENSRF( M, D, R, F, w, yloc )
 %% Does data assimilation using the Ensemble square root method (ENSRF).
 % Runs all observations jointly. Does not use serial updates.
 
