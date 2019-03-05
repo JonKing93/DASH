@@ -43,8 +43,7 @@ for t = 1:nTime
     obs = ~isnan(tD) & ~isnan(tR) & update;
     
     % Calculate Kalman gain and adjusted gain.
-    % (Must do this each time step to account for variable D and changing
-    % R). However, we can precalculate the numerator.
+    % Must do this each time step to account for variable D and R.
     [K, Ka] = kalmanENSRF( Mdev, Ydev(obs,:), tR(obs), w(:,obs), yloc(obs,obs) );
     
     % Update
