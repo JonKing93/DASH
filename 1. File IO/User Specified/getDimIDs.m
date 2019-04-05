@@ -1,8 +1,8 @@
-function[dimID, varSpecs, lonDim, latDim, levDim, timeDim, ensDim, triDim] = getDimIDs
+function[dimID, specs, lonDim, latDim, levDim, timeDim, ensDim, triDim] = getDimIDs
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
 
 % Variable specifications.
-varSpecs = 'varSpecs';
+specs = 'specs';
 
 % Longitude (x coordinate)
 lonDim = 'lon';

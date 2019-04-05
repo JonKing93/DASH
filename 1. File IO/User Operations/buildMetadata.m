@@ -1,9 +1,9 @@
-function[meta] = buildMetadata( gridSize, gridDims, varSpecs, varargin)
+function[meta] = buildMetadata( gridSize, gridDims, pecs, varargin)
 %% This converts user metadata to the structure used by dash. Metadata in
 % unspecified dimensions is set to NaN. Checks that metadata size matches
 % the size of gridded data.
 %
-% meta = buildMetadata( gridData, gridDims, varSpecs, dim1, val1, dim2, val2, ... )
+% meta = buildMetadata( gridData, gridDims, specs, dim1, meta1, dim2, meta2, ..., dimN, metaN )
 % Converts user metadata to a metadata structure used by dash.
 %
 % ----- Inputs -----
@@ -13,7 +13,7 @@ function[meta] = buildMetadata( gridSize, gridDims, varSpecs, varargin)
 % gridDims: A cell of dimension IDs indicating the order of dimensions in
 %       the gridded data.
 %
-% varSpecs: A scalar that contains non-gridded metadata for the variable.
+% specs: A scalar that contains non-gridded metadata for the variable.
 %   This could include values like the variable name and units. Use a cell
 %   or a struct to store multiple values.
 %
@@ -32,7 +32,7 @@ function[meta] = buildMetadata( gridSize, gridDims, varSpecs, varargin)
 %
 
 % varSpecs must be scalar
-if ~isscalar(varSpecs)
+if ~isscalar(pecs)
     error('The variable specs must be a scalar. If you wish to use multiple values, place them in a struct or cell.');
 end
 
@@ -82,7 +82,7 @@ for m = 2:2:numel(metaCell)
 end
 
 % Create the metadata structure
-meta = struct(var, varSpecs );
+meta = struct(var, pecs );
 
 % Fill in the cell metadata
 if numel(metaCell)>2
