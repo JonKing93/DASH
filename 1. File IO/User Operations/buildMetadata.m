@@ -70,7 +70,7 @@ for d = 1:nDim
 
         % Otherwise, check for the correct number of rows
         elseif size(value,1) ~= dimSize
-            error('The number of rows of metadata for the %s dimension must match the length of the dimension (%.f rows).', dimID(d), dimSize);
+            error('The number of rows (%.f) of metadata for the %s dimension must match the length of the dimension (%.f).', size(value,1), dimID(d), dimSize);
         end
 
         % Ensure that each row is unique, treating NaN as indistinct

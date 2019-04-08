@@ -20,7 +20,47 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check that the file is a string
+% Do some error checking
+errCheck( file, gridDims, meta, gridData );
+
+% Get the set of known dimension IDs
+[dimID] = getDimIDs;
+
+% Initialize and array to hold the size of each dimension.
+gridSize = ones( size(dimID) );
+
+% Fill in the size of any non-singleton dimensions
+for g = 1:numel(gridDims)
+    d = strcmp( gridDims(g), dimID );
+    gridSize(d) = size(gridData, g);
+end
+
+% Sort the dimensions from smallest to largest length to preserve
+% appending capabilities for partially writing .mat files.
+[gridSize, newOrder] = sort( gridSize );
+dimID = dimID( newOrder );
+
+
+% Permute the gridded data to match this order
+gridData = permuteGrid( gridData, gridDims, dimID );
+
+% Check that the metadata for each dimension has one row for each element.
+for d = 1:numel(dimID)
+    if size( meta.(dimID(d)), 1) ~= gridSize(d)
+        error('The number of rows (%.f) in the metadata for the %s dimension does not match the length of the dimension (%.f)', ...
+               size( meta.(dimID(d)),1), dimID(d), gridSize(d)  );
+    end
+end
+
+% Save a v7.3 .mat file (with a .grid extension) to enalbe partial loading
+% and writing
+save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
+
+end
+
+function[gridDims] = errCheck( file, gridDims, meta, gridData )
+        
+% Check that the file is a string with a .grid extension
 if ~isstrflag(file)
     error('File name must be a string.');
 end
@@ -29,55 +69,30 @@ if numel(file)<5 || ~strcmp( file(end-4:end), '.grid' )
     error('File must end in a .grid extension.');
 end
 
-% Get the size of all non-trailing singletons
-gridSize = size(gridData);
+% Check the grid dimensions
+gridDims = checkDims(gridDims);
+
+% Ensure that there is at least one gridID for each dimension of
+% the gridded data
 if iscolumn(gridData)
-    gridSize = gridSize(1);
-end
-minDim = numel(gridSize);
-
-% Ensure all dimensions that are not trailing singletons have IDs
-if numel(gridDims) < minDim
-    error('All dimensions that are not a trailing singleton must have IDs.');
+    nDim = 1;
+else
+    nDim = ndims(gridData);
 end
 
-% Get the known dimension IDs
-[knownID, var] = getDimIDs;
-
-% Permute the knownIDs to match the data ordering
-permDex = getPermutation( knownID, gridDims, knownID );
-dimID = knownID(permDex);
-
-% Then permute the data from smallest to largest dimension to optimize
-% use with matfile indexing.
-gridSize = fullSize(gridData, numel(dimID));
-[gridSize, permDex] = sort( gridSize, 'ascend' );
-
-gridData = permute( gridData, permDex );
-dimID = dimID(permDex);
-
-% Error check the metadata
-if any( ~isfield(meta, [dimID, var]) )
-    error('Metadata does not contain all required fields.');
-elseif ~( (isstring(meta.(var)) && isscalar(meta.(var))) || (ischar(meta.(var)) && isvector(meta.(var))) )
-    error('The %s field of the metadata must be a string ID.', var);
+if numel(gridDims) < nDim
+    error('gridDims does not contain a dimension ID for each dimension of the gridded data that is not a trailing singleton.');
 end
 
-% Error check the metadata
-for d = 1:numel(dimID)   
-    
-    % Check the size
-    if size(meta.(dimID{d}),1) ~= gridSize(d)
-        error('Metadata for %s does not match the size of the dimension in the gridded data.', dimID{d});
-    end
-    
-    % If cell, check for vector
-    if iscell(meta.(dimID{d})) && ~isvector(meta.(dimID{d}))
-        error('Metadata for %s is a cell but is not a vector.', dimID{d});
-    end
+% Ensure the metadata has all required fields.
+[dimID, specs] = getDimIDs;
+allField = [dimID, specs];
+
+if any( ~isfield(meta, allField) )
+    d = find( ~isfield( meta, allField), 1, 'first' );
+    error('Metadata does not contain a field for the %s dimension.', allField(d));
 end
 
-% Save a v7.3 matfile to enable partial loading
-save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
+% Check that the size of the metadata matches the grid size
 
 end
