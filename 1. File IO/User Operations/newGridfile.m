@@ -40,7 +40,6 @@ end
 [gridSize, newOrder] = sort( gridSize );
 dimID = dimID( newOrder );
 
-
 % Permute the gridded data to match this order
 gridData = permuteGrid( gridData, gridDims, dimID );
 
@@ -92,7 +91,5 @@ if any( ~isfield(meta, allField) )
     d = find( ~isfield( meta, allField), 1, 'first' );
     error('Metadata does not contain a field for the %s dimension.', allField(d));
 end
-
-% Check that the size of the metadata matches the grid size
 
 end

@@ -6,7 +6,8 @@ function[m] = fileCheck( file, readOnly )
 % Returns a writable matfile object.
 %
 % m = fileCheck( file, 'readOnly' )
-% Returns a read-only matfile object.
+% Returns a read-only matfile object. Provides a much faster load if only
+% metadata is needed.
 %
 % ----- Inputs -----
 %
@@ -19,13 +20,18 @@ function[m] = fileCheck( file, readOnly )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check that the file is a .mat file
+% Check that the file is a .grid file
 if ~isstrflag(file)
     error('File name must be a string.');
 end
 file = char(file);
 if ~strcmpi( file(end-4:end), '.grid' )
     error('File must be a .grid file.');
+end
+
+% Ensure that the file is on the path
+if ~exist(file, 'file')
+    error('The file %s cannot be found.', file);
 end
 
 % Get the matfile
@@ -39,7 +45,6 @@ end
 
 % Check that it contains the required fields
 vars = who(m);
-
 if ~ismember( 'gridData', vars )
     error('The %s file is missing the ''gridData'' variable.', file);
 elseif ~ismember( 'dimID', vars )
