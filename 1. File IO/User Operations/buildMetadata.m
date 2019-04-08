@@ -1,18 +1,18 @@
-function[meta] = buildMetadata( gridSize, gridDims, specs, varargin)
+function[meta] = buildMetadata( gridDims, gridSize, specs, varargin)
 %% This converts user metadata to the structure used by dash. Metadata in
 % unspecified dimensions is set to NaN. Checks that metadata size matches
 % the size of gridded data.
 %
-% meta = buildMetadata( gridSize, gridDims, specs, dim1, meta1, dim2, meta2, ..., dimN, metaN )
+% meta = buildMetadata( gridDims, gridSize, specs, dim1, meta1, dim2, meta2, ..., dimN, metaN )
 % Converts user specified metadata to the metadata structure used by dash.
 %
 % ----- Inputs -----
 %
-% gridSize: The size of a gridded dataset that will be used to initialize
-%           a .grid file.
-%
 % gridDims: A cell of dimension IDs indicating the order of dimensions in
 %       the gridded data.
+%
+% gridSize: The size of a gridded dataset that will be used to initialize
+%           a .grid file.
 %
 % specs: A scalar that contains non-gridded metadata for the variable.
 %   This could include values like the variable name and units. Use a cell
@@ -45,7 +45,7 @@ meta = struct(specName, specs );
 for d = 1:nDim
     
     % Check if the dimension is user-known
-    [isGridDim, g] = ismember( dimID, gridDims);
+    [isGridDim, g] = ismember( dimID(d), gridDims);
     
     % Get the size of the dimension. If the dimension is user-known, get
     % the specified size. Otherwise, set this as a singleton dimension.
@@ -70,7 +70,7 @@ for d = 1:nDim
 
         % Otherwise, check for the correct number of rows
         elseif size(value,1) ~= dimSize
-            error('The number of rows of the metadata for dimension %s must match the size of the dimension.', dimID(d));
+            error('The number of rows of metadata for the %s dimension must match the length of the dimension (%.f rows).', dimID(d), dimSize);
         end
 
         % Ensure that each row is unique, treating NaN as indistinct
@@ -114,13 +114,13 @@ if ~isvector(gridSize) || any(gridSize < 1) || any( mod(gridSize,1)~=0 )
     error('gridSize must be a vector of positive integers.');
 end
 
-% Check that gridDims is a vector with the same length as gridSize
-if ~isvector(gridDims) || length(gridDims)~=length(gridSize)
-    error('gridDims must be a vector of dimension IDs that matches the length of ''gridDims''.');
-end
-
 % Check the dimension IDs, convert to string
 gridDims = checkDims(gridDims);
+
+% Check that gridDims is a vector with the same length as gridSize
+if ~isvector(gridDims) || length(gridDims)~=length(gridSize)
+    error('gridSize must be a vector of dimension IDs that matches the length of ''gridDims''.');
+end
 
 % Check that the number of metadata elements is even
 nDim = numel(meta)/2;
