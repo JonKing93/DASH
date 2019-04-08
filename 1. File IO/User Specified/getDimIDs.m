@@ -2,27 +2,27 @@ function[dimID, specs, lonDim, latDim, levDim, timeDim, ensDim, triDim] = getDim
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
 
 % Variable specifications.
-specs = 'specs';
+specs = "specs";
 
 % Longitude (x coordinate)
-lonDim = 'lon';
+lonDim = "lon";
 
 % Latitude (y coordinate)
-latDim = 'lat';
+latDim = "lat";
 
 % Level (z / height coordinate)
-levDim = 'lev';
+levDim = "lev";
 
 % Time 
-timeDim = 'time';
+timeDim = "time";
 
 % Ensemble
-ensDim = 'run';
+ensDim = "run";
 
 % Tripole
-triDim = 'tripole';
+triDim = "tripole";
 
-% All dimensions
-dimID = {lonDim, latDim, levDim, timeDim, ensDim, triDim};
+% All grid dimensions
+dimID = [lonDim, latDim, levDim, timeDim, ensDim, triDim];
 
 end
