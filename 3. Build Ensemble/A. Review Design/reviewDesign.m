@@ -32,6 +32,14 @@ for v = 1:nVar
     % the values for the variable match the values in the .grid file.
     checkVarMatchesGrid( var );
     
+    % Record the dimension IDs from the first variable, and check that each
+    % variable has only these dimensions
+    if v == 1
+        dimID = var.dimID;
+    elseif numel(var.dimID)~=numel(dimID) || any( ~ismember(var.dimID, dimID) )
+        error('Variables %s and %s do not have the same dimension IDs.', var.name, design.var(1).name );
+    end
+    
     % Check the remaining fields are the correct type and length
     checkVarFields( var );
     

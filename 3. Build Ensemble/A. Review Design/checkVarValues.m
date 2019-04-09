@@ -30,8 +30,12 @@ for d = 1:numel(var.dimID)
     % If an ensemble dimension
     else
         
-        % There should be one row of ensemble metadata for each sequence index
-        if size( var.ensMeta{d}, 1) ~= numel(var.seqDex{d})
+        % Empty ensemble metadata is only permitted for no sequences
+        if isempty( var.ensMeta{d} ) && numel(var.seqDex{d})>1
+            error('The ensemble metadata for the %s dimension of variable %s is empty.', var.dimID(d), var.name );
+        
+        % and there should be one row of ensemble metadata for each sequence index
+        elseif size( var.ensMeta{d}, 1) ~= numel(var.seqDex{d})
             error('The ensemble metadata for the %s dimension of variable %s does not have one row for each sequence index.', var.dimID(d), var.name);
         end
         
