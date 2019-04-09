@@ -1,48 +1,29 @@
-function[] = compareMetadata( m, meta, ic )
-%% Compares two metadata structures. Throws error if they do not match at
-% specified indices.
-%
-% compareMetadata( m, meta, ic )
-%
-% ----- Inputs -----
-%
-% m: A metadata structure for a full gridded .mat file.
-%
-% meta: A metadata structure for specific indices.
-%
-% ic: A cell of indices specifying metadata indices in m.
+function[] = compareMetadata( meta, m, field, indices )
+% Compares user-specified metadata to metadata in a .grid file at specific
+% indices.
 
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
+% Load the grid metadata
+gridMeta = m.meta;
 
-% Get the existing metadata
-oldMeta = m.meta;
-dimID = m.dimID;
-
-% Check the indexed values match in the metadata
-for d = 1:numel(dimID)
-    % Check that the dimension is in the new metadata.
-    if ~isfield( meta, dimID{d})
-        error('The new metadata does not contain the %s field', dimID{d});
-    end
-    
-    % Check that the sizes of the two metadata are the same
-    if size(meta.(dimID{d})) ~= size(oldMeta.(dimID{d})(ic{d})
-        error('The size of the metadata for dimension %s do not match the size of the exisiting metadata in the indexed locations.', dimID{d});
-    end
-    
-    % Check that the new metadata matches the old   
-    if ~isequaln( oldMeta.(dimID{d})(ic{d}), meta.(dimID{d}) )
-        error('Metadata for %s does not match the values in the existing file.', dimID{d});
-    end
+% Check that the grid metadata has values for the correct dimension'
+if ~isfield(gridMeta, field)
+    error('The metadata in the .grid file does not contain values for the %s dimension.', field);
 end
 
-% Also ensure that the varSpecs field matches
-[~, var] = getDimIDs;
-if ~isfield(meta, var)
-    error('The new metadata does not contain the ''%s'' field', var);
-elseif ~isequaln( oldMeta.(var), meta.(var) )
-    error('The metadata %s field does not match the existing file.', var);
+% Get the values for the correct dimension
+gridMeta = gridMeta.(field);
+
+% Restrict to the indices
+gridMeta = gridMeta( indices, : );
+
+% If the metadata is a row vector with exactly the number of indices, convert to column.
+if isrow(meta) && length(meta)==numel(indices)
+    meta = meta';
+end
+
+% Compare the metadata
+if ~isequaln( meta, gridMeta )
+    error('The provided metadata values do not match the metadata values in the .grid file at the specified indices.');
 end
 
 end

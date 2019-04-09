@@ -1,5 +1,5 @@
-function[gridDims] = checkDims(gridDims)
-%% Check that user-specified dimensions are recognized and non-duplicate
+function[gridDims] = checkGridDims(gridDims, gridData)
+%% Check that gridded dimensions are recognized and non-duplicate
 %
 % checkDims(gridDims)
 
@@ -26,6 +26,18 @@ isdim = ismember(gridDims, dimID);
 if any( ~isdim )
     d = find( ~isdim, 1, 'first' );
     error('Grid dimension %0.f ("%s") is not a recognized dimension ID.',d, gridDims(d));
+end
+
+% Get the number of dimensions in the gridded data
+if iscolumn(gridData)
+    nDim = 1;
+else
+    nDim = ndims(gridData);
+end
+
+% Ensure there is a gridDim for each dimension that is not a trailing singleton
+if numel(gridDims) < nDim
+    error('gridDims only contains %.f dimension IDs, but the gridded data has at least %.f dimensions.', numel(gridDims), nDim);
 end
 
 end
