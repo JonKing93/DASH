@@ -80,12 +80,12 @@ classdef varDesign
             obj.overlap = false;
             
             % Initialize all dimensions as state dimensions with all
-            % indices selected. Set seq and mean to 0.            
+            % indices selected. Set seq and mean to [].            
             for d = 1:nDim
                 obj.indices{d} = 1:dimSize(d);
                 obj.nanflag{d} = 'includenan';
-                obj.seqDex{d} = 0;
-                obj.meanDex{d} = 0;
+                obj.seqDex{d} = [];
+                obj.meanDex{d} = [];
             end
         end
     end
