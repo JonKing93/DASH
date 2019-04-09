@@ -1,4 +1,4 @@
-function[] = reviewIndices( var )
+function[] = reviewVarIndices( var )
 %% Checks that design indices are allowed
 %
 % var: varDesign
@@ -6,6 +6,7 @@ function[] = reviewIndices( var )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
+% For each dimension
 for d = 1:numel(var.dimID)
     checkIndices( var, d, var.indices{d} );
     

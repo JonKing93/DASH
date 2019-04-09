@@ -6,30 +6,28 @@ function[] = checkVarMatchesGrid( var )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Get gridfile metadata
+% Get gridfile metadata. (This will also error check the file name).
 [meta, dimID, dimSize] = metaGridfile( var.file );
 
 % Common warning message
-warn = 'The gridfile may have been edited after initializing the variable.';
+warn = 'The .grid file may have been edited after creating the stateDesign.';
 
-% Check each for equality
+% Check each for metadata equality
 if ~isequaln( meta, var.meta )
-    error('Metadata in gridfile %s does not match the metadata in variable %s.\n%s',...
+    error('Metadata in file %s does not match the metadata for variable %s.\n%s',...
         var.file, var.name, warn);
 end
 
-% Check ordering
+% Check dimension order
 if ~isequal( dimID, var.dimID )
-    error('Dimensional ordering gridfile %s does not match variable %s.\n%s', ...
+    error('Dimensional ordering in file %s does not match variable %s.\n%s', ...
         var.file, var.name, warn );
 end
 
 % Check size
 if ~isequal( dimSize, var.dimSize )
-    error('Dimension sizes in gridfile %s do not match variable %s.\n%s', ...
+    error('Dimension sizes in file %s do not match variable %s.\n%s', ...
         var.file, var.name, warn );
 end
 
 end
-        
-         
