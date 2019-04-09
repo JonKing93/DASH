@@ -1,5 +1,5 @@
 function[meta] = indexMetadata( meta, index )
-%% Reduces n-dimensional metadata to the indexed rows
+%% Samples n-dimensional metadata from the indexed rows
 
 metaDex = repmat( {':'}, [1, ndims(meta)] );
 metaDex{1} = index;
