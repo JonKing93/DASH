@@ -37,6 +37,11 @@ for v = 1:numel(design.var)
         % If an ensemble dimension, get metadata from the ensemble metadata
         else
             ensMeta = var.ensMeta{d};
+            
+            % If the ensemble metadata is empty, use NaN
+            if isempty(ensMeta)
+                ensMeta = NaN;
+            end
         end
     
         % If taking a mean along a state dimension

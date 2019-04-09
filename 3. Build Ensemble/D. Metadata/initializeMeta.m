@@ -15,24 +15,16 @@ for v = 1:numel(design.var)
     dimID = unique( [dimID, currDim] );
 end
 
-% Include the variable name as a metadata field
-metaField = ["var", dimID];
+% Initialize the metadata structure
+meta = struct();
 
-% Create a cell of input arguments to create the metadata structure
-sArgs = cell( numel(metaField)*2, 1 );
+% Add the variable name
+[~,~,varName] = getDimIDs;
+meta.(varName) = repmat( "", [nState,1] );
 
-% Add the name and (empty) values for each field
-for f = 1:numel(metaField)
-    sArgs{f*2-1} = metaField(f);    % Name
-    
-    % Place values in a cell so that the struct is not recast as an array
-    sArgs{f*2} = { cell(nState, 1) };
+% Initialize the grid fields with empty cells
+for d = 1:numel(dimID)
+    meta.(dimID(d)) = cell(nState,1);
 end
-
-% Use empty strings for the variable name
-sArgs{2} = repmat( "", [nState, 1]);
-
-% Create the empty structure
-meta = struct( sArgs{:} );
 
 end
