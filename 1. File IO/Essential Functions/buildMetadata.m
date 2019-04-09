@@ -63,15 +63,8 @@ for d = 1:nDim
         % Get the metadata values
         value = varargin{v*2};
         
-        % If the value is a row vector with exactly the correct number of
-        % elements, convert to column vector
-        if isrow(value) && length(value)==dimSize
-            value = value';
-
-        % Otherwise, check for the correct number of rows
-        elseif size(value,1) ~= dimSize
-            error('The number of rows (%.f) of metadata for the %s dimension must match the length of the dimension (%.f).', size(value,1), dimID(d), dimSize);
-        end
+        % Check that the number of rows is correct
+        meta = checkMetadataRows( meta, dimSize, dimID(d) );
 
         % Ensure that each row is unique, treating NaN as indistinct
         for k = 1:size(value,1)
@@ -115,7 +108,7 @@ if ~isvector(gridSize) || any(gridSize < 1) || any( mod(gridSize,1)~=0 )
 end
 
 % Check the dimension IDs, convert to string
-gridDims = checkDims(gridDims);
+gridDims = checkGridDims(gridDims);
 
 % Check that gridDims is a vector with the same length as gridSize
 if ~isvector(gridDims) || length(gridDims)~=length(gridSize)

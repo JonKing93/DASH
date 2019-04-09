@@ -43,12 +43,9 @@ dimID = dimID( newOrder );
 % Permute the gridded data to match this order
 gridData = permuteGrid( gridData, gridDims, dimID );
 
-% Check that the metadata for each dimension has one row for each element.
+% Check that the metadata for each dimension has exactly one row for each element.
 for d = 1:numel(dimID)
-    if size( meta.(dimID(d)), 1) ~= gridSize(d)
-        error('The number of rows (%.f) in the metadata for the %s dimension does not match the length of the dimension (%.f)', ...
-               size( meta.(dimID(d)),1), dimID(d), gridSize(d)  );
-    end
+    checkMetadataRows( meta.(dimID(d)), gridSize(d), dimID(d) );
 end
 
 % Save a v7.3 .mat file (with a .grid extension) to enalbe partial loading

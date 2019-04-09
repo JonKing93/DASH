@@ -1,50 +1,49 @@
-function[] = setGridMetadata( file, dim, meta )
+function[] = setGridMetadata( file, dim, newMeta )
 %% This changes the values in a metadata field for an existing gridfile.
 %
-% setGridMetadata( file, dim, gridMeta )
+% setGridMetadata( file, dim, newMeta )
 %
 % ----- Inputs -----
 %
 % file: The name of a .grid file
 %
-% dim: The metadata field being edited
+% dim: The dimension being given new metadata
 %
-% meta: The new metadata
+% newMeta: The new metadata
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check that dim is a string flag
-if ~isstrflag(dim)
-    error('dim must be a string flag');
-end
-
-% Error check the file
+% Error checking. Get a matfile object
 m = fileCheck(file);
+checkDim(dim);
 
-% Get the metadata
+% Get the grid metadata
 gridMeta = m.meta;
 
 % Check for the metadata field
 if ~isfield(gridMeta, dim)
-    error('%s is not a field in the metadata.', dim);
+    error('The %s dimension is not in the grid metadata.', dim);
 end
 
 % If this is the variable specs, ensure it is a scalar
-[~,varSpec] = getDimIDs;
-if strcmp(dim, varSpec) && ~isscalar(meta)
-    error('Metadata for the %s field must be a scalar.', varSpec);
+[~,spec] = getDimIDs;
+if strcmp(dim, spec) && ~isscalar(newMeta)
+    error('Metadata for the "%s" field must be a scalar.', spec);
 end
 
-% Check that the size of the first metadata dimension matches the size of
-% grid dimension
-d = find( ismember(dim, m.dimID) );
-if size(gridMeta,1) ~= m.gridSize(d)
-    error('The first dimension of the metadata must have %0.f elements.', m.gridSize(d));
+% Get the number of elements in the dimension
+nEls = m.gridSize( strcmp(dim, m.dimID) );
+
+% Check that the new metadata has the correct size
+if isrow(newMeta) && length(newMeta)==nEls
+    newMeta = newMeta';
+elseif size(newMeta,1) ~= nEls
+    error('The number of rows in the new metadata (&.f) does not match the number of indices (%.f)', size(newMeta,1), nEls);
 end
 
 % Set the new grid metadata
-gridMeta.(dim) = meta;
+gridMeta.(dim) = newMeta;
 m.meta = gridMeta;
 
 end

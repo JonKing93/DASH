@@ -53,11 +53,7 @@ appDex = repmat( {':'}, [1, numel(dimID)] );
 appDex{appDim} = newDex;
 
 % Check that the new metadata has a row for each new index
-if isrow(newMeta) && length(newMeta) == nAdd
-    newMeta = newMeta';
-elseif size(newMeta,1) ~= nAdd
-    error('The number of rows in the new metadata (%.f) does not match the number of new indices (%.f)', size(newMeta,1), nAdd);
-end
+newMeta = checkMetadataRows(newMeta, nAdd);
 
 % Append the new metadata to the old metadata to ensure that the formats
 % are compatible.
