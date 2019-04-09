@@ -16,13 +16,13 @@ function[] = appendGridfile( file, gridData, gridDims, dim, newMeta )
 %
 % dim: An ID for the dimension to be extended. A string.
 %
-% newMeta: New metadata for the new indices along the appending dimension.
+% newMeta: Metadata for the new indices along the appending dimension.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
 % Error checking and setup
-[m, gridDims] = setup( file, gridDims, dim);        
+[m, gridDims] = setup( file, gridData, gridDims, dim);        
 
 % Get the dimension ordering in the .grid file
 dimID = m.dimID;
@@ -81,24 +81,21 @@ m.gridSize(1,appDim) = m.gridSize(1,appDim) + nAdd;
    
 end 
 
-function[m, gridDims] = setup( file, gridDims, dim )
+function[m, gridDims] = setup( file, gridData, gridDims, dim )
 
     % Error check and return the writable matfile object
     m = fileCheck( file );
+    
+    % Check the gridData is numeric
+    if ~isnumeric(gridData)
+        error('gridData must be a numeric array.');
+    end
 
     % Check the grid dimensions are allowed
     gridDims = checkDims(gridDims);
 
     % Check that the appending dimension is allowed
-    if ~isstrflag(dim)
-        error('The appending dimension ID must be a string.');
-    end
-
-    % Check that the appending dimension is recognized
-    dimID = getDimIDs;
-    if ~ismember(dim, dimID)
-        error('The specified appending dimension (%s) is not a recognized dimension ID.', dim);
-    end
+    checkDim(dim);
 end
 
 function[meta] = appendMetadata( meta, newMeta, field )
@@ -116,7 +113,7 @@ rethrow(ME);
 end
 
 function[] = sizeError( newSize, oldSize, dimID )
-%% Throws a useful error messages when the grid sizes don't match.
+%% Throws more useful error messages when the grid sizes don't match.
 d = find( newSize ~= oldSize, 1, 'first' );
 error('The length of the %s dimension in the new gridded data (%.f) does not match the length of the data in the .grid file (%.f).', ...
        dimID(d), newSize(d), oldSize(d) );

@@ -1,6 +1,8 @@
 function[] = compareMetadata( meta, m, field, indices )
 % Compares user-specified metadata to metadata in a .grid file at specific
 % indices.
+%
+% compareMetadata( meta, m, field, indices )
 
 % Load the grid metadata
 gridMeta = m.meta;
@@ -21,7 +23,7 @@ if isrow(meta) && length(meta)==numel(indices)
     meta = meta';
 end
 
-% Compare the metadata
+% Compare the metadata. Treat NaN as equivalent.
 if ~isequaln( meta, gridMeta )
     error('The provided metadata values do not match the metadata values in the .grid file at the specified indices.');
 end

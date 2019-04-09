@@ -21,7 +21,7 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 % Jonathan King, University of Arizona, 2019
 
 % Do some error checking
-errCheck( file, gridDims, meta, gridData );
+errCheck( file, gridData, gridDims, meta );
 
 % Get the set of known dimension IDs
 [dimID] = getDimIDs;
@@ -57,31 +57,18 @@ save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
 
 end
 
-function[gridDims] = errCheck( file, gridDims, meta, gridData )
+function[gridDims] = errCheck( file, gridData, gridDims, meta )
         
-% Check that the file is a string with a .grid extension
-if ~isstrflag(file)
-    error('File name must be a string.');
-end
-file = char(file);
-if numel(file)<5 || ~strcmp( file(end-4:end), '.grid' )
-    error('File must end in a .grid extension.');
+% Check for .grid extension
+fileCheck(file, 'new');
+
+% Check the data is numeric
+if ~isnumeric(gridData)
+    error('gridData must be a numeric array.');
 end
 
 % Check the grid dimensions
-gridDims = checkDims(gridDims);
-
-% Ensure that there is at least one gridID for each dimension of
-% the gridded data
-if iscolumn(gridData)
-    nDim = 1;
-else
-    nDim = ndims(gridData);
-end
-
-if numel(gridDims) < nDim
-    error('gridDims does not contain a dimension ID for each dimension of the gridded data that is not a trailing singleton.');
-end
+gridDims = checkDims(gridDims, gridData);
 
 % Ensure the metadata has all required fields.
 [dimID, specs] = getDimIDs;
