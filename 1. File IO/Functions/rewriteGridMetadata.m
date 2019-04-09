@@ -1,4 +1,4 @@
-function[] = setGridMetadata( file, dim, newMeta )
+function[] = rewriteGridMetadata( file, dim, newMeta )
 %% This changes the values in a metadata field for an existing gridfile.
 %
 % setGridMetadata( file, dim, newMeta )
