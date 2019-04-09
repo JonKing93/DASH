@@ -64,13 +64,13 @@ for k = 2:numel(v)
         for d = 1:numel( ensDim ) 
 
             % Get the dimension index in the coupling variable
-            dim = checkVarDim( design.var(v(k)), design.var(xv).dimID{ensDim(d)} );
+            dim = checkVarDim( design.var(v(k)), design.var(xv).dimID(ensDim(d)) );
 
             % Flip the isState toggle to ensemble
             design.var(v(k)).isState(dim) = false;
 
             % Notify user
-            fprintf('\tConverting %s to an ensemble dimension.\n', design.var(xv).dimID{ensDim(d)} );
+            fprintf('\tConverting %s to an ensemble dimension.\n', design.var(xv).dimID(ensDim(d)) );
         end
     end
     

@@ -35,27 +35,27 @@ Y = design.var(yv);
 for dim = 1:numel(X.dimID)
     
     % Get the indexed metadata
-    meta = indexMetadata( X.meta.(X.dimID{dim}), X.indices{dim} );
+    meta = indexMetadata( X.meta.(X.dimID(dim)), X.indices{dim} );
     
     % For each copying variable
     for k = 1:numel(Y)
         
         % Get a dimension index
-        d = checkVarDim( Y(k), X.dimID{dim} );
+        d = checkVarDim( Y(k), X.dimID(dim) );
         
         % Get values for means
         Y(k).takeMean(d) = X.takeMean(dim);
         Y(k).nanflag{d} = X.nanflag{dim};
         
         % Get state indices with matching metadata
-        Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID{dim}, meta );
+        Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID(dim), meta );
       
         % If a state dimension
         if X.isState(dim)
             
             % Error check the indices
             if numel(Y(k).indices{d}) ~= size(meta,1)
-                error('The %s variable does not have metadata matching all state indices of the template %s variable in the %s dimension.', Y(k).name, X.name, X.dimID{dim});
+                error('The %s variable does not have metadata matching all state indices of the template %s variable in the %s dimension.', Y(k).name, X.name, X.dimID(dim));
             end
             
             % Flip the isState toggle
@@ -71,7 +71,7 @@ for dim = 1:numel(X.dimID)
             
             % Error check ensemble indices
             if isempty( Y(k).indices{d} )
-                error('The %s variable doees not have metadata matching any of the metadata for the template variable %s in the %s dimension.', Y(k).name, X.name, X.dimID{dim} );
+                error('The %s variable doees not have metadata matching any of the metadata for the template variable %s in the %s dimension.', Y(k).name, X.name, X.dimID(dim) );
             end
             
             % Flip the isState toggle

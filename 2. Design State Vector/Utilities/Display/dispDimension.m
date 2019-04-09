@@ -16,7 +16,7 @@ function[] = dispDimension(var, d, long)
 % Jonathan King, University of Arizona, 2019
 
 % Dimension name
-fprintf('\t\t\t%s\n', var.dimID{d});
+fprintf('\t\t\t%s\n', var.dimID(d));
 
 % Size
 fprintf('\t\t\t\tSize: %0.f\n', numel(var.indices{d}) );
@@ -70,7 +70,7 @@ end
 % Output the indices
 if long
     fprintf( '\t\t\t\t%s Values: ', dexType);
-    disp( var.meta.(var.dimID{d})(var.indices{d}) );
+    disp( var.meta.(var.dimID(d))(var.indices{d}) );
 end
 
 % Space for next line
