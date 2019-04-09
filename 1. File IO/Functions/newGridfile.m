@@ -57,7 +57,7 @@ end
 function[gridDims] = errCheck( file, gridData, gridDims, meta )
         
 % Check for .grid extension
-fileCheck(file, 'new');
+fileCheck(file, 'ext');
 
 % Check the data is numeric
 if ~isnumeric(gridData)

@@ -1,8 +1,11 @@
-function[dimID, specs, lonDim, latDim, levDim, timeDim, ensDim, triDim] = getDimIDs
+function[dimID, specs, varName, lonDim, latDim, levDim, timeDim, ensDim, triDim] = getDimIDs
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
 
 % Variable specifications.
 specs = "specs";
+
+% Variable name in ensemble metadata
+varName = "var";
 
 % Longitude (x coordinate)
 lonDim = "lon";

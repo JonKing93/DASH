@@ -11,7 +11,7 @@ function[m] = fileCheck( file, flag )
 % Returns a read-only matfile object. Provides a much faster load if only
 % metadata is needed.
 %
-% [~] = fileCheck( file, 'new' )
+% [~] = fileCheck( file, 'ext' )
 % Only checks that the file has a .grid extension. Does not search the
 % active path or load a matfile object.
 %
@@ -28,7 +28,7 @@ function[m] = fileCheck( file, flag )
 
 % Get the flag
 if exist('flag','var')
-    if ~ismember(flag, ["new","readOnly"])
+    if ~ismember(flag, ["ext","readOnly"])
         error('Unrecognized flag.');
     end
 else
@@ -44,7 +44,7 @@ if ~strcmpi( file(end-4:end), '.grid' )
     error('File must be a .grid file.');
 end
 
-% Set a default output for when the flag is "new"
+% Set a default output for when the flag is "ext"
 m = [];
 
 % If returning a matfile object
