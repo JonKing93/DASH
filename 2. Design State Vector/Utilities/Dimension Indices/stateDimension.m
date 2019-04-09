@@ -81,6 +81,8 @@ end
 design.var(v).indices{d} = index;
 design.var(v).takeMean(d) = takeMean;
 design.var(v).nanflag{d} = nanflag;
+
+% Return ensemble dimension properties to empty.
 design.var(v).seqDex{d} = [];
 design.var(v).meanDex{d} = [];
 design.var(v).ensMeta{d} = [];

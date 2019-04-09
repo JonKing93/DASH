@@ -18,7 +18,7 @@ function[design] = ensDimension( design, var, dim, varargin )
 
  % Parse inputs
 [index, seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, ...
-        {'index','seq','mean','nanflag','meta','overlap'}, {[],[],[],[],[],[]}, ...
+        {'index','seq','mean','nanflag','meta','overlap'}, {[],0,0,[],[],[]}, ...
         {[],[],[],{'includenan','omitnan'},[],[]} );
     
 % Get the variable index
@@ -45,19 +45,8 @@ else % Ensure is column
 end
 checkIndices( design.var(v), d, index );
 
-% Get the value of sequence indices
-if isempty(seq)
-    seq = design.var(v).seqDex{d};
-end
+% Error check the mean and sequence indices
 checkIndices(design.var(v), d, seq+1);
-
-% Get the mean indices
-if isempty(mean)
-    mean = design.var(v).meanDex{d};
-end
-if ~ismember( 0, mean )
-    error('Mean indices must include the 0 index');
-end
 checkIndices(design.var(v), d, mean+1);
 
 
@@ -80,16 +69,39 @@ if ~islogical(overlap) || ~isscalar(overlap)
     error('Overlap must be a logical scalar.');
 end
 
-% Metadata
+% Ensemble metadata
 
-% If no metadata is provided, copy the old metadata
-if isempty(ensMeta)
-    ensMeta = design.var(v).ensMeta{d};
-end
+% If metadata as provided, and is a row vector with the number of sequence
+% elements, convert to column.
+if isrow(ensMeta) && length(ensMeta) == numel(seq)
+    ensMeta = ensMeta';
+    
+% If it was provided, check the number of rows
+elseif ~isempty(ensMeta)
+    if size(ensMeta,1) ~= numel(seq)
+        error('The ensemble metadata does not have one row per sequence index.');
+    end
 
-% If there is no pre-exisiting metadata, just use NaN
-if isempty(ensMeta)
-    ensMeta = NaN;
+% Otherwise, if no metadata is provided...
+else
+    
+    % If there is pre-exisiting metadata, get the previous value
+    if ~isempty(design.var(v).ensMeta{d})
+        ensMeta = design.var(v).ensMeta{d};
+    end
+    
+    % If the size does not match the number of sequence indices...
+    if size(ensMeta,1)~=numel(seq)
+        
+        % If the sequence length is 1, just use NaN.
+        if numel(seq)==1 
+            ensMeta = NaN;
+            
+        % Otherwise throw an error
+        else
+            error('Ensemble metadata for the %s dimension of variable %s was not provided.', dim, var);
+        end
+    end
 end
 
 %% Coupler
