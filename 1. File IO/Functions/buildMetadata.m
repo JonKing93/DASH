@@ -64,7 +64,7 @@ for d = 1:nDim
         value = varargin{v*2};
         
         % Check that the number of rows is correct
-        meta = checkMetadataRows( meta, dimSize, dimID(d) );
+        value = checkMetadataRows( value, dimSize, dimID(d) );
 
         % Ensure that each row is unique, treating NaN as indistinct
         for k = 1:size(value,1)

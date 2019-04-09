@@ -36,11 +36,7 @@ end
 nEls = m.gridSize( strcmp(dim, m.dimID) );
 
 % Check that the new metadata has the correct size
-if isrow(newMeta) && length(newMeta)==nEls
-    newMeta = newMeta';
-elseif size(newMeta,1) ~= nEls
-    error('The number of rows in the new metadata (&.f) does not match the number of indices (%.f)', size(newMeta,1), nEls);
-end
+newMeta = checkMetadataRows(newMeta, nEls);
 
 % Set the new grid metadata
 gridMeta.(dim) = newMeta;
