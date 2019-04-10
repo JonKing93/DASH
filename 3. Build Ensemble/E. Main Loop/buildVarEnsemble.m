@@ -1,58 +1,53 @@
-function[M] = buildVarEnsemble(var, nEns, iLoad, iTrim)
-%% Builds the ensemble for a single variable
-%
-% var: varDesign
-%
-% nEns: Ensemble size
-%
-% iLoad: index cell for loading
-%
-% iTrim: index cell for reducing loaded data with non-uniform spacing
-%
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
+function[] = buildVarEnsemble(fEns, var, varDex, nEns)
+% buildVarEnsemble( fEns, var, varDex, nEns )
 
-% Get a read-only matfile
-grid = matfile( var.file );
+% Get a read-only matfile object for the gridded data
+fGrid = matfile( var.file );
 
-% Get the number of state elements per sequence, and the total number of
-% sequence elements
-[nState, nSeq] = countVarStateSeq( var );
+% Get the index and size of the ensemble dimensions
+[~, dimSize] = getVarIndices( var );
+ensDex = find( ~var.isState );
+ensSize = dimSize( ensDex );
 
-% Subscript sequence elements to all dimensions
-[allSeq, siz] = getAllCombIndex( var.seqDex(~var.isState) );
-subSeq = subdim( siz, allSeq );
+% Get the total number of sequence elements
+nSeq = prod( ensSize );
 
-% Preallocate the variable ensemble
-M = NaN( nState*nSeq, nEns );
+% Get N-dimensional subscripted sequence indices
+seqDex = subdim( ensSize, (1:nSeq)' );
+
+% Get the reference loading indices and the indices to keep
+[refLoad, keep] = getLoadingIndices( var );
 
 % For each ensemble member
 for m = 1:nEns
     
-    % Preallocate a full sequence
-    seqM = NaN( nState*nSeq, 1 );
-    
     % For each sequence element
     for s = 1:nSeq
         
-        % Get the index cell
-        ic = getEnsLoadIndex( var, iLoad, subSeq(s,:), m);
+        % Initialize a specific set of sampling indices from the reference indices.
+        load = refLoad;
+        
+        % Get the unique sampling indics for each ensemble dimension
+        for dim = 1:numel(ensDex)
+            d = ensDex(dim);
+            load{d} = var.indices{d}(m) + var.seqDex{d}(seqDex(s,dim)) + refLoad{d};
+        end
         
         % Load the data
-        sM = grid.gridData( ic{:} );
+        M = fGrid.gridData( load{:} );
         
-        % Trim the data
-        sM = sM( iTrim{:} );
+        % Only keep the values associated with sampling indices.
+        M = M( keep{:} );
         
-        % Take the mean in appropriate dimensions
-        sM = takeDimMeans(sM, var.takeMean, var.nanflag);
+        % Take the mean along any relevant dimensions
+        M = takeDimMeans( M, var.takeMean, var.nanflag );
         
-        % Place as state vector in the full sequence
-        seqM( (s-1)*nState+1:s*nState ) = sM(:);
+        % Add to the .ens file
+        fEns.M( varDex, m ) = M(:);
     end
-        
-    % Save the full sequence in the ensemble
-    M(:,m) = seqM;
 end
 
-end     
+% Ensure that no rows are entirely NaN
+checkNaNRows( fEns, var, varDex );
+
+end
