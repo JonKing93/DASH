@@ -1,4 +1,4 @@
-function[design] = coupleEnsIndices( design )
+function[design] = coupleIndices( design )
 
 % Get the sets of coupled variables
 coupVars = getCoupledVars( design.isCoupled );
