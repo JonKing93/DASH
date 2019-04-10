@@ -10,6 +10,30 @@ function[sampDex, dimID] = drawEnsemble( coupVars, nEns, overlap )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
+% For each set of coupled variables
+for cv = 1:numel(coupVars)
+    vars = design.var( coupVars{cv} );
+    
+    % Get the total number of possible draws
+    nDraws = totalDraws( vars(1) );
+    
+    % Get the subscripted sequence elements
+    subSeq = subSequenceEls( vars );
+    
+    
+    
+    %%%%%%%%%
+    
+    
+    
+
+
+
+
+
+
+
+
 % Get the ensemble dimensions
 ensDim = find( ~coupVars(1).isState );
 dimID = coupVars(1).dimID(ensDim);
