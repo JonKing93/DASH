@@ -48,7 +48,8 @@ for dim = 1:numel(X.dimID)
         Y(k).nanflag{d} = X.nanflag{dim};
         
         % Get state indices with matching metadata
-        Y(k).indices{d} = getMatchingMetaDex( Y(k), X.dimID(dim), meta );
+        currMeta = Y(k).meta.(X.dimID(dim));        
+        [~, Y(k).indices{d}] = unionMetadata( currMeta, meta);
       
         % If a state dimension
         if X.isState(dim)
@@ -71,7 +72,7 @@ for dim = 1:numel(X.dimID)
             
             % Error check ensemble indices
             if isempty( Y(k).indices{d} )
-                error('The %s variable doees not have metadata matching any of the metadata for the template variable %s in the %s dimension.', Y(k).name, X.name, X.dimID(dim) );
+                error('The %s variable does not have metadata matching any of the metadata for the template variable %s in the %s dimension.', Y(k).name, X.name, X.dimID(dim) );
             end
             
             % Flip the isState toggle
