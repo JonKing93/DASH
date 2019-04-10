@@ -1,8 +1,9 @@
 function[M, ensMeta] = buildEnsemble( design, nEns )
 %% Builds an ensemble from a state vector design
 %
-% [M, meta] = buildEnsemble( design, nEns )
-% Builds a state vector ensemble according to a state vector design.
+% buildEnsemble( design, nEns )
+% Builds a prior model ensemble.
+% 
 %
 % ----- Inputs -----
 %
@@ -18,6 +19,28 @@ function[M, ensMeta] = buildEnsemble( design, nEns )
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
+
+% Error check the design
+reviewDesign(design);
+
+% Build the metadata
+ensMeta = ensembleMetadata( design );
+
+% Couple ensemble indices
+design = coupleEnsIndices( design );
+
+% Draw the ensemble members
+X = drawEnsemble( design, nEns );
+
+
+
+%% Randomly draw ensemble members
+
+
+%% Build the ensemble
+
+
+
 
 %% Coupler
 
