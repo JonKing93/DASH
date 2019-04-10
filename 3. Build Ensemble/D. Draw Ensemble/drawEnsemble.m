@@ -1,4 +1,4 @@
-function[design] = drawEnsemble( design, nDraws, coupVars )
+function[design] = drawEnsemble( design, nEns, coupVars )
 
 % For each set of coupled variables
 for cv = 1:numel(coupVars)
@@ -6,6 +6,9 @@ for cv = 1:numel(coupVars)
     
     % Get the overlap permission
     overlap = vars(1).overlap;
+    
+    % Initialize the number of draws needed
+    nDraws = nEns;
     
     % Get the index and size of each ensemble dimension
     ensDim = find( ~var(1).isState );
@@ -90,3 +93,16 @@ for cv = 1:numel(coupVars)
 end
 
 end
+
+function[] = ensSizeError(nEns, vars, overlap)
+
+oStr = '';
+if ~overlap
+    oStr = 'non-overlapping ';
+end
+ 
+coupled = sprintf('%s, ', vars.name);
+error( ['Cannot select %.f %sensemble members for coupled variables %s', ...
+        sprintf('\b\b.\nUse a smaller ensemble.')], nEns, oStr, coupled );
+end
+
