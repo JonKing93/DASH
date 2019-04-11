@@ -89,7 +89,7 @@ classdef varDesign
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to [].            
             for d = 1:nDim
-                obj.indices{d} = 1:dimSize(d);
+                obj.indices{d} = (1:dimSize(d))';
                 obj.nanflag{d} = 'includenan';
                 obj.seqDex{d} = [];
                 obj.meanDex{d} = [];

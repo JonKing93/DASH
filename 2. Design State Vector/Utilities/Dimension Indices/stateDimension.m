@@ -78,7 +78,7 @@ for k = 1:nVar
 end
 
 % Set the values
-design.var(v).indices{d} = index;
+design.var(v).indices{d} = index(:);
 design.var(v).takeMean(d) = takeMean;
 design.var(v).nanflag{d} = nanflag;
 
