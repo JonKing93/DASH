@@ -1,7 +1,8 @@
 function[loadDex, keepDex] = getLoadingIndices( var )
 
 % Create a cell of indices to load data from the .grid file
-loadDex = cell(1,nDim);
+nDim = numel(var.dimID);
+loadDex = cell(1,numel(nDim));
 
 % Partial loading from .mat files is only supported for indices with
 % uniform spacing. So, when the sample indices for a .grid file are

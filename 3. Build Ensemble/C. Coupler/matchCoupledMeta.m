@@ -33,8 +33,9 @@ for dim = 1:numel(ensID)
         % Get the metadata for the current variable
         currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
         
-        % Get the union (preserving inherent dimensionality)
-        meta = unionMetadata( meta, currMeta );
+        % Get the intersect of the two metadata sets
+        match = matchingMetaIndex( meta, currMeta );
+        meta = indexMetadata(meta, match);        
     end
     
     % Throw an error if no metadata remains
@@ -52,8 +53,9 @@ for dim = 1:numel(ensID)
         % Get the metadata for the variable
         currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
 
-        % And restrict indices to those matching the final metadata union.
-        [~, design.var( cv(v) ).indices{d}] = unionMetadata( currMeta, meta );
+        % And restrict indices so they match the final set of intersecting metadata
+        [~, iB] = matchingMetaIndex( meta, currMeta );
+        design.var( cv(v) ).indices{d} = varC.indices{d}(iB);
     end
 end
 
