@@ -27,14 +27,13 @@ reviewDesign(design);
 ensMeta = ensembleMetadata( design );
 
 % Couple ensemble indices
-design = coupleEnsIndices( design );
+design = coupleIndices( design );
 
 % Draw the ensemble members
-X = drawEnsemble( design, nEns );
+design = drawEnsemble( design, nEns );
 
-
-
-%% Randomly draw ensemble members
+% Create the .ens file
+writeEnsemble( file, design, nEns, ensMeta );
 
 
 %% Build the ensemble

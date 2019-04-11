@@ -1,7 +1,7 @@
 function[design] = coupleIndices( design )
 
 % Get the sets of coupled variables
-coupVars = getCoupledVars( design.isCoupled );
+coupVars = getCoupledVars( design );
 
 % Trim the ensemble indices for each variable to only allow complete sequences
 for v = 1:numel(design.var)

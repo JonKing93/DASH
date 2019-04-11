@@ -7,11 +7,11 @@ function[var] = trimEnsembleDims( var )
 % Jonathan King, University of Arizona, 2019
 
 % Get the ensemble dimensions
-ensDim = find( ~var.isState );
+ensDex = find( ~var.isState );
 
 % For each ensemble dimension
-for dim = 1:numel(ensDim)
-    d = ensDim(dim);
+for dim = 1:numel(ensDex)
+    d = ensDex(dim);
 
     % Get the dimension size
     dimSize = var.dimSize(d);

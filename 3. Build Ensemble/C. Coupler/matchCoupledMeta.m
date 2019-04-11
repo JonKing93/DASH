@@ -13,25 +13,25 @@ function[design] = matchCoupledMeta( design, cv )
 % Get the first variable for quick reference
 var1 = design.var( cv(1) );
 
-% Get the ensemble dimensions
-ensDim = var1.dimID( ~var1.isState );
+% Get the ensemble dimension IDs
+ensID = var1.dimID( ~var1.isState );
 
 % For each ensemble dimension
-for dim = 1:numel(ensDim)
+for dim = 1:numel(ensID)
     
     % Initialize the metadata with the values from the first variable
-    d = checkVarDim( var1, ensDim(dim) );
-    meta = var1.meta.(dim)( var1.indices{d} );
+    d = checkVarDim( var1, ensID(dim) );
+    meta = var1.meta.(ensID(dim))( var1.indices{d} );
     
     % Go through the remaining variables
     for v = 2:numel(cv)
         varC = design.var( cv(v) );
         
         % Get the index of the dimension in the variable
-        d = checkVarDim( varC, ensDim(dim) );
+        d = checkVarDim( varC, ensID(dim) );
         
         % Get the metadata for the current variable
-        currMeta = varC.meta.(dim)( varC.indices{d} );
+        currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
         
         % Get the union (preserving inherent dimensionality)
         meta = unionMetadata( meta, currMeta );
@@ -47,13 +47,13 @@ for dim = 1:numel(ensDim)
         
         % Get the index of each ensemble dimension
         varC = design.var( cv(v) );
-        d = checkVarDim( varC, ensDim(dim) );
+        d = checkVarDim( varC, ensID(dim) );
         
         % Get the metadata for the variable
-        currMeta = varC.meta.(dim)( varC.indices{d} );
+        currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
 
         % And restrict indices to those matching the final metadata union.
-        [~, design.var( cv(v) ).indices] = unionMetadata( currMeta, meta );
+        [~, design.var( cv(v) ).indices{d}] = unionMetadata( currMeta, meta );
     end
 end
 

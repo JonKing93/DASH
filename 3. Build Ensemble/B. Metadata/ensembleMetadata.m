@@ -2,7 +2,7 @@ function[meta] = ensembleMetadata( design )
 %% Generates the ensemble metadata for an ensemble.
 
 % Get the state indices associated with each variable
-[varDex, varDim] = getVarIndices( design );
+[varDex, varDim] = getVarIndices( design.var );
 
 % Get the total number of state elements
 nState = sum( prod(varDim,2) , 1);
@@ -20,7 +20,7 @@ for v = 1:numel(design.var)
     % Get the number of elements for the variable
     nEls = prod( varDim(v,:) );
     
-    % Get the N-dimensionally subscripted indices
+    % Get the N-dimensional subscript indices
     subDex = subdim( varDim(v,:) , (1:nEls)' );
     
     % For each dimension

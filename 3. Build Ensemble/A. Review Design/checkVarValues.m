@@ -1,5 +1,13 @@
 function[] = checkVarValues( var )
 
+% Check that there is at least one state dimension and at least one
+% ensemble dimension
+if ~any( var.isState )
+    error('Variable %s does not have any state dimensions.', var.name );
+elseif ~any( ~var.isState )
+    error('Variable %s does not have any ensemble dimensions.', var.name);
+end
+
 % For each dimension
 for d = 1:numel(var.dimID)
     

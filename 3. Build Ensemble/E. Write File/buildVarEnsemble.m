@@ -5,9 +5,7 @@ function[] = buildVarEnsemble(fEns, var, varDex, nEns)
 fGrid = matfile( var.file );
 
 % Get the index and size of the ensemble dimensions
-[~, dimSize] = getVarIndices( var );
-ensDex = find( ~var.isState );
-ensSize = dimSize( ensDex );
+[ensSize, ensDex] = getVarSize( var, 'ensOnly', 'seq' );
 
 % Get the total number of sequence elements
 nSeq = prod( ensSize );
@@ -47,7 +45,7 @@ for m = 1:nEns
     end
 end
 
-% Ensure that no rows are entirely NaN
+% Ensure that no rows are entirely NaN.
 checkNaNRows( fEns, var, varDex );
 
 end

@@ -5,7 +5,7 @@ function[subSeq] = subSequenceEls( vars )
 
 % Get the ensemble dimensions
 ensDex = find( ~vars(1).isState );
-nDim = numel(ensID);
+nDim = numel(ensDex);
 
 % Initialize the set of subscripted sequence elements. We will need to ensure that the
 % sequence elements are always added in the same dimensional order for each
@@ -17,8 +17,8 @@ for v = 1:numel(vars)
     
     % Initialize a cell of sequence elements for the ensemble dimensions
     % and an array to track the number of sequence elements
-    seqEls = cell( size(ensID) );
-    nEls = NaN( size(ensID) );
+    seqEls = cell( size(ensDex) );
+    nEls = NaN( size(ensDex) );
     
     % For each ensemble dimension
     for k = 1:nDim
@@ -35,8 +35,8 @@ for v = 1:numel(vars)
         seq = seq(:);
 
         % Add to the set of sequence elements for the variable and record the size
-        seqEls{ ensDex(k) } = seq;
-        nEls( ensDex(k) ) = numel(seq);
+        seqEls{k} = seq;
+        nEls(k) = numel(seq);
     end
     
     % We now have the sequence elements for each ensemble dimension for the
@@ -54,7 +54,7 @@ for v = 1:numel(vars)
     
     % Get the subscripted sequence elements for each dimension for the variable
     for k = 1:nDim
-        currSeq(:, ensDex(k)) = seqEls{ ensDex(k) }( subDex(:, ensDex(k)) );
+        currSeq(:, k) = seqEls{k}( subDex(:, k) );
     end
     
     % Finally, save the current subscripted sequence elements to the array

@@ -8,7 +8,7 @@ nDim = numel(var.dimID);
 
 % Get the index / mean / overlap properties
 field = properties('varDesign');
-field = string( field(6:end-1) );
+field = string( field(6:end-3) );
 
 % Also get the data type of each field
 type = ["logical","cell","cell","cell","cell","logical","cell","logical"];

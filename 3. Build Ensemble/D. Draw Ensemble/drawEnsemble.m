@@ -1,4 +1,7 @@
-function[design] = drawEnsemble( design, nEns, coupVars )
+function[design] = drawEnsemble( design, nEns )
+
+% Get the sets of coupled variables
+coupVars = getCoupledVars( design );
 
 % For each set of coupled variables
 for cv = 1:numel(coupVars)
@@ -11,18 +14,16 @@ for cv = 1:numel(coupVars)
     nDraws = nEns;
     
     % Get the index and size of each ensemble dimension
-    ensDim = find( ~var(1).isState );
-    [~, dimSize] = getVarIndices( vars(1) );    
-    ensSize = dimSize( ensDim );
+    [ensSize, ensDim] = getVarSize( vars(1), 'ensOnly', 'ensDex' );
     
     % Get the total number of possible draws, and index the draws that have
     % NOT yet been selected.
-    nTot = totalDraws( vars(1) );
+    nTot = prod( ensSize );
     undrawn = (1:nTot)';
 
     % Get the subscripted sequence elements. (These will be used to check
     % for overlap between draws.) If overlap is permitted, just set to zero
-    seqEls = zeros(1,nDim);
+    seqEls = zeros(1,numel(ensDim));
     if ~overlap
         seqEls = subSequenceEls( vars );
     end
@@ -68,15 +69,15 @@ for cv = 1:numel(coupVars)
         end
          
         % Replicate the sequence elements over each drawn ensemble index
-        repSeqEls = repmat( seqEls, [nDraw,1] );
+        repSeqEls = repmat( seqEls, [nDraws,1] );
         
         % Replicate the drawn ensemble indices over each sequence element.
         repEnsDex = repmat( ensDex(:)', [nSeq, 1] );
-        repEnsDex = reshape( repEnsDex, [nSeq*nDraws, nDim] );
+        repEnsDex = reshape( repEnsDex, [nSeq*nDraws, numel(ensDim)] );
         
         % Add together to get the full set of sampling indices associated 
         % with these draws. Add to the set of previous successful draws.
-        sampDex( (end - nDraw*nSeq + 1):end, : ) = repEnsDex + repSeqEls;
+        sampDex( (end - nDraws*nSeq + 1):end, : ) = repEnsDex + repSeqEls;
         
         % Remove any draws associated with overlapping sampling indices.
         sampDex = removeOverlappingDraws( sampDex, nSeq );
@@ -105,4 +106,3 @@ coupled = sprintf('%s, ', vars.name);
 error( ['Cannot select %.f %sensemble members for coupled variables %s', ...
         sprintf('\b\b.\nUse a smaller ensemble.')], nEns, oStr, coupled );
 end
-
