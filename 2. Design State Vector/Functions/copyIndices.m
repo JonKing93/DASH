@@ -49,7 +49,7 @@ for dim = 1:numel(X.dimID)
         
         % Get state indices with matching metadata
         currMeta = Y(k).meta.(X.dimID(dim));        
-        [~, Y(k).indices{d}] = unionMetadata( currMeta, meta);
+        Y(k).indices{d} = matchingMetaIndex( currMeta, meta );
       
         % If a state dimension
         if X.isState(dim)

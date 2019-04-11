@@ -30,6 +30,10 @@ classdef varDesign
         
         % Coupler property
         overlap; % Whether an ensemble dimension permits non-duplicate overlapping sequences
+        
+        % Ensemble draws
+        drawDex;
+        undrawn;
     end
         
     methods
@@ -79,6 +83,9 @@ classdef varDesign
             
             obj.overlap = false;
             
+            obj.drawDex = cell(nDim,1);
+            obj.undrawn = [];
+            
             % Initialize all dimensions as state dimensions with all
             % indices selected. Set seq and mean to [].            
             for d = 1:nDim
@@ -86,6 +93,7 @@ classdef varDesign
                 obj.nanflag{d} = 'includenan';
                 obj.seqDex{d} = [];
                 obj.meanDex{d} = [];
+                obj.drawDex{d} = [];
             end
         end
     end

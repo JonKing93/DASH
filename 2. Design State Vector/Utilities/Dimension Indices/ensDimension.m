@@ -49,6 +49,10 @@ checkIndices( design.var(v), d, index );
 checkIndices(design.var(v), d, seq+1);
 checkIndices(design.var(v), d, mean+1);
 
+% Ensure seq and mean are column
+seq = seq(:);
+mean = mean(:);
+
 
 % Takemean
 takeMean = true;
@@ -100,6 +104,15 @@ else
         % Otherwise throw an error
         else
             error('Ensemble metadata for the %s dimension of variable %s was not provided.', dim, var);
+        end
+    end
+end
+
+% Ensure that all ensemble metadata is unique
+for k = 1:size(ensMeta,1)
+    for j = k+1:size(ensMeta,1)
+        if isequaln( ensMeta(k,:), ensMeta(j,:) )
+            error('The ensemble metadata contains duplicate values.' );
         end
     end
 end
