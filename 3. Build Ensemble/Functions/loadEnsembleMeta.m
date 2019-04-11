@@ -8,11 +8,18 @@ function[ensMeta, design, ensSize] = loadEnsembleMeta( file )
 % file: a .ens file (created by "buildEnsemble.m")
 
 % Check for .ens file. Get matfile object.
-m = ensFileCheck(file);
+m = ensFileCheck(file, 'load');
 
-% Load the variables
+% Load the design
 design = m.design;
-ensMeta = m.ensMeta;
+
+% Generate the metadata. Doing this dynamically because adding cells to the
+% .ens matfile causes a huuuuuuuge reduction in speed. It's much much much
+% faster to dynamically generate the metadata each time, rather than trying
+% to save it to file.
+ensMeta = ensembleMetadata( design );
+
+% Also get the ensemble size
 ensSize = m.ensSize;
 
 end
