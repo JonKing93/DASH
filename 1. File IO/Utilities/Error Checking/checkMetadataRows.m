@@ -1,6 +1,11 @@
 function[meta] = checkMetadataRows( meta, nRows, dim )
 %% Ensures that metadata has the correct number of rows
 
+% Ensure the metadata is neither a cell nor struct
+if iscell(meta) || isstruct(meta)
+    error('Metadata cannot be a cell or a struct.');
+end
+
 % Convert row vector to column if the number of elements is correct
 if isrow(meta) && length(meta) == nRows
     meta = meta';
