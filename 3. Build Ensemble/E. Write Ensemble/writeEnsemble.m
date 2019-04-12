@@ -20,16 +20,16 @@ hasnan = false( 1, nEns );
 for v = 1:numel( design.var )
     nanCols = getVarEnsemble( fEns, design.var(v), varDex{v}, nEns );
     hasnan = hasnan & nanCols;
-end
-
-% If every column contains a NaN, the ensemble is invalid
-if all(hasnan)
     
-    % Delete the .ens file
-    delete(fEns.Properties.Source);
+    % If all the columns have NaN, the ensemble is invalid. Throw error
+    if all(hasnan)
     
-    % Throw error
-    error('Every ensemble member contained NaN elements.\n');
+        % Delete the .ens file
+        delete(fEns.Properties.Source);
+    
+        % Throw error
+        error('Every ensemble member contained NaN elements.\n');
+    end
 end
 
 % If any columns contain NaN
