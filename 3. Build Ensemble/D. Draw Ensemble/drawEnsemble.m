@@ -1,4 +1,4 @@
-function[design] = drawEnsemble( design, nEns )
+function[design] = drawEnsemble( design, nEns, addDraws )
 
 % Get the sets of coupled variables
 coupVars = getCoupledVars( design );
@@ -16,10 +16,17 @@ for cv = 1:numel(coupVars)
     % Get the index and size of each ensemble dimension
     [ensSize, ensDim] = getVarSize( vars(1), 'ensOnly', 'ensDex' );
     
-    % Get the total number of possible draws, and index the draws that have
-    % NOT yet been selected.
-    nTot = prod( ensSize );
-    undrawn = (1:nTot)';
+    % If drawing an initial ensemble, get the total number of possible
+    % draws, and index draws that have NOT yet been selected.
+    if ~addDraws
+        nTot = prod( ensSize );
+        undrawn = (1:nTot)';
+        
+    % If adding to an existing ensemble, get the undrawn values from the
+    % state vector design
+    else
+        undrawn = vars(1).undrawn;
+    end
 
     % Get the subscripted sequence elements. (These will be used to check
     % for overlap between draws.) If overlap is permitted, just set to zero
@@ -32,6 +39,20 @@ for cv = 1:numel(coupVars)
     % Preallocate the sampling indices. These are the actual grid indices
     % from which climate data will be loaded.
     sampDex = NaN( nSeq*nDraws, numel(ensDim) );
+    
+    % If adding to an existing ensemble
+    if add
+        
+        % Get the sampling indices for the existing draws
+        currDraw = vars(1).drawDex( ensDim );
+        currDraw = cell2mat( currDraw' );
+        
+        % Replicate over the sequence indices
+    
+    
+    
+    
+    
     
     % Make draws until either the ensemble is built, or everything has been attempted
     while nDraws > 0
