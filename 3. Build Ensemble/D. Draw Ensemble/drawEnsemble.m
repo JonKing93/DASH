@@ -1,4 +1,4 @@
-function[design] = drawEnsemble( design, nEns, addDraws )
+function[design] = drawEnsemble( design, nEns, newEnsemble )
 
 % Get the sets of coupled variables
 coupVars = getCoupledVars( design );
@@ -29,7 +29,7 @@ for cv = 1:numel(coupVars)
     
     % If this is a new ensemble, initialize the draws that have not yet
     % been selected
-    if ~addDraws
+    if newEnsemble
         undrawn = (1 : prod(ensSize))';
         
     % But if adding more draws to an existing ensemble.

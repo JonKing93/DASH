@@ -1,4 +1,4 @@
-function[coupleSet] = reviewDesign( design )
+function[] = reviewDesign( design )
 %% Error checks a state vector design.
 %
 % ----- Written By -----

@@ -12,6 +12,7 @@ fEns.complete = false;
 % Preallocate the ensemble within the matfile
 nState = max( varDex{end} );
 fEns.M(1:nState, 1:nEns) = NaN;
+fEns.ensSize = [0, 0];
 
 % Track the ensemble members that contain NaN elements
 hasnan = false( 1, nEns );

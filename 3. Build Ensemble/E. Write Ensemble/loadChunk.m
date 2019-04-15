@@ -1,4 +1,4 @@
-function[sM] = loadChunk( fGrid, var, seqDex, mc, refLoad, keep )
+function[sM] = loadChunk( fGrid, var, seqDex, draw, refLoad, keep )
 
 % Initialize a set of load indices for the SPECIFIC ensemble member
 load = refLoad;
@@ -12,8 +12,8 @@ for dim = 1:numel(ensDex)
     % Get the dimension index of the dimension
     d = ensDex(dim);
     
-    % Get the specific load indices
-    load{d} = var.drawDex{d}(mc) + var.seqDex{d}(seqDex(dim)) + refLoad{d};
+    % Get the specific load indices.
+    load{d} = var.drawDex{d}(draw) + var.seqDex{d}(seqDex(dim)) + refLoad{d};
 end
 
 % Load the data

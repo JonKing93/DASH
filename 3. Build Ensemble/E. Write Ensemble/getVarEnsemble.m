@@ -21,16 +21,17 @@ seqDex = subdim( ensSize, (1:nSeq)' );
 % Writing matfile objects has a high overhead, so we want to minimize the
 % number of time we actually write values to the .ens file.
 
-% Determine the most efficient way to build. Preallocate M.
+% Determine the most efficient way to build (based on available memory). 
+% Preallocate M.
 [M, full] = preallocateVarEnsemble( numel(varDex), nSeq, nEns, var.name );
 
 % If we can store full sets of ensemble members, cycle through sequences
 if full
-    colnan = buildOrderSeqEns( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nSeq, nEns, nEls );
+    colnan = buildOrderSeqEns( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nEns, nSeq, nEls );
     
 % If we can only store single ensemble members, cycle through ensemble members
 else
-    colnan = buildOrderEnsSeq( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nSeq, nEns, nEls );
+    colnan = buildOrderEnsSeq( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nEns, nSeq, nEls );
 end
 
 end

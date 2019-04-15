@@ -1,4 +1,4 @@
-function[colnan] = buildOrderSeqEns( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nSeq, nEns, nEls )
+function[colnan] = buildOrderSeqEns( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nEns, nSeq, nEls )
 %% Outer loop is sequence element. Inner loop is ensemble member
 
 % Preallocate an array to whether ensemble members contain NaN
@@ -10,6 +10,11 @@ full = false;
 if size(M,1) == numel(varDex)
     full = true;
 end
+
+% Get the size of any pre-existing ensemble. And the locations at which to
+% write in the final file.
+nPrev = fEns.ensSize(1,2);
+writeDex = nPrev + (1:nEns);
 
 % For each sequence member
 for s = 1:nSeq
@@ -23,9 +28,12 @@ for s = 1:nSeq
         % Don't bother loading values for ensemble members that already
         % contain NaN values.
         if ~colnan(mc)
+            
+            % Get the draw associated with the ensemble member. 
+            draw = nPrev + mc;
         
             % Load the data
-            sM = loadChunk( fGrid, var, seqDex(s,:), mc, refLoad, keep );
+            sM = loadChunk( fGrid, var, seqDex(s,:), draw, refLoad, keep );
 
             % If there aren't any NaN values, save the values
             if ~any( isnan(sM) )
@@ -52,13 +60,15 @@ for s = 1:nSeq
     % this sequence within the entire state vector.
     if ~full
         stateDex = varDex( seqLoc );
-        fEns.M(stateDex, :) = M;
+        fEns.M(stateDex, writeDex) = M;
     end
 end
 
+% Get the write indices
+
 % If writing the full variable, add to the .ens file
 if full
-    fEns.M( varDex, : ) = M;
+    fEns.M( varDex, writeDex ) = M;
 end
 
 end
