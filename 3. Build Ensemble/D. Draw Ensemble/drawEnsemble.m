@@ -7,27 +7,13 @@ coupVars = getCoupledVars( design );
 for cv = 1:numel(coupVars)
     vars = design.var( coupVars{cv} );
     
-    % Get the overlap permission
-    overlap = vars(1).overlap;
-    
-    % Initialize the number of draws needed
+    % Initialize the number of draws and get the overlap permission
     nDraws = nEns;
-    
+    overlap = vars(1).overlap;
+        
     % Get the index and size of each ensemble dimension
     [ensSize, ensDim] = getVarSize( vars(1), 'ensOnly', 'ensDex' );
     
-    % If drawing an initial ensemble, get the total number of possible
-    % draws, and index draws that have NOT yet been selected.
-    if ~addDraws
-        nTot = prod( ensSize );
-        undrawn = (1:nTot)';
-        
-    % If adding to an existing ensemble, get the undrawn values from the
-    % state vector design
-    else
-        undrawn = vars(1).undrawn;
-    end
-
     % Get the subscripted sequence elements. (These will be used to check
     % for overlap between draws.) If overlap is permitted, just set to zero
     seqEls = zeros(1,numel(ensDim));
@@ -37,24 +23,32 @@ for cv = 1:numel(coupVars)
     nSeq = size( seqEls, 1 );
     
     % Preallocate the sampling indices. These are the actual grid indices
-    % from which climate data will be loaded.
-    sampDex = NaN( nSeq*nDraws, numel(ensDim) );
+    % from which climate data will be loaded. They consist of the sequence 
+    % elements associated with each specific ensemble index.
+    sampDex = NaN( nSeq*nDraws, numel(ensDim) );  
     
-    % If adding to an existing ensemble
-    if add
+    % If this is a new ensemble, initialize the draws that have not yet
+    % been selected
+    if ~addDraws
+        undrawn = (1 : prod(ensSize))';
         
-        % Get the sampling indices for the existing draws
-        currDraw = vars(1).drawDex( ensDim );
-        currDraw = cell2mat( currDraw' );
+    % But if adding more draws to an existing ensemble.
+    else
         
-        % Replicate over the sequence indices
+        % Get the sampling indices for the existing ensemble indices
+        currEns = cell2mat(  vars(1).drawDex( ensDim )'  );
+        currSamp = getSamplingIndices( currEns, seqEls );
+        
+        % Combine these pre-existing sampling indices with the indices for
+        % the new draws (to prevent overlap with existing draws).
+        sampDex = [currSamp; sampDex]; %#ok<AGROW>
+        
+        % Only make draws from values that were not previously selected
+        undrawn = vars(1).undrawn;
+    end
     
-    
-    
-    
-    
-    
-    % Make draws until either the ensemble is built, or everything has been attempted
+    % Make draws until the ensemble is built, or throw an error if the
+    % total number of draws is not possbile.
     while nDraws > 0
         if nDraws > numel(undrawn)
             ensSizeError(nDraws, numel(undrawn));
@@ -71,34 +65,25 @@ for cv = 1:numel(coupVars)
         
         % Previously, ensemble indices were matched (via metadata) for the set
         % of coupled variables. So, the subscripted draws refer to the
-        % same set of ensemble indices for all the coupled variables.
+        % same ordered set of ensemble indices for all the coupled variables.
         %
         % Note that the subscripted draws refer to ensemble INDICES. They
-        % are indexing an index, and not a climate data value. This is
-        % good, because we want to check if the draw indices will overlap.
+        % are indexing an index, and not a climate data value. We'll use 
+        % these draw indices to check for overlap between the sampling
+        % indices associated with all the specific ensemble indices.
         %
         % So, we'll need to get the set of ensemble indices associated with
-        % these subscript indices, add in the sequence elements, and check
-        % for repeated elements for the full set of sampling indices.
+        % these draw indices, add to the sequence elements, and check
+        % for repeated elements in the full set of sampling indices.
         
-        % Preallocate the set of newly drawn ensemble indices
+        % Get the set of ensemble indices associated with the draw indices
         ensDex = NaN( size(subDraws) );
-        
-        % Get the set of drawn ensemble indices.
         for d = 1:numel(ensDim)
             ensDex(:,d) = vars(1).indices{ ensDim(d) }( subDraws(:,d) );
         end
-         
-        % Replicate the sequence elements over each drawn ensemble index
-        repSeqEls = repmat( seqEls, [nDraws,1] );
         
-        % Replicate the drawn ensemble indices over each sequence element.
-        repEnsDex = repmat( ensDex(:)', [nSeq, 1] );
-        repEnsDex = reshape( repEnsDex, [nSeq*nDraws, numel(ensDim)] );
-        
-        % Add together to get the full set of sampling indices associated 
-        % with these draws. Add to the set of previous successful draws.
-        sampDex( (end - nDraws*nSeq + 1):end, : ) = repEnsDex + repSeqEls;
+        % Get the total set of sampling indices (including the new draws)
+        sampDex( (end - nDraws*nSeq + 1):end, : ) = getSamplingIndices( ensDex, seqEls );
         
         % Remove any draws associated with overlapping sampling indices.
         sampDex = removeOverlappingDraws( sampDex, nSeq );

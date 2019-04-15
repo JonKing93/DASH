@@ -1,13 +1,13 @@
-function[sampDex] = getSamplingIndices( ensDex, subSeq )
+function[sampDex] = getSamplingIndices( ensDex, seqEls )
 % Combines a set of subscripted draws and sequence elements into a set of
 % sampling indices
 
 % Get the number of draws, sequence elements, and ensemble dimensions
 [nDraws, nDim] = size(ensDex);
-nSeq = size(subSeq,1);
+nSeq = size(seqEls,1);
 
 % Replicate the sequence elements over each draw
-seqEls = repmat( subSeq, [nDraws,1] );
+seqEls = repmat( seqEls, [nDraws,1] );
 
 % Replicate the draws over each sequence element
 ensEls = repmat( ensDex(:)', [nSeq,1] );
