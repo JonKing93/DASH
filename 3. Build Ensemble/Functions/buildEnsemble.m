@@ -30,7 +30,7 @@ reviewDesign(design);
 design = coupleIndices( design );
 
 % Draw the ensemble members
-design = drawEnsemble( design, nEns );
+design = drawEnsemble( design, nEns, true );
 
 % Create the .ens file
 writeEnsemble( m, design, nEns );
