@@ -1,4 +1,4 @@
-function[vars] = assignEnsDraws( vars, ensDraws, ensID, undrawn )
+function[vars] = setVariableDraws( vars, subDraws, ensID, undrawn )
 %% Sets the ensemble indices that will be used in constructing an ensemble.
 %
 % coupVars: A set of coupled varDesigns
@@ -24,7 +24,7 @@ for v = 1:numel(vars)
         d = checkVarDim( vars(v), ensID(dim) );
         
         % Save the values for the ensemble index draws
-        vars(v).drawDex{d} = ensDraws(:,dim);
+        vars(v).drawDex{d} = subDraws(:,dim);
     end
 end
 
