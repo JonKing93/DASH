@@ -27,7 +27,7 @@ for cv = 1:numel(coupVars)
         undrawn = vars(1).undrawn;
         
         % Include the previous draws
-        oldDraws = cell2mat( vars(1).subDraws( ensDim )' );
+        oldDraws = cell2mat( vars(1).drawDex( ensDim )' );
         subDraws = [ oldDraws;  NaN(nDraws, numel(ensID)) ];
     end
     

@@ -47,5 +47,17 @@ for v = 1:nVar
     checkVarValues( var );
 end
 
+% Check that coupled variables have the same overlap permission
+coupVars = getCoupledVars( design );
+for cv = 1:numel(coupVars)
+    vars = coupVars{cv};
+    
+    for v = 2:numel(vars)
+        if vars(1).overlap ~= vars(v).overlap
+            error('Coupled variables %s and %s do not have the same overlap permission.', vars(1).name, vars(v).name);
+        end
+    end
+end
+
 end
 

@@ -12,8 +12,11 @@ for dim = 1:numel(ensDex)
     % Get the dimension index of the dimension
     d = ensDex(dim);
     
-    % Get the specific load indices.
-    load{d} = var.drawDex{d}(draw) + var.seqDex{d}(seqDex(dim)) + refLoad{d};
+    % Get the ensemble index associated with the draw
+    ensDex = var.drawDex{d}(draw);
+    
+    % Get the loading index for the data value
+    load{d} = var.indices{d}(ensDex) + var.seqDex{d}(seqDex(dim)) + refLoad{d};
 end
 
 % Load the data
