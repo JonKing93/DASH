@@ -9,12 +9,13 @@ function[nameDex] = varCheck( ensMeta, name )
 % Jonathan King, University of Arizona, 2019
 
 % Check that the metadata has a variable name field
-if ~isfield(ensMeta, 'var')
-    error('Ensemble metadata must contain the ''var'' field.');
+[~,~,var] = getDimIDs;
+if ~isfield(ensMeta, var)
+    error('Ensemble metadata does not contain the %s field.', var);
 end
 
 % Check that the name is a string
-if ~(isstring(name)&&isscalar(name)) && ~(ischar(name)&&isvector(name))
+if ~isstrflag( name )
     error('Variable name must be a string.');
 end
 

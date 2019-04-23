@@ -1,107 +1,92 @@
 %% This is an interface that ensures that proxy models can interact with dashDA.
-%
-% Methods:
-%   runPSM( obj, M, d, t )
-%   getStateIndices( obj, ensMeta )
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
+
+% PSM is an abstract handle class. Abstract because it describes an
+% interface for specific instances of PSM. You cannot create a "PSM"
+% object. Instead you must create separate (concrete) classes that use this
+% "PSM" interface.
+%
+% Handle class because a developer may wish to use the same PSM for
+% multiple proxies. (Perhaps the PSM has a high initialization cost.)
+% However, this is an advanced capability and not necessary for typical
+% use.
 classdef (Abstract) PSM < handle
     
     % Some properties used by the DA to run the PSM
     properties
-        H; % Sampling indices
-        timeDependent = false; % Whether the PSM is time dependent
-        bias = [];  % A bias correction structure
+        H;                     % Sampling indices
+        bias = [];             % A bias correction class. Currently not implemented
     end
     
     % Methods that all proxy system models must implement, but that are
-    % unique for all PSMs
+    % unique for all PSMs.
     methods (Abstract = true)
         
-        % This generates the sampling indices for a site
         getStateIndices( obj, ensMeta );
-        
-        % Internal error checking
+        % This method determines the state vector elements that are needed 
+        % to run an instance of a PSM for a particular proxy. 
+        %
+        % The indices of those state vector elements are then saved as 
+        % the "H" property. (This is why the method has no outputs. The
+        % outputs are saved within the "H" property of each PSM.)
+        %
+        % This method will require the ensemble metadata as an input. When
+        % this method is implemented in concrete PSM classes, it may also
+        % use additional input arguments.
+
         reviewPSM( obj );
+        % This method implements internal error checking for each PSM.
+        %
+        % It is intended to check whether or not a PSM is ready to be used
+        % for data assimilation.
+        %
+        % Dash calls this method for each PSM before starting a data
+        % assimilation in order to ensure that the user did not forget any
+        % steps when building their PSMs.
+
+        M = convertUnits( obj, M );
+        % This method converts the units of the values in the model
+        % ensemble into values that can be used by the PSM to run the
+        % forward model.
+        %
+        % The output is the set of unit-converted values.
         
-        % Converts DA units to PSM units
-        M = convertM( obj, M );
-        
-        % This is the basic function used in the dashDA code to run a PSM.
-        % 
-        % ----- Inputs -----
+        [Ye, R] = runPSM( obj, M, t, d )
+        % This is the function used by dash to actually run a PSM forward
+        % model.
         %
-        % obj: The PSM
+        % It has 3 INPUTS
+        %    M: A set of values extracted from the state vectors in the
+        %       model ensemble. Most PSMs will only need this input. The
+        %       size will be (nSamplingIndices x nEns)
         %
-        % M: State elements required to run the PSM
+        %    t: The index of the time step being processed in the assimilation.
         %
-        % t: The time step being processed in the DA
+        %       This will be unnecessary for most standard PSMs, but could
+        %       be necessary for time-dependent forward models. For example,
+        %       a model that incorporates biological evolution over time 
+        %       could use different calibrations for different assimilation
+        %       time steps.
         %
-        % d: The index of the observation being processed.
-        [Ye, R] = runPSM( obj, M, t, d);
-    end
-    
-    % A switch that selects the appropriate bias correction algorithm.
-    methods
-        function[X] = biasCorrect( obj, Xd )
-            
-            % If no bias correction, just use the input value.
-            if isempty(obj.bias)
-                X = Xd;
-                
-            % NPDFT corrector
-            elseif isa( obj.bias, 'npdftCorrector')
-                X = obj.staticNPDFT( Xd );
-                
-            % Unrecognized bias corrector
-            else
-                error('Unrecognized bias corrector.');
-            end
-        end
-    end
-    
-    % NPDFT bias correction. Uses a npdftCorrector bias correction object.
-    methods
-        % Create the static npdft mapping. 
-        function[] = initialNPDFT( obj, Xo, M, tol, varargin )
-            
-            % Check that sampling indices were generated
-            if isempty(obj.H)
-                error('Cannot run an initial NPDFT until the sample indices are generated.');
-            end
-    
-            % Select at sampling indices and convert units
-            M = M( obj.H, : );
-            M = obj.convertM(M);
-            
-            % Transpose from state vector for npdft
-            Xo = Xo';
-            M = M';
-            
-            % Run Npdft. Record static iteration values.
-            [~, E, R, normO, normM] = npdft( Xo, M, tol, varargin{:} );
-            
-            % Save bias correction fields
-            obj.bias = npdftCorrector( E, R, normO, normM, Xo, M );
-        end
-        
-        % Do the static NPDFT mapping
-        function[X] = staticNPDFT( obj, Xd )
-            
-            % Convert units
-            Xd = obj.convertM( Xd );
-            
-            % Ensemble members become samples
-            Xd = Xd';
-            
-            % Run a static npdft
-            X = npdft_static( obj.bias.Xo, obj.bias.Xm, Xd, obj.bias.R, ...
-                              obj.bias.normO, obj.bias.normM );
-                          
-            % Flip back to state vector format
-            X = X';
-        end
+        %    d: The index of the observation being processed.
+        %
+        %       This will rarely be necessary for PSMs. It would be
+        %       useful for developers using the "handle" capabilities of a
+        %       PSM to assign multiple proxy records to a single PSM
+        %       instance. This might be desirable for PSMs with a high
+        %       computational cost of initialization.
+        %
+        % The method also has 2 OUTPUTS:
+        %    Ye: These are the proxy estimates generated by running the
+        %        forward model. Size is (1 x nEns)
+        %
+        %    R: This is an estimate of estimate variance generated by the
+        %       forward model. This is an optional output; it is fine to
+        %       write PSMs that do not calculate R. Dash will only require
+        %       this output when the user does not specify a value for R at
+        %       the beginning of assimilation.
     end
 
 end

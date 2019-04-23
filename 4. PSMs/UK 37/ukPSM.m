@@ -45,19 +45,55 @@
 % Jonathan King, University of Arizona, 2019
 classdef ukPSM < PSM
     
+    % The properties are the variables availabe to every instance of a
+    % ukPSM object. The actual values of the properties can be different
+    % for every ukPSM object.
     properties
-        bayes; % The bayes prior
-        bayesFile; % The bayes file used
-        coord; % The object coordinates
-        convertT; % Temperature conversion to Celsius
-    end
-    
-    % Filename for the Bayes posterior
-    properties (Constant, Hidden)
-        bayesDefault = 'bayes_posterior_v2.mat';
+        
+        bayes;
+        % This is the bayesian posterior distribution used to run the uk37
+        % forward model.
+        %
+        % The original forward model loaded this distribution from a file each
+        % time it ran. However, since the forward model ALWAYS uses 
+        % the same value, I removed it from the forward model, and placed it in
+        % the PSM object. This way, the PSM can load the posterior once, and
+        % then use that distribution for every assimilation time step.
+        %
+        % This is mostly just limiting the number of times we need to load
+        % from a file, but it has the added benefit that we can load from
+        % different files to use different posteriors without altering any
+        % of the code in the actual forward model.
+        
+        bayesFile = 'bayes_posterior_v2.mat';
+        % This is the file that bayesian posterior is loaded from. The
+        % default file is "bayes_posterior_v2.mat", but you can change this
+        % file to use different posterior distributions.
+        
+        coord;
+        % These are the lat-lon coordinates of a particular proxy site.
+        % Longitude can be in either 0-360 or -180-180, either is fine.
+        
+        convertSST;
+        % This is the temperature conversion that converts SSTs from the
+        % model ensemble (in any particular unit), to Celsius -- the units
+        % required for the forward model.
+        %
+        % (Currently only supports conversions from Celsius or Kelvin,
+        % Farenheit is not supported.)
     end
     
     methods
+        
+        function[] = getStateIndices( obj, ensMeta, sstName, 
+        
+        
+        
+        
+        
+        
+        
+        
         % Run the PSM
         function[uk,R] = runPSM( obj, T, ~, ~ )
             

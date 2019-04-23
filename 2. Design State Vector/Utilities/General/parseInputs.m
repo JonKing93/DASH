@@ -23,6 +23,11 @@ function[varargout] = parseInputs( inArgs, flags, defaults, switches )
 %
 % Jonathan King, 2017, University of Arizona
 
+% Convert string flags to cell vector
+if isstring( flags )
+    flags = cellstr(flags);
+end
+
 % Make sure everything is formatted correctly
 errorCheck(flags, defaults, switches);
 
