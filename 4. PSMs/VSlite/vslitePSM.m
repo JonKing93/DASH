@@ -167,57 +167,33 @@ classdef vslitePSM < PSM & biasCorrector
         end
         
         % Get the state vector indices
-        function[H] = getStateIndices( obj, ensMeta, Tname, Pname, time )
+        function[] = getStateIndices( obj, ensMeta, Tname, Pname, time )
             
-            % Error check
-            if ~isvector(time)
-                error('Time must be a vector.');
+            % Check that the variable names are allowed
+            if ~isstrflag(Tname)
+                error('Tname must be a string.');
+            elseif ~isstrflag(Pname)
+                error('Pname must be a string.');
             end
             
-            % Get the number of sensitive months
-            nTime = numel(obj.intwindow);
+            % Concatenate variable names
+            vars = [Tname;Pname];
+            
+            % Get the name of the time dimension
+            [~,~,~,~,~,~,timeDim] = getDimIDs;x
             
             % If time has 12 elements, convert to intwindow
             if numel(time) == 12
                 time = time(obj.intwindow);
             
             % Otherwise, if it doesn't match intwindow, throw an error
-            elseif numel(time)~=nTime
+            elseif size(time,1) ~= numel(obj.intwindow)
                 error('Time must have either 12 elements or an element for each month of seasonal sensitivity.');
             end
             
-            % Get the variable's indices
-            Tdex = varCheck(ensMeta, Tname);
-            Pdex = varCheck(ensMeta, Pname);
-            
-            % Preallocate the output indices
-            H = NaN(nTime*2,1);
-            
-            % For each month
-            for t = 1:nTime
-                
-                % Find the indices of the variables in the current time
-                Ttime = findincell( time(t), ensMeta.time(Tdex) );
-                Ptime = findincell( time(t), ensMeta.time(Pdex) );
-                
-                % Get the lat and lon coords
-                Tlat = cell2mat(ensMeta.lat( Tdex(Ttime) ));
-                Tlon = cell2mat(ensMeta.lon( Tdex(Ttime) ));
-                
-                Plat = cell2mat(ensMeta.lat( Pdex(Ptime) ));
-                Plon = cell2mat(ensMeta.lon( Pdex(Ptime) ));
-                
-                % Get the closest site for each variable
-                Tsite = samplingMatrix( [obj.lat, obj.lon], [Tlat, Tlon], 'linear');
-                Psite = samplingMatrix( [obj.lat, obj.lon], [Plat, Plon], 'linear');
-                
-                % Save the sampling index
-                H(t) = Tdex(Ttime(Tsite));
-                H(t+nTime) = Pdex(Ptime(Psite));
-            end     
-            
-            % Save the sample indices
-            obj.H = H;
+            % Get the indices
+            obj.H = getClosestLatLonIndex( [obj.lat, obj.lon], ensMeta, ...
+                                           vars, timeDim, time );
         end
         
         % Get the fixed standardization values
