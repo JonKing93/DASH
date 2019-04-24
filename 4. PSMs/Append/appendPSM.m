@@ -1,5 +1,6 @@
-%% Defines a PSM for the "append" (Tardif) DA method. 
-% A trivial PSM. Directly returns any inputs.
+%% Defines a PSM for the appended DA method
+%
+% This is a trivial PSM. It directly returns any inputs.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -15,19 +16,18 @@ classdef appendPSM < PSM
             obj.H = H;
         end
         
+        % Placeholder review PSM method.
+        function[] = reviewPSM(~)
+        end
+        
+        % Placeholder convertUnits method
+        function[] = convertUnits(~)
+        end
+        
         % Run the PSM. Simply return whatever value is input.
         function[Ye] = runPSM( ~, Ye)
         end
-        
-        % Convert units placeholder
-        function[M] = convertM(~, M)
-        end
-        
-        % Review PSM placeholder
-        function[] = reviewPSM(~)
-        end
     end
-    
 end
             
         

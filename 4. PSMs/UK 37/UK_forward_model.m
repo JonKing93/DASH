@@ -1,12 +1,19 @@
 function [uk] = UK_forward_model(ssts, bayes)
-%function to model uk'37 from ssts using the BAYSPLINE calibration
-%INPUTS:
-%ssts = N x 1 vector of ssts
-%OUTPUTS:
-%uk = N x 1500 ensemble estimates of ssts
+% Models uk'37 from SSTs using the BAYSPLINE calibration.
 %
+% uk = UK_forward_model( ssts, bayes )
+%
+% ----- Inputs -----
+%
+% ssts: A vector of sea surface temperatures (Celsius) (1 x N) or (N x 1)
+%
+% bayes: A Bayesian posterior to use for the calibration.
+%
+% ----- Outputs -----
+%
+% uk: A set of 1500 uk'37 estimates for each SST. (1500 x N)
 
-% Convert to column vector
+% Convert ssts to column vector.
 ssts=ssts(:);
 
 %NOTE: calibration is seasonal for the following regions: North Pacific (Jun-Aug),
@@ -29,6 +36,4 @@ mean_now=fnval(bs,ssts);
 %draw from the distribution:
 uk=normrnd(mean_now,repmat(sqrt(bayes.tau2),1,length(ssts)));
 
-% Convert N x 1500
-uk = uk';
 end

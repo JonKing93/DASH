@@ -43,6 +43,8 @@
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
+
+%% This defines the ukPSM class. ukPSM uses the PSM interface for Dash.
 classdef ukPSM < PSM
     
     % The properties are the variables availabe to every instance of a
@@ -83,35 +85,74 @@ classdef ukPSM < PSM
         % Farenheit is not supported.)
     end
     
+    %% The methods are the functions that each individual instance of a
+    % ukPSM can run.
     methods
         
-        function[] = getStateIndices( obj, ensMeta, sstName, 
         
-        
-        
-        
-        
-        
-        
-        
-        % Run the PSM
-        function[uk,R] = runPSM( obj, T, ~, ~ )
+        % Constructor. This creates an instance of a PSM
+        function obj = ukPSM( coord, varargin )
+            % Get optional inputs
+            [file, convertT] = parseInputs(varargin, {'bayesFile','convertT'}, {[],0}, {[],[]});
             
-            % Convert T to Celsius
-            T = T + obj.convertT;
+            % Get the file containing the posterior
+            if ~isempty(file)
+                obj.bayesFile = file;
+            end
             
-            % Run the forward model
-            uk = UK_forward_model( T, obj.bayes );
+            % Load the posterior
+            obj.bayes = load( obj.bayesFile );
             
-            % Estimate R from variance
-            R = mean( var(uk,[],2) ,1);
+            % Set the coordinates and temperature conversion
+            obj.coord = coord;
+            obj.convertT = convertT;
             
-            % Take the ensemble mean
-            uk = mean(uk,2);
-            
-            % Convert to row
-            uk = uk';
+        end  
+        
+        
+        % Get State Indices
+        % 
+        % This determines the indices of elements in a state vector that
+        % should be used to run the forward model for a particular uk37
+        % site.
+        function[] = getStateIndices( obj, ensMeta, sstName ) 
+            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName );
         end
+        
+        
+        %% Review PSM
+        %
+        % This error check an instance of a ukPSM to ensure that it is
+        % ready to be used wth dash.
+        function[] = reviewPSM( obj )
+            
+            % Check that H was set
+            if isempty(obj.H)
+                error('Did not set the state indices (H)');
+            end
+            
+            % This forward model only needs 1 variable - SST at the closest
+            % site. So check that H is a scalar
+            if ~isscalar( obj.H )
+                error('H must be a scalar.');
+            end
+            
+            % Check that the bayes file and unit conversion exist
+            if isempty(obj.bayes)
+                error('The "bayes" property is empty.');
+            elseif isempty( obj.convertSST )
+                error('The "convertSST" property is empty.');
+            elseif ~isscalar( obj.convertSST )
+                error('The "convertSST" property should be a scalar.');
+            end 
+        end        
+        
+        
+        % This converts units to celsius.
+        function[SST] = convertUnits( obj, SST )
+            SST = SST + obj.convertSST;
+        end
+            
         
         % Get the sample indices
         function[] = getStateIndices( obj, ensMeta, sstName, gridType, varargin )
@@ -165,23 +206,24 @@ classdef ukPSM < PSM
             obj.H = sstVar(sstSite);
         end
         
-        % Constructor 
-        function obj = ukPSM( obCoord, varargin )
+        
+        % This gets the model estimates by running the UK37 forward model.
+        function[uk,R] = runPSM( obj, SST, ~, ~ )
             
-            % Check for alternate bayes file
-            [file, convertT] = parseInputs(varargin, {'bayesFile','convertT'}, {[],0}, {[],[]});
+            % Convert T to Celsius
+            SST = obj.convertUnits( SST );
             
-            % Load the bayes parameters
-            if isempty(file)
-                file = obj.bayesDefault;
-            end
-            obj.bayes = load(file);
-            obj.bayesFile = file;
+            % Run the forward model. Output is 1500 possible estimates for
+            % each ensemble member (1500 x nEns)
+            uk = UK_forward_model( SST, obj.bayes );
             
-            % Set the coordinates and temperature conversion
-            obj.coord = obCoord;
-            obj.convertT = convertT;
-        end  
+            % Estimate R from the variance of the model for each ensemble
+            % member. (scalar)
+            R = mean( var(uk,[],1), 2);
+            
+            % Take the mean of the 1500 possible values for each ensemble
+            % member as the final estimate. (1 x nEns)
+            uk = mean(uk,1);
+        end
     end
-    
 end

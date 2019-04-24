@@ -54,6 +54,13 @@ if iscell(stateCoord)
     stateCoord = [lat, lon];
 end
 
+% Check that the coordinates are not all NaN
+if all( isnan(stateCoord), 2 )
+    error('All the state coordinates contain NaN values.');
+elseif all( isnan(siteCoord), 2 )
+    error('All the site coordinates contain NaN values.');
+end
+
 % Preallocate
 nSite = size( siteCoord, 1);
 Hvec = NaN( nSite, 1);
@@ -63,7 +70,7 @@ for s = 1:nSite
     
     % Get the distance between the site and grid coords
     dist = haversine( siteCoord(s,:), stateCoord );
-    
+
     % Get the index of the minimum distance
     Hvec(s) = find( dist == min(dist), 1 );
 end
