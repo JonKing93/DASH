@@ -106,7 +106,6 @@ classdef ukPSM < PSM
             % Set the coordinates and temperature conversion
             obj.coord = coord;
             obj.convertT = convertT;
-            
         end  
         
         
@@ -151,59 +150,6 @@ classdef ukPSM < PSM
         % This converts units to celsius.
         function[SST] = convertUnits( obj, SST )
             SST = SST + obj.convertSST;
-        end
-            
-        
-        % Get the sample indices
-        function[] = getStateIndices( obj, ensMeta, sstName, gridType, varargin )
-
-            % Parse inputs
-            [time, lev] = parseInputs(varargin, {'time','lev'}, {[],[]}, {[],[]} );
-            
-            % Get the variable's indices
-            sstVar = varCheck(ensMeta, sstName);
-
-            % If there is a time requirement, get the restricted indices.
-            if ~isempty(time)
-                dimCheck(ensMeta, 'time');
-                sstTime = findincell( time, ensMeta.time(sstVar) );
-                sstVar = sstVar(sstTime);
-            end
-            
-            % If there is a lev requirement, get the restricted indices
-            if ~isempty(lev)
-                dimCheck(ensMeta, 'lev');
-                sstLev = findincell( lev, ensMeta.lev(sstVar) );
-                sstVar = sstVar(sstLev);
-            end
-            
-            % For tripolar grids
-            if strcmpi(gridType, 'tripolar')
-                
-                % Check for the metadata field
-                dimCheck(ensMeta, 'tripole');
-                
-                % Get the lat, lon coordinates
-                latlon = cell2mat( ensMeta.tripole(sstVar) );
-                
-            % For lat x lon grids
-            elseif strcmpi(gridType, 'latxlon')
-                
-                % Check the metadata fields
-                dimCheck(ensMeta, 'lat');
-                dimCheck(ensMeta, 'lon');
-                
-                % Get the lat lon coordinates
-                latlon = [cell2mat(ensMeta.lat(sstVar)), cell2mat(ensMeta.lon(sstVar))];
-            else
-                error('Unrecognized grid type');
-            end
-
-            % Get the closest site to the observation
-            sstSite = samplingMatrix( obj.coord, latlon, 'linear');
-
-            % Get the location within the whole state vector
-            obj.H = sstVar(sstSite);
         end
         
         
