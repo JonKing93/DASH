@@ -1,4 +1,4 @@
-function[Ye, R, update] = getPSMOutput( F, Mpsm, R, d, t )
+function[Ye, R, update] = getPSMOutput( F, Mpsm, R, t, d )
 
 % Get the ensemble size
 nEns = size(Mpsm,2);
@@ -14,9 +14,9 @@ try
     
     % Run with or without R calculation
     if getR
-        [Ye, Rpsm] = F.runPSM( Mpsm, d, t );
+        [Ye, Rpsm] = F.runPSM( Mpsm, t, d );
     else
-        Ye = F.runPSM( Mpsm, d, t );
+        Ye = F.runPSM( Mpsm, t, d );
     end
     
     % Check that Ye were valid

@@ -43,12 +43,11 @@ Avar = NaN( nState, nTime );
 Ye = NaN( nObs, nEns, nTime );
 
 % Each time step is independent, process in parallel
-for t = 1:nTime
+parfor t = 1:nTime
     
     % Slice variables to minimize parallel overhead.
     tD = D(:,t);
     tR = R(:,t);
-    Ycurr = NaN(nObs, nEns);
     
     % Initialize the update for this time step
     Am = Mmean;
@@ -62,14 +61,14 @@ for t = 1:nTime
             Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);
             
             % Run the PSM. Generate R. Error check.
-            [Ycurr(d,:), tR(d), update] = getPSMOutput( F{d}, Mpsm, tR(d), d, t );
+            [Ye(d,:,t), tR(d), update] = getPSMOutput( F{d}, Mpsm, tR(d), t, d );
             
             % If no errors occured in the PSM, and the R value is valid,
             % update the analysis
             if update && ~isnan(tR(d))
 
                 % Decompose the model estimate
-                [Ymean, Ydev] = decomposeEnsemble( Ycurr(d,:) );
+                [Ymean, Ydev] = decomposeEnsemble( Ye(d,:,t) );
 
                 % Get the Kalman gain and alpha
                 [K, a] = kalmanENSRF( Ad, Ydev, tR(d), w(:,d), 1 );                
@@ -80,9 +79,6 @@ for t = 1:nTime
             end
         end
     end   % End serial updates
-    
-    % Record the Y estimates for this time step.
-    Ye(:,:,t) = Ycurr;
     
     % Record the mean and variance of the analysis.
     Amean(:,t) = Am;

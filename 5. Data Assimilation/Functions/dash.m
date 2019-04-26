@@ -1,25 +1,35 @@
-function[A, Ye] = dash( M, D, R, F, varargin )
+function[varargout] = dash( M, D, R, F, varargin )
 %% Implements data assimilation using dynamic PSMs or the tardif method.
 %
-% [A, Ye] = dash( M, D, R, F )
-% Runs a data assimilation using dynamic forward models.
+% [Amean, Avar, Ye] = dash( M, D, R, F )
+% Runs a data assimilation using dynamic forward models and a joint update
+% scheme. Returns the updated ensemble mean, updated ensemble variance, and
+% forward model estimates. 
 % 
-% [A, Yi, Yu, Yf]  = dash( ..., 'append' )
-% Runs the DA using the appended Ye method. Model estimates are calculated
-% initially, then appended to the state vector and updated linearly via the
-% Kalman Gain.
+% dash( ..., 'serial', true )
+% Runs a data assimilation using serial updates.
 %
-% [...] = dash( ... , 'inflate', inflate )
+% dash( ..., 'serial', true, 'append', true )
+% Run serial updates using the appended Ye method. Ye values are
+% calculated for the initial model prior, appended to the state vector, and
+% updated through the Kalman Gain. Returns the Ye estimates from the
+% initial estimate (Yi), used for updating (Yu), and final estimate (Yf).
+%
+% dash( ... , 'inflate', inflate )
 % Specifies an inflation factor. The covariance of the model ensemble will
 % be multiplied by the inflation factor.
 %
-% [...] = dash( ..., 'localize', w )
-% Specifies a covariance localization to use in data assimilation.
+% dash( ..., 'localize', {w, yloc} )
+% Specifies a covariance localization to use in data assimilation for a 
+% joint update scheme. See the covLocalization.m function.
 %
-% [...] = dash( ..., 'serial' )
-% Specify whether to process observations serially. Default is not serial.
-% For non-linear PSMs, serial processing may result in non-deterministic
-% analyses relative to the order in which observations are processed.
+% dash( ..., 'serial', true, 'localize', w )
+% Specifies covariance localization weights to use for data assimilation
+% with a serial update scheme. See the covLocalization.m function.
+%
+% [outArg] = dash( ..., 'output', {outputs} )
+% Specify required outputs. If certain outputs (such as Avar) are not
+% calculated, runtime can greatly increase.
 %
 % ----- Inputs -----
 %
@@ -27,24 +37,28 @@ function[A, Ye] = dash( M, D, R, F, varargin )
 %
 % D: The observations. (nObs x nTime)
 %
-% R: Observation uncertainty. 
-%     []: R computed dynamically from PSMs
-%     scalar: R is used as the error variance for all observations.
-%     column: Each element of R is used as the error-variance for a
-%         unique observation. (nObs x 1)
-%     matrix: Each column of R is used as the error-variances for a
-%         particular time step. (nObs x nTime)
+% R: Observation uncertainty of each proxy measurement. Values for NaN
+%    elements are generated dynamically by the PSMs. (nObs x nTime )
 %
-%     R values for NaN elements are computed dynamically by the PSMs.
-%
-% F: A cell vector of PSM objects for each observation. {nObs x 1}
-%
-% w: Covariance localization weights. (nState x nObs)
+% F: A cell vector of PSM objects. {nObs x 1}
 %
 % inflate: A scalar inflation factor. 
 %
-% Kmax: A scalar value used to test for ensemble convergence. An
-% unreareasonably large update for the variable with the largest units.
+% w: Model-estimate covariance localization weights. Applied to the Kalman
+%    numerator. (nState x nObs)
+%
+% yloc: Estimate-estimate covariance localization weights. Applied to the
+%       Kalman denominator. (nObs x nObs)
+%
+% outputs: Flags for possible outputs
+%     'Amean': Updated ensemble mean
+%     'Avar': Updated ensemble variance
+%     'Ye': The ensemble of model estimates at each time step
+%
+%     'Yi': The initial model estimates generated for the appended Ye method
+%     'Yu': The model estimates used for each update step for the appended Ye method.
+%     'Yf': The final model estimates from the appended Ye method. This is
+%           the same value returned as 'Ye' for the appended method.
 %
 % ----- Outputs -----
 %
@@ -52,14 +66,16 @@ function[A, Ye] = dash( M, D, R, F, varargin )
 %
 % Avar: Update analysis variance (nState x nTime).
 %
-% Ye: PSM generated model estimates.
+% Ye: Model estimates.
 %       serial DA: (nObs x nEns x nTime)
 %       joint DA: (nObs x nEns)
+% 
+% Yi: The initial model estimate for the appended Ye method. (nObs x nEns)
 %
-% {Yi, Yu, Yf}: Ye values used during an "append" data assimilation.
-%       Yi: The initial Ye calculated using the PSMs. (nObs x nEns x nTime)
-%       Yu: The updated Ye values used in a particular update (nObs x nEns x nTime)
-%       Yf: The final Ye values resulting from Kalman Gain updates. (nObs x nEns x nTime)
+% Yu: The model estimate used to update each time step for the appended Ye
+%     method. (nObs x nEns x nTime)
+%
+% Yf: The final model estimate for each time step. (nObs x nEns x nTime)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -67,51 +83,30 @@ function[A, Ye] = dash( M, D, R, F, varargin )
 %% Setup 
 
 % Parse inputs
-[inflate, w, append, serial] = parseInputs( varargin, {'inflate','localize','append','serial'}, ...
-                                            {1, [], false, false}, {[],[],'b','b'} );
+[serial, append, inflate, localize, output] = parseInputs( varargin, {'serial','append','inflate','localize','output'}, ...
+                                                           {false, false, 1, [], []}, {[],[],[],[],[]} );
                                         
 % Error check. Get R and w if unspecified.
-[R, w] = setup( M, D, R, F, inflate, w, append, serial );
+[R, w] = setup( M, D, R, F, serial, append, inflate, localize, output );
 
 % Apply the inflation factor
-[Mmean, Mdev] = decomposeEnsemble( M );
-Mdev = sqrt(inflate) .* Mdev;
-M = Mmean + Mdev;
+M = inflateEnsemble( inflate, M );
 
-% If doing the appended method.
+% Setup for the appended Ye method
 if append
-    
-    % Get sizes
-    [nState, nEns] = size(M);
-    [nObs] = size(D,1);
-    
-    % Preallocate the Y estimates
-    Yi = NaN( nObs, nEns );
-    
-    % For each observation
-    for d = 1:nObs
-        
-        % Generate the initial Yi
-        Yi(d,:) = F{d}.runPSM( M(F{d}.H, :), d );
-        
-        % Replace the PSM with the trivial appendPSM
-        F{d} = appendPSM;
-        F{d}.getStateIndices(nState+d);
-    end
-    
-    % Append Ye to M
-    M = [M;Yi];
+    [M, F] = appendSetup( M, F );
 end
 
-% Run the DA in serial or all-at-once
+% Run a serial or jointly updating data assimilation
 if serial
     [A, Ye] = serialDA( M, D, R, F, w );
 else
-    [A, Ye] =  jointDA( M, D, R, F, w );
+    [A, Ye] =  jointENSRF( M, D, R, F, w, yloc );
 end
 
-% If using the appended method.
+% Finish for the appened Ye method
 if append
+    [Amean, Avar] = 
     
     % Unappend
     Yf = A(nState+1:end,:,:);
@@ -120,6 +115,9 @@ if append
     % Get the Y output cell
     Ye = {Yi, Ye, Yf};
 end
+
+
+% Get outputs
 
 end
 

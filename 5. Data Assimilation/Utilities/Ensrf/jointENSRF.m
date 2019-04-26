@@ -17,7 +17,7 @@ for d = 1:nObs
     Mpsm = M(F{d}.H, :);
     
     % Run the PSM
-    [Ye(d,:), R(d), update(d)] = getPSMOutput( F{d}, Mpsm, R(d), d, NaN  );
+    [Ye(d,:), R(d), update(d)] = getPSMOutput( F{d}, Mpsm, R(d), NaN, d  );
 end
 
 % Decompose the ensemble
