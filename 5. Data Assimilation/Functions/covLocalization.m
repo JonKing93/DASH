@@ -1,4 +1,4 @@
-function[weights, yloc] = covLocalization( siteCoord, stateCoord, R, scale)
+function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %% Calculates the weights for covariance localization at a site.
 % 
 % weights = covLocalization( siteCoord, stateCoord, R )
@@ -31,8 +31,8 @@ function[weights, yloc] = covLocalization( siteCoord, stateCoord, R, scale)
 % 
 % site: The set of site coordinates, latitude x longitude. (nObs x 2)
 %
-% coords: The state vector coordinates, latitude x longitude.
-%         Non-localizable state variables (e.g. global mean) should use NaN
+% coords: The ensemble metadata, latitude x longitude.
+%         Non-localizable state variables (e.g. spatial means) should use NaN
 %         coordinates to prevent localization.  (nState x 2)
 %
 % R: The cutoff radius. All covariance outside of this radius will be
@@ -61,23 +61,8 @@ function[weights, yloc] = covLocalization( siteCoord, stateCoord, R, scale)
 %
 % Modified to included variable/optimal length scales by Jonathan King.
 
-
-% !!! This sequence could be more efficient.
-% State Coord is the ensemble metadata. Find locations that are means and
-% convert to NaN.
-if ~iscell(stateCoord) || size(stateCoord,2)~=2
-    error('stateCoord must be lat and lon from the ensemble metadata.');
-end
-nState = size(stateCoord,1);
-for n = 1:nState
-    if numel(stateCoord{n,1})>1
-        stateCoord{n,1} = NaN;
-    end
-    if numel(stateCoord{n,2})>1
-        stateCoord{n,2} = NaN;
-    end
-end
-stateCoord = cell2mat(stateCoord);
+% Get the lat-lon metadata for the state elements from the ensemble metadata
+stateCoord = getEnsembleCoords( ensMeta );
 
 % If not specified, set the length scale to 1/2 the localization radius
 if ~exist('scale','var') || isempty(scale)

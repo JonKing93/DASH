@@ -1,7 +1,7 @@
-function[varargout] = dash( M, D, R, F, varargin )
-%% Implements data assimilation using dynamic PSMs or the tardif method.
+function[Amean, Avar, Ye, R, update] = dash( M, D, R, F, varargin )
+%% Implements paleo data assimilation
 %
-% [Amean, Avar, Ye] = dash( M, D, R, F )
+% [Amean, Avar, Ye, R, update] = dash( M, D, R, F )
 % Runs a data assimilation using dynamic forward models and a joint update
 % scheme. Returns the updated ensemble mean, updated ensemble variance, and
 % forward model estimates. 
@@ -20,16 +20,13 @@ function[varargout] = dash( M, D, R, F, varargin )
 % be multiplied by the inflation factor.
 %
 % dash( ..., 'localize', {w, yloc} )
-% Specifies a covariance localization to use in data assimilation for a 
-% joint update scheme. See the covLocalization.m function.
-%
 % dash( ..., 'serial', true, 'localize', w )
-% Specifies covariance localization weights to use for data assimilation
-% with a serial update scheme. See the covLocalization.m function.
+% Specifies a covariance localization to use in data assimilation for the 
+% joint or serial updating schemes. See the covLocalization.m function.
 %
-% [outArg] = dash( ..., 'output', {outputs} )
-% Specify required outputs. If certain outputs (such as Avar) are not
-% calculated, runtime can greatly increase.
+% dash( ..., 'meanOnly', true )
+% Only calculates the updated ensemble mean for joint updates. May improve
+% runtime if the ensemble mean is the only quantity of interest.
 %
 % ----- Inputs -----
 %
@@ -45,20 +42,12 @@ function[varargout] = dash( M, D, R, F, varargin )
 % inflate: A scalar inflation factor. 
 %
 % w: Model-estimate covariance localization weights. Applied to the Kalman
-%    numerator. (nState x nObs)
+%    numerator. Required for localization in both serial and joint update
+%    schemes. (nState x nObs)
 %
 % yloc: Estimate-estimate covariance localization weights. Applied to the
-%       Kalman denominator. (nObs x nObs)
-%
-% outputs: Flags for possible outputs
-%     'Amean': Updated ensemble mean
-%     'Avar': Updated ensemble variance
-%     'Ye': The ensemble of model estimates at each time step
-%
-%     'Yi': The initial model estimates generated for the appended Ye method
-%     'Yu': The model estimates used for each update step for the appended Ye method.
-%     'Yf': The final model estimates from the appended Ye method. This is
-%           the same value returned as 'Ye' for the appended method.
+%       Kalman denominator. Only required for localization with a joint
+%       update scheme. (nObs x nObs)
 %
 % ----- Outputs -----
 %
@@ -83,11 +72,11 @@ function[varargout] = dash( M, D, R, F, varargin )
 %% Setup 
 
 % Parse inputs
-[serial, append, inflate, localize, output] = parseInputs( varargin, {'serial','append','inflate','localize','output'}, ...
+[serial, append, inflate, localize, meanOnly] = parseInputs( varargin, {'serial','append','inflate','localize','meanOnly'}, ...
                                                            {false, false, 1, [], []}, {[],[],[],[],[]} );
                                         
-% Error check. Get R and w if unspecified.
-[R, w] = setup( M, D, R, F, serial, append, inflate, localize, output );
+% Error check. Get w and yloc if unspecified.
+[w, yloc] = setup( M, D, R, F, inflate, localize, serial, append, meanOnly );
 
 % Apply the inflation factor
 M = inflateEnsemble( inflate, M );
@@ -99,54 +88,40 @@ end
 
 % Run a serial or jointly updating data assimilation
 if serial
-    [A, Ye] = serialDA( M, D, R, F, w );
+    [Amean, Avar, Ye, R, update] = serialENSRF( M, D, R, F, w );
 else
-    [A, Ye] =  jointENSRF( M, D, R, F, w, yloc );
+    [Amean, Avar, Ye, R, update] =  jointENSRF( M, D, R, F, w, yloc, meanOnly );
 end
 
 % Finish for the appened Ye method
 if append
-    [Amean, Avar] = 
-    
-    % Unappend
-    Yf = A(nState+1:end,:,:);
-    A = A(1:nState,:,:);
-    
-    % Get the Y output cell
-    Ye = {Yi, Ye, Yf};
+    [Amean, Avar] = unappendEnsemble( Amean, Avar, numel(F) );
 end
-
-
-% Get outputs
 
 end
 
-function[R, w] = setup( M, D, R, F, inflate, w, append, serial )
-    
-% Get the number of state elements
-nState = size(M,1);
-[nObs, nTime] = size(D,1);
+function[w, yloc] = setup( M, D, R, F, inflate, localize, serial, append, meanOnly )
+
+% Check that M is a matrix of real, numeric value without NaN or Inf
+if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
+    error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
+end
     
 % Check that observations are a matrix of real, numeric values
 if ~ismatrix(D) || ~isreal(D) || ~isnumeric(D) || any(isinf(D(:)))
     error('D must be a matrix of real, numeric, finite values.');
 end
 
-% Convert R to a nObs x nTime matrix
-if isempty(R)
-    R = NaN(nObs, nTime);
-elseif isscalar(R)
-    R = repmat(R, [nObs, nTime]);
-elseif iscolumn(R)
-    R = repmat( R, nTime );
-end
+% Get the number of state elements
+nState = size(M,1);
+[nObs] = size(D,1);
 
 % Check R is real, numeric, finite, and non-negative
 if ~ismatrix(R) || ~isreal(R) || ~isnumeric(R) || any(isinf(R(:)))
     error('R must be a matrix of real, numeric, finite values.');
 elseif any( R(:) < 0 )
     error('R cannot contain negative values.');
-elseif (size(R,1)~=size(D,1) || size(R,2)~=size(D,2))
+elseif size(R,1)~=size(D,1) || size(R,2)~=size(D,2)
     error('The number of rows and columns in R do not match the number in D.');
 end
 
@@ -167,27 +142,67 @@ for k = 1:nObs
     F{k}.reviewPSM;
 end
 
+%% Flags
+
+% Check that the true/false flags are scalar logicals
+flag = {serial, append, meanOnly};
+flagStr = {'serial','append','meanOnly'};
+for f = 1:3
+    if ~isscalar( flag{f} ) || ~islogical( flag{f} )
+        error('The value following the %s flag must be a scalar logical.', flagStr{f} );
+    end 
+end
+
+if ~serial && append
+    error('Cannot use the appended method with joint updates.')
+elseif serial && meanOnly
+    error('The serial update scheme cannot only update the ensemble mean. It must also update the deviations.');
+end
+
+
+%% Inflation
+
 % Inflation factor
 if ~isscalar(inflate) || inflate<=0 || isinf(inflate) || isnan(inflate) || ~isnumeric(inflate)
     error('The inflation factor must be a scalar greater than 0. It must be real, numeric, finite and not NaN.');
 end
 
-% Covariance localization
-if isempty(w)
+
+%% Covariance localization
+
+% Do a default of no localization if unspecified
+if isempty( localize )
     w = ones(nState, nObs);
-elseif ~ismatrix(w) || ~isnumeric(w) || ~isreal(w)
+    yloc = ones(nObs, nObs);
+
+% Otherwise, check everything...
+elseif serial
+    w = localize;
+    yloc = ones(nObs, nObs);
+
+% If not serial, must be a 2 element cell
+else
+    if ~iscell(localize) || numel(localize)~=2
+        error('The input following the "localize" flag must be a cell with 2 elements for joint updates.');
+    end
+    w = localize{1};
+    yloc = localize{2};
+end
+
+% Check that w and yloc are good
+if ~ismatrix(w) || ~isnumeric(w) || ~isreal(w)
     error('w must be a real, numeric matrix.');
 elseif size(w,1) ~= nState
     error('The number of rows in w does not match the number of state elements (i.e. rows of M).');
 elseif size(w,2)~=size(D,1)
     error('The number of columns in w must match the number of rows in D.');
 end
-
-% Append and serial
-if ~isscalar(append) || ~islogical(append)
-    error('append must be a scalar logical.');
-elseif ~isscalar(serial) || ~islogical(serial)
-    error('serial must be a scalar logical.');
+if ~ismatrix(yloc) || ~isnumeric(yloc) || ~isreal(yloc)
+    error('yloc must be a real, numeric matrix.');
+elseif size(yloc,1) ~= nObs
+    error('The number of rows in yloc does not match the number of observations (rows of D).');
+elseif size(yloc,2) ~= nObs
+    error('The number of columns in yloc does not match the number of observations (rows of D).');
 end
 
 end
