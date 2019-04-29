@@ -70,7 +70,7 @@ parfor t = 1:nTime
                 [Ymean, Ydev] = decomposeEnsemble( Ye(d,:,t) );
 
                 % Get the Kalman gain and alpha scaling factor
-                [K, a] = kalmanENSRF( Ad, Ydev, w(:,d), 1, R(d,t) );   %#ok<PFBNS>
+                [K, a] = serialKalman( Ad, Ydev, w(:,d), 1, R(d,t) );   %#ok<PFBNS>
 
                 % Update
                 Am = Am + K*( D(d,t) - Ymean );

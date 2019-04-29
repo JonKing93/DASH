@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye] = jointENSRF( M, D, R, F, w, yloc )
+function[Amean, Avar, Ye, R, update] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
 %% Does data assimilation using the Ensemble square root method (ENSRF).
 % Runs all observations jointly. Does not use serial updates.
 
@@ -30,7 +30,11 @@ clearvars M;
 
 % Preallocate the output
 Amean = NaN(nState, nTime);
-Avar = NaN(nState, nTime);
+
+Avar = [];
+if ~meanOnly
+    Avar = NaN(nState, nTime);
+end
 
 % Calculate the Kalman numerator (this is unchanging for joint updates)
 Knum = jointKalman( 'Knum', Mdev, Ydev, w );
@@ -43,17 +47,21 @@ for t = 1:nTime
     obs = update(:,t);
     
     % Get the full kalman gain and kalman denominator
-    [K, Kdenom] = jointKalman( 'K', Knum, Ydev, yloc, R );
+    [K, Kdenom] = jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) );
     
     % Update the mean
     Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) );
     K = [];   %#ok<NASGU>  (Free up memory)
+
+    % If returning variance
+    if ~meanOnly
     
-    % Get the adjusted kalman gain
-    Ka = jointKalman( 'Ka', Knum, Kdenom, R );
-    
-    % Update the deviations and get the variance
-    Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 );
+        % Get the adjusted kalman gain
+        Ka = jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
+
+        % Update the deviations and get the variance
+        Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 ); %#ok<AGROW>
+    end
 end
 
 end

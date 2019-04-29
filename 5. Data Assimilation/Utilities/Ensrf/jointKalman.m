@@ -29,6 +29,9 @@ elseif strcmp(type, 'K')
     % Get the coefficient for an unbiased estimator
     unbias = 1 / (size(Ydev,2) - 1);
 
+    % Convert R to diagonal matirx
+    R = diag(R);
+
     % Get the kalman denominator
     Kdenom = unbias .* yloc .* (Ydev * Ydev') + R;
     
@@ -42,6 +45,9 @@ elseif strcmp(type, 'K')
 % If getting the adjusted Kalman gain
 elseif strcmp(type, 'Ka')
     [Knum, Kdenom, R] = parseKalman( varargin );
+
+    % Convert R to diagonal matrix
+    R = diag(R);
     
     % Get the adjusted kalman gain
     Ka = Knum * (sqrtm(Kdenom)^(-1))' * (sqrtm(Kdenom) + sqrtm(R))^(-1);
