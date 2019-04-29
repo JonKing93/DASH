@@ -1,4 +1,4 @@
-function[] = checkPSMOutputs( Ye, nEns )
+function[] = checkYeValues( Ye, nEns )
 %% Error checks Ye output from a PSM
 
 % Check that the size is correct
