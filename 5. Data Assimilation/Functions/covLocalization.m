@@ -61,8 +61,18 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % Modified to included variable/optimal length scales by Jonathan King.
 
-% Get the lat-lon metadata for the state elements from the ensemble metadata
-stateCoord = getEnsembleCoords( ensMeta );
+% If ensemble metadata, get the lat-lon metadata
+if isstruct( ensMeta )
+    stateCoord = getEnsembleCoords( ensMeta );
+
+% Otherwise, this is user-generated coordinates. Check the size
+elseif ~ismatrix(ensMeta) || size( ensMeta, 2 ) ~= 2
+    error('User-generated state coordinates must be a matrix with 2 columns.');
+
+% Save user-generated coordinates
+else
+    stateCoord = ensMeta;
+end
 
 % If not specified, set the length scale to 1/2 the localization radius
 if ~exist('scale','var') || isempty(scale)
