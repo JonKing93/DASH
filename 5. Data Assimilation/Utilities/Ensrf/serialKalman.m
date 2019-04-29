@@ -1,4 +1,4 @@
-function[K, Ka] = kalmanENSRF( Mdev, Ydev, R, w, yloc )
+function[K, a] = serialKalman( Mdev, Ydev, w, yloc, R )
 %% Gets the Kalman Gain and alpha for a Kalman Ensemble Square Root Filter
 %
 % [K, a] = kalmanENSRF( Mdev, ydev, r, w, 1 )
@@ -33,9 +33,16 @@ function[K, Ka] = kalmanENSRF( Mdev, Ydev, R, w, yloc )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
+% Determine which parts of the Kalman Gain to calculate
+[getKnum, getK, getKa] = kalmanOptions( w, yloc );
+
 % Get the coefficient for an unbiased estimator
-nEns = size(Mdev,2);
-unbias = 1 / (nEns-1);
+if getKnum || getK
+
+    % Get the coefficient for an unbiased estimator
+    nEns = size(Ydev,2);
+    unbias = 1 / (nEns-1);
+end
 
 % Get the numerator (localized covariance of M with Ye)
 Knum = w .* unbias * (Mdev * Ydev');
@@ -57,3 +64,31 @@ else
 end
 
 end
+
+function[getKnum, getK, getKa] = kalmanOptions( w, yloc )
+
+% By default, get everything. This is the setting for serial updates.
+getKnum = true;
+getK = true;
+getKa = true;
+
+% If neither w nor yloc are specified, this is a joint update that only
+% needs the adjusted gain.
+if isempty(w) && isempty(yloc)
+    getKnum = false;
+    getK = false;
+    
+% If only w is specified, this is a joint update that only needs the kalman
+% numerator
+elseif isempty(yloc)
+    getK = false;
+    getKa = false;
+    
+% If only yloc is specified, this is a joint update that needs the full
+% Kalman gain and kalman denominator.
+elseif isempty(w)
+    getKnum = false;
+    getKa = false;
+end
+
+end    

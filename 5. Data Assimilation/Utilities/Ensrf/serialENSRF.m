@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye] = serialENSRF( M, D, R, F, w )
+function[Amean, Avar, Ye, update] = serialENSRF( M, D, R, F, w )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -42,45 +42,44 @@ Amean = NaN( nState, nTime );
 Avar = NaN( nState, nTime );
 Ye = NaN( nObs, nEns, nTime );
 
+% Preallocate an array to track which PSMs were used to update
+update = false( nObs, nTime );
+
 % Each time step is independent, process in parallel
 parfor t = 1:nTime
-    
-    % Slice variables to minimize parallel overhead.
-    tD = D(:,t);
-    tR = R(:,t);
     
     % Initialize the update for this time step
     Am = Mmean;
     Ad = Mdev;    
     
-    % For each observation that is not a NaN and has an R value
+    % For each observation that is not a NaN
     for d = 1:nObs
-        if ~isnan(tD(d))
+        if ~isnan( D(d,t) )
             
             % Get the model elements to pass to the PSM
-            Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);
+            Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);                   %#ok<PFBNS>
             
             % Run the PSM. Generate R. Error check.
-            [Ye(d,:,t), tR(d), update] = getPSMOutput( F{d}, Mpsm, tR(d), t, d );
+            [Ye(d,:,t), R(d,t), update(d,t)] = getPSMOutput( F{d}, Mpsm, R(d,t), t, d ); %#ok<PFOUS>
             
             % If no errors occured in the PSM, and the R value is valid,
             % update the analysis
-            if update && ~isnan(tR(d))
-
+            if update(d,t)
+                
                 % Decompose the model estimate
                 [Ymean, Ydev] = decomposeEnsemble( Ye(d,:,t) );
 
-                % Get the Kalman gain and alpha
-                [K, a] = kalmanENSRF( Ad, Ydev, tR(d), w(:,d), 1 );                
+                % Get the Kalman gain and alpha scaling factor
+                [K, a] = kalmanENSRF( Ad, Ydev, w(:,d), 1, R(d,t) );   %#ok<PFBNS>
 
                 % Update
-                Am = Am + K*( tD(d) - Ymean );
+                Am = Am + K*( D(d,t) - Ymean );
                 Ad = Ad - (a * K * Ydev);    
             end
         end
-    end   % End serial updates
+    end
     
-    % Record the mean and variance of the analysis.
+    % Record the mean and variance of the final analysis for the time step
     Amean(:,t) = Am;
     Avar(:,t) = var( Ad, 0 ,2 );
 end

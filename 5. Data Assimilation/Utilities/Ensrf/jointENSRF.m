@@ -6,9 +6,10 @@ function[Amean, Avar, Ye] = jointENSRF( M, D, R, F, w, yloc )
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
 
-% Preallocate Ye and a check for PSM success
+% Preallocate Ye and an array to track when the PSM should be used to
+% update the analysis
 Ye = NaN( nObs, nEns );
-update = false(nObs, 1);
+update = false(nObs, nTime);
 
 % For each observation
 for d = 1:nObs
@@ -17,7 +18,7 @@ for d = 1:nObs
     Mpsm = M(F{d}.H, :);
     
     % Run the PSM
-    [Ye(d,:), R(d), update(d)] = getPSMOutput( F{d}, Mpsm, R(d), NaN, d  );
+    [Ye(d,:), R(d,:), update(d,:)] = getPSMOutput( F{d}, Mpsm, R(d,:), NaN, d  );
 end
 
 % Decompose the ensemble
@@ -31,23 +32,27 @@ clearvars M;
 Amean = NaN(nState, nTime);
 Avar = NaN(nState, nTime);
 
-% Do the update in each time step
+% Calculate the Kalman numerator (this is unchanging for joint updates)
+Knum = jointKalman( 'Knum', Mdev, Ydev, w );
+
+% For each time step
 for t = 1:nTime
     
-    % Slice variables
-    tD = D(:,t);
-    tR = R(:,t);
+    % Update using obs that are not NaN
+    update(:,t) = update(:,t) & ~isnan( D(:,t) );
+    obs = update(:,t);
     
-    % Only use obs that are not NaN, have an R value, and successfully ran
-    % the PSM.
-    obs = ~isnan(tD) & ~isnan(tR) & update;
+    % Get the full kalman gain and kalman denominator
+    [K, Kdenom] = jointKalman( 'K', Knum, Ydev, yloc, R );
     
-    % Calculate Kalman gain and adjusted gain.
-    % Must do this each time step to account for variable D and R.
-    [K, Ka] = kalmanENSRF( Mdev, Ydev(obs,:), tR(obs), w(:,obs), yloc(obs,obs) );
+    % Update the mean
+    Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) );
+    K = [];   %#ok<NASGU>  (Free up memory)
     
-    % Update
-    Amean(:,t) = Mmean + K * ( tD(obs) - Ymean(obs) );
+    % Get the adjusted kalman gain
+    Ka = jointKalman( 'Ka', Knum, Kdenom, R );
+    
+    % Update the deviations and get the variance
     Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 );
 end
 
