@@ -17,10 +17,10 @@ elseif any(isnan(Ye))
 elseif any(isinf(Ye))
     error('PSM returned Ye with infinite values.');
 
-% Check if the values are all the same. (This would explode the Kalman Gain
-% to Inf)
+% Check if the values are all the same. (This would explode the Kalman
+% Gain)
 elseif numel(unique(Ye))==1
-    error( 'PSM returned Ye values that are all identical.\n(This would magnify the Kalman Gain to infinity).' );
+    error( 'PSM returned Ye values that are all identical.' );
 end
 
 end

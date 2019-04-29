@@ -43,9 +43,9 @@ try
     end
     
     % Check that the Ye values are valid, throw a useful error message if not
-    checkYeValues( Ye, nEns );
+    checkYeValues( Ye, nEns, d );
     
-    % If the Ye values were valid, update at all the locations where R is
+    % If the Ye values were valid, update at all the time steps where R is
     % also valid
     update( ~isnan(R) ) = true;
     
