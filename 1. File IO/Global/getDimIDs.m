@@ -1,5 +1,7 @@
 function[dimID, specs, varName, lonDim, latDim, levDim, timeDim, runDim, triDim] = getDimIDs
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
+%
+% [dimID, specs, varName, lonDim, latDim, levDim, timeDim, runDim, triDim] = getDimIDs
 
 % Variable specifications.
 specs = "specs";
