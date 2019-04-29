@@ -22,7 +22,7 @@ for d = 1:3
       
     % If the matrix conversion fails, give a useful error
     catch
-        error(['Could not retrieve %s metadata for variable %s.', newline, ...
+        error('DASH:MetadataSpatialMean', ['Could not retrieve %s metadata for variable %s.', newline, ...
             'It might be a spatial mean. (This function does not support spatial means.)'], ...
              dims(d), varName); 
     end
@@ -34,7 +34,7 @@ if all(hasmeta)
 elseif all( ~hasmeta )
     error('Variable %s has neither tripolar nor lat-lon metadata.', varName );
     
-% Meanwhile, lat and lon should have the same value
+% Meanwhile, lat and lon should  both have metadata
 elseif ~all( hasmeta(1:2) ) || ~all( ~hasmeta(1:2) )
     error('Only one of the the lat and lon dimensions of variable %s has metadata.', varName );
 end
