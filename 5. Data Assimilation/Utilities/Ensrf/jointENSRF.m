@@ -42,22 +42,26 @@ Knum = jointKalman( 'Knum', Mdev, Ydev, w );
 % For each time step
 parfor t = 1:nTime
     
+    % Slice variables
+    Rt = R(:,t);
+    Dt = D(:,t);
+    
     % Update using obs that are not NaN
-    update(:,t) = update(:,t) & ~isnan( D(:,t) );
+    update(:,t) = update(:,t) & ~isnan( Dt );
     obs = update(:,t);
     
     % Get the full kalman gain and kalman denominator
-    [K, Kdenom] = jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) ); %#ok<PFBNS>
+    [K, Kdenom] = jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), Rt(obs) ); %#ok<PFBNS>
     
     % Update the mean
-    Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) ); %#ok<PFBNS>
+    Amean(:,t) = Mmean + K * ( Dt(obs) - Ymean(obs) ); %#ok<PFBNS>
     K = [];   %#ok<NASGU>  (Free up memory)
 
     % If returning variance
     if ~meanOnly
     
         % Get the adjusted kalman gain
-        Ka = jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
+        Ka = jointKalman( 'Ka', Knum(:,obs), Kdenom, Rt(obs) );
 
         % Update the deviations and get the variance
         Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 );

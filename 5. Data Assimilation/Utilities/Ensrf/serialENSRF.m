@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye, update] = serialENSRF( M, D, R, F, w )
+function[Amean, Avar, Ye, R, update] = serialENSRF( M, D, R, F, w )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -62,7 +62,7 @@ parfor t = 1:nTime
             Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);                   %#ok<PFBNS>
             
             % Run the PSM. Generate R. Error check.
-            [Ye(d,:,t), R(d,t), update(d,t)] = getPSMOutput( F{d}, Mpsm, R(d,t), t, d ); %#ok<PFOUS>
+            [Ye(d,:,t), R(d,t), update(d,t)] = getPSMOutput( F{d}, Mpsm, R(d,t), t, d );
             
             % If no errors occured in the PSM, and the R value is valid,
             % update the analysis
@@ -72,7 +72,7 @@ parfor t = 1:nTime
                 [Ymean, Ydev] = decomposeEnsemble( Ye(d,:,t) );
 
                 % Get the Kalman gain and alpha scaling factor
-                [K, a] = serialKalman( Ad, Ydev, w(:,d), 1, R(d,t) );   %#ok<PFBNS>
+                [K, a] = serialKalman( Ad, Ydev, w(:,d), 1, R(d,t) );    %#ok<PFBNS>
 
                 % Update
                 Am = Am + K*( D(d,t) - Ymean );
