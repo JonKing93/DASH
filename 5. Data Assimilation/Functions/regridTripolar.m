@@ -9,17 +9,16 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, design, ocnDex, gridSize,
 %
 % ----- Inputs -----
 %
-% A: The mean or variance state vector from a particular time step of an
-%   udpate analysis. (nState x 1)
+% A: A state vector. Typically the updated ensemble mean or variance. (nState x 1)
 %
 % var: The name of a variable. Must be a string.
 %
 % ensMeta: Ensemble metadata
 %
-% design: A state vector design.
+% design: The state vector design for this analysis.
 %
 % ocnDex: A set of logical indices that point to non-nan indices on a
-% tripolar grid. (nTripole x 1)
+% tripolar grid. Typically, the indices of ocean grid nodes. (nTripole x 1)
 %
 % gridSize: size of the original tripolar grid. (2 x 1)
 %
@@ -27,7 +26,9 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, design, ocnDex, gridSize,
 %
 % rA: A regridded analysis for one variable.
 %
-% dimID: The dimensional ordering of the regridded variable.
+% dimID: The dimensional ordering of the regridded variable. Tri1 and tri2
+%        are the first and second dimensions associated with the original
+%        tripolar grid.
 
 % ----- Written by -----
 % Jonathan King, University of Arizona, 2019

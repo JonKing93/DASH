@@ -9,7 +9,8 @@ function[design] = copyIndices( design, fromVar, toVars )
 %
 % design: A state vector design
 %
-% fromVar: The template variable
+% fromVar: The template variable. The indices in the template variable will
+%       be copied into the other variables.
 %
 % toVars: The variables into which indices will be copied.
 %

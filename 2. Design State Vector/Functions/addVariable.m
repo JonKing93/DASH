@@ -13,9 +13,7 @@ function[design] = addVariable( design, file, name, varargin )
 %
 % file: The name of the gridfile containing data for the variable.
 %
-% name: A name for the variable
-%
-% couple: A flag that specifies whether to couple the variable by default.'couple','nocouple'
+% name: A name for the variable. Must be a string.
 %
 % ----- Outputs -----
 %

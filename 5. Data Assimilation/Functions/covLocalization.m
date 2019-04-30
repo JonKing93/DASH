@@ -1,16 +1,22 @@
 function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %% Calculates the weights for covariance localization at a site.
-% 
-% weights = covLocalization( siteCoord, stateCoord, R )
-% Creates a covariance localization with a cutoff radius R. Based on a
-% Gaspari-Cohn function.
 %
-% weights = covLocalization( siteCoord, stateCoord, R, 'optimal')
-% Uses an optimal length scale of sqrt(10/3) for the localization radius
-% based on Lorenc, 2003.
+% [w, yloc] = covLocalization( siteCoord, ensMeta, R )
+% Calculates covariance localization weights based on site coordinates and
+% ensemble metadata. Does not localize spatial means.
 %
-% weights = covLocalization( siteCoord, stateCoord, R, scale)
-% User specified length scale. Scale must be a scalar on the interval (0, 0.5].
+% [w, yloc] = covLocalization( siteCoord, stateCoord, R )
+% Calculates covariance localization weights based on user-defined state
+% vector coordinates.
+%
+% covLocalization( ..., scale )
+% Specifies the length scale to use for the localization weights. This
+% adjusts how quickly localization weights decrease as they approach the
+% cutoff radius. Must be a scalar on the interval (0, 0.5]. Default is 0.5.
+%
+% covLocalization( ..., 'optimal' )
+% Uses the optimal length scale of sqrt(10/3) based on Lorenc, 2003.
+%
 %
 % ***** Explanation of length scales and R
 %
@@ -29,11 +35,15 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % ----- Inputs -----
 % 
-% site: The set of site coordinates, latitude x longitude. (nObs x 2)
+% siteCoord: The set of observation site coordinates. A two-column matrix. First column
+%            is latitude, second is longitude. Supports both 0-360 and 
+%            -180 to 180 longitude coordinates. (nObs x 2)
 %
-% coords: The ensemble metadata, latitude x longitude.
-%         Non-localizable state variables (e.g. spatial means) should use NaN
-%         coordinates to prevent localization.  (nState x 2)
+% ensMeta: A set of ensemble metadata.
+% 
+% stateCoord: A set of user defined state coordinates. A two column matrix:
+%     first column is latitude, second is longitude. Supports both 0-360 and
+%     180 to -180 longitude coordinates.
 %
 % R: The cutoff radius. All covariance outside of this radius will be
 %    eliminated.
@@ -44,7 +54,10 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % ----- Outputs -----
 %
-% weights: The localization weights for each site. (nState x nObs)
+% w: The localization weights between each site and each state vector element. (nState x nObs)
+%
+% yloc: The localization weights between the observations sites. (Required
+%       localization with a joint update scheme. (nObs x nObs)
 
 % ----- Sources -----
 % 
@@ -60,6 +73,13 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 % Arizona, 08 Nov 2018.
 %
 % Modified to included variable/optimal length scales by Jonathan King.
+%
+% Y localization weights by Jonathan King
+
+% Check that the site coordinates are a 2 column matirx
+if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
+    error('Site coordinates must be a two column matrix.');
+end
 
 % If ensemble metadata, get the lat-lon metadata
 if isstruct( ensMeta )

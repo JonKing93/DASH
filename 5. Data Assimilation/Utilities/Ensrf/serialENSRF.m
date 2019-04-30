@@ -22,9 +22,11 @@ function[Amean, Avar, Ye, update] = serialENSRF( M, D, R, F, w )
 %
 % ----- Outputs -----
 %
-% A: The mean and variance of the analysis ensemble. (nState x nTime x 2)
+% Amean: Updated ensemble mean (nState x nTime)
 %
-% Y: The model estimates used for each update. (nObs x nEns x nTime)
+% Avar: Updated ensemble variance (nState x nTime)
+%
+% Ye: Proxy estimates. (nObs x nEns x nTime)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019

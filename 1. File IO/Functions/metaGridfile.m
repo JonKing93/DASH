@@ -9,7 +9,7 @@ function[meta, dimID, gridSize] = metaGridfile( file )
 %
 % ----- Outputs -----
 %
-% meta: The metadata structure for the girdded .mat file.
+% meta: The metadata structure for the gridded .mat file.
 %
 % dimID: The order of the dimensions of the saved gridded data.
 %

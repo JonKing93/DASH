@@ -1,7 +1,18 @@
 function[] = addToEnsemble( file, nNew )
-%% Adds additional ensemble members to a prior model ensemble.
+%% Adds additional ensemble members to a previously built ensemble. Will
+% only select new ensemble members -- does not allow repeat draws.
 %
 % addToEnsemble( file, nNew )
+%
+% ----- Inputs -----
+%
+% file: The name of the .ens file containing the ensemble that should be
+%       given additional ensemble members.
+%
+% nNew: The number of new ensemble members to add.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Error check the file. Get a matfile object
 m = ensFileCheck( file, 'write' );

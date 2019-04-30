@@ -1,15 +1,17 @@
 function[] = buildEnsemble( design, nEns, file )
-%% Builds an ensemble from a state vector design
+%% Builds an ensemble from a state vector design and writes it to a .ens file.
 %
-% buildEnsemble( design, nEns )
-% Builds a prior model ensemble.
-% 
+% buildEnsemble( design, nEns, file )
+% Builds a model ensemble. This is the prior for data assimilation.
 %
 % ----- Inputs -----
 %
 % design: A state vector design
 %
-% nEns: The number of ensemble members
+% nEns: The number of ensemble members desired
+%
+% file: The name of the file into which the model ensemble should be written.
+%       Must end with a ".ens" extension.
 %
 % ----- Outputs -----
 %

@@ -9,19 +9,22 @@ function[rA, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
 %
 % ----- Inputs -----
 %
-% A: The mean or variance state vector from a particular time step of an
-%   udpate analysis. (nState x 1)
+% A: A state vector. Typically, the updated ensemble mean or variance (nState x 1).
 %
 % var: The name of a variable. Must be a string.
 %
-% ensMeta: Ensemble metadata
+% ensMeta: The ensemble metadata
 %
 % design: A state vector design.
 %
 % ----- Outputs -----
+%
 % rA: A regridded analysis for one variable.
 %
-% dimID: The dimensional ordering of the regridded variable.
+% dimID: The order of the dimensions for the regridded variable.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Check for nosqueeze
 nosqueeze = parseInputs( varargin, {'nosqueeze'}, {false}, {'b'} );
