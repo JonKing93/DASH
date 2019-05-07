@@ -18,17 +18,61 @@ classdef biasCorrector
         % the appropriate bias correction.
         function[M] = biasCorrect( obj, M )
             
+            % If there is no bias-correction, just return the ensemble
+            if strcmp( obj.type, 'none' )
+                return;
+                
+            % Otherwise, if a npdft
+            elseif strcmp( obj.type, 'npdft' )
+                
+                
+            end
+            
         end
     end
         
 
-    %% This is the part of the code that implements a Bayesian Joint
-    % Probability (BJP) approach.
-    
+    %% This is the part of the code that implements N-pdft in conjunction
+    % with MVN sampling and BJP parameter estimation
     
     properties
         bjpvars;
     end
+
+    
+    methods
+        
+        % 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    end
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 end
     
