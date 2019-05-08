@@ -2,7 +2,7 @@ function[Xt, Xs, R, normT, normS, X, E, converged] = setupStaticNPDFT( Xt, Xs, t
 %% Gets the initial values required to run a static N-PDFt.
 % This includes the data normalizations and fixed rotation matrices.
 %
-% [Xt, Xs, R, normT, normS] = setupStaticNPDFT( Xt, Xs, tol )
+% [Xt0, Xs0, R, normT, normS] = setupStaticNPDFT( Xt, Xs, tol )
 % Use the Npdft method to map source data from a calibration period to
 % target data from the calibration period. Iterate until the energy
 % distance of the mapping is less than a threshold (tol). Returns values
@@ -26,9 +26,9 @@ function[Xt, Xs, R, normT, normS, X, E, converged] = setupStaticNPDFT( Xt, Xs, t
 %
 % ----- Outputs -----
 %
-% Xt: Standardized target data from the calibration period. (nTarget x nVars)
+% Xt0: Standardized target data from the calibration period. (nTarget x nVars)
 %
-% Xs: Standardized source data from the calibration period. (nSource x nVars)
+% Xs0: Standardized source data from the calibration period. (nSource x nVars)
 %
 % R: The rotation matrices used by the mapping. (nVars x nVars x nIter)
 %

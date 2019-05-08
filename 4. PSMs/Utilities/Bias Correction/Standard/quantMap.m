@@ -1,15 +1,15 @@
 function[X, tau] = quantMap( Xt, Xs )
 %% Quantile mapping
-% Maps a value from a dataset to the value of analogous quantile in a 
-% second dataset.
+% Maps a value from a source dataset to the value of analogous quantile in 
+% a target dataset.
 %
 % [X, tau] = quantMap( Xt, Xs )
 %
 % ----- Inputs -----
 %
-% Xs: A vector containing the source dataset.
-%
 % Xt: A vector containing the target dataset.
+%
+% Xs: A vector containing the source dataset.
 %
 % ----- Outputs -----
 %

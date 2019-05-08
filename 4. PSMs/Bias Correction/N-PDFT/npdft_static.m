@@ -1,4 +1,4 @@
-function[X] = npdft_static( Xd, Xt, Xs, R, normT, normS )
+function[X] = npdft_static( Xd, Xt0, Xs0, R, normT, normS )
 %% This performs a static npdft. Applies the mapping from a prior npdft to
 % bias-correct new values in a deterministic manner.
 %
@@ -18,7 +18,7 @@ function[X] = npdft_static( Xd, Xt, Xs, R, normT, normS )
 % Jonathan King, University of Arizona, 2019
 
 % Error Check
-errCheck( Xt, Xs, Xd )
+errCheck( Xt0, Xs0, Xd )
 
 % Standardize the new data using the normalization from the calibration
 % source data. (The input calibration data are already normalized.)
@@ -26,11 +26,11 @@ Xd = (Xd - normS(1,:)) ./ normS(2,:);
 
 % Concatenate the standardized datasets. This will allow us to do matrix
 % operations with a single line.
-X = [Xt; Xs; Xd];
+X = [Xt0; Xs0; Xd];
 
 % Get indices for each dataset in the concatenated array.
-t = 1:size(Xt,1);
-s = max(t)+1:max(t)+size(Xs,1);
+t = 1:size(Xt0,1);
+s = max(t)+1:max(t)+size(Xs0,1);
 d = max(s)+1:max(s)+size(Xd,1);
 
 % For each iteration

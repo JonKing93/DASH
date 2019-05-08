@@ -1,5 +1,14 @@
 function[E] = estat( x, y )
 %% Computes the E-statistic for two vectors
+%
+% E = estat(x, y)
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
+%
+% ----- References -----
+% Rizzo, M. L., & Székely, G. J. (2016). Energy distance. Wiley 
+% Interdisciplinary Reviews: Computational Statistics, 8(1), 27-38.
 
 % Check for same number of dimensions
 if ~ismatrix(x) || ~ismatrix(y)

@@ -1,13 +1,12 @@
-function[X] = mvnTransform( X, transform, params )
-%% This transforms the columns of a matrix to multivariate normal using
-% various specified transformations. This function is an interface for
-% bias-correction functions in a data assimilation.
+function[X] = invMvnTransform( X, transform, params )
+%% This is an interface that calls the appropriate inverse MVN transformation
+% functions for bias-corrected variables in a data assimilation.
 %
-% Xmvn = mvnTransform( X, transform, params )
+% X = mvnTransformInv( Xmvn, transform, params )
 %
 % ----- Inputs -----
 %
-% X: A data matrix. Each column is a variable (nSample x nVar)
+% Xmvn: A data matrix that has been transformed to multivariate normal. (nSample x nVar)
 %
 % transform: A string vector holding the transformation type for each
 %            variable. (1 x nVar)
@@ -28,15 +27,15 @@ function[X] = mvnTransform( X, transform, params )
 %
 % ----- Outputs -----
 %
-% Xmvn: The transformed data matrix. (nSample x nVar)
+% X: The inversely transformed data matrix. (nSample x nVar)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Error checking. Convert transforms to string array
-transform = errCheck(X, transform, params);
+% Error checking.
+transform = errCheck( X, transform, params );
 
-% For each variable, apply the appropriate transformation
+% For each variable, apply the appropriate inverse transformation
 for v = 1:size(X,2)
     
     % Error check the parameters
@@ -45,7 +44,7 @@ for v = 1:size(X,2)
     % Box-Cox
     if strcmp( transform(v), "boxcox" )
         lambda = params{v}{1};
-        X(:,v) = extBoxCox( X(:,v), lambda );
+        X(:,v) = invExtBoxCox( X(:,v), lambda );
         
     % None
     elseif strcmp( transform(v), "none" )

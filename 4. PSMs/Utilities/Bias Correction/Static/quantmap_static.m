@@ -1,5 +1,12 @@
 function[Xs, Xd] = quantmap_static( Xt, Xs, Xd )
-%% This does a static quantile mapping as efficiently as possible
+%% This does a static quantile mapping. Maps new data to the quantiles
+% established by a calibration period.
+%
+% [Xs, Xd] = quantmap_static(Xt, Xs, Xd)
+%
+% ----- Inputs -----
+%
+% Xt: 
 
 % Check that Xs and Xt are vectors
 if ~isvector(Xs) || ~isvector(Xt) || ~isvector(Xd)
@@ -29,7 +36,7 @@ catch ME
     if strcmp(ME.identifier, 'MATLAB:griddedInterpolant:NonUniqueCompVecsPtsErrId')
 
         % Use the highest tau value for duplicate quantiles
-        [~, uA, uC] = unique(X, 'last');
+        [~, uA, uC] = unique(Xs, 'last');
         tau = tau(uA);
         tau = tau(uC);
         
