@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye, R, update] = dash( M, D, R, F, varargin )
+function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 %% Implements paleo data assimilation
 %
 % [Amean, Avar, Ye, R, update] = dash( M, D, R, F )
@@ -75,7 +75,7 @@ function[Amean, Avar, Ye, R, update] = dash( M, D, R, F, varargin )
 
 % Parse inputs
 [serial, append, inflate, localize, meanOnly] = parseInputs( varargin, {'serial','append','inflate','localize','meanOnly'}, ...
-                                                           {false, false, 1, [], []}, {[],[],[],[],[]} );
+                                                           {false, false, 1, [], false}, {[],[],[],[],[]} );
                                         
 % Error check. Get default inflation and covariance localization if
 % unspecified
@@ -91,9 +91,9 @@ end
 
 % Run a serial or jointly updating data assimilation
 if serial
-    [Amean, Avar, Ye, R, update] = serialENSRF( M, D, R, F, w );
+    [Amean, Avar, Ye, R, update, calib] = serialENSRF( M, D, R, F, w );
 else
-    [Amean, Avar, Ye, R, update] =  jointENSRF( M, D, R, F, w, yloc, meanOnly );
+    [Amean, Avar, Ye, R, update, calib] =  jointENSRF( M, D, R, F, w, yloc, meanOnly );
 end
 
 % Finish for the appened Ye method

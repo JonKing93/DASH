@@ -38,7 +38,7 @@ var = design.var(v);
 
 % Preallocate the grid size
 nDim = numel(var.dimID);
-gridSize = ones(1, nDim);
+gridSize = ones(1, nDim+1);
 
 % Get the number of indices in each dimension
 for d = 1:nDim
@@ -53,11 +53,15 @@ for d = 1:nDim
     end
 end
 
+% Last dimension is DA time steps
+nTime = size(A, 2);
+gridSize(d+1) = nTime;
+
 % Regrid the variable in A
-rA = reshape( A(varDex), gridSize );
+rA = reshape( A(varDex,:), gridSize );
 
 % Get the dimension ordering
-dimID = var.dimID;
+dimID = [var.dimID, "DA Time Steps"];
 
 % If reducing dimensions
 if ~nosqueeze
