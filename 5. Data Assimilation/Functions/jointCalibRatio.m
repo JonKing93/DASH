@@ -1,9 +1,9 @@
-function[cr, Ymean, Yvar, R] = jointCalibRatio( M, D, R, F, inflate )
+function[cr, Ropt, Ymean, Yvar, R] = jointCalibRatio( M, D, R, F, inflate )
 %% Calculates the calibration ratio for joint updates without running a full assimilation.
 %
-% cr = jointCalibRatio( M, D, R, F )
+% [cr, Ropt, Ymean, Yvar, R] = jointCalibRatio( M, D, R, F )
 %
-% cr = jointCalibRatio( M, D, R, F, inflate )
+% [cr, Ropt, Ymean, Yvar, R] = jointCalibRatio( M, D, R, F, inflate )
 
 % Use a default inflation factor if unspecified
 if ~exist( 'inflate', 'var' )
@@ -11,15 +11,18 @@ if ~exist( 'inflate', 'var' )
 end
 
 % Error checking
-errCheck( M, D, R, F, inflate );
+% errCheck( M, D, R, F, inflate );
+
+% Apply the inflation factor
+M = inflateEnsemble( inflate, M );
 
 % Get some sizes
 [nObs, nTime] = size(D);
 
 % Preallocate the calibration ratio, Y mean, Y variance
 cr = NaN( nObs, nTime );
-Ymean = NaN( nTime, 1 );
-Yvar = NaN( nTime, 1 );
+Ymean = NaN( nObs, 1 );
+Yvar = NaN( nObs, 1 );
 
 % For each observation
 for d = 1:nObs
@@ -42,5 +45,8 @@ for d = 1:nObs
     % Get the calibration ratio
     cr(d, update) = ( D(d,update) - Ymean(d) ) ./ ( Yvar(d) + R(d,update) );
 end
+
+% Get the optimal R
+Ropt = calibrateR(D, Ymean, Yvar);
    
 end
