@@ -116,6 +116,9 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
             
             % Review the unit converter
             obj.reviewUnitConversion( obj.H );
+            
+            % Review the specific PSM
+            obj.review
 
 
     end
