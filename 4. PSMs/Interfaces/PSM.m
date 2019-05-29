@@ -104,7 +104,7 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
         
         
         % This is a function to convert units from the DA.
-        function[] = finalizePSM( obj )
+        function[] = reviewPSM( obj )
             
             % Check that the user generated H
             if isempty(obj.H)
@@ -114,8 +114,8 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
             % Error check the bias corrector
             obj.reviewBiasCorrector;
             
-            
-            
+            % Review the unit converter
+            obj.reviewUnitConversion( obj.H );
 
 
     end
