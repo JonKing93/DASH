@@ -12,7 +12,7 @@
 % multiple proxies. (Perhaps the PSM has a high initialization cost.)
 % However, this is an advanced capability and not necessary for typical
 % use.
-classdef (Abstract) PSM < handle & biasCorrector
+classdef (Abstract) PSM < handle & biasCorrector & unitConverter
     
     % Some properties used by the DA to run the PSM
     properties
@@ -44,15 +44,8 @@ classdef (Abstract) PSM < handle & biasCorrector
         % Dash calls this method for each PSM before starting a data
         % assimilation in order to ensure that the user did not forget any
         % steps when building their PSMs.
-
-        M = convertUnits( obj, M );
-        % This method converts the units of the values in the model
-        % ensemble into values that can be used by the PSM to run the
-        % forward model.
-        %
-        % The output is the set of unit-converted values.
         
-        [Ye, R] = runPSM( obj, M, t, d )
+        runForwardModel( obj, M, t, d );
         % This is the function used by dash to actually run a PSM forward
         % model.
         %
@@ -86,6 +79,45 @@ classdef (Abstract) PSM < handle & biasCorrector
         %       write PSMs that do not calculate R. Dash will only require
         %       this output when the user does not specify a value for R at
         %       the beginning of assimilation.
+    end
+    
+    
+    % Here are some concrete methods implemented by the interface. These
+    % ensure that all PSMs automatically convert DA units and apply any
+    % relevant bias correction
+    methods
+        
+        %% This is the line called by dash to run a forward model. It
+        % applies unit conversion and bias correction to PSMs, and then
+        % redirects to the PSMs specific forward model.
+        function[Ye, R] = runPSM( obj, M, t, d )
+            
+            % All PSMs should start by converting units
+            M = obj.convertUnits( M );
+            
+            % They should then apply any bias correction
+            M = obj.biasCorrect( M );
+            
+            % And finally, run the forward model
+            [Ye, R] = obj.runForwardModel( M, t, d );
+        end
+        
+        
+        % This is a function to convert units from the DA.
+        function[] = finalizePSM( obj )
+            
+            % Check that the user generated H
+            if isempty(obj.H)
+                error('The PSM does not have sampling indices, H.');
+            end
+            
+            % Error check the bias corrector
+            obj.reviewBiasCorrector;
+            
+            
+            
+
+
     end
 
 end
