@@ -3,9 +3,9 @@ classdef biasCorrector < handle
     %% This is the interface part of the bias corrector. It allows PSM
     % developers to access any bias correction with a single line of code.
    
-    % The type of bias corrector
+    % The biasType of bias corrector
     properties
-        type = "none";  % Default is no bias-correction
+        biasType = "none";  % Default is no bias-correction
         bias = struct();    % A structure to hold bias-correction args
     end
     
@@ -24,15 +24,19 @@ classdef biasCorrector < handle
         function[M] = biasCorrect( obj, M )
             
             % Just return the ensemble if not bias-correcting
-            if strcmp( obj.type, 'none' )
+            if strcmp( obj.biasType, 'none' )
                 return;
                 
             % Use an npdft scheme if specified
-            elseif strcmp( obj.type, 'mvn-npdft' )
+            elseif strcmp( obj.biasType, 'mvn-npdft' )
                 M = obj.mvnNpdftCorrector( M );
                 
+            % Renormalization
+            elseif strcmp( obj.biasType, 'renorm' )
+                M = obj.renormCorrector( M );
+                
             % A demo for future bias-correction development
-            elseif strcmp( obj.type, 'some other corrector')
+            elseif strcmp( obj.biasType, 'some other corrector')
                 M = obj.someOtherCorrector( M );
                 
             end
@@ -45,15 +49,19 @@ classdef biasCorrector < handle
         function[] = checkBiasCorrector( obj )
             
              % No error checking needed if no bias-correction
-            if strcmp( obj.type, 'none' )
+            if strcmp( obj.biasType, 'none' )
                 return;
                 
             % Check on an mvn-npdft scheme
-            elseif strcmp( obj.type, 'mvn-npdft' )
+            elseif strcmp( obj.biasType, 'mvn-npdft' )
                 obj.checkMvnNpdft;
                 
+            % Error check renormalization
+            elseif strcmp( obj.biasType, 'renorm' )
+                obj.checkRenorm;
+                
             % A demo for future bias-correction development
-            elseif strcmp( obj.type, 'some other corrector' )
+            elseif strcmp( obj.biasType, 'some other corrector' )
                 obj.checkSomeOther;
                 
             end
@@ -62,8 +70,7 @@ classdef biasCorrector < handle
     end
      
 
-    %% This is the part of the code that implements N-pdft
-    
+    %% This is the part of the code that implements N-pdft    
     methods
         
         % This function sets the values needed for a static N-pdft map. It
@@ -88,7 +95,7 @@ classdef biasCorrector < handle
             obj.bias.params = params;
             
             % Specify that the PSM is using an MVN-NPDFT corrector
-            obj.type = "mvn-npdft";
+            obj.biasType = "mvn-npdft";
         end
         
         % This function applies a static npdft mapping.
@@ -121,9 +128,35 @@ classdef biasCorrector < handle
         
     end
     
+    %% This implements a renormalization bias-corrector
+    methods
+        
+        % A function that specifies to use renormalization bias-correction
+        function[] = useRenormCorrector( obj, slope, intercept )
+            obj.bias = struct();
+            obj.bias.slope = slope(:);
+            obj.bias.intercept = intercept(:);
+            obj.biasType = "renorm";
+        end
+        
+        % A function that implements renormalization
+        function[M] = renormCorrector( obj, M )
+            
+            % Apply the multiplicative constant
+            M = M .* obj.bias.slope;
+            
+            % Apply the additive constant
+            M = M + obj.bias.intercept;
+        end
+        
+        % A function to error check renormalization
+        function[] = checkRenorm( obj )
+            % Need to write this
+            % ....
+        end
+    end
     
     %% This part of the code is a demo for bias-corrector developers.
-
     methods
         
         % A function that specifies to use some other bias corrector
@@ -138,10 +171,10 @@ classdef biasCorrector < handle
             obj.bias = struct();
             
             % Save the input arguments
-            obj.bias = inArgs;
+            obj.bias.args = inArgs;
             
             % Specify that the PSM should use some other corrector
-            obj.type = "some other corrector";
+            obj.biasType = "some other corrector";
         end
     
         % A function that implements bias correction for an ensemble

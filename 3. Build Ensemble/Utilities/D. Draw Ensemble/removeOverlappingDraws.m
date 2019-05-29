@@ -43,7 +43,7 @@ end
 
 % Combine the ensemble indices and sequence elements to get the full set of
 % sampling indices
-sampDex = getSamplingIndices( ensDex, seqEls );
+sampDex = getSamplingIndices( ensDex, subSeq );
 
 % Get the indices of repeated sampling indices
 [~, notrepeat] = unique( sampDex, 'rows', 'stable' );
@@ -57,6 +57,6 @@ subDraws( badDraw, : ) = NaN;
 % Move failed draws to the end of the array so that new draws don't
 % eliminate previously successful draws
 failed = ismember( 1:size(subDraws,1), badDraw );
-subDraws = [ subDraws(~failed,:), subDraws(failed,:) ];
+subDraws = [ subDraws(~failed,:); subDraws(failed,:) ];
 
 end

@@ -43,7 +43,7 @@ try
     end
     
     % Check that the Ye values are valid, throw a useful error message if not
-    checkYeValues( Ye, nEns, d );
+    checkYeValues( Ye, nEns );
     
     % If the Ye values were valid, update at all the time steps where R is
     % also valid

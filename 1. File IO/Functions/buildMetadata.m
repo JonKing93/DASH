@@ -70,7 +70,7 @@ for d = 1:nDim
         for k = 1:size(value,1)
             for j = k+1:size(value,1)
                 if isequaln( value(k,:), value(j,:) )
-                    error('Metadata for dimension %s contains duplicate values.', dimID(d) );
+                    error('Metadata for dimension %s contains duplicate values at rows %0.f and %0.f.', dimID(d), k, j );
                 end
             end
         end

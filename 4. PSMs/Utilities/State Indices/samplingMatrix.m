@@ -32,9 +32,7 @@ function[H] = samplingMatrix( siteCoord, stateCoord, indexType )
 %
 % Hvec: A vector of linear sampling indices. (nSite x 1)
 %
-% Hrow: A vector of row sampling indices. (nSite x 1)
-%
-% Hcol: A two column matrix of 2D sampling subscript indices. (nSite x 2)
+% Hsub: A two column matrix of 2D sampling subscript indices. (nSite x 2)
 %
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019

@@ -1,5 +1,19 @@
 function[meta] = ensembleMetadata( design )
 %% Generates the ensemble metadata for an ensemble.
+%
+% meta = ensembleMetadata( design )
+%
+% ----- Inputs -----
+%
+% design: A state vector design
+%
+% ----- Outputs -----
+%
+% meta: The metadata structure for an ensemble built from the state vector
+%       design.
+
+% ----- Written By -----
+% Jonathan King, University of Arizona, 2019
 
 % Get the state indices associated with each variable
 [varDex, varDim] = getVarIndices( design.var );

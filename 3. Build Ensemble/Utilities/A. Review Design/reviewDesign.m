@@ -50,7 +50,7 @@ end
 % Check that coupled variables have the same overlap permission
 coupVars = getCoupledVars( design );
 for cv = 1:numel(coupVars)
-    vars = coupVars{cv};
+    vars = design.var( coupVars{cv} );
     
     for v = 2:numel(vars)
         if vars(1).overlap ~= vars(v).overlap

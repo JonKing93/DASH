@@ -4,13 +4,13 @@ function[sM] = loadChunk( fGrid, var, seqDex, draw, refLoad, keep )
 load = refLoad;
 
 % Get the ensemble dimension indices
-ensDex = find( ~var.isState );
+ensDim = find( ~var.isState );
 
 % For each ensemble dimension.
-for dim = 1:numel(ensDex)
+for dim = 1:numel(ensDim)
     
     % Get the dimension index of the dimension
-    d = ensDex(dim);
+    d = ensDim(dim);
     
     % Get the ensemble index associated with the draw
     ensDex = var.drawDex{d}(draw);

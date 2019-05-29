@@ -25,7 +25,7 @@ classdef appendPSM < PSM
         end
         
         % Run the PSM. Simply return whatever value is input.
-        function[Ye] = runPSM( ~, Ye)
+        function[Ye] = runPSM( ~, Ye, ~, ~)
         end
     end
 end

@@ -40,11 +40,11 @@ transform = errCheck(X, transform, params);
 for v = 1:size(X,2)
     
     % Error check the parameters
-    checkNumParams( transform(v), params(v) );
+    checkNumParams( transform(v), params{v} );
     
     % Box-Cox
     if strcmp( transform(v), "boxcox" )
-        lambda = params{v}{1};
+        lambda = params{v}(1);
         X(:,v) = extBoxCox( X(:,v), lambda );
         
     % None
@@ -66,7 +66,7 @@ if strcmp(transform, "boxcox")
     
 % No transformation
 elseif strcmp(transform, "none") || strcmp(transform, "")
-    if numel(params) > 1 || ~isempty(params{1})
+    if ~isempty(params)
         error('Parameters were specified for a null transformation.');
     end
 end

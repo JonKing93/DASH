@@ -55,8 +55,8 @@ normS = [meanS; stdS];
 [X, E, converged, R] = npdft( Xt, Xs, tol, varargin{:} );
 
 % Warn the user if the method did not converge
-if ~converged
-    warning('The N-PDFT algorithm did not converge.');
-end
+% if ~converged
+%     warning('The N-PDFT algorithm did not converge.');
+% end
 
 end

@@ -7,7 +7,7 @@ coupVars = getCoupledVars( design );
 for cv = 1:numel(coupVars)
     vars = design.var( coupVars{cv} );
     
-    % Initialize the number of draws needed and get the overlap permissino
+    % Initialize the number of draws needed and get the overlap permission
     nDraws = nEns;
     overlap = vars(1).overlap;
     
@@ -49,7 +49,7 @@ for cv = 1:numel(coupVars)
         undrawn( ismember( undrawn, currDraws) ) = [];
 
         % Subscript the draws to N-dimensions.
-        subDraws( nTot-nDraws+1, : ) = subdim( ensSize, currDraws );
+        subDraws( nTot-nDraws+1 : nTot, : ) = subdim( ensSize, currDraws );
         
         % If not allowing overlap, then for each variable...
         if ~overlap

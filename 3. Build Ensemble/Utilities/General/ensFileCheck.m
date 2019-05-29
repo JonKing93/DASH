@@ -19,6 +19,11 @@ end
 if strcmp(type, 'new') && exist( file, 'file' )
     error('The file %s already exists. Use the function "addEnsemble.m" or delete the pre-existing .ens file.', file);
 end
+
+% Existing file should be on path
+if ismember( type, ["add","load"] ) && ~exist(file, 'file')
+    error('The file %s does not exist. It may be mispelled or not on the active path.', file);
+end 
     
 % Load the appropriate type of matfile
 if ismember( type, ["new", "add"] )

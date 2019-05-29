@@ -17,8 +17,9 @@ function[X] = npdft_static( Xd, Xt0, Xs0, R, normT, normS )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Error Check
+% Error Check. Get the number of variables.
 errCheck( Xt0, Xs0, Xd )
+N = size(Xt0,2);
 
 % Standardize the new data using the normalization from the calibration
 % source data. (The input calibration data are already normalized.)
@@ -44,10 +45,10 @@ for j = 1:size(R,3)
         
         % Get a static quantile mapping based on the rotated variables from
         % the calibration period
-        [tauT, tauS] = setupStaticQM( X(t,:), X(s,:), 'stable' );
+        [tauT, tauS] = setupStaticQM( X(t,k), X(s,k), 'stable' );
         
         % Apply the mapping to the new data and calibration source data
-        X([s,d],:) = QM_static( X([s,d],:), X(t,:), tauT, X(s,:), tauS );
+        X([s,d],k) = QM_static( X([s,d],k), X(t,k), tauT, X(s,k), tauS );
     end
     
     % Do the inverse rotation

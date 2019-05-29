@@ -12,12 +12,11 @@
 % multiple proxies. (Perhaps the PSM has a high initialization cost.)
 % However, this is an advanced capability and not necessary for typical
 % use.
-classdef (Abstract) PSM < handle
+classdef (Abstract) PSM < handle & biasCorrector
     
     % Some properties used by the DA to run the PSM
     properties
         H;                     % Sampling indices
-        bias = [];             % A bias correction class. Currently not implemented
     end
     
     % Methods that all proxy system models must implement, but that are

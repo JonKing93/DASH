@@ -65,7 +65,7 @@ if ~isnumeric(gridData)
 end
 
 % Check the grid dimensions
-gridDims = checkDims(gridDims, gridData);
+gridDims = checkGridDims(gridDims, gridData);
 
 % Ensure the metadata has all required fields.
 [dimID, specs] = getDimIDs;

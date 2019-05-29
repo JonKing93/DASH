@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye, R, update] = serialENSRF( M, D, R, F, w )
+function[Amean, Avar, Ye, R, update, calib] = serialENSRF( M, D, R, F, w )
 %% Implements data assimilation using an ensemble square root filter with serial
 % updates for individual observations. Time steps are assumed independent
 % and processed in parallel.
@@ -43,12 +43,12 @@ clearvars M;
 Amean = NaN( nState, nTime );
 Avar = NaN( nState, nTime );
 Ye = NaN( nObs, nEns, nTime );
-
-% Preallocate an array to track which PSMs were used to update
 update = false( nObs, nTime );
+calib = NaN( nObs, nTime );
 
 % Each time step is independent, process in parallel
-parfor t = 1:nTime
+for t = 1:nTime
+    t
     
     % Initialize the update for this time step
     Am = Mmean;
@@ -72,11 +72,14 @@ parfor t = 1:nTime
                 [Ymean, Ydev] = decomposeEnsemble( Ye(d,:,t) );
 
                 % Get the Kalman gain and alpha scaling factor
-                [K, a] = serialKalman( Ad, Ydev, w(:,d), 1, R(d,t) );    %#ok<PFBNS>
-
+                [K, a] = serialKalman( Ad, Ydev, w(:,d), R(d,t) );    %#ok<PFBNS>
+                
                 % Update
                 Am = Am + K*( D(d,t) - Ymean );
                 Ad = Ad - (a * K * Ydev);    
+                
+                % Get the calibration ratio
+                calib(d,t) = ( D(d,t) - Ymean ) ./ ( var(Ye(d,:,t)) + R(d,t) );
             end
         end
     end

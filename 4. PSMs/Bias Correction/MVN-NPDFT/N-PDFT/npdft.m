@@ -44,12 +44,13 @@ function[X, E, converged, R] = npdft( Xt, Xs, tol, nIter )
 % doi: 10.1016/j.cviu.2006.11.011
 
 % Set the number of iterations to infinite if unspecified
-if ~exist( nIter, 'var')
+if ~exist( 'nIter', 'var')
     nIter = Inf;
 end
 
-% Error check. Preallocate output. Get a marker for variable output
-[E, R, saveR] = setup( Xt, Xs, tol, nIter, nargout );
+% Error check. Preallocate output. Get a marker for variable output, and
+% the number of variables.
+[E, R, saveR, N] = setup( Xt, Xs, tol, nIter, nargout );
 
 % Standardize both datasets. Record the mean and standard deviation of the target.
 Xs = zscore(Xs);
@@ -72,7 +73,7 @@ while ~converged
     
     % Save the rotation matrix if desired as output
     if saveR
-        R(:,:,j) = R;
+        Rj(:,:,j) = R;
     end
     
     % Use quantile mapping to map each column of the rotated source data
@@ -85,7 +86,10 @@ while ~converged
     Xs = rXs * R';
     
     % Calculate the energy distance between the target and updated source data
-    E(j) = estat( Xs, Xt );
+%     E(j) = estat( Xs, Xt );
+    
+    % The energy statistic takes a long time to run. Temporarily disabling.
+    E(j) = NaN;
     
     % If the datasets have converged
     if E(j) < tol
@@ -96,7 +100,7 @@ while ~converged
         % Remove any unused iterations from the output
         E = E(1:j);
         if saveR
-            R = R(:,:,1:j);
+            R = Rj(:,:,1:j);
         end
     end
     
@@ -114,7 +118,7 @@ X = Xs .* stdT + meanT;
 
 end
 
-function[E, R, saveR] = setup( Xt, Xs, tol, nIter, nOut )
+function[E, R, saveR, N] = setup( Xt, Xs, tol, nIter, nOut )
 
 % Check that Xs and Xt are matric
 if ~ismatrix(Xs) || ~ismatrix(Xt)

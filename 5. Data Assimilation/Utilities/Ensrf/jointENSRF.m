@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye, R, update] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
+function[Amean, Avar, Ye, R, update, calib] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
 %% Does data assimilation using the Ensemble square root method (ENSRF).
 % Runs all observations jointly. Does not use serial updates.
 
@@ -17,8 +17,11 @@ for d = 1:nObs
     % Get the model values being passed
     Mpsm = M(F{d}.H, :);
     
+    % Get the time steps with observations
+    hasObs = ~isnan( D(d,:) );
+    
     % Run the PSM
-    [Ye(d,:), R(d,:), update(d,:)] = getPSMOutput( F{d}, Mpsm, R(d,:), NaN, d  );
+    [Ye(d,:), R(d,hasObs), update(d,hasObs)] = getPSMOutput( F{d}, Mpsm, R(d,hasObs), NaN, d  );
 end
 
 % Decompose the ensemble
@@ -36,12 +39,16 @@ if ~meanOnly
     Avar = NaN(nState, nTime);
 end
 
+% Preallocate the calibration ratio
+calib = NaN( nObs, nTime );
+
 % Calculate the Kalman numerator (this is unchanging for joint updates)
 Knum = jointKalman( 'Knum', Mdev, Ydev, w );
 
 % For each time step
-parfor t = 1:nTime
+for t = 1:nTime
     
+    t
     % Slice variables
     Rt = R(:,t);
     Dt = D(:,t);
@@ -56,6 +63,9 @@ parfor t = 1:nTime
     % Update the mean
     Amean(:,t) = Mmean + K * ( Dt(obs) - Ymean(obs) ); %#ok<PFBNS>
     K = [];   %#ok<NASGU>  (Free up memory)
+    
+    % Get the calibration ratio
+    calib( obs, t ) = abs( Dt(obs) - Ymean(obs) ) ./ ( diag(Kdenom) );
 
     % If returning variance
     if ~meanOnly
@@ -63,8 +73,9 @@ parfor t = 1:nTime
         % Get the adjusted kalman gain
         Ka = jointKalman( 'Ka', Knum(:,obs), Kdenom, Rt(obs) );
 
-        % Update the deviations and get the variance
-        Avar(:,t) = var(   Mdev - Ka * Ydev(obs,:),   0, 2 );
+        % Update the deviations and get the variance.
+        Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
+%         Avar(:,t) = var( Mdev - Ka * Ydev(obs,:), [], 2);
     end
 end
 

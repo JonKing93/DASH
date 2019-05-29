@@ -1,10 +1,10 @@
-function[rA, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
+function[rA, meta, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
 %% Regrids a variable from a particular time step for a DA analysis.
 %
-% [rA, dimID] = regridAnalysis( A, var, ensMeta, design )
+% [rA, meta, dimID] = regridAnalysis( A, var, ensMeta, design )
 % Regrids a variable from output. Removes any singleton dimensions.
 %
-% [rA, dimID] = regridAnalysis( A, var, ensMeta, design, 'nosqueeze' )
+% [rA, meta, dimID] = regridAnalysis( A, var, ensMeta, design, 'nosqueeze' )
 % Preserves all singleton dimensions.
 %
 % ----- Inputs -----
@@ -21,6 +21,8 @@ function[rA, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
 %
 % rA: A regridded analysis for one variable.
 %
+% meta: Metadata associated with each element of the regridded data.
+%
 % dimID: The order of the dimensions for the regridded variable.
 
 % ----- Written By -----
@@ -36,20 +38,36 @@ varDex = varCheck(ensMeta, var);
 v = checkDesignVar(design, var);
 var = design.var(v);
 
-% Preallocate the grid size
+% Preallocate the grid size and metadata
 nDim = numel(var.dimID);
 gridSize = ones(1, nDim+1);
+meta = struct();
 
-% Get the number of indices in each dimension
+% For each grid dimension
 for d = 1:nDim
     
-    % State dimensions without a mean
-    if var.isState(d) && ~var.takeMean(d)
-        gridSize(d) = numel(var.indices{d});
+    %  Get the name of the dimension
+    dim = var.dimID(d);
+    
+    % If a state dimension
+    if var.isState(d)
         
-    % Ensemble dimensions
-    elseif ~var.isState(d)
-        gridSize(d) = numel(var.seqDex{d});
+        % Get the metadata
+        meta.(dim) = var.meta.(dim)( var.indices{d}, : );
+        
+        % Get the size if not a mean
+        if ~var.takeMean(d)
+            gridSize(d) = numel( var.indices{d} );
+        end
+        
+    % Otherwise, if an ensemble dimension
+    else
+        
+        % Get the metadata
+        meta.(dim) = var.ensMeta{d};
+        
+        % Get the size
+        gridSize(d) = numel( var.seqDex{d} );
     end
 end
 
@@ -61,13 +79,19 @@ gridSize(d+1) = nTime;
 rA = reshape( A(varDex,:), gridSize );
 
 % Get the dimension ordering
-dimID = [var.dimID, "DA Time Steps"];
+dimID = [var.dimID, "DA_Time_Steps"];
+
+% Add in metadata for the DA time steps
+meta.(dimID(end)) = (1:gridSize(end))';
 
 % If reducing dimensions
 if ~nosqueeze
     
     % Get the singular dimensions
     singDim = size(rA)==1;
+    
+    % Remove their metadata
+    meta = rmfield( meta, dimID(singDim) );
     
     % Remove their dimIDs
     dimID(singDim) = [];

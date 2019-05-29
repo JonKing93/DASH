@@ -67,10 +67,12 @@ classdef bilinearPSM < PSM
                 error('State indices were not generated.');
             end
             
-            if isempty(obj.addUnit) || isempty(obj.multUnit) || isempty(obj.slope) || isempty(obj.intercept)
+            if isempty(obj.addUnit) || isempty(obj.multUnit) || isempty(obj.slope1) || isempty(obj.slope2) || isempty(obj.intercept)
                 error('This PSM has properties with no associated values.');
-            elseif isnan(obj.addUnit) || isnan(obj.multUnit) || isnan(obj.slope) || isnan(obj.intercept)
+            elseif any(isnan(obj.addUnit)) || any(isnan(obj.multUnit)) || isnan(obj.slope1) || isnan(obj.slope2) || isnan(obj.intercept)
                 error('This PSM has properties with NaN elements.');
+            elseif numel(obj.addUnit)~=numel(obj.H) || numel(obj.multUnit)~=numel(obj.H)
+                error('addUnit and multUnit must have exactly one element for each state index.');
             end
         end
             

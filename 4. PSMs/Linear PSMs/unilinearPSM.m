@@ -51,8 +51,12 @@ classdef unilinearPSM < PSM
             
             if isempty(obj.addUnit) || isempty(obj.multUnit) || isempty(obj.slope) || isempty(obj.intercept)
                 error('This PSM has properties with no associated values.');
-            elseif isnan(obj.addUnit) || isnan(obj.multUnit) || isnan(obj.slope) || isnan(obj.intercept)
+            elseif any(isnan(obj.addUnit)) || any(isnan(obj.multUnit)) || isnan(obj.slope) || isnan(obj.intercept)
                 error('This PSM has properties with NaN elements.');
+            end
+            
+            if numel(obj.addUnit)~= numel(obj.H) || numel(obj.multUnit)~= numel(obj.H)
+                error('addUnit and multUnit must have exactly one element for each state index.');
             end
         end
         

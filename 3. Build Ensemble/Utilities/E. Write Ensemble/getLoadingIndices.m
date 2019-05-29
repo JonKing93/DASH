@@ -40,7 +40,8 @@ for d = 1:numel(var.dimID)
         
         % Only keep points on this interval that are associated with
         % sampling indices.
-        keepDex{d} = find( ismember( loadDex{d}, interval ) );
+        [~, locb] = ismember( interval, loadDex{d} );
+        keepDex{d} = find( logical( locb ) );
         
         % Load everything on the interval between the indices
         loadDex{d} = interval;

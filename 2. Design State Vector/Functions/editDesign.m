@@ -23,8 +23,9 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 % design = editDesign( design, var, dim, 'ens', ..., 'index', ensIndex )
 % Specifies the ensemble indices.
 %
-% design = editDesign( design, var, dim, 'ens', ..., 'seq', seqIndex )
-% Specifies the sequence indices to use for an ensemble dimension.
+% design = editDesign( design, var, dim, 'ens', ..., 'seq', seqIndex, 'meta', ensMeta )
+% Specifies the sequence indices and associated metadata to use for an 
+% ensemble dimension.
 %
 % design = editDesign( design, var, dim, 'ens', ..., 'mean', meanIndex )
 % Specifies the mean indices to use for an ensemble dimension.
@@ -52,6 +53,9 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 %
 % seqIndex: A list of sequence indices. These are the number of indices to
 %      add to a reference ensemble index to obtain a sequence element.
+%
+% ensMeta: Metadata associated with each sequence element. Must have one
+%          row for each sequence element.
 %
 % meanIndex: A list of mean indices. These are the indices from each
 %       sequence element over which to take a mean. Must include the 0 index.
@@ -102,7 +106,7 @@ elseif strcmpi(dimType, 'ens')
 
 % Error
 else
-    error('Unrecognized dimension type.');
+    error('The dimension type must be either ''state'' or ''ens''.');
 end
 
 end

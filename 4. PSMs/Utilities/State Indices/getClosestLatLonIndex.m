@@ -9,7 +9,7 @@ restrict = cell( nDim, 1 );
 empty = repmat( {[]}, [nDim, 1] );
 
 % Get the restriction values for each dimension
-restrict{:} = parseInputs( varargin, dimID, empty, empty );
+[restrict{:}] = parseInputs( varargin, cellstr(dimID), empty, empty );
 
 % Preallocate which dimensions have restriction metadata, and the number of
 % metadata elements for the dimensions.
@@ -84,10 +84,10 @@ for v = 1:nVar
         end
         
         % Determine the closest lat-lon value
-        site = samplingMatrix( coord, latlon(stateDex,:), 'linear' );
+        site = samplingMatrix( coord, latlon, 'linear' );
         
         % Get the location within the entire state vector
-        H( (v-1*nDex) + s ) = stateDex( site );
+        H( (v-1)*nDex + s ) = stateDex( site );
     end
 end
 

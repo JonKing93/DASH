@@ -29,7 +29,7 @@ if nargout<3
     
 % If also returning variance
 elseif nargout==3
-    Xvar = var(X, 0, 2);
+    Xvar = sum( Xdev.^2, 2 ) ./ (size(X,2)-1);
     varargout = {Xmean, Xdev, Xvar};
 end
 
