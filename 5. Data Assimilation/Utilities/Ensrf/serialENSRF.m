@@ -86,7 +86,7 @@ for t = 1:nTime
     
     % Record the mean and variance of the final analysis for the time step
     Amean(:,t) = Am;
-    Avar(:,t) = var( Ad, 0 ,2 );
+    Avar(:,t) = sum( Ad.^2, 2 ) ./ (nEns - 1);
 end
 
 end
