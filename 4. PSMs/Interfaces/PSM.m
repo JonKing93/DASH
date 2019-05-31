@@ -12,6 +12,9 @@
 % multiple proxies. (Perhaps the PSM has a high initialization cost.)
 % However, this is an advanced capability and not necessary for typical
 % use.
+%
+% The PSM interface also has biasCorrector and unitCorrector plugins. These
+% introduce some functionality available to all PSMs.
 classdef (Abstract) PSM < handle & biasCorrector & unitConverter
     
     % Some properties used by the DA to run the PSM
@@ -89,7 +92,7 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
         
         %% This is the line called by dash to run a forward model. It
         % applies unit conversion and bias correction to PSMs, and then
-        % redirects to the PSMs specific forward model.
+        % redirects to the PSM's specific forward model.
         function[Ye, R] = runPSM( obj, M, t, d )
             
             % All PSMs should start by converting units
@@ -102,7 +105,7 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
             [Ye, R] = obj.runForwardModel( M, t, d );
         end
         
-        % This is a function to convert units from the DA.
+        % This error checks the PSM before running a data assimilation.
         function[] = reviewPSM( obj )
             
             % Check that the user generated H
