@@ -32,7 +32,6 @@ classdef myPSM < PSM
     properties
         
         coordinates;     % Site coordinates (Used to select optimal sites from the state vector)
-        unitConversion;  % Unit conversions (from the units of the model prior to the units of the PSM)
         
         myProp1;   % Some properties needed to run a myPSM
         myProp2;
@@ -57,7 +56,7 @@ classdef myPSM < PSM
         % responsible for actually creating and initializing each instance
         % of a myPSM. It returns a single output (traditionally named "obj"
         % (for "object"), which is the specific instance of a myPSM.
-        function obj = myPSM( coord, units, propVal1, input4, varargin )
+        function obj = myPSM( coord, propVal1, input4, varargin )
             
             % The primary responsibility of the constructor method is to
             % intialize all the properties for the PSM. Let's do that now
@@ -66,7 +65,6 @@ classdef myPSM < PSM
             % change the value in a property. This is very similar to a
             % "struct" object (a structure).
             obj.coordinates = coord;
-            obj.unitConversion = units;
             obj.myProp1 = propVal1;
             
             % Get the value of myProp2, which requires some additional
@@ -102,7 +100,7 @@ classdef myPSM < PSM
         % "myPSM" (using the constructor), and then call the function using
         % dot indexing, so
         %
-        % >> A = myPSM( coord, unit, propVal1, input4 )
+        % >> A = myPSM( coord, propVal1, input4 )
         % >> A.myMethod( input1, input2, input3)
         %
         % Looking at the function line, we can see that there is a fourth
@@ -176,7 +174,7 @@ classdef myPSM < PSM
         
         
         
-        % REVIEW PSM
+        % ERROR CHECK PSM
         %
         % This is a method required by the PSM interface. It is used to
         % error check a PSM and ensure that it is ready for data
@@ -185,12 +183,7 @@ classdef myPSM < PSM
         % You shouldn't change the inputs to this method because it is
         % built in to the data assimilation code with no input (excepting
         % "obj")
-        function[] = reviewPSM( obj )
-        
-            % You should always check that you generatred the state indices
-            if isempty( obj.H )
-                error('You forgot to get the state indices!.');
-            end
+        function[] = errorCheckPSM( obj )
             
             % Do error checking on values specific to the PSM
             if obj.propVal1 < 0
@@ -206,47 +199,7 @@ classdef myPSM < PSM
             
             
         
-        % UNIT CONVERTER
-        %
-        % This is one of the methods required by the PSM interface. This
-        % method takes the values sampled from the ensemble, and converts
-        % their units to values that the PSM is expecting.
-        %
-        % It has two inputs, the automatic "obj", and M. Here M represents
-        % the part of the model ensemble that is at the state indices. It
-        % has a row for each sampling index in "H", and a column for each
-        % ensemble member. So each row is a specific variable. 
-        %
-        % You can use different inputs and outputs if that is useful. This
-        % function is intended to be used in the first line of the "runPSM"
-        % method, so the design of "convertUnits" is up to the author of
-        % the PSM. Feel free to get creative
-        %
-        % Note that this method has an output. This is because the model
-        % ensemble is very big and it would be silly to try and store it in
-        % the PSM. So there is no "M" property in the "myPSM", and we will
-        % need to return the output of this method.
-        function[M] = convertUnits( obj, M )
-            
-            % A suggested way to run "convertUnits" is with the use of a
-            % "convertUnits" property.
-            
-            % So, say the myPSM has state indices as mentioned in the
-            % example above, such that:
-            % 
-            % >> obj.H = [T-June, T-July, T-Aug, P-June, P-July, P-Aug]
-            
-            % Then we could store unit conversions in the "unitConversion"
-            % property and run this method via
-            convertTemp = obj.unitConversion(1:3);
-            convertPrecip = obj.unitConversion(4:6);
-            
-            M(1:3, :) = M(1:3,:) + convertTemp;
-            M(4:6, :) = M(4:6,:) .* convertPrecip;
-        end
-            
-        
-        % RUN PSM
+        % RUN FORWARD MODEL
         %
         % This is the final method required by the PSM interface. It 
         % does the heavy lifting of actually running a PSM. It has two
@@ -271,7 +224,7 @@ classdef myPSM < PSM
         % Using the "t" input is also
         % uncommon, but could be necessary if your PSM is time dependent.
         % For example, if you wanted to incorporate the effects of
-        % evolution on a calibration curve over time, you may wish to know
+        % evolution on a biological calibration curve over time, you may wish to know
         % the current time step in order to select the appropriate curve.
         %
         % Overwhelmingly, most PSMs should only need the "M" input, so that
@@ -281,15 +234,7 @@ classdef myPSM < PSM
         % placeholder for inputs that we don't need for our function.
         function[Ye, R] = runPSM( obj, M, ~, ~ )
             
-            % The following is a suggested setup for runPSM
-            
-            % Convert units
-            M = obj.convertUnits( M );
-            
-            % Bias correct
-            M = myBiasCorrection( M );
-            
-            % Run the PSM forward model
+            % Run the PSM forward model via some function.
             [Ye, R] = myForwardModel( M );
         end
     end
