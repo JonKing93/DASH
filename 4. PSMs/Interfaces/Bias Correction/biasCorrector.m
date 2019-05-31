@@ -46,7 +46,7 @@ classdef biasCorrector < handle
         % access the appropriate error checking for a bias-correction
         % method. It is a switch interface that routes the saved bias
         % correction arguments to the appropriate error checker.
-        function[] = checkBiasCorrector( obj )
+        function[] = reviewBiasCorrector( obj )
             
              % No error checking needed if no bias-correction
             if strcmp( obj.biasType, 'none' )
@@ -64,6 +64,8 @@ classdef biasCorrector < handle
             elseif strcmp( obj.biasType, 'some other corrector' )
                 obj.checkSomeOther;
                 
+            else
+                error('Unrecognzied bias-corrector.');
             end
         end
         

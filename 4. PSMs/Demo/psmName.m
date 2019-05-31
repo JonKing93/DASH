@@ -4,7 +4,6 @@ classdef psmName < PSM
     
     properties
         coords;  % Site coordinates
-        unitConvert;  % Unit conversion
         
         someProp;    % another properties
         default_100 = 100;   % Property with default value
@@ -13,9 +12,8 @@ classdef psmName < PSM
     methods
         
         %% Constructor
-        function obj = psmName( coord, unit, prop, varargin )
+        function obj = psmName( coord, prop, varargin )
             obj.coords = coord;
-            obj.unitConvert = unit;
             obj.someProp = prop;
             
             % Change values of default
@@ -30,15 +28,8 @@ classdef psmName < PSM
         end
         
         %% Review PSM
-        function[] = reviewPSM( obj )
-            
-            % Check for sampling indices
-            if isempty(obj.H)
-                error('Need to generate sampling indices.');
-            end
-            
-            %%%%%  Insert Error checking here %%%%%
-            
+        function[] = errorCheckPSM( obj )
+                        
             % Some error checking examples
             if obj.coord(1) < -90 || obj.coord(1) > 90
                 error('Latitude must be on [-90 90]');
@@ -47,27 +38,13 @@ classdef psmName < PSM
                 error('someProp cannot be NaN');
             end
             
-            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         end
             
-        
-        %% Unit conversion
-        function[M] = convertUnits( obj, M )
-            
-            % Additive
-            M = M + obj.unitConvert;
-            
-            % Multiplicative
-            M = M .* obj.unitConvert;
-            
-            % More complex
-            M = someFunction( M, obj.unitConvert );
-            
-        end
+       
         
          
         %% Run the PSM
-        function[Ye, R] = runPSM( obj, M, ~, ~ )
+        function[Ye, R] = runForwardModel( obj, M, ~, ~ )
             
             % Convert units
             M = obj.convertUnits( M );

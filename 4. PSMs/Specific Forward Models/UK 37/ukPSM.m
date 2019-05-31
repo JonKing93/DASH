@@ -9,16 +9,11 @@
 % obj = ukPSM( ..., 'bayesFile', file )
 % Uses a non-default bayes posterior file.
 %
-% obj = ukPSM( ..., 'convertT', convertT )
-% Specifies a value to ADD to DA T values to convert to Celsius.
-%
 % ----- Inputs -----
 %
 % obCoord: [lat, lon] coordinate of an observation.
 %
 % bayesFile: The name of a bayes posterior file.
-%
-% convertT: A value to ADD to DA temperatures to convert to Celsius.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % STATE INDICES:
@@ -26,10 +21,9 @@
 % getStateIndices( ensMeta, sstName )
 % Gets state indices needed to run the PSM.
 %
-% getStateIndices( ..., 'lev', lev)
-% getStateIndices( ..., 'time', time)
-% Further restricts state indices to specific time or lev points.
-% (For SST variables with multiple levels or a time sequence.)
+% getStateIndices( ..., dimName, dimPoints)
+% Further restricts state indices to specific dimensional indices. See
+% getClosestLatLonIndex.m for details.
 %
 % ----- Inputs -----
 %
@@ -37,9 +31,10 @@
 %
 % sstName: The name of the SST variable
 %
-% time: A time metadata value from which indices should be selected.
+% dimName: A dimension name, a string.
 %
-% lev: A lev metadata values from which indices should be selected.
+% dimPoints: The metadata associated with the specific dimensional points.
+%            Each row is treated as one point of metadata.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -76,13 +71,6 @@ classdef ukPSM < PSM
         % These are the lat-lon coordinates of a particular proxy site.
         % Longitude can be in either 0-360 or -180-180, either is fine.
         
-        convertSST;
-        % This is the temperature conversion that converts SSTs from the
-        % model ensemble (in any particular unit), to Celsius -- the units
-        % required for the forward model.
-        %
-        % (Currently only supports conversions from Celsius or Kelvin,
-        % Farenheit is not supported.)
     end
     
     %% The methods are the functions that each individual instance of a
@@ -93,19 +81,21 @@ classdef ukPSM < PSM
         % Constructor. This creates an instance of a PSM
         function obj = ukPSM( coord, varargin )
             % Get optional inputs
-            [file, convertT] = parseInputs(varargin, {'bayesFile','convertT'}, {[],0}, {[],[]});
+            [file] = parseInputs(varargin, {'bayesFile'}, {[]}, {[]});
             
             % Get the file containing the posterior
             if ~isempty(file)
+                if ~exist(file, 'file')
+                    error('The specified bayes file cannot be found. It may be misspelled or not on the active path.');
+                end
                 obj.bayesFile = file;
             end
             
             % Load the posterior
             obj.bayes = load( obj.bayesFile );
             
-            % Set the coordinates and temperature conversion
+            % Set the coordinates
             obj.coord = coord;
-            obj.convertT = convertT;
         end  
         
         
@@ -114,8 +104,8 @@ classdef ukPSM < PSM
         % This determines the indices of elements in a state vector that
         % should be used to run the forward model for a particular uk37
         % site.
-        function[] = getStateIndices( obj, ensMeta, sstName ) 
-            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName );
+        function[] = getStateIndices( obj, ensMeta, sstName, varargin ) 
+            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, varargin{:} );
         end
         
         
@@ -123,12 +113,7 @@ classdef ukPSM < PSM
         %
         % This error check an instance of a ukPSM to ensure that it is
         % ready to be used wth dash.
-        function[] = reviewPSM( obj )
-            
-            % Check that H was set
-            if isempty(obj.H)
-                error('Did not set the state indices (H)');
-            end
+        function[] = errorCheckPSM( obj )
             
             % This forward model only needs 1 variable - SST at the closest
             % site. So check that H is a scalar
@@ -136,28 +121,15 @@ classdef ukPSM < PSM
                 error('H must be a scalar.');
             end
             
-            % Check that the bayes file and unit conversion exist
+            % Check that the bayesian parameters exist
             if isempty(obj.bayes)
                 error('The "bayes" property is empty.');
-            elseif isempty( obj.convertSST )
-                error('The "convertSST" property is empty.');
-            elseif ~isscalar( obj.convertSST )
-                error('The "convertSST" property should be a scalar.');
-            end 
+            end
         end        
         
         
-        % This converts units to celsius.
-        function[SST] = convertUnits( obj, SST )
-            SST = SST + obj.convertSST;
-        end
-        
-        
         % This gets the model estimates by running the UK37 forward model.
-        function[uk,R] = runPSM( obj, SST, ~, ~ )
-            
-            % Convert T to Celsius
-            SST = obj.convertUnits( SST );
+        function[uk,R] = runForwardModel( obj, SST, ~, ~ )
             
             % Run the forward model. Output is 1500 possible estimates for
             % each ensemble member (1500 x nEns)

@@ -15,9 +15,6 @@ classdef vslitePSM < PSM
         intwindow;
         lbparams;
         hydroclim;
-        
-        addUnit;
-        multUnit;
     end
     
     
@@ -27,9 +24,9 @@ classdef vslitePSM < PSM
         function obj = vslitePSM( coord, T1, T2, M1, M2, Tclim, varargin )
             
             % Parse inputs
-            [intwindow, lbparams, hydroclim, addUnit, multUnit] = ...
-                parseInputs( varargin, {'lbparams','hydroclim','intwindow','addUnit','multUnit'}, ...
-                {[],[],[],0,1}, {[],{'P','M'},[],[],[]} );
+            [intwindow, lbparams, hydroclim] = ...
+                parseInputs( varargin, {'lbparams','hydroclim','intwindow'}, ...
+                {[],[],[]}, {[],{'P','M'},[]} );
             
             % Defaults
             obj.intwindow = {};
@@ -56,8 +53,6 @@ classdef vslitePSM < PSM
             obj.M1 = M1;
             obj.M2 = M2;
             obj.Tclim = Tclim;
-            obj.addUnit = addUnit;
-            obj.multUnit = multUnit;
         end
         
         % State indices
@@ -76,23 +71,12 @@ classdef vslitePSM < PSM
         end
         
         % Error Checking
-        function[] = reviewPSM(obj)
-        end
-        
-        % Convert Units
-        function[M] = convertUnits( obj, M )
-            M = M + obj.addUnit;
-            M = M .* obj.multUnit;
+        function[] = errorCheckPSM(obj)
+            warning('VS-Lite PSMs have no error checking!!!');
         end
         
         % Run the PSM
-        function[Ye] = runPSM( obj, M, ~, ~ )
-            
-            % Convert units
-            M = obj.convertUnits( M );
-            
-            % Bias correct
-            M = obj.biasCorrect( M );
+        function[Ye] = runForwardModel( obj, M, ~, ~ )
             
             % Split the state vector into T and P
             T = M(1:12,:);

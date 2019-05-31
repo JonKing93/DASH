@@ -16,16 +16,13 @@ classdef appendPSM < PSM
             obj.H = H;
         end
         
-        % Placeholder review PSM method.
-        function[] = reviewPSM(~)
+        % Placeholder error check PSM method.
+        function[] = errorCheckPSM(~)
         end
         
-        % Placeholder convertUnits method
-        function[] = convertUnits(~)
-        end
-        
-        % Run the PSM. Simply return whatever value is input.
-        function[Ye] = runPSM( ~, Ye, ~, ~)
+        % Run the PSM. Simply return whatever value is input. Just a
+        % placeholder.
+        function[Ye] = runForwardModel( ~, Ye, ~, ~)
         end
     end
 end
