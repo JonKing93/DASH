@@ -17,7 +17,7 @@ classdef unitConverter < handle
         function obj = unitConverter()
         end
         
-        % Convert units
+        % Convert units within a DA
         function[M] = convertUnits( obj, M )
             M = M + obj.addUnit;
             M = M .* obj.multUnit;
@@ -52,5 +52,29 @@ classdef unitConverter < handle
                 error('multUnit must be a vector 1 element per sampling index (%0.f)'
             end
         end
+        
+        % Set the values of addUnit and multUnit
+        function[] = setUnitConversion( obj, varargin )
+            
+            % Parse the inputs
+            [add, mult] = parseInputs( varargin, {'add', 'times'}, {[],[]}, {[],[]} );
+            
+            % Error check the values
+            if ~isempty(add) && ( ~isvector(add) || ~isnumeric(add) )
+                error('The additive unit conversion values must be a numeric vector.');
+            end
+            if ~isempty(mult) && (~isvector(mult) || ~isnumeric(mult))
+                error('The multiplicative unit conversion values must be a numeric vector.');
+            end
+            
+            % Convert to column
+            add = add(:);
+            mult = mult(:);
+            
+            % Set the values
+            obj.addUnit = add;
+            obj.multUnit = mult;
+        end
+            
     end
 end
