@@ -8,9 +8,6 @@ classdef vstempPSM < PSM
         T2;
         
         intwindowArg = {};
-        
-        addUnit;
-        multUnit;
     end
     
     methods
@@ -18,8 +15,7 @@ classdef vstempPSM < PSM
         % Constructor
         function obj = vstempPSM( lat, lon, T1, T2, varargin )
             
-            [intwindow, addUnit, multUnit] = parseInputs( varargin, {'intwindow','addUnit','multUnit'}, ...
-                                                          {[], zeros(12,1), ones(12,1)}, {[], [] []} );
+            [intwindow] = parseInputs( varargin, {'intwindow'}, {[]}, {[]} );
                                                       
             % Advanced parameters
             if ~isempty(intwindow)
@@ -31,9 +27,8 @@ classdef vstempPSM < PSM
             obj.lon = lon;
             obj.T1 = T1;
             obj.T2 = T2;
-            obj.addUnit = addUnit;
-            obj.multUnit = multUnit;
         end
+       
         
         % State indices
         function[] = getStateIndices( obj, ensMeta, Tname, monthNames, varargin )
@@ -45,25 +40,23 @@ classdef vstempPSM < PSM
             obj.H = getClosestLatLonIndex( [obj.lat, obj.lon], ensMeta, ...
                                            Tname, timeID, monthNames, varargin{:} );
         end
+
         
         % Error Checking
-        function[] = reviewPSM(obj)
+        function[] = errorCheckPSM(obj)
+            if ~isnumeric(obj.lat) || ~isnumeric(obj.T1) || ~isnumeric(obj.T2) || ...
+               ~isscalar(obj.lat) || ~isscalar(obj.T1) || ~isscalar(obj.T2)
+                error('lat, T1, and T2 must all be numeric scalars.');
+            elseif obj.lat > 90 || obj.lat < -90
+                error('The latitude of the PSM must be on the interval [-90 90].');
+            elseif obj.T2 < obj.T1
+                error('T2 must be greater than T1.');
+            end
         end
         
-        % Convert Units
-        function[M] = convertUnits( obj, M )
-            M = M + obj.addUnit;
-            M = M .* obj.multUnit;
-        end
         
         % Run the PSM
-        function[Ye] = runPSM( obj, T, ~, ~ )
-            
-            % Convert units
-            T = obj.convertUnits( T );
-            
-            % Bias correct
-            T = obj.biasCorrect( T );
+        function[Ye] = runForwardModel( obj, T, ~, ~ )
             
             % Run the moel
             Ye = vstemp( obj.lat, obj.T1, obj.T2, T, obj.intwindowArg{:} );
