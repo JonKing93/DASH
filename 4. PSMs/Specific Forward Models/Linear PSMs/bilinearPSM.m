@@ -11,16 +11,13 @@ classdef bilinearPSM < PSM
         
         coord;
         
-        addUnit;
-        multUnit;
-        
         nVar1;
         nVar2;
     end
     
     methods
         % Constructor
-        function obj = bilinearPSM( slope1, slope2, intercept, lat, lon, varargin )
+        function obj = bilinearPSM( slope1, slope2, intercept, lat, lon )
             
             % Check that slope and intercept are scalars
             if ~isscalar(slope1) || ~isscalar(slope2) || ~isscalar(intercept)
@@ -30,17 +27,12 @@ classdef bilinearPSM < PSM
             elseif ~isscalar(lat) || ~isscalar(lon)
                 error('lat and lon must be scalars.');
             end
-            
-            % Read in the optional unit conversion inputs
-            [add, mult] = parseInputs( varargin, {'addUnit','multUnit'}, {0, 1}, {[],[]} );
 
             % Save
             obj.slope1 = slope1;
             obj.slope2 = slope2;
             obj.intercept = intercept;
             obj.coord = [lat, lon];
-            obj.addUnit = add;
-            obj.multUnit = mult;
         end
         
         % State indices.
@@ -62,34 +54,20 @@ classdef bilinearPSM < PSM
         end
             
         % Review PSM
-        function[] = reviewPSM( obj )
-            if isempty( obj.H )
-                error('State indices were not generated.');
-            end
+        function[] = errorCheckPSM( obj )
             
-            if isempty(obj.addUnit) || isempty(obj.multUnit) || isempty(obj.slope1) || isempty(obj.slope2) || isempty(obj.intercept)
-                error('This PSM has properties with no associated values.');
-            elseif any(isnan(obj.addUnit)) || any(isnan(obj.multUnit)) || isnan(obj.slope1) || isnan(obj.slope2) || isnan(obj.intercept)
-                error('This PSM has properties with NaN elements.');
-            elseif numel(obj.addUnit)~=numel(obj.H) || numel(obj.multUnit)~=numel(obj.H)
-                error('addUnit and multUnit must have exactly one element for each state index.');
+            if isempty(obj.slope1) || isempty(obj.slope2) || isempty(obj.intercept)
+                error('The slopes and intercept cannot be empty.');
+            elseif isnan(obj.slope1) || isnan(obj.slope2) || isnan(obj.intercept)
+                error('The slopes and intercept cannot be NaN.');
+            elseif ~isnumeric(obj.slope1) || ~isnumeric(obj.slope2) || ~isnumeric(obj.intercept) || ...
+                    ~isscalar(obj.slope1) || ~isscalar(obj.slope2) || ~isscalar(obj.intercept)
+                error('The slopes and intercept must be numeric scalars.');
             end
-        end
-            
-        % Convert Units
-        function[M] = convertUnits( obj, M )
-            M = M + obj.addUnit;
-            M = M .* obj.multUnit;
         end
         
         % Run the PSM
-        function[Ye] = runPSM( obj, M, ~, ~ )
-            
-            % Convert units
-            M = obj.convertUnits(M);
-            
-            % Bias correct
-            M = obj.biasCorrect(M);
+        function[Ye] = runForwardModel( obj, M, ~, ~ )
             
             % Get the indices of elements associated with each variable
             index1 = 1:obj.nVar1;
