@@ -35,8 +35,8 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
         % this method is implemented in concrete PSM classes, it may also
         % use additional input arguments.
 
-        reviewPSM( obj );
-        % This method implements internal error checking for each PSM.
+        errorCheckPSM( obj );
+        % This method implements internal error checking for specific PSM.
         %
         % It is intended to check whether or not a PSM is ready to be used
         % for data assimilation.
@@ -46,8 +46,8 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
         % steps when building their PSMs.
         
         runForwardModel( obj, M, t, d );
-        % This is the function used by dash to actually run a PSM forward
-        % model.
+        % This is the function used by dash to run individual forward
+        % models.
         %
         % It has 3 INPUTS
         %    M: A set of values extracted from the state vectors in the
@@ -101,7 +101,6 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
             % And finally, run the forward model
             [Ye, R] = obj.runForwardModel( M, t, d );
         end
-        
         
         % This is a function to convert units from the DA.
         function[] = reviewPSM( obj )
