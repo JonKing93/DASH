@@ -1,5 +1,5 @@
-function[] = newGridfile( file, gridData, gridDims, meta )
-%% Creates a new gridded .mat file.
+function[] = newGridfile( file, gridData, gridDims, specs, varargin )
+%% Creates a new gridded data (.grid) file. Uses NetCDF4 to store data.
 %
 % newGridfile( file, gridData, gridDims, meta )
 % Creates a new gridded .mat file. Checks that metadata matches data size
@@ -7,7 +7,7 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 %
 % ----- Inputs -----
 %
-% file: The name of the gridded .mat file. A string.
+% file: The name of the .grid file. A string.
 %
 % gridData: A gridded data set.
 %
@@ -20,60 +20,58 @@ function[] = newGridfile( file, gridData, gridDims, meta )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Do some error checking
-errCheck( file, gridData, gridDims, meta );
+% Error check. Convert names to strings.
+gridDims = setup( file, gridData, gridDims );
 
-% Get the set of known dimension IDs
-[dimID] = getDimIDs;
+% Organize the metadata into a structure
+meta = buildMetadata( gridDims, size(gridData), specs, varargin{:} );
 
-% Initialize and array to hold the size of each dimension.
-gridSize = ones( size(dimID) );
+% Get the set of dimension IDs
+[dimID, specs] = getDimIDs;
 
-% Fill in the size of any non-singleton dimensions
-for g = 1:numel(gridDims)
-    d = strcmp( gridDims(g), dimID );
-    gridSize(d) = size(gridData, g);
-end
-
-% Sort the dimensions from smallest to largest length to preserve
-% appending capabilities for partially writing .mat files.
-[gridSize, newOrder] = sort( gridSize );
-dimID = dimID( newOrder );
-
-% Permute the gridded data to match this order
+% Permute the grid to the order of dimID
 gridData = permuteGrid( gridData, gridDims, dimID );
 
-% Check that the metadata for each dimension has exactly one row for each element.
+% Build the NetCDF4 schema
+schema = buildGridSchema( gridData, dimID, meta );
+
+% Create a new NetCDF4 .grid file
+ncwriteschema( file, schema );
+
+% Write the metadata to the file
 for d = 1:numel(dimID)
-    checkMetadataRows( meta.(dimID(d)), gridSize(d), dimID(d) );
+    ncwrite( file, dimID(d), meta.(dimID(d)) );
 end
 
-% Save a v7.3 .mat file (with a .grid extension) to enalbe partial loading
-% and writing
-save(file, 'gridData', 'gridSize', 'dimID', 'meta', '-mat', '-v7.3');
+% Write the actual data and avoid the memory bug
+nccreate( file, 'gridData', 'Dimensions', {'lon','lat','lev','time'}, ...
+          'Datatype', 'double', 'FillValue', NaN );
+ncwrite( file, 'gridData', gridData );
+
+% Add the variable attributes
+specField = string(fieldnames(meta.(specs)));
+for f = 1:numel(specField)
+    ncwriteatt( file, 'gridData', specField(f), meta.(specs).(specField(f)) );
+end
 
 end
 
-function[gridDims] = errCheck( file, gridData, gridDims, meta )
+function[gridDims] = setup( file, gridData, gridDims )
         
 % Check for .grid extension
 fileCheck(file, 'ext');
 
-% Check the data is numeric
-if ~isnumeric(gridData)
-    error('gridData must be a numeric array.');
+% Abort if the file exists
+if exist(file, 'file')
+    error('The file %s already exists!', file );
+end
+
+% Check the data is a netcdf type
+if ~isnctype(gridData)
+    error('gridData is not a supported NetCDF4 data type (See listNcType.m).');
 end
 
 % Check the grid dimensions
 gridDims = checkGridDims(gridDims, gridData);
-
-% Ensure the metadata has all required fields.
-[dimID, specs] = getDimIDs;
-allField = [dimID, specs];
-
-if any( ~isfield(meta, allField) )
-    d = find( ~isfield( meta, allField), 1, 'first' );
-    error('Metadata does not contain a field for the %s dimension.', allField(d));
-end
 
 end

@@ -11,7 +11,7 @@ function[meta, dimID, gridSize] = metaGridfile( file )
 %
 % meta: The metadata structure for the gridded .mat file.
 %
-% dimID: The order of the dimensions of the saved gridded data.
+% dimID: The order of the dimensions in the saved gridded data.
 %
 % gridSize: The size of the gridded data.
 
@@ -19,11 +19,44 @@ function[meta, dimID, gridSize] = metaGridfile( file )
 % Jonathan King, University of Arizona, 2019
 
 % Error check the file.
-m = fileCheck( file, 'readOnly' );
+fileCheck( file );
 
-% Get the metadata
-dimID = m.dimID;
-meta = m.meta;
-gridSize = m.gridSize;
+% Initialize a structure
+meta = struct();
+
+% Get the dimensions and attributes
+[dimID, specs] = getDimIDs;
+
+% For each dimension
+for d = 1:numel(dimID)
+    meta.(dimID(d)) = ncread( file, dimID(d) );
+end
+
+% Get a separate structure for data attributes
+info = ncinfo(file);
+att = info.Variables(end).Attributes;
+
+% Get a structure for the attributes
+s = struct();
+for a = 1:numel(att)
+    if isvarname( att(a).Name ) || iskeyword( att(a).Name )
+        s.( att(a).Name ) = att(a).Value;
+    end
+end
+
+% Add the attributes to the full metadata
+meta.(specs) = s;
+
+% Get the dimensional ordering of the dataset
+nDim = numel( info.Variables(end).Dimensions );
+dimID = cell( nDim, 1 );
+
+for d = 1:nDim
+    dimID{d} = info.Variables(end).Dimensions(d).Name;
+end
+dimID = string(dimID);
+
+% Also get the size
+gridSize = info.Variables(end).Size;
 
 end
