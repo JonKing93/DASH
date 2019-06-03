@@ -37,7 +37,7 @@ for d = 1:nDim
     schema.Variables(d).FillValue = NaN;
 end
 
-
+%% This syntax appears to cause a bug in ncwrite...
 
 % % The gridded data
 % d = d + 1;
