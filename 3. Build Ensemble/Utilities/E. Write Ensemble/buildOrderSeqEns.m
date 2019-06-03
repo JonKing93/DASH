@@ -1,8 +1,7 @@
-function[colnan] = buildOrderSeqEns( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nEns, nSeq, nEls )
+function[colnan] = buildOrderSeqEns( fEns, M, var, varDex, seqDex, loadNC, keep, nEns, nSeq, nEls )
 %% Outer loop is sequence element. Inner loop is ensemble member
 
-% Preallocate an array to whether ensemble members contain NaN
-% contains NaN values.
+% Preallocate an array for whether ensemble members contain NaN values.
 colnan = false( 1, nEns );
 
 % Check whether we are writing full variables
@@ -33,7 +32,7 @@ for s = 1:nSeq
             draw = nPrev + mc;
         
             % Load the data
-            sM = loadChunk( fGrid, var, seqDex(s,:), draw, refLoad, keep );
+            sM = loadChunk( var, seqDex(s,:), draw, loadNC, keep );
 
             % If there aren't any NaN values, save the values
             if ~any( isnan(sM) )

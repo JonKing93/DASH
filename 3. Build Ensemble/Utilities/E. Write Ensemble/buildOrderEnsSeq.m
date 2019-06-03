@@ -1,4 +1,4 @@
-function[colnan] = buildOrderEnsSeq( fEns, fGrid, M, var, varDex, seqDex, refLoad, keep, nEns, nSeq, nEls )
+function[colnan] = buildOrderEnsSeq( fEns, M, var, varDex, seqDex, loadNC, keep, nEns, nSeq, nEls )
 
 % Preallocate array to track whether ensemble members contain NaN values.
 colnan = false( 1, nEns );
@@ -26,7 +26,7 @@ for mc = 1:nEns
         seqLoc = (s-1)*nEls + (1:nEls)';
         
         % Load the data
-        sM = loadChunk( fGrid, var, seqDex(s,:), draw, refLoad, keep );
+        sM = loadChunk( fGrid, var, seqDex(s,:), draw, loadNC, keep );
         
         % If there aren't any NaN values, save the values
         if ~any( isnan(sM) )

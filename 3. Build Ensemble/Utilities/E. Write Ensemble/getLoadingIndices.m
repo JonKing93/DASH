@@ -1,55 +1,51 @@
-function[loadDex, keepDex] = getLoadingIndices( var )
+function[loadNC, keep] = getLoadingIndices( var )
 
-% Create a cell of indices to load data from the .grid file
-nDim = numel(var.dimID);
-loadDex = cell(1,numel(nDim));
+% Create an array to hold the start count and stride for loading from the .grid file
+nDim = numel( var.dimID );
+start = NaN( 1, nDim );
+count = NaN( 1, nDim );
+stride = ones( 1, nDim );
 
-% Partial loading from .mat files is only supported for indices with
-% uniform spacing. So, when the sample indices for a .grid file are
-% unevenly spaced, the entire interval of data between the indices is
-% loaded.
-%
-% After the entire interval is loaded, the data is indexed so that we will
-% only keep the values associated with the sampling indces.
-
-% Initialize a cell of indices to index which loaded values should be kept.
-keepDex = repmat({':'}, [1,nDim] );
+% Initialize a cell of indices to record which loaded values should be kept
+% (Can only load with uniform spacing, so need to load an entire interval
+% for non-uniform)
+keep = repmat( {':'}, [1,nDim] );
 
 % For each dimension
-for d = 1:numel(var.dimID)
+for d = 1:nDim
     
-    % For state dimensions, the smallest unit of contiguous loaded data is
-    % a set of state indices.
+    % If a state dimension, the smallest set of continguous loaded data is
+    % a set of state indices
     if var.isState(d)
-        loadDex{d} = var.indices{d};
+        index = var.indices{d};
         
-    % For ensemble dimensions, the smallest set of contiguous loaded data
-    % is a set of mean indices for a single sequence element
+    % For ensembles, a set of mean indices is the smallest set of
+    % contiguous loaded data
     else
-        loadDex{d} = var.meanDex{d};
+        index = var.meanDex{d};
     end
     
-    % Sort the indices so we can test for uniform spacing
-    loadDex{d} = sort(loadDex{d});
+    % Sort the indices to test for uniform spacing
+    interval = sort( index );
     
-    % If the indices are unevenly spaced
-    if numel(loadDex{d})>1 && numel(unique(diff(loadDex{d})))>1
+    % If unevenly spaced, load every index on the interval
+    if numel(index)>1 && numel(unique(diff(interval)))>1
+        interval = interval(1):interval(end);
         
-        % Get the full interval of indices
-        interval = loadDex{d}(1):loadDex{d}(end);
-        
-        % Only keep points on this interval that are associated with
-        % sampling indices.
-        [~, locb] = ismember( interval, loadDex{d} );
-        keepDex{d} = find( logical( locb ) );
-        
-        % Load everything on the interval between the indices
-        loadDex{d} = interval;
+    % Correct stride if evenly spaced
+    elseif numel(index)>1
+        stride(d) = unique( diff(index) );
     end
+    
+    % Fill out the start and count
+    start(d) = interval(1);
+    count(d) = numel( interval );
+        
+    % Only keep points on the interval associated with sampling indices
+    [~, keep{d}] = ismember( index, interval );
 end
 
+% Concatenate the loading arrays
+loadNC = cat(1, start, count, stride );
+
 end
-        
-        
-        
-        

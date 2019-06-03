@@ -1,7 +1,4 @@
-function[sM] = loadChunk( fGrid, var, seqDex, draw, refLoad, keep )
-
-% Initialize a set of load indices for the SPECIFIC ensemble member
-load = refLoad;
+function[sM] = loadChunk( var, seqDex, draw, loadNC, keep )
 
 % Get the ensemble dimension indices
 ensDim = find( ~var.isState );
@@ -15,12 +12,12 @@ for dim = 1:numel(ensDim)
     % Get the ensemble index associated with the draw
     ensDex = var.drawDex{d}(draw);
     
-    % Get the loading index for the data value
-    load{d} = var.indices{d}(ensDex) + var.seqDex{d}(seqDex(dim)) + refLoad{d};
+    % Get the start index for each load
+    loadNC(1,d) = var.indices{d}(ensDex) + var.seqDex{d}(seqDex(dim));
 end
 
 % Load the data
-sM = fGrid.gridData( load{:} );
+sM = nread( var.file, 'gridData', loadNC(1,:), loadNC(2,:), loadNC(3,:) );
 
 % Only keep the values associated with sampling indices.
 sM = sM( keep{:} );
