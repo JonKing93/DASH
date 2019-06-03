@@ -66,20 +66,8 @@ for d = 1:nDim
         % Get the metadata values
         value = varargin{v*2};
         
-        % Check that the metadata is an allowed type
-        if ~isnctype( value )
-            error('The %s metadata is not an allowed NetCDF type. Please see listNcTypes.m for the allowed data types.', dimID(d));
-        elseif ~ismatrix( value )
-            error('The %s metadata is not a matrix.', dimID(d));
-        end 
-            
-        % Check that the number of rows is correct
-        value = checkMetadataRows( value, dimSize, dimID(d) );
-        
-        % Check that there are no duplicate rows
-        if size(value,1) ~= size( unique(value, 'rows'), 1 )
-            error('The %s metadata contains duplicate values.', dimID(d));
-        end
+        % Ensure the metadata is valid
+        value = checkMetadata( value, dimSize, dimID(d) );
              
     % Otherwise, there is no specified metadata for this dimension.
     else
@@ -103,13 +91,8 @@ end
 %% Error checking and setup helper function
 function[gridDims, metaDim] = setup( gridSize, gridDims, specs, meta )
 
-% varSpecs must be scalar
-if ~isstruct(specs) || ~isscalar(specs)
-    error('The variable ''specs'' must be a scalar structure (struct).');
-end
-
-% Check the dimension IDs, convert to string
-gridDims = checkGridDims(gridDims);
+% Check that the attributes are valid
+checkValidSpecs( specs );
 
 % Check that gridSize is a vector of positive integers
 if ~isvector(gridSize) || any(gridSize < 1) || any( mod(gridSize,1)~=0 )
@@ -154,14 +137,6 @@ for v = 1:2:numel(meta)
         else
             metaDim((v+1)/2) = d;
         end
-    end
-end
-
-% Check that each field of specs is a NetCDF4 type
-specNames = string( fieldnames( specs ) );
-for s = 1:numel(specNames)
-    if ~isnctype( specs.(specNames(s)) )
-        error('The "%s" attribute in the "specs" structure contains data that is not a valid NetCDF4 type.', specNames(s) );
     end
 end
 
