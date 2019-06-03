@@ -42,11 +42,7 @@ for v = 1:numel(design.var)
         
         % If a state dimension, get metadata from grid metadata
         if var.isState(d)
-            ensMeta = var.meta.(var.dimID(d));
-            
-            % Use the metadata at the state indices, preserving any
-            % higher order dimensionality inherent in the metadata.
-            ensMeta = indexMetadata( ensMeta, var.indices{d} );
+            ensMeta = var.meta.(var.dimID(d))( var.indices{d}, : );
             
         % If an ensemble dimension, get metadata from the ensemble metadata
         else
@@ -73,14 +69,12 @@ for v = 1:numel(design.var)
         % Otherwise
         else
             
-            % Subscript index each metadata value. (And preserve any
-            % inherent dimensionality.)
-            ensMeta = indexMetadata( ensMeta, subDex(:,d) );
+            % Subscript index each metadata value.
+            ensMeta = ensMeta( subDex(:,d), : );
             
-            % Convert to cell if numeric. Preserve dimensionality.
+            % Convert to cell if not already. Group metadata columns
             if ~iscell(ensMeta)
-                groupDim = 2:ndims(ensMeta);
-                ensMeta = num2cell(ensMeta, groupDim);
+                ensMeta = num2cell(ensMeta, 2);
             end
         end
         
