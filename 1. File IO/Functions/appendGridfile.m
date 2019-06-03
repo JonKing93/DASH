@@ -1,116 +1,94 @@
-function[] = appendGridfile( file, gridData, gridDims, dim, newMeta )
+function[] = appendGridfile( file, newData, gridDims, dim, newMeta )
 %% Appends data along a dimension in a .grid file.
 %
-% appendGridfile( file, gridData, gridDims, dim, meta )
+% appendGridfile( file, gridData, gridDims, dim, newMeta )
 % Appends new data to the end of a specified dimension in a .grid file.
 % Adds metadata for the new indices.
 %
 % ----- Inputs -----
 % 
-% file: The name of the gridded .mat file. A string.
+% file: The name of the gridded .grid file in which data will be appended.
+%       A string or character vector. Must have a .grid extension.
 %
-% gridData: A gridded dataset
+% newData: A gridded data set. An N-dimensional numeric array. Must match
+%           the size of the pre-existing gridded data except along the
+%           appending dimension.
 %
-% gridDims: A cell of dimension IDs indicating the order of dimensions in
-%       the gridded data.
+% gridDims: A list of dimension IDs indicating the order of dimensions in
+%           the gridded dataset. Either a cell vector of character vectors
+%           (cellstring), or a string vector. All fill values should be NaN
 %
-% dim: An ID for the dimension to be extended. A string.
+% dim: The name of the dimension along which to append the new data. Either
+%      a character vector or a string.
 %
-% newMeta: Metadata for the new indices along the appending dimension.
+% newMeta: Metadata for the new indices along the appending dimension. If
+%          the pre-exisiting metadata for the dimension is a vector, must
+%          also be a vector. If the pre-existing metadata is a matrix, must
+%          have the same nunber of columns. Must be the same data type as
+%          the pre-existing metadata.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
 % Error checking and setup
-[m, gridDims] = setup( file, gridData, gridDims, dim);        
+[gridDims, newMeta] = setup( file, newData, gridDims, dim);     
+
+%% Gridded data
 
 % Get the dimension ordering in the .grid file
-dimID = m.dimID;
+[~, dimID, gridSize] = metaGridfile( file );
 
-% Permute the grid to match this order
-gridData = permuteGrid( gridData, gridDims, dimID );
+% Permute the new grid to match the old order
+newData = permuteGrid( newData, gridDims, dimID );
 
-% Get the size of the grid
-gridSize = fullSize( gridData, numel(dimID) );
+% Get the size of the new grid
+newSize = fullSize( newData, numel(dimID) );
 
 % Get the index of the dimension along which to append
-appDim = strcmp(dim, dimID);
+d = strcmp(dim, dimID);
 
 % Check that the new data exactly matches the size of the old data except
 % along the appending dimension
-if ~isequal( gridSize(~appDim), m.gridSize(~appDim) )
-    sizeError( gridSize(~appDim), m.gridSize(~appDim), dimID(~appDim) );
+if ~isequal( gridSize(~d), newSize(~d) )
+    bad = find( gridSize(~d) ~= newSize(~d), 1, 'first' );
+    error('The length of the %s dimension in the new gridded data (%.f) does not match the length of the data in the .grid file (%.f).', ...
+           dimID(bad), newSize(bad), gridSize(bad) );
 end
 
-% Get the new indices at which to add data along the appending dimension
-oldLen = m.gridSize(appDim);
-nAdd = gridSize(appDim);
-newDex = oldLen+1 : oldLen + nAdd;
+% Check that the new metadata is acceptable
+checkAppendMetadata( newMeta, ncread(file, dim), newSize(d) );
 
-% Create an cell to hold the indices on which to append data for all
-% dimensions
-appDex = repmat( {':'}, [1, numel(dimID)] );
-appDex{appDim} = newDex;
+% Get the starting index to start writing in each dimension
+sGrid = ones( size(dimID ) );
+sGrid(d) = gridSize(d) + 1;
 
-% Check that the new metadata has a row for each new index
-newMeta = checkMetadataRows(newMeta, nAdd);
+sMeta = size( oldMeta );
+sMeta(1) = sMeta(1) + 1;
+sMeta( sMeta==1 ) = [];   % Remove the columns if a vector
 
-% Append the new metadata to the old metadata to ensure that the formats
-% are compatible.
-meta = appendMetadata( m.meta, newMeta, dimID(appDim) );
+% Write the new values
+ncwrite( file, dim, newMeta, sMeta );
+ncwrite( file, 'gridData', newGrid, sGrid );
 
-% Check that the new metadata contains no duplicate values
-for k = oldLen+nAdd: -1: oldLen+1
-    for j = k-1:-1:1
-        if isequaln( meta(k,:), meta(j,:) )
-            error('The new metadata duplicates values in the .grid metadata.');
-        end
-    end
 end
-        
-% Append the new Data
-m.gridData( appDex{:} ) = gridData;
 
-% Update the metadata and grid size
-m.meta = meta;
-m.gridSize(1,appDim) = m.gridSize(1,appDim) + nAdd;
-   
-end 
-
-function[m, gridDims] = setup( file, gridData, gridDims, dim )
+% Setup helper function
+function[gridDims, newMeta] = setup( file, gridData, gridDims, dim, newMeta )
 
     % Error check and return the writable matfile object
-    m = fileCheck( file );
+    fileCheck( file );
     
     % Check the gridData is numeric
     if ~isnumeric(gridData)
         error('gridData must be a numeric array.');
     end
 
-    % Check the grid dimensions are allowed
-    gridDims = checkDims(gridDims);
+    % Check the grid dimensions are allowed and non-duplicate
+    gridDims = checkGridDims(gridDims);
 
     % Check that the appending dimension is allowed
     checkDim(dim);
-end
-
-function[meta] = appendMetadata( meta, newMeta, field )
-% Attempts to append metadata and gives an improved error message
-% if appending fails.
-try
-    meta.(field) = [meta.(field); newMeta];
-catch ME
-    moreInfo = MException('DASH:appendMetadata:dimensions', ...
-        ['The new metadata could not be appended to the .grid metadata. They may have different sizes or different types.', newline, ...
-        'The .grid metadata can be loaded via the function "metaGridfile.m" if you wish to determine why appending failed.'] );
-    ME = addCause( ME, moreInfo );
-end
-rethrow(ME);
-end
-
-function[] = sizeError( newSize, oldSize, dimID )
-%% Throws more useful error messages when the grid sizes don't match.
-d = find( newSize ~= oldSize, 1, 'first' );
-error('The length of the %s dimension in the new gridded data (%.f) does not match the length of the data in the .grid file (%.f).', ...
-       dimID(d), newSize(d), oldSize(d) );
+    
+    % Check that the new metadata is allowed
+    newMeta = checkMetadata( newMeta, length(newMeta), 'new');
 end

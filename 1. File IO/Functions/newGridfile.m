@@ -7,13 +7,15 @@ function[] = newGridfile( file, gridData, gridDims, specs, varargin )
 %
 % ----- Inputs -----
 %
-% file: The name of the .grid file. A string. Must have a .grid extension.
+% file: The name of the .grid file. A string or character vector. Must have
+%       a .grid extension.
 %
-% gridData: A gridded data set. An N-dimensional numeric array.
+% gridData: A gridded data set. An N-dimensional numeric array. All fill
+%           values should be NaN.
 %
 % gridDims: A list of dimension IDs indicating the order of dimensions in
 %           the gridded dataset. Either a cell vector of character vectors
-%           (cellstring), or a string vector. All fill values should be NaN
+%           (cellstring), or a string vector. 
 %
 % specs: A scalar structure whose fields contain non-dimensional metadata 
 %        for the gridded data set. These are equivalent to variable
