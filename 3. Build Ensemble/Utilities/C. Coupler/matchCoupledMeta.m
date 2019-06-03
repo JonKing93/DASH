@@ -21,21 +21,20 @@ for dim = 1:numel(ensID)
     
     % Initialize the metadata with the values from the first variable
     d = checkVarDim( var1, ensID(dim) );
-    meta = var1.meta.(ensID(dim))( var1.indices{d} );
+    meta = var1.meta.(ensID(dim))( var1.indices{d}, : );
     
     % Go through the remaining variables
     for v = 2:numel(cv)
-        varC = design.var( cv(v) );
+        varCurr = design.var( cv(v) );
         
         % Get the index of the dimension in the variable
-        d = checkVarDim( varC, ensID(dim) );
+        d = checkVarDim( varCurr, ensID(dim) );
         
         % Get the metadata for the current variable
-        currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
+        currMeta = varCurr.meta.(ensID(dim))( varCurr.indices{d}, : );
         
         % Get the intersect of the two metadata sets
-        match = matchingMetaIndex( meta, currMeta );
-        meta = indexMetadata(meta, match);        
+        meta = intersect( meta, currMeta, 'rows', 'stable' );        
     end
     
     % Throw an error if no metadata remains
@@ -47,15 +46,15 @@ for dim = 1:numel(ensID)
     for v = 1:numel(cv)
         
         % Get the index of each ensemble dimension
-        varC = design.var( cv(v) );
-        d = checkVarDim( varC, ensID(dim) );
+        varCurr = design.var( cv(v) );
+        d = checkVarDim( varCurr, ensID(dim) );
         
         % Get the metadata for the variable
-        currMeta = varC.meta.(ensID(dim))( varC.indices{d} );
+        currMeta = varCurr.meta.(ensID(dim))( varCurr.indices{d} );
 
         % And restrict indices so they match the final set of intersecting metadata
         [~, iB] = matchingMetaIndex( meta, currMeta );
-        design.var( cv(v) ).indices{d} = varC.indices{d}(iB);
+        design.var( cv(v) ).indices{d} = varCurr.indices{d}(iB);
     end
 end
 
