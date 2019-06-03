@@ -36,7 +36,7 @@ Y = design.var(yv);
 for dim = 1:numel(X.dimID)
     
     % Get the indexed metadata
-    meta = indexMetadata( X.meta.(X.dimID(dim)), X.indices{dim} );
+    meta = X.meta.(X.dimID(dim))( X.indices{dim}, : );
     
     % For each copying variable
     for k = 1:numel(Y)
@@ -50,7 +50,7 @@ for dim = 1:numel(X.dimID)
         
         % Get state indices with matching metadata
         currMeta = Y(k).meta.(X.dimID(dim));        
-        Y(k).indices{d} = matchingMetaIndex( currMeta, meta );
+        [~, Y(k).indices{d}] = intersect( currMeta, meta, 'rows', 'stable' );
       
         % If a state dimension
         if X.isState(dim)
