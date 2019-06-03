@@ -25,7 +25,7 @@ timeDim = "time";
 runDim = "run";
 
 % Tripole
-triDim = "tripole";
+triDim = "tri";
 
 % All grid dimensions
 dimID = [lonDim, latDim, levDim, timeDim, runDim, triDim];
