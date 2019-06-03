@@ -11,13 +11,13 @@ end
 % Check that the class of the new metadata matches the old class
 oldClass = class( oldMeta );
 newClass = class( newMeta );
-if strcmp( oldClass, newClass )
+if ~strcmp( oldClass, newClass )
     error('The data type of the pre-existing metadata (%s) does not match the data type of the new metadata (%s).', oldClass, newClass );
 end
 
 % Check that the new metadata has one row per element along the appending
 % dimension
-if size(newMeta,1) ~= dimLen(d)
+if size(newMeta,1) ~= dimLen
     
     % Get a toggle to improve the error message
     type = 'rows';

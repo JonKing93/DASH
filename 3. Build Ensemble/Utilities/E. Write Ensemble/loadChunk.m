@@ -17,7 +17,7 @@ for dim = 1:numel(ensDim)
 end
 
 % Load the data
-sM = nread( var.file, 'gridData', loadNC(1,:), loadNC(2,:), loadNC(3,:) );
+sM = ncread( var.file, 'gridData', loadNC(1,:), loadNC(2,:), loadNC(3,:) );
 
 % Only keep the values associated with sampling indices.
 sM = sM( keep{:} );

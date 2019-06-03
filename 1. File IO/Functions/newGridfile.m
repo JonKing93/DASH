@@ -36,7 +36,8 @@ function[] = newGridfile( file, gridData, gridDims, specs, varargin )
 gridDims = setup( file, gridData, gridDims );
 
 % Organize the metadata into a structure
-meta = buildMetadata( gridDims, size(gridData), specs, varargin{:} );
+gsize = fullSize( gridData, numel(gridDims) );
+meta = buildMetadata( gridDims, gsize, specs, varargin{:} );
 
 % Get the set of dimension IDs
 [dimID, specs] = getDimIDs;

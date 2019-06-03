@@ -31,7 +31,7 @@ function[] = appendGridfile( file, newData, gridDims, dim, newMeta )
 % Jonathan King, University of Arizona, 2019
 
 % Error checking and setup
-[gridDims, newMeta] = setup( file, newData, gridDims, dim);     
+[gridDims, newMeta] = setup( file, newData, gridDims, dim, newMeta);     
 
 %% Gridded data
 
@@ -56,7 +56,8 @@ if ~isequal( gridSize(~d), newSize(~d) )
 end
 
 % Check that the new metadata is acceptable
-checkAppendMetadata( newMeta, ncread(file, dim), newSize(d) );
+oldMeta = ncread(file, dim);
+checkAppendMetadata( newMeta, oldMeta, newSize(d) );
 
 % Get the starting index to start writing in each dimension
 sGrid = ones( size(dimID ) );
@@ -68,7 +69,7 @@ sMeta( sMeta==1 ) = [];   % Remove the columns if a vector
 
 % Write the new values
 ncwrite( file, dim, newMeta, sMeta );
-ncwrite( file, 'gridData', newGrid, sGrid );
+ncwrite( file, 'gridData', newData, sGrid );
 
 end
 

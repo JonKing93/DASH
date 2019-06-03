@@ -53,7 +53,7 @@ for dim = 1:numel(ensID)
         currMeta = varCurr.meta.(ensID(dim))( varCurr.indices{d} );
 
         % And restrict indices so they match the final set of intersecting metadata
-        [~, iB] = matchingMetaIndex( meta, currMeta );
+        [~, iB] = intersect( meta, currMeta, 'rows', 'stable' );
         design.var( cv(v) ).indices{d} = varCurr.indices{d}(iB);
     end
 end
