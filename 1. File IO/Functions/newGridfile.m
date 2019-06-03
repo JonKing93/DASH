@@ -1,21 +1,31 @@
 function[] = newGridfile( file, gridData, gridDims, specs, varargin )
-%% Creates a new gridded data (.grid) file. Uses NetCDF4 to store data.
+%% Creates a new gridded data (.grid) file. This is a NetCDF4 file that is
+% custom built to interface with Dash.
 %
-% newGridfile( file, gridData, gridDims, meta )
-% Creates a new gridded .mat file. Checks that metadata matches data size
-% in all dimensions.
+% newGridfile( file, gridData, gridDims, specs, dimName1, dimMeta1, ..., dimNameN, dimMetaN )
+% Creates a new .grid file storing gridded data and associated metadata.
 %
 % ----- Inputs -----
 %
-% file: The name of the .grid file. A string.
+% file: The name of the .grid file. A string. Must have a .grid extension.
 %
-% gridData: A gridded data set.
+% gridData: A gridded data set. An N-dimensional numeric array.
 %
-% gridDims: A cell of dimension IDs indicating the order of dimensions in
-%       the gridded data.
+% gridDims: A list of dimension IDs indicating the order of dimensions in
+%           the gridded dataset. Either a cell vector of character vectors
+%           (cellstring), or a string vector. All fill values should be NaN
 %
-% meta: A metadata structure for the gridded data. See the buildMetadata.m
-%       function.
+% specs: A scalar structure whose fields contain non-dimensional metadata 
+%        for the gridded data set. These are equivalent to variable
+%        attributes in a NetCDF4 file.
+%
+% dimNameN: The name of a dimension. Either a character vector or a string.
+%
+% dimMetaN: Metadata for dimension N. May be a vector or matrix. If a
+%           vector, the length must match the size of the dimension in the
+%           gridded data. If a matrix, the number of rows must match the
+%           length of the dimension in the gridded data. Metadata must be a
+%           vector that is a valid NetCDF4 data type. (See listnctypes.m)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -44,7 +54,7 @@ for d = 1:numel(dimID)
 end
 
 % Write the actual data and avoid the memory bug
-nccreate( file, 'gridData', 'Dimensions', {'lon','lat','lev','time'}, ...
+nccreate( file, 'gridData', 'Dimensions', cellstr(dimID), ...
           'Datatype', 'double', 'FillValue', NaN );
 ncwrite( file, 'gridData', gridData );
 
@@ -66,12 +76,13 @@ if exist(file, 'file')
     error('The file %s already exists!', file );
 end
 
-% Check the data is a netcdf type
-if ~isnctype(gridData)
-    error('gridData is not a supported NetCDF4 data type (See listNcType.m).');
+% Check the data is numeric
+if ~isnumeric(gridData)
+    error('gridData must be a numeric array.');
 end
 
-% Check the grid dimensions
+% Check the grid dimensions are recognized and non-duplicate. Convert to
+% string if a cellstring
 gridDims = checkGridDims(gridDims, gridData);
 
 end
