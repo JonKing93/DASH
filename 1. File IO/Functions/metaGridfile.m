@@ -30,7 +30,13 @@ meta = struct();
 
 % For each dimension
 for d = 1:numel(dimID)
-    meta.(dimID(d)) = ncread( file, dimID(d) );
+    
+    % Read the dimensional metadata
+    dimMeta = ncread( file, dimID(d) );
+    
+    % Limit to the number of used columns
+    nCols = ncreadatt( file, dimID(d), 'nCols');
+    meta.( dimID(d) ) = dimMeta(:, 1:nCols);
 end
 
 % Get a separate structure for data attributes

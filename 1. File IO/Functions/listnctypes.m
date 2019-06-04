@@ -1,4 +1,4 @@
-function[] = listnctypes
+function[list] = listnctypes
 %% Returns a list of valid NetCDF4 data types.
 %
 % [list] = listnctypes()

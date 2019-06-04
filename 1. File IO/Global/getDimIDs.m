@@ -15,6 +15,9 @@ lonDim = "lon";
 % Latitude (y coordinate)
 latDim = "lat";
 
+% Tripole (x-y coordinate)
+triDim = "tri";
+
 % Level (z / height coordinate)
 levDim = "lev";
 
@@ -24,10 +27,7 @@ timeDim = "time";
 % Ensemble
 runDim = "run";
 
-% Tripole
-triDim = "tri";
-
 % All grid dimensions
-dimID = [lonDim, latDim, levDim, timeDim, runDim, triDim];
+dimID = [lonDim, latDim, triDim, levDim, timeDim, runDim];
 
 end

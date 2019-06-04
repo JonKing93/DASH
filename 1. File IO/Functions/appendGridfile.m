@@ -87,8 +87,14 @@ function[gridDims, newMeta] = setup( file, gridData, gridDims, dim, newMeta )
     % Check the grid dimensions are allowed and non-duplicate
     gridDims = checkGridDims(gridDims);
 
-    % Check that the appending dimension is allowed
+    % Check that the appending dimension is a dimension
     checkDim(dim);
+    
+    % Check that the appending dimension is for an unlimited dimension
+    append = ncreadatt( file, dim, 'append');
+    if ~append
+        error('The %s dimension is not enabled for appending in %s. To append along this dimension, you will need to create a new .grid file.', dim, file );
+    end
     
     % Check that the new metadata is allowed
     newMeta = checkMetadata( newMeta, length(newMeta), 'new');

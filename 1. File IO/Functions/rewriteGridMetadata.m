@@ -24,14 +24,14 @@ function[] = rewriteGridMetadata( file, dim, newMeta )
 
 % Error checking.
 fileCheck(file);
-checkDim(dim);
+checkDim(dim, true);
 
 % Get the grid metadata
 meta = metaGridfile( file );
 
 % Check for the metadata field
 if ~isfield(meta, dim)
-    error('The %s dimension is not in the grid metadata.', dim);
+    error('The %s dimension is not in the grid metadata. The getDimIDs function may have been altered.', dim);
 end
 
 % If this is the variable attributes
@@ -55,9 +55,17 @@ else
 
     % Check that the metadata is valid
     newMeta = checkMetadata( newMeta, nEls, dim );
+    
+    % Check that the new metadata matches the old data class
+    if ~strcmp( class(newMeta), class(meta.(dim)) )
+        error('The data type of the new metadata (%s) is different than the old metadata (%s).', class(newMeta), class(meta.(dim)) );
+    end
 
     % Set the new grid metadata
     ncwrite( file, dim, newMeta );
+    
+    % Update the number of columns
+    ncwriteatt( file, dim, 'nCols', size(newMeta,2) );
 end
 
 end
