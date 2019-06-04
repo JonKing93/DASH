@@ -11,8 +11,8 @@ function[] = checkDim(dim, useSpec)
 % Get the flag
 if nargin == 1
     useSpec = false;
-elseif ~isboolean(useSpec)
-    error('useSpec must be a boolean.');
+elseif ~islogical(useSpec) || ~isscalar(useSpec)
+    error('useSpec must be a scalar logical.');
 end
 
 % Check that the deletion dimension is allowed
