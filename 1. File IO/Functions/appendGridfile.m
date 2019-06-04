@@ -36,7 +36,7 @@ function[] = appendGridfile( file, newData, gridDims, dim, newMeta )
 %% Gridded data
 
 % Get the dimension ordering in the .grid file
-[~, dimID, gridSize] = metaGridfile( file );
+[meta, dimID, gridSize] = metaGridfile( file );
 
 % Permute the new grid to match the old order
 newData = permuteGrid( newData, gridDims, dimID );
@@ -63,13 +63,19 @@ checkAppendMetadata( newMeta, oldMeta, newSize(d) );
 sGrid = ones( size(dimID ) );
 sGrid(d) = gridSize(d) + 1;
 
-sMeta = size( oldMeta );
-sMeta(1) = sMeta(1) + 1;
-sMeta( sMeta==1 ) = [];   % Remove the columns if a vector
+% Append the new metadata to the old
+meta.(dim) = [meta.(dim); newMeta];
 
 % Write the new values
-ncwrite( file, dim, newMeta, sMeta );
 ncwrite( file, 'gridData', newData, sGrid );
+
+% Rewrite the appending dimensions (they seem to be deleted?)
+for d = 1:numel(dimID)
+    append = ncreadatt(file, dimID(d), 'append');
+    if append
+        ncwrite( file, dimID(d), meta.(dimID(d)) );
+    end
+end
 
 end
 

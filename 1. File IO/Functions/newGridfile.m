@@ -67,9 +67,6 @@ for d = 1:numel(dimID)
     % Initialize the metadata variable    
     nccreate(file, dimID(d), 'Format', 'netcdf4', 'Dimensions', dims );
     
-    % Set an attribute for the number of columns
-    ncwriteatt( file, dimID(d), 'nCols', size(meta.(dimID(d)), 2) );
-    
     % Set an attribute for whether appending is allowed
     ncwriteatt( file,  dimID(d), 'append', single(append(d)) );
 end
@@ -87,13 +84,13 @@ end
 
 % Now that the NetCDF4 header is complete, start writing actual data
 
+% Write in the variable
+ncwrite( file, 'gridData', gridData );
+
 % Then write the metadata variables
 for d = 1:numel(dimID)
     ncwrite( file, dimID(d), meta.(dimID(d)) );
 end
-
-% Finally, write in the variable
-ncwrite( file, 'gridData', gridData );
 
 end
 

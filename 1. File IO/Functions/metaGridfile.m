@@ -28,15 +28,9 @@ meta = struct();
 % Get the dimensions and attributes
 [dimID, specs] = getDimIDs;
 
-% For each dimension
+% Get the metadata for each dimension
 for d = 1:numel(dimID)
-    
-    % Read the dimensional metadata
-    dimMeta = ncread( file, dimID(d) );
-    
-    % Limit to the number of used columns
-    nCols = ncreadatt( file, dimID(d), 'nCols');
-    meta.( dimID(d) ) = dimMeta(:, 1:nCols);
+    meta.( dimID(d) ) = ncread( file, dimID(d) );
 end
 
 % Get a separate structure for data attributes

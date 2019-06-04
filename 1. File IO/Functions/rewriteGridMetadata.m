@@ -63,9 +63,6 @@ else
 
     % Set the new grid metadata
     ncwrite( file, dim, newMeta );
-    
-    % Update the number of columns
-    ncwriteatt( file, dim, 'nCols', size(newMeta,2) );
 end
 
 end
