@@ -11,7 +11,7 @@ end
 % Check that the dimension is recognized.
 dimID = getDimIDs;
 if ~ismember(dim, dimID)
-    error('The value of dim (%s) is not a recognized dimension ID.', dim);
+    error('%s is not a recognized dimension ID.', dim);
 end
 
 end

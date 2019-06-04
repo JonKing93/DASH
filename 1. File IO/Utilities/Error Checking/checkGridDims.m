@@ -1,18 +1,12 @@
 function[gridDims] = checkGridDims(gridDims, gridData)
-%% Check that gridded dimensions are recognized and non-duplicate
+%% Check that listed dimensions are recognized and non-duplicate
 %
 % checkDims(gridDims, gridData)
 
-% Check that the dims are a vector
-if ~isvector( gridDims )
-    error('gridDims must be a vector.');
+% Check that this is a list of dimension IDs
+if ~isdimlist( gridDims )
+    error('gridDims must be either a cell vector of character row vectors (cellstring) or a string vector.');
 end
-
-% Check that the dims are a string.
-if ~isstring(gridDims) && ~iscellstr(gridDims)
-    error('gridDims must be either a cell vector of character row vectors, or a string vector.');
-end
-gridDims = string(gridDims);
 
 % Check for duplicates
 if numel(gridDims) ~= numel(unique(gridDims))

@@ -15,26 +15,19 @@ gridSize = fullSize(gridData, nDim);
 for d = 1:nDim
     
     % Specific dimension
-    schema.Dimensions(d).Name = char( dimID(d) );
-    schema.Dimensions(d).Length = gridSize(d);
-    schema.Dimensions(d).Unlimited = true;
+    schema.Dimensions(d*2-1).Name = char( dimID(d) );
+    schema.Dimensions(d*2-1).Length = gridSize(d);
+    schema.Dimensions(d*2-1).Unlimited = true;
     
-    % Optional metadata dimension
-    dimRef = [];
-    nMetaEls = size( meta.(dimID(d)), 2 );
-    if nMetaEls > 1
-        schema.Dimensions(k).Name = char( strcat( dimID(d), 'Metadata' ) );
-        schema.Dimensions(k).Length = nMetaEls;
-        schema.Dimensions(k).Unlimited = false;
-        dimRef = k;
-        k = k+1;
-    end
+    % Metadata columns dimension
+    schema.Dimensions(d*2).Name = char( strcat( dimID(d), 'MetaCols' ) );
+    schema.Dimensions(d*2).Length = size( meta.(dimID(d)), 2 );
+    schema.Dimensions(d*2).Unlimited = true;
     
-    % Dimensional metadata
-    schema.Variables(d).Name = char( dimID(d) );
-    schema.Variables(d).Dimensions = schema.Dimensions([d, dimRef]);
-    schema.Variables(d).Datatype = class( meta.(dimID(d)) );
-    schema.Variables(d).FillValue = NaN;
+%     % Dimensional metadata
+%     schema.Variables(d).Name = char( dimID(d) );
+%     schema.Variables(d).Dimensions = schema.Dimensions([d, dimRef]);
+%     schema.Variables(d).Datatype = class( meta.(dimID(d)) );
 end
 
 %% This syntax appears to cause a bug in ncwrite...
