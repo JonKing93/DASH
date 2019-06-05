@@ -39,7 +39,7 @@ for cv = 1:numel(coupVars)
     % desired number of draws is not possible.
     while nDraws > 0
         if nDraws > numel(undrawn)
-            ensSizeError(nDraws, numel(undrawn));
+            error('Cannot find %.f ensemble members. Try using a smaller ensemble.', nEns);
         end
 
         % Randomly draw ensemble members
@@ -73,18 +73,4 @@ for cv = 1:numel(coupVars)
     design.var( coupVars{cv} ) = setVariableDraws( vars, subDraws, ensID, undrawn );
 end
 
-end
-                
-
-%% A detailed error message when dash cannot select the desired number of draws.
-function[] = ensSizeError(nEns, vars, overlap)
-
-oStr = '';
-if ~overlap
-    oStr = 'non-overlapping ';
-end
- 
-coupled = sprintf('%s, ', vars.name);
-error( ['Cannot select %.f %sensemble members for coupled variables %s', ...
-        sprintf('\b\b.\nUse a smaller ensemble.')], nEns, oStr, coupled );
 end
