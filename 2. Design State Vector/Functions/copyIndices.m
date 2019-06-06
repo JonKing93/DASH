@@ -48,9 +48,17 @@ for dim = 1:numel(X.dimID)
         Y(k).takeMean(d) = X.takeMean(dim);
         Y(k).nanflag{d} = X.nanflag{dim};
         
-        % Get state indices with matching metadata
+        % Get the current metadata
         currMeta = Y(k).meta.(X.dimID(dim));        
-        [~, Y(k).indices{d}] = intersect( currMeta, meta, 'rows', 'stable' );
+       
+        % If metadata is NaN, the index is 1
+        if isscalar(currMeta) && isnan(currMeta) && isscalar(meta) && isnan(meta)
+            Y(k).indices{d} = 1;
+        
+        % Otherwise, get state indices with matching metadata
+        else
+            [~, Y(k).indices{d}] = intersect( currMeta, meta, 'rows', 'stable' );
+        end
       
         % If a state dimension
         if X.isState(dim)

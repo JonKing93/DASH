@@ -79,7 +79,7 @@ classdef ukPSM < PSM
         
         
         % Constructor. This creates an instance of a PSM
-        function obj = ukPSM( coord, varargin )
+        function obj = ukPSM( lat, lon, varargin )
             % Get optional inputs
             [file] = parseInputs(varargin, {'bayesFile'}, {[]}, {[]});
             
@@ -95,7 +95,7 @@ classdef ukPSM < PSM
             obj.bayes = load( obj.bayesFile );
             
             % Set the coordinates
-            obj.coord = coord;
+            obj.coord = [lat lon];
         end  
         
         

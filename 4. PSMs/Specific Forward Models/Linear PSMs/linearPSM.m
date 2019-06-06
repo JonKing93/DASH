@@ -34,6 +34,8 @@ classdef linearPSM < PSM
         end
         
         % State indices
+        % vararg1 = list of variable names (for slope 1)
+        % vararg2 = list of restriction indices (for slope 1)
         function[] = getStateIndices( obj, ensMeta, varargin )
             
             % Ensure the correct number of inputs
@@ -50,7 +52,7 @@ classdef linearPSM < PSM
             for v = 1:nVar
                 
                 % Get the state indices
-                Hv = getClosestLatLonIndex( obj.coord, ensMeta, varargin{v*2-1}, varargin{v*2} );
+                Hv = getClosestLatLonIndex( obj.coord, ensMeta, varargin{v*2-1}, varargin{v*2}{:} );
                 
                 % Add to array
                 obj.H = [obj.H; Hv];
@@ -67,9 +69,9 @@ classdef linearPSM < PSM
         function[] = errorCheckPSM( obj )
             if isempty(obj.slope) || isempty(obj.intercept) || isempty(obj.varDex)
                 error('The slope, intercept and varDex cannot be empty.');
-            elseif isnan(obj.slope) || isnan(obj.intercept) || isnan(obj.varDex)
+            elseif any(isnan(obj.slope)) || any(isnan(obj.intercept)) || any(isnan(obj.varDex))
                 error('The slope, intercept, and varDex cannot be NaN.');
-            elseif ~isvector(obj.slope) || ~isvector(obj.nEls) || length(obj.slope)~=length(obj.varDex)-1
+            elseif ~isvector(obj.slope) || ~isvector(obj.varDex) || length(obj.slope)~=length(obj.varDex)-1
                 error('The slope and varDex must be vectors. varDex must have one more element than slope.');
             elseif ~isscalar(obj.intercept)
                 error('The intercept must be a scalar.');
@@ -78,7 +80,7 @@ classdef linearPSM < PSM
        
         
         % Run the PSM
-        function[Ye] = runForwardModel( obj, M, ~, ~ )
+        function[Ye, R] = runForwardModel( obj, M, ~, ~ )
             
             % Preallocate the variables
             nVar = numel(obj.slope);
@@ -91,6 +93,9 @@ classdef linearPSM < PSM
             
             % Apply the linear relationship
             Ye = sum( var .* obj.slope, 1 ) + obj.intercept;
+            
+            % Return an empty R
+            R = [];
         end
     end
 end

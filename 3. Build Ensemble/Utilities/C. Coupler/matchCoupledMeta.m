@@ -50,7 +50,7 @@ for dim = 1:numel(ensID)
         d = checkVarDim( varCurr, ensID(dim) );
         
         % Get the metadata for the variable
-        currMeta = varCurr.meta.(ensID(dim))( varCurr.indices{d} );
+        currMeta = varCurr.meta.(ensID(dim))( varCurr.indices{d}, : );
 
         % And restrict indices so they match the final set of intersecting metadata
         [~, iB] = intersect( meta, currMeta, 'rows', 'stable' );

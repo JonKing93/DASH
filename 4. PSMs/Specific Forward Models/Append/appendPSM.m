@@ -9,6 +9,8 @@ classdef appendPSM < PSM
     methods
         % Constructor
         function obj = appendPSM
+            obj.addUnit = 0;
+            obj.multUnit = 1;
         end
         
         % Set the value of H
@@ -22,7 +24,8 @@ classdef appendPSM < PSM
         
         % Run the PSM. Simply return whatever value is input. Just a
         % placeholder.
-        function[Ye] = runForwardModel( ~, Ye, ~, ~)
+        function[Ye,R] = runForwardModel( ~, Ye, ~, ~)
+            R = [];
         end
     end
 end

@@ -79,7 +79,7 @@ gridSize(d+1) = nTime;
 rA = reshape( A(varDex,:), gridSize );
 
 % Get the dimension ordering
-dimID = [var.dimID, "DA_Time_Steps"];
+dimID = [var.dimID; "DA_Time_Steps"];
 
 % Add in metadata for the DA time steps
 meta.(dimID(end)) = (1:gridSize(end))';

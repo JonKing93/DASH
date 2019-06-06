@@ -19,7 +19,7 @@ dimID = getDimIDs;
 isdim = ismember(dims, dimID);
 if any( ~isdim )
     d = find( ~isdim, 1, 'first' );
-    error('%s is not a recognized dimension ID.', dim(d) );
+    error('%s is not a recognized dimension ID.', dims(d) );
 end
 
 end

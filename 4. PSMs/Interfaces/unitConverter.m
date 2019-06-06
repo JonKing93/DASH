@@ -49,7 +49,7 @@ classdef unitConverter < handle
             if ~isvector(obj.addUnit) || length(obj.addUnit)~=nEls
                 error('addUnit must be a vector with 1 element per sampling index (%0.f)', numel(obj.H));
             elseif ~isvector(obj.multUnit) || length(obj.multUnit)~=nEls
-                error('multUnit must be a vector 1 element per sampling index (%0.f)'
+                error('multUnit must be a vector with 1 element per sampling index (%0.f)');
             end
         end
         
