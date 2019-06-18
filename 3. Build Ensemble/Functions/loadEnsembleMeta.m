@@ -1,5 +1,5 @@
 function[ensMeta, design, ensSize] = loadEnsembleMeta( inArg )
-%% Loads metadata associated with a .ens file.
+%% Loads metadata associated with a .ens file or state design.
 %
 % [ensMeta, design, ensSize] = loadEnsembleMeta( file )
 % Builds the ensemble metadata associated with a .ens file.

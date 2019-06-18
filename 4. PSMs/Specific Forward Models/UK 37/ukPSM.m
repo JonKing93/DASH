@@ -126,8 +126,8 @@ classdef ukPSM < PSM
                 error('The "bayes" property is empty.');
             end
         end        
-        
-        
+
+
         % This gets the model estimates by running the UK37 forward model.
         function[uk,R] = runForwardModel( obj, SST, ~, ~ )
             

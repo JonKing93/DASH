@@ -34,8 +34,10 @@ bs=fnxtr(bs_b);
 %evaluate the mean value of the spline for your SST obs:
 mean_now=fnval(bs,ssts);
 %draw from the distribution:
-warning('UKPSM rand default');
+
+% Facilitates comparison of different methods.
 rng('default');
+
 uk=normrnd(mean_now,repmat(sqrt(bayes.tau2),1,length(ssts)));
 
 end

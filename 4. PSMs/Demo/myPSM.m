@@ -232,7 +232,7 @@ classdef myPSM < PSM
         % for this method, but the PSM interface requires that this method
         % accepts four inputs. We can use the tilde operator (~) as a
         % placeholder for inputs that we don't need for our function.
-        function[Ye, R] = runPSM( obj, M, ~, ~ )
+        function[Ye, R] = runForwardModel( obj, M, ~, ~ )
             
             % Run the PSM forward model via some function.
             [Ye, R] = myForwardModel( M );

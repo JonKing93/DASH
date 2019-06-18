@@ -46,12 +46,6 @@ classdef psmName < PSM
         %% Run the PSM
         function[Ye, R] = runForwardModel( obj, M, ~, ~ )
             
-            % Convert units
-            M = obj.convertUnits( M );
-            
-            % Bias correct
-            M = myBiasCorrection( M );
-            
             % Run the forward model
             Ye = myForwardModel( M, obj.someProp );
             

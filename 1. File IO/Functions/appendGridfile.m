@@ -12,11 +12,11 @@ function[] = appendGridfile( file, newData, gridDims, dim, newMeta )
 %
 % newData: A gridded data set. An N-dimensional numeric array. Must match
 %           the size of the pre-existing gridded data except along the
-%           appending dimension.
+%           appending dimension. It is recommended that fill values be NaN.
 %
 % gridDims: A list of dimension IDs indicating the order of dimensions in
 %           the gridded dataset. Either a cell vector of character vectors
-%           (cellstring), or a string vector. All fill values should be NaN
+%           (cellstring), or a string vector.
 %
 % dim: The name of the dimension along which to append the new data. Either
 %      a character vector or a string.
