@@ -9,8 +9,6 @@ classdef appendPSM < PSM
     methods
         % Constructor
         function obj = appendPSM
-            obj.addUnit = 0;
-            obj.multUnit = 1;
         end
         
         % Set the value of H
