@@ -1,10 +1,12 @@
 function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 %% Implements paleo data assimilation
 %
-% [Amean, Avar, Ye, R, update] = dash( M, D, R, F )
+% [Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F )
 % Runs a data assimilation using dynamic forward models and a joint update
-% scheme. Returns the updated ensemble mean, updated ensemble variance, and
-% forward model estimates. 
+% scheme. Returns the updated ensemble mean, updated ensemble variance, 
+% forward model estimates, R values used in each time step, a logical for
+% whether each proxy was used to update each time step, and the calibration
+% ratio for each proxy in each time step.
 % 
 % dash( ..., 'serial', true )
 % Runs a data assimilation using serial updates.
@@ -70,6 +72,8 @@ function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 %
 % update: A boolean array indicating which observations were used to update
 %         each time step. (nObs x nTime)
+%
+% calib: Calibration ratio for each proxy in each time step.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019

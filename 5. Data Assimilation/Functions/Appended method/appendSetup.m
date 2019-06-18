@@ -1,7 +1,7 @@
-function[M, F] = appendSetup( M, F )
+function[M, F, Yi] = appendSetup( M, F )
 %% Updates a model prior and PSM array for use with the appended DA method.
 %
-% [Ma, Fa] = appendSetup( M, F );
+% [Ma, Fa, Yi] = appendSetup( M, F );
 % Calculates Ye values, appends them to the end of a prior. Converts PSMs
 % to trivial "appendPSMs" that sample the appropriate appended value
 %
@@ -9,13 +9,17 @@ function[M, F] = appendSetup( M, F )
 %
 % M: A prior model ensemble. (nState x nEns)
 %
-% F: A cell vector of PSMs {nSite x 1}
+% F: A cell vector of PSMs {nObs x 1}
+%
+% Yi: The initial, appended Ye values. (nObs x 1)
 %
 % ----- Outputs -----
 %
-% Ma: The appended model. (nState + nSite x nEns)
+% Ma: The appended model. (nState + nObs x nEns)
 %
-% F: A set of "appendPSMs". {nSite x 1{
+% F: A set of "appendPSMs". {nObs x 1}
+%
+% Yi: The initial Ye values. (nObs x nEns)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -41,6 +45,9 @@ for d = 1:nObs
     F{d} = appendPSM;
     F{d}.getStateIndices( nState + d );
 end
+
+% Get the initial Ye values
+Yi = M( nState+(1:nObs), : );
 
 end
 
