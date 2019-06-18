@@ -1,4 +1,4 @@
-function[Amean, Avar, Ye, R, update, calib] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
+function[Amean, Avar, Ye, R, update, calib] = jointENSRF( M, D, R, F, w, yloc, meanOnly, postflate )
 %% Does data assimilation using the Ensemble square root method (ENSRF).
 % Runs all observations jointly. Does not use serial updates.
 
@@ -23,6 +23,9 @@ for d = 1:nObs
     % Run the PSM
     [Ye(d,:), R(d,hasObs), update(d,hasObs)] = getPSMOutput( F{d}, Mpsm, R(d,hasObs), NaN, d  );
 end
+
+% Apply the postflation factor
+M = inflateEnsemble( postflate, M );
 
 % Decompose the ensemble
 [Mmean, Mdev] = decomposeEnsemble(M);
