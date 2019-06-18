@@ -9,15 +9,16 @@ function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 % dash( ..., 'serial', true )
 % Runs a data assimilation using serial updates.
 %
-% dash( ..., 'serial', true, 'append', true )
-% Run serial updates using the appended Ye method. Ye values are
-% calculated for the initial model prior, appended to the state vector, and
-% updated through the Kalman Gain. Returns the Ye estimates from the
-% initial estimate (Yi), used for updating (Yu), and final estimate (Yf).
-%
 % dash( ... , 'inflate', inflate )
 % Specifies an inflation factor. The covariance of the model ensemble will
-% be multiplied by the inflation factor.
+% be multiplied by the inflation factor. Inflation is applied BEFORE
+% Ye values are generated, so forward models operate on a more variable
+% ensemble.
+%
+% dash( ..., 'postflate', postflate )
+% For joint updates only. Specifies an inflation factor to apply to the
+% model ensemble AFTER Ye values are generated. Increases the magnitude of
+% updates in the joint updating scheme.
 %
 % dash( ..., 'localize', {w, yloc} )
 % dash( ..., 'serial', true, 'localize', w )
@@ -39,7 +40,9 @@ function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 %
 % F: A cell vector of PSM objects. {nObs x 1}
 %
-% inflate: A scalar inflation factor. 
+% inflate: A scalar inflation factor.
+%
+% postflate: A scalar preflation factor.
 %
 % w: Model-estimate covariance localization weights. Applied to the Kalman
 %    numerator. Required for localization in both serial and joint update
@@ -74,37 +77,27 @@ function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 %% Setup 
 
 % Parse inputs
-[serial, append, inflate, localize, meanOnly] = parseInputs( varargin, {'serial','append','inflate','localize','meanOnly'}, ...
-                                                           {false, false, 1, [], false}, {[],[],[],[],[]} );
+[serial, inflate, postflate, localize, meanOnly] = parseInputs( varargin, {'serial','inflate','postflate','localize','meanOnly'}, ...
+                                                           {false, 1, 1, [], false}, {[],[],[],[],[]} );
                                         
 % Error check. Get default inflation and covariance localization if
 % unspecified
-[inflate, w, yloc] = setup( M, D, R, F, inflate, localize, serial, append, meanOnly );
+[inflate, postflate, w, yloc] = setup( M, D, R, F, inflate, postflate, localize, serial, meanOnly );
 
-% Apply the inflation factor
+% Apply the preflation factor
 M = inflateEnsemble( inflate, M );
-
-% Setup for the appended Ye method
-if append
-    [M, F] = appendSetup( M, F );
-end
 
 % Run a serial or jointly updating data assimilation
 if serial
     [Amean, Avar, Ye, R, update, calib] = serialENSRF( M, D, R, F, w );
 else
-    [Amean, Avar, Ye, R, update, calib] =  jointENSRF( M, D, R, F, w, yloc, meanOnly );
-end
-
-% Finish for the appened Ye method
-if append
-    [Amean, Avar] = unappendEnsemble( Amean, Avar, numel(F) );
+    [Amean, Avar, Ye, R, update, calib] =  jointENSRF( M, D, R, F, w, yloc, meanOnly, postflate );
 end
 
 end
 
 %% Error checking and default values
-function[inflate, w, yloc] = setup( M, D, R, F, inflate, localize, serial, append, meanOnly )
+function[inflate, postflate, w, yloc] = setup( M, D, R, F, inflate, postflate, localize, serial, meanOnly )
 
 % Check that M is a matrix of real, numeric value without NaN or Inf
 if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
@@ -146,20 +139,18 @@ for k = 1:nObs
     F{k}.reviewPSM;
 end
 
-%% Flags
+%% Serial / Mean only flags
 
 % Check that the true/false flags are scalar logicals
-flag = {serial, append, meanOnly};
-flagStr = {'serial','append','meanOnly'};
-for f = 1:3
+flag = {serial, meanOnly};
+flagStr = {'serial','meanOnly'};
+for f = 1:numel(flag)
     if ~isscalar( flag{f} ) || ~islogical( flag{f} )
         error('The value following the %s flag must be a scalar logical.', flagStr{f} );
     end 
 end
 
-if ~serial && append
-    error('Cannot use the appended method with joint updates.')
-elseif serial && meanOnly
+if serial && meanOnly
     error('The serial update scheme cannot only update the ensemble mean. It must also update the deviations.');
 end
 
@@ -167,10 +158,16 @@ end
 %% Inflation
 
 % Inflation factor
-if isempty(inflate)
-    inflate = 1;
-elseif ~isscalar(inflate) || inflate<=0 || isinf(inflate) || isnan(inflate) || ~isnumeric(inflate)
+if ~isscalar(inflate) || inflate<=0 || isinf(inflate) || isnan(inflate) || ~isnumeric(inflate)
     error('The inflation factor must be a scalar greater than 0. It must be real, numeric, finite and not NaN.');
+end
+
+% Preflation factor
+if ~isscalar(postflate) || postflate<=0 || isinf(postflate) || isnan(postflate) || ~isnumeric(postflate)
+    error('The postflation factor must be a scalar greater than 0. It must be real, numeric, finite and not NaN.');
+
+elseif postflate ~= 1 && serial
+    error('The "postflate" option is only possible for joint updates.');
 end
 
 
