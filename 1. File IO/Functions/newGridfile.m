@@ -2,7 +2,7 @@ function[] = newGridfile( file, gridData, gridDims, appendDims, specs, varargin 
 %% Creates a new gridded data (.grid) file. This is a NetCDF4 file
 % built to interface with Dash.
 %
-% newGridfile( file, gridData, gridDims, specs, dimName1, dimMeta1, ..., dimNameN, dimMetaN )
+% newGridfile( file, gridData, gridDims, appendDims, specs, dimName1, dimMeta1, ..., dimNameN, dimMetaN )
 % Creates a new .grid file storing gridded data and associated metadata.
 %
 % ----- Inputs -----
