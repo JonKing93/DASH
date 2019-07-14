@@ -52,14 +52,26 @@ classdef vstempPSM < PSM
             elseif obj.T2 < obj.T1
                 error('T2 must be greater than T1.');
             end
+            
+            if isempty(obj.intwindowArg) && numel(obj.H)~=12
+                error('There must be 12 state indices.');
+            elseif ~isempty(obj.intwindowArg) && numel(obj.H)~=numel(obj.intwindowArg{2})
+                error('There must be one state index for each month in the integration window (intwindow).');
+            end
         end
         
         
         % Run the PSM
-        function[Ye] = runForwardModel( obj, T, ~, ~ )
+        function[Ye,R] = runForwardModel( obj, M, ~, ~ )
             
-            % Run the moel
+            % Infill missing months with NaN
+            T = NaN( 12, size(M,2) );
+            T( obj.intwindowArg{2}, : ) = M;
+            
+            % Run the model
             Ye = vstemp( obj.lat, obj.T1, obj.T2, T, obj.intwindowArg{:} );
+            
+            R = NaN;
         end
         
     end
