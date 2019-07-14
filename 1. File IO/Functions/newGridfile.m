@@ -24,7 +24,8 @@ function[] = newGridfile( file, gridData, gridDims, appendDims, specs, varargin 
 %
 % specs: A scalar structure whose fields contain non-dimensional metadata 
 %        for the gridded data set. These are equivalent to variable
-%        attributes in a NetCDF4 file.
+%        attributes in a NetCDF4 file. May include any fields. All metadata
+%        must be valid NetCDF4 data types with a single row. (See listnctypes.m)
 %
 % dimNameN: The name of a dimension. Either a character vector or a string.
 %

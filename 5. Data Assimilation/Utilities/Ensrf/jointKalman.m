@@ -16,7 +16,8 @@ if strcmp(type, 'Knum')
     unbias = 1 / (size(Ydev,2) - 1);
     
     % Get the numerator (localized covariance of M with Ye
-    Knum = unbias .* w .* (Mdev * Ydev');
+    Knum = unbias .* (Mdev * Ydev');
+    Knum = Knum .* w;
     
     % Return the output
     varargout = {Knum};

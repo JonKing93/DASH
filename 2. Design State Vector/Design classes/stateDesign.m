@@ -4,6 +4,14 @@
 % design = stateDesign( designName )
 % Initializes a state vector design with no variables and an identifying
 % name.
+%
+% ----- Inputs -----
+%
+% designName: A character vector or string.
+%
+% ----- Outputs -----
+%
+% design: An empty stateDesign object.
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019

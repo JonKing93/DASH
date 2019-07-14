@@ -2,7 +2,7 @@ function[value] = checkMetadata( value, nRows, dim )
 
 % Check that the metadata is an allowed type
 if ~isnctype( value )
-    error('The %s metadata is not an allowed NetCDF type. Please see listnctypes.m for the allowed data types.', dimID(d));
+    error('The %s metadata is not an allowed NetCDF type. Please see listnctypes.m for the allowed data types.', dim);
 elseif ~ismatrix( value )
     error('The %s metadata is not a matrix.', dim );
 elseif any(isnan(value(:)))

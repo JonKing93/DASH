@@ -12,7 +12,8 @@ function[design] = copyIndices( design, fromVar, toVars )
 % fromVar: The template variable. The indices in the template variable will
 %       be copied into the other variables.
 %
-% toVars: The variables into which indices will be copied.
+% toVars: The variables into which indices will be copied. Either a string
+%         or cellstring array.
 %
 % ----- Outputs -----
 %

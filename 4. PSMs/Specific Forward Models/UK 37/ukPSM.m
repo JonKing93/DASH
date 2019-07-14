@@ -29,7 +29,7 @@
 %
 % ensMeta: Metadata for an ensemble
 %
-% sstName: The name of the SST variable
+% sstName: The name of the SST variable.
 %
 % dimName: A dimension name, a string.
 %
@@ -105,6 +105,7 @@ classdef ukPSM < PSM
         % should be used to run the forward model for a particular uk37
         % site.
         function[] = getStateIndices( obj, ensMeta, sstName, varargin ) 
+            sstName = string(sstName);
             obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, varargin{:} );
         end
         

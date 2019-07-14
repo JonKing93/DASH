@@ -23,7 +23,7 @@ for s = 1:nSeq
 
     % For each ensemble member
     for mc = 1:nEns
-        mc
+        
         % Don't bother loading values for ensemble members that already
         % contain NaN values.
         if ~colnan(mc)

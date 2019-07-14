@@ -25,7 +25,7 @@ function[Amean, Avar, Ye, R, update, calib] = dash( M, D, R, F, varargin )
 % dash( ..., 'localize', {w, yloc} )
 % dash( ..., 'serial', true, 'localize', w )
 % Specifies a covariance localization to use in data assimilation for the 
-% joint or serial updating schemes. See the covLocalization.m function.
+% joint or serial updating schemes. (See the covLocalization.m function.)
 %
 % dash( ..., 'meanOnly', true )
 % Only calculates the updated ensemble mean for joint updates. May improve

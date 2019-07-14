@@ -7,6 +7,10 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, design, ocnDex, gridSize,
 % [rA, dimID] = regridTripolar( ..., 'nosqueeze' )
 % Preserves all singleton dimensions.
 %
+% *** Known Issues: At this point in time, regridTripolar does not support
+% metadata return and is only functional for state vectors that contain
+% full spatial grids. An update is in progress...
+%
 % ----- Inputs -----
 %
 % A: A state vector. Typically the updated ensemble mean or variance. (nState x 1)
@@ -35,17 +39,17 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, design, ocnDex, gridSize,
 
 % Check that gridsize is allowed
 if ~islogical(ocnDex) || ~isvector(ocnDex)
-    error('ocnDex must be a logical vector the size of the tripolar dimension.');
+    error('ocnDex must be a logical vector the length of the tripolar dimension.');
 elseif numel(gridSize)~=2 || any(gridSize<1) || any(mod(gridSize,1)~=0) || ...
         prod(gridSize)~=numel(ocnDex)
     error('gridSize must be a 2-element vector with the size of the original tripolar spatial grid.');
 end
 
 % First, regrid the analysis
-[A, dimID] = regridAnalysis( A, var, ensMeta, design, varargin{:} );
+[A, ~, dimID] = regridAnalysis( A, var, ensMeta, design, varargin{:} );
 
 % Get the tripole dimension
-[~,~,triDim] = getKnownIDs;
+[~,~,~,~,~,~,~,~,triDim] = getDimIDs;
 d = find( strcmp(dimID, triDim) );
 
 % Preallocate the full grid including land

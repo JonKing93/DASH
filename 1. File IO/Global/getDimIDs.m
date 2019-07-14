@@ -1,7 +1,11 @@
 function[dimID, specs, varName, lonDim, latDim, levDim, timeDim, runDim, triDim] = getDimIDs
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
 %
+% dimID = getDimIDs
+% Returns a list of data dimensions.
+%
 % [dimID, specs, varName, lonDim, latDim, levDim, timeDim, runDim, triDim] = getDimIDs
+% Returns a list of data dimensions and all unique names used by Dash.
 
 % Variable specifications. These are non-gridded metadata.
 specs = "specs";

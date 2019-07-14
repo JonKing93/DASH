@@ -28,7 +28,8 @@ nEns = size(Ydev,2);
 unbias = 1 / (nEns-1);
 
 % Get the numerator (localized covariance of M with Ye)
-Knum = w .* unbias .* (Mdev * Ydev');
+Knum = unbias .* (Mdev * Ydev');
+Knum = Knum .* w;
 
 % Get the denominator. This is the uncertainty in the system. It is the Ye
 % error covariance + observation uncertainty.

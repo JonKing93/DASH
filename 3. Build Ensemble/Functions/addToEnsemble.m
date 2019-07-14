@@ -15,7 +15,7 @@ function[] = addToEnsemble( file, nNew )
 % Jonathan King, University of Arizona, 2019
 
 % Error check the file. Get a matfile object
-m = ensFileCheck( file, 'write' );
+m = ensFileCheck( file, 'add' );
 
 % Ensure that the number of new ensemble members is a positive integer
 if ~isnumeric(nNew) || ~isscalar(nNew) || nNew < 1 || mod(nNew,1)~=0
@@ -29,7 +29,7 @@ design = m.design;
 reviewDesign( design );
 
 % Get the new draws
-newDesign = drawEnsemble( design, nEns, false );
+newDesign = drawEnsemble( design, nNew, false );
 
 % Get the size of the original ensemble
 ensSize = m.ensSize;
