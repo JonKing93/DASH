@@ -13,7 +13,7 @@ for dim = 1:numel(ensDim)
     ensDex = var.drawDex{d}(draw);
     
     % Get the start index for each load
-    loadNC(1,d) = var.indices{d}(ensDex) + var.seqDex{d}(seqDex(dim));
+    loadNC(1,d) = var.indices{d}(ensDex) + var.seqDex{d}(seqDex(dim)) + min(var.meanDex{d});
 end
 
 % Load the data

@@ -39,7 +39,7 @@ for dim = 1:numel(ensID)
     
     % Throw an error if no metadata remains
     if isempty(meta)
-        overlapError(design, cv, dim);
+        overlapError(design, cv, ensID(dim));
     end
 
     % Then run through each coupled variable
