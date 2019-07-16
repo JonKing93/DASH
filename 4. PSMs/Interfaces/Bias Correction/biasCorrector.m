@@ -9,7 +9,7 @@ classdef biasCorrector < handle
         bias = struct();    % A structure to hold bias-correction args
     end
     
-    % Constructor and interface method.
+    %% Constructor and interface method.
     methods
         
         % This is the placeholder biasCorrector constructor. It is 
@@ -27,18 +27,17 @@ classdef biasCorrector < handle
             if strcmp( obj.biasType, 'none' )
                 return;
                 
-            % Use an npdft scheme if specified
-            elseif strcmp( obj.biasType, 'mvn-npdft' )
-                M = obj.mvnNpdftCorrector( M );
-                
             % Renormalization
             elseif strcmp( obj.biasType, 'renorm' )
                 M = obj.renormCorrector( M );
                 
+            % Mean adjustment
+            elseif strcmp( obj.biasType, 'mean' )
+                M = obj.meanCorrector( M );
+                
             % A demo for future bias-correction development
             elseif strcmp( obj.biasType, 'some other corrector')
-                M = obj.someOtherCorrector( M );
-                
+                M = obj.someOtherCorrector( M );  
             end
         end
         
@@ -52,13 +51,13 @@ classdef biasCorrector < handle
             if strcmp( obj.biasType, 'none' )
                 return;
                 
-            % Check on an mvn-npdft scheme
-            elseif strcmp( obj.biasType, 'mvn-npdft' )
-                obj.checkMvnNpdft;
-                
             % Error check renormalization
             elseif strcmp( obj.biasType, 'renorm' )
                 obj.checkRenorm;
+                
+            % Error check the mean adjuster
+            elseif strcmp( obj.biasType, 'mean' )
+                obj.checkMean;
                 
             % A demo for future bias-correction development
             elseif strcmp( obj.biasType, 'some other corrector' )
@@ -70,74 +69,41 @@ classdef biasCorrector < handle
         end
         
     end
-     
-
-    %% This is the part of the code that implements N-pdft    
+    
+    %% This implements mean adjustment
     methods
         
-        % This function sets the values needed for a static N-pdft map. It
-        % also specifies that the PSM should use an npdft bias correction.
-        function[] = useMvnNpdftCorrector( obj, Xt0, Xs0, R, normT, normS, transform, params )
+        % This activates the mean adjuster
+        function[] = useMeanCorrector( obj, addConstant )
+  
+            % Set the value for mean adjustment
+            obj.bias.addConstant = addConstant(:);
             
-            % Ensure there are the correct number of inputs
-            if nargin ~= 7
-                error('There must be 7 input arguments.');
-            end
-            
-            % Empty the bias-correction structure of any previous values
-            obj.bias = struct();
-            
-            % Add a field for each input
-            obj.bias.Xt0 = Xt0;
-            obj.bias.Xs0 = Xs0;
-            obj.bias.R = R;
-            obj.bias.normT = normT;
-            obj.bias.normS = normS;
-            obj.bias.transform = transform;
-            obj.bias.params = params;
-            
-            % Specify that the PSM is using an MVN-NPDFT corrector
-            obj.biasType = "mvn-npdft";
+            % Specify to use a mean adjustment
+            obj.biasType = "mean";
         end
         
-        % This function applies a static npdft mapping.
-        function[M] = mvnNpdftCorrector( obj, M )
-            
-            % Flip the ensemble to (nEns x nVar)
-            M = M';
-            
-            % Transform the variables to the MVN distributions used in the
-            % calibration period.
-            M = mvnTransform( M, obj.bias.transform, obj.bias.params );
-            
-            % Apply the static npdft mapping.
-            M = npdft_static( M, obj.bias.Xt0, obj.bias.Xs0, obj.bias.R, ...
-                                 obj.bias.normT, obj.bias.normS );
-                             
-            % Apply the inverse transforms
-            M = invMvnTransform( M, obj.bias.transform, obj.bias.params );
-            
-            % Flip back to (nVar x nEns)
-            M = M';
-        end
-            
-        % This error checks the MVN-NPDFT bias corrector args
-        function[] = checkMvnNpdft( obj )
-            
-            % Do some error checking
-            % ...
+        % This actually does the adjustment
+        function[M] = meanCorrector( obj, M )
+            % Adjust the mean
+            M = M + obj.bias.addConstant;
         end
         
+        % This error checks the additive constant
+        function[] = checkMean( obj )
+            
+            % This needs to be written
+        end
     end
-    
+       
     %% This implements a renormalization bias-corrector
     methods
         
         % A function that specifies to use renormalization bias-correction
-        function[] = useRenormCorrector( obj, slope, intercept )
+        function[] = useRenormCorrector( obj, timesConstant, addConstant )
             obj.bias = struct();
-            obj.bias.slope = slope(:);
-            obj.bias.intercept = intercept(:);
+            obj.bias.timesConstant = timesConstant(:);
+            obj.bias.addConstant = addConstant(:);
             obj.biasType = "renorm";
         end
         
@@ -145,10 +111,10 @@ classdef biasCorrector < handle
         function[M] = renormCorrector( obj, M )
             
             % Apply the multiplicative constant
-            M = M .* obj.bias.slope;
+            M = M .* obj.bias.timesConstant;
             
             % Apply the additive constant
-            M = M + obj.bias.intercept;
+            M = M + obj.bias.addConstant;
         end
         
         % A function to error check renormalization
