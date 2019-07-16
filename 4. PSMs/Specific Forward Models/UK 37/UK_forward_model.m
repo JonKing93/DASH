@@ -39,5 +39,7 @@ mean_now=fnval(bs,ssts);
 rng('default');
 
 uk=normrnd(mean_now,repmat(sqrt(bayes.tau2),1,length(ssts)));
-
+%any uk values outside 0 to 1 are forced to be in that range - J.T. edit 7/15/19
+uk(uk>1)=1;
+uk(uk<0)=0;
 end
