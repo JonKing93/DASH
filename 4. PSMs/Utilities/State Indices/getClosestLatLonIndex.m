@@ -75,12 +75,24 @@ for v = 1:nVar
         
         % Restrict in the appropriate dimensions
         for d = 1:nDim
+            
+            % Convert the ensemble metadata for the dimension out of a cell
+            try
+                searchMeta = cell2mat( ensMeta.(dimID(d))(stateDex) );
+            catch
+                error('Could not convert ensemble metadata to array in getClosestLatLonIndex.m');
+            end
                         
             % Find the indices of restriction values for the dimension
-            resDex = findincell( dimVal{d}(s), ensMeta.(dimID(d))(stateDex) );
+            [~, resDex] = intersect( searchMeta, dimVal{d}(s), 'rows', 'stable');
             
             % Restrict the state indices
             stateDex = stateDex( resDex );
+            
+            % Ensure not empty
+            if isempty(stateDex)
+                error('There is no metadata matching the restriction values in getClosestLatLonIndex.m');
+            end
         end
         
         % Determine the closest lat-lon value
