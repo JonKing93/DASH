@@ -85,6 +85,6 @@ design.var(v).nanflag{d} = nanflag;
 % Return ensemble dimension properties to empty.
 design.var(v).seqDex{d} = [];
 design.var(v).meanDex{d} = [];
-design.var(v).ensMeta{d} = [];
+design.var(v).seqMeta{d} = [];
 
 end
