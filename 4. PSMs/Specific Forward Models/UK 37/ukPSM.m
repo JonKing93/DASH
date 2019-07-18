@@ -35,7 +35,17 @@
 %
 % dimPoints: The metadata associated with the specific dimensional points.
 %            Each row is treated as one point of metadata.
-
+% %define polygons for UK37
+% med poly
+% poly_m_lat=[36.25; 47.5; 47.5; 30; 30];
+% poly_m_lon=[-5.5; 3; 45; 45; -5.5];
+% %natl poly
+% poly_a_lat=[48; 70; 70; 62.5; 58.2; 48];
+% poly_a_lon=[-55; -50; 20; 10; -4.5; -4.5];
+% %npac poly
+% poly_p_lat=[45; 70; 70; 52.5; 45];
+% poly_p_lon=[135; 135; 250; 232; 180];
+% inpolygon(proxylons(s),proxylats(s),poly_m_lon,poly_m_lat)
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
