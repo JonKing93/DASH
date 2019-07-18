@@ -55,9 +55,16 @@ if ~isequal( gridSize(~d), newSize(~d) )
            dimID(bad), newSize(bad), gridSize(bad) );
 end
 
-% Check that the new metadata is acceptable
+%% Metadata
+
+% Check that the new metadata is a valid format
+newMeta = checkMetadata( newMeta, newSize(d), 'new');
+
+% Check that the new metadata can be appended to the old
 oldMeta = ncread(file, dim);
-checkAppendMetadata( newMeta, oldMeta, newSize(d) );
+checkAppendMetadata( newMeta, oldMeta, newSize(d), dim );
+
+%% Append
 
 % Get the starting index to start writing in each dimension
 sGrid = ones( size(dimID ) );
@@ -85,9 +92,10 @@ function[gridDims, newMeta] = setup( file, gridData, gridDims, dim, newMeta )
     % Error check and return the writable matfile object
     fileCheck( file );
     
-    % Check the gridData is numeric
-    if ~isnumeric(gridData)
-        error('gridData must be a numeric array.');
+    % Check that gridData is the same datatype as the exisitng array
+    gridInfo = ncinfo(file,'gridData');
+    if ~isequal( class(gridData), gridInfo.Datatype )
+        error('The data type of the new gridded data (%s) is not the same as the data type in the .grid file (%s).', class(gridData), gridInfo.Datatype );
     end
 
     % Check the grid dimensions are allowed and non-duplicate
@@ -102,6 +110,4 @@ function[gridDims, newMeta] = setup( file, gridData, gridDims, dim, newMeta )
         error('The %s dimension is not enabled for appending in %s. To append along this dimension, you will need to create a new .grid file.', dim, file );
     end
     
-    % Check that the new metadata is allowed
-    newMeta = checkMetadata( newMeta, length(newMeta), 'new');
 end

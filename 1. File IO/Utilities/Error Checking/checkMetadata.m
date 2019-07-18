@@ -1,8 +1,13 @@
 function[value] = checkMetadata( value, nRows, dim )
+%% Checks that metadata is a valid format. That is: a valid NetCDF4 data type,
+% a matrix, cannot contain NaN, and cannot contain duplicate values.
+%
+% Also checks that the number of rows is correct. If a row vector with the
+% exact number of elements, converts to a column vector.
 
 % Check that the metadata is an allowed type
 if ~isnctype( value )
-    error('The %s metadata is not an allowed NetCDF type. Please see listnctypes.m for the allowed data types.', dim);
+    error('The %s metadata is a "%s" datatype, which is not allowed. Please see listnctypes.m for the allowed data types.', dim, class(value));
 elseif ~ismatrix( value )
     error('The %s metadata is not a matrix.', dim );
 elseif any(isnan(value(:)))
