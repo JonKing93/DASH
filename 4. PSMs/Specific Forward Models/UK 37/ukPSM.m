@@ -35,17 +35,7 @@
 %
 % dimPoints: The metadata associated with the specific dimensional points.
 %            Each row is treated as one point of metadata.
-% %define polygons for UK37
-% med poly
-% poly_m_lat=[36.25; 47.5; 47.5; 30; 30];
-% poly_m_lon=[-5.5; 3; 45; 45; -5.5];
-% %natl poly
-% poly_a_lat=[48; 70; 70; 62.5; 58.2; 48];
-% poly_a_lon=[-55; -50; 20; 10; -4.5; -4.5];
-% %npac poly
-% poly_p_lat=[45; 70; 70; 52.5; 45];
-% poly_p_lon=[135; 135; 250; 232; 180];
-% inpolygon(proxylons(s),proxylats(s),poly_m_lon,poly_m_lat)
+%
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
@@ -56,21 +46,6 @@ classdef ukPSM < PSM
     % ukPSM object. The actual values of the properties can be different
     % for every ukPSM object.
     properties
-        
-        bayes;
-        % This is the bayesian posterior distribution used to run the uk37
-        % forward model.
-        %
-        % The original forward model loaded this distribution from a file each
-        % time it ran. However, since the forward model ALWAYS uses 
-        % the same value, I removed it from the forward model, and placed it in
-        % the PSM object. This way, the PSM can load the posterior once, and
-        % then use that distribution for every assimilation time step.
-        %
-        % This is mostly just limiting the number of times we need to load
-        % from a file, but it has the added benefit that we can load from
-        % different files to use different posteriors without altering any
-        % of the code in the actual forward model.
         
         bayesFile = 'bayes_posterior_v2.mat';
         % This is the file that bayesian posterior is loaded from. The
@@ -102,7 +77,7 @@ classdef ukPSM < PSM
             end
             
             % Load the posterior
-            obj.bayes = load( obj.bayesFile );
+            % obj.bayes = load( obj.bayesFile );
             
             % Set the coordinates
             obj.coord = [lat lon];
@@ -114,9 +89,11 @@ classdef ukPSM < PSM
         % This determines the indices of elements in a state vector that
         % should be used to run the forward model for a particular uk37
         % site.
-        function[] = getStateIndices( obj, ensMeta, sstName, varargin ) 
+        function[] = getStateIndices( obj, ensMeta, sstName, monthName, varargin ) 
             sstName = string(sstName);
-            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, varargin{:} );
+             % Get the time dimension
+            [~,~,~,~,~,~,timeID] = getDimIDs;
+            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, timeID, monthName, varargin{:} );
         end
         
         
@@ -128,31 +105,53 @@ classdef ukPSM < PSM
             
             % This forward model only needs 1 variable - SST at the closest
             % site. So check that H is a scalar
-            if ~isscalar( obj.H )
-                error('H must be a scalar.');
+            if ~isvector( obj.H ) || length(obj.H)~=12
+                error('H is the wrong size.');
             end
             
             % Check that the bayesian parameters exist
-            if isempty(obj.bayes)
-                error('The "bayes" property is empty.');
+            if isempty(obj.bayesFile)
+                error('Missing Bayesian parameters file.');
             end
         end        
 
 
         % This gets the model estimates by running the UK37 forward model.
-        function[uk,R] = runForwardModel( obj, SST, ~, ~ )
+        function[uk,R] = runForwardModel( obj, M, ~, ~ )
+            % Polygons for seasonal areas
+            % Mediterranean polygon: Nov-May
+            poly_m_lat=[36.25; 47.5; 47.5; 30; 30];
+            poly_m_lon=[-5.5; 3; 45; 45; -5.5];
+            % North Atlantic polygon: Aug-Oct
+            poly_a_lat=[48; 70; 70; 62.5; 58.2; 48];
+            poly_a_lon=[-55; -50; 20; 10; -4.5; -4.5];
+            % North Pacific polygon: Jun-Aug
+            poly_p_lat=[45; 70; 70; 52.5; 45];
+            poly_p_lon=[135; 135; 250; 232; 180];
             
+            if inpolygon(obj.coord(2),obj.coord(1),poly_m_lon,poly_m_lat)
+                ind = [1 2 3 4 5 11 12];             
+            elseif inpolygon(obj.coord(2),obj.coord(1),poly_a_lon,poly_a_lat)
+                ind = [8 9 10];
+            elseif   inpolygon(obj.coord(2),obj.coord(1),poly_p_lon,poly_p_lat)
+                ind = [6 7 8];
+            else
+                ind = (1:12)';
+            end
+                SST = mean(M(ind',:),1);
             % Run the forward model. Output is 1500 possible estimates for
             % each ensemble member (1500 x nEns)
-            uk = UK_forward_model( SST, obj.bayes );
+            uk = UK_forward( SST, obj.bayesFile );
             
             % Estimate R from the variance of the model for each ensemble
             % member. (scalar)
-            R = mean( var(uk,[],1), 2);
+            R = mean( var(uk,[],2), 1);
             
             % Take the mean of the 1500 possible values for each ensemble
             % member as the final estimate. (1 x nEns)
-            uk = mean(uk,1);
+            uk = mean(uk,2);
+            % transpose for Ye
+            uk = uk';
         end
     end
 end

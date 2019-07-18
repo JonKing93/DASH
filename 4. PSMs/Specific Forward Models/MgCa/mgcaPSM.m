@@ -120,6 +120,7 @@ classdef mgcaPSM < PSM
             % Take the mean of the 1500 possible values for each ensemble
             % member as the final estimate. (1 x nEns)
             mg = mean(mg,2);
+            % transpose for Ye
             mg = mg';
         end
     end
