@@ -84,7 +84,7 @@ for v = 1:nVar
             end
                         
             % Find the indices of restriction values for the dimension
-            [~, resDex] = intersect( searchMeta, dimVal{d}(s), 'rows', 'stable');
+            resDex = ismember( searchMeta, dimVal{d}(s,:), 'rows' );
             
             % Restrict the state indices
             stateDex = stateDex( resDex );
