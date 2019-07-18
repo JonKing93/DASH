@@ -73,7 +73,14 @@ if ~islogical(overlap) || ~isscalar(overlap)
     error('Overlap must be a logical scalar.');
 end
 
-% Ensemble metadata
+%% Ensemble metadata
+
+% Ensure that the metadata is an allowed type
+if ~ischar(ensMeta) && ~islogical(ensMeta) && ~isnumeric(ensMeta) && ~iscellstr(ensMeta) && ~isstring(ensMeta)
+    error('Ensemble metadata must be a numeric, char, string, or cellstring data type.');
+elseif any(isnan(ensMeta))
+    error('Ensemble metadata may not contain NaN.');
+end
 
 % If metadata as provided, and is a row vector with the number of sequence
 % elements, convert to column.
@@ -108,13 +115,14 @@ else
     end
 end
 
+% Convert char or cellstring metadata to string to allow faster sorting.
+if ischar(ensMeta) || iscellstr(ensMeta)                      %#ok<ISCLSTR>
+    ensMeta = string(ensMeta);
+end
+
 % Ensure that all ensemble metadata is unique
-for k = 1:size(ensMeta,1)
-    for j = k+1:size(ensMeta,1)
-        if isequaln( ensMeta(k,:), ensMeta(j,:) )
-            error('The ensemble metadata contains duplicate values.' );
-        end
-    end
+if size(ensMeta,1) ~= size( unique(ensMeta,'rows'), 1 )
+    error('The ensemble metadata contains duplicate values.');
 end
 
 %% Coupler
