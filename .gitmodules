@@ -1,0 +1,3 @@
+[submodule "4. PSMs/Specific Forward Models/MgCa/BAYMAG"]
+	path = 4. PSMs/Specific Forward Models/MgCa/BAYMAG
+	url = https://github.com/jesstierney/BAYMAG
