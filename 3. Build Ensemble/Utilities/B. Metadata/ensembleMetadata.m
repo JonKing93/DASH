@@ -28,8 +28,8 @@ meta = initializeMeta( design, nState );
 for v = 1:numel(design.var)
     var = design.var(v);
     
-    % Set the value of the variable name metadata
-    meta.var( varDex{v} ) = var.name;
+    % Record the index limits
+    meta.varLim(v,:) = [min(varDex{v}), max(varDex{v})];
     
     % Get the number of elements for the variable
     nEls = prod( varDim(v,:) );
@@ -46,7 +46,7 @@ for v = 1:numel(design.var)
             
         % If an ensemble dimension, get metadata from the ensemble metadata
         else
-            ensMeta = var.ensMeta{d};
+            ensMeta = var.seqMeta{d};
             
             % If the ensemble metadata is empty, use NaN
             if isempty(ensMeta)
@@ -56,12 +56,9 @@ for v = 1:numel(design.var)
     
         % If taking a mean along a state dimension
         if var.takeMean(d) && var.isState(d)
-
-            % Place the metadata collection in a cell (unless already a
-            % scalar cell).
-            if ~iscell(ensMeta) || size(ensMeta,1)>1
-                ensMeta = {ensMeta};
-            end
+            
+            % Propagate the metadata collection along the third dimension
+            ensMeta = permute(ensMeta, [3 2 1]);
 
             % Replicate over the set of all indices
             ensMeta = repmat( ensMeta, [nEls, 1]);
@@ -72,14 +69,10 @@ for v = 1:numel(design.var)
             % Subscript index each metadata value.
             ensMeta = ensMeta( subDex(:,d), : );
             
-            % Convert to cell if not already. Group metadata columns
-            if ~iscell(ensMeta)
-                ensMeta = num2cell(ensMeta, 2);
-            end
         end
         
         % Add to ensemble metadata
-        meta.(var.dimID(d))(varDex{v}) = ensMeta;
+        meta.var(v).(var.dimID(d)) = ensMeta;
     end
 end
 
