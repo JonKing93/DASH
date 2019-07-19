@@ -25,13 +25,15 @@ classdef mgcaPSM < PSM
         GrowthSeas = [3.6 29.2; 22.5 31.9; 6.7 21.1; -0.9 15.3; 20.2 30.6; -5 50; -5 50];
         %names of allowable species
         SpeciesNames = {'bulloides','ruber','incompta','pachy','sacculifer','all','all_sea'};
+        %string array of Bayesian parameters. These are the default values.
+        bayes = ["pooled_model_params.mat";"pooled_sea_model_params.mat";"species_model_params.mat"];
     end
     
     methods
         % Constructor. This creates an instance of a PSM
         function obj = mgcaPSM( lat, lon, pH, Omega, Clean, Species, varargin )
             % Get optional inputs
-            [age, sw, pmean, pstd] = parseInputs(varargin, {'Age','SeaCorr','PriorMean','PriorStd'}, {[],[],[],[]}, {[],[],[],[]});
+            [age, sw, pmean, pstd, bayes] = parseInputs(varargin, {'Age','SeaCorr','PriorMean','PriorStd','Bayes'}, {[],[],[],[],[]}, {[],[],[],[],[]});
             
             % Set the coordinates
             obj.coord = [lat lon];
@@ -55,6 +57,9 @@ classdef mgcaPSM < PSM
             end
             if ~isempty(pstd)
                 obj.PriorStd = pstd;
+            end
+            if ~isempty(bayes)
+                obj.bayes = bayes;
             end
         end 
         % Get State Indices
@@ -111,7 +116,7 @@ classdef mgcaPSM < PSM
             SSS=mean(M(gots_t+12,:),1);
             % Run the forward model. Output is 1500 possible estimates for
             % each ensemble member (nEns x 1000)
-            mg = baymag_forward(obj.Age,SST,obj.Omega,SSS,obj.pH,obj.Clean,obj.Species,obj.SeaCorr,obj.PriorMean,obj.PriorStd);
+            mg = baymag_forward(obj.Age,SST,obj.Omega,SSS,obj.pH,obj.Clean,obj.Species,obj.SeaCorr,obj.PriorMean,obj.PriorStd,obj.bayes);
             
             % Estimate R from the variance of the model for each ensemble
             % member. (scalar)
