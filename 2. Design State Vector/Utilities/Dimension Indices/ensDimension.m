@@ -78,7 +78,7 @@ end
 % Ensure that the metadata is an allowed type
 if ~ischar(seqMeta) && ~islogical(seqMeta) && ~isnumeric(seqMeta) && ~iscellstr(seqMeta) && ~isstring(seqMeta)
     error('Sequence metadata must be a numeric, char, string, or cellstring data type.');
-elseif any(isnan(seqMeta))
+elseif isnumeric(seqMeta) && any(isnan(seqMeta))
     error('Sequence metadata may not contain NaN.');
 elseif ~ismatrix(seqMeta)
     error('Sequence metadata must be a matrix.');
