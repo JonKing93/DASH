@@ -31,20 +31,20 @@ for d = 1:numel(var.dimID)
             error('The %s dimension of variable %s has sequence indices, but it is a state dimension.', var.dimID(d), var.name );
             
         % And that ensemble metadata is empty
-        elseif ~isempty( var.ensMeta{d} )
-            error('The %s dimension of variable %s has ensemble metadata, but it is a state dimension.', var.dimID(d), var.name );
+        elseif ~isempty( var.seqMeta{d} )
+            error('The %s dimension of variable %s has sequence metadata, but it is a state dimension.', var.dimID(d), var.name );
         end
         
     % If an ensemble dimension
     else
         
-        % Empty ensemble metadata is only permitted for no sequences
-        if isempty( var.ensMeta{d} ) && numel(var.seqDex{d})>1
-            error('The ensemble metadata for the %s dimension of variable %s is empty.', var.dimID(d), var.name );
+        % Empty sequence metadata is only permitted for no sequences
+        if isempty( var.seqMeta{d} ) && numel(var.seqDex{d})>1
+            error('The sequence metadata for the %s dimension of variable %s is empty.', var.dimID(d), var.name );
         
-        % and there should be one row of ensemble metadata for each sequence index
-        elseif size( var.ensMeta{d}, 1) ~= numel(var.seqDex{d})
-            error('The ensemble metadata for the %s dimension of variable %s does not have one row for each sequence index.', var.dimID(d), var.name);
+        % and there should be one row of sequence metadata for each sequence index
+        elseif size( var.seqMeta{d}, 1) ~= numel(var.seqDex{d})
+            error('The sequence metadata for the %s dimension of variable %s does not have one row for each sequence index.', var.dimID(d), var.name);
         end
         
         % Check the sequence indices are allowed

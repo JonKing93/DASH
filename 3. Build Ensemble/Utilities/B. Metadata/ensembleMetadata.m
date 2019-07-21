@@ -44,7 +44,7 @@ for v = 1:numel(design.var)
         if var.isState(d)
             ensMeta = var.meta.(var.dimID(d))( var.indices{d}, : );
             
-        % If an ensemble dimension, get metadata from the ensemble metadata
+        % If an ensemble dimension, get metadata from the sequence metadata
         else
             ensMeta = var.seqMeta{d};
             
