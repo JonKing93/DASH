@@ -99,8 +99,8 @@ elseif ~isempty(seqMeta)
 else
     
     % If there is pre-exisiting metadata, get the previous value
-    if ~isempty(design.var(v).ensMeta{d})
-        seqMeta = design.var(v).ensMeta{d};
+    if ~isempty(design.var(v).seqMeta{d})
+        seqMeta = design.var(v).seqMeta{d};
     end
     
     % If the size does not match the number of sequence indices...
