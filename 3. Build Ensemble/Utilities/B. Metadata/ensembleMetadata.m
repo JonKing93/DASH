@@ -16,63 +16,40 @@ function[meta] = ensembleMetadata( design )
 % Jonathan King, University of Arizona, 2019
 
 % Get the state indices associated with each variable
-[varDex, varDim] = getVarIndices( design.var );
+[varLim, varSize, nEls] = getVarIndices( design.var );
 
-% Get the total number of state elements
-nState = sum( prod(varDim,2) , 1);
-
-% Initialize an empty metadata container with a row for each state element.
-meta = initializeMeta( design, nState );
+% Record the index limits for each variable
+meta.varLim = varLim;
+meta.varSize = varSize;
+meta.nEls = nEls;
 
 % For each variable
 for v = 1:numel(design.var)
     var = design.var(v);
-    
-    % Record the index limits
-    meta.varLim(v,:) = [min(varDex{v}), max(varDex{v})];
-    
-    % Get the number of elements for the variable
-    nEls = prod( varDim(v,:) );
-    
-    % Get the N-dimensional subscript indices
-    subDex = subdim( varDim(v,:) , (1:nEls)' );
-    
+
     % For each dimension
     for d = 1:numel(var.dimID)
         
-        % If a state dimension, get metadata from grid metadata
+        % If a state dimension, get the metadata by querying the grid
+        % metadata at the state indices
         if var.isState(d)
-            ensMeta = var.meta.(var.dimID(d))( var.indices{d}, : );
+            dimMeta = var.meta.(var.dimID(d))( var.indices{d}, : );
             
-        % If an ensemble dimension, get metadata from the sequence metadata
-        else
-            ensMeta = var.seqMeta{d};
-            
-            % If the ensemble metadata is empty, use NaN
-            if isempty(ensMeta)
-                ensMeta = NaN;
+            % If the state dimension is taking a mean, propagate the
+            % multiple sets of metadata down the third dimension.
+            if var.takeMean(d)
+                dimMeta = permute(dimMeta, [3 2 1]);
             end
-        end
-    
-        % If taking a mean along a state dimension
-        if var.takeMean(d) && var.isState(d)
             
-            % Propagate the metadata collection along the third dimension
-            ensMeta = permute(ensMeta, [3 2 1]);
-
-            % Replicate over the set of all indices
-            ensMeta = repmat( ensMeta, [nEls, 1]);
-        
-        % Otherwise
+        % Otherwise, if this is an ensemble dimension, the dimensional
+        % metadata is the entire set of sequence metadata
         else
-            
-            % Subscript index each metadata value.
-            ensMeta = ensMeta( subDex(:,d), : );
-            
+            dimMeta = var.seqMeta{d};
         end
         
-        % Add to ensemble metadata
-        meta.var(v).(var.dimID(d)) = ensMeta;
+        % So, we now have the set of metadata restricted to the useful
+        % indices for the dimension. Save this to the metadata structure
+        meta.var(v,1).(var.dimID(d)) = dimMeta;
     end
 end
 
