@@ -12,6 +12,8 @@ elseif ~ismatrix( value )
     error('The %s metadata is not a matrix.', dim );
 elseif any(isnan(value(:)))
     error('The %s metadata contains NaN elements.', dim );
+elseif any(isinf(value(:)))
+    error('The %s metadata contains Inf elements.', dim );
 end
 
 % Convert row vector to column if the number of elements is correct

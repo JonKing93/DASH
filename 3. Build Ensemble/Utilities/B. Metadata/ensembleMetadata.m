@@ -18,7 +18,8 @@ function[meta] = ensembleMetadata( design )
 % Get the state indices associated with each variable
 [varLim, varSize, nEls] = getVarIndices( design.var );
 
-% Record the index limits for each variable
+% Record the index limits for each variable as well as variable names
+meta.varName = design.varName;
 meta.varLim = varLim;
 meta.varSize = varSize;
 meta.nEls = nEls;

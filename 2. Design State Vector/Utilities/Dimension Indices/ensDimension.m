@@ -49,6 +49,11 @@ checkIndices( design.var(v), d, index );
 checkIndices(design.var(v), d, seq+1);
 checkIndices(design.var(v), d, mean+1);
 
+% Sort the indices
+index = sort(index);
+seq = sort(seq);
+mean = sort(mean);
+
 % Ensure seq and mean are column
 seq = seq(:);
 mean = mean(:);

@@ -10,7 +10,7 @@ fEns.M = [];
 fEns.complete = false;
 
 % Preallocate the ensemble within the matfile
-nState = max( varDex{end} );
+nState = varDex(end);
 fEns.M(1:nState, 1:nEns) = NaN;
 fEns.ensSize = [0, 0];
 
@@ -19,7 +19,7 @@ hasnan = false( 1, nEns );
 
 % Build the ensemble for each variable and mark any NaN ensemble members
 for v = 1:numel( design.var )
-    nanCols = getVarEnsemble( fEns, design.var(v), varDex{v}, nEns );
+    nanCols = getVarEnsemble( fEns, design.var(v), varDex(v,:), nEns );
     hasnan = hasnan & nanCols;
     
     % If all the columns have NaN, the ensemble is invalid. Throw error

@@ -42,6 +42,9 @@ else % Ensure is column
 end
 checkIndices( design.var(v), d, index);
 
+% Sort
+index = sort(index);
+
 % Get the value of takeMean
 if isempty(takeMean)
     takeMean = design.var(v).takeMean(d);
