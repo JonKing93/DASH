@@ -72,8 +72,13 @@ nEls = nEls( resDim );
 % Get the set of combinations
 combDex = subdim( nEls, (1:prod(nEls))' );
 
+% Adjust for no combinations
+nComb = 1;
+if ~isempty(combDex)
+    nComb = size(combDex,1);
+end
+
 % Preallocate the number of H indices
-nComb = size(combDex,1);
 nVar = numel(varNames);
 H = NaN( nComb*nVar, 1 );
 
@@ -120,7 +125,13 @@ for var = 1:numel(varNames)
         resComb(:,dim) = restrictDex{dim}(combDex(:,dim));
     end
 
-    % Modulate over restriction indices to get the H indices for the variable
-    H((var-1).*nComb+(1:nComb)) = (ensMeta.varLim(v,1) - 1) + sum( (resComb-1).*nModulus, 2 ) + site;
+    % Modulate over restriction indices
+    nAdd = 0;
+    if ~isempty( resComb )
+        nAdd = sum( (resComb-1).*nModulus, 2 );
+    end
+    
+    % Get the final state indices
+    H((var-1).*nComb+(1:nComb)) = (ensMeta.varLim(v,1) - 1) + nAdd + site;
 end
     

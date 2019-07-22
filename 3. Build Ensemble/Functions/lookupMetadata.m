@@ -77,6 +77,6 @@ subDex = subdim( ensMeta.varSize(v,:), H' );
 d = strcmp( fields(ensMeta.var), dim );
 
 % Get the metadata
-meta = ensMeta.var(v).(dim)( subDex(:,d) );
+meta = ensMeta.var(v).(dim)( subDex(:,d), : );
 
 end
