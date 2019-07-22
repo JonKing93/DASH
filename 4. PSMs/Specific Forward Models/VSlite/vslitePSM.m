@@ -66,8 +66,10 @@ classdef vslitePSM < PSM
             
             
             % Get the closest indices
+            tic
             obj.H = getClosestLatLonIndex( [obj.lat, obj.lon], ensMeta, ...
                                            varNames, timeID, monthName, varargin{:} );
+            toc
         end
         
         % Error Checking
