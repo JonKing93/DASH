@@ -1,11 +1,11 @@
-function[] = checkAppendMetadata( newMeta, oldMeta, dimLen )
+function[] = checkAppendMetadata( newMeta, oldMeta, dimLen, dim )
 %% Checks that new metadata can be appended to old metadata. Checks that no
 % duplicates occur, and that there is one metadata row for each new index.
 
-% Stop if the metadata is NaN. (user needs to add metadata so there are no
-% NaN elements in this dimension.)
+% Stop if the current metadata is NaN. (user needs to add metadata so there
+% are no NaN elements in this dimension.)
 if isnan( oldMeta )
-    error('There is no metadata for the %s dimension. Add some using rewriteGridMetadata.m before appending along this dimension.', dim);
+    error('There is no metadata for the "%s" dimension. Add some using rewriteGridMetadata.m before appending along this dimension.', dim);
 end
 
 % Check that the class of the new metadata matches the old class
@@ -32,11 +32,7 @@ end
 % Check that the number of columns in the new metadata matches the number
 % in the old metadata
 if size(oldMeta,2) ~= size(newMeta,2)
-    if isvector(newMeta)
-        error('The pre-existing metadata is a matrix, but the new metadata is a vector.');
-    else
-        error('The number of columns in the new metadata (%.f) does not match the number for the pre-existing metadata (%.f).', size(newMeta,2), size(oldMeta,1) );
-    end
+    error('The number of columns in the new metadata (%.f) does not match the number for the pre-existing metadata (%.f).', size(newMeta,2), size(oldMeta,2) );
 end
     
 % Check that there are no duplicate metadata values in the new metadata

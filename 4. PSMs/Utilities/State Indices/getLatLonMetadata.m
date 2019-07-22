@@ -1,68 +1,79 @@
-function[latlon] = getLatLonMetadata( ensMeta, vardex, varName )
+function[latlon] = getLatLonMetadata( ensMeta, varName )
+%% Gets the set of lat-lon coordinates for a variable from the ensemble metadata.
+% DOES NOT replicate over all variable indices.
 
-% Get the lat lon and tripole dimensions
+% Get the dimension names
 [~,~,~,lon,lat,~,~,~,tri] = getDimIDs;
 dims = [lon;lat;tri];
 
-% Track whether the dimensions have metadata that is not all NaN
-hasmeta = false(3,1);
+% Get the variable index
+v = varCheck(ensMeta, varName);
+varName = string(varName);
 
-% Preallocate lat-lon metadata for each dimension
-val = cell(3,1);
-
-% Try converting each dimension to a matrix
-for d = 1:3
-    try
-        val{d} = cell2mat( ensMeta.(dims(d))(vardex) );
-        
-        % If the dimension has non-nan elements, then it has metadata
-        if any( ~isnan(val{d}(:)) )
-            hasmeta(d) = true;
-        end
-      
-    % If the matrix conversion fails, give a useful error
-    catch
-        error('DASH:MetadataSpatialMean', ['Could not retrieve %s metadata for variable %s.', newline, ...
-            'It might be a spatial mean. (This function does not support spatial means.)'], ...
-             dims(d), varName); 
+% Check whether there is any metadata in each dimension
+hasmeta = true(3,1);
+for d = 1:numel(dims)
+    if isscalar( ensMeta.var(v).(dims(d)) ) && isnan( ensMeta.var(v).(dims(d)) )
+        hasmeta(d) = false;
     end
 end
 
-% Throw error if both/neither lat-lon and tripole have metadata
+% Ensure that only one of lat-lon, and tri have metadata
 if all(hasmeta)
-    error('Variable %s has both tripolar and lat-lon metadata.', varName);
+    error('Variable %s has both tripolar and lat-lon metadata.', varName );
 elseif all( ~hasmeta )
     error('Variable %s has neither tripolar nor lat-lon metadata.', varName );
-    
-% Meanwhile, lat and lon should  both have metadata
 elseif ~all( hasmeta(1:2) ) && ~all( ~hasmeta(1:2) )
-    error('Only one of the the lat and lon dimensions of variable %s has metadata.', varName );
+    error('Only one of the lat and lon dimensions of variable %s has metadata.', varName );
 end
 
+% Get the state indices for the variable
+H = getVarStateIndex( ensMeta, varName );
 
-% If this is a tripolar grid
+% If tripolar
 if hasmeta(3)
     
-    % Check that the value is a 2D grid
-    if ~ismatrix( val{3} )
-        error('tripolar metadata must be a 2D matrix.');
-        
-    % With exactly two columns
-    elseif size(val{3},2) ~= 2
-        error('tripolar metadata must have 2 columns.');
+    % Restrict size
+    H = H(1:ensMeta.varSize(v,3));
+    
+    % Get the metadata
+    latlon = lookupMetadata( ensMeta, H, 'tri' );
+    
+    % Error check the metadata
+    if ~ismatrix( latlon )
+        error('The %s data is a spatial mean.', dims(3) );
+    elseif size(latlon,2)~=2 || ~isnumeric(latlon)
+        error('%s metadata for variable %s must be a 2 column matrix of numeric values.', dims(3), varName);
     end
     
-    latlon = val{3};
-    
-% Otherwise, use metadata from the lat and lon dimensions.
+% Otherwise, if lat and lon
 else
-    if ~isvector( val{2} )
-        error('latitude metadata must be a vector.');
-    elseif ~isvector( val{1} )
-        error('longitude metadata must be a vector.');
+    
+    % Restrict H
+    nEls = prod( ensMeta.varSize(v,[1 2]) );
+    H = H(1:nEls);
+    
+    % Get the metadata
+    lat = lookupMetadata(ensMeta, H, 'lat');
+    lon = lookupMetadata(ensMeta, H, 'lon');
+    
+    % Error check
+    if ~ismatrix(lat)
+        error('Variable %s is a spatial mean along the %s dimension.', varName, dims(2) );
+    elseif ~isvector(lat) || ~isnumeric(lat)
+        error('%s metadata for variable %s must be a vector of numeric values.', dims(2), varName)
+    elseif ~ismatrix(lon)
+        error('Variable %s is a spatial mean along the %s dimension.', varName, dims(1) );
+    elseif ~isvector(lon) || ~isnumeric(lon)
+        error('%s metadata for variable %s must be a vector of numeric values.', dims(1), varName);
     end
     
-    latlon = [val{2}, val{1}];
+    % Concatenate, give useful error message if failure
+    try
+        latlon = cat(2, lat, lon);
+    catch
+        error('The lat and lon metadata cannot be concatenated.');
+    end
 end
-
+    
 end

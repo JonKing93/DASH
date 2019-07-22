@@ -25,8 +25,8 @@ for d = 1:nDim
         index = var.meanDex{d};
     end
     
-    % Sort the indices to test for uniform spacing
-    interval = sort( index );
+    % Initialize the interval of indices being loaded
+    interval = index;
     
     % If unevenly spaced, load every index on the interval
     if numel(index)>1 && numel(unique(diff(interval)))>1

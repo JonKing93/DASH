@@ -60,4 +60,3 @@ for cv = 1:numel(coupVars)
 end
 
 end
-

@@ -11,7 +11,7 @@ function[dimID, specs, varName, lonDim, latDim, levDim, timeDim, runDim, triDim]
 specs = "specs";
 
 % Variable name field in ensemble metadata
-varName = "var";
+varName = "varName";
 
 % Longitude (x coordinate)
 lonDim = "lon";

@@ -23,7 +23,7 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 % design = editDesign( design, var, dim, 'ens', ..., 'index', ensIndex )
 % Specifies the ensemble indices.
 %
-% design = editDesign( design, var, dim, 'ens', ..., 'seq', seqIndex, 'meta', ensMeta )
+% design = editDesign( design, var, dim, 'ens', ..., 'seq', seqIndex, 'meta', seqMeta )
 % Specifies the sequence indices and associated metadata to use for an 
 % ensemble dimension.
 %
@@ -54,11 +54,11 @@ function[design] = editDesign( design, var, dim, dimType, varargin )
 % seqIndex: A list of sequence indices. These are the number of indices to
 %      add to a reference ensemble index to obtain a sequence element.
 %
-% ensMeta: Metadata associated with each sequence element. Must have one
+% seqMeta: Metadata associated with each sequence element. Must have one
 %          row for each sequence element.
 %
 % meanIndex: A list of mean indices. These are the indices from each
-%       sequence element over which to take a mean. Must include the 0 index.
+%       sequence element over which to take a mean.
 %
 % takeMean: A scalar logical indicating whether to take a mean over a state dimension.
 % 

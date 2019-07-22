@@ -33,7 +33,7 @@ function[] = newGridfile( file, gridData, gridDims, appendDims, specs, varargin 
 %           vector, the length must match the size of the dimension in the
 %           gridded data. If a matrix, the number of rows must match the
 %           length of the dimension in the gridded data. Metadata must be a
-%           vector that is a valid NetCDF4 data type. (See listnctypes.m)
+%           vector that is a valid, numeric NetCDF4 data type. (See listnctypes.m)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
@@ -66,14 +66,14 @@ for d = 1:numel(dimID)
     dims = { dimID(d), dimLength, strcat(dimID(d),'MetaCols'), Inf };
     
     % Initialize the metadata variable    
-    nccreate(file, dimID(d), 'Format', 'netcdf4', 'Dimensions', dims );
+    nccreate(file, dimID(d), 'Format', 'netcdf4', 'Dimensions', dims, 'Datatype', class(meta.(dimID(d))) );
     
     % Set an attribute for whether appending is allowed
     ncwriteatt( file,  dimID(d), 'append', single(append(d)) );
 end
     
 % Initialize the gridded data variable
-nccreate( file, 'gridData', 'Dimensions', cellstr(dimID) );
+nccreate( file, 'gridData', 'Dimensions', cellstr(dimID), 'Datatype', class(gridData) );
 
 % Next, get all the data attributes
 attName = string( fieldnames( meta.(specs) ) );

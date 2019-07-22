@@ -46,10 +46,10 @@ else
     
     % Metadata
     fprintf('\t\t\t\tMetadata Value: ');
-    if isempty(var.ensMeta{d})
+    if isempty(var.seqMeta{d})
         fprintf('\n');
     else
-        disp( var.ensMeta{d} );
+        disp( var.seqMeta{d} );
         fprintf('\b');
     end
     

@@ -17,7 +17,7 @@ classdef varDesign
         
         % State vs Ensemble properties
         isState; % Whether a dimension is a state dimension.
-        ensMeta; % The metadata value for ensemble dimensions
+        seqMeta; % The metadata value for sequence members
         
         % Index properties
         indices;  % The allowed indices for state or ensemble dimensions
@@ -79,7 +79,7 @@ classdef varDesign
             obj.nanflag = cell(nDim,1);
             
             obj.isState = true(nDim,1);
-            obj.ensMeta = cell(nDim,1);
+            obj.seqMeta = cell(nDim,1);
             
             obj.overlap = false;
             

@@ -14,10 +14,11 @@ function[] = rewriteGridMetadata( file, dim, newMeta )
 % newMeta: The new metadata. If dimensional metadata, either a vector or
 %          matrix of a valid NetCDF4 data type. The number of elements
 %          (rows) in the vector (matrix) must match the length of the
-%          dimension in the gridded data. If overwriting variable
-%          attributes, a scalar structure whose fields contain the
+%          dimension in the gridded data. The class of the new metadata
+%          must match the class of the existing metadata. If overwriting variable
+%          attributes, use a scalar structure (specs) whose fields contain the
 %          attribute metadata being overwritten. Each field must contain a
-%          vector of a valid NetCDF4 data type.
+%          vector of a valid, numeric NetCDF4 data type. (See listnctypes.m)
 
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019

@@ -8,8 +8,8 @@ end
 % Check that each field of specs is a vector of a NetCDF4 data type
 specNames = string( fieldnames( specs ) );
 for s = 1:numel(specNames)
-    if ~isnctype( specs.(specNames(s)) ) || ~isvector( specs.(specNames(s)) )
-        error('The "%s" field in the "specs" structure must be a vector of a valid NetCDF4 data type.', specNames(s) );
+    if (~isnctype( specs.(specNames(s))) && ~ischar(specs.(specNames(s))) ) || ~isvector( specs.(specNames(s)) )
+        error('The "%s" field in the "specs" structure must be a vector of a valid NetCDF4 data types (See listnctypes.m) or a character vector.', specNames(s) );
     end
 end
 
