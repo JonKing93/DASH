@@ -32,7 +32,7 @@ function[rA, meta, dimID] = regridAnalysis( A, var, ensMeta, design, varargin )
 nosqueeze = parseInputs( varargin, {'nosqueeze'}, {false}, {'b'} );
 
 % Get the indices of the variable in the state vector
-varDex = varCheck(ensMeta, var);
+varDex = getVarStateIndex(ensMeta, var);
 
 % Also get the variable in the state vector design
 v = checkDesignVar(design, var);
@@ -64,7 +64,7 @@ for d = 1:nDim
     else
         
         % Get the metadata
-        meta.(dim) = var.ensMeta{d};
+        meta.(dim) = var.seqMeta{d};
         
         % Get the size
         gridSize(d) = numel( var.seqDex{d} );

@@ -72,10 +72,10 @@ for dim = 1:numel(X.dimID)
             % Flip the isState toggle
             Y(k).isState(d) = true;
             
-            % Delete seq, mean, and ensMeta
+            % Delete seq, mean, and seqMeta
             Y(k).seqDex{k} = [];
             Y(k).meanDex{k} = [];
-            Y(k).ensMeta{k} = [];
+            Y(k).seqMeta{k} = [];
             
         % If an ensemble dimension and syncing seq or mean
         else
@@ -93,7 +93,7 @@ for dim = 1:numel(X.dimID)
             Y(k).meanDex{d} = X.meanDex{dim};
             
             % Copy ensemble metadata
-            Y(k).ensMeta{d} = X.ensMeta{dim};
+            Y(k).seqMeta{d} = X.seqMeta{dim};
         end
     end
 end

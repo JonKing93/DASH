@@ -17,7 +17,7 @@ function[design] = ensDimension( design, var, dim, varargin )
 % Jonathan King, University of Arizona, 2019
 
  % Parse inputs
-[index, seq, mean, nanflag, ensMeta, overlap] = parseInputs( varargin, ...
+[index, seq, mean, nanflag, seqMeta, overlap] = parseInputs( varargin, ...
         {'index','seq','mean','nanflag','meta','overlap'}, {[],0,0,[],[],[]}, ...
         {[],[],[],{'includenan','omitnan'},[],[]} );
     
@@ -49,6 +49,11 @@ checkIndices( design.var(v), d, index );
 checkIndices(design.var(v), d, seq+1);
 checkIndices(design.var(v), d, mean+1);
 
+% Sort the indices
+index = sort(index);
+seq = sort(seq);
+mean = sort(mean);
+
 % Ensure seq and mean are column
 seq = seq(:);
 mean = mean(:);
@@ -73,48 +78,58 @@ if ~islogical(overlap) || ~isscalar(overlap)
     error('Overlap must be a logical scalar.');
 end
 
-% Ensemble metadata
+%% Sequence metadata
+
+% Ensure that the metadata is an allowed type
+if ~ischar(seqMeta) && ~islogical(seqMeta) && ~isnumeric(seqMeta) && ~iscellstr(seqMeta) && ~isstring(seqMeta)
+    error('Sequence metadata must be a numeric, char, string, or cellstring data type.');
+elseif isnumeric(seqMeta) && any(isnan(seqMeta))
+    error('Sequence metadata may not contain NaN.');
+elseif ~ismatrix(seqMeta)
+    error('Sequence metadata must be a matrix.');
+end
 
 % If metadata as provided, and is a row vector with the number of sequence
 % elements, convert to column.
-if isrow(ensMeta) && length(ensMeta) == numel(seq)
-    ensMeta = ensMeta';
+if isrow(seqMeta) && length(seqMeta) == numel(seq)
+    seqMeta = seqMeta';
     
 % If it was provided, check the number of rows
-elseif ~isempty(ensMeta)
-    if size(ensMeta,1) ~= numel(seq)
-        error('The ensemble metadata does not have one row per sequence index.');
+elseif ~isempty(seqMeta)
+    if size(seqMeta,1) ~= numel(seq)
+        error('The sequence metadata does not have one row per sequence index.');
     end
 
 % Otherwise, if no metadata is provided...
 else
     
     % If there is pre-exisiting metadata, get the previous value
-    if ~isempty(design.var(v).ensMeta{d})
-        ensMeta = design.var(v).ensMeta{d};
+    if ~isempty(design.var(v).seqMeta{d})
+        seqMeta = design.var(v).seqMeta{d};
     end
     
     % If the size does not match the number of sequence indices...
-    if size(ensMeta,1)~=numel(seq)
+    if size(seqMeta,1)~=numel(seq)
         
         % If the sequence length is 1, just use NaN.
         if numel(seq)==1 
-            ensMeta = NaN;
+            seqMeta = NaN;
             
         % Otherwise throw an error
         else
-            error('Ensemble metadata for the %s dimension of variable %s was not provided.', dim, var);
+            error('Sequence metadata for the %s dimension of variable %s was not provided.', dim, var);
         end
     end
 end
 
-% Ensure that all ensemble metadata is unique
-for k = 1:size(ensMeta,1)
-    for j = k+1:size(ensMeta,1)
-        if isequaln( ensMeta(k,:), ensMeta(j,:) )
-            error('The ensemble metadata contains duplicate values.' );
-        end
-    end
+% Convert char or cellstring metadata to string to allow faster sorting.
+if ischar(seqMeta) || iscellstr(seqMeta)                      %#ok<ISCLSTR>
+    seqMeta = string(seqMeta);
+end
+
+% Ensure that all sequence metadata is unique
+if size(seqMeta,1) ~= size( unique(seqMeta,'rows'), 1 )
+    error('The sequence metadata contains duplicate values.');
 end
 
 %% Coupler
@@ -145,6 +160,6 @@ design.var(v).seqDex{d} = seq;
 design.var(v).meanDex{d} = mean;
 design.var(v).nanflag{d} = nanflag;
 design.var(v).takeMean(d) = takeMean;
-design.var(v).ensMeta{d} = ensMeta;
+design.var(v).seqMeta{d} = seqMeta;
 
 end

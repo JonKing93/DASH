@@ -6,8 +6,9 @@ function[colnan] = getVarEnsemble(fEns, var, varDex, nEns)
 
 % Get the total number of sequence elements (nSeq) and elements per
 % sequence (nEls)
+nTot = varDex(2) - varDex(1) + 1;
 nSeq = prod( ensSize );
-nEls = numel(varDex) / nSeq;
+nEls = nTot / nSeq;
 
 % Get N-dimensional subscripted sequence indices
 seqDex = subdim( ensSize, (1:nSeq)' );
@@ -22,7 +23,10 @@ seqDex = subdim( ensSize, (1:nSeq)' );
 
 % Determine the most efficient way to build (based on available memory). 
 % Preallocate M.
-[M, full] = preallocateVarEnsemble( numel(varDex), nSeq, nEns, var.name );
+[M, full] = preallocateVarEnsemble( nTot, nSeq, nEns, var.name );
+
+% Get the full set of variable indices
+varDex = (varDex(1):varDex(end))';
 
 % If we can store full sets of ensemble members, cycle through sequences
 if full

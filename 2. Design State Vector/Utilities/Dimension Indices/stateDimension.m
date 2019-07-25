@@ -42,6 +42,9 @@ else % Ensure is column
 end
 checkIndices( design.var(v), d, index);
 
+% Sort
+index = sort(index);
+
 % Get the value of takeMean
 if isempty(takeMean)
     takeMean = design.var(v).takeMean(d);
@@ -85,6 +88,6 @@ design.var(v).nanflag{d} = nanflag;
 % Return ensemble dimension properties to empty.
 design.var(v).seqDex{d} = [];
 design.var(v).meanDex{d} = [];
-design.var(v).ensMeta{d} = [];
+design.var(v).seqMeta{d} = [];
 
 end

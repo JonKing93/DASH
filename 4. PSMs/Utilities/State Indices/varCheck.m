@@ -1,4 +1,4 @@
-function[nameDex] = varCheck( ensMeta, name )
+function[v] = varCheck( ensMeta, name )
 %% Checks for a variable name field and returns variable indices
 %
 % ensMeta: Ensemble metadata
@@ -8,18 +8,13 @@ function[nameDex] = varCheck( ensMeta, name )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check that the metadata has a variable name field
-[~,~,var] = getDimIDs;
-if ~isfield(ensMeta, var)
-    error('Ensemble metadata does not contain the %s field.', var);
-end
+% Check for variables in the ensemble metadata
+[ismem, v] = ismember( name, ensMeta.varName );
 
-% Check that the name is a string
-if ~isstrflag( name )
-    error('Variable name must be a string.');
+% Ensure that all variables presented are in the ensemble metadata
+if any( ~ismem )
+    badVar = find( ~ismem,1 );
+    error('The %s variable is not in the ensemble metadata.', name(badVar) );
 end
-
-% Get the indices of the name
-nameDex = find( ismember( ensMeta.var, name ) );
 
 end
