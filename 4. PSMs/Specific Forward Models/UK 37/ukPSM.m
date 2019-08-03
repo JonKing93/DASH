@@ -1,6 +1,5 @@
-%% Implements a PSM for UK 37
+% Implements a PSM for UK 37
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % CONSTRUCTOR:
 %
 % obj = ukPSM( obCoord )
@@ -15,7 +14,7 @@
 %
 % bayesFile: The name of a bayes posterior file.
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % STATE INDICES:
 %
 % getStateIndices( ensMeta, sstName )
@@ -39,7 +38,7 @@
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-%% This defines the ukPSM class. ukPSM uses the PSM interface for Dash.
+% This defines the ukPSM class. ukPSM uses the PSM interface for Dash.
 classdef ukPSM < PSM
     
     % The properties are the variables availabe to every instance of a
@@ -47,6 +46,7 @@ classdef ukPSM < PSM
     % for every ukPSM object.
     properties
         
+        % What is bayes
         bayes;
         % This is the bayesian posterior distribution used to run the uk37
         % forward model.
@@ -73,13 +73,15 @@ classdef ukPSM < PSM
         
     end
     
-    %% The methods are the functions that each individual instance of a
+    % The methods are the functions that each individual instance of a
     % ukPSM can run.
     methods
         
         
         % Constructor. This creates an instance of a PSM
         function obj = ukPSM( lat, lon, varargin )
+            
+            
             % Get optional inputs
             [file] = parseInputs(varargin, {'bayesFile'}, {[]}, {[]});
             
@@ -104,13 +106,20 @@ classdef ukPSM < PSM
         % This determines the indices of elements in a state vector that
         % should be used to run the forward model for a particular uk37
         % site.
+        
         function[] = getStateIndices( obj, ensMeta, sstName, varargin ) 
+        % Here are some comments for the function
+            
+            
+            
+        % This is a help line for getStateIndices
+        
             sstName = string(sstName);
             obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, varargin{:} );
         end
         
         
-        %% Review PSM
+        % Review PSM
         %
         % This error check an instance of a ukPSM to ensure that it is
         % ready to be used wth dash.
@@ -130,7 +139,10 @@ classdef ukPSM < PSM
 
 
         % This gets the model estimates by running the UK37 forward model.
+        
+        
         function[uk,R] = runForwardModel( obj, SST, ~, ~ )
+            % A help line
             
             % Run the forward model. Output is 1500 possible estimates for
             % each ensemble member (1500 x nEns)
