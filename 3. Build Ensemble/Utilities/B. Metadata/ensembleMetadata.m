@@ -1,57 +1,267 @@
-function[meta] = ensembleMetadata( design )
-%% Generates the ensemble metadata for an ensemble.
-%
-% meta = ensembleMetadata( design )
-%
-% ----- Inputs -----
-%
-% design: A state vector design
-%
-% ----- Outputs -----
-%
-% meta: The metadata structure for an ensemble built from the state vector
-%       design.
-
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
-
-% Get the state indices associated with each variable
-[varLim, varSize, nEls] = getVarIndices( design.var );
-
-% Record the index limits for each variable as well as variable names
-meta.varName = design.varName;
-meta.varLim = varLim;
-meta.varSize = varSize;
-meta.nEls = nEls;
-
-% For each variable
-for v = 1:numel(design.var)
-    var = design.var(v);
-
-    % For each dimension
-    for d = 1:numel(var.dimID)
+classdef ensembleMetadata
+    % ensembleMetadata
+    % Manages metadata for a state vector ensemble
+    % 
+    % ensembleMetadata Properties:
+    %   varName - The name of each variable
+    %   varLim - The index limits of each variable in the state vector
+    %   varSize - The original size of the gridded variable
+    %   varData - The metadata values associated with the variable
+    %
+    %   fileName - The name of the associated .ens file
+    %   designName - The name of the associated state design
+    %   
+    % ensembleMetadata Methods:
+    %   ensembleMetadata - Creates a new ensemble metadata object
+    %   lookupMetadata - Returns metadata at specified indices
+    %   varIndex - Returns the state vector indices associated with a
+    %              variable
+    %
+    % ensembleMetadata Utility Methods:
+    %   dimCheck - Checks that a set of dimensions are in the metadata
+    %   varCheck - Checks that a set of variables are in the metadata
+    %   getLookupIndex - Parses inputs for 
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019
+    
+    % The user is not permitted to access any of the properties. These
+    % values must be set and looked up by the constructor.
+    properties (SetAccess = private)
+        varName     % Variable name
+        varLim      % Index limits in state vector
+        varSize     % Size of girdded data
+        varData     % Metadata for each dimension
         
-        % If a state dimension, get the metadata by querying the grid
-        % metadata at the state indices
-        if var.isState(d)
-            dimMeta = var.meta.(var.dimID(d))( var.indices{d}, : );
-            
-            % If the state dimension is taking a mean, propagate the
-            % multiple sets of metadata down the third dimension.
-            if var.takeMean(d)
-                dimMeta = permute(dimMeta, [3 2 1]);
+        fileName    % Ensemble metadata file
+        designName  % State design name
+    end
+    
+    % But they can name for quick reference
+    
+    % These are public methods that anyone can use
+    methods
+        function obj = ensembleMetadata( inArg )
+            % Constructor for an ensemble metadata object
+            %
+            % obj = ensembleMetadata( design )
+            % Creates an ensemble metadata object for a state vector design.
+            %
+            % obj = ensembleMetadata( ensFile )
+            % Returns the ensemble metadata object for the ensemble saved in a
+            % .ens file.
+            %
+            % ----- Inputs -----
+            %
+            % design: A state vector design object.
+            %
+            % ensFile: The name of a .ens file. Either a character vector
+            %          or a string.
+            %
+            % ----- Outputs -----
+            %
+            % obj: The new ensemble metadata object.
+
+            % Get the state design associated with the input argument
+            if isa(inArg, 'stateDesign')
+                design = inArg;
+                if numel(inArg) > 1
+                    error('design must be a scalar object. The current design is a stateDesign array.');
+                end
+            else
+                m = ensFileCheck(inArg, 'load');
+                design = m.design;
+                obj.fileName = string(inArg);
             end
+            obj.designName = design.name;
+
+            % Record the variable names
+            obj.varName = design.varName;
+
+            % Get the limits and sizes
+            [obj.varLim, obj.varSize] = getVarIndices( design.var );
+            % !!! This should be a design object method
             
-        % Otherwise, if this is an ensemble dimension, the dimensional
-        % metadata is the entire set of sequence metadata
-        else
-            dimMeta = var.seqMeta{d};
+            % Get the metadata associated with each variable.
+            for v = 1:numel( design.var )
+                if v == 1  % Initialize the structure for variable 1
+                    obj.varData = getVarEnsMeta( design.var(v) );
+                end
+                obj.varData(v) = getVarEnsMeta( design.var(v) );
+                % !!! This should be a design object method.
+            end
         end
         
-        % So, we now have the set of metadata restricted to the useful
-        % indices for the dimension. Save this to the metadata structure
-        meta.var(v,1).(var.dimID(d)) = dimMeta;
+        function meta = lookupMetadata( obj, dims, inArg )
+            % Returns ensemble metadata at specific indices.
+            %
+            % meta = obj.lookupMetadata( dims, H )
+            % Returns the metadata along dimension 'dim' at state indices 'H'.
+            %
+            % meta = obj.lookupMetadata( dims, varName )
+            % Returns the metadata along dimension 'dim' at all indices for
+            % the specified variable.
+            %
+            % ***Note: H and varName may not reference more than 1
+            % variable.
+            %
+            % ----- Inputs -----
+            %
+            % dims: A set of dimension names. Either a single character
+            %       vector, cellstring, or string array,.
+            %
+            % H: A vector of indices in the state vector. May not contain
+            % indices for more than 1 variable.
+            %
+            % varName: The name of a variable.
+            % 
+            % ----- Outputs -----
+            %
+            % meta: 
+            %   If a single dimension is specified, a matrix of metadata. 
+            %   Each row corresponds to a specific index.
+            %
+            %   If multiple dimensions are specified, returns a structure.
+            %   The fields of the structure are the metadata matrices for
+            %   each queried dimension.
+            
+            % Check that the dimension is in the ensemble metadata
+            dims = obj.dimCheck( dims );
+            
+            % Convert the input argument into state indices
+            H = obj.getLookupIndex( inArg );
+            
+            % Get the variable referenced by each state index. Note that H
+            % is a row, while varLim is a column, so the output is a
+            % logical matrix. Use two outputs for find to subscript the row
+            % (variable) for each inex.
+            [v, ~] =  find(  H' >= obj.varLim(:,1)  &  H' <= obj.varLim(:,2)  );
+            
+            % Check that there is only a single variable
+            v = unique(v);
+            if numel(v)~=1
+                error('H cannot reference more than a single variable.');
+            end
+            
+            % Adjust H indices so they are 1 indexed to the start of each
+            % variable
+            H = H - obj.varLim(v,1) + 1;
+            
+            % Get the N-dimensional subscript indices
+            subDex = subdim( obj.varSize(v,:), H );
+            
+            % Initialize the metadata structure
+            meta = struct();
+            
+            % Get the metadata at each index for each dimension
+            for d = 1:numel(dims)
+                meta.(dims(d)) = obj.varData(v).(dim)( subDex(:,d), : );
+            end
+            
+            % If there's only a single dimension, just return the array
+            if numel(dims) == 1
+               meta = meta.(dims);
+            end
+        end
+        
+        function H = varIndex( obj, varName )
+            % Returns the indices associated with a particular variable.
+            %
+            % H = obj.varIndex( varName )
+            %
+            % ----- Inputs -----
+            %
+            % varName: The name of a variable.
+            %
+            % ----=- Outputs -----
+            %
+            % H: The state indices associated with the varialbe
+            
+            % Check that this is a single variable
+            if ~isstrflag(varName)
+                error('varName must be a character row or string scalar.');
+            end
+            
+            % Check that the variable is in the metadata
+            varName = obj.varCheck( varName );
+            
+            % Get an index for the variable
+            v = find( strcmp( varName, obj.varName ) );
+            
+            % Get the indices
+            H = ( obj.varLim(v,1) : obj.varLim(v,2) )';
+        end
     end
-end
-
+    
+    % These are some utility functions that the user doesn't need to worry
+    % about
+    methods (Access = private)
+        function dims = dimCheck( obj, dims )
+            % Checks if a set of dimensions are in the ensemble metadata.
+            % Returns them as a string array.
+            
+            % Check that dims is either a character row, cellstring, or
+            % string
+            if ~isstrset(dims)
+                error('dims must be a character row vector, cellstring, or string array.');
+            end
+            
+            % Convert to string for simplicity
+            dims = string(dims);
+            
+            % Check that the dims are actually in the ensemble metadata
+            goodDims = fields( obj.varData );
+            if any( ~ismember( dims, goodDims ) )
+                error('"%s" is not a dimension in the ensemble metadata.', dims( find(~ismember(dims,goodDims),1) ) );
+            end
+        end
+            
+        function vars = varCheck( obj, vars )
+            % Checks if a set of varialbes are in the ensemble metadata.
+            % Returns the input as a string array.
+            
+            % Check this is a string set
+            if ~isstrset(vars)
+                error('vars must be a character row vector, cellstring, or string array.');
+            end
+            
+            % Convert to string for simplicity
+            vars = string(vars);
+            
+            % Check that the vars are actually in the metadata
+            if any( ~ismember( vars, obj.varNames ) )
+                error('"%s" is not a variable in the ensemble metadata.', vars(find(~ismember(vars,obj.varNames),1)) );
+            end
+        end            
+            
+        function H = getLookupIndex( obj, inArg )
+            % Parses the input for lookupMetadata
+            
+            % If a string flag, this is a variable name
+            if isstrflag( inArg )
+                
+                % Check that the variable is in the ensemble metadata
+                obj.varCheck(inArg);
+                
+                % Get the entire set of variable indices
+                H = obj.varIndex( inArg );
+            
+            % Otherwise, this is a set of indices
+            else
+                H = inArg;
+                
+                % Error check
+                if ~isvector(inArg) || ~isnumeric(inArg) || any(inArg < 1) || any(mod(inArg,1)~=0)
+                    error('H indices must be a numeric vector of positive integers.');
+                
+                % Ensure the indices are in the ensemble
+                elseif any( H > obj.varLim(end,2) )
+                    error('H contains indices longer than the state vector.');
+                end
+                
+                % Ensure H is a column
+                H = H(:);
+            end
+        end
+    end
 end
