@@ -1,5 +1,5 @@
-function[obj] = add( obj, varName, file, autoCouple )
-%% Add a variable to a state vector design.
+function[obj] = addVar( obj, varName, file, autoCouple )
+%% Adds a variable to a state vector design.
 %
 % design = addVariable( varName, file,  )
 % Adds a variable to a state vector design.
