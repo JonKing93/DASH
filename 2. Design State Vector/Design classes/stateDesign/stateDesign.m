@@ -21,6 +21,14 @@ classdef stateDesign
     %   
     % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
+    %    add - Adds a variable to the state vector
+    %    edit - Edits the design specifications for a variable.
+    %    copy - Copies design specifications from a template variable to
+    %           other variables.
+    %    disp - Displays information about the state vector.
+    %    couple - Couples specified variables.
+    %    uncouple - Uncouples specified variables.
+    %    remove - Removes a variable from the state vector.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
@@ -33,7 +41,7 @@ classdef stateDesign
         autoCouple;  % Whether the variable should be automatically coupled to new variables.
     end
     
-    
+    % Constructor block.
     methods
         function obj = stateDesign( name )
             % Constructor for a stateDesign object.
@@ -59,9 +67,34 @@ classdef stateDesign
             % Set the name
             obj.name = name;
             
-            % Initialize logical arrays as logical
+            % Initialize logical arrays
             obj.isCoupled = logical([]);
             obj.autoCouple = logical([]);
         end
+    end
+    
+    % User methods.
+    methods
+        
+        % Adds a new variable to the state vector.
+        obj = add( obj, varName, file, autoCouple );
+        
+        % Edits the design specifications of a variable in the state vector.
+        obj = edit( obj, varName, dim, dimType, varargin );
+        
+        % Copies indices from one variable to other variables.
+        obj = copy( obj, fromVar, toVars );
+        
+        % Displays information about the state vector
+        obj = disp( obj, varName, dim, longform );
+        
+        % Couples specified variables.
+        obj = couple( obj, varNames, varargin );
+        
+        % Uncouples specified variables.
+        obj = uncouple( obj, varNames, varargin );
+        
+        % Removes a variable from the state vector.
+        obj = remove( obj, varName );        
     end
 end
