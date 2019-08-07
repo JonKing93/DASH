@@ -59,7 +59,7 @@ for k = 1:nVars
         obj.var(var).seqDex{dim} = [];
         obj.var(var).seqMeta{dim} = [];
     end
-    obj.notifyChangedType( var, flipDim );
+    obj.notifyChangedType( var, flipDim, false );
     
     % Set the autocoupler, overlap, and ensemble dimensions
     obj.autoCouple(var) = autoCouple;

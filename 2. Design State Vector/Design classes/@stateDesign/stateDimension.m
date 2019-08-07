@@ -8,10 +8,9 @@ function[obj] = stateDimension( obj, v, d, varargin )
 [index, takeMean, nanflag] = parseInputs( varargin, {'index', 'mean', 'nanflag'}, ...
     {obj.var(v).indices{d}, obj.var(v).takeMean(d), obj.var(v).nanflag{d}} );
 
-% Error check and set the non-index inputs.
-errCheck( takeMean, nanflag );
-obj.var(v).takeMean(d) = takeMean;
-obj.var(v).nanflag{d} = nanflag;
+% Error check and set takeMean and the nanflag
+obj.var(v).takeMean(d) = errCheck(takeMean);
+obj.var(v).nanflag{d} = obj.getNaNflag( v, d, nanflag, varargin(1:2:end-1) );
 
  % Error check, process, and record indices. (Sorted column, linear)
 obj.var(v).indices{d} = obj.checkIndices( index, v, d );
@@ -20,27 +19,25 @@ obj.var(v).indices{d} = obj.checkIndices( index, v, d );
 v = find( obj.isCoupled(v,:) );
 for k = 1:numel(v)
     
-    % Mark the dimension as a state dimension
-    obj.var(v(k)).isState(d) = true;
-    
-    % Remove the nanflag if it referred to an ensemble mean
-    if ~isempty( obj.var(v).meanDex{d} )
-        obj.var(v).nanflag = [];
+    % If changing dimension type, delete sequence and mean data. Notify the user
+    if ~obj.var(v(k)).isState(d)
+        obj.var(v(k)).isState(d) = true;
+
+        obj.var(v(k)).takeMean(dim) = false;
+        obj.var(v(k)).meanDex{dim} = [];
+        obj.var(v(k)).nanflag{dim} = [];
+        obj.var(v(k)).seqDex{dim} = [];
+        obj.var(v(k)).seqMeta{dim} = [];
+        
+        obj.notifyChangedType( v(k), d, true );
     end
-
-    % Delete ensemble dimension properties
-    obj.var(v).seqDex{d} = [];
-    obj.var(v).meanDex{d} = [];
-    obj.var(v).seqMeta{d} = [];
-    obj.var(v).overlap = [];
 end
 
 end
 
-function[] = errCheck( takeMean, nanflag )
-if ~isscalar(takeMean) || ~islogical(takeMean)
-    error('takeMean must be a scalar logical.');
-elseif ~strflag(nanflag) || ~ismember(nanflag, ["omitnan","includenan"])
-    error('nanflag must be either "omitnan" or "includenan".');
+function[takeMean] = errCheck(takeMean)
+    if ~isscalar(takeMean) || ~islogical(takeMean)
+        error('takeMean must be a scalar logical.');
+    end
 end
-end
+

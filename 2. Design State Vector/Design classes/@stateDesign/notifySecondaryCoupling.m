@@ -6,8 +6,15 @@ function[] = notifySecondaryCoupling( obj, v, vall )
 % Get the variables not in the initial list
 sv = vall( ~ismember(vall, v) );
 
+s = "s";
+verb = "are";
+if numel(sv) == 1
+    s = "";
+    verb = "is";
+end
+
 % Notify
-fprintf(['The variables ', sprintf('%s, ', obj.varName(sv)), '\b\b\n',...
-         'are already coupled to ', sprintf('%s, ', obj.varName(v)), '\b\b\n', ...
+fprintf([sprintf('The variable%s ',s), sprintf('%s, ', obj.varName(sv)), '\b\b\n',...
+         sprintf('%s already coupled to ',verb), sprintf('%s, ', obj.varName(v)), '\b\b\n', ...
          'and will also be coupled.\n\n']);
 end
