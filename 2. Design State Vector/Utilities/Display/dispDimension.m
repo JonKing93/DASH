@@ -15,17 +15,12 @@ function[] = dispDimension(var, d, long)
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Dimension name
-fprintf('\t\t\t%s\n', var.dimID(d));
 
-% Size
-fprintf('\t\t\t\tSize: %0.f\n', numel(var.indices{d}) );
 
 % State dimensions
 if var.isState(d)
     
     % Type
-    fprintf('\t\t\t\tType: State\n');
     
     % Mean
     if var.takeMean(d)
@@ -41,9 +36,6 @@ if var.isState(d)
 % Ensemble dimension
 else
     
-    % Type
-    fprintf('\t\t\t\tType: Ensemble\n');
-    
     % Metadata
     fprintf('\t\t\t\tMetadata Value: ');
     if isempty(var.seqMeta{d})
@@ -53,15 +45,6 @@ else
         fprintf('\b');
     end
     
-    % Sequence indices
-    if ~isequal(var.seqDex{d}, 0)
-        fprintf( ['\t\t\t\tSequence Indices: ', sprintf('%i, ',var.seqDex{d}), '\b\b\n'] );
-    end
-    
-    % Mean indices
-    if ~isequal(var.meanDex{d}, 0)
-        fprintf( ['\t\t\t\tMean Indices: ', sprintf('%i, ', var.meanDex{d}), '\b\b\n'] );
-    end
     
     % Index type
     dexType = 'Ensemble';
