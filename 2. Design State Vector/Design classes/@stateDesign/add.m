@@ -1,14 +1,16 @@
 function[obj] = add( obj, varName, file, autoCouple )
 %% Adds a variable to a state vector design.
 %
-% design = addVariable( varName, file,  )
+% design = obj.add( varName, file,  )
 % Adds a variable to a state vector design.
 %
-% design = addVariable( varName, file, autoCouple )
+% design = obj.add( varName, file, autoCouple )
 % Specify whether to automatically couple the variable to new variables
 % added to the state vector. Default is true.
 %
 % ----- Inputs -----
+%
+% obj: A state vector design.
 %
 % varName: The name of the variable. A string scalar or character row
 %          vector.
@@ -41,17 +43,17 @@ if ~isempty(obj.varName) && ismember(varName, obj.varName)
 end
 
 % Initialize a new varDesign
-newVar = varDesign(file, name);
+newVar = varDesign(file, varName);
 
 % Add the variable to the state vector
-obj.var(end+1) = newVar;
-obj.varName(end+1) = varName;
+obj.var = [obj.var; newVar];
+obj.varName = [obj.varName; varName];
 
 % Mark the default coupling choice for the variable
 obj.autoCouple(end+1) = autoCouple;
 
 % Initialize the iscoupled field
-obj.isCoupled(end+1,end+1) = false;
+obj.isCoupled(end+1,end+1) = true;
 
 % Autocouple if specified
 if autoCouple
@@ -60,7 +62,7 @@ if autoCouple
     v = find( obj.autoCouple )';
     
     % Couple them.
-    obj = obj.couple( obj.varName(v);
+    obj = obj.couple( obj.varName(v) );
 end
 
 end

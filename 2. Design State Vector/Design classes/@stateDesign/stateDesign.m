@@ -21,7 +21,7 @@ classdef stateDesign
     %   
     % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
-    %    addVar - Adds a variable to the state vector
+    %    add - Adds a variable to the state vector
     %    edit - Edits the design specifications for a variable.
     %    copy - Copies design specifications from a template variable to
     %           other variables.
@@ -33,6 +33,7 @@ classdef stateDesign
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
     
+    % User can see, but not touch.
     properties (SetAccess = private)
         name;       % An identifier for the state vector.
         var;        % The array of variable designs
@@ -77,7 +78,7 @@ classdef stateDesign
     methods
         
         % Adds a new variable to the state vector.
-        obj = addVar( obj, varName, file, autoCouple );
+        obj = add( obj, varName, file, autoCouple );
         
         % Edits the design specifications of a variable in the state vector.
 %         obj = edit( obj, varName, dim, dimType, varargin );
@@ -89,12 +90,30 @@ classdef stateDesign
 %         obj = disp( obj, varName, dim, longform );
         
         % Couples specified variables.
-%         obj = couple( obj, varNames, varargin );
+        obj = couple( obj, varNames, varargin );
         
         % Uncouples specified variables.
 %         obj = uncouple( obj, varNames, varargin );
         
         % Removes a variable from the state vector.
-%         obj = remove( obj, varName );        
+        obj = remove( obj, varName );        
     end
+    
+    % Internal utility methods
+    methods (Access = private)
+        
+        % Edit design for a state dimension
+        obj = stateDimension( obj, varName, dim, varargin );
+        
+        % Edit design for an ensemble dimension
+        obj = ensDimension( obj, varName, dim, varargin );
+        
+        % Find the index of a variable in the list of variables in the
+        % state vector.
+        v = findVarIndices( obj, varName );
+        
+        % Process indices for internal use
+        index = checkIndices( obj, index );
+    end
+        
 end
