@@ -31,7 +31,8 @@ classdef stateDesign
     %    disp - Displays information about the state vector.
     %    couple - Couples specified variables to one another.
     %    uncouple - Uncouples specified variables from all other variables.
-    %    remove - Removes a variable from the state vector.
+    %    remove - Removes a set of variables from the state vector.
+    %    overlap - Adjusts a variable's overlap permissions.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
@@ -85,13 +86,13 @@ classdef stateDesign
         obj = add( obj, varName, file, autoCouple );
         
         % Edits the design specifications of a variable in the state vector.
-%         obj = edit( obj, varName, dim, dimType, varargin );
+        obj = edit( obj, varName, dim, dimType, varargin );
         
         % Copies indices from one variable to other variables.
         obj = copy( obj, fromVar, toVars );
         
         % Displays information about the state vector
-%         obj = disp( obj, varName, dim, longform );
+        obj = disp( obj, varName, dim, longform );
         
         % Couples specified variables.
         obj = couple( obj, varNames, varargin );
@@ -99,18 +100,17 @@ classdef stateDesign
         % Uncouples specified variables.
         obj = uncouple( obj, varNames, varargin );
         
-        % Removes a variable from the state vector.
-        obj = remove( obj, varName );        
+        % Removes a set of variables from the state vector.
+        obj = remove( obj, varNames );       
+        
+        % Adjusts a variable's overlap permissions
+%         obj = overlap( obj, varName );
     end
     
     % Internal utility methods
     methods (Access = private)
         
-        % Edit design for a state dimension
-        obj = stateDimension( obj, varName, dim, varargin );
-        
-        % Edit design for an ensemble dimension
-        obj = ensDimension( obj, varName, dim, varargin );
+        %% General
         
         % Find the index of a variable in the list of variables in the
         % state vector.
@@ -119,8 +119,32 @@ classdef stateDesign
         % Find the index of a dimension in the list of variables
         d = findDimIndices( obj, v, dim );
         
+        
+        %% Editing
+        
+        % Edit design for a state dimension
+        obj = stateDimension( obj, varName, dim, varargin );
+        
+        % Edit design for an ensemble dimension
+        obj = ensDimension( obj, varName, dim, varargin );
+        
         % Process indices for internal use
         index = checkIndices( obj, index );
+        
+        % Implements nanflag behavior for complex edits.
+        nanflag = getNaNflag( obj, v, d, nanflag, inArgs )
+        
+        
+        %% Coupling
+        
+        % Flips a dimension and applies to all coupled variables.
+        obj = changeDimType( obj, v, d );
+        
+        % Flips type, deletes mean and sequence data, notifies user.
+        obj = resetChangedDim( obj, var, d );
+        
+        
+        %% Notifications
         
         % Notify the user when sequence and mean data are deleted for
         % coupled dimensions that change type.
