@@ -29,18 +29,14 @@ function[obj] = add( obj, varName, file, autoCouple )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Set autoCouple if not specified
+% Set unspecified fields
 if ~exist( 'autoCouple', 'var' )
     autoCouple = true;
 end
 
-% Type check the inputs. Convert strings to "string"
-[varName, file] = setup( varName, file, autoCouple );
-    
-% Check that the variable name is not a repeat
-if ~isempty(obj.varName) && ismember(varName, obj.varName)
-    error('Cannot repeat variable names.');
-end
+% Type check the inputs. Convert strings to "string". Prevent duplicate
+% variable names
+[varName, file] = setup( obj, varName, file, autoCouple );
 
 % Initialize a new varDesign
 newVar = varDesign(file, varName);
@@ -49,26 +45,26 @@ newVar = varDesign(file, varName);
 obj.var = [obj.var; newVar];
 obj.varName = [obj.varName; varName];
 
-% Mark the default coupling choice for the variable
+% Ensure the dimension order is the same for all variables
+if ~isequal( newVar.dimID, obj.var(1).dimID )
+    error('The order of dimensions in variable %s does not match the order for variable %s.', varName, obj.varName(1) );
+end
+
+% Set default coupling and overlap
 obj.autoCouple(end+1) = autoCouple;
-
-% Initialize the iscoupled field
 obj.isCoupled(end+1,end+1) = true;
+obj.overlap(end+1) = false;
 
-% Autocouple if specified
+% If autocoupling, get the other variables and couple
 if autoCouple
-    
-    % Get the autocoupled variables
     v = find( obj.autoCouple )';
-    
-    % Couple them.
     obj = obj.couple( obj.varName(v) );
 end
 
 end
 
 % Does type checking on the inputs
-function[varName, file] = setup( varName, file, autoCouple )
+function[varName, file] = setup( obj, varName, file, autoCouple )
 
 if ~isstrflag(varName)
     error('varName must be a string.');
@@ -80,5 +76,9 @@ end
 
 varName = string(varName);
 file = string(file);
+
+if ~isempty(obj.varName) && ismember(varName, obj.varName)
+    error('Cannot repeat variable names.');
+end
 
 end

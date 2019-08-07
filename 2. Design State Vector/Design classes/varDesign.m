@@ -1,9 +1,14 @@
-%% This is a custom structure that holds the design parameters for a single
-% variable in a state vector.
-
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
 classdef varDesign
+    % varDesign
+    % This is a custom structure that holds design parameters for a single
+    % variable in a state vector.
+    %
+    % This class should not be used by users. Instead, modify design
+    % parameters via the "stateDesign" class.
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019
+    
     
     % The values needed for each variable.
     properties
@@ -15,21 +20,16 @@ classdef varDesign
         dimSize; % Dimension size
         meta; % Metadata
         
-        % State vs Ensemble properties
+        % State or Ensemble properties
         isState; % Whether a dimension is a state dimension.
-        seqMeta; % The metadata value for sequence members
-        
-        % Index properties
         indices;  % The allowed indices for state or ensemble dimensions
-        seqDex;  % The indices used to get dimensional sequences
-        meanDex; % The indices used to take a mean
-        
-        % Mean properties
         takeMean; % Toggle to take a mean
         nanflag;  % How to treat NaN
-        
-        % Coupler property
-        overlap; % Whether an ensemble dimension permits non-duplicate overlapping sequences
+
+        % Ensemble properties
+        seqDex;  % The indices used to get dimensional sequences
+        seqMeta; % The metadata value for sequence members
+        meanDex; % The indices used to take a mean
         
         % Ensemble draws
         drawDex;
@@ -40,10 +40,16 @@ classdef varDesign
         %% This is the constructor that builds the design object
         function obj = varDesign( file, name )
             
-            % Set the file field
-            obj.file = file;
+            % Get the name. Convert to string for internal use.
+            if ~isstrflag(name)
+                error('Variable name must be a string scalar.');
+            elseif ~isstrflag(name)
+                error('File name must be a string scalar.');
+            end
+            obj.name = string(name);
+            obj.file = string(file);
             
-            % Get the dimID
+            % Get the grid file metadata
             [meta, dimID, dimSize] = metaGridfile( file );
             
             % Ensure that the gridfile contains all known IDs
@@ -59,41 +65,25 @@ classdef varDesign
             obj.dimSize = dimSize;
             obj.meta = meta;
             
-            % Get the name. Convert to string
-            if ischar(name) && isrow(name)
-                name = string(name);
-            elseif ~isstring(name) || ~isscalar(name)
-                error('name must be a string.');
-            end
-            obj.name = name;
+
                 
             % Get the number of dimensions
             nDim = numel(dimID);
             
             % Preallocate dimensional quantities
+            obj.isState = true(nDim,1);
             obj.indices = cell(nDim,1);
-            obj.seqDex = cell(nDim,1);
-            obj.meanDex = cell(nDim,1);
-            
             obj.takeMean = false(nDim,1);
             obj.nanflag = cell(nDim,1);
-            
-            obj.isState = true(nDim,1);
+            obj.seqDex = cell(nDim,1);
             obj.seqMeta = cell(nDim,1);
-            
-            obj.overlap = false;
+            obj.meanDex = cell(nDim,1);
             
             obj.drawDex = cell(nDim,1);
             obj.undrawn = [];
             
-            % Initialize all dimensions as state dimensions with all
-            % indices selected. Set seq and mean to [].            
             for d = 1:nDim
                 obj.indices{d} = (1:dimSize(d))';
-                obj.nanflag{d} = 'includenan';
-                obj.seqDex{d} = [];
-                obj.meanDex{d} = [];
-                obj.drawDex{d} = [];
             end
         end
     end

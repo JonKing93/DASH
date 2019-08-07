@@ -18,11 +18,6 @@ function[design] = stateDimension( design, var, dim, varargin )
 % Parse the inputs
 [index, takeMean, nanflag] = parseInputs( varargin, {'index','mean','nanflag'}, {[],[],[]}, {[],[],{'omitnan','includenan'}} );
 
-% Get the variable index
-v = checkDesignVar( design, var );
-
-% Get the dimension index
-d = checkVarDim( design.var(v), dim );
 
 %% Get the values to use
 
@@ -42,21 +37,7 @@ else % Ensure is column
 end
 checkIndices( design.var(v), d, index);
 
-% Sort
-index = sort(index);
 
-% Get the value of takeMean
-if isempty(takeMean)
-    takeMean = design.var(v).takeMean(d);
-end
-if ~islogical(takeMean) || ~isscalar(takeMean)
-    error('takeMean must be a logical scalar.');
-end
-
-% Get the nanflag
-if isempty(nanflag)
-    nanflag = design.var(v).nanflag{d};
-end
 
 
 %% Coupled variables

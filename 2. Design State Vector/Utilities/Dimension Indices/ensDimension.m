@@ -16,16 +16,6 @@ function[design] = ensDimension( design, var, dim, varargin )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
- % Parse inputs
-[index, seq, mean, nanflag, seqMeta, overlap] = parseInputs( varargin, ...
-        {'index','seq','mean','nanflag','meta','overlap'}, {[],0,0,[],[],[]}, ...
-        {[],[],[],{'includenan','omitnan'},[],[]} );
-    
-% Get the variable index
-v = checkDesignVar(design, var);
-
-% Get the dimension index
-d = checkVarDim(design.var(v),dim);
 
 %% Get the values to use
 

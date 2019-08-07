@@ -27,5 +27,6 @@ obj.varName(v) = [];
 obj.isCoupled(v,:) = [];
 obj.isCoupled(:,v) = [];
 obj.autoCouple(v) = [];
+obj.overlap(v) = [];
 
 end

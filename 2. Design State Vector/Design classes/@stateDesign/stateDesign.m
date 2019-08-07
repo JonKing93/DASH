@@ -18,6 +18,9 @@ classdef stateDesign
     %
     %   autoCouple - Notes whether a variable should automatically be
     %               coupled to new variables. Default is true.
+    %
+    %   overlap - Whether a variable permits overlapping, non-duplicate
+    %             sequences in the ensemble.
     %   
     % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
@@ -26,8 +29,8 @@ classdef stateDesign
     %    copy - Copies design specifications from a template variable to
     %           other variables.
     %    disp - Displays information about the state vector.
-    %    couple - Couples specified variables.
-    %    uncouple - Uncouples specified variables.
+    %    couple - Couples specified variables to one another.
+    %    uncouple - Uncouples specified variables from all other variables.
     %    remove - Removes a variable from the state vector.
     
     % ----- Written By -----
@@ -40,6 +43,7 @@ classdef stateDesign
         varName;    % The names of the variables in the design.
         isCoupled;  % Notes whether variables are coupled
         autoCouple;  % Whether the variable should be automatically coupled to new variables.
+        overlap;    % Whether the variable permits overlapping non-duplicate sequences
     end
     
     % Constructor block.
@@ -84,7 +88,7 @@ classdef stateDesign
 %         obj = edit( obj, varName, dim, dimType, varargin );
         
         % Copies indices from one variable to other variables.
-%         obj = copy( obj, fromVar, toVars );
+        obj = copy( obj, fromVar, toVars );
         
         % Displays information about the state vector
 %         obj = disp( obj, varName, dim, longform );
@@ -93,7 +97,7 @@ classdef stateDesign
         obj = couple( obj, varNames, varargin );
         
         % Uncouples specified variables.
-%         obj = uncouple( obj, varNames, varargin );
+        obj = uncouple( obj, varNames, varargin );
         
         % Removes a variable from the state vector.
         obj = remove( obj, varName );        
@@ -112,8 +116,18 @@ classdef stateDesign
         % state vector.
         v = findVarIndices( obj, varName );
         
+        % Find the index of a dimension in the list of variables
+        d = findDimIndices( obj, v, dim );
+        
         % Process indices for internal use
         index = checkIndices( obj, index );
+        
+        % Notify the user when sequence and mean data are deleted for
+        % coupled dimensions that change type.
+        notifyChangedType( obj, v, d );
+        
+        % Notify the user when secondary variables are coupled
+        notifySecondaryCoupling( obj, v, vall );
     end
         
 end
