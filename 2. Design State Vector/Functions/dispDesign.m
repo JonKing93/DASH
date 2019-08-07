@@ -31,35 +31,6 @@ function[] = dispDesign( d, var, dim, longform )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Check the design is a design
-if ~isa(d, 'stateDesign')
-    error('d must be a stateDesign.');
-end
-
-% Get the variable(s)
-if ~exist('var','var')
-    v = 1:numel(d.var);
-elseif ~(ischar(var)&&isvector(var)) && ~(isstring(var)&&isscalar(var))
-    error('var must be a char vector or string scalar.');
-else
-    v = checkDesignVar(d, var);
-end
-
-% Get the dimension
-if ~exist('dim','var')
-    dim = 'all';
-elseif ~(ischar(var)&&isvector(var)) && ~(isstring(var)&&isscalar(var))
-    error('dim must be a char vector or string scalar.');
-else
-    dim = checkVarDim(d.var(v), dim);
-end
-
-% Get the longform toggle
-if ~exist('longform','var')
-    longform = false;
-elseif ~islogical(longform) || ~isscalar(longform)
-    error('longform must be a scalar logical.');
-end
 
 
 %% Output
