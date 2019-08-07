@@ -30,15 +30,11 @@ end
 % Finally, implement NaN flag behavior
 obj.var(v).nanflag{d} = obj.getNaNflag( v, d, nanflag, varargin(1:2:end-1) );
 
-% Coupled variables
-% ,,,
-
-
-
-
-
-
-
+% If changing dimension type, change for all coupled variables
+% Delete coupled sequence and mean, notify user.
+if obj.var(v).isState(d)
+    obj = obj.changeDimType( v, d );
+end
  
 end
  

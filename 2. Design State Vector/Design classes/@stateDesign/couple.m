@@ -48,23 +48,17 @@ for k = 1:nVars
     obj.isCoupled( var, vall ) = true;
     obj.isCoupled( vall, var ) = true;
     
-    % Get the dimensions that are changing type, delete their mean and
-    % sequence data. Notify the user.
+    % For any dimensions changing type, delete mean and sequence data.
+    % Notify the user.
     flipDim =   isState ~= obj.var(var).isState;
     for d = 1:numel(flipDim)
-        dim = flipDim(d);
-        obj.var(var).takeMean(dim) = false;
-        obj.var(var).meanDex{dim} = [];
-        obj.var(var).nanflag{dim} = [];
-        obj.var(var).seqDex{dim} = [];
-        obj.var(var).seqMeta{dim} = [];
+        obj = obj.resetChangedDim( var, flipDim(d) );
     end
-    obj.notifyChangedType( var, flipDim, false );
+    obj.notifyChangedType( var, flipDim );
     
-    % Set the autocoupler, overlap, and ensemble dimensions
+    % Set the autocoupler and overlap
     obj.autoCouple(var) = autoCouple;
     obj.overlap(var) = overlap;
-    obj.var(var).isState = isState;
 end
 
 end

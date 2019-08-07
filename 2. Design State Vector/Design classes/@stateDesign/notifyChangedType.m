@@ -1,21 +1,45 @@
-function[] = notifyChangedType( obj, v, d, iscoupled )
+function[] = notifyChangedType( obj, v, d, cv )
 % v: The variable index
 %
 % d: The dimension index
-s = "s";
-verb = "are";
+%
+% cv: Optional coupled variables
+
+% Get plurals for dimensions and variables
+ds = "s";
+dverb = "are";
 if numel(d) == 1
-    s = "";
-    verb = "is";
+    ds = "";
+    dverb = "is";
 end
 
-coupled = "Coupled ";
-if ~iscoupled
-    coupled = "";
+cs = "s";
+cgroup = "these";
+if exist('cv','var') && numel(cv)==1
+    cs = "";
+    cgroup = "this";
 end
 
-fprintf([ sprintf('%sVariable %s:', coupled, obj.varName(v)), '\n', ...
-          sprintf('\tDimension%s ',s), sprintf('%s, ', obj.var(v).dimID(d)), '\b\b\n', ...
-          sprintf('\t%s changing type. Sequence and mean design specifications will', verb) ...
-          '\tbe deleted for these dimensions.\n\n' ]);
+vs = "";
+vgroup = "this";
+if exist('cv', 'var')
+    vs = cs;
+    vgroup = cgroup;
+end
+
+line1 = [sprintf('Dimension%s ',ds), sprintf('%s, ', obj.var(v).dimID(d)), ...
+    sprintf('\b\b %s changing type for variable %s.\n', dverb, obj.varName(v)) ];
+    
+line2 = '';
+if exist('cv', 'var')
+    line2 = [sprintf('Coupled variable%s ',cs), sprintf('%s, ', obj.varName(cv)), ...
+        sprintf('\b\b will also be altered.\n')];
+end
+
+line3 = sprintf('Deleting sequence and mean design specifications for %s variable%s.\n\n', ...
+                 vgroup, vs );
+    
+
+fprintf([line1, line2, line3]);
+
 end

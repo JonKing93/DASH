@@ -15,22 +15,10 @@ obj.var(v).nanflag{d} = obj.getNaNflag( v, d, nanflag, varargin(1:2:end-1) );
  % Error check, process, and record indices. (Sorted column, linear)
 obj.var(v).indices{d} = obj.checkIndices( index, v, d );
 
-% For each coupled variable (including the specified variable)
-v = find( obj.isCoupled(v,:) );
-for k = 1:numel(v)
-    
-    % If changing dimension type, delete sequence and mean data. Notify the user
-    if ~obj.var(v(k)).isState(d)
-        obj.var(v(k)).isState(d) = true;
-
-        obj.var(v(k)).takeMean(dim) = false;
-        obj.var(v(k)).meanDex{dim} = [];
-        obj.var(v(k)).nanflag{dim} = [];
-        obj.var(v(k)).seqDex{dim} = [];
-        obj.var(v(k)).seqMeta{dim} = [];
-        
-        obj.notifyChangedType( v(k), d, true );
-    end
+% If changing dimension type, change for all coupled variables
+% Delete coupled sequence and mean, notify user.
+if ~obj.var(v).isState(d)
+    obj = obj.changeDimType( v, d );
 end
 
 end
