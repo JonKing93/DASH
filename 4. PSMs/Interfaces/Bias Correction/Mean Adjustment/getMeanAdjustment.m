@@ -1,12 +1,12 @@
-function[timesConstant, addConstant] = getRenormalization( Xt, Xs )
-%% Gets the multiplicative and additive constants needed to adjust the mean
-% and variance of a source dataset to match a target dataset.
+function[addConstant] = getMeanAdjustment( Xt, Xs, nanflag )
+%% Gets the additive constant needed to adjust the mean of a source dataset
+% to match the mean of a target dataset.
 %
-% [timesConstant, addConstant] = getRenormalization( Xt, Xs )
-% Determines the constants needed to adjust the means and standard
-% deviations of the rows of Xs to match those of Xt.
+% [addConstant] = getMeanAdjustment( Xt, Xs )
+% Determines the additive constants needed to adjust the means of the rows
+% of Xs to match the means of the rows of Xt.
 %
-% [timesConstant, addConstant] = getRenormalization( Xt, Xs, nanflag )
+% [addConstant] = getMeanAdjustment( Xt, Xs, nanflag )
 % Specifies how to treat NaN values in the datasets.
 %
 % ----- Inputs -----
@@ -23,9 +23,6 @@ function[timesConstant, addConstant] = getRenormalization( Xt, Xs )
 %
 % ----- Outputs -----
 %
-% timesConstant: The multiplicative constants needed to adjust the standard
-% deviations of the rows of Xs to match the rows of Xt. 
-% 
 % addConstant: The additive constants needed to adjust the means of the rows
 % of Xs to match the means of the rows of Xt.
 
@@ -48,16 +45,12 @@ elseif ~ismember( nanflag, ["omitnan","includenan"] )
     error('Unrecognized nanflag.');
 end
 
-% Get the means
-meanS = mean(Xs, 2, nanflag);
+% Get the mean of each row
 meanT = mean(Xt, 2, nanflag);
+meanS = mean(Xs, 2, nanflag);
 
-% Get the standard deviations
-stdS = std( Xs, 0, 2, nanflag );
-stdT = std( Xs, 0, 2, nanflag );
-
-% Get the renormalization
-timesConstant = (stdT ./ stdS);
-addConstant = meanT - (stdT .* meanS ./ stdS);
+% Get the additive constants
+addConstant = meanT - meanS;
 
 end
+
