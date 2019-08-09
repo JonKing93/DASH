@@ -1,63 +1,30 @@
-classdef mgcaPSM < PSM
+classdef deloPSM < PSM
     
     properties
         %lat and lon coordinates of site
         coord;
-        %pH needs to be passed to the PSM since it isn't modeled
-        pH;
-        %ditto with omega
-        Omega;
-        %you need to enter the cleaning method.
-        Clean;
         %you need to give the PSM the species of foraminifera.
         Species;
-        %age is needed for seawater correction in deep time. Otherwise it
-        %is fine to pass a dummy value of zero.
-        Age = 0; 
-        %flag for seawater correction, default is none.
-        SeaCorr = 0; 
-        %Prior mean to limit forward model, default is 4;
-        PriorMean = 4; 
-        %Prior std to limit forward model, default is 4 (very wide).
-        PriorStd = 4;
         %array of seasonal min and max values. note large dummy values for
         %annual models
         GrowthSeas = [3.6 29.2; 22.5 31.9; 6.7 21.1; -0.9 15.3; 20.2 30.6; -5 50; -5 50];
         %names of allowable species
         SpeciesNames = {'bulloides','ruber','incompta','pachy','sacculifer','all','all_sea'};
         %string array of Bayesian parameters. These are the default values.
-        bayes = ["pooled_model_params.mat";"pooled_sea_model_params.mat";"species_model_params.mat"];
+        bayes = ["poolann_params.mat";"poolsea_params.mat";"hiersea_params.mat"];
     end
     
     methods
         % Constructor. This creates an instance of a PSM
-        function obj = mgcaPSM( lat, lon, pH, Omega, Clean, Species, varargin )
+        function obj = deloPSM( lat, lon, Species, varargin )
             % Get optional inputs
-            [age, sw, pmean, pstd, bayes] = parseInputs(varargin, {'Age','SeaCorr','PriorMean','PriorStd','Bayes'}, {[],[],[],[],[]}, {[],[],[],[],[]});
+            [bayes] = parseInputs(varargin, {'Bayes'}, {[]}, {[]});
             
             % Set the coordinates
             obj.coord = [lat lon];
-            % Set pH
-            obj.pH = pH;
-            % Set Omega
-            obj.Omega = Omega;
-            % Set Clean
-            obj.Clean = Clean;
             % Set species
             obj.Species = Species;
             % Set optional arguments
-            if ~isempty(age)
-                obj.Age = age;
-            end
-            if ~isempty(sw)
-                obj.SeaCorr = sw;
-            end
-            if ~isempty(pmean)
-                obj.PriorMean = pmean;
-            end
-            if ~isempty(pstd)
-                obj.PriorStd = pstd;
-            end
             if ~isempty(bayes)
                 obj.bayes = bayes;
             end
@@ -67,17 +34,18 @@ classdef mgcaPSM < PSM
         % This determines the indices of elements in a state vector that
         % should be used to run the forward model for a particular Mg/Ca
         % site.
-        function[] = getStateIndices( obj, ensMeta, sstName, sssName, monthName, varargin ) 
+        function[] = getStateIndices( obj, ensMeta, sstName, deloName, monthName, varargin ) 
             % Concatenate the variable names
-            varNames = [string(sstName), string(sssName)];
+            % varNames = [string(sstName), string(deloName)];
             % Get the time dimension
             [~,~,~,~,~,~,timeID] = getDimIDs;
-            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, varNames, timeID, monthName, varargin{:} );
+            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, sstName, timeID, monthName, varargin{:} );
+            obj.H(13) = getClosestLatLonIndex( obj.coord, ensMeta, deloName);
         end
         % Error Checking
         %
         function[] = errorCheckPSM( obj )
-            if ~isvector( obj.H ) || length(obj.H)~=24
+            if ~isvector( obj.H ) || length(obj.H)~=13
                 error('H is not the right size.');
             end
             if ~ismember(obj.Species,obj.SpeciesNames)
@@ -85,7 +53,7 @@ classdef mgcaPSM < PSM
             end
         end
         % Now run the forward model
-        function[mg,R] = runForwardModel( obj, M, ~, ~ )
+        function[delo,R] = runForwardModel( obj, M, ~, ~ )
             %get ensemble means of SST and SSS for growth seasons
             SSTens = mean(M(1:12,:),2);
             %find the species
@@ -113,20 +81,21 @@ classdef mgcaPSM < PSM
         end
             %average months for seasonal T
             SST=mean(M(gots_t,:),1);
-            SSS=mean(M(gots_t+12,:),1);
+            %delosw should be the 13th entry in M
+            d18Osw=M(13,:);
             % Run the forward model. Output is 1500 possible estimates for
             % each ensemble member (nEns x 1000)
-            mg = baymag_forward(obj.Age,SST,obj.Omega,SSS,obj.pH,obj.Clean,obj.Species,obj.SeaCorr,obj.PriorMean,obj.PriorStd,obj.bayes);
+            delo = bayfox_forward(SST,d18Osw,obj.Species,obj.bayes);
             
             % Estimate R from the variance of the model for each ensemble
             % member. (scalar)
-            R = mean( var(mg,[],2), 1);
+            R = mean( var(delo,[],2), 1);
             
             % Take the mean of the 1500 possible values for each ensemble
             % member as the final estimate. (1 x nEns)
-            mg = mean(mg,2);
+            delo = mean(delo,2);
             % transpose for Ye
-            mg = mg';
+            delo = delo';
         end
     end
 end
