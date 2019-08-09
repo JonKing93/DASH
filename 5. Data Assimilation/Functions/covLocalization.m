@@ -76,22 +76,9 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % Y localization weights by Jonathan King
 
-% Check that the site coordinates are a 2 column matirx
-if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
-    error('Site coordinates must be a two column matrix.');
-end
-
-% If ensemble metadata, get the lat-lon metadata
-if isstruct( ensMeta )
-    stateCoord = getEnsembleCoords( ensMeta );
-
-% Otherwise, this is user-generated coordinates. Check the size
-elseif ~ismatrix(ensMeta) || size( ensMeta, 2 ) ~= 2
-    error('User-generated state coordinates must be a matrix with 2 columns.');
-
-% Save user-generated coordinates
-else
-    stateCoord = ensMeta;
+% Error check R
+if ~isscalar(R) || ~isnumeric(R) || R < 0 || isnan(R) || isinf(R)
+    error('R must be a positive, numeric scalar that is not NaN or Inf.');
 end
 
 % If not specified, set the length scale to 1/2 the localization radius
@@ -104,7 +91,70 @@ else
     elseif ~isscalar(scale) || scale<0 || scale>0.5
         error('The length scale must be a scalar on the interval [0, 0.5].');
     end
-end       
+end  
+
+% Check that the site coordinates are a 2 column matirx
+if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
+    error('Site coordinates must be a two column matrix.');
+end
+
+% Get lat-lon metadata for ensemble metadata
+if isstruct( ensMeta )
+    
+    % Error check dimensions
+    [~,~,~,lon,lat,~,~,~,tri] = getDimIDs;
+    dims = [lon;lat;tri];
+    if any(~ismember( dims, fields(ensMeta.var) ))
+        error('Ensemble metadata does not contain the %s dimension.', dims( find( ~ismember(dims, fields(ensMeta.var)),1)) );
+    end
+    
+    % Preallocate the state coordinates
+    stateCoord = NaN( ensMeta.varLim(end,2), 2 );
+    
+    % For each variable...
+    for v = 1:numel(ensMeta.varName)
+    
+        % Check whether there is any metadata in each dimension
+        hasmeta = true(3,1);
+        for d = 1:numel(dims)
+            if isscalar( ensMeta.var(v).(dims(d)) ) && isnan( ensMeta.var(v).(dims(d)) )
+                hasmeta(d) = false;
+            end
+        end
+
+        % Ensure that only one of lat-lon, and tri have metadata
+        if all(hasmeta)
+            error('Variable %s has both tripolar and lat-lon metadata.', varName );
+        elseif all( ~hasmeta )
+            error('Variable %s has neither tripolar nor lat-lon metadata.', varName );
+        elseif ~all( hasmeta(1:2) ) && ~all( ~hasmeta(1:2) )
+            error('Only one of the lat and lon dimensions of variable %s has metadata.', varName );
+        end
+
+        % Get state indices. Lookup lat and lon in appropriate dimension.
+        % Only record if not a spatial mean
+        H = getVarStateIndex( ensMeta, ensMeta.varName(v) );
+        if hasmeta(3)
+            meta = lookupMetadata( ensMeta, H, 'tri' );
+            if ismatrix(meta)
+                stateCoord(H,:) = meta;
+            end 
+        else
+            meta1 = lookupMetadata( ensMeta, H, 'lat' );
+            meta2 = lookupMetadata( ensMeta, H, 'lon' );
+            if ismatrix(meta1) && ismatrix(meta2)
+                stateCoord(H,1) = meta1;
+                stateCoord(H,2) = meta2;
+            end
+        end
+    end
+    
+% If the user provides state coordinates, error check and save
+elseif ~ismatrix(ensMeta) || size( ensMeta, 2 ) ~= 2 || ~isnumeric(ensMeta)
+    error('User-generated state coordinates must be a numeric matrix with 2 columns.');
+else
+    stateCoord = ensMeta;
+end  
 
 % Get the localization weights for the state vector
 weights = localWeights( siteCoord, stateCoord, R, scale );

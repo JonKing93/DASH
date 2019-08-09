@@ -4,7 +4,7 @@ function[stateCoord] = getEnsembleCoords( ensMeta )
 [~,~,var,lonDim,latDim,~,~,~,triDim] = getDimIDs;
 if ~isstruct(ensMeta)
     error('ensMeta must be an ensemble metadata structure.');
-elseif ~isfield( ensMeta, lonDim) || ~isfield(ensMeta,latDim) || ~isfield(ensMeta,triDim)
+elseif ~isfield( ensMeta.var, lonDim) || ~isfield(ensMeta.var,latDim) || ~isfield(ensMeta.var,triDim)
     error('Ensemble metadata must include the %s, %s, and %s fields.', lonDim, latDim, triDim);
 end
 
@@ -15,7 +15,7 @@ nState = size(ensMeta, 1);
 stateCoord = NaN( nState, 2 );
 
 % Get the variables in the state vector
-vars = unique( ensMeta.(var) );
+vars = unique( ensMeta.varName );
 
 % For each variable
 for v = 1:vars
