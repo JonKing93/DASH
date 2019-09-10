@@ -45,17 +45,16 @@ end
 % sampling indices
 sampDex = getSamplingIndices( ensDex, subSeq );
 
-% Get the indices of repeated sampling indices
-[~, notrepeat] = unique( sampDex, 'rows', 'stable' );
-repDex = (1:size(sampDex,1))';
-repDex = repDex( ~ismember(repDex, notrepeat) );
+% Get the indices of repeated / overlapping sampling indices
+[~, notoverlap] = unique( sampDex, 'rows', 'stable' );
+overlap = (1:size(sampDex,1))';
+overlap = overlap( ~ismember(overlap, notoverlap) );
 
-% Replace the draws associated with overlap with NaN
-badDraw = unique( ceil( repDex / nSeq ) );
+% Replace the draws associated with overlap with NaN. Move failed draws to
+% the end of the array to be overwritten
+badDraw = unique( ceil( overlap / nSeq ) );
 subDraws( badDraw, : ) = NaN;
 
-% Move failed draws to the end of the array so that new draws don't
-% eliminate previously successful draws
 failed = ismember( 1:size(subDraws,1), badDraw );
 subDraws = [ subDraws(~failed,:); subDraws(failed,:) ];
 
