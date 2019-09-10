@@ -4,15 +4,8 @@ function[] = reviewDesign( design )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Ensure that the design is a state design
-if ~isa(design, 'stateDesign')
-    error('design must be a stateDesign object.');
-end
 
-% Check that the coupling matrix is a symmetric logical matrix
-if ~islogical(design.isCoupled) || ~ismatrix(design.isCoupled) || ~issymmetric(design.isCoupled)
-    error('The "isCoupled" field of the stateDesign must be a symmetric logical matrix.');
-end
+
 
 % Get the number of variables
 nVar = numel(design.var);
