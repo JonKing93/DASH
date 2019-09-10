@@ -1,4 +1,4 @@
-function[vars] = setVariableDraws( vars, subDraws, ensID, undrawn )
+function[obj] = recordDraws( obj, cv, subDraws, undrawn )
 %% Sets the ensemble indices that will be used in constructing an ensemble.
 %
 % coupVars: A set of coupled varDesigns
@@ -12,10 +12,10 @@ function[vars] = setVariableDraws( vars, subDraws, ensID, undrawn )
 
 % Store a reference to undrawn ensemble members in the first coupled
 % variable so that the ensemble can be increased in size later.
-vars(1).undrawn = undrawn;
+obj.var( cv(1) ).undrawn = undrawn;
 
-% For each variable
-for v = 1:numel(vars)
+% Srot the
+for v = 1:numel(cv)
     
     % For each ensemble dimension
     for dim = 1:numel(ensID)
