@@ -37,6 +37,38 @@ classdef ensembleMetadata
         designName  % State design name
     end
     
+    
+    
+    % These are public methods that anyone can use
+    methods (Access = public)
+        
+        
+        
+        
+        
+    end
+    
+    
+    
+    % These are internal methods.
+    methods (Access = private)
+        
+        % Check if variables are in the ensemble and return their indices
+        % in the set of variables.
+        v = varCheck(obj, varNames);
+        
+        % Return all the indices associated with a particular variable
+        H = varIndices( obj, varName );
+        
+        
+    end
+    
+    
+    
+    
+    
+    
+    
     % But they can name for quick reference
     
     % These are public methods that anyone can use
@@ -164,34 +196,7 @@ classdef ensembleMetadata
             end
         end
         
-        function H = varIndex( obj, varName )
-            % Returns the indices associated with a particular variable.
-            %
-            % H = obj.varIndex( varName )
-            %
-            % ----- Inputs -----
-            %
-            % varName: The name of a variable.
-            %
-            % ----=- Outputs -----
-            %
-            % H: The state indices associated with the varialbe
-            
-            % Check that this is a single variable
-            if ~isstrflag(varName)
-                error('varName must be a character row or string scalar.');
-            end
-            
-            % Check that the variable is in the metadata
-            varName = obj.varCheck( varName );
-            
-            % Get an index for the variable
-            v = find( strcmp( varName, obj.varName ) );
-            
-            % Get the indices
-            H = ( obj.varLim(v,1) : obj.varLim(v,2) )';
-        end
-    end
+
     
     % These are some utility functions that the user doesn't need to worry
     % about
@@ -216,23 +221,7 @@ classdef ensembleMetadata
             end
         end
             
-        function vars = varCheck( obj, vars )
-            % Checks if a set of varialbes are in the ensemble metadata.
-            % Returns the input as a string array.
-            
-            % Check this is a string set
-            if ~isstrset(vars)
-                error('vars must be a character row vector, cellstring, or string array.');
-            end
-            
-            % Convert to string for simplicity
-            vars = string(vars);
-            
-            % Check that the vars are actually in the metadata
-            if any( ~ismember( vars, obj.varNames ) )
-                error('"%s" is not a variable in the ensemble metadata.', vars(find(~ismember(vars,obj.varNames),1)) );
-            end
-        end            
+          
             
         function H = getLookupIndex( obj, inArg )
             % Parses the input for lookupMetadata
