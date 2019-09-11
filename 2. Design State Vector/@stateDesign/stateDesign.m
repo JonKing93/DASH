@@ -33,6 +33,7 @@ classdef stateDesign
     %    uncouple - Uncouples specified variables from all other variables.
     %    remove - Removes a set of variables from the state vector.
     %    overlap - Adjusts a variable's overlap permissions.
+    %    buildEnsemble - Build an ensemble from the design.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
@@ -103,6 +104,9 @@ classdef stateDesign
         % Removes a set of variables from the state vector.
         obj = remove( obj, varNames );       
         
+        % Create an ensemble from the design.
+        ens = buildEnsemble( obj, nEns, ordered );
+        
         % Adjusts a variable's overlap permissions
 %         obj = overlap( obj, varName );
     end
@@ -152,6 +156,32 @@ classdef stateDesign
         
         % Notify the user when secondary variables are coupled
         notifySecondaryCoupling( obj, v, vall );
+        
+        
+        %% Ensembles
+        
+        % Removes ensemble indices that don't allow a full sequence
+        obj = trim( obj );
+        
+        % Returns the variable indices of each set of coupled variables.
+        cv = coupledVariables( obj );
+        
+        % Restricts a set of coupled variables to ensemble indices with 
+        % matching metadata
+        obj = matchMetadata( obj, cv );
+        
+        % Initializes an array of draws for a design.
+        [overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws );
+        
+        % Selects a set of N-D subscripted draws
+        [subDraws, undrawn] = obj.draw( nDraws, subDraws, undrawn, random, ensSize );
+        
+        % Removes overlapping draws from an ensemble
+        subDraws = removeOverlap( obj, subDraws, cv )
+        
+        % Saves finalized draws to variables
+        obj = obj.saveDraws( obj, cv, subDraws );
+        
     end
         
 end
