@@ -21,6 +21,9 @@ classdef stateDesign
     %
     %   overlap - Whether a variable permits overlapping, non-duplicate
     %             sequences in the ensemble.
+    %
+    %   new - Records whether a stateDesign has previously selected ensemble
+    %         draws.
     %   
     % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
@@ -44,8 +47,9 @@ classdef stateDesign
         var;        % The array of variable designs
         varName;    % The names of the variables in the design.
         isCoupled;  % Notes whether variables are coupled
-        autoCouple;  % Whether the variable should be automatically coupled to new variables.
+        autoCouple; % Whether the variable should be automatically coupled to new variables.
         overlap;    % Whether the variable permits overlapping non-duplicate sequences
+        new;        % Whether the design has previously selected ensemble draws.
     end
     
     % Constructor block.
@@ -77,6 +81,9 @@ classdef stateDesign
             % Initialize logical arrays
             obj.isCoupled = logical([]);
             obj.autoCouple = logical([]);
+            
+            % No ensembles yet..
+            obj.new = true;
         end
     end
     

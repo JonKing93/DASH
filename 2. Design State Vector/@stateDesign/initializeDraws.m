@@ -11,7 +11,7 @@ ensSize = var1.dimSize( ensDim );
 
 % Preallocate the draw arrays
 nDim = sum(ensDim);
-if newEnsemble
+if obj.new
     undrawn = (1:prod(ensSize))';
     subDraws = NaN( nDraws, nDim );
 else

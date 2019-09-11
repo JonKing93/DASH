@@ -19,7 +19,7 @@ function[ens] = buildEnsemble( obj, nEns, random )
 %
 % ens: An ensemble object.
 
-% Error check the inputs. Set defaults.
+% Error check the inputs. Set defaults. Check if this is a new ensemble
 if ~isnumeric(nEns) || ~isscalar(nEns) || mod(nEns,1)==0 || nEns<=0
     error('nEns must be a positive, scalar integer.');
 elseif ~exist('random','var') || isempty(random)
@@ -55,6 +55,7 @@ for set = 1:numel(cv)
 end
 
 % Save to an ensemble object
+obj.new = false;
 ens = ensemble( obj );
 
 end
