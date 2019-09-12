@@ -1,5 +1,8 @@
 function[M] = load( obj )
-%% Loads an ensemble
+%% Loads an ensemble and returns as output.
+%
+% If obj.source is a state design, builds the ensemble.
+% If obj.source is a .ens file, loads the ensemble from file.
 %
 % M = obj.load
 
