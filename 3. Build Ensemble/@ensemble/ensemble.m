@@ -18,15 +18,12 @@ properties (SetAccess = private)
     unsaved;           % Whether the ensemble has unsaved changes not written to file
                        
     members;           % Which ensemble members to load
-    overwrite;         % Whether to overwrite existing .ens files when writing to file.
+    canOverwrite;         % Whether to overwrite existing .ens files when writing to file.
     hasnan;            % Indicates which ensemble members contain NaN.
     writenan;          % Whether or not to write ensemble members
                        % containing NaN to file. (Default is false)
                        
-    haschanges;        % Whether the ensemble has been altered?
-    ordered;           % Whether the ensemble is ordered or random
-    
-                       
+    haschanges;        % Whether the ensemble has been altered?                       
 end
 
 % Constructor. Creates an ensemble object from a .ens file.
@@ -85,7 +82,10 @@ methods
     add( obj, nEns );
     
     % Writes an ensemble to a .ens file. 
-    write;
+    write( obj, file );
+    
+    % Specifies whether overwriting .ens files is allowed
+    overwrite( obj, tf );
     
     % Returns the ensemble as output. If obj.source is a stateDesign,
     % builds the ensemble from scratch. If obj.source is a .ens file, loads
@@ -97,12 +97,6 @@ methods
     
     % Specifies which ensemble members to load.
     useMembers;
-    
-    % Diplays information about the ensemble object.
-    disp;
-    
-    % Set whether existing files can be overwritten when writing to file.
-    canOverwrite;
 end
 
 

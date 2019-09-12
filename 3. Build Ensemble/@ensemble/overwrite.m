@@ -1,7 +1,7 @@
-function[] = canOverwrite( obj, tf )
+function[] = overwrite( obj, tf )
 %% Specify whether an ensemble object can overwrite pre-exisiting files.
 %
-% obj.canOverwrite( tf )
+% obj.overwrite( tf )
 % Select whether overwriting is allowed.
 %
 % ----- Inputs -----
@@ -11,6 +11,6 @@ function[] = canOverwrite( obj, tf )
 if ~isscalar(tf) || ~islogical(tf)
     error('tf must be a scalar logical.');
 end
-obj.overwrite = tf;
+obj.canOverwrite = tf;
 
 end
