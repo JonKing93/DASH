@@ -14,28 +14,8 @@ keep = repmat( {':'}, [1,nDim] );
 % For each dimension
 for d = 1:nDim
     
-    % If a state dimension, the smallest set of continguous loaded data is
-    % a set of state indices
-    if var.isState(d)
-        index = var.indices{d};
-        
-    % For ensembles, a set of mean indices is the smallest set of
-    % contiguous loaded data
-    else
-        index = var.meanDex{d};
-    end
+
     
-    % Initialize the interval of indices being loaded
-    interval = index;
-    
-    % If unevenly spaced, load every index on the interval
-    if numel(index)>1 && numel(unique(diff(interval)))>1
-        interval = interval(1):interval(end);
-        
-    % Correct stride if evenly spaced
-    elseif numel(index)>1
-        stride(d) = unique( diff(index) );
-    end
     
     % Fill out the start and count
     start(d) = interval(1);
