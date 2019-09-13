@@ -165,7 +165,7 @@ classdef stateDesign
         notifySecondaryCoupling( obj, v, vall );
         
         
-        %% Ensembles
+        %% Building Ensembles
         
         % Removes ensemble indices that don't allow a full sequence
         obj = trim( obj );
@@ -188,6 +188,20 @@ classdef stateDesign
         
         % Saves finalized draws to variables
         obj = obj.saveDraws( obj, cv, subDraws );
+        
+        %% Ensemble metadata
+        
+        % Returns the state vector index limits and dimensional size of
+        % each variable.
+        [varLimits, varSize] = varIndices( obj );
+        
+        % Get the metadata associated with each variable
+        meta = varMetadata( obj );
+        
+        %% Writing ensemble
+        
+        % Determines which indices to read from for efficient loading.
+        [start, count, stride, keep] = loadingIndices( obj );
         
     end
         
