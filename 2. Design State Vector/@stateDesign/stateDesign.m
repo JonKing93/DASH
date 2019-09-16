@@ -91,7 +91,7 @@ classdef stateDesign
     methods
         
         % Adds a new variable to the state vector.
-        obj = addVariable( obj, varName, file, autoCouple );
+        obj = add( obj, varName, file, autoCouple );
         
         % Edits the design specifications of a variable in the state vector.
         obj = edit( obj, varName, dim, dimType, varargin );
