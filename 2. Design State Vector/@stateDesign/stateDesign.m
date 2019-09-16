@@ -181,13 +181,13 @@ classdef stateDesign
         [overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws );
         
         % Selects a set of N-D subscripted draws
-        [subDraws, undrawn] = obj.draw( nDraws, subDraws, undrawn, random, ensSize );
+        [subDraws, undrawn] = draw( obj, nDraws, subDraws, undrawn, random, ensSize );
         
         % Removes overlapping draws from an ensemble
         subDraws = removeOverlap( obj, subDraws, cv )
         
         % Saves finalized draws to variables
-        obj = obj.saveDraws( obj, cv, subDraws );
+        obj = saveDraws( obj, cv, subDraws );
         
         %% Ensemble metadata
         

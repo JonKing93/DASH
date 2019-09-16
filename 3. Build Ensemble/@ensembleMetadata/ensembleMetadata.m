@@ -29,12 +29,15 @@ classdef ensembleMetadata
     % values must be set and looked up by the constructor.
     properties (SetAccess = private)
         varName     % Variable name
-        varLim      % Index limits in state vector
+        varLimit      % Index limits in state vector
         varSize     % Size of gridded data
         varData     % Metadata for each dimension
         
         fileName    % Ensemble metadata file
         designName  % State design name
+        
+        nEns        % The number of ensemble members
+        hasnan      % Whether ensemble members contain NaN values
     end
         
     % Constructor block (unfinished)
@@ -74,21 +77,15 @@ classdef ensembleMetadata
             end
             obj.designName = design.name;
 
-            % Record the variable names
+            % Record the variable names, index limits, dimensional sizes,
+            % used metadata
             obj.varName = design.varName;
-
-            % Get the limits and sizes
-            [obj.varLim, obj.varSize] = getVarIndices( design.var );
-            % !!! This should be a design object method
+            [obj.varLimit, obj.varSize] = design.varIndices;
+            obj.varData = design.varMetadata;
             
-            % Get the metadata associated with each variable.
-            for v = 1:numel( design.var )
-                if v == 1  % Initialize the structure for variable 1
-                    obj.varData = getVarEnsMeta( design.var(v) );
-                end
-                obj.varData(v) = getVarEnsMeta( design.var(v) );
-                % !!! This should be a design object method.
-            end
+            % Get the number of ensemble members.
+            ensDim = find( ~design.var(1).isState, 1 );
+            obj.nEns = numel( design.var(1).drawDex{ensDim} );
         end
     end
     

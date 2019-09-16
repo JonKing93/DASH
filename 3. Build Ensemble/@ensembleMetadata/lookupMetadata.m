@@ -44,13 +44,13 @@ else
     H = inArg;
     if ~isvector(inArg) || ~isnumeric(inArg) || any(inArg < 1) || any(mod(inArg,1)~=0)
         error('H indices must be a numeric vector of positive integers.');
-    elseif any( H > obj.varLim(end,2) )
+    elseif any( H > obj.varLimit(end,2) )
         error('H contains indices longer than the state vector.');
     end
     H = H(:);
     
     % Then get the associated variables and ensure there is only 1
-    [v, ~] =  find(  H' >= obj.varLim(:,1)  &  H' <= obj.varLim(:,2)  );
+    [v, ~] =  find(  H' >= obj.varLimit(:,1)  &  H' <= obj.varLimit(:,2)  );
     v = unique(v);
     if numel(v)~=1
         error('H cannot reference more than a single variable.');
@@ -59,7 +59,7 @@ end
 dims = obj.dimCheck( dims );
 
 % Adjust indices to just the variable and get ND subscript indices
-H = H - obj.varLim(v,1) + 1;
+H = H - obj.varLimit(v,1) + 1;
 subDex = subdim( obj.varSize(v,:), H );
 
 % Get the metadata structure at each index for each dimension. If there's

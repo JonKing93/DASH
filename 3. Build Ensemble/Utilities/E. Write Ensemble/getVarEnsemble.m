@@ -13,9 +13,8 @@ nEls = nTot / nSeq;
 % Get N-dimensional subscripted sequence indices
 seqDex = subdim( ensSize, (1:nSeq)' );
 
-% Get the reference loading indices and the indices to keep for each chunk
-% of loaded data.
-[loadNC, keep] = getLoadingIndices( var );
+
+
 
 % Our ensemble members could be very big or very small. If they are very
 % very large, we will need to build the .ens file slightly differently to

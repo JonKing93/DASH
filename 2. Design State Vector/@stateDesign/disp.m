@@ -120,7 +120,7 @@ v = obj.findVarIndices( varNames );
 d = obj.findDimIndices( v(1), dims );
 
 if ~islogical(showMeta) || ~issscalar(showMeta)
-    error('showMeta must be a scalar logical.')l
+    error('showMeta must be a scalar logical.');
 end
 
 end

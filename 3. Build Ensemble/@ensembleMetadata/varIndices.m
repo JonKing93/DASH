@@ -18,6 +18,6 @@ end
 v = obj.varCheck( varName );
 
 % Get the indices
-H = (obj.varLim(v,1) : obj.varLim(v,2))';
+H = (obj.varLimit(v,1) : obj.varLimit(v,2))';
 
 end
