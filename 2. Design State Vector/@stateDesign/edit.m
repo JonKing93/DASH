@@ -12,7 +12,7 @@ function[obj] = edit( obj, varName, dim, dimType, varargin )
 % are enabled. Optional arguments are detailed below.
 %
 %
-% STATE DIMENSIONS:     obj.edit( varName, dim, 'state', ... )
+% STATE DIMENSIONS:  obj.edit( varName, dim, 'state', ... )
 %
 % obj.edit( ..., 'index', stateIndex )
 % Specifies state indices for the dimension.
@@ -21,7 +21,7 @@ function[obj] = edit( obj, varName, dim, dimType, varargin )
 % Specify whether to take a mean over the dimension.
 %
 %
-% ENSEMBLE DIMENSIONS:    obj.edit( varName, dim, 'ens', ... )
+% ENSEMBLE DIMENSIONS:  obj.edit( varName, dim, 'ens', ... )
 %
 % obj.edit( ..., 'index', ensIndex )
 % Specifies ensemble indices for the dimension.
@@ -102,39 +102,26 @@ function[obj] = edit( obj, varName, dim, dimType, varargin )
 % location for the "help" information, and to feed inputs into
 % stateDimension or ensDimension, which do the actual work.)
 
-% Type check and convert strings to "string"
-[v, d, dimType] = setup( varName, dim, dimType );
-
-% Edit a state dimension
-if strcmpi( dimType, "state" )
-    obj = obj.stateDimension( v, d, varargin{:} );
-    
-% Edit an ensemble dimension
-else
-    obj = obj.ensDimension( v, d, varargin{:} );
-end
-
-end
-
-function[v, d, dimType] = setup( varName, dim, dimType )
-
-% Check that inputs are string scalars.
+% Error check
 if ~isstrflag(varName)
     error('varName must be a string scalar.');
 elseif ~isstrflag(dim)
     error('dim must be a string scalar.');
 elseif ~isstrflag(dimType)
     error('dimType must be a string scalar.');
+elseif ~ismember( dimType, ["state","ens"] )
+    error('dimType must either be "state" or "ens".');
 end
 
-% Check that the variable and dimension are within the design, and get
-% their indices.
+% Variable and dimenion on which to operate
 v = obj.findVarIndices( varName );
 d = obj.var(v).findDimIndices( dim );
 
-% Check that the dimension type is recognized.
-if ~ismember( dimType, ["state","ens"] )
-    error('dimType must either be "state" or "ens".');
+% Edit a state or ensemble dimension
+if strcmpi( dimType, "state" )
+    obj = obj.stateDimension( v, d, varargin{:} );
+else
+    obj = obj.ensDimension( v, d, varargin{:} );
 end
 
 end
