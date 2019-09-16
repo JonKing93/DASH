@@ -1,10 +1,10 @@
-function[obj] = add( obj, varName, file, autoCouple )
+function[obj] = addVariable( obj, varName, file, autoCouple )
 %% Adds a variable to a state vector design.
 %
-% design = obj.add( varName, file,  )
+% design = obj.addVariable( varName, file,  )
 % Adds a variable to a state vector design.
 %
-% design = obj.add( varName, file, autoCouple )
+% design = obj.addVariable( varName, file, autoCouple )
 % Specify whether to automatically couple the variable to new variables
 % added to the state vector. Default is true.
 %

@@ -1,18 +1,18 @@
 function[] = info( obj, varNames, dims, showMeta )
 %% Displays information about a sate vector design.
 %
-% obj.disp
+% obj.info
 % Outputs information on every dimension of every variable in a state
 % vector design.
 %
-% obj.disp( varNames )
+% obj.info( varNames )
 % Outputs information on every dimension for specified variables in a state
 % vector design.
 %
-% obj.disp( varNames, dims )
+% obj.info( varNames, dims )
 % Outputs information on specific dimensions for specified variables.
 %
-% obj.disp( varNames, dims, showMeta )
+% obj.info( varNames, dims, showMeta )
 % Specify whether to display metadata for each dimension.
 %
 % ----- Inputs -----
