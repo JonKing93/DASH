@@ -100,7 +100,7 @@ classdef stateDesign
         obj = copy( obj, fromVar, toVars );
         
         % Displays information about the state vector
-        obj = disp( obj, varName, dim, longform );
+        obj = info( obj, varName, dim, longform );
         
         % Couples specified variables.
         obj = couple( obj, varNames, varargin );

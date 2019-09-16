@@ -1,4 +1,4 @@
-function[] = disp( obj, varNames, dims, showMeta )
+function[] = info( obj, varNames, dims, showMeta )
 %% Displays information about a sate vector design.
 %
 % obj.disp
