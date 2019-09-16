@@ -50,11 +50,13 @@ for k = 1:nVars
     
     % For any dimensions changing type, delete mean and sequence data.
     % Notify the user.
-    flipDim =   isState ~= obj.var(var).isState;
-    for d = 1:numel(flipDim)
-        obj = obj.resetChangedDim( var, flipDim(d) );
+    flipDim =  find( isState ~= obj.var(var).isState );
+    if ~isempty(flipDim)
+        for d = 1:numel(flipDim)
+            obj = obj.resetChangedDim( var, flipDim(d) );
+        end
+        obj.notifyChangedType( var, flipDim );
     end
-    obj.notifyChangedType( var, flipDim );
     
     % Set the autocoupler and overlap
     obj.autoCouple(var) = autoCouple;
