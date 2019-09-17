@@ -3,43 +3,39 @@ classdef stateDesign
     % Stores design specifications and parameters for a state vector
     % containing multiple variables.
     %
-    % stateDesign Properties:
-    %   name - An identifying name for the state vector
-    %
-    %   var - An array of variable designs. These contain the design
-    %        specifications for how data should be read from .grid files
-    %        into a state vector.
-    %
-    %   varName - The names of the variables in the state design.
-    %
-    %   isCoupled - Notes whether variables are coupled. Coupled variables
-    %              are selected from the same ensemble indices for each
-    %              ensemble member.
-    %
-    %   autoCouple - Notes whether a variable should automatically be
-    %               coupled to new variables. Default is true.
-    %
-    %   overlap - Whether a variable permits overlapping, non-duplicate
-    %             sequences in the ensemble.
-    %
-    %   new - Records whether a stateDesign has previously selected ensemble
-    %         draws.
-    %   
     % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
     %    add - Adds a variable to the state vector
     %    edit - Edits the design specifications for a variable.
     %    copy - Copies design specifications from a template variable to
     %           other variables.
-    %    disp - Displays information about the state vector.
+    %    info - Displays information about the state vector.
+    %    remove - Removes a set of variables from the state vector.
     %    couple - Couples specified variables to one another.
     %    uncouple - Uncouples specified variables from all other variables.
-    %    remove - Removes a set of variables from the state vector.
-    %    overlap - Adjusts a variable's overlap permissions.
     %    buildEnsemble - Build an ensemble from the design.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
+    %
+    % ----- Additional Documentation -----
+    %
+    % stateDesign Properties:
+    %   name - An identifying name for the state vector
+    %   var - An array of variable designs. These contain the design
+    %        specifications for how data should be read from .grid files
+    %        into a state vector.
+    %   varName - The names of the variables in the state design.
+    %   isCoupled - Notes whether variables are coupled. Coupled variables
+    %              are selected from the same ensemble indices for each
+    %              ensemble member.
+    %   autoCouple - Notes whether a variable should automatically be
+    %               coupled to new variables. Default is true.
+    %   overlap - Whether a variable permits overlapping, non-duplicate
+    %             sequences in the ensemble.
+    %   new - Records whether a stateDesign has previously selected ensemble
+    %         draws.
+
     
     % User can see, but not touch.
     properties (SetAccess = private)
