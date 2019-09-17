@@ -38,7 +38,7 @@ tvar = obj.var(tv);
 for d = 1:numel(tvar.dimID)
     
     % Get the indexed metadata for the template variable
-    meta = tvar.meta.(tvar.dimID(d))( tvar.indices{d} );
+    meta = tvar.meta.(tvar.dimID(d))( tvar.indices{d},: );
     
     % For each copying variable
     for k = 1:numel(v)
@@ -48,7 +48,7 @@ for d = 1:numel(tvar.dimID)
         % metadata, then this is a singleton dimension with index 1.
         currMeta = var.meta.(tvar.dimID(d));
         index = 1;
-        if ~isnan(currMeta) || ~isnan(meta)
+        if ~(isscalar(currMeta) && isnan(currMeta)) || ~(isscalar(meta) && isnan(meta))
             [~, index] = intersect( currMeta, meta, 'rows', 'stable' );
         end
         

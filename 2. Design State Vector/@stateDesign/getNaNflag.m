@@ -7,7 +7,7 @@ takeMean = obj.var(v).takeMean(d);
 % If setting takeMean to false -- if the user provided a
 % nanflag, throw error. For anything else, set the nanflag to [].
 if ~takeMean
-    if ismember('nanflag', inArgs)
+    if ismember('nanflag', inArgs) && ~isempty(nanflag)
         error('Cannot specify a NaN flag when not taking a mean.');
     elseif ~isempty(nanflag)
         fprintf('No longer taking a mean. Deleting NaN flag for dimension %s of variable %s.', obj.var(v).dimID(d), obj.varName(v) );
