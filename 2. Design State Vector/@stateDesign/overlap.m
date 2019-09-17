@@ -23,15 +23,14 @@ function[obj] = overlap( obj, tf, varNames )
 
 % Set defaults, error check
 if ~exist('varNames','var') || isempty(varNames)
-    varNames = 'all';
-end
-if ~isscalar(tf) || ~islogical(tf)
-    error('tf must be a scalar logical.');
+    varNames = "all";
 elseif ~isstrlist(varNames)
     error('varNames must be a string vector, cellstring vector, or character row vector.');
-elseif any(~ismember(varNames, [obj.varName; "all"]))
-    error('"%s" is not a variable in the stateDesign.', varNames(find(~ismember(varNames, obj.varName),1)) );
-elseif ismember("all", varNames) && numel(varNames)>1
+end
+varNames = string(varNames);
+if ~isscalar(tf) || ~islogical(tf)
+    error('tf must be a scalar logical.');
+elseif ismember("all",varNames) && numel(varNames)>1
     error('Cannot use "all" with variable names.');
 end
 

@@ -4,7 +4,7 @@ function[overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws
 
 % Get the overlap and ensemble size information
 var1 = obj.var( cv(1) );
-overlap = var1.overlap;
+overlap = obj.allowOverlap( cv(1) );
 
 ensDim = ~var1.isState;
 ensSize = var1.dimSize( ensDim );
