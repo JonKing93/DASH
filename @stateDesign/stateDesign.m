@@ -102,6 +102,17 @@ classdef stateDesign
         % Specify weights for a weighted mean
         obj = weightedMean( var, dims, weights, nanflag );
     end
+
+    % Methods used by ensemble and ensemble metadata objects
+    methods
+        
+        % Returns the state vector index limits and dimensional size of
+        % each variable.
+        [varLimits, varSize, isState] = varIndices( obj, v );
+        
+        % Get the metadata associated with each variable
+        [stateMeta, ensMeta] = varMetadata( obj );
+    end
     
     % Internal utility methods
     methods (Access = private)
@@ -176,15 +187,6 @@ classdef stateDesign
         
         % Saves finalized draws to variables
         obj = saveDraws( obj, cv, subDraws, undrawn );
-        
-        %% Ensemble metadata
-        
-        % Returns the state vector index limits and dimensional size of
-        % each variable.
-        [varLimits, varSize] = varIndices( obj );
-        
-        % Get the metadata associated with each variable
-        meta = varMetadata( obj );
         
         %% Writing ensemble
         

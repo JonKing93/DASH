@@ -34,6 +34,10 @@ classdef varDesign
         % Ensemble draws
         drawDex;
         undrawn;
+
+        % Weighted means
+        weightDims;    % The dimensions associated with each set of weights
+        weights;        % The weights to use when taking a mean
     end
         
     methods

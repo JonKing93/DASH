@@ -1,4 +1,10 @@
 function[] = checkFile( filename, varargin )
+% 'extension', ext
+% 'exist', tf
+
+if ~isstrflag(filename)
+    error('filename must be a string scalar or character row vector.');
+end
 
 % Optional inputs
 [ext, checkExists] = parseInputs( varargin, {'extension', 'exist'}, {[], false}, {[],[]} );

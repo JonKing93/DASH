@@ -4,9 +4,12 @@ classdef ensembleMetadata
     % 
     % ensembleMetadata Properties:
     %   varName - The name of each variable
-    %   varLim - The index limits of each variable in the state vector
+    %   varLimit - The index limits of each variable in the state vector
     %   varSize - The original size of the gridded variable
-    %   varData - The metadata values associated with the variable
+    %   stateMeta - The metadata values associated with each state elements
+    %               for each variable
+    %   ensMeta - The metadata assocaited with each ensemble member for
+    %             each variable.
     %
     %   fileName - The name of the associated .ens file
     %   designName - The name of the associated state design
@@ -14,19 +17,18 @@ classdef ensembleMetadata
     % ensembleMetadata Methods:
     %   ensembleMetadata - Creates a new ensemble metadata object
     %   lookupMetadata - Returns metadata at specified indices
-    %   varIndex - Returns the state vector indices associated with a
+    %   varIndices - Returns the state vector indices associated with a
     %              variable
     %
     % ensembleMetadata Utility Methods:
     %   dimCheck - Checks that a set of dimensions are in the metadata
     %   varCheck - Checks that a set of variables are in the metadata
-    %   getLookupIndex - Parses inputs for 
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
     
     % The user is not permitted to access any of the properties. These
-    % values must be set and looked up by the constructor.
+    % values must be set by the constructor and looked up elsewhere.
     properties (SetAccess = private)
         varName     % Variable name
         varLimit     % Index limits in state vector
@@ -39,7 +41,7 @@ classdef ensembleMetadata
         
         ensSize     % The number of state elements and members
         hasnan      % Whether ensemble members contain NaN values
-end
+    end
         
     % Constructor block
     methods
@@ -76,17 +78,18 @@ end
                 m = ensFileCheck( inArg );
                 obj.design = m.design;
                 obj.fileName = string(inArg);
+                obj.hasnan = m.hasnan;
             end
 
             % Record the variable names, index limits, dimensional sizes,
             % used metadata
-            obj.varName = design.varName;
-            [obj.varLimit, obj.varSize] = design.varIndices;
-            [obj.stateMeta, obj.ensMeta] = design.varMetadata;
+            obj.varName = obj.design.varName;
+            [obj.varLimit, obj.varSize] = obj.design.varIndices;
+            [obj.stateMeta, obj.ensMeta] = obj.design.varMetadata;
             
             % Get the size of the ensemble
-            ensDim = find( ~design.var(1).isState, 1 );
-            nEns = numel( design.var(1).drawDex{ensDim} );
+            ensDim = find( ~obj.design.var(1).isState, 1 );
+            nEns = numel( obj.design.var(1).drawDex{ensDim} );
             nState = obj.varLimit(end);
             obj.ensSize = [nState, nEns];
         end

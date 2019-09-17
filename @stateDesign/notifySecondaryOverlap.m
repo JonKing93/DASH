@@ -1,4 +1,5 @@
-function[] = noitfySecondaryOverlap( obj, v, vall, tf )
+function[] = notifySecondaryOverlap( obj, v, vall, tf )
+
 % v: Initial variable indices
 %
 % vall: Total set of variables
