@@ -6,11 +6,15 @@ function[overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws
 var1 = obj.var( cv(1) );
 overlap = obj.allowOverlap( cv(1) );
 
-ensDim = ~var1.isState;
-ensSize = var1.dimSize( ensDim );
+ensDim = find( ~var1.isState );
+nDim = numel(ensDim);
+
+ensSize = NaN( 1, nDim );
+for d = 1:nDim
+    ensSize(d) = numel( var1.indices{ ensDim(d) } );
+end
 
 % Preallocate the draw arrays
-nDim = sum(ensDim);
 if obj.new
     undrawn = (1:prod(ensSize))';
     subDraws = NaN( nDraws, nDim );

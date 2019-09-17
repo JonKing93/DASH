@@ -1,4 +1,4 @@
-function[obj] = saveDraws( obj, cv, subDraws )
+function[obj] = saveDraws( obj, cv, subDraws, undrawn )
 % Save the draws for each set of coupled variables.
 
 % Get the ensemble dimensions
@@ -10,6 +10,7 @@ for v = 1:numel(cv)
     for d = 1:numel(ensDim)
         obj.var( cv(v) ).drawDex{ensDim(d)} = subDraws(:,d);
     end
+    obj.var( cv(v) ).undrawn = undrawn;
 end
 
 end

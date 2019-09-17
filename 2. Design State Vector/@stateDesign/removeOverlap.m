@@ -21,7 +21,7 @@ for v = 1:numel(cv)
     % For each ensemble dimension, get the ensemble indices. Add them to the
     % sequence and mean indices to get the set of sequence elements.
     for d = 1:nDim
-        ensIndices(:,dim) = var.indices{ensDim(d)}( subDraws(notnan,d) );
+        ensIndices(:,d) = var.indices{ensDim(d)}( subDraws(notnan,d) );
 
         seq = var.seqDex{ensDim(d)} + var.meanDex{ensDim(d)}';
         seqElements{d} = seq(:);
@@ -31,7 +31,7 @@ for v = 1:numel(cv)
     % Get sequence subscript indices for N-D. Use them to subscript the
     % sequence elements
     nSeq = prod(nEls);
-    subIndices = subdim( nEls, (1:nSeq)' );
+    subIndices = subdim( (1:nSeq)', nEls );
 
     subSequences = NaN( nSeq, nDim );
     for d = 1:nDim

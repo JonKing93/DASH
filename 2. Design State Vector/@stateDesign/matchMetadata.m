@@ -30,7 +30,7 @@ for dim = 1:numel(ensDim)
         var = obj.var( cv(v) );
         varMeta = var.meta.(ensDim(dim))(var.indices{d}, :);
         [~, keep] = intersect( meta, varMeta, 'rows', 'stable' );
-        obj.var( cv(v) ).indices{dim} = var.indices{d}(keep);
+        obj.var( cv(v) ).indices{d} = var.indices{d}(keep);
     end
 end
 

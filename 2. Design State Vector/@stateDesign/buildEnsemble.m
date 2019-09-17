@@ -52,7 +52,7 @@ for set = 1:numel(cv)
     end
     
     % Save the draws for each variable
-    obj = obj.saveDraws( cv{set}, subDraws );
+    obj = obj.saveDraws( cv{set}, subDraws, undrawn );
 end
 
 % Save to an ensemble object

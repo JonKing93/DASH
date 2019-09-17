@@ -170,7 +170,7 @@ classdef stateDesign
         subDraws = removeOverlap( obj, subDraws, cv )
         
         % Saves finalized draws to variables
-        obj = saveDraws( obj, cv, subDraws );
+        obj = saveDraws( obj, cv, subDraws, undrawn );
         
         %% Ensemble metadata
         
