@@ -26,7 +26,7 @@ classdef varDesign
         takeMean; % Toggle to take a mean
         nanflag;  % How to treat NaN
 
-        % Ensemble properties
+        % Indices
         seqDex;  % The indices used to get dimensional sequences
         seqMeta; % The metadata value for sequence members
         meanDex; % The indices used to take a mean
