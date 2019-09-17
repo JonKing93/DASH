@@ -5,8 +5,8 @@ function[] = notifyChangedType( obj, v, d, cv )
 %
 % cv: Optional coupled variables
 
-% Only notify if there are coupled variables
-if ~isempty(cv)
+% If coupled variables are provided, only notify
+if ~exist('cv','var') || (exist('cv','var') && ~isempty(cv))
 
     % Get plurals for dimensions and variables
     ds = "s";
@@ -30,12 +30,12 @@ if ~isempty(cv)
         vgroup = cgroup;
     end
 
-    line1 = [sprintf('Dimension%s ',ds), sprintf('%s, ', obj.var(v).dimID(d)), ...
-        sprintf('\b\b %s changing type for variable %s.\n', dverb, obj.varName(v)) ];
+    line1 = [sprintf('Dimension%s ',ds), sprintf('"%s", ', obj.var(v).dimID(d)), ...
+        sprintf('\b\b %s changing type for variable "%s".\n', dverb, obj.varName(v)) ];
 
     line2 = '';
     if exist('cv', 'var')
-        line2 = [sprintf('Coupled variable%s ',cs), sprintf('%s, ', obj.varName(cv)), ...
+        line2 = [sprintf('Coupled variable%s ',cs), sprintf('"%s", ', obj.varName(cv)), ...
             sprintf('\b\b will also be altered.\n')];
     end
 
