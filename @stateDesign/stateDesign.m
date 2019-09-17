@@ -9,7 +9,9 @@ classdef stateDesign
     %    edit - Edits the design specifications for a variable.
     %    copy - Copies design specifications from a template variable to
     %           other variables.
+    %    weightedMean - Specifies weights when computing a mean.
     %    info - Displays information about the state vector.
+    %
     %    remove - Removes a set of variables from the state vector.
     %    couple - Couples specified variables to one another.
     %    uncouple - Uncouples specified variables from all other variables.
@@ -96,6 +98,9 @@ classdef stateDesign
         
         % Adjusts overlap permissions
         obj = overlap( obj, tf, varNames );
+
+        % Specify weights for a weighted mean
+        obj = weightedMean( var, dims, weights, nanflag );
     end
     
     % Internal utility methods
