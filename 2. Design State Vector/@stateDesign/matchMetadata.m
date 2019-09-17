@@ -4,16 +4,18 @@ function[obj] = matchMetadata( obj, cv )
 % Get the first variable and ensemble dimensions
 var1 = obj.var( cv(1) );
 ensDim = var1.dimID( ~var1.isState );
+ensIndex = find( ~var1.isState );
 nVar = numel(cv);
 
 % For each ensemble dimension, run through the set of variables and remove
 % any non-intersecting metadata
 for dim = 1:numel(ensDim)    
+    d = ensIndex(dim);
     meta = var1.meta.(ensDim(dim))( var1.indices{d}, : );
     
     for v = 2:nVar
         var = obj.var( cv(v) );
-        varMeta = var.meta.(ensDim(dim))(var.indices{dim}, :);
+        varMeta = var.meta.(ensDim(dim))(var.indices{d}, :);
         meta = intersect( meta, varMeta, 'rows', 'stable' );   
     end
     
@@ -26,9 +28,9 @@ for dim = 1:numel(ensDim)
     % remove ensemble indices that are not in this intersect.
     for v = 1:nVar
         var = obj.var( cv(v) );
-        varMeta = var.meta.(ensDim(dim))(var.indices{dim}, :);
+        varMeta = var.meta.(ensDim(dim))(var.indices{d}, :);
         [~, keep] = intersect( meta, varMeta, 'rows', 'stable' );
-        obj.var( cv(v) ).indices{dim} = var.indices{dim}(keep);
+        obj.var( cv(v) ).indices{dim} = var.indices{d}(keep);
     end
 end
 

@@ -37,6 +37,7 @@ for set = 1:numel(cv)
     obj = obj.matchMetadata( cv{set} );
     
     % Initialize values in preparation for making draws. 
+    nDraws = nEns;
     [overlap, ensSize, undrawn, subDraws] = obj.initializeDraws( cv{set}, nDraws );
     
     % Make draws. Remove overlapping draws if necessary. Continue until

@@ -53,7 +53,7 @@ end
 % Set default coupling and overlap
 obj.autoCouple(end+1) = autoCouple;
 obj.isCoupled(end+1,end+1) = true;
-obj.overlap(end+1) = false;
+obj.allowOverlap(end+1) = false;
 
 % If autocoupling, get the other variables and couple
 if autoCouple

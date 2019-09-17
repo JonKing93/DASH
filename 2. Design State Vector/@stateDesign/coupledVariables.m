@@ -12,7 +12,8 @@ cv = cell(nSets,1);
 unset = 1:nVar;
 
 for s = 1:nSets
-    cv{s} = find( obj.isCoupled( unset(1), : ) );
+    set = find( obj.isCoupled( unset(1), : ) );
+    cv{s} = set;
     unset( set ) = [];
 end
 

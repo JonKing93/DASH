@@ -13,39 +13,23 @@ classdef stateDesign
     %    remove - Removes a set of variables from the state vector.
     %    couple - Couples specified variables to one another.
     %    uncouple - Uncouples specified variables from all other variables.
+    %
     %    buildEnsemble - Build an ensemble from the design.
+    %    overlap - Specify whether variables in ensembles can contain
+    %              partially duplicated data.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
-    %
-    % ----- Additional Documentation -----
-    %
-    % stateDesign Properties:
-    %   name - An identifying name for the state vector
-    %   var - An array of variable designs. These contain the design
-    %        specifications for how data should be read from .grid files
-    %        into a state vector.
-    %   varName - The names of the variables in the state design.
-    %   isCoupled - Notes whether variables are coupled. Coupled variables
-    %              are selected from the same ensemble indices for each
-    %              ensemble member.
-    %   autoCouple - Notes whether a variable should automatically be
-    %               coupled to new variables. Default is true.
-    %   overlap - Whether a variable permits overlapping, non-duplicate
-    %             sequences in the ensemble.
-    %   new - Records whether a stateDesign has previously selected ensemble
-    %         draws.
-
     
     % User can see, but not touch.
     properties (SetAccess = private)
-        name;       % An identifier for the state vector.
-        var;        % The array of variable designs
-        varName;    % The names of the variables in the design.
-        isCoupled;  % Notes whether variables are coupled
-        autoCouple; % Whether the variable should be automatically coupled to new variables.
-        overlap;    % Whether the variable permits overlapping non-duplicate sequences
-        new;        % Whether the design has previously selected ensemble draws.
+        name;            % An identifier for the state vector.
+        var;             % The array of variable designs
+        varName;         % The names of the variables in the design.
+        isCoupled;       % Notes whether variables are coupled
+        autoCouple;      % Whether the variable should be automatically coupled to new variables.
+        allowOverlap;    % Whether the variable permits overlapping non-duplicate sequences
+        new;             % Whether the design has previously selected ensemble draws.
     end
     
     % Constructor block.
@@ -96,7 +80,7 @@ classdef stateDesign
         obj = copy( obj, fromVar, toVars );
         
         % Displays information about the state vector
-        obj = info( obj, varName, dim, longform );
+        info( obj, varName, dims, showMeta );
         
         % Couples specified variables.
         obj = couple( obj, varNames, varargin );
@@ -110,8 +94,8 @@ classdef stateDesign
         % Create an ensemble from the design.
         ens = buildEnsemble( obj, nEns, ordered );
         
-        % Adjusts a variable's overlap permissions
-%         obj = overlap( obj, varName );
+        % Adjusts overlap permissions
+        obj = overlap( obj, tf, varNames );
     end
     
     % Internal utility methods
@@ -159,6 +143,9 @@ classdef stateDesign
         
         % Notify the user when secondary variables are coupled
         notifySecondaryCoupling( obj, v, vall );
+
+        % Notify when coupled variables have overlap permissions altered
+        notifySecondaryOverlap( obj, v, vall, tf );
         
         
         %% Building Ensembles

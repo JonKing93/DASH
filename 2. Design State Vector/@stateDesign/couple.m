@@ -36,7 +36,7 @@ nVars = numel(vall);
 obj.notifySecondaryCoupling( v, vall );
 
 % Get the overlap, ensemble dimensions, and autocoupling settings
-overlap = obj.overlap(v(1));
+overlap = obj.allowOverlap(v(1));
 isState = obj.var(v(1)).isState;
 autoCouple = obj.autoCouple(v(1));
 
@@ -60,7 +60,7 @@ for k = 1:nVars
     
     % Set the autocoupler and overlap
     obj.autoCouple(var) = autoCouple;
-    obj.overlap(var) = overlap;
+    obj.allowOverlap(var) = overlap;
 end
 
 end

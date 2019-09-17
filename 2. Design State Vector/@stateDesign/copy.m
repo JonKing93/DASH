@@ -70,7 +70,7 @@ for d = 1:numel(tvar.dimID)
         
         % Set overlap permissions
         if d == 1
-            obj.overlap(v(k)) = obj.overlap(tv);
+            obj.allowOverlap(v(k)) = obj.allowOverlap(tv);
         end
     end
 end
