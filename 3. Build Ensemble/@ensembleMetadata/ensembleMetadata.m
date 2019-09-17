@@ -29,18 +29,19 @@ classdef ensembleMetadata
     % values must be set and looked up by the constructor.
     properties (SetAccess = private)
         varName     % Variable name
-        varLimit      % Index limits in state vector
-        varSize     % Size of gridded data
-        varData     % Metadata for each dimension
+        varLimit     % Index limits in state vector
+        varSize     % Size of gridded data for each variable
+        stateMeta     % Metadata for each state element
+        ensMeta      % Metadata for each ensemble member
         
         fileName    % Ensemble metadata file
-        designName  % State design name
+        design      % The stateDesign associated with the ensemble
         
-        nEns        % The number of ensemble members
+        ensSize     % The number of state elements and members
         hasnan      % Whether ensemble members contain NaN values
-    end
+end
         
-    % Constructor block (unfinished)
+    % Constructor block
     methods
         function obj = ensembleMetadata( inArg )
             % Constructor for an ensemble metadata object
@@ -63,29 +64,31 @@ classdef ensembleMetadata
             %
             % obj: The new ensemble metadata object.
 
-            % Get the state design associated with the input argument
-            % !!!! The file bits are not finished.
+            % If the input is a state design, just use it directly.
             if isa(inArg, 'stateDesign')
-                design = inArg;
+                obj.design = inArg;
                 if numel(inArg) > 1
                     error('design must be a scalar object. The current design is a stateDesign array.');
                 end
+
+            % For an ens file input, error check before extracting desing
             else
-                m = ensFileCheck(inArg, 'load');
-                design = m.design;
+                m = ensFileCheck( inArg );
+                obj.design = m.design;
                 obj.fileName = string(inArg);
             end
-            obj.designName = design.name;
 
             % Record the variable names, index limits, dimensional sizes,
             % used metadata
             obj.varName = design.varName;
             [obj.varLimit, obj.varSize] = design.varIndices;
-            obj.varData = design.varMetadata;
+            [obj.stateMeta, obj.ensMeta] = design.varMetadata;
             
-            % Get the number of ensemble members.
+            % Get the size of the ensemble
             ensDim = find( ~design.var(1).isState, 1 );
-            obj.nEns = numel( design.var(1).drawDex{ensDim} );
+            nEns = numel( design.var(1).drawDex{ensDim} );
+            nState = obj.varLimit(end);
+            obj.ensSize = [nState, nEns];
         end
     end
     
