@@ -140,7 +140,7 @@ classdef stateDesign
         obj = ensDimension( obj, varName, dim, varargin );
         
         % Process indices for internal use
-        index = checkIndices( obj, index );
+        index = checkIndices( obj, index, v, d );
         
         % Implements nanflag behavior for complex edits.
         nanflag = getNaNflag( obj, v, d, nanflag, inArgs )
@@ -159,7 +159,7 @@ classdef stateDesign
         
         % Notify the user when sequence and mean data are deleted for
         % coupled dimensions that change type.
-        notifyChangedType( obj, v, d );
+        notifyChangedType( obj, v, d, cv );
         
         % Notify the user when secondary variables are coupled
         notifySecondaryCoupling( obj, v, vall );

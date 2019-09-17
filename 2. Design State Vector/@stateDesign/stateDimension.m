@@ -6,7 +6,7 @@ function[obj] = stateDimension( obj, v, d, varargin )
 % Parse inputs. Use the pre-existing values as the defaults. (This way a
 % second call to obj.edit, as may happen in the console, doesn't overwrite)
 [index, takeMean, nanflag] = parseInputs( varargin, {'index', 'mean', 'nanflag'}, ...
-    {obj.var(v).indices{d}, obj.var(v).takeMean(d), obj.var(v).nanflag{d}} );
+    {obj.var(v).indices{d}, obj.var(v).takeMean(d), obj.var(v).nanflag{d}}, {[],[],[]});
 
 % Error check and set takeMean and the nanflag
 obj.var(v).takeMean(d) = errCheck(takeMean);

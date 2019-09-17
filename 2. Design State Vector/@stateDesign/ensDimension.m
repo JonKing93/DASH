@@ -7,8 +7,8 @@ function[obj] = ensDimension( obj, v, d, varargin )
 % don't overwrite values
 [index, seq, seqMeta, mean, nanflag] = parseInputs( varargin, ...
     {'index', 'seq', 'meta', 'mean', 'nanflag'}, ...
-    {obj.var(v).index{d}, obj.var(v).seqDex{d}, obj.var(v).seqMeta{d}, ...
-     obj.var(v).meanDex{d}, obj.var(v).nanflag{d}} );
+    {obj.var(v).indices{d}, obj.var(v).seqDex{d}, obj.var(v).seqMeta{d}, ...
+     obj.var(v).meanDex{d}, obj.var(v).nanflag{d}},     {[],[],[],[],[]});
  
 % Minor error checking. Get defaults for seq and mean (0) when empty.
 [seq, mean] = setup( seq, mean, varargin(1:2:end-1) );
@@ -23,7 +23,7 @@ obj.var(v).seqMeta{d} = checkSeqMeta( seqMeta, seq );
 
 % Can only take a mean if meanDex has more than 1 element.
 obj.var(v).takeMean(d) = true;
-if numel(meanDex) == 1
+if numel(mean) == 1
     obj.var(v).takeMean(d) = false;
 end
 

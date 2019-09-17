@@ -21,7 +21,7 @@ else
         error('The indices for the %s dimension of variable %s are not numeric vectors.', obj.var(v).dimID(d), obj.varName(v));
     elseif any(index<=0) || any( mod(index,1)~=0 )
         error('The indices for the %s dimension of variable %s are not positive integers.', obj.var(v).dimID(d), obj.varName(v));
-    elseif any( index>dimSize )
+    elseif any( index>obj.var(v).dimSize(d) )
         error('Some indices for the %s dimension in variable %s are larger than the dimension size.', obj.var(v).dimID(d), obj.varName(v));
     end
 end

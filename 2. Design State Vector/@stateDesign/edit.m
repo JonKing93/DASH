@@ -115,7 +115,7 @@ end
 
 % Variable and dimenion on which to operate
 v = obj.findVarIndices( varName );
-d = obj.var(v).findDimIndices( dim );
+d = obj.findDimIndices( v, dim );
 
 % Edit a state or ensemble dimension
 if strcmpi( dimType, "state" )
