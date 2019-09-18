@@ -12,101 +12,76 @@ classdef ensemble < handle
 properties (SetAccess = private)
     design;            % The state design associated with the ensemble
     file;              % The .ens file associated with the ensemble
+
+    % Used / Set when writing
+    canOverwrite;      % Whether to overwrite existing .ens files when writing to file.
+    hasnan;            % Whether an ensemble member has NaN values
+    ensSize;           % The size of the full ensemble
     
     % Used to add
     random;            % Whether the ensemble is ordered or random
-    unsaved;           % Whether the ensemble has unsaved changes not written to file
-                       
-    members;           % Which ensemble members to load
-    canOverwrite;         % Whether to overwrite existing .ens files when writing to file.
-    hasnan;            % Indicates which ensemble members contain NaN.
-    writenan;          % Whether or not to write ensemble members
-                       % containing NaN to file. (Default is false)
-                       
-    haschanges;        % Whether the ensemble has been altered?                       
 end
 
-% Constructor. Creates an ensemble object from a .ens file.
+% Constructor
 methods
-    function obj = ensemble( source, overwrite )
-        % Creates a new ensemble object.
+    function obj = ensemble( design, random )
+        % Creates a new ensemble object from a .ens file
         %
-        % obj = ensemble( source )
-        % Creates an ensemble object using either a state design object or
-        % an existing .ens file as the source.
-        %
-        % obj = ensemble( source, overwrite )
-        % Specify whether the ensemble object can overwrite existing files
-        % when writing to file. Default is false.
+        % obj = ensemble( file )
+        % Returns the ensemble object for a .ens file.
         %
         % ----- Inputs -----
         %
-        % source: The source of the ensemble object. Either a state design
-        %         object (for ensembles not written to file), or a .ens
-        %         filename (for previously saved ensembles).
+        % design: A state design with draws
         %
-        % overwrite: A scalar logical indicating whether the ensemble
-        %            object can overwrite existing files.
+        % random: Whether the draws are random or ordered. A scalar logical
         %
         % ----- Outputs -----
         %
-        % obj: A new ensemble object.
-        
-        % Check that the source is either a state design, or a .ens file.
-        % Error check accordingly.
-        if isa(source, 'stateDesign') 
-            source.review;
-        elseif isstrflag(source)
-            checkFile( source, 'extension', '.ens', 'exist', true );
-        else
-            error('source must either be a "stateDesign" object, or a filename (string or character row vector).');
+        % obj: A new ensemble object
+
+        % Error check
+        if ~isa(design,'stateDesign')
+            error('design must be a stateDesign.');
+        elseif ~isscalar( design )
+            error('design must be a scalar stateDesign object.');
+        elseif design.new
+            error('The state design has no ensemble members. Please use the "stateDesign.buildEnsemble" function.');
+        elseif ~isscalar(random) || ~islogical(random)
+            error('random must be a scalar logical.');
         end
-        
-        % Get default overwrite if unspecified. Error check user inputs
-        if ~exist('overwrite','var') || isempty(overwrite)
-            overwrite = false;
-        elseif ~isscalar(overwrite) || ~islogical(overwrite)
-            error('overwrite must be a scalar logical.');
-        end
-        
+
         % Set values
-        obj.source = source;
-        obj.overwrite = overwrite;
-    end    
+        obj.design = design;
+        obj.random = random;
+        obj.canOverwrite = false;
+
+        % Determine the ensemble size
+        varLimits = design.varIndices;
+        nState = varLimits(end);
+        
+        ensDim1 = find( ~design.var(1).isState, 1 );
+        nEns = numel( design.var(1).drawDex{ensDim1} );
+        
+        obj.ensSize = [nState, nEns];
+    end
 end
 
-
+% User methods
 methods
-    
     % Adds additional ensemble members to an ensemble.
-    add( obj, nEns );
-    
-    % Writes an ensemble to a .ens file. 
-    write( obj, file );
-    
-    % Specifies whether overwriting .ens files is allowed
+    obj = add( obj, nAdd );
+
+    % Writes an ensemble to a .ens file.
+    write( obj );
+
+    % Loads and ensemble from a .ens file and returns it as output.
+    % *** In the future this could be made fancier. E.g. only load
+    % non-Nans, or specific ensemble members.
+    M = load( obj );
+
+    % Allows the object to overwrite preexisting files
     overwrite( obj, tf );
-    
-    % Returns the ensemble as output. If obj.source is a stateDesign,
-    % builds the ensemble from scratch. If obj.source is a .ens file, loads
-    % from file. If the ensemble has unwritten changes, loads what is
-    % possible from file, and builds the rest.
-    load;
-    
-
-    
-    % Specifies which ensemble members to load.
-    useMembers;
 end
-
-
-% Internal utilities
-methods (Access = private)
-    
-    % Builds an ensemble from a state design.
-    build;
-
-    % Loads the ensemble from a file
-    loadFromFile;
 
 end

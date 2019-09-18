@@ -1,18 +1,33 @@
 function[] = write( obj, file )
 % Writes an ensemble to a .ens file
+%
+% obj.write( file )
+% Writes / saves the ensemble to the specified file.
+%
+% ----- Inputs -----
+%
+% file: The name of a file
 
-% Warn the user about files and stuff...
-% ...
-% file = file;
-% m = matfile(file);
-if new
-ens.size = [0, 0];
+% Error check the file. Delete existing file if allowed
+checkFile( file, 'extension', '.ens' );
+if exist(file, 'file') && ~obj.canOverwrite
+    error('The file "%s" already exists.', file );
+elseif exist(file, 'file') && obj.canOverwrite
+    delete(file);
 end
-%
-%
+obj.file = file;
 
 % Preallocate the new values in the matfile
+ens = matfile( file );
+ens.M( 1:obj.ensSize(1), 1:obj.ensSize(2) ) = NaN;
+ens.design = design;
+ens.random = random;
+
+
 meta = ensembleMetadata( obj.design );
+
+
+
 nState = meta.varLimit(end);
 nWritten = ens.size(2);
 nAdd = meta.nEns - nWritten;
