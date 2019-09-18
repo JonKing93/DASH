@@ -196,7 +196,8 @@ classdef stateDesign
         % Saves finalized draws to variables
         obj = saveDraws( obj, cv, subDraws, undrawn );
         
-        %% Writing ensemble
+
+        %% Write ensemble
         
         % Determines which indices to read from for efficient loading.
         [start, count, stride, keep] = loadingIndices( obj );

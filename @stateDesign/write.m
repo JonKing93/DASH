@@ -1,20 +1,31 @@
-function[] = write( obj, file, random, writenan, overwrite )
+function[] = write( obj, file, random, writenan, new )
 % Writes the ensemble to file.
 
-% Get the matfile. Delete if overwriting
-if exist( 'file', 'file' ) && overwrite
+% Handle pre-existing or non-existing files.
+if new && exist('file','file') && overwrite
     delete(file);
+elseif ~new && ~exist('file','file')
+    error('The file "%s" in the ensemble object does not exist. It may have been deleted or removed from the active path.', file);
 end
-ens = matfile( file );
 
-% Preallocate / add initial values into the matfile
+% Get the matfile and fill in values as appropriate
+ens = matfile(file);
 ens.complete = false;
 ensSize = obj.ensembleSize;
-ens.M( 1:ensSize(1), 1:ensSize(2) ) = NaN;
-ens.ensSize = ensSize;
-ens.random = random;
-ens.writenan = writenan;
-hasnan = false( 1, ensSize(2) );
+if new
+    nNew = ensSize(2);
+    nWritten = 0;
+    ens.M( 1:ensSize(1), 1:nNew ) = NaN;
+    ens.random = random;
+    ens.writenan = writenan;
+    ens.hasnan = [];
+    hasnan = false(1, ensSize(2));
+else
+    nWritten = ens.ensSize(1,2);
+    nNew = ensSize(2) - nWritten;
+    ens.M( :, ens.ensSize(1,2) + (1:nNew) ) = NaN;
+    hasnan = false(1, nNew);
+end
 
 % Get information about variable indices and read indices
 [start, count, stride, keep] = obj.design.loadingIndices;
@@ -23,7 +34,7 @@ hasnan = false( 1, ensSize(2) );
 for v = 1:nVar
     var = obj.design.var(v);
     nState = prod( meta.varSize(v,:) );
-    M = NaN( nState, nAdd );
+    M = NaN( nState, nNew );
     
     % Get the number of sequences and elements per sequence. Subscript 
     % each element of the sequence to ND
@@ -35,7 +46,7 @@ for v = 1:nVar
     % Load the sequence for each ensemble member
     for s = 1:nSeq
         varSegment = (s-1)*nEls + (1:nEls)';
-        for mc = 1:nAdd
+        for mc = 1:nNew
             
             % Get the starting index for ensemble dimensions.
             draw = nWritten + mc;
@@ -56,7 +67,7 @@ for v = 1:nVar
             end        
             
             % Store as state vector in the workspace ensemble
-            M( varSegment, mc ) = data(:);
+            M( varSegment, nWritten+mc ) = data(:);
         end
     end
 
@@ -67,7 +78,8 @@ for v = 1:nVar
 end
 
 % Finish adding values to the .ens file
-ens.hasnan = hasnan;
+ens.hasnan = [ens.hasnan, hasnan];
+ens.ensSize = ensSize;
 obj.new = false;
 ens.design = obj;
 ens.complete = true;
