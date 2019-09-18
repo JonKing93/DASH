@@ -1,4 +1,4 @@
-function[obj] = makeDraws( obj, cv, nEns )
+function[obj] = makeDraws( obj, cv, nEns, random )
 
 % Initialize values in preparation for making draws. Note if there are
 % previous draws and add to them.

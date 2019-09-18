@@ -11,7 +11,7 @@ end
 vars = string(vars);
 
 % Check they exist. Return indices
-[ismem, v] = ismember( vars, obj.varNames );
+[ismem, v] = ismember( vars, obj.varName );
 if any( ~ismem )
     error('"%s" is not a variable in the ensemble metadata.', vars(find(~ismem,1)) );
 end

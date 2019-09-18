@@ -50,6 +50,7 @@ methods
         obj.ensSize = m.ensSize;
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
+        obj.file = which( file );
     end
 end
 

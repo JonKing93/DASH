@@ -16,7 +16,7 @@ end
 % Add more draws to each set of coupled variables
 cv = obj.design.coupledVariables;
 for set = 1:numel(cv)
-    obj.design = obj.design.makeDraws( cv{set}, nEns );
+    obj.design = obj.design.makeDraws( cv{set}, nEns, obj.random );
 end
 
 % Write to file

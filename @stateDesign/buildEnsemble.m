@@ -56,8 +56,8 @@ elseif ~isscalar( writeNaN) || ~islogical( writeNaN )
     error('writeNaN must be a scalar logical.');
 end
 checkFile( file, 'extension', '.ens' );
-if ~overwrite && exist('file','file')
-    error('file "%s" already exists.', file);
+if ~overwrite && exist(fullfile(pwd,file),'file')
+    error('file "%s" already exists in the current directory.', file);
 end
 
 % !!! TODO
@@ -74,11 +74,11 @@ for set = 1:numel(cv)
     obj = obj.matchMetadata( cv{set} );
 
     % Select the ensemble members
-    obj = obj.makeDraws( cv{set}, nEns );
+    obj = obj.makeDraws( cv{set}, nEns, random );
 end
 
 % Write the ensemble to a .ens file. Return the associated ensemble object
-obj.write( file, random, writeNaN, overwrite );
+obj.write( file, random, writeNaN, true );
 ens = ensemble( file );
 
 end

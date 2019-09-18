@@ -89,7 +89,7 @@ elseif size(seqMeta,1) ~= numel(seq)
     error('Sequence metadata must have one row per sequence index.');
 elseif ~ischar(seqMeta) && ~islogical(seqMeta) && ~isnumeric(seqMeta) && ~iscellstr(seqMeta) && ~isstring(seqMeta)
     error('Sequence metadata must be a numeric, char, string, or cellstring data type.');
-elseif isnumeric(seqMeta) && any(isnan(seqMeta(:)))
+elseif isnumeric(seqMeta) && any(isnan(seqMeta(:))) && numel(seq)>1
     error('Sequence metadata may not contain NaN.');
 elseif ~ismatrix(seqMeta)
     error('Sequence metadata must be a matrix.');

@@ -2,7 +2,7 @@ function[] = write( obj, file, random, writenan, new )
 % Writes the ensemble to file.
 
 % Handle pre-existing or non-existing files.
-if new && exist('file','file') && overwrite
+if new && exist(fullfile(pwd,file),'file')
     delete(file);
 elseif ~new && ~exist('file','file')
     error('The file "%s" in the ensemble object does not exist. It may have been deleted or removed from the active path.', file);
@@ -28,11 +28,12 @@ else
 end
 
 % Get information about variable indices and read indices
-[start, count, stride, keep] = obj.design.loadingIndices;
+meta = ensembleMetadata( obj );
+[start, count, stride, keep] = obj.loadingIndices;
 
 % Preallocate the part of the ensemble for each variable.
-for v = 1:nVar
-    var = obj.design.var(v);
+for v = 1:numel(obj.var)
+    var = obj.var(v);
     nState = prod( meta.varSize(v,:) );
     M = NaN( nState, nNew );
     
@@ -73,8 +74,7 @@ for v = 1:nVar
 
     % Record NaN members. Write the variable into the .ens file
     hasnan = hasnan | any( isnan(M), 1 );
-    varIndices = meta.varIndices( var.name );
-    ens.M( varIndices, : ) = M;
+    ens.M( meta.varIndices(var.name), : ) = M;
 end
 
 % Finish adding values to the .ens file

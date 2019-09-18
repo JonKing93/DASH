@@ -31,17 +31,18 @@ if ~exist('nonan','var') || isempty(nonan)
     nonan = false;
 end
 
-% Error check. use linear indices internally
+% Error check. use linear indices internally. Get the matfile
 if ~isscalar(nonan) || ~islogical(nonan)
     error('nonan must be a scalar logical.');
 elseif islogical(members) && (~isvector(members) || length(members)~=obj.ensSize(2))
     error('When using logical indices, members must be a vector the length of the ensemble (%.f).', obj.ensSize(2) );
-elseif ~isnumeric(member) || ~isreal(members) || ~isvector(members) || any(members<=0) || any(members>obj.ensSize(2)) || any(mod(members,1)~=0)
+elseif ~isnumeric(members) || ~isreal(members) || ~isvector(members) || any(members<=0) || any(members>obj.ensSize(2)) || any(mod(members,1)~=0)
     error('members must be a vector of positive integers on the closed interval [1, %.f].', obj.ensSize(2) );
 end
 if islogical(members)
     members = find(members);
 end
+ens = obj.checkEnsFile( obj.file );
 
 % Remove NaN members if prohibiting NaN
 if nonan

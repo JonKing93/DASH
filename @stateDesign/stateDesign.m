@@ -115,6 +115,12 @@ classdef stateDesign
 
         % Get the size of the ensemble
         [siz] = ensembleSize( obj );
+        
+        % Select draws
+        obj = makeDraws( obj, cv, nEns, random );
+        
+        % Writes the ensemble to file
+        write( obj, file, random, writenan, overwrite );
     end
     
     % Internal utility methods
@@ -178,8 +184,6 @@ classdef stateDesign
         % matching metadata
         obj = matchMetadata( obj, cv );
 
-        % Select draws
-        obj = makeDraws( obj, cv, nEns );
         
         
         %% Select ensemble draws
@@ -202,8 +206,6 @@ classdef stateDesign
         % Determines which indices to read from for efficient loading.
         [start, count, stride, keep] = loadingIndices( obj );
 
-        % Writes the ensemble to file
-        write( obj, file, random, writenan, overwrite );
     end
         
 end

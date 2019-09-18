@@ -22,7 +22,7 @@ if ~islogical(checkExists) || ~isscalar(checkExists)
 end
 
 % File name
-if ~isstrflag( file )
+if ~isstrflag( filename )
     error('file name must be a string or character row vector.');
 end
 
@@ -30,13 +30,13 @@ end
 if ~isempty(ext)
     filename = char(filename);
     nExt = numel(ext);
-    if ~strcmp( filename( end-nExt : (1:nExt) ), ext )
+    if ~strcmp( filename( end-nExt + (1:nExt) ), ext )
         error('filename must end in a %s extension.', ext);
     end
 end
     
 % Existence
-if checkExist && ~exist( filename, 'file' )
+if checkExists && ~exist( filename, 'file' )
     error('The file %s does not exist. It may be misspelled or not on the active path.', filename );
 end
 
