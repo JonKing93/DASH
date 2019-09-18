@@ -94,7 +94,7 @@ classdef stateDesign
         obj = remove( obj, varNames );       
         
         % Create an ensemble from the design.
-        ens = buildEnsemble( obj, nEns, ordered );
+        ens = buildEnsemble( obj, nEns, file, random, writeNaN );
         
         % Adjusts overlap permissions
         obj = overlap( obj, tf, varNames );
@@ -112,6 +112,9 @@ classdef stateDesign
         
         % Get the metadata associated with each variable
         [stateMeta, ensMeta] = varMetadata( obj );
+
+        % Get the size of the ensemble
+        [siz] = ensembleSize( obj );
     end
     
     % Internal utility methods
@@ -164,7 +167,7 @@ classdef stateDesign
         notifySecondaryOverlap( obj, v, vall, tf );
         
         
-        %% Building Ensembles
+        %% Build ensemble draws
         
         % Removes ensemble indices that don't allow a full sequence
         obj = trim( obj );
@@ -192,7 +195,9 @@ classdef stateDesign
         
         % Determines which indices to read from for efficient loading.
         [start, count, stride, keep] = loadingIndices( obj );
-        
+
+        % Writes the ensemble to file
+        write( obj, file, random, writenan );
     end
         
 end

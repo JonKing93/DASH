@@ -1,11 +1,8 @@
-function[varLimits, varSize, isState] = varIndices( obj, v )
+function[varLimits, varSize, isState] = varIndices( obj )
 %% Returns the state vector index limits and dimensional size of each variable
 
 % Get the variables
-if ~exist('v','var') || isempty(v)
-    v = 1:numel(obj.var);
-end
-vars = obj.var(v);
+vars = obj.var(:);
 
 % Preallocate
 nVar = numel( vars );
