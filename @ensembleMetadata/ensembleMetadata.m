@@ -88,10 +88,7 @@ classdef ensembleMetadata
             [obj.stateMeta, obj.ensMeta] = obj.design.varMetadata;
             
             % Get the size of the ensemble
-            ensDim = find( ~obj.design.var(1).isState, 1 );
-            nEns = numel( obj.design.var(1).drawDex{ensDim} );
-            nState = obj.varLimit(end);
-            obj.ensSize = [nState, nEns];
+            obj.ensSize = obj.design.ensembleSize;
         end
     end
     

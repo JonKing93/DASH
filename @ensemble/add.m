@@ -13,10 +13,18 @@ if ~isnumeric(nEns) || ~isscalar(nEns) || nEns<=0 || mod(nEns,1)~=0
     error('nEns must be a positive scalar integer.');
 end
 
-% Add more draws to the design
-obj.design = obj.design.makeDraws( nEns );
+% Add more draws to each set of coupled variables
+cv = obj.design.coupledVariables;
+for set = 1:numel(cv)
+    obj.design = obj.design.makeDraws( cv{set}, nEns );
+end
 
-% Write them to file
-obj.design.write( obj.file, obj.random, obj.writenan );
+% Write to file
+obj.design.write( obj.file, obj.random, obj.writenan, false );
+
+% Update the ensemble object.
+m = matfile( obj.file );
+obj.ensSize = m.ensSize;
+obj.design = m.design;
 
 end
