@@ -72,28 +72,13 @@ obj = obj.trim;
 cv = obj.coupledVariables;
 for set = 1:numel(cv)
     obj = obj.matchMetadata( cv{set} );
-    
-    % Initialize values in preparation for making draws. 
-    nDraws = nEns;
-    [overlap, ensSize, undrawn, subDraws] = obj.initializeDraws( cv{set}, nDraws );
-    
-    % Make draws. Remove overlapping draws if necessary. Continue until
-    % the ensemble is complete or impossible.
-    while nDraws > 0
-        [subDraws, undrawn] = obj.draw( nDraws, subDraws, undrawn, random, ensSize );
-        
-        if ~overlap
-            [subDraws] = obj.removeOverlap( subDraws, cv{set} );
-            nDraws = sum( isnan( subDraws(:,1) ) );
-        end
-    end
-    
-    % Save the draws for each variable
-    obj = obj.saveDraws( cv{set}, subDraws, undrawn );
+
+    % Select the ensemble members
+    obj = obj.makeDraws( cv{set}, nEns );
 end
 
 % Write the ensemble to a .ens file. Return the associated ensemble object
-obj.write( file, random, writeNaN );
+obj.write( file, random, writeNaN, overwrite );
 ens = ensemble( file );
 
 end

@@ -1,8 +1,8 @@
-function[] = write( obj, file, random, writenan )
+function[] = write( obj, file, random, writenan, overwrite )
 % Writes the ensemble to file.
 
-% Get a new matfile
-if exist( 'file', 'file' )
+% Get the matfile. Delete if overwriting
+if exist( 'file', 'file' ) && overwrite
     delete(file);
 end
 ens = matfile( file );

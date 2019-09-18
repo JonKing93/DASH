@@ -165,19 +165,24 @@ classdef stateDesign
 
         % Notify when coupled variables have overlap permissions altered
         notifySecondaryOverlap( obj, v, vall, tf );
-        
-        
-        %% Build ensemble draws
-        
+
+        %% Build ensemble
+
         % Removes ensemble indices that don't allow a full sequence
         obj = trim( obj );
-        
+
         % Returns the variable indices of each set of coupled variables.
         cv = coupledVariables( obj );
-        
+
         % Restricts a set of coupled variables to ensemble indices with 
         % matching metadata
         obj = matchMetadata( obj, cv );
+
+        % Select draws
+        obj = makeDraws( obj, cv, nEns );
+        
+        
+        %% Select ensemble draws
         
         % Initializes an array of draws for a design.
         [overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws );
@@ -197,7 +202,7 @@ classdef stateDesign
         [start, count, stride, keep] = loadingIndices( obj );
 
         % Writes the ensemble to file
-        write( obj, file, random, writenan );
+        write( obj, file, random, writenan, overwrite );
     end
         
 end
