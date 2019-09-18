@@ -3,28 +3,31 @@ classdef ensemble < handle
 % Builds and loads ensembles.
 %
 % ensemble Properties:
-%   ...
+%   file - The .ens file associated with the ensemble.
+%   writenan - Whether NaN values are permitted to write to file. 
+%              (Currently only supports true)
+%   hasnan - Whether each ensemble member contains NaN values.
+%   ensSize - The size of the ensemble
+%   random - Whether the ensemble members are random or ordered
+%   design - The stateDesign associated with the ensemble.
 %
 % ensemble Methods:
-%   ...
-%
-
+%   load - Loads desired ensemble members.
+%   add - Adds additional ensemble members to the stateDesign.
 properties (SetAccess = private)
-    design;            % The state design associated with the ensemble
     file;              % The .ens file associated with the ensemble
 
-    % Used / Set when writing
-    canOverwrite;      % Whether to overwrite existing .ens files when writing to file.
+    % Values also in the .ens file
+    writenan;          % Whether NaN values have been written to file.
     hasnan;            % Whether an ensemble member has NaN values
     ensSize;           % The size of the full ensemble
-    
-    % Used to add
     random;            % Whether the ensemble is ordered or random
+    design;            % The state design associated with the ensemble
 end
 
 % Constructor
 methods
-    function obj = ensemble( design, random )
+    function obj = ensemble( file )
         % Creates a new ensemble object from a .ens file
         %
         % obj = ensemble( file )
@@ -32,56 +35,39 @@ methods
         %
         % ----- Inputs -----
         %
-        % design: A state design with draws
-        %
-        % random: Whether the draws are random or ordered. A scalar logical
+        % file: A .ens file with a saved ensemble.
         %
         % ----- Outputs -----
         %
         % obj: A new ensemble object
 
-        % Error check
-        if ~isa(design,'stateDesign')
-            error('design must be a stateDesign.');
-        elseif ~isscalar( design )
-            error('design must be a scalar stateDesign object.');
-        elseif design.new
-            error('The state design has no ensemble members. Please use the "stateDesign.buildEnsemble" function.');
-        elseif ~isscalar(random) || ~islogical(random)
-            error('random must be a scalar logical.');
-        end
+        % Error check the file
+        m = obj.checkEnsFile( file );
 
-        % Set values
-        obj.design = design;
-        obj.random = random;
-        obj.canOverwrite = false;
-
-        % Determine the ensemble size
-        varLimits = design.varIndices;
-        nState = varLimits(end);
-        
-        ensDim1 = find( ~design.var(1).isState, 1 );
-        nEns = numel( design.var(1).drawDex{ensDim1} );
-        
-        obj.ensSize = [nState, nEns];
+        % Get the file values
+        obj.design = m.design;
+        obj.random = m.random;
+        obj.ensSize = m.ensSize;
+        obj.hasnan = m.hasnan;
+        obj.writenan = m.writenan;
     end
 end
 
 % User methods
 methods
+
     % Adds additional ensemble members to an ensemble.
     obj = add( obj, nAdd );
 
-    % Writes an ensemble to a .ens file.
-    write( obj );
+    % Loads an ensemble from a .ens file
+    M = load( obj, members );
+end
 
-    % Loads and ensemble from a .ens file and returns it as output.
-    % *** In the future this could be made fancier. E.g. only load
-    % non-Nans, or specific ensemble members.
-    M = load( obj );
+% Internal utilities
+methods
 
-    % Allows the object to overwrite preexisting files
-    overwrite( obj, tf );
+    % Checks a .ens file exists and is not corrupted. Returns a matfile
+    ens = checkEnsFile( ~, file );
 end
 
 end
