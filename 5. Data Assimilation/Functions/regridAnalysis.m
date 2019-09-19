@@ -35,7 +35,7 @@ nosqueeze = parseInputs( varargin, {'nosqueeze'}, {false}, {'b'} );
 varDex = getVarStateIndex(ensMeta, var);
 
 % Also get the variable in the state vector design
-v = checkDesignVar(design, var);
+v = design.findVarIndices(var);
 var = design.var(v);
 
 % Preallocate the grid size and metadata

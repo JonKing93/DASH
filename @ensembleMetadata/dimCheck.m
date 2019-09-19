@@ -12,7 +12,7 @@ end
 dims = string(dims);
 
 % Check that the dims are actually in the ensemble metadata
-goodDims = fields( obj.varData );
+goodDims = fields( obj.stateMeta.(obj.varName(1)) );
 if any( ~ismember( dims, goodDims ) )
     error('"%s" is not a dimension in the ensemble metadata.', dims( find(~ismember(dims,goodDims),1) ) );
 end

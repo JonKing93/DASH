@@ -33,6 +33,7 @@ classdef varDesign
         
         % Ensemble draws
         drawDex;
+        drawDim;
         undrawn;
 
         % Weighted means
@@ -68,8 +69,6 @@ classdef varDesign
             obj.dimID = dimID;
             obj.dimSize = dimSize;
             obj.meta = meta;
-            
-
                 
             % Get the number of dimensions
             nDim = numel(dimID);

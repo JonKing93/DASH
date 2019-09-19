@@ -49,19 +49,22 @@ if nonan
     members( ismember(members, find(obj.hasnan)) ) = [];
 end
 
-% If evenly spaced, only load desired values. Otherwise, load the entire range.
+% If evenly spaced, only load desired values. Otherwise, load iteratively
 [members, order] = sort(members);
-loadInterval = members;
 spacing = unique( diff( members ) );
+nMembers = numel(members);
 
-if numel(members) > 1 && numel(spacing)>1
-    loadInterval = members(1):members(end);
+if nMembers==1 || numel(spacing) == 1
+    M = ens.M( :, members );
+    
+else
+    M = NaN( obj.ensSize(1), nMembers );
+    for m = 1:nMembers
+        M(:,m) = ens.M( :, members(m) );
+    end
 end
-keep = ismember( loadInterval, members );
 
-% Load everything, remove undesired members. Reorder members
-M = ens.M(:, loadInterval);
-M = M(:,keep);
-M = M(:, sort(order));       % (Sort indices of sorting indices give reverse sort)
+% Reorder the members with a reverse sort
+M = M(:, sort(order) );
 
 end

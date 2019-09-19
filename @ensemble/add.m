@@ -26,5 +26,6 @@ obj.design.write( obj.file, obj.random, obj.writenan, false );
 m = matfile( obj.file );
 obj.ensSize = m.ensSize;
 obj.design = m.design;
+obj.hasnan = m.hasnan;
 
 end

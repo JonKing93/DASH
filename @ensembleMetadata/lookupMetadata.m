@@ -36,7 +36,7 @@ if isstrflag( inArg)
     H = obj.varIndices( inArg );
     
 % But don't allow multiple variable names
-elseif isstrset( inArg )
+elseif isstrlist( inArg )
     error('varName can only refer to a single variable.');
     
 % Assume anything else is a set of indices. Error check
@@ -60,13 +60,14 @@ dims = obj.dimCheck( dims );
 
 % Adjust indices to just the variable and get ND subscript indices
 H = H - obj.varLimit(v,1) + 1;
-subDex = subdim( obj.varSize(v,:), H );
+subDex = subdim( H, obj.varSize(v,:) );
 
 % Get the metadata structure at each index for each dimension. If there's
 % only a single dimension, just return the array
 meta = struct();
 for d = 1:numel(dims)
-    meta.(dims(d)) = obj.varData(v).(dim)( subDex(:,d), : );
+    col = find( ismember(obj.design.var(v).dimID, dims(d)) );
+    meta.(dims(d)) = obj.stateMeta.(obj.varName(v)).(dims(d))( subDex(:,col), : );
 end
 if numel(dims) == 1
     meta = meta.(dims);

@@ -89,7 +89,7 @@ H = NaN( nComb*nVar, 1 );
 for var = 1:numel(varNames)
     
     % Get the variable index
-    v = varCheck( ensMeta, varNames(var) );
+    v = ensMeta.varCheck( varNames(var) );
     
     % Get the lat-lon metadata
     latlon = getLatLonMetadata( ensMeta, varNames(var) );
@@ -111,7 +111,7 @@ for var = 1:numel(varNames)
         d = resDim(dim);
             
         % Get the associated restriction indices
-        [~, restrictDex{dim}] = ismember( restrict{d}, ensMeta.var(v).(dimID(d)) );
+        [~, restrictDex{dim}] = ismember( restrict{d}, ensMeta.stateMeta.(ensMeta.varName(v)).(dimID(d)) );
         
         % Check that every index had appropriate metadata
         if any( restrictDex{dim} == 0 )
@@ -132,6 +132,6 @@ for var = 1:numel(varNames)
     end
     
     % Get the final state indices
-    H((var-1).*nComb+(1:nComb)) = (ensMeta.varLim(v,1) - 1) + nAdd + site;
+    H((var-1).*nComb+(1:nComb)) = (ensMeta.varLimit(v,1) - 1) + nAdd + site;
 end
     

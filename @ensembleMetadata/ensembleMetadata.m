@@ -75,7 +75,8 @@ classdef ensembleMetadata
 
             % For an ens file input, error check before extracting desing
             else
-                m = ensFileCheck( inArg );
+                checkFile( inArg, 'extension', '.ens', 'exist', true );
+                m = matfile( inArg );
                 obj.design = m.design;
                 obj.fileName = string(inArg);
                 obj.hasnan = m.hasnan;
@@ -102,8 +103,8 @@ classdef ensembleMetadata
         H = varIndices( obj, varName ); 
     end
     
-    % Internal utilities
-    methods (Access = private)
+    % Internal utilities (often used by PSMs -- thus not private)
+    methods 
         
         % Checks that dimensions are in the metadata, converts to string
         dims = dimCheck( obj, dims );

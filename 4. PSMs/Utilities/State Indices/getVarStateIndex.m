@@ -7,6 +7,6 @@ function[H] = getVarStateIndex( ensMeta, var )
 v = varCheck( ensMeta, var );
 
 % Get the indices
-H = ( ensMeta.varLim(v,1) : ensMeta.varLim(v,2) )';
+H = ( ensMeta.varLimit(v,1) : ensMeta.varLimit(v,2) )';
 
 end

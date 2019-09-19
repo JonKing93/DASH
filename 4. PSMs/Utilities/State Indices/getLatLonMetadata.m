@@ -7,13 +7,13 @@ function[latlon] = getLatLonMetadata( ensMeta, varName )
 dims = [lon;lat;tri];
 
 % Get the variable index
-v = varCheck(ensMeta, varName);
+v = ensMeta.varCheck(varName);
 varName = string(varName);
 
 % Check whether there is any metadata in each dimension
 hasmeta = true(3,1);
 for d = 1:numel(dims)
-    if isscalar( ensMeta.var(v).(dims(d)) ) && isnan( ensMeta.var(v).(dims(d)) )
+    if isscalar( ensMeta.stateMeta.(varName).(dims(d)) ) && isnan( ensMeta.stateMeta.(varName).(dims(d)) )
         hasmeta(d) = false;
     end
 end
@@ -28,7 +28,7 @@ elseif ~all( hasmeta(1:2) ) && ~all( ~hasmeta(1:2) )
 end
 
 % Get the state indices for the variable
-H = getVarStateIndex( ensMeta, varName );
+H = ensMeta.varIndices( varName );
 
 % If tripolar
 if hasmeta(3)
@@ -37,7 +37,7 @@ if hasmeta(3)
     H = H(1:ensMeta.varSize(v,3));
     
     % Get the metadata
-    latlon = lookupMetadata( ensMeta, H, 'tri' );
+    latlon = ensMeta.lookupMetadata( 'tri', H );
     
     % Error check the metadata
     if ~ismatrix( latlon )
@@ -54,8 +54,8 @@ else
     H = H(1:nEls);
     
     % Get the metadata
-    lat = lookupMetadata(ensMeta, H, 'lat');
-    lon = lookupMetadata(ensMeta, H, 'lon');
+    lat = ensMeta.lookupMetadata('lat', H);
+    lon = ensMeta.lookupMetadata('lon', H);
     
     % Error check
     if ~ismatrix(lat)

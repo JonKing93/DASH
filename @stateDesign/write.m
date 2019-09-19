@@ -9,7 +9,7 @@ elseif ~new && ~exist('file','file')
 end
 
 % Get the matfile and fill in values as appropriate
-ens = matfile(file);
+ens = matfile(file,'Writable', true);
 ens.complete = false;
 ensSize = obj.ensembleSize;
 if new
@@ -23,7 +23,7 @@ if new
 else
     nWritten = ens.ensSize(1,2);
     nNew = ensSize(2) - nWritten;
-    ens.M( :, ens.ensSize(1,2) + (1:nNew) ) = NaN;
+    ens.M( :, nWritten + (1:nNew) ) = NaN;
     hasnan = false(1, nNew);
 end
 
@@ -53,7 +53,7 @@ for v = 1:numel(obj.var)
             draw = nWritten + mc;
             for dim = 1:numel(ensDim)
                 d = ensDim(dim);
-                ensMember = var.drawDex(draw, d);                
+                ensMember = var.drawDex(draw, dim);                
                 start(v,d) = var.indices{d}( ensMember ) + var.seqDex{d}( subSequence(s,dim) ) + min( var.meanDex{d} );
             end
             
@@ -68,13 +68,13 @@ for v = 1:numel(obj.var)
             end        
             
             % Store as state vector in the workspace ensemble
-            M( varSegment, nWritten+mc ) = data(:);
+            M( varSegment, mc ) = data(:);
         end
     end
 
     % Record NaN members. Write the variable into the .ens file
     hasnan = hasnan | any( isnan(M), 1 );
-    ens.M( meta.varIndices(var.name), : ) = M;
+    ens.M( meta.varIndices(var.name), nWritten + (1:nNew) ) = M;
 end
 
 % Finish adding values to the .ens file
