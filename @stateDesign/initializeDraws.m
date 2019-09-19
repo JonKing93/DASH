@@ -7,20 +7,20 @@ var1 = obj.var( cv(1) );
 overlap = obj.allowOverlap( cv(1) );
 
 ensDim = find( ~var1.isState );
-nDim = numel(ensDim);
+nEnsDim = numel(ensDim);
 
-ensSize = NaN( 1, nDim );
-for d = 1:nDim
+ensSize = NaN( 1, nEnsDim );
+for d = 1:nEnsDim
     ensSize(d) = numel( var1.indices{ ensDim(d) } );
 end
 
 % Preallocate the draw arrays
 if obj.new
     undrawn = (1:prod(ensSize))';
-    subDraws = NaN( nDraws, nDim );
+    subDraws = NaN( nDraws, nEnsDim );
 else
     undrawn = var1.undrawn;
-    subDraws = [var1.drawDex; NaN(nDraws, nDim)];
+    subDraws = [var1.drawDex; NaN(nDraws, nEnsDim)];
 end
 
 end

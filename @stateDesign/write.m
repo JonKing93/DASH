@@ -53,7 +53,7 @@ for v = 1:numel(obj.var)
             draw = nWritten + mc;
             for dim = 1:numel(ensDim)
                 d = ensDim(dim);
-                ensMember = var.drawDex{d}(draw);                
+                ensMember = var.drawDex(draw, d);                
                 start(v,d) = var.indices{d}( ensMember ) + var.seqDex{d}( subSequence(s,dim) ) + min( var.meanDex{d} );
             end
             

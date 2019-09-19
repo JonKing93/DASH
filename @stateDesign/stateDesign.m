@@ -121,6 +121,13 @@ classdef stateDesign
         
         % Writes the ensemble to file
         write( obj, file, random, writenan, overwrite );
+        
+        % Find the index of a variable in the list of variables in the
+        % state vector.
+        v = findVarIndices( obj, varName );
+        
+        % Returns the variable indices of each set of coupled variables.
+        cv = coupledVariables( obj );
     end
     
     % Internal utility methods
@@ -128,9 +135,7 @@ classdef stateDesign
         
         %% General
         
-        % Find the index of a variable in the list of variables in the
-        % state vector.
-        v = findVarIndices( obj, varName );
+
         
         % Find the index of a dimension in the list of variables
         d = findDimIndices( obj, v, dim );
@@ -177,8 +182,7 @@ classdef stateDesign
         % Removes ensemble indices that don't allow a full sequence
         obj = trim( obj );
 
-        % Returns the variable indices of each set of coupled variables.
-        cv = coupledVariables( obj );
+
 
         % Restricts a set of coupled variables to ensemble indices with 
         % matching metadata

@@ -7,10 +7,9 @@ ensDim = find( ~var1.isState );
 
 % Save the values
 for v = 1:numel(cv)
-    for d = 1:numel(ensDim)
-        obj.var( cv(v) ).drawDex{ensDim(d)} = subDraws(:,d);
-    end
+    obj.var( cv(v) ).drawDex = subDraws;
     obj.var( cv(v) ).undrawn = undrawn;
+    obj.var( cv(v) ).drawDim = ensDim;
 end
 
 end
