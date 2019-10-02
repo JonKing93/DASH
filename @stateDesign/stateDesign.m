@@ -28,10 +28,9 @@ classdef stateDesign
         name;            % An identifier for the state vector.
         var;             % The array of variable designs
         varName;         % The names of the variables in the design.
+        allowOverlap;    % Whether the variable permits overlapping non-duplicate sequences
         isCoupled;       % Notes whether variables are coupled
         autoCouple;      % Whether the variable should be automatically coupled to new variables.
-        allowOverlap;    % Whether the variable permits overlapping non-duplicate sequences
-        new;             % Whether the design has previously selected ensemble draws.
     end
     
     % Constructor block.
@@ -69,7 +68,7 @@ classdef stateDesign
         end
     end
     
-    % User methods.
+    % Basic user methods.
     methods
         
         % Adds a new variable to the state vector.
@@ -78,70 +77,56 @@ classdef stateDesign
         % Edits the design specifications of a variable in the state vector.
         obj = edit( obj, varName, dim, dimType, varargin );
         
+        % Specify weights for a weighted mean
+        obj = weightedMean( var, dims, weights, nanflag );
+        
         % Copies indices from one variable to other variables.
         obj = copy( obj, fromVar, toVars );
         
         % Displays information about the state vector
-        info( obj, varName, dims, showMeta );
-        
-        % Couples specified variables.
-        obj = couple( obj, varNames, varargin );
-        
-        % Uncouples specified variables.
-        obj = uncouple( obj, varNames, varargin );
-        
-        % Removes a set of variables from the state vector.
-        obj = remove( obj, varNames );       
-        
+        info( obj, varName, dims, showMeta );    
+    
         % Create an ensemble from the design.
         ens = buildEnsemble( obj, nEns, file, random, writeNaN );
+
+    end
+    
+    % Advanced user methods
+    methods
         
         % Adjusts overlap permissions
         obj = overlap( obj, tf, varNames );
-
-        % Specify weights for a weighted mean
-        obj = weightedMean( var, dims, weights, nanflag );
+        
+        % Couples specified variables.
+        obj = couple( obj, varNames );
+        
+        % Uncouples specified variables.
+        obj = uncouple( obj, varNames );
+        
+        % Removes a set of variables from the state vector.
+        obj = remove( obj, varNames );   
+        
+        % Appends a separate state design
+        design = append( obj, design );
+        
+        % Gets the part of a state design associated with specific variables
+        design = getVariables( obj, varNames );
+        
     end
-
-    % Methods used by ensemble and ensemble metadata objects
+    
+    % Methods to modify the design
     methods
         
-        % Returns the state vector index limits and dimensional size of
-        % each variable.
-        [varLimits, varSize, isState] = varIndices( obj, v );
-        
-        % Get the metadata associated with each variable
-        [stateMeta, ensMeta] = varMetadata( obj );
-
-        % Get the size of the ensemble
-        [siz] = ensembleSize( obj );
-        
-        % Select draws
-        obj = makeDraws( obj, cv, nEns, random );
-        
-        % Writes the ensemble to file
-        write( obj, file, random, writenan, overwrite );
+        %% Index search and name error checking
         
         % Find the index of a variable in the list of variables in the
         % state vector.
         v = findVarIndices( obj, varName );
-        
-        % Returns the variable indices of each set of coupled variables.
-        cv = coupledVariables( obj );
-    end
-    
-    % Internal utility methods
-    methods (Access = private)
-        
-        %% General
-        
 
-        
         % Find the index of a dimension in the list of variables
         d = findDimIndices( obj, v, dim );
         
-        
-        %% Editing
+        %% Dimension indices
         
         % Edit design for a state dimension
         obj = stateDimension( obj, varName, dim, varargin );
@@ -155,7 +140,6 @@ classdef stateDesign
         % Implements nanflag behavior for complex edits.
         nanflag = getNaNflag( obj, v, d, nanflag, inArgs )
         
-        
         %% Coupling
         
         % Flips a dimension and applies to all coupled variables.
@@ -164,8 +148,10 @@ classdef stateDesign
         % Flips type, deletes mean and sequence data, notifies user.
         obj = resetChangedDim( obj, var, d );
         
-        
-        %% Notifications
+    end
+    
+    % Methods to notify user of automatic design changes
+    methods
         
         % Notify the user when sequence and mean data are deleted for
         % coupled dimensions that change type.
@@ -176,21 +162,39 @@ classdef stateDesign
 
         % Notify when coupled variables have overlap permissions altered
         notifySecondaryOverlap( obj, v, vall, tf );
+        
+    end
+ 
+    % Methods for ensemble metadata objects
+    methods
+                
+        % Get the metadata associated with each variable
+        [stateMeta, ensMeta] = varMetadata( obj );
 
-        %% Build ensemble
-
+        % Get the size of the ensemble
+        [siz] = ensembleSize( obj );
+        
+        % Returns the state vector index limits and dimensional size of
+        % each variable.
+        [varLimits, varSize, isState] = varIndices( obj, v );
+        
+    end
+    
+    % Methods for generating ensemble draws
+    methods
+        
+        % Returns the variable indices of each set of coupled variables.
+        cv = coupledVariables( obj );
+        
         % Removes ensemble indices that don't allow a full sequence
         obj = trim( obj );
-
-
 
         % Restricts a set of coupled variables to ensemble indices with 
         % matching metadata
         obj = matchMetadata( obj, cv );
-
         
-        
-        %% Select ensemble draws
+        % Select draws
+        obj = makeDraws( obj, cv, nEns, random );
         
         % Initializes an array of draws for a design.
         [overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws );
@@ -203,13 +207,18 @@ classdef stateDesign
         
         % Saves finalized draws to variables
         obj = saveDraws( obj, cv, subDraws, undrawn );
-        
 
-        %% Write ensemble
+    end
+    
+    % Methods for writing the ensemble to file
+    methods
+        
+        % Writes the ensemble to file
+        write( obj, file, random, writenan, overwrite );
         
         % Determines which indices to read from for efficient loading.
         [start, count, stride, keep] = loadingIndices( obj );
-
+        
     end
         
 end
