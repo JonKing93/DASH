@@ -27,5 +27,6 @@ m = matfile( obj.file );
 obj.ensSize = m.ensSize;
 obj.design = m.design;
 obj.hasnan = m.hasnan;
+obj.metadata = ensembleMetadata( obj.design );
 
 end

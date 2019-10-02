@@ -16,6 +16,7 @@ classdef ensemble < handle
 %   add - Adds additional ensemble members to the stateDesign.
 properties (SetAccess = private)
     file;              % The .ens file associated with the ensemble
+    metadata;          % Ensemble metadata
 
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
@@ -51,6 +52,9 @@ methods
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.file = which( file );
+        
+        % Create the ensemble metadata
+        obj.metadata = ensembleMetadata( obj.design );
     end
 end
 
