@@ -1,4 +1,5 @@
 function[start, count, stride, keep] = loadingIndices( obj )
+% Implement efficient loading behavior from grid file
 
 % Preallocate
 nVar = numel(obj.var);

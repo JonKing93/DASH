@@ -1,24 +1,25 @@
 classdef stateDesign
     % stateDesign
-    % Stores design specifications and parameters for a state vector
-    % containing multiple variables.
+    % Stores design specifications and parameters for a state vector, and
+    % builds ensembles.
     %
-    % stateDesign Methods:
+    % Essential stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
-    %    add - Adds a variable to the state vector
-    %    edit - Edits the design specifications for a variable.
-    %    copy - Copies design specifications from a template variable to
-    %           other variables.
-    %    weightedMean - Specifies weights when computing a mean.
+    %    add - Adds a new variable
+    %    edit - Edits a the design specifications of a dimension of a variable.
+    %    weightedMean - Specify weights for weighted means.
+    %    copy - Copies design specifications from a template variable to other variables.
     %    info - Displays information about the state vector.
+    %    buildEnsemble - Create an ensemble from the design.
     %
-    %    remove - Removes a set of variables from the state vector.
-    %    couple - Couples specified variables to one another.
-    %    uncouple - Uncouples specified variables from all other variables.
     %
-    %    buildEnsemble - Build an ensemble from the design.
-    %    overlap - Specify whether variables in ensembles can contain
-    %              partially duplicated data.
+    % Advanced stateDesign Methods:
+    %    overlap - Adjust overlap permissions of variables
+    %    uncouple - Uncouples specified variables
+    %    couple - Couples specified variables
+    %    remove - Deletes specified variables from the design.
+    %    getVariables - Gets the design associated with specific variables
+    %    append - Appends a second stateDesign to the current object
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019

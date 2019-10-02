@@ -1,4 +1,5 @@
 function[obj] = stateDimension( obj, v, d, varargin )
+% Internal function for editing state dimensions
 % v: Variable index in state Design
 %
 % d: Dimension index in varDesign

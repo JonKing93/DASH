@@ -1,4 +1,5 @@
 function[obj] = changeDimType( obj, v, d )
+% Change a dimension from state to ens or vice versa
 
 % Flip the dimension
 obj.var(v).isState(d) = ~obj.var(v).isState(d);

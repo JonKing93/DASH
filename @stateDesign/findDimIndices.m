@@ -1,4 +1,5 @@
 function[d] = findDimIndices( obj, v, dim )
+% Get the dimension indices of named dimensions.
 
 % Ensure that dim is a string scalar. Convert to "string" for internal use
 if ~isstrlist( dim )

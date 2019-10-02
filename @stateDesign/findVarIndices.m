@@ -1,4 +1,5 @@
 function[v] = findVarIndices( obj, varName )
+% Get the dimension indices of named variables
 
 % Ensure that varName is a set of names. Convert to "string" for internal use
 if ~isstrlist(varName)

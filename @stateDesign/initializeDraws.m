@@ -1,6 +1,5 @@
 function[overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws )
-% Create the initial array of subscripted draws, and undrawn values and
-% some other values
+% Initialize a set of new draws
 
 % Get the overlap and ensemble size information
 var1 = obj.var( cv(1) );

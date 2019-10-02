@@ -1,4 +1,5 @@
 function[] = notifySecondaryCoupling( obj, v, vall )
+% Alert user if unnamed variables are automatically coupled
 % v: Initial variable indices.
 %
 % vall: The total set of variables.

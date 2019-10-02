@@ -1,4 +1,5 @@
 function[obj] = makeDraws( obj, cv, nEns, random )
+% Select a set of ensemble draws
 
 % Initialize values in preparation for making draws. Note if there are
 % previous draws and add to them.

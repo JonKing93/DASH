@@ -1,5 +1,5 @@
 function[] = notifySecondaryOverlap( obj, v, vall, tf )
-
+% Alert user if overlap permissions of unnamed variables are automatically altered
 % v: Initial variable indices
 %
 % vall: Total set of variables

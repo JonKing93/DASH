@@ -1,4 +1,5 @@
 function[obj] = ensDimension( obj, v, d, varargin )
+% Internal function that edits ensemble dimensions
 % v: Variable index in state Design
 %
 % d: Dimension index in varDesign

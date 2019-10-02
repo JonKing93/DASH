@@ -1,4 +1,5 @@
 function[] = notifyChangedType( obj, v, d, cv )
+% Alert user if dimension changes type automatically
 % v: The variable index
 %
 % d: The dimension index
