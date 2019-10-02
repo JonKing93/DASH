@@ -57,15 +57,24 @@ for v = 1:numel(obj.var)
                 start(v,d) = var.indices{d}( ensMember ) + var.seqDex{d}( subSequence(s,dim) ) + min( var.meanDex{d} );
             end
             
-            % Load the data, discard unneeded values. Take any means.
+            % Load the data, discard unneeded values.
             data = ncread( var.file, 'gridData', start(v,:), count(v,:), stride(v,:) );
             data = data( keep{v,:} );
             
-            for d = 1:numel(var.dimID)
+            % Take weighted means
+            dims = 1:numel(var.dimID);
+            for w = 1:numel( var.weights )
+                wdim = find( var.weightDims(w,:) );
+                data = sum( data.*var.weights{w}, wdim, var.nanflag{wdim(1)} ) ./ sum(var.weights{w}, 'all');
+                dims( ismember(dims,wdim) ) = [];
+            end
+            
+            % Take normal means over the remaining dimensions
+            for d = 1:numel( dims )
                 if var.takeMean(d)
                     data = mean( data, d, var.nanflag{d} );
                 end
-            end        
+            end   
             
             % Store as state vector in the workspace ensemble
             M( varSegment, mc ) = data(:);

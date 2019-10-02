@@ -12,7 +12,6 @@ classdef stateDesign
     %    info - Displays information about the state vector.
     %    buildEnsemble - Create an ensemble from the design.
     %
-    %
     % Advanced stateDesign Methods:
     %    overlap - Adjust overlap permissions of variables
     %    uncouple - Uncouples specified variables
@@ -32,6 +31,7 @@ classdef stateDesign
         allowOverlap;    % Whether the variable permits overlapping non-duplicate sequences
         isCoupled;       % Notes whether variables are coupled
         autoCouple;      % Whether the variable should be automatically coupled to new variables.
+        new;             % Whether this is an unwritten stateDesign
     end
     
     % Constructor block.
