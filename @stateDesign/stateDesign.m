@@ -3,7 +3,7 @@ classdef stateDesign
     % Stores design specifications and parameters for a state vector, and
     % builds ensembles.
     %
-    % Essential stateDesign Methods:
+    % stateDesign Methods:
     %    stateDesign - Creates a new stateDesign object.
     %    add - Adds a new variable
     %    edit - Edits a the design specifications of a dimension of a variable.
