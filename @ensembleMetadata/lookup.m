@@ -1,10 +1,10 @@
-function[meta] = lookupMetadata( obj, dims, inArg )
+function[meta] = lookup( obj, dims, inArg )
 % Returns ensemble metadata at specific indices and dimensions.
 %
-% meta = obj.lookupMetadata( dims, H )
+% meta = obj.lookup( dims, H )
 % Returns the metadata along specified dimensions at state indices 'H'.
 %
-% meta = obj.lookupMetadata( dims, varName )
+% meta = obj.lookup( dims, varName )
 % Returns the metadata along specified dimensions at all indices for
 % the specified variable.
 %

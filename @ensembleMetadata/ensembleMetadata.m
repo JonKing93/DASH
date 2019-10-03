@@ -1,24 +1,11 @@
 classdef ensembleMetadata
     % ensembleMetadata
     % Manages metadata for a state vector ensemble
-    % 
-    % ensembleMetadata Properties:
-    %   varName - The name of each variable
-    %   varLimit - The index limits of each variable in the state vector
-    %   varSize - The original size of the gridded variable
-    %   stateMeta - The metadata values associated with each state elements
-    %               for each variable
-    %   ensMeta - The metadata assocaited with each ensemble member for
-    %             each variable.
-    %
-    %   fileName - The name of the associated .ens file
-    %   designName - The name of the associated state design
     %   
     % ensembleMetadata Methods:
     %   ensembleMetadata - Creates a new ensemble metadata object
-    %   lookupMetadata - Returns metadata at specified indices
-    %   varIndices - Returns the state vector indices associated with a
-    %              variable
+    %   lookup - Returns metadata at specified indices
+    %   varIndices - Returns the state vector indices associated with a variable
     %
     % ensembleMetadata Utility Methods:
     %   dimCheck - Checks that a set of dimensions are in the metadata
@@ -97,13 +84,13 @@ classdef ensembleMetadata
     methods
         
         % Looks up metadata for a variable
-        meta = lookupMetadata( obj, dims, inArg );
+        meta = lookup( obj, dims, inArg );
         
         % Return the indices associated with a variable
         H = varIndices( obj, varName ); 
     end
     
-    % Internal utilities (often used by PSMs -- thus not private)
+    % Indexing
     methods 
         
         % Checks that dimensions are in the metadata, converts to string
