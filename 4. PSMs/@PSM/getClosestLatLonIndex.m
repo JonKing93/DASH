@@ -1,16 +1,19 @@
 function[H] = getClosestLatLonIndex( coord, ensMeta, varNames, varargin )
-%% Gets the state indices closest to a particular lat-lon coordinate from
-% an ensemble for a set of variables. May optionally specify additional
-% indices along other dimensions along which to extract indices. (In
-% process of writing better documentation -- for now, please ask for any
-% questions on how this works.)
-%
+%% Gets the state indices closest to a particular lat-lon coordinate. from
+% 
 % H = getClosestLatLonIndex( coord, ensMeta, varNames )
-% Finds the closest state indices to a set of coordinates for a set of
+% Finds the closest state vector element to a coordinate for a set of
 % variables.
 %
-% H = getClosestLatLonIndex( coord, ensMeta, varNames, 'dimName', indices )
-% Finds H at each of a set of specified indices along other dimensions.
+% H = getClosestLatLonIndex( ..., dim1, meta1, ... dimN, metaN )
+% Finds the closest H for specific elements along specified dimensions.
+% Searches each index associated with elements in the specified metadata.
+%
+% For Example:
+%   >> H = getClosestLatLonIndex( ..., 'lev', [100 200 300] )
+%
+%   would find three state elements. The closest on the level with metadata
+%   equal to 100, the closest on level 200, and the closest on level 300.
 %
 % ----- Inputs -----
 %
@@ -20,118 +23,87 @@ function[H] = getClosestLatLonIndex( coord, ensMeta, varNames, varargin )
 %
 % varNames: A set of variable names. Must be a string column.
 %
-% dimName: A dimension ID
+% dimN: The name of the Nth dimension with specific indices to search
 %
-% indices: The indices within the ensemble metadata along which to search
-%          state indices.
+% indicesN: The indices along which to search for dimension N
 %
 % ----- Outputs -----
 %
-% H: A set of state indices.
+% H: State vector indices.
 
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
-
-%% Do a general call to parseInputs to get restriction values
-
-% Start by getting the names of all the dimension IDs
+% Parse inputs. Dimension names can be changed, so do a general call
 [dimID,~,~,lon,lat,~,~,~,tri] = getDimIDs;
 nDim = numel(dimID);
 norestrict = [lon;lat;tri];
 
-% Preallocate args for call to parseInputs
-restrict = cell( nDim, 1 );
+metaValue = cell( nDim, 1 );
 empty = repmat( {[]}, [nDim, 1] );
 
-% Get the restriction values for each dimension
-[restrict{:}] = parseInputs( varargin, cellstr(dimID), empty, empty );
+[metaValue{:}] = parseInputs( varargin, cellstr(dimID), empty, empty );
 
-
-%% Get combination indices for each set of restriction values
-
-% Preallocate the number of restriction indices per dimension
+% Get the number of indices to search in each dimension. Throw error if
+% indices were provided for lat, lon, or tri
 nEls = zeros( nDim, 1 );
-
-% For each dimension
-for d = 1:nDim
-    
-    % Check that lat, lon, and tri do not have restriction values
-    if ismember(dimID(d), norestrict) && ~isempty(restrict{d})
+for d = 1:nDim    
+    if ismember(dimID(d), norestrict) && ~isempty(metaValue{d})
         error('Restriction values are not allowed for the %s dimension.', norestrict(d) );
-    end
-    
-    % Get the number of restrictions
-    nEls(d) = size( restrict{d}, 1 );
+    end    
+    nEls(d) = size( metaValue{d}, 1 );
 end
 
-% Reduce to restriction dimensions
-resDim = find( nEls~=0 );
-nResDim = numel(resDim);
-nEls = nEls( resDim );
+% Get the N-D subscript of each combination of dimensions. 
+searchDim = find( nEls~=0 );
+nDim = numel(searchDim);
+nEls = nEls( searchDim );
+subDex = subdim( (1:prod(nEls))', nEls );
 
-% Get the set of combinations
-combDex = subdim( nEls, (1:prod(nEls))' );
-
-% Adjust for no combinations
+% Preallocate the H indices
 nComb = 1;
-if ~isempty(combDex)
-    nComb = size(combDex,1);
+if ~isempty(subDex)
+    nComb = size(subDex,1);
 end
-
-% Preallocate the number of H indices
 nVar = numel(varNames);
 H = NaN( nComb*nVar, 1 );
 
-
-%% Get the closest index for the lat, lon metadata for each variable
-
-% For each variable
+% Get the v-index of each variable, extract metadata for each sequence
+% element, and find the closest to the coordinate
 for var = 1:numel(varNames)
-    
-    % Get the variable index
     v = ensMeta.varCheck( varNames(var) );
+    latlon = PSM.getLatLonMetadata( ensMeta, varNames(var) );
+    dist = haversine( coord, latlon );
+    site = find( dist == min(dist), 1 );
     
-    % Get the lat-lon metadata
-    latlon = getLatLonMetadata( ensMeta, varNames(var) );
+    % Initialize the dimension search
+    searchIndex = cell( nDim, 1 );
+    subSearch = subDex;
+    nModulus = NaN( 1, nDim );
     
-    % Determine the ensemble lat-lon values closest to the coordinates
-    site = samplingMatrix( coord, latlon, 'linear' );
-    
-    
-    %% Modulate over restriction indices
-    
-    % Initialize restriction indices, number of modulus indices per
-    % dimension, and the indices for each combination
-    restrictDex = cell( nResDim, 1 );
-    nModulus = NaN( 1, nResDim );
-    resComb = combDex;
-    
-    % For each dimension with restriction values
-    for dim = 1:nResDim
-        d = resDim(dim);
-            
-        % Get the associated restriction indices
-        [~, restrictDex{dim}] = ismember( restrict{d}, ensMeta.stateMeta.(ensMeta.varName(v)).(dimID(d)) );
+    % For each dimension with search values, get the indices where the
+    % metadata is located. Subscript to N-D
+    for dim = 1:nDim
+        d = searchDim(dim);
+        stateMeta = ensMeta.stateMeta.(ensMeta.varName(v)).(dimID(d));
         
-        % Check that every index had appropriate metadata
-        if any( restrictDex{dim} == 0 )
-            error('Variable %s does not have the appropriate metadata along the %s dimension.', varNames(var), dimID(d) );
+        if size(metaValue{d}, 2) ~= size(stateMeta,2)
+            error('The metadata search values do not have the same number of rows as the ensemble metadata.');
         end
-
-        % Get the modulus number and number of restrictions
-        nModulus(dim) = prod( ensMeta.varSize(v,1:d-1) );
         
-        % Get the restriction indices for each combination
-        resComb(:,dim) = restrictDex{dim}(combDex(:,dim));
+        [~, searchIndex{dim}] = ismember( metaValue{d}, ensMeta.stateMeta.(ensMeta.varName(v)).(dimID(d)), 'rows' );
+        if any( searchIndex{dim} == 0 )
+            error('Variable %s does not have matching metadata along the %s dimension.', varNames(var), dimID(d) );
+        end
+        subSearch(:,dim) = searchIndex{dim}(subDex(:,dim)); 
+        nModulus(dim) = prod( ensMeta.varSize(v,1:d-1) );
     end
-
-    % Modulate over restriction indices
+    
+    % Modulate the closest site (within a single sequence element), over
+    % the N-D set of search dimensions
     nAdd = 0;
-    if ~isempty( resComb )
-        nAdd = sum( (resComb-1).*nModulus, 2 );
+    if ~isempty( subSearch )
+        nAdd = sum( (subSearch-1).*nModulus, 2 );
     end
-    
-    % Get the final state indices
     H((var-1).*nComb+(1:nComb)) = (ensMeta.varLimit(v,1) - 1) + nAdd + site;
-end
     
+end
+
+end
