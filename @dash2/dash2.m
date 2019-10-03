@@ -24,13 +24,12 @@ classdef dash2 < handle
             
             % Create the default settings structure
             obj.settings = struct('ensrf', [], 'particleFilter', [], 'optimalSensor', []);
-            obj.settings.ensrf = struct( 'serial', false, 'append', false, 'inflate', 1, 'localize', false, 'radius', NaN );
+            obj.settings.ensrf = struct( 'type', 'joint', 'localize', [], 'inflate', 1, 'append', false, 'meanOnly', false );
             obj.settings.particleFilter = struct('type', "weight", 'N', NaN, 'big', false, 'nEns', NaN);
             obj.settings.optimalSensor = struct('replace', true, 'nSensor', 1, 'sites', [], 'radius', 0 );
             
         end
     end
-    
     
     % Settings for different types of analyses
     methods
@@ -42,12 +41,8 @@ classdef dash2 < handle
     % User methods to begin analyses
     methods
         optimalSensor;
-        
-    
-    
-    
-    
-    
+        particleFilter;
+        ensrf;
     end
     
     

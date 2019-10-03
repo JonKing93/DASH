@@ -1,4 +1,4 @@
-classdef (Abstract) PSM < handle & biasCorrector & unitConverter
+classdef (Abstract) PSM < handle & biasCorrector
     % PSM
     % Implements an interface for proxy system models to interact with unit
     % converting, bias correction, and data analysis functions.
@@ -105,4 +105,12 @@ classdef (Abstract) PSM < handle & biasCorrector & unitConverter
        reviewUnitConversion( obj, H );
     end
 
+    % Static methods for developing PSMs
+    methods (Static)
+        
+        % Gets lat-lon metadata for one sequence element of a variable
+        latlon = getLatLonMetadata( ensMeta, varName );
+        
+    end
+    
 end

@@ -1,6 +1,14 @@
 function[latlon] = getLatLonMetadata( ensMeta, varName )
-%% Gets the set of lat-lon coordinates for a variable from the ensemble metadata.
-% DOES NOT replicate over all variable indices.
+%% Gets the set of lat-lon coordinates for one sequence element of a
+% variable in an ensemble.
+%
+% latlon = getLatLonMetadata( ensMeta, varName )
+%
+% ----- Inputs -----
+%
+% ensMeta: An ensemble metadata object
+%
+% varName: The name of the variable
 
 % Get the dimension names
 [~,~,~,lon,lat,~,~,~,tri] = getDimIDs;
@@ -37,7 +45,7 @@ if hasmeta(3)
     H = H(1:ensMeta.varSize(v,3));
     
     % Get the metadata
-    latlon = ensMeta.lookupMetadata( 'tri', H );
+    latlon = ensMeta.lookupMetadata( tri, H );
     
     % Error check the metadata
     if ~ismatrix( latlon )
@@ -54,8 +62,8 @@ else
     H = H(1:nEls);
     
     % Get the metadata
-    lat = ensMeta.lookupMetadata('lat', H);
-    lon = ensMeta.lookupMetadata('lon', H);
+    lat = ensMeta.lookup(lat, H);
+    lon = ensMeta.lookup(lon, H);
     
     % Error check
     if ~ismatrix(lat)
