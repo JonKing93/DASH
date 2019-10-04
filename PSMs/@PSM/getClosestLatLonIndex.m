@@ -25,7 +25,7 @@ function[H] = getClosestLatLonIndex( coord, ensMeta, varNames, varargin )
 %
 % dimN: The name of the Nth dimension with specific indices to search
 %
-% indicesN: The indices along which to search for dimension N
+% metaN: The metadata of indices along which to search for dimension N
 %
 % ----- Outputs -----
 %
@@ -46,7 +46,7 @@ empty = repmat( {[]}, [nDim, 1] );
 nEls = zeros( nDim, 1 );
 for d = 1:nDim    
     if ismember(dimID(d), norestrict) && ~isempty(metaValue{d})
-        error('Restriction values are not allowed for the %s dimension.', norestrict(d) );
+        error('Search values are not allowed for the %s dimension.', norestrict(d) );
     end    
     nEls(d) = size( metaValue{d}, 1 );
 end
