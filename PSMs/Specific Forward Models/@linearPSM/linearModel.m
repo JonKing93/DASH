@@ -1,7 +1,7 @@
 function[Y] = linearModel( X, slopes, intercept )
 % The linear model function used by a linearPSM
 %
-% Y = linearModel( X, slopes, intercept )
+% Y = linearPSM.linearModel( X, slopes, intercept )
 %
 % ----- Inputs -----
 %

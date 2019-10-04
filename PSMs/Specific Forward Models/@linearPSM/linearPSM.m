@@ -6,6 +6,7 @@ classdef linearPSM < PSM
     %   linearPSM - Creates a new linearPSM object
     %   getStateIndices - Find the state vector elements needed to run the PSM
     %   runForwardModel - Runs the multivariate linear forward model.
+    %   linearModel - Static function implementing the linear model
     
     properties
         coord;       % Proxy site coordinates, [lat, lon]
@@ -60,40 +61,14 @@ classdef linearPSM < PSM
         % Error checking
         errorCheckPSM( obj );
         
+        % Run the forward model
+        [Ye, R] = runForwardModel( obj, M, ~, ~ );
         
-        
-        
-        % Error Check
-        function[] = errorCheckPSM( obj )
-            if isempty(obj.slope) || isempty(obj.intercept) || isempty(obj.varDex)
-                error('The slope, intercept and varDex cannot be empty.');
-            elseif any(isnan(obj.slope)) || any(isnan(obj.intercept)) || any(isnan(obj.varDex))
-                error('The slope, intercept, and varDex cannot be NaN.');
-            elseif ~isvector(obj.slope) || ~isvector(obj.varDex) || length(obj.slope)~=length(obj.varDex)-1
-                error('The slope and varDex must be vectors. varDex must have one more element than slope.');
-            elseif ~isscalar(obj.intercept)
-                error('The intercept must be a scalar.');
-            end
-        end
-       
-        
-        % Run the PSM
-        function[Ye, R] = runForwardModel( obj, M, ~, ~ )
-            
-            % Preallocate the variables
-            nVar = numel(obj.slope);
-            var = NaN( nVar, size(M,2) );
-            
-            % Take all means
-            for v = 1:nVar
-                var(v,:) = mean( M( obj.varDex(v)+1 : obj.varDex(v+1), :), 1 );
-            end
-            
-            % Apply the linear relationship
-            Ye = sum( var .* obj.slope, 1 ) + obj.intercept;
-            
-            % Return an empty R
-            R = [];
-        end
     end
+    
+    % Static call to linear model function
+    methods (Static)
+        Y = linearModel( X, slopes, intercept );
+    end
+    
 end
