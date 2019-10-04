@@ -22,10 +22,12 @@ function[] = getStateIndices( obj, ensMeta, sstName, monthMeta, varargin )
 % dimN, metaN: Please see PSM.getClosestLatLonIndex for details
 
 % Error check
-if ~isstrflag(sstName)
+if ~isa(ensMeta, 'ensembleMetadata') || ~isscalar(ensMeta)
+    error('ensMeta must be a scalar ensembleMetadata object.');
+elseif ~isstrflag(sstName)
     error('The name of the SST variable must be a string scalar or character row vector.');
 elseif size(monthMeta,1) ~= 12
-    error('monthNames must have 12 rows (one for each month).';
+    error('monthNames must have 12 rows (one for each month).');
 end
 
 % Finds the closest SST variable in each of the specified months

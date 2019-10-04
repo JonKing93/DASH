@@ -3,7 +3,10 @@ classdef ukPSM < PSM
     % Implements proxy model for Uk'37
     %
     % ukPSM Methods:
+    %   ukPSM - Creates a new ukPSM object
     %   getStateIndices - Finds state vector elements needed to run the PSM
+    %   runForwardModel - Runs a UK37 PSM
+    %   UK_forward_model - Static function implementing the UK37 forward model function.
 
     properties
         bayesFile = 'bayes_posterior_v2.mat';   % The file with the Bayesian posterior
@@ -54,11 +57,11 @@ classdef ukPSM < PSM
         errorCheckPSM( obj );
         
         % Run the forward model
-        [uk, R] = runForwardModel( obj, M );
+        [uk, R] = runForwardModel( obj, M, ~, ~ );
         
     end
         
-    % The actual forward model
+    % Static call to the forward model function
     methods (Static)
         uk = UK_forward_model( ssts, bayes );
     end

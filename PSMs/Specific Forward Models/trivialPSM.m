@@ -1,6 +1,11 @@
 classdef trivialPSM < PSM
     % trivialPSM
     % A trivial PSM used that directly returns whatever value it is given.
+    %
+    % trivialPSM Methods:
+    %   trivialPSM - Creates a new trivial PSM
+    %   getStateIndices - Finds state vector element needed to run the PSM
+    %   runForwardModel - Runs the trivial PSM forward model
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019

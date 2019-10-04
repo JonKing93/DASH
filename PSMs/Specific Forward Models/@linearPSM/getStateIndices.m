@@ -38,8 +38,8 @@ if ~exist('searchParams','var') || isempty(searchParams)
 end
 
 % Error check
-if ~isa( ensMeta, 'ensembleMetadata' )
-    error('ensMeta must be an ensembleMetadata object.');
+if ~isa( ensMeta, 'ensembleMetadata' ) || ~isscalar(ensMeta)
+    error('ensMeta must be a scalar ensembleMetadata object.');
 elseif ~isstrlist(varNames)
     error('varNames must be a cellstring or string vector.');
 elseif ~iscell(searchParams) || ~isvector(searchParams) || numel(searchParams~=numel(obj.slopes))
