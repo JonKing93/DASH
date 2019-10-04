@@ -4,14 +4,13 @@ classdef (Abstract) PSM < handle
     % converting, bias correction, and data analysis functions.
     %
     % PSM Methods:
-    %   runPSM - Interfaces running a forward model with bias/unit/dash/PSM
-    %   reviewPSM - Interfaces error checking with bias/unit/PSM functions.
+    %   setUnitConversion - Set values used for unit conversion.
+    %   setBiasCorrector - Specify a bias corrector to use.
     %
-    % Abstract PSM Methods:
-    % (These must be implemented in individual PSMs)
-    % getStateIndices - Determine which state vector elements are needed to run
-    % errorCheckPSM - Internal error checking
-    % runForwardModel - Run a specific forward model
+    % Abstract PSM Methods: (These must be implemented in individual PSMs)
+    %    getStateIndices - Determine which state vector elements are needed to run
+    %    errorCheckPSM - Internal error checking
+    %    runForwardModel - Run a specific forward model
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
@@ -20,6 +19,7 @@ classdef (Abstract) PSM < handle
         H;                     % Sampling indices
         addUnit;
         multUnit;
+        biasCorrection;
     end
     
     % Abstract methods unique to individual PSMs
@@ -95,14 +95,18 @@ classdef (Abstract) PSM < handle
         
     end
     
-    % Unit conversion
+    % Unit conversion and bias correction
     methods
         
-       % Set the additive and multiplicative unit conversions
-       setUnitConversion( obj, varargin );
+        % Set the additive and multiplicative unit conversions
+        setUnitConversion( obj, varargin );
        
-       % Error check unit conversion
-       reviewUnitConversion( obj, H );
+        % Error check unit conversion
+        reviewUnitConversion( obj, H );
+       
+        % Select a bias corrector
+        setBiasCorrector( type, Xt, Xs );
+       
     end
 
     % Static utility methods for developing PSMs
