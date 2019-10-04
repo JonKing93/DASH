@@ -1,17 +1,17 @@
-% This implements a general PSM for linear models with N variables.
-
-% ----- Written  By -----
-% Jonathan King, University of Arizona, 2019
 classdef linearPSM < PSM
     % linearPSM
     % Implements a multivariate linear proxy system model.
+    %
+    % linearPSM Methods:
+    %   linearPSM - Creates a new linearPSM object
+    %   getStateIndices - Find the state vector elements needed to run the PSM
+    %   runForwardModel - Runs the multivariate linear forward model.
     
     properties
         coord;       % Proxy site coordinates, [lat, lon]
-        slopes;      % The linear slope to apply to each variable
-        intercept;   % 
-        
-        varDex % State indices associated with each variable
+        slopes;      % The multiplicative constant to apply to each variable
+        intercept;   % The additive constant
+        Hlim;        % The limits of the state elements associated with each slope
     end
     
     % Constructor
@@ -55,38 +55,13 @@ classdef linearPSM < PSM
     methods
         
         % State indices
-        getStateIndices( obj, ensMeta, varargin );
+        getStateIndices( obj, ensMeta, varNames, searchParams );
         
-        % 
+        % Error checking
+        errorCheckPSM( obj );
         
         
-            
-            % Ensure the correct number of inputs
-            nVar = length(obj.slope);
-            if numel(varargin) ~= nVar*2
-                error('There must be two inputs (a variable name and a cell of restriction indices) for each element of ''slope''.');
-            end
-            
-            % Initialize H and the number of elements per variable
-            obj.H = [];
-            obj.varDex = zeros( nVar+1, 1 );
-            
-            % For each variable
-            for v = 1:nVar
-                
-                % Get the state indices
-                Hv = getClosestLatLonIndex( obj.coord, ensMeta, varargin{v*2-1}, varargin{v*2}{:} );
-                
-                % Add to array
-                obj.H = [obj.H; Hv];
-                
-                % Record the number of indices (useful if taking means)
-                obj.varDex(v+1) = numel(Hv);
-            end
-            
-            % Take the cumulative sum to get the edges of variable indices
-            obj.varDex = cumsum( obj.varDex );
-        end
+        
         
         % Error Check
         function[] = errorCheckPSM( obj )
