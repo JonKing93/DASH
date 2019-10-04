@@ -15,7 +15,7 @@ elseif ~isempty(obj.multUnit) && ~isequal(size(obj.H),size(obj.multUnit))
 end
 
 % Error check the bias corrector and specific PSM
-obj.reviewBiasCorrector;
+obj.biasCorrector.review( obj.H );
 obj.errorCheckPSM;
 
 end

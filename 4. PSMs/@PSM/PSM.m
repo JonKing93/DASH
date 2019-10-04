@@ -17,9 +17,9 @@ classdef (Abstract) PSM < handle
     
     properties
         H;                     % Sampling indices
-        addUnit;
-        multUnit;
-        biasCorrection;
+        addUnit;               % Additive unit conversion
+        multUnit;              % Multiplicative unit conversion
+        biasCorrection;        % A bias corrector
     end
     
     % Abstract methods unique to individual PSMs
