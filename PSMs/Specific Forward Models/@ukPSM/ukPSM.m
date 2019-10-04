@@ -3,7 +3,7 @@ classdef ukPSM < PSM
     % Implements proxy model for Uk'37
     %
     % ukPSM Methods:
-    %   getStateIndices
+    %   getStateIndices - Finds state vector elements needed to run the PSM
 
     properties
         bayesFile = 'bayes_posterior_v2.mat';   % The file with the Bayesian posterior
