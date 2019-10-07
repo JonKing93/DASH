@@ -2,7 +2,7 @@ function[Ye, R, use] = processYeR( F, Mpsm, R, t, d )
 % Estimates Ye and R as a data assimilation is running. Error checks the
 % PSM output and determines if it can be used to update.
 %
-% [Ye, R, use] = processYeR( F, Mpsm, R, t, d )
+% [Ye, R, use] = dash.processYeR( F, Mpsm, R, t, d )
 %
 % ----- Inputs -----
 %

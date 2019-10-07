@@ -1,22 +1,22 @@
 function[] = ensrfSettings( obj, varargin )
 % Specifies settings for an Ensemble Square Root Kalman Filter analysis.
 %
-% ensrfSettings( ..., 'type', type )
+% obj.ensrfSettings( ..., 'type', type )
 % Whether to process updates jointly or in serial. Default is jointly.
 %
-% ensrfSettings( ..., 'type', 'serial', 'localize', w )
+% obj.ensrfSettings( ..., 'type', 'serial', 'localize', w )
 % ensrfSettings( ..., 'type', 'joint', 'localize', {w, yloc} )
 % Applies localization weights. See dash.covLocalization for w and yloc.
 %
-% ensrfSettings( ..., 'inflate', inflate )
+% obj.ensrfSettings( ..., 'inflate', inflate )
 % Specify an inflation factor. Default is 1 (no inflation). Note that
 % inflation is applied BEFORE generating Ye values.
 %
-% ensrfSettings( ..., 'type', 'serial', 'append', append )
+% obj.ensrfSettings( ..., 'type', 'serial', 'append', append )
 % Indicate whether to pre-calculate Y estimates, append them to the state
 % vector, and update via the Kalman Gain. Default is false.
 %
-% ensrfSettings( ..., 'type', 'joint', 'meanOnly', meanOnly )
+% obj.ensrfSettings( ..., 'type', 'joint', 'meanOnly', meanOnly )
 % Specify whether to only update the ensemble mean. (This is typically much
 % faster than calculating the ensemble mean and variance.)
 % 

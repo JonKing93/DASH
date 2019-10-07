@@ -52,7 +52,7 @@ classdef dash < handle
             obj.settings = struct('ensrf', [], 'particleFilter', [], 'optimalSensor', []);
             obj.settings.ensrf = struct( 'type', 'joint', 'localize', [], 'inflate', 1, 'append', false, 'meanOnly', false );
             obj.settings.particleFilter = struct('type', "weight", 'N', NaN, 'big', false, 'nEns', NaN);
-            obj.settings.optimalSensor = struct('replace', true, 'nSensor', 1, 'sites', [], 'radius', 0 );
+            obj.settings.optimalSensor = struct('replace', true, 'nSensor', 1, 'radius', NaN );
             
             obj.setValues( M, D, R, F );
         end
@@ -77,8 +77,12 @@ classdef dash < handle
     
     % User methods to initiate analysis
     methods
-        optimalSensor;
-        particleFilter;
+        
+        % Do an optimal sensor analysis
+        output = optimalSensor( obj, J, sites )
+        
+        % Run a particle filter
+        output = particleFilter( obj );
         
         % Run an Ensemble Kalman Filter data assimilation
         output = ensrf( obj );
@@ -140,8 +144,16 @@ classdef dash < handle
     methods (Static)
         
         % Normal particle filter
+        output = pf( M, D, R, F, N );
         
-        % Particle filter for large ensemble
+        % Particle filter for large ensembles
+        output = bigpf( ens, D, R, F, N, batchSize )
+        
+        % Compute particle weights
+        weights = pfWeights( sse, N );
+        
+        % Probabilistic weights
+        Y = normexp( X, dim, nanflag );
         
     end
     
@@ -149,8 +161,13 @@ classdef dash < handle
     methods (Static)
         
         % Assess skill of sites
+        skill = assessPlacement( Jdev, Mdev, H, R );
         
         % Update the variance field
+        Mdev = updateSensor( Mdev, H, R );
+        
+        % Run a sensor test
+        output = sensorTest( J, M, sites, N, replace, radius )
         
     end
     

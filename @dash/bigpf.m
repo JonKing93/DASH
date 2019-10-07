@@ -1,4 +1,4 @@
-function[output] = pf( M, D, R, F, N )
+function[output] = bigpf( ens, D, R, F, N, batchSize )
 %% Implements a particle filter.
 %
 % [output] = dash.pf( M, D, R, F, N )
@@ -16,6 +16,8 @@ function[output] = pf( M, D, R, F, N )
 % N: The number of particles to use when calculating the ensemble mean. A
 %    positive scalar. Use NaN for probabilistic weights.
 %
+% batchSize: The number of ensemble members to load per step.
+%
 % ----- Outputs -----
 %
 % output: A structure with the following fields
@@ -30,23 +32,44 @@ function[output] = pf( M, D, R, F, N )
 
 % Preallocate
 [nObs, nTime] = size(D);
-nEns = size(M,2);
-Ye = NaN( nObs, nEns );
+nEns = ens.ensSize(2);
+nState = ens.ensSize(1);
 
-% Run the forward models. Get Ye and R
-for d = 1:nObs
-    hasObs = ~isnan( D(d,:) );
-    [Ye(d,:), R(d,hasObs)] = dash.processYeR( F{d}, M(F{d}.H,:), R(d,hasObs), NaN, d );
+Ye = NaN( nObs, nEns );
+A = zeros( nState, nTime );
+sse = NaN( nEns, nTime );
+
+% Get the number of batches
+nBatch = floor( ens.ensSize(2) / batchSize );
+if mod( ens.ensSize(2), batchSize ) ~= 0
+    nBatch = nBatch + 1;
 end
 
-% Permute for singleton expansions
+% Permute for singleton expansion
 D = permute(D, [1 3 2]);
 R = permute(R, [1 3 2]);
 
-% Sum of uncertainty weighted squared errors. Use to compute weights and update.
-sse = squeeze( sum(  (1./R) .* (D - Ye).^2,  1 ) );
+% Load the portion of the ensemble for each batch
+for b = 1:nBatch
+    batchIndices = (b-1)*blockSize+1 : min( b*blockSize, ens.ensSize(2) );
+    M = ens.load( batchIndices );
+    
+    % Generate Ye and compute sse
+    for d = 1:nObs
+        Ye(d, batchIndices) = dash.processYeR( F{d}, M(F{d}.H, :), R(d,:), NaN, d );
+    end
+    sse(batchIndices,:) = squeeze( sum(  (1./R) .* (D - Ye(:,batchIndices)).^2,  1 ) );
+end
+
+% Get the weights
 weights = dash.pfWeights( sse, N );
-A = M * weights;
+
+% Use the weights to combine each batch
+for b = 1:nBatch
+    batchIndices = (b-1)*blockSize+1 : min( b*blockSize, ens.ensSize(2) );
+    M = ens.load( batchIndices );
+    A = A + M * weights( batchIndices, : );
+end
 
 % Build the output structure
 output.settings = struct('Analysis','Particle Filter','Weights', 'Probabilistic');
