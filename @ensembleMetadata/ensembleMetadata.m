@@ -99,4 +99,19 @@ classdef ensembleMetadata
         % Checks that variables are in the metadata. Returns variable index
         v = varCheck( obj, vars );
     end
+    
+    % Lat-lon lookup for PSM development
+    methods
+        
+        % Gets lat-lon metadata for one sequence element of a variable
+        latlon = getLatLonMetadata( obj, varName );
+        
+        % Finds the closest state vector elements to a lat-lon coordinate
+        H = getClosestLatLonIndex( obj, coord, varNames, varargin );
+        
+        % Gets the lat lon metadata for the entire ensemble
+        latlon = coordinates( obj );
+        
+    end
+             
 end
