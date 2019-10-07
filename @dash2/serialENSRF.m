@@ -64,7 +64,7 @@ for t = 1:nTime
             [Ye(d,:,t), R(d,t), sites(d,t)] = getPSMOutput( F{d}, Mpsm, R(d,t), t, d );
             
             % If Ye and R were successful, use to update
-            if update(d,t)
+            if sites(d,t)
                 
                 % Decompose the estimates, get the Kalman gain, and
                 % calibration ratio

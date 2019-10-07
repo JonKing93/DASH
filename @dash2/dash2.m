@@ -38,11 +38,25 @@ classdef dash2 < handle
         localize( R, scale );
     end
     
-    % User methods to initiate analyses
+    % User methods. Start analysis and regrid
     methods
         optimalSensor;
         particleFilter;
+        
+        % Runs an Ensemble Kalman Filter data assimilation
         output = ensrf( obj );
+          
+    end
+    
+    % Regridding
+    methods (Static)
+        
+        % Regrids a variable in an ensemble from a state vector.
+        [A, meta, dimID] = regrid( A, var, ensMeta, keepSingleton )
+        
+        % Regrids a tripolar variable
+        [rA, dimID] = regridTripolar( A, var, ensMeta, gridSize, notnan, keepSingleton );
+        
     end
     
     % General analysis methods
@@ -55,7 +69,10 @@ classdef dash2 < handle
         [Mmean, Mdev, Mvar] = decompose( M );
         
         % Calculate localization weights
-        localizeWeights( 
+        [weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale);
+        
+        % Error check Ye and R generation on the fly without crashing the analysis
+        [Ye, R, use] = processYeR( F, Mpsm, R, t, d );
         
     end        
         
