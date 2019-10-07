@@ -1,7 +1,7 @@
 function[K, a] = serialKalman( Mdev, Ydev, w, R )
-%% Gets the Kalman Gain and alpha for a Kalman Ensemble Square Root Filter
+%% Gets the kalman gain for serial updates
 %
-% [K, a] = kalmanENSRF( Mdev, ydev, w, R )
+% [K, a] = dash.serialKalman( Mdev, ydev, w, R )
 % Computes the kalman gain and alpha scaling factor for a serial update.
 %
 % ----- Inputs -----
@@ -20,25 +20,17 @@ function[K, a] = serialKalman( Mdev, Ydev, w, R )
 %
 % a: The alpha weight for the adjusted kalman gain for a serial update.
 
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
-
 % Get the coefficient for an unbiased estimator
 nEns = size(Ydev,2);
 unbias = 1 / (nEns-1);
 
-% Get the numerator (localized covariance of M with Ye)
+% Get the numerator, denominator (localized covariance of M with Ye)
 Knum = unbias .* (Mdev * Ydev');
 Knum = Knum .* w;
-
-% Get the denominator. This is the uncertainty in the system. It is the Ye
-% error covariance + observation uncertainty.
 Kdenom = unbias .* (Ydev * Ydev') + R;
 
-% Get the full Kalman gain
+% Get the full Kalman gain and adjusted gain scaling factor
 K = Knum / Kdenom;
-
-% Get the alpha scaling factor
 a = 1 / ( 1 + sqrt(R/Kdenom) );
 
 end

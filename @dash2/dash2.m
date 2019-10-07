@@ -12,15 +12,16 @@ classdef dash2 < handle
         R;      % Observation uncertainty.
         F;      % Forward operators
         
-        nState;
-        nEns;
-        nObs;
-        nTime;
+        nState;   % The number of state elements
+        nEns;     % The number of ensemble members
+        nObs;     % The number of observation sites
+        nTime;    % The number of time steps
+        nSensor;  % The number of sensor sites
     end
     
-    % Constructor
+    % Constructor (unfinished!)
     methods
-        function obj = dash2(M, D, R, F)
+        function obj = dash2(M, D, R, F, S)
             
             % Create the default settings structure
             obj.settings = struct('ensrf', [], 'particleFilter', [], 'optimalSensor', []);
@@ -28,14 +29,16 @@ classdef dash2 < handle
             obj.settings.particleFilter = struct('type', "weight", 'N', NaN, 'big', false, 'nEns', NaN);
             obj.settings.optimalSensor = struct('replace', true, 'nSensor', 1, 'sites', [], 'radius', 0 );
             
+            obj.useValues( M, D, R, F, S )
         end
     end
     
-    % Settings for different types of analyses
+    % Settings for different types of analyses. Also, error checking
     methods
         ensrfSettings( obj, varargin );
         pfSettings( obj, varargin );
         sensorSettings( obj, varargin );
+        setValues( M, D, R, F, S );
     end
     
     % User methods to begin analyses
@@ -45,51 +48,35 @@ classdef dash2 < handle
         ensrf;
     end
     
-    
-    
-    % User methods
+    % General analysis methods
     methods (Static)
         
-        % Specifies to use localization
-        localize;
+        % Inflates the covariance matrix
+        M = inflate( M, factor );
         
-        % Specifies to inflate
-        inflate;
+        % Breaks an ensemble into mean and devations. Also variance.
+        [Mmean, Mdev, Mvar] = decompose( M );
         
-        % Uses an ensemble square root Kalman filter
-        ensrf;
+    end        
         
-        % Uses a particle filter
-        particleFilter;
+    % Ensrf analysis methods
+    methods (Static)
         
-        % Applies a particle filter to a data set too large to fit into
-        % active memory
-        bigParticleFilter;
+        % Implements joint updates
+        jointENSRF;
         
-        % Tests for optimal sensor placement
-        optimalSensor;
+        % Implements serial updates
+        serialENSRF;
+        
+        % Appends Ye, gets trivial PSMs
+        [M, F] = appendYe( M, F );
+        
+        % Unappends Ye from ensemble
+        [M, Ye] = unappendYe( M );      
+
     end
     
-    % Internal methods
-    methods
-        
-        % Actually applies inflation
-        inflateEnsemble;
-        
-        % Computes localization weights
-        [w, yloc] = covLocalization;
-        
-        % Breaks apart an ensemble, get mean/deviations/variance
-        decomposeEnsemble;
-        
-        % 
-    end
-        
-        
-        
-        
     
-        
+    
+    
 end
-        
-        

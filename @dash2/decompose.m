@@ -1,23 +1,20 @@
-function[varargout] = decomposeEnsemble( X )
+function[varargout] = decompose( X )
 %% Break apart an ensemble into mean, deviations, and variance.
 %
-% [Xmean, Xdev, Xvar] = decomposeEnsemble( X )
+% [Xmean, Xdev, Xvar] = dash.decompose( X )
 % Gets the mean, deviation, and variance of an ensemble.
 %
 % ----- Inputs -----
 %
-% X: An ensemble. Each column is one ensemble member. (nState x nEns)
+% X: An ensemble. (nState x nEns)
 %
 % ----- Outputs -----
 %
-% Xmean: Mean of the ensemble
+% Xmean: Mean of the ensemble (nState x 1)
 %
-% Xdev: Ensemble deviations
+% Xdev: Ensemble deviations (nState x nEns)
 %
-% Xvar: Ensemble variance
-%
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
+% Xvar: Ensemble variance (nState x 1)
 
 % Mean
 Xmean = mean(X,2);
