@@ -42,14 +42,24 @@ if ~exist(F,'var') || isempty(F)
     F = obj.F;
 end
 
-% Check M and D and get sizes
-if isa(M,'ensemble') && ~isscalar(M)
-    error('When M is an ensemble object, it must be scalar.');
-elseif isa(M, 'ensemble') && any( ismember( M.loadMembers, find(M.hasnan) ) )
-    error('Cannot load NaN values for data assimilation. Please use ensemble.load to only load ensemble members without NaN elements.');
-elseif ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
-    error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
-elseif ~ismatrix(D) || ~isreal(D) || ~isnumeric(D) || any(isinf(D(:)))
+% Check M 
+if isa(M,'ensemble') 
+    if ~isscalar(M)
+        error('When M is an ensemble object, it must be scalar.');
+    elseif isa(M, 'ensemble') && any( ismember( M.loadMembers, find(M.hasnan) ) )
+        error('Cannot load NaN values for data assimilation. Please use ensemble.load to only load ensemble members without NaN elements.');
+    end
+    nState = M.ensSize(1);
+    nEns = M.ensSize(2);
+else
+    if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
+        error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
+    end
+    [nState, nEns] = size(M);
+end
+
+% Check the observations
+if ~ismatrix(D) || ~isreal(D) || ~isnumeric(D) || any(isinf(D(:)))
     error('D must be a matrix of real, numeric, finite values.');
 end
 [nObs, nTime] = size(D);
@@ -108,5 +118,10 @@ obj.D = D;
 obj.R = R;
 obj.F = F;
 obj.Rtype = Rtype;
+
+obj.nState = nState;
+obj.nEns = nEns;
+obj.nObs = nObs;
+obj.nTime = nTime;
         
 end

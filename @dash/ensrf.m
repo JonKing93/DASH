@@ -27,11 +27,15 @@ function[output] = ensrf( obj )
 %   sites - A logical array indicating which sites were used to update each
 %           time step. (nObs x nTime)
 
-% Get settings
+% Get settings. Load the ensemble if necessary
 set = obj.settings.ensrf;
+M = obj.M;
+if isa(M,'ensemble')
+    M = M.load;
+end
 
 % Inflate ensemble
-M = dash.inflate( obj.M, set.inflate );
+M = dash.inflate( M, set.inflate );
 
 % Serial updates
 if strcmp(type, 'serial')

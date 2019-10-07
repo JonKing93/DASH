@@ -37,6 +37,11 @@ classdef dash < handle
         F;      % Forward operators
         
         Rtype   % Records whether input R was a scalar, vector, or matrix
+        
+        nState;  % Number of state elements
+        nEns;    % Number of ensemble members
+        nObs;    % Number of observations
+        nTime;   % Number of time steps
     end
     
     % Constructor
@@ -70,12 +75,12 @@ classdef dash < handle
         
     end
     
-    % User methods. Start analysis and regrid
+    % User methods to initiate analysis
     methods
         optimalSensor;
         particleFilter;
         
-        % Runs an Ensemble Kalman Filter data assimilation
+        % Run an Ensemble Kalman Filter data assimilation
         output = ensrf( obj );
           
     end
