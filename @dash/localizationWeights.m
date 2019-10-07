@@ -1,9 +1,12 @@
 function[weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale)
 %% Calculates the weights for covariance localization at a site.
 %
-% [w, yloc] = dash.localizationWeights( siteCoord, stateCoord, R )
-% Calculates covariance localization weights based on user-defined state
-% vector coordinates.
+% [w, yloc] = dash.localizationWeights( siteCoord, ensMeta, R )
+% Calculates covariance localization weights for an ensemble.
+%
+% [...] = dash.localizationWeights( siteCoord, stateCoord, R )
+% Calculates covariance localization weights for user-defined state
+% coordinates.
 %
 % [...] = dash.localizationWeights( siteCoord, stateCoord, R, scale )
 % Specifies the length scale to use for the localization weights. This
@@ -31,10 +34,13 @@ function[weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale)
 %
 % ----- Inputs -----
 % 
-% siteCoord: The coordinates of the grid nodes that are closest to the
-%            observation sites. A two-column matrix. First column
+% siteCoord: The coordinates observation sites. A two-column matrix. First 
 %            is latitude, second is longitude. Supports both 0-360 and 
 %            -180 to 180 longitude coordinates. (nObs x 2)
+%
+%           Ideally, site coordinates are the coordinates of the model grid
+%           nodes closest to the individual sites. However, when using
+%           multiple grids, the actual site coordinates are a good approximation.
 % 
 % stateCoord: A set of state vector coordinates. A two column matrix. First
 %     column is latitude, second is longitude. Supports both 0-360 and
@@ -71,11 +77,17 @@ function[weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale)
 %
 % Y localization weights by Jonathan King
 
-% Set defaults
+% Get defaults
 if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
 elseif strcmpi(scale, 'optimal')
     scale = sqrt(10/3);
+end
+if isa(stateCoord, 'ensembleMetadata')
+    if ~isscalar(stateCoord)
+        error('ensMeta must be a scalar ensembleMetadata object.');
+    end
+    stateCoord = stateCoord.coordinates;
 end
 
 % Error check

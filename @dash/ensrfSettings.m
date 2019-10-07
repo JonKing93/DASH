@@ -71,7 +71,7 @@ if ~isempty(weights)
     if strcmpi(type,'joint') 
         if ( ~iscell(weights) || numel(weights)~=2 )
             error(['Localization weights for joint updates must be provided as the 2-element cell: {w, yloc}\n',...
-               'Please see dash.covLocalization for details.'] );
+               'Please see dash.localizationWeights for details.'] );
         elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [obj.nObs, obj.nObs])
             error('The second element of weights must be a %.f x %.f numeric matrix', obj.nObs, obj.nObs );
         elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [obj.nState, obj.nObs])
@@ -83,6 +83,6 @@ if ~isempty(weights)
 end
 
 % Save values
-obj.settings.ensrf = struct( 'type', type, 'localize', weights, 'inflate', inflate, 'append', append, 'meanOnly', append );
+obj.settings.ensrf = struct( 'type', type, 'localize', weights, 'inflate', inflate, 'append', append, 'meanOnly', meanOnly );
 
 end

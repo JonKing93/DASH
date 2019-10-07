@@ -21,6 +21,7 @@ classdef dash < handle
     %   optimalSensor - Test for optimal sensor placements
     %   sensorSettings - Change the settings used for optimal sensors
     %
+    %   localizationWeights - Computes distance based localization weights
     %   regrid - Converts a state vector or a matrix of state vectors to a gridded data array.
     %   regridTripolar - Converts a tripolar state vector or matrix of state vectors to a gridded data array.
     
@@ -66,9 +67,6 @@ classdef dash < handle
         
         % Set values of variables used for DA
         setValues( obj, M, D, R, F, S );
-        
-        % Set localization weights
-        localize( R, scale );
         
     end
     
