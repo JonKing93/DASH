@@ -104,14 +104,10 @@ end
 function[inflate, postflate, w, yloc] = setup( M, D, R, F, inflate, postflate, localize, serial, meanOnly )
 
 % Check that M is a matrix of real, numeric value without NaN or Inf
-if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
-    error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
-end
+
     
 % Check that observations are a matrix of real, numeric values
-if ~ismatrix(D) || ~isreal(D) || ~isnumeric(D) || any(isinf(D(:)))
-    error('D must be a matrix of real, numeric, finite values.');
-end
+
 
 % Get the number of state elements
 nState = size(M,1);

@@ -1,9 +1,5 @@
-function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
+function[weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale)
 %% Calculates the weights for covariance localization at a site.
-%
-% [w, yloc] = covLocalization( siteCoord, ensMeta, R )
-% Calculates covariance localization weights based on site coordinates and
-% ensemble metadata. Does not localize spatial means.
 %
 % [w, yloc] = covLocalization( siteCoord, stateCoord, R )
 % Calculates covariance localization weights based on user-defined state
@@ -38,8 +34,6 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 % siteCoord: The set of observation site coordinates. A two-column matrix. First column
 %            is latitude, second is longitude. Supports both 0-360 and 
 %            -180 to 180 longitude coordinates. (nObs x 2)
-%
-% ensMeta: A set of ensemble metadata.
 % 
 % stateCoord: A set of user defined state coordinates. A two column matrix:
 %     first column is latitude, second is longitude. Supports both 0-360 and
@@ -76,35 +70,37 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % Y localization weights by Jonathan King
 
-% Check that the site coordinates are a 2 column matirx
-if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
-    error('Site coordinates must be a two column matrix.');
-end
-
-% If ensemble metadata, get the lat-lon metadata
-if isstruct( ensMeta )
-    stateCoord = getEnsembleCoords( ensMeta );
-
-% Otherwise, this is user-generated coordinates. Check the size
-elseif ~ismatrix(ensMeta) || size( ensMeta, 2 ) ~= 2
-    error('User-generated state coordinates must be a matrix with 2 columns.');
-
-% Save user-generated coordinates
-else
-    stateCoord = ensMeta;
-end
-
-% If not specified, set the length scale to 1/2 the localization radius
+% Set defaults
 if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
-else
-    % If optimal scale is selected (Lorenc, 2003)
-    if strcmpi(scale, 'optimal')   
-        scale = sqrt(10/3);
-    elseif ~isscalar(scale) || scale<0 || scale>0.5
-        error('The length scale must be a scalar on the interval [0, 0.5].');
-    end
+elseif strcmpi(scale), 'optimal')
+    scale = sqrt(10/3);
+end
+
+% Error check
+if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
+    error('Site coordinates must be a two column matrix.');
+elseif ~ismatrix(stateCoord) || size( stateCoord, 2 ) ~= 2
+    error('State coordinates must be a matrix with 2 columns.');
+elseif ~isscalar(scale) || scale<0 || scale>0.5
+    error('The length scale must be a scalar on the interval [0, 0.5].');
 end       
+
+% Preallocate
+nState = size(stateCoord,1);
+nSite = size(siteCoord,1);
+distw = NaN( nState, nSite );
+closestNode = NaN( nSite, 2 );
+
+% Get site-state distance. Find the closest node to each site
+for s = 1:nSite
+    distw(:,k) = haversine( siteCoord(k,:), stateCoord );
+    closest = find( distw(:,k) == min(distw(:,k)), 1 );
+    closestNode(k,:) = stateCoord( closest, : );
+    
+
+
+
 
 % Get the localization weights for the state vector
 weights = localWeights( siteCoord, stateCoord, R, scale );

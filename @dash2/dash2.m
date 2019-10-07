@@ -4,7 +4,7 @@ classdef dash2 < handle
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
     
-    properties
+    properties (SetAccess = private)
         settings;   % Instructions for different types of DA
         
         M;      % An ensemble. Either an ensemble object or (nState x nEns) matrix
@@ -12,11 +12,7 @@ classdef dash2 < handle
         R;      % Observation uncertainty.
         F;      % Forward operators
         
-        nState;   % The number of state elements
-        nEns;     % The number of ensemble members
-        nObs;     % The number of observation sites
-        nTime;    % The number of time steps
-        nSensor;  % The number of sensor sites
+        Rtype   % Records
     end
     
     % Constructor (unfinished!)
@@ -33,19 +29,20 @@ classdef dash2 < handle
         end
     end
     
-    % Settings for different types of analyses. Also, error checking
+    % Settings for different types of analyses.
     methods
         ensrfSettings( obj, varargin );
         pfSettings( obj, varargin );
         sensorSettings( obj, varargin );
-        setValues( M, D, R, F, S );
+        setValues( obj, M, D, R, F, S );
+        localize( R, scale );
     end
     
-    % User methods to begin analyses
+    % User methods to initiate analyses
     methods
         optimalSensor;
         particleFilter;
-        ensrf;
+        output = ensrf( obj );
     end
     
     % General analysis methods
@@ -57,6 +54,9 @@ classdef dash2 < handle
         % Breaks an ensemble into mean and devations. Also variance.
         [Mmean, Mdev, Mvar] = decompose( M );
         
+        % Calculate localization weights
+        localizeWeights( 
+        
     end        
         
     % Ensrf analysis methods
@@ -65,8 +65,14 @@ classdef dash2 < handle
         % Implements joint updates
         jointENSRF;
         
+        % Efficiently computes Kalman gain for joint updates
+        varargout = jointKalman( type, varargin );
+        
         % Implements serial updates
         serialENSRF;
+        
+        % Efficiently computes Kalman gain for serial updates
+        [K, a] = serialKalman( Mdev, Ydev, w, R );
         
         % Appends Ye, gets trivial PSMs
         [M, F] = appendYe( M, F );
