@@ -55,7 +55,7 @@ classdef varDesign
             obj.file = string(file);
             
             % Get the grid file metadata
-            [meta, dimID, dimSize] = metaGridfile( file );
+            [meta, dimID, dimSize] = gridFile.meta( file );
             
             % Ensure that the gridfile contains all known IDs
             allID = getDimIDs;

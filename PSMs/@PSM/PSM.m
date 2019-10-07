@@ -108,16 +108,5 @@ classdef (Abstract) PSM < handle
         setBiasCorrector( type, Xt, Xs );
        
     end
-
-    % Static utility methods for developing PSMs
-    methods (Static)
-        
-        % Gets lat-lon metadata for one sequence element of a variable
-        latlon = getLatLonMetadata( ensMeta, varName );
-        
-        % Finds the closest state vector elements to a lat-lon coordinate
-        H = getClosestLatLonIndex( coord, ensMeta, varNames, varargin );
-        
-    end
     
 end
