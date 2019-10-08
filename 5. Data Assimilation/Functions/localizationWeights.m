@@ -1,20 +1,19 @@
-function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
+function[weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale)
 %% Calculates the weights for covariance localization at a site.
 %
-% [w, yloc] = covLocalization( siteCoord, ensMeta, R )
-% Calculates covariance localization weights based on site coordinates and
-% ensemble metadata. Does not localize spatial means.
+% [w, yloc] = dash.localizationWeights( siteCoord, ensMeta, R )
+% Calculates covariance localization weights for an ensemble.
 %
-% [w, yloc] = covLocalization( siteCoord, stateCoord, R )
-% Calculates covariance localization weights based on user-defined state
-% vector coordinates.
+% [...] = dash.localizationWeights( siteCoord, stateCoord, R )
+% Calculates covariance localization weights for user-defined state
+% coordinates.
 %
-% covLocalization( ..., scale )
+% [...] = dash.localizationWeights( siteCoord, stateCoord, R, scale )
 % Specifies the length scale to use for the localization weights. This
 % adjusts how quickly localization weights decrease as they approach the
 % cutoff radius. Must be a scalar on the interval (0, 0.5]. Default is 0.5.
 %
-% covLocalization( ..., 'optimal' )
+% [...] = dash.localizationWeights( siteCoord, stateCoord, R, 'optimal' )
 % Uses the optimal length scale of sqrt(10/3) based on Lorenc, 2003.
 %
 %
@@ -35,14 +34,16 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % ----- Inputs -----
 % 
-% siteCoord: The set of observation site coordinates. A two-column matrix. First column
+% siteCoord: The coordinates observation sites. A two-column matrix. First 
 %            is latitude, second is longitude. Supports both 0-360 and 
 %            -180 to 180 longitude coordinates. (nObs x 2)
 %
-% ensMeta: A set of ensemble metadata.
+%           Ideally, site coordinates are the coordinates of the model grid
+%           nodes closest to the individual sites. However, when using
+%           multiple grids, the actual site coordinates are a good approximation.
 % 
-% stateCoord: A set of user defined state coordinates. A two column matrix:
-%     first column is latitude, second is longitude. Supports both 0-360 and
+% stateCoord: A set of state vector coordinates. A two column matrix. First
+%     column is latitude, second is longitude. Supports both 0-360 and
 %     180 to -180 longitude coordinates.
 %
 % R: The cutoff radius. All covariance outside of this radius will be
@@ -76,85 +77,27 @@ function[weights, yloc] = covLocalization( siteCoord, ensMeta, R, scale)
 %
 % Y localization weights by Jonathan King
 
-% Error check R
-if ~isscalar(R) || ~isnumeric(R) || R < 0 || isnan(R) || isinf(R)
-    error('R must be a positive, numeric scalar that is not NaN or Inf.');
-end
-
-% If not specified, set the length scale to 1/2 the localization radius
+% Get defaults
 if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
-else
-    % If optimal scale is selected (Lorenc, 2003)
-    if strcmpi(scale, 'optimal')   
-        scale = sqrt(10/3);
-    elseif ~isscalar(scale) || scale<0 || scale>0.5
-        error('The length scale must be a scalar on the interval [0, 0.5].');
+elseif strcmpi(scale, 'optimal')
+    scale = sqrt(10/3);
+end
+if isa(stateCoord, 'ensembleMetadata')
+    if ~isscalar(stateCoord)
+        error('ensMeta must be a scalar ensembleMetadata object.');
     end
-end  
-
-% Check that the site coordinates are a 2 column matirx
-if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
-    error('Site coordinates must be a two column matrix.');
+    stateCoord = stateCoord.coordinates;
 end
 
-% Get lat-lon metadata for ensemble metadata
-if isstruct( ensMeta )
-    
-    % Error check dimensions
-    [~,~,~,lon,lat,~,~,~,tri] = getDimIDs;
-    dims = [lon;lat;tri];
-    if any(~ismember( dims, fields(ensMeta.var) ))
-        error('Ensemble metadata does not contain the %s dimension.', dims( find( ~ismember(dims, fields(ensMeta.var)),1)) );
-    end
-    
-    % Preallocate the state coordinates
-    stateCoord = NaN( ensMeta.varLim(end,2), 2 );
-    
-    % For each variable...
-    for v = 1:numel(ensMeta.varName)
-    
-        % Check whether there is any metadata in each dimension
-        hasmeta = true(3,1);
-        for d = 1:numel(dims)
-            if isscalar( ensMeta.var(v).(dims(d)) ) && isnan( ensMeta.var(v).(dims(d)) )
-                hasmeta(d) = false;
-            end
-        end
-
-        % Ensure that only one of lat-lon, and tri have metadata
-        if all(hasmeta)
-            error('Variable %s has both tripolar and lat-lon metadata.', varName );
-        elseif all( ~hasmeta )
-            error('Variable %s has neither tripolar nor lat-lon metadata.', varName );
-        elseif ~all( hasmeta(1:2) ) && ~all( ~hasmeta(1:2) )
-            error('Only one of the lat and lon dimensions of variable %s has metadata.', varName );
-        end
-
-        % Get state indices. Lookup lat and lon in appropriate dimension.
-        % Only record if not a spatial mean
-        H = getVarStateIndex( ensMeta, ensMeta.varName(v) );
-        if hasmeta(3)
-            meta = lookupMetadata( ensMeta, H, 'tri' );
-            if ismatrix(meta)
-                stateCoord(H,:) = meta;
-            end 
-        else
-            meta1 = lookupMetadata( ensMeta, H, 'lat' );
-            meta2 = lookupMetadata( ensMeta, H, 'lon' );
-            if ismatrix(meta1) && ismatrix(meta2)
-                stateCoord(H,1) = meta1;
-                stateCoord(H,2) = meta2;
-            end
-        end
-    end
-    
-% If the user provides state coordinates, error check and save
-elseif ~ismatrix(ensMeta) || size( ensMeta, 2 ) ~= 2 || ~isnumeric(ensMeta)
-    error('User-generated state coordinates must be a numeric matrix with 2 columns.');
-else
-    stateCoord = ensMeta;
-end  
+% Error check
+if ~ismatrix(siteCoord) || size(siteCoord,2) ~= 2
+    error('Site coordinates must be a two column matrix.');
+elseif ~ismatrix(stateCoord) || size( stateCoord, 2 ) ~= 2
+    error('State coordinates must be a matrix with 2 columns.');
+elseif ~isscalar(scale) || scale<0 || scale>0.5
+    error('The length scale must be a scalar on the interval [0, 0.5].');
+end
 
 % Get the localization weights for the state vector
 weights = localWeights( siteCoord, stateCoord, R, scale );
