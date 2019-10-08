@@ -19,7 +19,7 @@ classdef (Abstract) PSM < handle
         H;                     % Sampling indices
         addUnit;               % Additive unit conversion
         multUnit;              % Multiplicative unit conversion
-        biasCorrection;        % A bias corrector
+        biasCorrection = nullCorrector;        % A bias corrector
     end
     
     % Abstract methods unique to individual PSMs
@@ -91,7 +91,7 @@ classdef (Abstract) PSM < handle
         
         % Interface error checking for bias correction, unit conversion,
         % dash, and unique PSMs.
-        review( obj );
+        review( obj, nState );
         
     end
     

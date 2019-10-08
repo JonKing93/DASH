@@ -67,7 +67,7 @@ subDex = subdim( H, obj.varSize(v,:) );
 meta = struct();
 for d = 1:numel(dims)
     col = find( ismember(obj.design.var(v).dimID, dims(d)) );
-    meta.(dims(d)) = obj.stateMeta.(obj.varName(v)).(dims(d))( subDex(:,col), : );
+    meta.(dims(d)) = obj.stateMeta.(obj.varName(v)).(dims(d))( subDex(:,col), :, : );
 end
 if numel(dims) == 1
     meta = meta.(dims);

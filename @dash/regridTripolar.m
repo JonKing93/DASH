@@ -32,7 +32,7 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, gridSize, notnan, keepSin
 %        tripolar grid.
 
 % Set defaults
-if ~exist(keepSingleton,'var') || isempty(keepSingleton)
+if ~exist('keepSingleton','var') || isempty(keepSingleton)
     keepSingleton = false;
 end
 

@@ -18,10 +18,11 @@ coord = NaN( obj.varLimit(end), 2 );
 for v = 1:numel(obj.varName)
     try
         latlon = obj.getLatLonMetadata( obj.varName(v) );
+        
+        nIndex = obj.varLimit(v,2) - obj.varLimit(v,1) + 1;
+        nRep = nIndex ./ size(latlon,1);
+        coord( obj.varIndices(obj.varName(v)), : ) = repmat( latlon, [nRep, 1]);
     catch
-    end
-    if ismatrix(latlon)
-        coord( obj.varIndices(obj.varName(v)), : ) = latlon;
     end
 end
 

@@ -57,7 +57,7 @@ calibRatio = NaN( nObs, nTime );
 for d = 1:nObs
     Mpsm = M(F{d}.H, :);    
     hasObs = ~isnan( D(d,:) );    
-    [Ye(d,:), R(d,hasObs), sites(d,hasObs)] = getPSMOutput( F{d}, Mpsm, R(d,hasObs), NaN, d  );
+    [Ye(d,:), R(d,hasObs), sites(d,hasObs)] = dash.processYeR( F{d}, Mpsm, R(d,hasObs), NaN, d  );
 end
 
 % Compute the (static) Kalman numerator. Clear M for space

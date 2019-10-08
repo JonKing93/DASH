@@ -61,7 +61,7 @@ for t = 1:nTime
     for d = 1:nObs
         if ~isnan( D(d,t) )
             Mpsm = Am(F{d}.H) + Ad(F{d}.H,:);                           
-            [Ye(d,:,t), R(d,t), sites(d,t)] = getPSMOutput( F{d}, Mpsm, R(d,t), t, d );
+            [Ye(d,:,t), R(d,t), sites(d,t)] = dash.processYeR( F{d}, Mpsm, R(d,t), t, d );
             
             % If Ye and R were successful, use to update
             if sites(d,t)

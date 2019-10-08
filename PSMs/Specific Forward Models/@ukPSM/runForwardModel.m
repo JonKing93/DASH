@@ -10,7 +10,7 @@ SST = mean( M(ind,:), 1 );
 uk = ukPSM.UK_forward_model( SST, obj.bayesFile );
 R = mean( var(uk,[],2), 1 );
 
-uk = mean( uk, 2 )';
+uk = mean( uk, 1 );
 end
 
 

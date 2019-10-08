@@ -40,8 +40,8 @@ end
 
 % Run the PSM, check R and Ye for errors
 try
-    [Ye, Rpsm] = F.run( Mpsm, t, d );
     goodYe = false;
+    [Ye, Rpsm] = F.run( Mpsm, t, d );
     
     % Check Ye for errors. If Ye is good, note that any time steps with
     % non-NaN R are ready.

@@ -46,7 +46,7 @@ classdef dash < handle
     
     % Constructor
     methods
-        function obj = dash2(M, D, R, F)
+        function obj = dash(M, D, R, F)
             
             % Create the default settings structure
             obj.settings = struct('ensrf', [], 'particleFilter', [], 'optimalSensor', []);
@@ -121,13 +121,13 @@ classdef dash < handle
     methods (Static)
         
         % Implements joint updates
-        jointENSRF;
+        output = jointENSRF( M, D, R, F, w, yloc, meanOnly );
         
         % Efficiently computes Kalman gain for joint updates
         varargout = jointKalman( type, varargin );
         
         % Implements serial updates
-        serialENSRF;
+        output = serialENSRF( M, D, R, F, w);
         
         % Efficiently computes Kalman gain for serial updates
         [K, a] = serialKalman( Mdev, Ydev, w, R );

@@ -1,4 +1,4 @@
-function [uk] = UK_forward_model(ssts, bayes)
+function [uk] = UK_forward_model(ssts, bayesFile)
 % Models uk'37 from SSTs using the BAYSPLINE calibration.
 %
 % uk = UK_forward_model( ssts, bayes )
@@ -13,6 +13,7 @@ function [uk] = UK_forward_model(ssts, bayes)
 %
 % uk: A set of 1500 uk'37 estimates for each SST. (1500 x N)
 
+bayes = load(bayesFile);
 % Convert ssts to column vector.
 ssts=ssts(:);
 

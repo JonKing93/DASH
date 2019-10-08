@@ -21,9 +21,6 @@ function[obj] = weightedMean( obj, var, dims, weights, nanflag )
 %           "includenan": Use NaN values when computing a mean
 %           "omitnan": Remove NaN values when computing a mean
 %
-% couple: A scalar logical indicating whether to apply the weights to
-%         coupled variables (true) or not (false).
-%
 % ----- Outputs -----
 %
 % design: The updated stateDesign object.

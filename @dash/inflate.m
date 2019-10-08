@@ -14,7 +14,7 @@ function[M] = inflate( M, factor )
 % M: The inflated ensemble.
 
 % Don't both inflating if the inflation factor is 1. 
-if inflate ~= 1
+if factor ~= 1
     [Mmean, Mdev] = dash.decompose( M );
     Mdev = sqrt(factor) .* Mdev;
     M = Mmean + Mdev;

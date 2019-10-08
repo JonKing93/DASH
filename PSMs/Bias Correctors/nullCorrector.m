@@ -12,7 +12,7 @@ classdef nullCorrector < biasCorrector
         end
         
         % Null Error checking
-        function[] = review(~)
+        function[] = review(~,~)
         end
         
         % Null bias correction

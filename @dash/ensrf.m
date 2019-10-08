@@ -38,7 +38,7 @@ end
 M = dash.inflate( M, set.inflate );
 
 % Serial updates
-if strcmp(type, 'serial')
+if strcmp(set.type, 'serial')
     
     % Optionally append Ye
     F = obj.F;

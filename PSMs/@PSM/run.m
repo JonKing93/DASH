@@ -23,7 +23,7 @@ function[Ye, R] = run( obj, M, t, d )
 M = obj.convertUnits( M );
 
 % They should then apply any bias correction
-M = obj.biasCorrector.biasCorrect( M );
+M = obj.biasCorrection.biasCorrect( M );
 
 % And finally, run the forward model
 [Ye, R] = obj.runForwardModel( M, t, d );

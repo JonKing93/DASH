@@ -4,7 +4,7 @@ function[gridDims] = checkGridDims(gridDims)
 % checkDims(gridDims, gridData)
 
 % Check that this is a list of dimension IDs
-gridDims = checkDimList( gridDims, 'gridDims' );
+gridDims = gridFile.checkDimList( gridDims, 'gridDims' );
 
 % Check for duplicates
 if numel(gridDims) ~= numel(unique(gridDims))

@@ -28,17 +28,17 @@ function[] = setValues( obj, M, D, R, F)
 
 % Get any saved variables
 Rtype = 'new';
-if ~exist(M,'var') || isempty(M)
+if ~exist('M','var') || isempty(M)
     M = obj.M;
 end
-if ~exist(D,'var') || isempty(D)
+if ~exist('D','var') || isempty(D)
     D = obj.D;
 end
-if ~exist(R,'var') || isempty(R)
+if ~exist('R','var') || isempty(R)
     R = obj.R;
     Rtype = obj.Rtype;
 end
-if ~exist(F,'var') || isempty(F)
+if ~exist('F','var') || isempty(F)
     F = obj.F;
 end
 
@@ -105,10 +105,9 @@ for d = 1:nObs
         error('Element %.f of F must be a scalar "PSM" object', d );
     end
     try
-        F{d}.review;
+        F{d}.review( nState );
     catch ME
-        ME.message = sprintf( ['PSM %.f failed with the following error message:\n', ME.message], d );
-        rethrow( ME );
+        error( [sprintf('PSM %.f failed with the following error message:\n',d), ME.message] );
     end
 end
 

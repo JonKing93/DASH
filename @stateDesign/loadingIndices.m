@@ -3,7 +3,7 @@ function[start, count, stride, keep] = loadingIndices( obj )
 
 % Preallocate
 nVar = numel(obj.var);
-nDim = numel(obj.var.dimID);
+nDim = numel(obj.var(1).dimID);
 start = NaN( nVar, nDim );
 count = NaN( nVar, nDim );
 stride = ones( nVar, nDim );

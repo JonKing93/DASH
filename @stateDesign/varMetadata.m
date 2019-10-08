@@ -7,7 +7,7 @@ ensMeta = struct;
 
 % Run through each dimension of each variable, reading metadata
 nVar = numel(obj.var);
-nDim = numel(obj.var.dimID);
+nDim = numel(obj.var(1).dimID);
 for v = 1:nVar
     var = obj.var(v);
     ensDim = 1;

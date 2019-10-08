@@ -19,7 +19,7 @@ if ~takeMean
 else
     if isempty(nanflag)
         nanflag = "includenan";
-    elseif ~strflag(nanflag) || ~ismember(nanflag, ["omitnan","includenan"])
+    elseif ~isstrflag(nanflag) || ~ismember(nanflag, ["omitnan","includenan"])
         error('nanflag must be either "omitnan" or "includenan".');
     end
 end
