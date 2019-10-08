@@ -62,18 +62,16 @@ classdef mgcaPSM < PSM
                 obj.bayes = bayes;
             end
         end 
+    end
+    
+    % PSM 
+    methods
         % Get State Indices
         % 
         % This determines the indices of elements in a state vector that
         % should be used to run the forward model for a particular Mg/Ca
         % site.
-        function[] = getStateIndices( obj, ensMeta, sstName, sssName, monthName, varargin ) 
-            % Concatenate the variable names
-            varNames = [string(sstName), string(sssName)];
-            % Get the time dimension
-            [~,~,~,~,~,~,timeID] = getDimIDs;
-            obj.H = getClosestLatLonIndex( obj.coord, ensMeta, varNames, timeID, monthName, varargin{:} );
-        end
+        
         % Error Checking
         %
         function[] = errorCheckPSM( obj )
