@@ -8,5 +8,5 @@ function[] = getStateIndices( obj, ensMeta, sstName, deloName, monthMeta, vararg
     % Get the time dimension
     [~,~,~,~,~,~,timeID] = getDimIDs;
     obj.H = ensMeta.getClosestLatLonIndex( obj.coord, sstName, timeID, monthMeta, varargin{:} );
-    obj.H(13) = getClosestLatLonIndex( obj.coord, ensMeta, deloName);
+    obj.H(13) = ensMeta.getClosestLatLonIndex( obj.coord, deloName);
 end
