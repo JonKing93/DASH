@@ -9,7 +9,7 @@ classdef sensorSites
     end
     
     % Constructor
-    methods
+    methods 
         function obj = sensorSites( H, R, coordinates )
             % Creates a new sensorSites object
             %
