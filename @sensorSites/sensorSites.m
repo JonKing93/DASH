@@ -8,7 +8,7 @@ classdef sensorSites
         coordinates;    % lat-lon coordinates of each site
     end
     
-    % Constructor
+    % Constructor 
     methods 
         function obj = sensorSites( H, R, coordinates )
             % Creates a new sensorSites object
