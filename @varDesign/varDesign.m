@@ -82,7 +82,7 @@ classdef varDesign
             obj.seqMeta = cell(nDim,1);
             obj.meanDex = cell(nDim,1);
             
-            obj.drawDex = cell(nDim,1);
+            obj.drawDex = [];
             obj.undrawn = [];
             
             for d = 1:nDim
