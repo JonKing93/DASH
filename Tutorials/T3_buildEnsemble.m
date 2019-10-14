@@ -142,6 +142,13 @@ meta.time
 % is all NaN, because time is an ensemble dimension. If we had used a
 % sequence for time, then meta would show the sequence metadata.
 
+% Sometimes, you may want to use ensemble metadata without actually
+% building or loading an ensemble. If this is the case, you can generate an 
+% ensembleMetadata object using either a stateDesign object, or the name
+% of an existing .ens file as the input. For example 
+ensMeta2 = ensembleMetadata( d );
+ensMeta3 = ensembleMetadata( 'tutorial.ens' );
+
 
 %% Existing ensembles
 
