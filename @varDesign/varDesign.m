@@ -1,4 +1,4 @@
-classdef varDesign
+classdef varDesign 
     % varDesign
     % This is a custom structure that holds design parameters for a single
     % variable in a state vector.
