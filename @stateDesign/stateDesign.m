@@ -177,7 +177,7 @@ classdef stateDesign
         
         % Returns the state vector index limits and dimensional size of
         % each variable.
-        [varLimits, varSize, isState] = varIndices( obj, v );
+        [varLimits, varSize, isState] = varIndices( obj );
         
     end
     

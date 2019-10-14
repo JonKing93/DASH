@@ -87,7 +87,7 @@ end
 
 % Create the output structure
 output.settings = struct('Updates', 'Joint', 'Mean_Only', meanOnly);
-if ~all(w==1) || ~all(yloc==1)
+if ~all(w==1, 'all') || ~all(yloc==1, 'all')
     output.settings.Localize = {w, yloc};
 end 
 output.Amean = Amean;

@@ -73,12 +73,12 @@ if ~isempty(weights)
             error(['Localization weights for joint updates must be provided as the 2-element cell: {w, yloc}\n',...
                'Please see dash.localizationWeights for details.'] );
         elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [obj.nObs, obj.nObs])
-            error('The second element of weights must be a %.f x %.f numeric matrix', obj.nObs, obj.nObs );
+            error('The second element of joint localization weights must be a %.f x %.f numeric matrix', obj.nObs, obj.nObs );
         elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [obj.nState, obj.nObs])
-            error('The first element of weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
+            error('The first element of joint localization weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
         end
     elseif strcmpi(type, 'serial') && ( ~isnumeric(weights) || ~isreal(weights) || ~ismatrix(weights) || ~isequal(size(weights), [obj.nState, obj.nObs]) )
-        error('weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
+        error('serial localization weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
     end
 end
 

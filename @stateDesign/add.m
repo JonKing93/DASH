@@ -77,7 +77,9 @@ end
 varName = string(varName);
 file = string(file);
 
-if ~isempty(obj.varName) && ismember(varName, obj.varName)
+if ~isvarname(varName)
+    error('varName must be valid Matlab variable name (starts with a letter, composed only of letters, digits, and underscores).');
+elseif ~isempty(obj.varName) && ismember(varName, obj.varName)
     error('Cannot repeat variable names.');
 end
 

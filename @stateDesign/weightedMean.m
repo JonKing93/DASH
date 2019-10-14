@@ -33,19 +33,23 @@ v = obj.findVarIndices( var );
 dims = obj.findDimIndices( v, dims );
 
 % Error check
+[~,dimSize] = obj.varIndices;
+dimSize = dimSize(v,:);
 if ~isstrflag(var)
     error('var must be a string scalar or character row vector.');
 elseif ~isstrflag(nanflag) || ~ismember(nanflag, ["includenan","omitnan"])
     error('nanflag must either be "includenan" or "omitnan".');
 elseif ~isnumeric(weights) || ~isreal(weights)
     error('Weights must be a numeric, real array.');
-elseif ~isequal(  size(weights),  obj.var(v).dimSize(dims) )
+elseif ~isequal(  size(weights),  dimSize(dims) )
     errString = ['[', sprintf('%.f x ', obj.var(v).dimSize(dims)), sprintf('\b\b\b].')];
     error('The size of the weights array must match the length of each dimension in the state vector: %s.', errString);
 elseif ~isempty( obj.var(v).weightDims ) && any( obj.var(v).weightDims(:,dims), 'all' )
     [~, dim] = find( obj.var(v).weightDims(:,dims) );
     error(['The dimensions ', sprintf('"%s", ', obj.var(v).dimID(dim)), 'are already being used in weighted means.']);
 end
+
+
 
 % Permute the weights to match the order of dimensions in the grid file
 [dims, reorder] = sort( dims );

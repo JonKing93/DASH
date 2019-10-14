@@ -23,7 +23,7 @@ for v = 1:nVar
             
         % For ensemble dimensions, use the sequence metadata. Also, record
         % the grid metadata associated with each ensemble member
-        else
+        elseif ~isempty( var.drawDex )
             dimMeta = var.seqMeta{d};
             ensMeta.(obj.varName(v)).(var.dimID(d)) = ...
                     var.meta.(var.dimID(d))( var.indices{d}(var.drawDex(:,ensDim)), : );

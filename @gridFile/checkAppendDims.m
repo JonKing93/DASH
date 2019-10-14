@@ -10,7 +10,7 @@ if ~isempty( appendDims )
     appendDims = gridFile.checkDimList( appendDims, 'appendDims' );
     
     % Get booelan array of append dimensions
-    append = ismember( dimID, appendDims );
+    append = ismember( getDimIDs, appendDims );
 end
 
 end

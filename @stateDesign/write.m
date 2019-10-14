@@ -71,8 +71,8 @@ for v = 1:numel(obj.var)
             
             % Take normal means over the remaining dimensions
             for d = 1:numel( dims )
-                if var.takeMean(d)
-                    data = mean( data, d, var.nanflag{d} );
+                if var.takeMean(dims(d))
+                    data = mean( data, dims(d), var.nanflag{dims(d)} );
                 end
             end   
             

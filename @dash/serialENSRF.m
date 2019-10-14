@@ -87,7 +87,7 @@ end
 
 % Create the output structure
 output.settings = struct('Analysis', 'EnSRF', 'Type', 'Serial');
-if ~all( w==1 )
+if ~all( w==1, 'all' )
     output.settings.Localize = w;
 end
 output.Amean = Amean;

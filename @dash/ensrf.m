@@ -34,11 +34,19 @@ if isa(M,'ensemble')
     M = M.load;
 end
 
+
 % Inflate ensemble
 M = dash.inflate( M, set.inflate );
 
+
 % Serial updates
 if strcmp(set.type, 'serial')
+    
+    % Default localization
+    w = set.localize;
+    if isempty(w)
+        w = ones( obj.nState, obj.nObs );
+    end 
     
     % Optionally append Ye
     F = obj.F;
@@ -47,7 +55,7 @@ if strcmp(set.type, 'serial')
     end
     
     % Do the updates
-    output = dash.serialENSRF( M, obj.D, obj.R, F, set.localize );
+    output = dash.serialENSRF( M, obj.D, obj.R, F, w );
     
     % Unappend if necessary
     output.Append = false;
@@ -59,7 +67,18 @@ if strcmp(set.type, 'serial')
     
 % Joint updates
 else
-    output = dash.jointENSRF( M, obj.D, obj.R, obj.F, set.localize{1}, set.localize{2}, set.meanOnly );
+    
+    % Default localization
+    if isempty(set.localize)
+        w = ones(obj.nState, obj.nObs);
+        yloc = ones(obj.nObs, obj.nObs);
+    else
+        w = set.localize{1};
+        yloc = set.localize{2};
+    end
+    
+    % Do the updates
+    output = dash.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, set.meanOnly );
 end
 
 end

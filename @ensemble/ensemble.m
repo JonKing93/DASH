@@ -23,7 +23,7 @@ properties (SetAccess = private)
     hasnan;            % Whether an ensemble member has NaN values
     ensSize;           % The size of the full ensemble
     random;            % Whether the ensemble is ordered or random
-    design;            % The state design associated with the ensemble
+    design;
 end
 
 % Constructor
@@ -46,15 +46,15 @@ methods
         m = obj.checkEnsFile( file );
 
         % Get the file values
-        obj.design = m.design;
         obj.random = m.random;
         obj.ensSize = m.ensSize;
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.file = which( file );
+        obj.design = m.design;
         
         % Create the ensemble metadata
-        obj.metadata = ensembleMetadata( obj.design );
+        obj.metadata = ensembleMetadata( m.design );
     end
 end
 
