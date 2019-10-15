@@ -6,7 +6,7 @@ function[value] = checkMetadata( value, nRows, dim )
 % exact number of elements, converts to a column vector.
 
 % Check that the metadata is an allowed type
-if ~isnctype( value )
+if ~gridFile.isnctype( value )
     error('The %s metadata is a "%s" datatype, which is not allowed. Please see listnctypes.m for the allowed data types.', dim, class(value));
 elseif ~ismatrix( value )
     error('The %s metadata is not a matrix.', dim );

@@ -53,7 +53,6 @@ file = 'b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc';
 
 % Extract the variable, and some relevant metadata
 PSL = ncread( file, 'PSL');
-
 lat = ncread( file, 'lat' );
 lon = ncread( file, 'lon' );
 time = datevec(  datetime(850,1,15):calmonths(1):datetime(1849,12,15)  );
@@ -130,7 +129,8 @@ appendDims = ["time","run"];
 %
 % Here, I'm going to store some information about the data and the model,
 % but you can use anything at all. 
-specs = struct('Variable','Sea Level Pressure', 'Model', 'CESM Last Millennium Ensemble');
+specs = struct('Variable','Sea Level Pressure', ...
+    'Model', 'CESM Last Millennium Ensemble');
 
 
 % Okay! We're ready to make a new grid file. Let's call it LME-PSL.grid.
@@ -138,7 +138,8 @@ specs = struct('Variable','Sea Level Pressure', 'Model', 'CESM Last Millennium E
 newfile = 'LME-PSL.grid';
 
 % To create the new .grid file, use the command
-gridFile.new( newfile, PSL, dimOrder, appendDims, specs, 'time', time, 'run', run, 'lon', lon, 'lat', lat );
+gridFile.new( newfile, PSL, dimOrder, appendDims, specs, 'time', time, ...
+    'run', run, 'lon', lon, 'lat', lat );
 
 % What does this say?
 % gridFile is an object that holds functions for working with .grid files
