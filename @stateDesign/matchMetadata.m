@@ -21,7 +21,7 @@ for dim = 1:numel(ensDim)
     
     % Throw an error if no metadata remains
     if isempty(meta)
-        overlapError(design, cv, ensDim(dim));
+        overlapError(obj, cv, ensDim(dim));
     end
     
     % Now we have the metadata intersect. Run through each variable and
