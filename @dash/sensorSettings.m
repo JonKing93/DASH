@@ -38,6 +38,6 @@ elseif ~isnumeric(radius) || ~isscalar(radius) || radius<0
 end
 
 % Save the settings
-obj.settings.optimalSensor = struct('replace', tf, 'nSensor', N, 'radius', radius );
+obj.settings.optimalSensor = struct('replace', replace, 'nSensor', N, 'radius', radius );
 
 end

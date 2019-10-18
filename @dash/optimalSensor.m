@@ -41,6 +41,6 @@ end
 set = obj.settings.optimalSensor;
 
 % Run
-output = dash.sensorTest( J, M, sites, set.N, set.replace, set.radius );
+output = dash.sensorTest( J, M, sites, set.nSensor, set.replace, set.radius );
 
 end

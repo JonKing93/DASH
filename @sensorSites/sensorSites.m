@@ -6,6 +6,7 @@ classdef sensorSites
         H;    % State vector indices
         R;    % Site observation uncertainty
         coordinates;    % lat-lon coordinates of each site
+        useSite;     % Logical indicating whether a site is still available for consideration
     end
     
     % Constructor 
@@ -41,6 +42,7 @@ classdef sensorSites
             obj.H = H(:);
             obj.R = R(:);
             obj.coordinates = coordinates;
+            obj.useSite = true( length(obj.H), 1 );
         end
     end
     
@@ -50,9 +52,7 @@ classdef sensorSites
         % Remove single site
         function[obj] = removeSite( obj, remove )
             % Removes site from a sensor array
-            obj.H(remove) = [];
-            obj.R(remove) = [];
-            obj.coordinates(remove,:) = [];
+            obj.useSite(remove) = false;
         end
         
         % Remove sites in radius
@@ -60,9 +60,7 @@ classdef sensorSites
             if ~isnan(radius)
                 dist = haversine( obj.coordinates(best,:), obj.coordinates );
                 remove = ( dist <= radius );
-                obj.H(remove) = [];
-                obj.R(remove) = [];
-                obj.coordinates(remove,:) = [];
+                obj.useSite( remove ) = false;
             end
         end
             

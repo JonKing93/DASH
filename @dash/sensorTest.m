@@ -34,7 +34,9 @@ function[output] = sensorTest( J, M, sites, N, replace, radius )
 %
 %   settings - Settings used to run the analysis
 %
-%   bestSites - The state vector indices of the best sites
+%   bestH - The state vector indices of the best sites
+%
+%   bestSite - The index of the best site in the sensorSites object.
 %
 %   skill - The relative reduction in J variance of each placement.
  
@@ -47,7 +49,8 @@ if ~exist('radius', 'var') || isempty(radius)
 end
 
 % Preallocate
-best = NaN( N, 1 );
+bestH = NaN( N, 1 );
+bestSite = NaN( N, 1 );
 skill = NaN( N, 1 );
 
 % Decompose J and M
@@ -55,25 +58,32 @@ skill = NaN( N, 1 );
 [~, Mdev] = dash.decompose(M);
 
 % For each new sensor, get the explained variance of each placement
+progressbar(0)
 for s = 1:N
-    expVar = dash.assessPlacement( Jdev, Mdev, sites.H, sites.R );
+    checkSite = find( sites.useSite );
+    expVar = dash.assessPlacement( Jdev, Mdev, sites.H(checkSite), sites.R(checkSite) );
     
     % Find the best site.
-    best(s) = find( expVar == max(expVar), 1 );
-    skill(s) = expVar(best);
+    currBest = find( expVar == max(expVar), 1 );
+    bestSite(s) = checkSite( currBest );
+    bestH(s) = sites.H( bestSite(s) );
+    skill(s) = expVar( currBest );
     
     % Update the ensemble deviations
-    Mdev = dash.updateSensor( Mdev, sites.H(best), sites.R(best) );
+    Mdev = dash.updateSensor( Mdev, sites.H(curr), sites.R(curr) );
     
     % Optionally remove the site and sites within the radius. Stop the loop
     % if no sites are left
-    sites = sites.removeRadius( best, radius );
+    sites = sites.removeRadius( curr, radius );
     if ~replace
-        sites = sites.removeSite( best );
+        sites = sites.removeSite( curr );
     end
     if isempty(sites.H)
+        progressbar(1);
         break;
     end
+    
+    progressbar(s/N);
 end
 
 % Remove any extra entries if quitting early
@@ -85,7 +95,8 @@ output.settings = struct('Analysis', 'Optimal Sensor', 'N', N, 'Replacement', re
 if ~isnan(radius)
     output.settings.Radius = radius;
 end
-output.bestSites = best;
+output.bestH = bestH;
+output.bestSite = bestSite;
 output.skill = skill;
 
 end    

@@ -27,7 +27,7 @@ Jvar = var(Jdev,[],2);
 % Get the model deviations for each site. Use to compute the change in the
 % variance of J
 for s = 1:nSite
-    HMdev = Mdev(sites(s),:);
+    HMdev = Mdev(H(s),:);
     
     covJH = cov( Jdev', HMdev' );
     dStdJ = covJH(2).^2 / ( var(HMdev,[],2) + R(s) );
