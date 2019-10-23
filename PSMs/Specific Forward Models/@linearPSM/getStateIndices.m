@@ -34,7 +34,7 @@ function[] = getStateIndices( obj, ensMeta, varNames, searchParams )
 
 % Set defaults
 if ~exist('searchParams','var') || isempty(searchParams)
-    searchParams = cell( numel(obj.slopes), 1 );
+    searchParams = repmat( {{}}, [numel(obj.slopes), 1] );
 end
 
 % Error check
@@ -42,14 +42,15 @@ if ~isa( ensMeta, 'ensembleMetadata' ) || ~isscalar(ensMeta)
     error('ensMeta must be a scalar ensembleMetadata object.');
 elseif ~isstrlist(varNames)
     error('varNames must be a cellstring or string vector.');
-elseif ~iscell(searchParams) || ~isvector(searchParams) || numel(searchParams~=numel(obj.slopes))
+elseif ~iscell(searchParams) || ~isvector(searchParams) || numel(searchParams)~=numel(obj.slopes)
     error('searchParams must be a cell vector with %.f elements.', numel(obj.slopes) );
 end
 for v = 1:numel(searchParams)
-    if ~iscell( searchParams{v} ) || ~isvector( searchParams{v} )
+    if ~iscell( searchParams{v} ) || (~isempty(searchParams{v}) && ~isvector(searchParams{v}) )
         error('Element %.f of searchParams is not a cell vector.', v );
     end
 end
+varNames = string(varNames);
 
 % Initialize values
 obj.H = [];
@@ -57,10 +58,10 @@ obj.Hlim = NaN( numel(obj.slopes), 2 );
 
 % Get the state indices for each variable
 k = 0;
-for v = 1:numel(obj.varNames)
-    Hvar = ensMeta.getClosestLatLonIndex( obj.coord, searchParams{v}{:} );
+for v = 1:numel(varNames)
+    Hvar = ensMeta.getClosestLatLonIndex( obj.coord, varNames(v), searchParams{v}{:} );
     obj.H = [obj.H; Hvar];
-    obj.H(v,:) = k + [1, numel(Hvar)];
+    obj.Hlim(v,:) = k + [1, numel(Hvar)];
     k = k + numel(Hvar);
 end
 
