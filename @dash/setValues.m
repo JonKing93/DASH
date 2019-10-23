@@ -75,10 +75,14 @@ end
 
 if ~isnumeric(R) || ~isreal(R) || any(R(:)<0) || ~ismatrix(R)
     error('R must be a set of real, numeric, positive values and cannot have more than 2 dimensions.');
-elseif isrow(R) && length(R)~=nTime
-    error('The number of elements in R (%.f) does not match the number of time steps (%.f).', length(R), nTime );
-elseif iscolumn(R) && length(R)~=nObs
-    error('The number of elements in R (%.f) does not match the number of observation sites.', length(R), nObs );
+elseif isrow(R)
+    if length(R)~=nTime
+        error('The number of elements in R (%.f) does not match the number of time steps (%.f).', length(R), nTime );
+    end
+elseif iscolumn(R) 
+    if length(R)~=nObs
+        error('The number of elements in R (%.f) does not match the number of observation sites.', length(R), nObs );
+    end
 elseif ismatrix(R) && ~isequal( size(R), [nObs, nTime])
     error('R must be a (%.f x %.f) matrix.', nObs, nTime );
 end
