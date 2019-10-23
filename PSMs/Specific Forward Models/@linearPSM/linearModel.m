@@ -21,7 +21,7 @@ elseif ~isnumeric(intercept) || ~isscalar(intercept)
 end
 
 % Apply the model
-Y = sum( X.*slopes, 1 ) + obj.intercept;
+Y = sum( X.*slopes, 1 ) + intercept;
 
 end
     

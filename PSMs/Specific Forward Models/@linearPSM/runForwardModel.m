@@ -4,7 +4,7 @@ function[Ye, R] = runForwardModel( obj, M, ~, ~ )
 % [Ye, R] = obj.runForwardModel( M )
 
 % Preallocate
-nVar = numel(obj.slope);
+nVar = numel(obj.slopes);
 var = NaN( nVar, size(M,2) );
 
 % Obtain any variables that are means of multiple state elements
