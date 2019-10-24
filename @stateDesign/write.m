@@ -45,6 +45,7 @@ for v = 1:numel(obj.var)
     subSequence = subdim( (1:nSeq)', meta.varSize(v,ensDim) );
 
     % Load the sequence for each ensemble member
+    progressbar( var.name );
     for s = 1:nSeq
         varSegment = (s-1)*nEls + (1:nEls)';
         for mc = 1:nNew
@@ -78,6 +79,8 @@ for v = 1:numel(obj.var)
             
             % Store as state vector in the workspace ensemble
             M( varSegment, mc ) = data(:);
+            
+            progressbar( ((s-1)*nNew+mc) / (nSeq*nNew) );
         end
     end
 
