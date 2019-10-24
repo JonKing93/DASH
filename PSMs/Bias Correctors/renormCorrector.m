@@ -14,7 +14,7 @@ classdef renormCorrector < biasCorrector
     
     % Constructor
     methods
-        function obj = renormCorrector( Xt, Xs )
+        function obj = renormCorrector( Xt, Xs, nanflag )
             % Creates a renormalization bias corrector
             %
             % obj = renormCorrector( Xt, Xs )
@@ -62,7 +62,7 @@ classdef renormCorrector < biasCorrector
         
         % Apply the correction
         function[M] = biasCorrect( obj, M )
-            M = M .* obj.timeUnit;
+            M = M .* obj.timesUnit;
             M =M + obj.addUnit;
         end
         

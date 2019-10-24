@@ -14,15 +14,15 @@ function[] = setBiasCorrector( obj, type, varargin )
 
 % Null corrector
 if strcmpi( type, 'none' )
-    obj.biasCorrector = nullCorrector;
+    obj.biasCorrection = nullCorrector;
     
 % Mean adjustment
 elseif strcmpi( type, 'mean' )
-    obj.biasCorrector = meanCorrector( varargin{:} );
+    obj.biasCorrection = meanCorrector( varargin{:} );
     
 % Renormalization
 elseif strcmpi(type, 'renorm')
-    obj.biasCorrector = renormCorrector( varargin{:} );
+    obj.biasCorrection = renormCorrector( varargin{:} );
     
 else
     error('Unrecognized bias corrector.');

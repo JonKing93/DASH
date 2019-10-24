@@ -72,7 +72,7 @@ classdef (Abstract) biasCorrector < handle
             meanT = mean(Xt, 2, nanflag);
 
             stdS = std( Xs, 0, 2, nanflag );
-            stdT = std( Xs, 0, 2, nanflag );
+            stdT = std( Xt, 0, 2, nanflag );
             
             % Get the renormalization constants
             timesUnit= (stdT ./ stdS);

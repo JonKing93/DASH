@@ -105,7 +105,7 @@ classdef (Abstract) PSM < handle
         reviewUnitConversion( obj, H );
        
         % Select a bias corrector
-        setBiasCorrector( type, Xt, Xs );
+        setBiasCorrector( obj, type, varargin );
        
     end
     
