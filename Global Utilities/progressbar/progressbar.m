@@ -118,7 +118,9 @@ function progressbar(varargin)
 % 2004-Oct-20   Efficient if-else structure for sec2timestr
 % 2006-Sep-11   Width is a multiple of height (don't stretch on widescreens)
 % 2010-Sep-21   Major overhaul to support multiple bars and add labels
-%
+
+% 2019-Oct-24   (J King) Fixed to allow string inputs. Changed label
+%               interpreter to 'none'.
 
 persistent progfig progdata lastupdate
 
@@ -133,7 +135,7 @@ else
 end
 
 % If task completed, close figure and clear vars, then exit
-if input{1} == 1
+if isequal(input{1}, 1)
     if ishandle(progfig)
         delete(progfig) % Close progress bar
     end
@@ -146,15 +148,19 @@ end
 resetflag = false;
 
 % Set reset flag if first input is a string
-if ischar(input{1})
+if ischar(input{1}) || isstring(input{1})
     resetflag = true;
 end
 
 % Set reset flag if all inputs are zero
-if input{1} == 0
+if isequal(input{1}, 0)
     % If the quick check above passes, need to check all inputs
-    if all([input{:}] == 0) && (length([input{:}]) == ninput)
-        resetflag = true;
+    resetflag = true;
+    for b = 1:ninput
+        if ~isequal( input{b}, 0 )
+            resetflag = false;
+            break;
+        end
     end
 end
 
@@ -225,8 +231,8 @@ else % This strange if-else works when progfig is empty (~ishandle() does not)
         progdata(ndx).proglabel = text(0.01, 0.5, '', ...
             'HorizontalAlignment', 'Left', ...
             'FontUnits', 'Normalized', ...
-            'FontSize', 0.7 );
-        if ischar(input{ndx})
+            'FontSize', 0.7, 'Interpreter', 'none' );
+        if ischar(input{ndx}) || isstring(input{ndx})
             set(progdata(ndx).proglabel, 'String', input{ndx})
             input{ndx} = 0;
         end
