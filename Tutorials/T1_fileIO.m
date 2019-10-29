@@ -1,6 +1,6 @@
 %% Tutorial 1: FILE IO
 
-%% Introduction
+%% Introduction 
 
 % This demonstrates how to create a .grid file from data.
 %
