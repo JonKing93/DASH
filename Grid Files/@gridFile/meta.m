@@ -20,7 +20,8 @@ function[meta, dimID, gridSize] = meta( file )
 % Jonathan King, University of Arizona, 2019
 
 % Initialize the gridFile object
-grid = gridFile( file );
+gridFile.fileCheck( file );
+grid = matfile( file );
 
 % Extract the output fields
 meta = grid.metadata;

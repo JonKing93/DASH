@@ -52,7 +52,7 @@ if strcmp(flag, "use")
     
     % Check that all the required fields are in the file
     vars = who(m);
-    required = ["sourece";"dimOrder";"dimLimit";"metadata";"gridSize"];
+    required = ["source";"dimOrder";"dimLimit";"metadata";"gridSize"];
     isvar = ismember( required, vars );
     if any( ~isvar )
         error('The %s field is missing from the .grid file.', required(find(~isvar,1)) );
