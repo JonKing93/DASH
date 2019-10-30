@@ -65,7 +65,7 @@ function[dimOrder] = setup( filename, type, dimOrder )
 % Check file extension and existence.
 gridFile.fileCheck( filename, 'ext' );
 if exist(filename, 'file')
-    error('The file %s already exists!', file );
+    error('The file %s already exists!', filename );
 end
 
 % Check the type is recognized

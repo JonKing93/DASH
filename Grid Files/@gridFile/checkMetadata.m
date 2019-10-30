@@ -6,15 +6,15 @@ function[value] = checkMetadata( value, nRows, dim )
 % exact number of elements, converts to a column vector.
 
 % Check that the metadata is an allowed type
-if ~ismetadatatype( value )
+if ~gridFile.ismetadatatype( value )
     error('The %s metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime', dim);
 elseif ~ismatrix( value )
     error('The %s metadata is not a matrix.', dim );
-elseif any(isnan(value(:)))
+elseif isnumeric( value ) && any(isnan(value(:)))
     error('The %s metadata contains NaN elements.', dim );
-elseif any(isinf(value(:)))
+elseif isnumeric( value) && any(isinf(value(:)))
     error('The %s metadata contains Inf elements.', dim );
-elseif any( isnat(value(:)) )
+elseif isdatetime(value) && any( isnat(value(:)) )
     error('The %s metadata contains NaT elements.', dim );
 end
 
