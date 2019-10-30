@@ -17,44 +17,44 @@ function[] = new( filename, type, source, varName, dimOrder, atts, varargin )
 
 % Create the appropriate data source object
 if strcmpi( type, 'nc' )
-    source = ncGrid( source, varName, dimOrder );
+    sourceGrid = ncGrid( source, varName, dimOrder );
 elseif strcmpi( type, 'mat' )
-    source = matGrid( source, varName, dimOrder );
+    sourceGrid = matGrid( source, varName, dimOrder );
 else
-    source = arrayGrid( source, filename );
+    sourceGrid = arrayGrid( source, filename, 'data1', dimOrder );
 end
 
 % Get the initial grid size. Check there is a named dimension for each
 % non-trailing singleton
-gridSize = source.size(:)';
+gridSize = sourceGrid.size(:)';
 if numel( dimOrder ) < numel( gridSize )
     error('dimOrder only contains %.f dimensions, but the gridded source data has %.f dimensions.', numel(dimOrder), numel(gridSize) );
 end
 
+% Organize the metadata.
+meta = gridFile.buildMetadata( dimOrder, gridSize, atts, varargin{:} );
+
 % Reorder size to match the internal dimension order
 gridDims = getDimIDs;
 nDim = numel(gridDims);
-gridSize = gridFile.fullSize( source.size(:)', nDim );
-gridSize = gridFile.permute( gridSize, dimOrder, gridDims );
+gridSize = gridFile.fullSize( sourceGrid.size(:)', nDim );
+gridSize = gridFile.permuteSize( gridSize, dimOrder, gridDims );
 
 % Get the dimension limits of the data source
 dimLimit = [ones(nDim,1), gridSize'];
 
-% Organize the metadata.
-meta = gridFile.buildMetadata( gridDims, gridSize, atts, varargin{:} );
-
 % Create the new .grid file. Add in the data source, metadata, dimension
 % order, dimension limts. 
 m = matfile( filename );
-m.source = source;
+m.source = sourceGrid;
 m.dimOrder = gridDims;
 m.dimLimit = dimLimit;
 m.metadata = meta;
 m.gridSize = gridSize;
 
 % If the data source is an array, save it directly to the file
-if isa(source,'arrayGrid')
-    m.data1 = source.X;
+if isa(sourceGrid,'arrayGrid')
+    m.data1 = source;
 end
 
 end

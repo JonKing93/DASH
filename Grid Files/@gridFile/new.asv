@@ -21,10 +21,17 @@ if strcmpi( type, 'nc' )
 elseif strcmpi( type, 'mat' )
     source = matGrid( source, varName, dimOrder );
 else
-    source = arrayGrid( source, filename );
+    source = arrayGrid( source, filename, 'data1',  );
 end
 
-% Initialize the grid size. Reorder to match the internal dimension order
+% Get the initial grid size. Check there is a named dimension for each
+% non-trailing singleton
+gridSize = source.size(:)';
+if numel( dimOrder ) < numel( gridSize )
+    error('dimOrder only contains %.f dimensions, but the gridded source data has %.f dimensions.', numel(dimOrder), numel(gridSize) );
+end
+
+% Reorder size to match the internal dimension order
 gridDims = getDimIDs;
 nDim = numel(gridDims);
 gridSize = gridFile.fullSize( source.size(:)', nDim );
@@ -66,4 +73,7 @@ if ~isstrflag( type ) || ~ismember( type, ["nc","mat","array"] )
     error('type must either be "nc", "mat", or "array"');
 end
 
+% Check the grid dimensions are recognized and non-duplicate. Convert to string
+dimOrder = gridFile.checkSourceDims( dimOrder );
 
+end
