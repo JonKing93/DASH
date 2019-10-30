@@ -9,22 +9,50 @@ classdef gridFile
         gridSize; % The total size of the gridded metadata.
     end
     
-    methods
-        
-    end
-    
-    % Static methods
+    % Static user methods
     methods (Static)
         
-        % Creates a new .grid file
-        new( filename, type, source, varargin );
+        % Exract metadata from existing .grid file
+        [meta, dimID, gridSize] = meta( file )
         
-        % Retrieves metadata from a .grid file
-        [meta, dimID, gridSize] = meta( file );
+        % Create new grid file
+        new( filename, type, source, varName, dimOrder, atts, varargin );
         
-        % Removes trailing singletons from the size of an array
-        siz = squeezeSize( siz );
     end
+   
+   % Error checking
+   methods (Static)
+       
+       % Check that dimensions are recognized
+       [dims] = checkDimList( dims, errName );
+       
+       % Check that dimensions are recognized and non-duplicate
+       [sourceDims] = checkSourceDims( sourceDims )
+       
+       % Check that metadata is allowed
+       [value] = checkMetadata( value, nRows, dim );
+       
+       % Indicate whether type is allowed for metadata
+       [tf] = ismetadatatype( value );
+       
+   end
+   
+   % Utilities
+   methods (Static)
+       
+       % Check file existence / extension / correct fields
+       fileCheck( file, flag );
+       
+       % Create the metadata structure
+       meta = buildMetadata( dimOrder, gridSize, atts, varargin );
+       
+       % Pad size to at least d dimensions
+       [siz] = fullSize( siz, d )
+       
+       % Reorder size to internal dimension order
+       [gridSize] = permuteSize( gridSize, dimOrder, gridDims )
+       
+   end
         
 end  
         
