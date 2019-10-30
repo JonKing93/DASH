@@ -2,11 +2,11 @@ function[] = fileCheck( file, flag )
 %% Checks that a gridded .mat file exists. Returns a writable or read-only 
 % matfile object, as required.
 %
-% m = fileCheck( file )
+% fileCheck( file )
 % Checks that a file is a .grid file on the active path, and that the .grid
 % file contains all standard fields.
 %
-% [~] = fileCheck( file, 'ext' )
+% fileCheck( file, 'ext' )
 % Only checks that the file has a .grid extension. Does not search the
 % active path for the file.
 %
