@@ -33,7 +33,7 @@ elseif strcmp(type, 'mat')
     sourceGrid = matGrid( source, varName, dimOrder );
 elseif strcmp(type, 'array')
     dataName = sprintf('data%.f', numel(m.source)+1);
-    sourceGrid = arrayGrid( source, file, dataName, dimOrder );
+    sourceGrid = arrayGrid( source, dataName, dimOrder );
 end
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified

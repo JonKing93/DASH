@@ -4,7 +4,7 @@ function[X] = permuteSource( X, sourceOrder, gridOrder )
 [insource] = ismember( gridOrder, sourceOrder );
 sourceOrder = [sourceOrder, gridOrder(~insource)];
 
-% Permute the data to this order
+% Permute the data to the grid file order
 [~, permOrder] = ismember( gridOrder, sourceOrder );
 X = permute( X, permOrder );
 
