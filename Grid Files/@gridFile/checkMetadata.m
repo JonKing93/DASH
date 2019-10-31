@@ -8,7 +8,7 @@ end
 metaDims = string( fields(meta) );
 dimID = getDimIDs;
 if any( ~ismember( metaDims, dimID ) )
-    error('The metadata contains fields that are not recognized dimension IDs.')p
+    error('The metadata contains fields that are not recognized dimension IDs.');
 end
 
 for d = 1:numel(metaDims)

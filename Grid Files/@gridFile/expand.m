@@ -27,7 +27,7 @@ elseif isdatetime(newMeta) && any( isnat(newMeta(:)) )
 end
 
 % Check the old metadata is not a NaN singleton
-m = matfile( file );
+m = matfile( file, 'writable', true );
 metadata = m.metadata;
 if isnan( metadata.(dim) )
     error('The metadata for the %s dimension in the file %s is NaN. Please write in a non-NaN value first. (See gridFile.rewriteMeta)', dim, file);
@@ -40,13 +40,15 @@ catch ME
     error('The new metadata cannot be appended to the existing metadata.');
 end
    
-% Check the new metadata does not duplicate the old
+% Check the new metadata does not duplicate the old or itself
 if size(allmeta,1) ~= size( unique(allmeta, 'rows'), 1 )
     error('The new metadata duplicates existing metadata values.');
 end
 
 % Add the new metadata to the file
 metadata.(dim) = allmeta;
+m.valid = false;
 m.metadata = metadata;
+m.valid = true;
 
 end

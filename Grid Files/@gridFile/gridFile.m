@@ -25,7 +25,10 @@ classdef gridFile
         [meta, dimID, gridSize] = meta( file );
         
         % Increase the size of a dimension in a .grid file.
-        expand( file, dim, newMeta )
+        expand( file, dim, newMeta );
+        
+        % Change metadata along a dimension
+        rewriteMetadata( file, dim, newMeta );
         
     end
    

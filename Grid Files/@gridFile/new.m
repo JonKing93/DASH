@@ -42,7 +42,7 @@ allmeta = struct();
 gridSize = NaN(1, nDim);
 
 for d = 1:nDim
-    if isfield( dimID(d), meta )
+    if isfield( meta, dimID(d) )
         allmeta.( dimID(d) ) = meta.( dimID(d) );
         gridSize(d) = size( meta.(dimID(d)), 1 );
     else
