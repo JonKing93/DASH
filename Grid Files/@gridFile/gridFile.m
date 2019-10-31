@@ -53,6 +53,15 @@ classdef gridFile
        % Whether data overlaps existing data
        checkOverlap( dimLimit, gridLimit );
        
+       % Permutes source grid data to match grid order
+       [X] = permuteSource( X, sourceOrder, gridOrder );
+       
+       % Returns requested data from sources
+       [X] = read( file, start, count, stride );
+       
+       % Reorders grid scs for source grid order
+       [start, count, stride] = reorderSCS( start, count, stride, gridOrder, sourceOrder )
+       
    end
         
 end  
