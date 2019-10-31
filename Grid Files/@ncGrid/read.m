@@ -15,7 +15,7 @@ end
 ncNames = cell( numel(info.Variables), 1 );
 [ncNames{:}] = deal( info.Variables.Name );        
 ncNames = string( ncNames );
-[isvar, v] = ismember( varName, ncNames );
+[isvar, v] = ismember( obj.varName, ncNames );
 if ~isvar
     error('The file %s does not contain a %s variable.', obj.filename, obj.varName );
 elseif ~ismember( info.Variables(v).Datatype, [gridData.numericTypes;"logical"] )

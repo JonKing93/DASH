@@ -100,6 +100,10 @@ for d = 1:nDims
     end 
 end
 
+% Reorder the limits to match the internal .grid dimension order
+[~, reorder] = ismember( gridDims, dimOrder );
+dimLimit = dimLimit(reorder,:);
+
 % Check that the data does not overlap with other existing data
 gridFile.checkOverlap( dimLimit, m.dimLimit );
 

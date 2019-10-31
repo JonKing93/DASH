@@ -35,8 +35,8 @@ end
 % For each source grid
 for s = 1:numel(source)
     useSource = true;
-    sStart = NaN( nDim, 1 );
-    sCount = NaN( nDim, 1 );
+    sStart = NaN( 1, nDim );
+    sCount = NaN( 1, nDim );
     readIndex = cell( nDim, 1 );
     
     % Check if it contains any data to be read. If so, get the start and
@@ -57,9 +57,9 @@ for s = 1:numel(source)
     % Read the data from the source grid. Permute scs to match source
     % order, then permute output to match .grid order.
     if useSource
-        [sStart, sCount, sStride] = gridFile.reorderSCS( sStart, sCount, sStride, m.dimOrder, source.dimOrder );
+        [sStart, sCount, sStride] = gridFile.reorderSCS( sStart, sCount, stride, m.dimOrder, source{s}.dimOrder );
         Xsource = source{s}.read( sStart, sCount, sStride, file );
-        X( readIndex{:} ) = gridFile.permuteSource( Xsource, source.dimOrder, m.dimOrder );
+        X( readIndex{:} ) = gridFile.permuteSource( Xsource, source{s}.dimOrder, m.dimOrder );
     end
     
 end
