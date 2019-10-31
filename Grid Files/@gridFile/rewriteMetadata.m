@@ -1,8 +1,9 @@
-function[] = expand( file, dim, newMeta )
-%% Expands a .grid file along a specified dimension.
+function[] = rewriteMetadata( file, dim, newMeta )
+%% Rewrites the metadata along a specified dimension.
 
-% Check the file is .grid and exists.
+% Check the file is .grid and exists
 gridFile.fileCheck( file );
+m = matfile( file, 'writable', true );
 
 % Check the dim is an ID
 if ~isstrflag( dim )
@@ -24,29 +25,18 @@ elseif isnumeric( newMeta) && any(isinf(newMeta(:)))
     error('The new metadata contains Inf elements.' );
 elseif isdatetime(newMeta) && any( isnat(newMeta(:)) )
     error('The new metadata contains NaT elements.' );
+elseif size( newMeta, 1) ~= size( unique(newMeta,'rows'), 1)
+    error('The new metadata contains duplicate rows.');
 end
-
-% Check the old metadata is not a NaN singleton
-m = matfile( file, 'writable', true );
+ 
+% Check the new metadata is the correct size
 metadata = m.metadata;
-if isscalar(metadata.(dim)) && isnumeric(metadata.(dim)) && isnan( metadata.(dim) )
-    error('The metadata for the %s dimension in the file %s is NaN. Please write in a non-NaN value first. (See gridFile.rewriteMetadata)', dim, file);
+if size(newMeta,1) ~= size( metadata.(dim), 1 )
+    error('The new metadata must have %.f rows.', size(metadata.(dim),1) );
 end
 
-% Check that the new metadata can be appended
-try
-    allmeta = cat(1, metadata.(dim), newMeta );
-catch ME
-    error('The new metadata cannot be appended to the existing metadata. It may be a different type or have a different number of columns.');
-end
-   
-% Check the new metadata does not duplicate the old or itself
-if size(allmeta,1) ~= size( unique(allmeta, 'rows'), 1 )
-    error('The new metadata duplicates existing metadata values.');
-end
-
-% Add the new metadata to the file
-metadata.(dim) = allmeta;
+% Write
+metadata.(dim) = newMeta;
 m.valid = false;
 m.metadata = metadata;
 m.valid = true;

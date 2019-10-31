@@ -3,7 +3,7 @@ function[tf] = ismetadatatype( value )
 % numeric, logical, char, string, cellstring, or datetime
 
 tf = false;
-if isnumeric(value) || islogical(value) || ischar(value) || isstring(value) || iscellstring(value) || isdatetime(value)
+if isnumeric(value) || islogical(value) || ischar(value) || isstring(value) || iscellstr(value) || isdatetime(value)
     tf = true;
 end
 

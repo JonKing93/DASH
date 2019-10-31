@@ -14,7 +14,7 @@ end
 
 % If all the dimensions overlap for any variable, then it overlaps the new
 % data source
-if any( all(overlap) )
+if ~isempty(overlap) && any( all(overlap) )
     error('The new data source overlaps data already in the .grid file.');
 end
 

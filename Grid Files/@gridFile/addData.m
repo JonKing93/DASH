@@ -31,7 +31,7 @@ if strcmp(type, 'nc')
     sourceGrid = ncGrid( source, varName, dimOrder );
 elseif strcmp(type, 'mat')
     sourceGrid = matGrid( source, varName, dimOrder );
-else
+elseif strcmp(type, 'array')
     dataName = sprintf('data%.f', numel(m.source)+1);
     sourceGrid = arrayGrid( source, file, dataName, dimOrder );
 end
@@ -44,7 +44,7 @@ gridMeta = m.metadata;
 
 notnan = false( 1, nDims );
 for d = 1:nDims
-    if ~isscalar(gridMeta.(gridDims(d))) || ~isnan(gridMeta.(gridDims(d)))
+    if ~isscalar(gridMeta.(gridDims(d))) || ~isnumeric(gridMeta.(gridDims(d))) || ~isnan(gridMeta.(gridDims(d)))
         notnan(d) = true;
     end
 end
@@ -55,7 +55,7 @@ sourceSize = sourceGrid.squeezeSize( sourceGrid.size );
 notTS = sourceGrid.dimOrder( 1:numel(sourceSize) );
 
 % Ensure that both the non-nan grid dims, and the non-TS dims have metadata
-needMeta = unique( [notnanDim; notTS] );
+needMeta = unique( [notnanDim, notTS] );
 metaDims = string( fields(meta) );
 
 hasmeta = ismember( needMeta, metaDims );
@@ -75,7 +75,7 @@ for d = 1:nDims
         
         % Check the number of metadata rows match the size of the dimension
         if size(meta.(dimOrder(d)),1) ~= sourceSize(d)
-            error('The number of "%s" metadata rows (%.f) does not match the size of the dimension (%.f)', dimOrder(d), size(meta.dimOrder(d),1), sourceSize(d) );
+            error('The number of "%s" metadata rows (%.f) does not match the size of the dimension (%.f) in the data source', dimOrder(d), size(meta.(dimOrder(d)),1), sourceSize(d) );
         end
         
         % Check the metadata is an exact, increasing sequence within the
@@ -104,10 +104,18 @@ end
 gridFile.checkOverlap( dimLimit, m.dimLimit );
 
 % Add the new data source to the .grid file
+newSource = m.source;
+newSource{end+1} = sourceGrid;
+newLimit = m.dimLimit;
+newLimit(:,:,end+1) = dimLimit;
+
 m.valid = false;
 m.nSource = m.nSource + 1;
-m.source{m.nSource} = sourceGrid;
-m.dimLimit(:,:,m.nSource) = dimLimit;
+m.source = newSource;
+m.dimLimit = newLimit;
+if isa(source, 'arrayGrid')
+    m.dataName = source;
+end
 m.valid = true;
     
 end
