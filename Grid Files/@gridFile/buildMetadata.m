@@ -106,40 +106,8 @@ if ~isvector(gridDims) || length(gridDims)~=length(gridSize)
     error('gridSize must be a vector of dimension IDs that matches the length of ''gridDims''.');
 end
 
-% Check that the number of metadata elements is even
-nDim = numel(meta)/2;
-if mod(nDim,1)~=0
-    error('There must be exactly one set of metadata values for each metadata dimension.');
-end
 
-% Initialize an array to record the index of each metadata dimension in the
-% total set of dimension IDs
-metaDim = NaN(nDim,1);
 
-% Check that the odd elements of varargin are non-duplicate dimIDs
-dimID = getDimIDs;
-for v = 1:2:numel(meta)
-    
-    % Check whether the dimension is recognized
-    [isdim, d] = ismember( meta{v}, dimID );
-    
-    % If not a dimension ID, throw an error
-    if ~isdim
-        error('Input %0.f is not a recognized dimension ID.', v+3);
-        
-    % If allowed, then get the index in the set of all recognized
-    % dimensions
-    else
-        
-        % Check for duplicate
-        if ismember(d, metaDim)
-            error('Metadata for dimension %s is provided multiple times.', meta{v} );
-        
-        % Record index if not duplicate
-        else
-            metaDim((v+1)/2) = d;
-        end
-    end
-end
+
 
 end

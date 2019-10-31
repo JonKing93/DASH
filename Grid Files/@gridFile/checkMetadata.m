@@ -1,35 +1,37 @@
-function[value] = checkMetadata( value, nRows, dim )
-%% Checks that metadata is a valid format. That is: 
-% a matrix, cannot contain NaN, and cannot contain duplicate values.
-%
-% Also checks that the number of rows is correct. If a row vector with the
-% exact number of elements, converts to a column vector.
+function[] = checkMetadata( meta )
+%% Checks that metadata structure is valid. 
 
-% Check that the metadata is an allowed type
-if ~gridFile.ismetadatatype( value )
-    error('The %s metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime', dim);
-elseif ~ismatrix( value )
-    error('The %s metadata is not a matrix.', dim );
-elseif isnumeric( value ) && any(isnan(value(:)))
-    error('The %s metadata contains NaN elements.', dim );
-elseif isnumeric( value) && any(isinf(value(:)))
-    error('The %s metadata contains Inf elements.', dim );
-elseif isdatetime(value) && any( isnat(value(:)) )
-    error('The %s metadata contains NaT elements.', dim );
+if ~isscalar(meta) || ~isstruct(meta)
+    error('meta must be a scalar structure.');
 end
 
-% Convert row vector to column if the number of elements is correct
-if isrow(value) && length(value) == nRows
-    value = value';
+metaDims = string( fields(meta) );
+dimID = getDimIDs;
+if any( ~ismember( metaDims, dimID ) )
+    error('The metadata contains fields that are not recognized dimension IDs.')p
+end
+
+for d = 1:numel(metaDims)
+    value = meta.(metaDims(d));
     
-% Otherwise, throw error if the number of rows is incorrect
-elseif size(value, 1) ~= nRows
-    error('The number of rows in the %s metadata (%.f) does not match the number of indices in the dimension (%.f).', dim, size(value,1), nRows);
-end
-
-% Check there are no duplicate rows
-if size(value,1) ~= size( unique(value, 'rows'), 1 )
-    error('The %s metadata contains duplicate values.', dim);
+    if ~gridFile.ismetadatatype( value )
+        error('The %s metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime', metaDims(d));
+    elseif iscellstr( value ) %#ok<ISCLSTR>
+        error('The %s metadata is a cellstring.', metaDims(d) );
+    elseif ~ismatrix( value )
+        error('The %s metadata is not a matrix.', metaDims(d) );
+    elseif isnumeric( value ) && any(isnan(value(:)))
+        error('The %s metadata contains NaN elements.', metaDims(d) );
+    elseif isnumeric( value) && any(isinf(value(:)))
+        error('The %s metadata contains Inf elements.', metaDims(d) );
+    elseif isdatetime(value) && any( isnat(value(:)) )
+        error('The %s metadata contains NaT elements.', metaDims(d) );
+    end
+    
+    if size(value,1) ~= size( unique(value, 'rows'), 1 )
+        error('The %s metadata contains duplicate values.', metaDims(d));
+    end
+    
 end
 
 end

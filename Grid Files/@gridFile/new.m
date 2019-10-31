@@ -1,79 +1,67 @@
-function[] = new( filename, type, source, varName, dimOrder, atts, varargin )
-%% Creates a new gridded data (.grid) file. This is a container object that
+function[] = new( filename, meta, attributes )
+%% Initializes a new gridded data (.grid) file. This is a container object that
 % contains instructions on reading data from different sources, including:
 % NetCDF files, .mat Files, and Matlab numeric arrays.
 %
-% gridFile.new( filename, 'nc', ncfile, varName, dimOrder, attributes, dimName1, dimMeta1, ..., dimNameN, dimMetaN ) 
-% Creates a new .grid file from data in a NetCDF file.
+% gridFile.new( filename, meta )
+% Initializes a new .grid file with pre-defined dimensional metadata.
 %
-% gridFile.new( filename, 'mat', matfile, varName, dimOrder, attributes, dimName1, dimMeta1, ..., dimNameN, dimMetaN ) 
-% Creates a new .grid file from data in a .mat file.
+% gridFile.new( filename, meta, attributes )
+% Includes any desired non-dimensional metadata.
 %
-% gridFile.new( filename, 'array', X, [], dimOrder, attributes, dimName1, dimMeta1, ..., dimNameN, dimMetaN ) 
-% Creates a new .grid file from a numeric array.
+% ----- Inputs -----
+%
+% filename: The name of the .grid file
+%
+% meta: A metadata structure defining the grid. See gridFile.defineMetadata
+%
+% attributes: A scalar structure whose fields contain any non-dimensional
+%             metadata of interest.
 
-% Error check. Convert to strings for internal use.
-[dimOrder] = setup( filename, type, dimOrder );
-
-% Create the appropriate data source object
-if strcmpi( type, 'nc' )
-    sourceGrid = ncGrid( source, varName, dimOrder );
-elseif strcmpi( type, 'mat' )
-    sourceGrid = matGrid( source, varName, dimOrder );
-else
-    sourceGrid = arrayGrid( source, filename, 'data1', dimOrder );
-end
-
-% Get the initial grid size. Check there is a named dimension for each
-% non-trailing singleton
-gridSize = sourceGrid.size(:)';
-if numel( dimOrder ) < numel( gridSize )
-    error('dimOrder only contains %.f dimensions, but the gridded source data has %.f dimensions.', numel(dimOrder), numel(gridSize) );
-end
-
-% Organize the metadata.
-meta = gridFile.buildMetadata( dimOrder, gridSize, atts, varargin{:} );
-
-% Reorder size to match the internal dimension order
-gridDims = getDimIDs;
-nDim = numel(gridDims);
-gridSize = gridFile.fullSize( sourceGrid.size(:)', nDim );
-gridSize = gridFile.permuteSize( gridSize, dimOrder, gridDims );
-
-% Get the dimension limits of the data source
-dimLimit = [ones(nDim,1), gridSize'];
-
-% Create the new .grid file. Add in the data source, metadata, dimension
-% order, dimension limts. 
-m = matfile( filename );
-m.source = sourceGrid;
-m.dimOrder = gridDims;
-m.dimLimit = dimLimit;
-m.metadata = meta;
-m.gridSize = gridSize;
-
-% If the data source is an array, save it directly to the file
-if isa(sourceGrid,'arrayGrid')
-    m.data1 = source;
-end
-
-end
-
-% Initial error checking
-function[dimOrder] = setup( filename, type, dimOrder )
-
-% Check file extension and existence.
+% Check the file extension and that it does not exist
 gridFile.fileCheck( filename, 'ext' );
 if exist(filename, 'file')
     error('The file %s already exists!', filename );
 end
 
-% Check the type is recognized
-if ~isstrflag( type ) || ~ismember( type, ["nc","mat","array"] )
-    error('type must either be "nc", "mat", or "array"');
+% Check that the metadata structure is valid
+gridFile.checkMetadata( meta );
+
+% Error check attributes / set default
+if ~exist('attributes','var')
+    attributes = [];
+elseif ~isstruct(attributes) || ~isscalar(attributes)
+    error('attributes must be a scalar struct.');
 end
 
-% Check the grid dimensions are recognized and non-duplicate. Convert to string
-dimOrder = gridFile.checkSourceDims( dimOrder );
+% Get the internal metadata structure. Include attributes. Give undefined
+% dimensions NaN metadata
+[dimID, attsName] = getDimIDs;
+nDim = numel(dimID);
+allmeta = struct();
+gridSize = NaN(1, nDim);
+
+for d = 1:nDim
+    if isfield( dimID(d), meta )
+        allmeta.( dimID(d) ) = meta.( dimID(d) );
+        gridSize(d) = size( meta.(dimID(d)), 1 );
+    else
+        allmeta.( dimID(d) ) = NaN;
+        gridSize(d) = 1;
+    end
+end
+if ~isempty( attributes )
+    allmeta.(attsName) = attributes;
+end
+
+% Initialize the .grid file
+m = matfile( filename );
+m.dimOrder = dimID;
+m.gridSize = gridSize;
+m.metadata = allmeta;
+
+m.nSource = 0;
+m.source = {};
+m.dimLimit = [];
 
 end
