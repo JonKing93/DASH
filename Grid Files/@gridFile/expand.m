@@ -34,10 +34,17 @@ if isscalar(metadata.(dim)) && isnumeric(metadata.(dim)) && isnan( metadata.(dim
 end
 
 % Check that the new metadata can be appended
+if size( metadata.(dim),2) ~= size(newMeta, 2)
+    error('The new %s metadata has a different number of columns than the metadata in file %s.', dim, file );
+elseif (isnumeric(newMeta) || islogical(newMeta)) && ~(isnumeric(metadata.(dim)) || islogical(metadata.(dim)))
+    error('The new %s metadata is numeric or logical, but the metadata in the %s file is not.', dim, file );
+elseif isstrlist(newMeta) && ~isstrlist(metadata.(dim))
+    error('The new %s is a string, but the metadata in the %s file is not.', dim, file );
+end
 try
     allmeta = cat(1, metadata.(dim), newMeta );
 catch ME
-    error('The new metadata cannot be appended to the existing metadata. It may be a different type or have a different number of columns.');
+    error('The new metadata cannot be appended to the existing metadata. It may be a different type.');
 end
    
 % Check the new metadata does not duplicate the old or itself
@@ -47,7 +54,10 @@ end
 
 % Add the new metadata to the file
 metadata.(dim) = allmeta;
+d = find(  strcmp(dim, m.dimOrder) );
+
 m.valid = false;
+m.gridSize(1,d) = size(allmeta,1); %#ok<FNDSB>
 m.metadata = metadata;
 m.valid = true;
 

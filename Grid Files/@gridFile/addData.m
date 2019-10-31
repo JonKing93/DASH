@@ -105,16 +105,16 @@ gridFile.checkOverlap( dimLimit, m.dimLimit );
 
 % Add the new data source to the .grid file
 newSource = m.source;
-newSource{end+1} = sourceGrid;
+newSource{end+1,1} = sourceGrid;
 newLimit = m.dimLimit;
-newLimit(:,:,end+1) = dimLimit;
+newLimit = cat(3, newLimit, dimLimit);
 
 m.valid = false;
 m.nSource = m.nSource + 1;
 m.source = newSource;
 m.dimLimit = newLimit;
-if isa(source, 'arrayGrid')
-    m.dataName = source;
+if isa(sourceGrid, 'arrayGrid')
+    m.(dataName) = source;
 end
 m.valid = true;
     

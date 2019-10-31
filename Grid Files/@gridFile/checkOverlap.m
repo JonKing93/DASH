@@ -6,7 +6,7 @@ function[] = checkOverlap( dimLimit, gridLimit )
 overlap = false( nDim, nVar );
 
 for d = 1:nDim
-    sourceIndex =- dimLimit(d,1):dimLimit(d,2);
+    sourceIndex = dimLimit(d,1):dimLimit(d,2);
     for v = 1:nVar
         overlap(d,v) = any( ismember( sourceIndex, gridLimit(d,1,v):gridLimit(d,2,v) ) );
     end

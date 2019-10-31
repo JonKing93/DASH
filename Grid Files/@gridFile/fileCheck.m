@@ -60,7 +60,7 @@ if strcmp(flag, "use")
     
     % Check that the file was not corrupted during a write operation
     if ~m.valid
-        error('The file %s is not valid. It may have become corrupted during a write operation.');
+        error('The file %s is not valid. It may have failed during a write operation.', file);
     end
 end
 
