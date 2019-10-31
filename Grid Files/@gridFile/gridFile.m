@@ -12,45 +12,43 @@ classdef gridFile
     % Static user methods
     methods (Static)
         
-        % Exract metadata from existing .grid file
-        [meta, dimID, gridSize] = meta( file )
+        % Create a metadata structure for a grid or gridded data
+        [meta] = defineMetadata( varargin )
         
         % Create new grid file
         new( filename, type, source, varName, dimOrder, atts, varargin );
+        
+        % Adds data to a .grid file
+        addData( file, type, source, varName, dimOrder, meta );
+        
+        % Exract metadata from existing .grid file
+        [meta, dimID, gridSize] = meta( file );
+        
+        % Increase the size of a dimension in a .grid file.
+        expand( file, dim, newMeta )
         
     end
    
    % Error checking
    methods (Static)
        
+       % Check file existence / extension / correct fields
+       fileCheck( file, flag );
+       
        % Check that dimensions are recognized
        [dims] = checkDimList( dims, errName );
        
        % Check that dimensions are recognized and non-duplicate
-       [sourceDims] = checkSourceDims( sourceDims )
+       [sourceDims] = checkSourceDims( sourceDims );
        
        % Check that metadata is allowed
-       [value] = checkMetadata( value, nRows, dim );
+       checkMetadata( meta );
        
        % Indicate whether type is allowed for metadata
        [tf] = ismetadatatype( value );
        
-   end
-   
-   % Utilities
-   methods (Static)
-       
-       % Check file existence / extension / correct fields
-       fileCheck( file, flag );
-       
-       % Create the metadata structure
-       meta = buildMetadata( dimOrder, gridSize, atts, varargin );
-       
-       % Pad size to at least d dimensions
-       [siz] = fullSize( siz, d )
-       
-       % Reorder size to internal dimension order
-       [gridSize] = permuteSize( gridSize, dimOrder, gridDims )
+       % Whether data overlaps existing data
+       checkOverlap( dimLimit, gridLimit );
        
    end
         

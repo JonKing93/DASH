@@ -52,10 +52,15 @@ if strcmp(flag, "use")
     
     % Check that all the required fields are in the file
     vars = who(m);
-    required = ["source";"dimOrder";"dimLimit";"metadata";"gridSize"];
+    required = ["valid","dimOrder","gridSize","metadata","nSource","source","dimLimit"];
     isvar = ismember( required, vars );
     if any( ~isvar )
         error('The %s field is missing from the .grid file.', required(find(~isvar,1)) );
+    end
+    
+    % Check that the file was not corrupted during a write operation
+    if ~m.valid
+        error('The file %s is not valid. It may have become corrupted during a write operation.');
     end
 end
 

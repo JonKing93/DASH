@@ -56,6 +56,7 @@ end
 
 % Initialize the .grid file
 m = matfile( filename );
+m.valid = false;
 m.dimOrder = dimID;
 m.gridSize = gridSize;
 m.metadata = allmeta;
@@ -63,5 +64,6 @@ m.metadata = allmeta;
 m.nSource = 0;
 m.source = {};
 m.dimLimit = [];
+m.valid = true;
 
 end
