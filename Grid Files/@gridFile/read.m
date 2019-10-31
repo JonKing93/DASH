@@ -54,9 +54,11 @@ for s = 1:numel(source)
         sCount(d) = numel( sourceIndex );
     end
     
-    % Read the data from the source grid
+    % Read the data from the source grid. Permute to match the grid file
+    % dimensional order
     if useSource
-        X( readIndex{:} ) = source{s}.read( sStart, sCount, sStride );
+        Xsource = source{s}.read( sStart, sCount, stride );
+        X( readIndex{:} ) = gridFile.permuteSource( Xsource, source.dimOrder, m.dimOrder );
     end
     
 end
