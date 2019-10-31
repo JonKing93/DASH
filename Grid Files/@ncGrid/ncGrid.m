@@ -57,7 +57,7 @@ classdef ncGrid < gridData
             end
             obj.varName = varName;
             
-            % Ensure the data field is numeric
+            % Ensure the data field is numeric or logical
             if ~ismember( info.Variables(v).Datatype, [gridData.numericTypes;"logical"] )
                 error('The %s variable is neither numeric nor logical.', varName );
             end
@@ -86,7 +86,7 @@ classdef ncGrid < gridData
     methods
         
         % Reads data from the netcdf file
-        X = read( obj, start, count, stride );
+        X = read( obj, start, count, stride, ~ );
         
     end
     

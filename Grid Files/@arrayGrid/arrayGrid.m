@@ -2,13 +2,12 @@ classdef arrayGrid < gridData
     % Describes a data source that is an actual array.
     
     properties (SetAccess = private)
-        gridFile; % The gridfile containing the array
         dataName; % The name of the data field in the gridFile
     end
     
     % Constructor
     methods
-        function[obj] = arrayGrid( X, gridFile, dataName, dimOrder )
+        function[obj] = arrayGrid( X, dataName, dimOrder )
             % Creates a new arrayGrid object. 
             
             % Ensure the data is numeric or logical
@@ -16,9 +15,7 @@ classdef arrayGrid < gridData
                 error('X must be a numeric or logical array.');
             end
             
-            % These two are directly provided by the call from the gridFile
-            % object. No error checking.
-            obj.gridFile = gridFile;
+            % Provided directly by the .grid file
             obj.dataName = dataName;
             
             % Get the data size. Remove trailing singletons
@@ -40,9 +37,9 @@ classdef arrayGrid < gridData
         end
     end
     
-    % Utilities
+    % Interface utilities
     methods
-        X = read( start, count, stride );
+        [X] = read(obj, start, count, stride, gridpath );
     end
     
 end

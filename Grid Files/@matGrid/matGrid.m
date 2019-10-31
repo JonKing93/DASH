@@ -80,7 +80,7 @@ classdef matGrid < gridData
     
     % Utilities
     methods
-        X = read( obj, start, count, stride );
+        X = read( obj, start, count, stride, ~ );
     end
     
 end
