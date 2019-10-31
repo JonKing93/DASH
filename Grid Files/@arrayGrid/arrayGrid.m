@@ -11,9 +11,9 @@ classdef arrayGrid < gridData
         function[obj] = arrayGrid( X, gridFile, dataName, dimOrder )
             % Creates a new arrayGrid object. 
             
-            % Ensure the data is numeric
-            if ~isnumeric(X)
-                error('X must be a numeric array.');
+            % Ensure the data is numeric or logical
+            if ~isnumeric(X) && ~islogical(X)
+                error('X must be a numeric or logical array.');
             end
             
             % These two are directly provided by the call from the gridFile

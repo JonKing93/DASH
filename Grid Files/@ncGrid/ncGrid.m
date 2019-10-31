@@ -57,6 +57,11 @@ classdef ncGrid < gridData
             end
             obj.varName = varName;
             
+            % Ensure the data field is numeric
+            if ~ismember( info.Variables(v).Datatype, [gridData.numericTypes;"logical"] )
+                error('The %s variable is neither numeric nor logical.', varName );
+            end
+            
             % Get the data size. Remove any trailing singletons
             siz = info.Variables(v).Size;
             obj.size = gridData.squeezeSize( siz );

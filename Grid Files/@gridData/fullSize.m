@@ -1,12 +1,12 @@
-function[siz] = fullSize( X, d )
+function[siz] = fullSize( siz, d )
 %% This gets the size of an array through a minumum number of dimensions.
 %
-% siz = fullSize( X, d )
-% Gets the size of array X through a minimum of d dimensions.
+% siz = fullSize( siz, d )
+% Pads a size vector with trailing singletons through a minimum of d dimensions.
 % 
 % ----- Inputs -----
 %
-% X: The array
+% siz: A size vector
 %
 % d: The minimum number of dimensions.
 %
@@ -18,7 +18,6 @@ function[siz] = fullSize( X, d )
 % Jonathan King, University of Arizona, 2019
 
 % Get the size
-siz = size(X);
 nDim = numel(siz);
 siz(nDim+1:d) = 1;
 

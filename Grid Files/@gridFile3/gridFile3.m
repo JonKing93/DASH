@@ -1,4 +1,4 @@
-classdef (Abstract) gridFile
+classdef (Abstract) gridFile3
     % gridFile
     % A class to hold file IO functions
     %

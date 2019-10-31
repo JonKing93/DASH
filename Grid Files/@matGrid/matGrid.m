@@ -48,11 +48,16 @@ classdef matGrid < gridData
                 error('varName must be a string scalar or character row vector.');
             end
             names = string( who(m) );
-            [isvar, v] = ismember( varName, names );
+            [isvar] = ismember( varName, names );
             if ~isvar
                 error('The file %s does not contain a %s variable.', filename, varName );
             end
             obj.varName = varName;
+            
+            % Check the data is numeric or logical
+            if ~isnumeric( m.(varName) ) && ~islogical( m.(varName) )
+                error('The variable %s is neither numeric nor logical.', varName );
+            end
             
             % Get the data size. Remove any trailing singletons
             siz = size( m.(varName) );

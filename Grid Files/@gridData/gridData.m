@@ -15,7 +15,14 @@ classdef (Abstract) gridData
     
     % Static Utilities
     methods (Static)
+        % Removes trailing singletons from a size vector
         siz = squeezeSize( siz );
+        
+        % Returns a list of numeric types
+        [types] = numericTypes
+        
+        % Get the size up to n dimensions
+        [siz] = fullSize( siz, d )
     end
     
 end
