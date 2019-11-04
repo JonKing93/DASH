@@ -1,4 +1,4 @@
-function[] = write2( obj, file, random, writenan, new )
+function[] = write( obj, file, random, writenan, new )
 % Writes the ensemble to file.
 
 % Handle pre-existing or non-existing files.

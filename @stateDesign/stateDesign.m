@@ -69,15 +69,6 @@ classdef stateDesign
         end
     end
     
-    % Test method
-    methods
-     
-        [] = writeEnsfile( obj, file, random, writenan, new )
-        
-        [M, passVals] = varEnsemble( obj, var, nNew, varSize, nMean, passVals )
-    end
-    
-    
     % Basic user methods.
     methods
         
@@ -190,7 +181,7 @@ classdef stateDesign
         
     end
     
-    % Methods for generating ensemble draws
+    % Methods for generating ensembles 
     methods
         
         % Returns the variable indices of each set of coupled variables.
@@ -206,6 +197,13 @@ classdef stateDesign
         % Select draws
         obj = makeDraws( obj, cv, nEns, random );
         
+        % Writes the ensemble to file
+        [] = write( obj, file, random, writenan, new )  
+    end
+    
+    % Methods for making draws
+    methods
+        
         % Initializes an array of draws for a design.
         [overlap, ensSize, undrawn, subDraws] = initializeDraws( obj, cv, nDraws );
         
@@ -217,13 +215,6 @@ classdef stateDesign
         
         % Saves finalized draws to variables
         obj = saveDraws( obj, cv, subDraws, undrawn );
-    end
-    
-    % Methods for writing the ensemble to file
-    methods
-        
-        % Writes the ensemble to file
-        [] = write( obj, file, random, writenan, new )   
         
     end
         
