@@ -93,7 +93,10 @@ classdef varDesign
 
     % Utilities
     methods
-        [scs, keep] = loadingIndices( obj );
+        
+        % Determine all grid file indices that will be loaded for a set of
+        % draws.
+        [dataIndex, nSeq] = dataIndices( var, subDraws )
     end
     
 end
