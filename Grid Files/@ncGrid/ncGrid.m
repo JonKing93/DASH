@@ -6,6 +6,7 @@ classdef ncGrid < gridData
         filepath; % The filepath for the netcdf
         filename; % The name of the file. Used for error messages
         varName; % The name of the gridded data variable in the file
+        ncDim;   % The dimensions of the variable in the NetCDF file
     end
     
     % Constructor
@@ -79,6 +80,11 @@ classdef ncGrid < gridData
                 obj.size = [obj.size, ones(1,nExtra)];
             end 
             obj.dimOrder = dimOrder;
+
+            % Also record the dimensions within the NetCDF file
+            ncDim = cell( numel(info.Variables(v).Dimensions), 1 );
+            [ncDim{:}] = deal( info.Variables(v).Dimensions.Name );
+            obj.ncDim = string( ncDim );
         end
     end
     
@@ -86,7 +92,10 @@ classdef ncGrid < gridData
     methods
         
         % Reads data from the netcdf file
-        X = read( obj, start, count, stride, ~ );
+        [X, passVal] = read( obj, scs, ~, ~ )
+        
+        % Adjust scs for nc dimensions
+        [scs] = trimSCS( obj, scs );
         
     end
     
