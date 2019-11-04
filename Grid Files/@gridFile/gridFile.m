@@ -60,7 +60,7 @@ classdef gridFile
        [X, passVals] = read( file, start, count, stride );
        
        % Reorders grid scs for source grid order
-       [start, count, stride] = reorderSCS( start, count, stride, gridOrder, sourceOrder )
+       [scs] = reorderSCS( scs, gridOrder, sourceOrder )
        
    end
         
