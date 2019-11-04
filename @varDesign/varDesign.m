@@ -90,5 +90,10 @@ classdef varDesign
             end
         end
     end
+
+    % Utilities
+    methods
+        [scs, keep] = loadingIndices( obj );
+    end
     
 end
