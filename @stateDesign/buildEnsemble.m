@@ -59,10 +59,11 @@ checkFile( file, 'extension', '.ens' );
 if ~overwrite && exist(fullfile(pwd,file),'file')
     error('file "%s" already exists in the current directory.', file);
 end
+file = fullfile(pwd,file);
 
 % !!! TODO
 if ~writeNaN
-    error('writeNaN must be true. Sorry!');
+    error('writeNaN must be true. (An update is in the works...) Sorry!');
 end
 
 % Trim ensemble indices so that only complete sequences are allowed

@@ -75,7 +75,7 @@ elseif ~islogical(autoCouple) || ~isscalar(autoCouple)
 end
 
 varName = string(varName);
-file = string(file);
+file = string( which(file) );
 
 if ~isvarname(varName)
     error('varName must be valid Matlab variable name (starts with a letter, composed only of letters, digits, and underscores).');

@@ -69,6 +69,15 @@ classdef stateDesign
         end
     end
     
+    % Test method
+    methods
+     
+        [] = writeEnsfile( obj, file, random, writenan, new )
+        
+        [M, passVals] = varEnsemble( obj, var, nNew, varSize, nMean, passVals )
+    end
+    
+    
     % Basic user methods.
     methods
         
@@ -177,7 +186,7 @@ classdef stateDesign
         
         % Returns the state vector index limits and dimensional size of
         % each variable.
-        [varLimits, varSize, isState] = varIndices( obj );
+        [varLimits, varSize, isState, nMean] = varIndices( obj );
         
     end
     
@@ -208,17 +217,13 @@ classdef stateDesign
         
         % Saves finalized draws to variables
         obj = saveDraws( obj, cv, subDraws, undrawn );
-
     end
     
     % Methods for writing the ensemble to file
     methods
         
         % Writes the ensemble to file
-        write( obj, file, random, writenan, overwrite );
-        
-        % Determines which indices to read from for efficient loading.
-        [start, count, stride, keep] = loadingIndices( obj );
+        [] = write( obj, file, random, writenan, new )   
         
     end
         

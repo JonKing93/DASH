@@ -46,7 +46,8 @@ end
 % Get the ensemble for each variable. Record NaN members and write to file
 [varLimit, varSize, ~, nMean] = obj.varIndices;
 for v = 1:numel( obj.var )
-    M = obj.varEnsemble( obj.var(v), nWritten, varSize(v,:), nMean(v,:), passVals{passIndex(v)} );
+    [M,  passVals{passIndex(v)}] = ...
+        obj.var(v).buildEnsemble( nWritten, varSize(v,:), nMean(v,:), passVals{passIndex(v)} );
     hasnan = hasnan | any( isnan(M), 1 );
     ens.M( varLimit(v,1):varLimit(v,2), nWritten+(1:nNew) ) = M; 
 end

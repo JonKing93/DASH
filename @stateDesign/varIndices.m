@@ -1,4 +1,4 @@
-function[varLimits, varSize, isState] = varIndices( obj )
+function[varLimits, varSize, isState, nMean] = varIndices( obj )
 %% Returns the state vector index limits and dimensional size of each variable
 
 % Get the variables
@@ -9,19 +9,24 @@ nVar = numel( vars );
 nDim = numel( vars(1).dimID );
 varSize = NaN( nVar, nDim );
 isState = true( nVar, nDim );
+nMean = ones( nVar, nDim );
 
 % Get the size of each variable in each dimension. Number of state indices,
 % or number of sequence indices (adjusted for means)
 for v = 1:nVar
     
     for d = 1:nDim   
-        if vars(v).isState(d) && ~vars(v).takeMean(d)
-            varSize(v,d) = numel( vars(v).indices{d} );     % State dimension
-        elseif vars(v).isState(d) 
-            varSize(v,d) = 1;                           % State dimension with mean
-        else
-            varSize(v,d) = numel( vars(v).seqDex{d} );      % Ensemble dimension
+        if vars(v).isState(d) && ~vars(v).takeMean(d)  % State dimension, no mean
+            varSize(v,d) = numel( vars(v).indices{d} ); 
+        elseif vars(v).isState(d)                      % State dimension, with mean
+            varSize(v,d) = 1;                           
+            nMean(v,d) = numel( vars(v).meanDex{d} );
+        else                % Ensemble dimensions
+            varSize(v,d) = numel( vars(v).seqDex{d} );
             isState(v,d) = false;
+            if vars(v).takeMean(d) % Ensemble dimension with mean
+                nMean(v,d) = numel( vars(v).meanDex{d} );
+            end
         end
     end
 end
