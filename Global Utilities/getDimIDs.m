@@ -1,4 +1,4 @@
-function[dimID, atts, varName, lonDim, latDim, levDim, timeDim, runDim, triDim] = getDimIDs
+function[dimID, atts, varName, lonDim, latDim, levDim, timeDim, runDim, triDim, varDim] = getDimIDs
 %% This creates string IDs for all dimensions that can possibly occur in gridded data.
 %
 % dimID = getDimIDs
@@ -31,7 +31,10 @@ timeDim = "time";
 % Ensemble
 runDim = "run";
 
+% Variable dimension
+varDim = "var";
+
 % All grid dimensions
-dimID = [lonDim, latDim, triDim, levDim, timeDim, runDim];
+dimID = [lonDim, latDim, triDim, levDim, timeDim, runDim, varDim];
 
 end
