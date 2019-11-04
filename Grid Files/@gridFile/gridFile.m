@@ -57,7 +57,7 @@ classdef gridFile
        [X] = permuteSource( X, sourceOrder, gridOrder );
        
        % Returns requested data from sources
-       [X] = read( file, start, count, stride );
+       [X, passVals] = read( file, start, count, stride );
        
        % Reorders grid scs for source grid order
        [start, count, stride] = reorderSCS( start, count, stride, gridOrder, sourceOrder )

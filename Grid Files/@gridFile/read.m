@@ -1,48 +1,43 @@
-function[X] = read( file, start, count, stride )
+function[X, passVals] = read( file, scs, passVals )
 % Returns data from a .gridFile at the specified locations
 
-% Check the file
-gridFile.fileCheck( file );
-m = matfile( file );
-source = m.source;
-dimLimit = m.dimLimit;
-nDim = numel( m.dimOrder );
+% Either load grid data or used previously loaded data
+if ~isempty( passVals{1} )
+    grid = passVals{1};
+else
+    grid = load(file, '-mat', 'source','dimLimit','dimOrder','gridSize');
+    passVals{1} = grid;
+end
 
-% Check that start, count, and stride are vectors of positive integers,
-% each with one element per grid dimension.
-if ~isnumeric(start) || ~isreal(start) || ~isrow(start) || any(start<1) || any(mod(start,1)~=0)
-    error('start must be a row vector of positive integers');
-elseif ~isnumeric(count) || ~isreal(count) || ~isrow(count) || any(count<1) || any(mod(count,1)~=0)
-    error('count must be a row vector of positive integers.');
-elseif ~isnumeric(stride) || ~isreal(stride) || ~isrow(stride) || any(stride<1) || any(mod(stride,1)~=0)
-    error('stride must be a row vector of positice integers.');
-elseif length(start)~=nDim || length(count)~=nDim || length(stride)~=nDim
-    error('start, count, and stride must all have %.f elements.', nDim );
-elseif any( start + stride.*(count-1) > m.gridSize )
-    error('The read indices for dimension %s are longer than the dimension.', m.dimOrder(find(start + stride.*(count-1) > m.gridSize,1)) );
+% Check scs
+if ~isnumeric(scs) || ~isreal(scs) || any(scs(:)<1) || any(mod(scs(:),1)~=0)
+    error('scs must be a matrix of positive integers.');
+elseif ~isequal( [3, numel(grid.dimOrder)], size(scs) )
+    error('scs must be (3 x %.f)', numel(grid.dimOrder) );
+elseif any( scs(1,:) + scs(3,:).*(scs(2,:)-1) > grid.gridSize )
+    error('The read indices for dimension %s are longer than the dimension.', m.dimOrder(find(scs(1,:) + scs(3,:).*(scs(2,:)-1) > grid.gridSize, 1)) );
 end
 
 % Preallocate the read grid
-X = NaN( count );
-warning('Need to build a type check.');
+X = NaN( scs(2,:) );
 
 % Get the grid Indices to be loaded for each dimension.
+nDim = numel( grid.dimOrder );
 gridIndex = cell( nDim,1 );
 for d = 1:nDim
-    gridIndex{d} = start(d) : stride(d) : start(d)+stride(d)*(count(d)-1);
+    gridIndex{d} = scs(1,d) : scs(3,d) : scs(1,d)+scs(3,d)*(scs(2,d)-1);
 end
 
-% For each source grid
-for s = 1:numel(source)
+% Preallocate scs for each source grid and indices in overall read grid
+for s = 1:numel(grid.source)
     useSource = true;
-    sStart = NaN( 1, nDim );
-    sCount = NaN( 1, nDim );
+    sSCS = [NaN(2, nDim); scs(3,:)];
     readIndex = cell( nDim, 1 );
     
     % Check if it contains any data to be read. If so, get the start and
     % count within the source grid. Also note which data it is reading
     for d = 1:nDim
-        [~, loc] = ismember( gridIndex{d}, dimLimit(d,1,s):dimLimit(d,2,s) );
+        [~, loc] = ismember( gridIndex{d}, grid.dimLimit(d,1,s):grid.dimLimit(d,2,s) );
         if all(loc==0)
             useSource = false;
             break;
@@ -50,16 +45,18 @@ for s = 1:numel(source)
         
         readIndex{d} = find( loc~=0 );
         sourceIndex = loc( loc~=0 );
-        sStart(d) = sourceIndex(1);
-        sCount(d) = numel( sourceIndex );
+        sSCS(1,d) = sourceIndex(1);
+        sSCS(2,d) = numel( sourceIndex );
     end
     
     % Read the data from the source grid. Permute scs to match source
     % order, then permute output to match .grid order.
     if useSource
-        [sStart, sCount, sStride] = gridFile.reorderSCS( sStart, sCount, stride, m.dimOrder, source{s}.dimOrder );
-        Xsource = source{s}.read( sStart, sCount, sStride, file );
-        X( readIndex{:} ) = gridFile.permuteSource( Xsource, source{s}.dimOrder, m.dimOrder );
+        sSCS = gridFile.reorderSCS( sSCS, grid.dimOrder, grid.source{s}.dimOrder );
+        [Xsource, passVals{s+1}] = grid.source{s}.read( sSCS, file, passVals{s+1} );
+        X( readIndex{:} ) = gridFile.permuteSource( Xsource, grid.source{s}.dimOrder, grid.dimOrder );
     end
     
+end
+
 end
