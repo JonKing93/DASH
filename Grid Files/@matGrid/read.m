@@ -9,7 +9,7 @@ else
 end
 
 % Read the data
-nDim = length(start);
+nDim = size(scs,2);
 loadIndex = cell(nDim,1);
 for d = 1:nDim
     loadIndex{d} = scs(1,d) : scs(3,d) : scs(1,d)+scs(3,d)*(scs(2,d)-1);
