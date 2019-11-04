@@ -10,7 +10,7 @@ classdef (Abstract) gridData
     % Interface methods
     methods (Abstract = true)
         % Reads data from the data structure
-        X = read( obj, start, count, stride, gridpath ); 
+        [X, passVal] = read( obj, scs, gridpath, passVal ); 
     end
     
     % Static Utilities
@@ -23,6 +23,9 @@ classdef (Abstract) gridData
         
         % Get the size up to n dimensions
         [siz] = fullSize( siz, d )
+        
+        % Get load / keep indices
+        [scs, keep] = loadKeep( indices );
     end
     
 end
