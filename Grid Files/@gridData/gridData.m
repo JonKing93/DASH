@@ -23,9 +23,6 @@ classdef (Abstract) gridData
         
         % Get the size up to n dimensions
         [siz] = fullSize( siz, d )
-        
-        % Get load / keep indices
-        [scs, keep] = loadKeep( indices );
     end
     
 end
