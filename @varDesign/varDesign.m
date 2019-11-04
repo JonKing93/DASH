@@ -97,6 +97,9 @@ classdef varDesign
         % Determine all grid file indices that will be loaded for a set of
         % draws.
         [dataIndex, nSeq] = dataIndices( var, subDraws )
+        
+        % Builds the ensemble for the variable
+        [M, passVals] = buildEnsemble( var, nNew, varSize, nMean, passVals )
     end
     
 end
