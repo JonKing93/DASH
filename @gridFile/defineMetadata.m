@@ -5,14 +5,16 @@ function[meta] = defineMetadata( varargin )
 %
 % ----- Inputs -----
 %
-% dimN: A dimension ID for the Nth input dimension.
+% dimN: The name of the Nth input dimension. See getDimIDs.m for a
+%       list of recognized dimensions. A string.
 %
 % valN: The metadata for the Nth input dimension. Must be a numeric,
-% logical, char, string, or cellstring. Cannot have more than 2 dimensions.
+%       logical, char, string, or cellstring. Cannot have more than 2 dimensions.
+%       Each *ROW* will be treated as the metadata for one element.
 %
 % ----- Outputs -----
 %
-% meta: The associated metadata structure.
+% meta: The metadata structure for the inputs.
 
 % Check that the number of metadata elements is even
 nDim = nargin /2;

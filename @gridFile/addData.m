@@ -1,5 +1,5 @@
 function[] = addData( file, type, source, varName, dimOrder, meta )
-% Adds data to a .grid file
+% Adds a data source to a .grid file.
 %
 % gridFile.addData( file, 'nc', ncFile, varName, dimOrder, meta )
 % Adds data from a netCDF file.
@@ -8,7 +8,24 @@ function[] = addData( file, type, source, varName, dimOrder, meta )
 % Adds data from a saved .mat file.
 %
 % gridFile.addData( file, 'array', X, [], dimOrder, meta )
-% Adds data from a workspace array.
+% Adds data from a workspace array. Saves the array directly to file.
+%
+% ----- Inputs ----
+%
+% file: The name of the .grid file. A string. Must end with ".grid"
+%
+% ncFile: The name of a NetCDF file. Must be on the active path. A string.
+%
+% matFile: The name of a .mat file. Must be on the active path. A string.
+%
+% X: A numeric or logical array.
+%
+% varName: The name of a variable in a NetCDF or .mat file.
+%
+% dimOrder: The order of the dimensions in the data source.
+%
+% meta: A metadata structure for the data source. See gridFile.defineMetadata
+%       for details.
 
 % Check the file is grid / exists
 gridFile.fileCheck( file );

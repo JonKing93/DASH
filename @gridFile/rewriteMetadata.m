@@ -1,5 +1,16 @@
 function[] = rewriteMetadata( file, dim, newMeta )
-%% Rewrites the metadata along a specified dimension.
+%% Rewrites the metadata in a .grid file along a specified dimension.
+%
+% gridFile.rewriteMetadata( file, dim, newMeta )
+%
+% ----- Inputs -----
+%
+% file: The name of a .grid file. A string.
+%
+% dim: The name of the dimension for which metadata is being rewritten.
+%
+% newMeta: The new metadata. Must have one row per element along the
+%          dimension.
 
 % Check the file is .grid and exists
 gridFile.fileCheck( file );

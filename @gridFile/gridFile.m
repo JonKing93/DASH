@@ -1,5 +1,17 @@
 classdef gridFile
-    % A container class that describes a gridded dataset.
+    % Provides methods for creating and editing .grid files. These are
+    % containers for various data sources, including NetCDF files, .mat
+    % files, and MATLAB workspace arrays.
+    %
+    % gridFile Methods:
+    %   defineMetadata - Creates a metadata structure for a .grid file, or gridded data source.
+    %   new - Creates a new .grid file.
+    %   addData - Adds data to a .grid file.
+    %   expand - Increases the size of a dimension in a .grid file
+    %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file.
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019
     
     properties
         source; % A vector of data sources

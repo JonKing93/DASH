@@ -1,5 +1,16 @@
 function[] = expand( file, dim, newMeta )
-%% Expands a .grid file along a specified dimension.
+%% Increases the size of a dimension in a .grid File
+%
+% gridFile.expand( file, dim, newMeta )
+%
+% ----- Inputs -----
+%
+% file: A .grid file.
+%
+% dim: The name of the dimension being expanded. A string
+%
+% newMeta: New metadata for the dimension. Must have one row per new
+%          element along the dimension.
 
 % Check the file is .grid and exists.
 gridFile.fileCheck( file );
