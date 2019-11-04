@@ -54,14 +54,17 @@ classdef matGrid < gridData
             end
             obj.varName = varName;
             
+            % Get the data size. Remove any trailing singletons
+            siz = size( m, varName );
+            obj.size = gridData.squeezeSize( siz );
+            
             % Check the data is numeric or logical
-            if ~isnumeric( m.(varName) ) && ~islogical( m.(varName) )
+            nDim = numel( siz );
+            load1 = repmat( {1}, [nDim,1] );
+            val1 = m.(varName)(load1{:});
+            if ~isnumeric( val1 ) && ~islogical( val1 )
                 error('The variable %s is neither numeric nor logical.', varName );
             end
-            
-            % Get the data size. Remove any trailing singletons
-            siz = size( m.(varName) );
-            obj.size = gridData.squeezeSize( siz );
             
              % Check there is a dimension for all non-trailing singletons
             if ~isstrlist( dimOrder )
@@ -80,7 +83,7 @@ classdef matGrid < gridData
     
     % Utilities
     methods
-        X = read( obj, start, count, stride, ~ );
+        [X, passVal] = read( obj, scs, ~, passVal );
     end
     
 end
