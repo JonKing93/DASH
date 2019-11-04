@@ -40,9 +40,9 @@ classdef varDesign
         weightDims;    % The dimensions associated with each set of weights
         weights;        % The weights to use when taking a mean
     end
-        
+      
+    % Constructor
     methods
-        %% This is the constructor that builds the design object
         function obj = varDesign( file, name )
             
             % Get the name. Convert to string for internal use.
@@ -99,7 +99,7 @@ classdef varDesign
         [dataIndex, nSeq] = dataIndices( var, subDraws )
         
         % Builds the ensemble for the variable
-        [M, passVals] = buildEnsemble( var, nNew, varSize, nMean, passVals )
+        [M, passVals] = buildEnsemble( var, nWritten, varSize, nMean, passVals )
     end
     
 end
