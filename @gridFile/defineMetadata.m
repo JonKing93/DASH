@@ -9,7 +9,8 @@ function[meta] = defineMetadata( varargin )
 %       list of recognized dimensions. A string.
 %
 % valN: The metadata for the Nth input dimension. Must be a numeric,
-%       logical, char, string, or cellstring. Cannot have more than 2 dimensions.
+%       logical, char, string, cellstring, or datetime. Cannot have more
+%       than 2 dimensions.
 %       Each *ROW* will be treated as the metadata for one element.
 %
 % ----- Outputs -----
@@ -54,7 +55,7 @@ for v = 1:2:nargin
     elseif isdatetime(value) && any( isnat(value(:)) )
         error('The %s metadata contains NaT elements.', varargin{v} );
     end
-    if isrow( value ) && ~isscalar(value)
+    if isrow( value ) && ~isscalar(value) && ~ischar(value)
         warning('The %s metadata is a row vector and will be used for a single %s index.', varargin{v}, varargin{v} );
     end
     if size(value,1) ~= size( unique(value, 'rows'), 1 )

@@ -10,7 +10,7 @@ if ~takeMean
     if ismember('nanflag', inArgs) && ~isempty(nanflag)
         error('Cannot specify a NaN flag when not taking a mean.');
     elseif ~isempty(nanflag)
-        fprintf('No longer taking a mean. Deleting NaN flag for dimension %s of variable %s.', obj.var(v).dimID(d), obj.varName(v) );
+        fprintf('No longer taking a mean. Deleting NaN flag for dimension %s of variable %s.\n', obj.var(v).dimID(d), obj.varName(v) );
     end        
     nanflag = [];
 

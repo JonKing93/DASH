@@ -7,6 +7,7 @@ classdef gridFile
     %   defineMetadata - Creates a metadata structure for a .grid file, or gridded data source.
     %   new - Creates a new .grid file.
     %   addData - Adds data to a .grid file.
+    %   meta - Returns the metadata for a .grid file.
     %   expand - Increases the size of a dimension in a .grid file
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file.
     

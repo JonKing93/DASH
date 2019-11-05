@@ -20,7 +20,7 @@ function[] = new( filename, meta, attributes )
 
 % Check the file extension and that it does not exist
 gridFile.fileCheck( filename, 'ext' );
-if exist(filename, 'file')
+if exist(fullfile(pwd,filename),'file')
     error('The file %s already exists!', filename );
 end
 

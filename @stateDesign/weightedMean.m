@@ -42,7 +42,7 @@ elseif ~isstrflag(nanflag) || ~ismember(nanflag, ["includenan","omitnan"])
 elseif ~isnumeric(weights) || ~isreal(weights)
     error('Weights must be a numeric, real array.');
 elseif ~isequal(  size(weights),  dimSize(dims) )
-    errString = ['[', sprintf('%.f x ', obj.var(v).dimSize(dims)), sprintf('\b\b\b].')];
+    errString = ['[', sprintf('%.f x ', obj.var(v).dimSize(dims)), sprintf('\b\b\b]')];
     error('The size of the weights array must match the length of each dimension in the state vector: %s.', errString);
 elseif ~isempty( obj.var(v).weightDims ) && any( obj.var(v).weightDims(:,dims), 'all' )
     [~, dim] = find( obj.var(v).weightDims(:,dims) );

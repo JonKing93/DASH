@@ -53,7 +53,7 @@ nTime = size(A,2);
 A = reshape( A(H,:), [ensMeta.varSize(v,:), nTime] );
 
 % Include metadata for DA time steps
-dimID = [ensMeta.design.var(v).dimID; "DA_Time_Steps"];
+dimID = [ensMeta.design.var(v).dimID, "DA_Time_Steps"];
 meta.(dimID(end)) = (1:nTime)';
 
 % Optionally remove singletons

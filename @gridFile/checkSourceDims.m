@@ -4,11 +4,11 @@ function[sourceDims] = checkSourceDims( sourceDims)
 % checkSourceDims( dimOrder )
 
 % Check that this is a list of dimension IDs
-sourceDims = gridFile.checkDimList( sourceDims, 'sourceDims' );
+sourceDims = gridFile.checkDimList( sourceDims, 'dimOrder' );
 
 % Check for duplicates
 if numel(sourceDims) ~= numel(unique(sourceDims))
-    error('gridDims cannot contain repeat dimensions.');
+    error('dimOrder cannot contain repeat dimensions.');
 end
 
 end

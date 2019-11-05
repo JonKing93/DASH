@@ -7,7 +7,7 @@ for v = 1:numel(cv)
     var = obj.var( cv(v) );
     
     % Get the data indices from which values are loaded in the .grid file
-    [dataIndex, nSeq] = var.dataIndices( var, subDraws );
+    [dataIndex, nSeq] = var.dataIndices( subDraws );
     
     % Get the indices of repeated / overlapping sampling indices. Overwrite
     % overlapping draws with NaN and move to the end of the array.

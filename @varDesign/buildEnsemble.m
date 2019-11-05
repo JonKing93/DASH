@@ -69,10 +69,9 @@ for mc = 1:nNew
     data = data( unorder{:} );
     
     % Reshape sequences along the end+1 dimension
-    data = permute( data, [stateDim; ensDim] );
-    data = reshape( data, [varSize(stateDim), prod([nMean(ensDim),varSize(ensDim)])] );
+    data = reshape( data, [ varSize(stateDim).*nMean(stateDim),  prod([nMean(ensDim),varSize(ensDim)]) ] );
     data = data( seqOrder{:} );
-    data = reshape( data, [varSize(stateDim), nMean(ensDim), nSeq] );
+    data = reshape( data, [varSize(stateDim).*nMean(stateDim), nMean(ensDim), nSeq] );
     data = permute( data, unpermute );
     
     % Take weighted means

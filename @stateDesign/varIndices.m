@@ -20,7 +20,7 @@ for v = 1:nVar
             varSize(v,d) = numel( vars(v).indices{d} ); 
         elseif vars(v).isState(d)                      % State dimension, with mean
             varSize(v,d) = 1;                           
-            nMean(v,d) = numel( vars(v).meanDex{d} );
+            nMean(v,d) = numel( vars(v).indices{d} );
         else                % Ensemble dimensions
             varSize(v,d) = numel( vars(v).seqDex{d} );
             isState(v,d) = false;
