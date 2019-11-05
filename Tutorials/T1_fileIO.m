@@ -213,7 +213,7 @@ for f = 1:numel( trefFiles )
     end
     
     run = 2;
-    if ismember( f, [2 3] )
+    if ismember( f, [2 4] )
         run = 3;
     end
     
@@ -228,6 +228,21 @@ for f = 1:numel( trefFiles )
     % the name of the variable in the NetCDF is "TREFHT", 
     % the order of the dimensions of this variable is dimOrder, 
     % the data contained in this file is for this metadata.
+end
+
+% We can do a similar loop for the PSL files
+for f = 1:2:3
+    time = preIndustrial;
+    if ismember(f, [3 4])
+        time = postIndustrial;
+    end
+    run = 2;
+    if ismember(f, [2 4])
+        run = 3;
+    end
+    meta = gridFile.defineMetadata('lat',lat,'lon',lon,'time',time,'run',run,'var',"PSL");
+    
+    gridFile.addData('tutorial.grid', 'nc', pslFiles(f), "PSL", dimOrder, meta );
 end
 
 % Also, note that we can mix the type of data source used in a .grid
@@ -279,12 +294,13 @@ disp(meta);
 % 5 - 13. Then we can do
 newRuns = (4:13)';
 
-gridFile.expand('tutorial.grid', 'run', newRuns );
+% >> gridFile.expand('tutorial.grid', 'run', newRuns );
 % so, this says: expand the scope of tutorial.grid,
 % expand the run dimension to include 10 new elements,
 % the metadata for these 10 new runs are in newRuns.
 
-
+% (For now, let's hold off on actually expanding this .grid file -- it will
+% be more useful this way for later parts of the tutorial.)
 
 %% Rewrite metadata
 

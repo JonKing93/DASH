@@ -7,9 +7,9 @@ clearvars;
 %
 % For a specific assimilation, we will need to specify which portion of the
 % data we want to use. This is done by creating a special object that
-% contains instructions on how to build a state vector. In the dash
-% package, these design instructions are stored in a special object of the
-% "stateDesign" class.
+% contains instructions on how to build a state vector from a .grid file. 
+% In the dash package, these design instructions are stored in a special
+% object of the "stateDesign" class.
 
 % As with the "gridFile" class, you can see a reference page for
 % stateDesign using
@@ -26,10 +26,10 @@ clearvars;
 % Or click on the hyperlink on the stateDesign reference page.
 
 % Unlike the "gridFile" class, which was just a container for a set of
-% functions, the stateDesign class describes unique variables, each
+% fileIO functions, the stateDesign class describes unique variables, each
 % describing a unique set of instructions used to build a state vector.
 % Thus, we will usually treat stateDesigns like variables. However, they
-% are abit fancier than variables, because they also have some functions
+% are a bit more complex than variables, because they also have some functions
 % associated with them. From this point onward, I will refer to individual 
 % stateDesign variables as "stateDesign objects", and their associated
 % functions as "methods". 
@@ -87,14 +87,14 @@ clearvars design2;
 
 % Here we can see that "add" accepts 2 inputs, the name of the variable,
 % and the grid file in which the variable is located.
-design = design.add( 'PSL', 'LME-PSL.grid' );
+design = design.add( 'PSL', 'tutorial.grid' );
 
 % So this say, add a new variable to design. The variable's name is 'PSL',
-% and it is located in 'LME-PSL.grid'.
+% and it is located in 'tutorial.grid'.
 %
 % Note that the updated design is provided as output. The command
 %
-% >> design.add( 'PSL', 'LME-PSL.grid')
+% >> design.add( 'PSL', 'tutorial.grid')
 %
 % wouldn't actually do anything to design. It would instead return an
 % updated design that Matlab would automatically name "ans".
@@ -114,7 +114,7 @@ design = design.add( 'PSL', 'LME-PSL.grid' );
 % We'll need to note which indices to extract data from along each
 % dimension in the .grid file. Some metadata might be useful. To get .grid
 % file metadata use
-meta = gridFile.meta( 'LME-PSL.grid' );
+meta = gridFile.meta( 'tutorial.grid' );
 
 % We can see that meta has a field for each dimension. And each field
 % contains the metadata for the dimension.
@@ -122,7 +122,7 @@ meta = gridFile.meta( 'LME-PSL.grid' );
 % Lets get all the northern hemisphere latitudes and the starting index of
 % each JJA mean (so, all of the Junes)
 nh = meta.lat > 0;
-june = (meta.time(:,2) == 6);
+june = month( meta.time ) == 6;
 
 % We are almost ready to edit the design, but first, an important concept:
 % In this tutorial, I will refer to "state dimensions" and "ensemble
@@ -162,6 +162,9 @@ june = (meta.time(:,2) == 6);
 % So, back to the example. Let's first do the northern hemisphere
 design = design.edit( 'PSL', 'lat', 'state', 'index', nh );
 
+% Next, we need to note which variable this is in the grid file
+design = design.edit( 'PSL', 'var', 'state', 'index', 2 );
+
 % This says: edit the PSL variable, edit the lat dimension, the lat
 % dimension is a state dimension, the state vector should be built from the
 % data at these lat indices.
@@ -186,11 +189,12 @@ design = design.edit( 'PSL', 'run', 'ens' );
 % spatial dimensions will be different).
 %
 % Let's add this variable, and then edit it in the design
-design = design.add( 'PSL_globe', 'LME-PSL.grid' );
+design = design.add( 'PSL_globe', 'tutorial.grid' );
 design = design.edit( 'PSL_globe', 'time', 'ens', 'index', june, 'mean', [0 1 2] );
 design = design.edit( 'PSL_globe', 'lat', 'state', 'mean', true );
 design = design.edit( 'PSL_globe', 'lon', 'state', 'mean', true );
 design = design.edit( 'PSL_globe', 'run', 'ens');
+design = design.edit( 'PSL_globe', 'var', 'state', 'index', 2 );
 
 % And we're done! Note that the syntax for means is different in state
 % dimensions and ensemble dimensions. State dimensions have a simple
@@ -199,8 +203,17 @@ design = design.edit( 'PSL_globe', 'run', 'ens');
 
 % If we wanted, we could instead use a weighted spatial mean. Say we knew
 % the area in each grid node and wanted to weight by it.
+
+% (Here, I'm just undoing the previous mean)
+design = design.edit( 'PSL_globe', 'lat', 'state', 'mean', false );
+design = design.edit( 'PSL_globe', 'lon', 'state', 'mean', false );
+
+% And here I'm specifying to use a weighted mean
 gridArea = rand( 96, 144 );
 design = design.weightedMean( 'PSL_globe', ["lat","lon"], gridArea );
+
+% Note that before providing the weights, we needed to specify the order of
+% the dimensions in the array of weights.
 
 
 %% Sequences
@@ -235,17 +248,14 @@ design = design.weightedMean( 'PSL_globe', ["lat","lon"], gridArea );
 % reference to contstruct the sequence.
 %
 % So using our example
-design = design.edit( 'PSL', 'time', 'ens', 'index', june, 'seq', [0 1 2], 'meta', ["June","July","August"] );
+design = design.edit( 'PSL', 'time', 'ens', 'index', june, 'seq', [0 1 2], 'meta', ["June";"July";"August"] );
 
-% Note that you MUST provide metadata for sequences. The rules for sequence
-% metadata are more flexible that for .grid file metadata. There must still
-% be 1 element (vector) or 1 row (matrices) of metadata for each sequence
-% element, BUT the metadata no longer needs to be numeric.
+% Note that you MUST provide metadata for sequences. 
 
-% It's also convenient to not that the reference index for a sequence does
+% It's also convenient to note that the reference index for a sequence does
 % not need to be the actual start of the sequence. Instead of line 233, we
 % could instead do
-january = meta.time(:,2)==1;
+january = month( meta.time ) == 1;
 design = design.edit( 'PSL', 'time', 'ens', 'index', january, 'seq', [5 6 7], 'meta', ["June","July","August"] );
 
 % and get exactly the same result.

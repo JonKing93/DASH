@@ -73,7 +73,7 @@ output = da.ensrf;
 % Inputs are the state vector (or matrix of state vectors), name of the
 % variable we wish to extract, and ensemble metadata associated with the state
 % vector.
-Am = dash.regrid( output.Amean, 'PSL', ens.metadata );
+Am = dash.regrid( output.Amean, 'T', ens.metadata );
 
 % We can do
 size(Am)
@@ -81,7 +81,7 @@ size(Am)
 
 % Although, usually it's useful to also have the metadata associated with
 % the grid
-[Am, meta] = dash.regrid( output.Amean, 'PSL', ens.metadata );
+[Am, meta] = dash.regrid( output.Amean, 'T', ens.metadata );
 
 % Here
 meta.lat
@@ -100,6 +100,5 @@ meta.time
 % dimension as a single vector.)
 %
 % Note that this method accepts one additional input. For the tutorial,
-% TRaCE grid, this is the land/ocean indices we saved into the specs
+% TRaCE grid, this is the land/ocean indices we saved into the attributes
 % structure in the first tutorial.
-% indices we saved into the "s

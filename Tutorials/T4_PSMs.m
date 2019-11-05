@@ -59,13 +59,13 @@ help ukPSM.getStateIndices
 % We can see that the ukPSM requires knowing ensemble metadata, the name of
 % the SST variable, and sequence metadata for all 12 months. We'll use the
 % tutorial_sequence.ens ensemble built at the end of the last tutorial.
-% Let's pretend that the PSL variables are actually SST variables for
+% Let's pretend that the Tref variables are actually SST variables for
 % convenience.
 ens = ensemble('tutorial_sequence.ens');
 months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]';
 
 for s = 1:nSites
-    F{s}.getStateIndices( ens.metadata, "PSL", months );
+    F{s}.getStateIndices( ens.metadata, "T", months );
 end
 
 % Great! The PSMs are ready for use

@@ -4,19 +4,20 @@ clearvars;
 %% Make the design
 % 
 % The basic workflow for building an ensemble in dash is
-% 1. Design a state vecotr
+% 1. Design a state vector
 % 2. Write an ensemble to a .ens file
 % 3. Load the ensemble
 
 % I'll start off by quickly making the state design we made in Tutorial 2.
 % (PSL NH JJA mean, with PSL JJA global mean)
-file = 'LME-PSL.grid';
+file = 'tutorial.grid';
 meta = gridFile.meta(file);
 d = stateDesign('tutorial');
 d = d.add( 'PSL', file );
 d = d.add( 'PSL_globe', file);
 
-d = d.edit( 'PSL', 'time', 'ens', 'index', meta.time(:,2)==6, 'mean', [0 1 2]);
+d = d.edit( 'PSL', 'var', 'state', 'index', 2 );
+d = d.edit( 'PSL', 'time', 'ens', 'index', month(meta.time)==6, 'mean', [0 1 2]);
 d = d.edit( 'PSL', 'run', 'ens');
 d = d.copy( 'PSL', 'PSL_globe');
 
@@ -42,7 +43,11 @@ ens = d.buildEnsemble( 50, 'tutorial.ens');
 ens2 = d.buildEnsemble( 50, 'tutorial_ordered.ens', false );
 
 % Finally, you can note to overwrite exisiting files if desired. The line
-ens = d.buildEnsemble( 50, 'tutorial.ens' );
+try
+    ens = d.buildEnsemble( 50, 'tutorial.ens' );
+catch ME
+    disp( ME.message )
+end
 
 % will now throw an error. But
 ens = d.buildEnsemble( 50, 'tutorial.ens', true, true );
@@ -162,17 +167,18 @@ ens = ensemble('tutorial.ens');
 
 %% Run this, but ignore this, it's for the next tutorial.
 
-file = 'LME-PSL.grid';
+file = 'tutorial.grid';
 meta = gridFile.meta(file);
 months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 d = stateDesign('tutorial');
-d = d.add( 'PSL', file );
-d = d.add( 'PSL_globe', file);
-d = d.edit( 'PSL', 'time', 'ens', 'index', meta.time(:,2)==1, 'seq', 0:11, 'meta', months);
-d = d.edit( 'PSL', 'run', 'ens');
-d = d.copy( 'PSL', 'PSL_globe');
-d = d.edit( 'PSL', 'lat', 'state', 'index', meta.lat>0 );
-d = d.edit( 'PSL_globe', 'lat', 'state', 'mean', true );
-d = d.edit('PSL_globe', 'lon', 'state', 'mean', true );
+d = d.add( 'T', file );
+d = d.add( 'T_globe', file);
+d = d.edit( 'T', 'time', 'ens', 'index', month(meta.time)==1, 'seq', 0:11, 'meta', months);
+d = d.edit( 'T', 'run', 'ens');
+d = d.edit( 'T', 'var', 'state', 'index', 1 );
+d = d.copy( 'T', 'T_globe');
+d = d.edit( 'T', 'lat', 'state', 'index', meta.lat>0 );
+d = d.edit( 'T_globe', 'lat', 'state', 'mean', true );
+d = d.edit('T_globe', 'lon', 'state', 'mean', true );
 
 d.buildEnsemble(10,'tutorial_sequence.ens');
