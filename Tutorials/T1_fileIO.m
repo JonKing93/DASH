@@ -4,8 +4,14 @@
 
 % This demonstrates how to create a .grid file from data.
 %
-% The purpose of a .grid file is to store information in a common data
-% format for use with the DASH package.
+% The purpose of a .grid file is to store information in an organized
+% format for the DASH package.
+%
+% The grid files are serve as containers for various types of stored data,
+% including NetCDF files, .mat files, and workspace arrays. For netcdf and
+% .mat data sources, associated grid files do not actually store data, but
+% rather instructions for how to extract information from the appropriate
+% file.
 %
 % The methods used for working with .grid files are all stored in the
 % gridFile class. See
@@ -21,61 +27,109 @@
 % code.
 
 % The basic workflow for .grid files is:
-%   Step 1: Get your data into a Matlab array
-%   Step 2: Get metadata for each non-singleton dimension of the array
-%   Step 3: Use the array and associated metadata to build a .grid file.
+%   Step 1: Define metadata for the dimensions of all the gridded data to be
+%           placed in the .grid file.
+%   Step 2: Initialize a new .grid file.
 %
-%   (Optional) Step 4: If your data is too large to fit in active memory
-%   all at once, append sections of your data to an existing .grid file.
+%   Then, for each gridded data source (NetCDF file, .mat file, or
+%   workspace array)
+%       Step 3: Specify some metadata for the dimensions in the data source.
+%       Step 4: Add the data source to the .grid file.
 
-% Part of the purpose of the .grid files is to increase workflow
-% efficiency. By converting model output fields into .grid files once, you
-% are able to use any part of the output field for any subsequent data
-% assimilation test. This mitigates time spent downloading files, loading
-% them into matlab, etc. Because of this, I recommend using complete model
-% output fields to build .grid files, rather than some subset of the field
-% that is of interest for current analyses.
+% The purpose of the .grid files is to increase workflow efficiency.
+% Storing data in the .grid file limits file IO to a single instance.
+% Furthermore, all data is catalogued with associated metadata for use with
+% the DASH package, so can be sorted via metadata at any later point.
 
-% In reality, a .grid file is just a netcdf file that I have ordered in a
-% specific manner. So you can use
+
+
+%% Define metadata.
+
+% Before initializing a new .grid file, we need to specify what data it can
+% eventually contain. Do this by defining metadata for each dimension of
+% the data that will be added to the file.
+
+% I'll illustrate this with an example case using some output fields from
+% the CESM Last Millennium ensemble. 
 %
-% >> ncdisp( myGridFile.grid )
+% We're going to be using near-surface temperature (Tref) and
+% sea level pressure (SLP) from runs 2 and 3.
+
+% Here are the netcdf files containing the near surface temperature. You
+% can see that the files for each run are split into 850-1849, and 1850-2005
+trefFiles = ["b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.085001-184912.nc";
+             "b.e11.BLMTRC5CN.f19_g16.003.cam.h0.TREFHT.085001-184912.nc"
+             "b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc"
+             "b.e11.BLMTRC5CN.f19_g16.003.cam.h0.TREFHT.185001-200512.nc"];
+         
+% Similarly here are the files for sea level pressure
+pslFiles = ["b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc";
+            "b.e11.BLMTRC5CN.f19_g16.003.cam.h0.PSL.085001-184912.nc";
+            "b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.185001-200512.nc";
+            "b.e11.BLMTRC5CN.f19_g16.003.cam.h0.PSL.185001-200512.nc"];
+        
+% These files are all for data on the CESM-LME model grid. We want to add
+% these files to a common .grid file that we can use later for data
+% assimilation. We'll want to get all the possible spatial, time, run, and
+% variable metadata and use it to define the scope of the .grid file.
+
+% So let's do that now. The spatial metadata can be obtained directly from
+% the NetCDF files
+lon = ncread( pslFiles(1), 'lon' );
+lat = ncread( pslFiles(1), 'lat' );
+
+% Futhermore, we know the total time scope of the files is from 850-1849,
+% spaced in monthly increments.
+time = datetime(850,1,15) : calmonths(1) : datetime(1849,12,15);
+
+% Also, these files are for runs 2 and 3. And they define 2 variables
+% "Tref" and "SLP"
+run = [2;3];
+var = ["Tref";"PSL"];
+
+% We'll use these values to create a metadata structure that will define
+% the scope of the grid file
+meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run, 'var', var );
+
+% So, this line defines metadata for the longitude, latitude, time,
+% ensemble, and variable dimensions of our 5 dimensional dataset. We can
+% use it now to initialize a new gridFile.
 %
-% if you want to see what's under the hood.
+% I have used metadata values that I find meaningful, but you may prefer
+% completely different metadata. That's fine! You can use any numeric,
+% logical, character, string, cellstring, or datetime matrix to define
+% metadata for any dimension. 
+%
+% However, it is important to note that the metadata must have 1 ROW per
+% element down the appropriate dimension.
+
+% For example, we could provide more information about the variables in
+% their metadata. If we wanted to also provide information about variable
+% units, we could do
+%   >> var = ["Tref", "Kelvin";   "Slp", "Pa"];
+%   >> meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run, 'var', var );
+
 
 %% Make a new .grid file
 
-% We're going to start by extracting data from some file and moving it into
-% a Matlab array. In this case, we're going to use output of sea level
-% pressure from the last millennium ensemble. Specifically, output from the
-% second run over the period January 850 - December 1849.
-file = 'b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc';
-
-% Extract the variable, and some relevant metadata
-PSL = ncread( file, 'PSL');
-lat = ncread( file, 'lat' );
-lon = ncread( file, 'lon' );
-time = datevec(  datetime(850,1,15):calmonths(1):datetime(1849,12,15)  );
-run = 2;
-
-% (Note that the time metadata here is in a datevector array, which is just
-% my personal preference for working with time metadata. Feel free
-% to use whatever format you like!)
+% When intializing a new .grid file, we can also provide non-dimensional
+% metadata, which I will refer to as attributes. To create attributes for 
+% the .grid file, provide a scalar strucutre whose fields contain the 
+% values of interest. Again, the metadata is entirely up to you, there are 
+% no required fields.
 %
-% ...well almost. Currently, the .grid files only accept numeric metadata,
-% so you can't use strings, objects, cells, etc. Again, ONLY NUMERIC
-% METADATA. Also important, metadata can be a matrix. In this case, each
-% ROW must correspond to one index along the appropriate dimension.
-% 
-% Vector metadata must have 1 element for each index along the appropriate
-% dimension, but you can use a column or a row vector - it doesn't matter.
+% In fact, attributes are entirely optional. You don't need to actually
+% provide them when creating a .grid file.
 
-% Another thing we need to make the .grid file is the order of the
-% dimensions in PSL. In the .grid file, the data will be stored in some
-% custom dimensional order, but you don't need to worry about that as a
-% user. Just provide the order of your data and the code will do all the
-% rest.
-%
+% For a NetCDF file, we need to provide the name of the variable in the
+% file, as well as the order of the dimensions of the data. The .grid files
+% enforce an internal dimensional order when reading from different data
+% sources, but you don't need to worry about it as a user. Simply provide
+% the order in the data source, and the .grid file will handle the rest.
+
+% We can look in one of the NetCDF files
+ncdisp( slpFiles(1), 'PSL');
+
 % Looking at the PSL field, we can see it is (144 x 96 x 12000), which is
 % longitude x latitude x time. These dimensions have specific names in
 % dash. They are lon, lat, and time. In fact, the full set of possible
@@ -87,172 +141,135 @@ run = 2;
 % tri: A tripolar dimension (More on this later in the tutorial.)
 % time: A time dimension
 % run: A model-ensemble dimension
+% var: A dimension for different variables.
 %
 % It is the user's responsibility to know the names of dimensions in dash.
 % These can all be seen in the function "getDimIDs.m". If you would like to
 % rename a dimension (say, from "lat" to "latitude"), you can do so by 
 % changing the name in "getDimIDs.m". Similarly, if you find you need more
-% than 6 data dimensions, you can add additional dimensions to this
+% than 7 data dimensions, you can add additional dimensions to this
 % function. However, for now, I'd recommend leaving it alone.
 
-% So, back to our tutorial on .grid files. The order of dimensions is
+% So, the dimensional order for our files is
 dimOrder = ["lon","lat","time"];
 
-% Recall that we noted metadata for the "run" dimension back in line 60.
-% Don't we need to note the "run" dimension in the dimension order? What
-% about those "tri" and "lev" dimensions in lines 79 and 80?
+% *** Note: The data sources added to a .grid file DO NOT need to store
+% data in the same dimensional order. In this tutorial, all the data
+% sources will have the same order, but you could easily have a data source
+% that is, say lon x lat x time, and a second source that is time x lev x
+% lat x lon and be fine. As long as you provide the order of the dimensions
+% in the data source, everything will be reordered correctly in the grid.
+
+
+% Now, we also need to specify the metadata for this data source. That way,
+% the .grid file will know which data each data source contains. For these
+% files, each NetCDF encompasses a full global spatial grid (so, the same
+% lat and lon), one of two time spans, one of 3 runs, and one of two
+% variables.
+
+% Here, we'll start with the temperature files. We'll start by defining the
+% two time spans
+preIndustrial = ( datetime(850,1,15) : calmonths(1) : datetime(1849,12,15) )';
+postIndustrial = ( datetime(1850,1,15): calmonths(1) : datetime(2005,12,15) )';
+
+% We can then process each file using a loop. We'll specify the metadata
+% for each file, and then add it to the grid
+for f = 1:numel( trefFiles )
+    
+    % Specify metadata
+    time = preIndustrial;
+    if ismember(f, [3 4])
+        time = postIndustrial;
+    end
+    
+    run = 2;
+    if ismember( f, [2 3] )
+        run = 3;
+    end
+    
+    sourceMetadata = gridFile.defineMetadata('lon',lon, 'lat',lat, 'time', time, 'run', run, 'var', 'Tref' );
+    
+    % Add the data source
+    gridFile.addData('tutorial.grid', 'nc', trefFiles(f), "TREFHT", dimOrder, sourceMetadata );
+    
+    % so, this says: Add some data to the grid file name 'tutorial.grid',
+    % the data I am adding is from a NetCDF file, 
+    % the name of the file is in trefFiles, 
+    % the name of the variable in the NetCDF is "TREFHT", 
+    % the order of the dimensions of this variable is dimOrder, 
+    % the data contained in this file is for this metadata.
+end
+
+% Also, note that we can mix the type of data source used in a .grid
+% files. For example, say I had PSL data stored in a .mat file named
+% "LME_SLP_run4_850-1850.mat", and that the PSL variable was named "SLP" in
+% this mat file, and the dimension order is lat x time x lon. Then I could
+% do
 %
-% Short answer: No. You only need to provide names for dimensions that are
-% not trailing singletons. But if you want, doing
+% >> gridFile.addData( 'tutorial.grid', 'mat', "LME_SLP_run4_850-1850.mat", "SLP", ["lat", "time", "lon"], sourceMetadata );
 %
-% >> dimOrder = ["lon","lat","time","run"]
+% Or if I had the data in an array named X loaded into the workspace, I
+% could do
 %
-% will also work fine.
+% >> gridFile.addData( 'tutorial.grid', 'array', X, [], ["lat","time","lon"], sourceMetadata )
+% (Note that workspace arrays are written directly to the .grid file. So
+% you can clear your workspace later, and the data will still be
+% available.)
+
+% Nice! We've successfully added data to a .grid file. You can stop here if
+% you like, but the next two sections explain a few more useful methods for
+% working with .grid files
+
+%% Extract grid metadata.
+
+% Later, we will see that it is useful to catalogue data in a .grid file by
+% its metadata. To extract metadata for a file, use
+
+meta = gridFile.meta( 'tutorial.grid' );
+
+% By looking at meta, we can see that it contains the metadata for each
+% dimension, and also the grid attributes.
+disp(meta);
 
 
-% Another thing needed for the .grid file is the name of any dimension on
-% which we might like to append additional data later. I know there are
-% multiple ensemble members of the LME, and I also know the data output
-% proceeds from 850 - 2005, so I'd like to leave the "time" and "run"
-% dimensions available for appending more data later.
-appendDims = ["time","run"];
+%% Expand a .grid file.
 
-
-% One last input. Right now, we have metadata for each of the data
-% dimensions (lat, lon, time, and run). But what about non-dimensional
-% metadata? We can also provide some of those. For those familiar with
-% NetCDF files, these are essentially attributes. For .grid files, specify
-% these data as a structure.
+% As more data becomes available over time, it may be desirable to expand
+% the scope of the .grid file. For example, in tutorial.grid we added data
+% from runs 2 and 3 of CESM-LME. Let's say that run 4 just completed and
+% that we would like to add it to the file as well. Currently, the scope of
+% the .grid file only covers runs 2 and 3, so we will need to expand its
+% scope to cover run 4.
 %
-% Worth noting that character metadata *is* allowed in this structure,
-% unlike the dimensional metadata.
+% We will expand the scope of the grid file using the "expand" method.
+% To use this method, specify the dimension being expanded, and the new
+% metadata for the expanded elements.
 %
-% Here, I'm going to store some information about the data and the model,
-% but you can use anything at all. 
-specs = struct('Variable','Sea Level Pressure', ...
-    'Model', 'CESM Last Millennium Ensemble');
+% For this tutorial, let's say we anticipate not just run 4, but also runs
+% 5 - 13. Then we can do
+newRuns = (4:13)';
+
+gridFile.expand('tutorial.grid', 'run', newRuns );
+% so, this says: expand the scope of tutorial.grid,
+% expand the run dimension to include 10 new elements,
+% the metadata for these 10 new runs are in newRuns.
 
 
-% Okay! We're ready to make a new grid file. Let's call it LME-PSL.grid.
-% (Note that you must end the filename with a .grid extension.)
-newfile = 'LME-PSL.grid';
 
-% To create the new .grid file, use the command
-gridFile.new( newfile, PSL, dimOrder, appendDims, specs, 'time', time, ...
-    'run', run, 'lon', lon, 'lat', lat );
+%% Rewrite metadata
 
-% What does this say?
-% gridFile is an object that holds functions for working with .grid files
+% Sometimes, it may be necessary to change the format of the metadata. Do
+% this using the "rewriteMetadata" method. Syntax is similar to "expand";
+% first provide the dimension that is receiving new metadata, then provide
+% the new metadata.
 %
-% gridFile.new
-% says to look in that object and use the function for making new .grid
-% files.
-% 
-% (Note that you can use help commands in the same way as with normal
-% functions.)
-%
-% >> doc gridFile.new
-%
-% will pull up a reference page on using the method, and
-%
-% >> help gridFile.new
-%
-% will print help into the console. Try it out!
+% For example, perhaps I decided to rename the variables. I can do
+newMetadata = ["T";"P"];
 
-% So, back to line 141. It says:
-%
-% Use the function for making new grid files to create a new file. The name
-% of the new file is newfile, the data to store in the file is PSL, the
-% order of dimensions in PSL is dimOrder, I want to be able to append along
-% the appendDims dimensions later, this data has non-dimensional metadata
-% specs, it has "time" metadata equal to time, "run" metadata equal to run,
-% "lat" metadata lat, and "lon" metadata lon.
-%
-% Note that the order you provide the dimensional metadata doesn't matter.
-% I could have instead done
-%
-% >> gridFile.new( ..., 'lat', lat, 'lon', lon, 'run', run, 'time', time )
-%
-% and it would have been fine.
-
-% Congrats! You made your first .grid file.
-%
-% (As mentioned before, if you are curious at looking under the hood, you
-% can do 
-%
-% >> ncdisp('LME-PSl.grid')
-%
-% to see what's inside the .grid file.)
-
-%% Append data to a .grid file.
-
-% As it turns out, the output for the PSL field over every ensemble member
-% of the LME is too large to hold in my computer's active memory. To allow
-% large data arrays to be stored in .grid files, you can build up the .grid
-% files iteratively, by appending new data to an existing array.
-
-% Let's do an example of that now. I mentioned that LME output is over
-% 850 - 2005, but we only added data from 850 - 1849 in the previous
-% section. Let's add in the remainder of that data.
-file = 'b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.185001-200512.nc';
-PSL2 = ncread(file, 'PSL');
-
-% Now, the lat and lon data dimensions already have metadata. We don't need
-% to provide it again. However, we're adding data along the "time"
-% dimension. So we will need to provide metadata for those new time
-% indices.
-time2 = datevec(  datetime(1850,1,15):calmonths(1):datetime(2005,12,15) );
-
-% Note that we don't need to provide metadata for the existing part of the
-% time dimension (the part from 850 - 1849). Instead, just the new indices
-% being append along that dimension
-
-% We also need to provide the dimension order for the new data. In this
-% case, it is the same order as before, but that is not necessary for
-% appending data to .grid files.
-dimOrder = ["lon","lat","time"];
-
-
-% Alright, to append the data, we do
-gridFile.append( 'LME-PSL.grid', PSL2, dimOrder, "time", time2 );
-
-% This says, look in the gridFile object and use the function for appending
-% data. Append any new data into the existing file 'LME-PSL.grid', append
-% the data in PSL2, the dimension order of this new data is 
-% lon x lat x time, append the new data along the "time" dimension, the new
-% metadata for this dimension is time2.
-%
-% As usual, you can do
-% >> doc gridFile.append
-%
-% >> help gridFile.append
-%
-% for help on using the function.
-
-% When appending data, you can only append along 1 dimension. Additionally,
-% the new data must be a complete hyperslab of all the other dimensions.
-%
-% For example, pretend I have PSL data from run 3 that I would like to
-% append.
-PSL3 = PSL;
-run3 = 3;
-dimOrder = ["lon","lat","time"];
-
-% Note that this data is only from 850 - 1849, but the data in LME-PSL.grid
-% now extends from 850 - 1849. Attempting to append this new data will
-% cause an error
-gridFile.append( 'LME-PSL.grid', PSL3, dimOrder, "run", run3 );
-
-
-% Instead, I will need to provide a complete (lon x lat x time) hyperslab.
-% So something along the lines of
-PSL3 = cat(3, PSL, PSL2);
-gridFile.append( 'LME-PSL.grid', PSL3, dimOrder, "run", run3 )
-
-% (Use the append function to add data to 'LME-PSL.grid', the new data is
-% PSL3, the order of dimensions is dimOrder, append data to the run
-% dimension, the new "run" metadata is run3.
-
+gridFile.rewriteMetadata( 'tutorial.grid', 'var', newMetadata );
+% this says: rewrite some of the metadata in tutorial.grid,
+% specifically rewrite the metadata for the var dimension,
+% the new metadata is in newMetadata.
 
 
 %% Working with tripolar .grids
@@ -264,7 +281,7 @@ gridFile.append( 'LME-PSL.grid', PSL3, dimOrder, "run", run3 )
 
 % To add a tripolar grid to a .grid file, we will first need to convert the
 % tripolar spatial grid to a vector. In this way, each index along the 
-% spatial tripolar vector (the tripolar dimension) will be describes by a
+% spatial tripolar vector (the tripolar dimension) will be described by a
 % unique lat-lon metadata point.
 
 % Here we will do a demo using SSTs from a run of TRACE
@@ -291,6 +308,9 @@ lat = lat(:);
 lon = lon(:);
 tri = [lat, lon];
 
+% Define the scope of the grid file
+meta = gridFile.defineMetadata('time', time, 'tri', tri );
+
 % Looking at the tri metadata, we see it is a 2 column matrix. Each row
 % corresponds to one index along the tripolar dimension (the vectorized
 % lat-lon dimensions), with a unique lat-lon metadata point.
@@ -298,19 +318,21 @@ dimOrder = ["tri","time"];
 appendDims = [];
 
 % Later, we will see that it can be useful to know the location of land
-% elements (NaN values) in a tripolar grid. Let's record those and save
-% them to specs.
-%
-% Remember that specs metadata is limited to numeric values and characters,
-% so we will convert the logical indices to singles here.
-%
-% If you would like to store a matrix of non-dimensional metadata, I
-% recommend reshaping it to a row vector, and then saving the original size
-% of the matrix as an additional attribute so that you can reshape it back
-% to a matrix later.
+% elements (NaN values) in a tripolar ocean grid. Let's record those and save
+% them to the grid attributes.
 land = any( isnan(sst), 2 );
-land = single(land);
-specs = struct('Variable','SST','Model', 'TRaCE', 'land_indices', land );
+attributes = struct('Model', 'TRaCE', 'land_indices', land );
 
-% Now make the grid file
-gridFile.new( 'TRACE-SST.grid', sst, dimOrder, appendDims, specs, 'tri', tri, 'time', time );
+% Now initialize the grid file
+gridFile.new( 'trace_sst.grid', meta, attributes );
+
+% And add the data
+gridFile.addData( 'trace_sst.grid', 'array', sst, dimOrder, meta );
+
+% This says:
+% Add a data source to trace_sst.grid,
+% The data source is a workspace array,
+% Specifically this sst array,
+% the order of the dimensions is tripolar (merged lat-lon) x time,
+% the array has this metadata.
+
