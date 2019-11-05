@@ -39,7 +39,7 @@ classdef arrayGrid < gridData
     
     % Interface utilities
     methods
-        [X] = read(obj, start, count, stride, gridpath );
+        [X, passVal] = read(obj, scs, gridpath, passVal );
     end
     
 end

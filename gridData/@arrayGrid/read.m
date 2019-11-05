@@ -7,7 +7,7 @@ for d = 1:nDim
     loadIndex{d} = scs(1,d): scs(3,d) : scs(1,d)+scs(3,d)*(scs(2,d)-1);
 end
 
-if isempty( passVal )
+if ~isempty( passVal )
     m = passVal;
 else
     m = matfile( gridpath );
