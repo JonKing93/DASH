@@ -1,4 +1,7 @@
 %% Tutorial 1: FILE IO
+clearvars;
+close all;
+clc;
 
 %% Introduction 
 
@@ -78,9 +81,9 @@ pslFiles = ["b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc";
 lon = ncread( pslFiles(1), 'lon' );
 lat = ncread( pslFiles(1), 'lat' );
 
-% Futhermore, we know the total time scope of the files is from 850-1849,
+% Futhermore, we know the total time scope of the files is from 850-2005,
 % spaced in monthly increments.
-time = datetime(850,1,15) : calmonths(1) : datetime(1849,12,15);
+time = ( datetime(850,1,15) : calmonths(1) : datetime(2005,12,15) )';
 
 % Also, these files are for runs 2 and 3. And they define 2 variables
 % "Tref" and "SLP"
@@ -90,6 +93,7 @@ var = ["Tref";"PSL"];
 % We'll use these values to create a metadata structure that will define
 % the scope of the grid file
 meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run, 'var', var );
+
 
 % So, this line defines metadata for the longitude, latitude, time,
 % ensemble, and variable dimensions of our 5 dimensional dataset. We can
@@ -121,6 +125,32 @@ meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run
 % In fact, attributes are entirely optional. You don't need to actually
 % provide them when creating a .grid file.
 
+% For this tutorial, let's provide some information about the model and the
+% grid
+attributes = struct('Model', 'CESM-LME', 'Grid', 'f19_g16');
+
+% Alright, let's initialize the .grid file. We'll call it tutorial.grid
+gridFile.new( 'tutorial.grid', meta, attributes );
+
+% this says: Create a new grid file named tutorial.grid,
+% the scope of the grid is defined by this metadata,
+% the grid also has non-dimensional metadata in attributes.
+
+
+%% Add data to a grid file
+
+% Alright, now that we've created the grid, we can start adding data. Or
+% rather data sources. Instead of taking the time and effort to load data 
+% from our netCDF files, merge them together, permute to some dimensional
+% order, and save to file (which would duplicate our data), we will instead
+% add the netcdf files directly to the data grid. This is far more
+% efficient, and allows automated merging of data stored across different
+% workspace array, .mat, and NetCDF files.
+%
+% We will also need to provide some information about the data in data
+% source so that the .grid file knows how to access the data at a later
+% point.
+%
 % For a NetCDF file, we need to provide the name of the variable in the
 % file, as well as the order of the dimensions of the data. The .grid files
 % enforce an internal dimensional order when reading from different data
@@ -128,7 +158,7 @@ meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run
 % the order in the data source, and the .grid file will handle the rest.
 
 % We can look in one of the NetCDF files
-ncdisp( slpFiles(1), 'PSL');
+ncdisp( pslFiles(1), 'PSL');
 
 % Looking at the PSL field, we can see it is (144 x 96 x 12000), which is
 % longitude x latitude x time. These dimensions have specific names in
@@ -327,7 +357,7 @@ attributes = struct('Model', 'TRaCE', 'land_indices', land );
 gridFile.new( 'trace_sst.grid', meta, attributes );
 
 % And add the data
-gridFile.addData( 'trace_sst.grid', 'array', sst, dimOrder, meta );
+gridFile.addData( 'trace_sst.grid', 'array', sst, [], dimOrder, meta );
 
 % This says:
 % Add a data source to trace_sst.grid,
