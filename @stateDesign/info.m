@@ -31,6 +31,17 @@ function[] = info( obj, varNames, dims, showMeta )
 % ----- Written By -----
 % Jonathan king, University of Arizona, 2019
 
+% Set defaults
+if ~exist('varNames','var') || isempty(varNames)
+    varNames = obj.varName;
+end
+if ~exist('dims','var') || isempty(dims)
+    dims = obj.var(1).dimID;
+end
+if ~exist('showMeta','var') || isempty(showMeta)
+    showMeta = false;
+end 
+
 % Error check the inputs. Get the indices of the variables and dimensions
 [v, dim] = setup( obj, varNames, dims, showMeta );
 
@@ -43,7 +54,7 @@ for k = 1:numel(v)
     var = obj.var( v(k) );
     
     % Name, gridfile
-    fprintf('\t%s\n', obj.var(v).name );
+    fprintf('\t%s\n', obj.var(v(k)).name );
     fprintf( '\t\tGridfile: %s\n', var.file );
     
     % Coupled variables, overlap status, dimension header
@@ -52,7 +63,7 @@ for k = 1:numel(v)
     fprintf([ '\t\tCoupled Variables: ', sprintf('%s, ', obj.varName(cv)), '\b\b\n' ]);
     
     overlap = "Forbidden";
-    if obj.overlap(v(k))
+    if obj.allowOverlap(v(k))
         overlap = "Allowed";
     end
     fprintf('\t\tEnsemble overlap: %s\n', overlap);
@@ -119,7 +130,7 @@ function[v,d] = setup( obj, varNames, dims, showMeta )
 v = obj.findVarIndices( varNames );
 d = obj.findDimIndices( v(1), dims );
 
-if ~islogical(showMeta) || ~issscalar(showMeta)
+if ~islogical(showMeta) || ~isscalar(showMeta)
     error('showMeta must be a scalar logical.');
 end
 
