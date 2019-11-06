@@ -6,8 +6,6 @@ nNew = size(var.drawDex,1) - nWritten;
 nState = prod( varSize );
 M = NaN( nState, nNew );
 
-% Get the number of sequences and elements per sequence. ND subscript
-
 % Preallocate scs and keep
 nDim = numel(var.dimID);
 scs = NaN(3, nDim);
