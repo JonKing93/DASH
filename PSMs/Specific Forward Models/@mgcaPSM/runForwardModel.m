@@ -34,7 +34,7 @@ end
 
     % Estimate R from the variance of the model for each ensemble
     % member. (scalar)
-    R = mean( var(mg,[],2), 1);
+    R = mean( var(mg,[],1), 2);
 
     % Take the mean of the 1500 possible values for each ensemble
     % member as the final estimate. (1 x nEns)
