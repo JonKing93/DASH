@@ -33,6 +33,8 @@ if ~isscalar(replace) || ~islogical(replace)
     error('replace must be a scalar logical.');
 elseif ~isnumeric(N) || ~isscalar(N) || N<=0 || mod(N,1)~=0
     error('N must be a positive scalar integer.');
+elseif N~=1
+    error('Currently nSensor must equal 1. An update is in the works...');
 elseif ~isnumeric(radius) || ~isscalar(radius) || radius<0
     error('radius must be a scalar, non-negative number.');
 end
