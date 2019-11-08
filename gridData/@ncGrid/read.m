@@ -15,4 +15,7 @@ end
 X = ncread( obj.filepath, obj.varName, scs(1,:), scs(2,:), scs(3,:) );
 passVal = [];
 
+% Merge dimensions
+X = obj.mergeDims( X, obj.merge );
+
 end

@@ -49,8 +49,7 @@ if strcmp(type, 'nc')
 elseif strcmp(type, 'mat')
     sourceGrid = matGrid( source, varName, dimOrder );
 elseif strcmp(type, 'array')
-    dataName = sprintf('data%.f', numel(m.source)+1);
-    sourceGrid = arrayGrid( source, dataName, dimOrder );
+    [sourceGrid, source] = arrayGrid( source, m, dimOrder );
 end
 dimOrder = sourceGrid.dimOrder;
 
@@ -136,7 +135,7 @@ m.nSource = m.nSource + 1;
 m.source = newSource;
 m.dimLimit = newLimit;
 if isa(sourceGrid, 'arrayGrid')
-    m.(dataName) = source;
+    m.(sourceGrid.dataName) = source;    
 end
 m.valid = true;
     

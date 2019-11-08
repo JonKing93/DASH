@@ -16,4 +16,7 @@ for d = 1:nDim
 end
 X = m.(obj.varName)( loadIndex{:} );
 
+% Merge dimensions
+X = obj.mergeDims( X, obj.merge );
+
 end

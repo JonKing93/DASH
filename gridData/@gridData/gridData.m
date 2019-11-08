@@ -25,6 +25,12 @@ classdef (Abstract) gridData
         
         % Get the size up to n dimensions
         [siz] = fullSize( siz, d )
+        
+        % Initial processing of merged dimensions
+        [umSize, mSize, uniqDim, merge] = processSourceDims( dimOrder, iSize )
+        
+        % Actually merge data dimension
+        [X] = mergeDims( X, merge )
     end
     
 end

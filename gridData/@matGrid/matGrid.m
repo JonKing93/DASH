@@ -54,30 +54,17 @@ classdef matGrid < gridData
             end
             obj.varName = varName;
             
-            % Get the data size. Remove any trailing singletons
-            siz = size( m, varName );
-            obj.size = gridData.squeezeSize( siz );
-            
+            % Process the dimensions. Record merging and sizes
+            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge] = ...
+                gridDta.processSourceDims( dimOrder, size(m,varName) );
+           
             % Check the data is numeric or logical
-            nDim = numel( siz );
+            nDim = numel( obj.unmergedSize );
             load1 = repmat( {1}, [nDim,1] );
             val1 = m.(varName)(load1{:});
             if ~isnumeric( val1 ) && ~islogical( val1 )
                 error('The variable %s is neither numeric nor logical.', varName );
-            end
-            
-             % Check there is a dimension for all non-trailing singletons
-            if ~isstrlist( dimOrder )
-                error('dimOrder must be a vector that is a string, cellstring, or character row');
-            end
-            dimOrder = string(dimOrder);
-            nExtra = numel(dimOrder) - numel(siz);
-            if nExtra < 0
-                error('There are %.f named dimensions, but the .mat variable has more (%.f) dimensions.', numel(dimOrder), numel(siz) );
-            else
-                obj.size = [obj.size, ones(1,nExtra)];
             end 
-            obj.dimOrder = dimOrder;
         end
     end
     
