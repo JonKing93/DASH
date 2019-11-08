@@ -5,6 +5,8 @@ classdef (Abstract) gridData
     properties
         dimOrder; % The order of dimensions in the gridded dataset
         size;  % The size of the gridded dataset
+        unmergedSize;   % Size without any squashed dimensions
+        merge; % Indicates which dimensions should be merged
     end
     
     % Interface methods

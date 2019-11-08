@@ -23,6 +23,7 @@ gridFile.fileCheck( filename, 'ext' );
 if exist(fullfile(pwd,filename),'file')
     error('The file %s already exists!', filename );
 end
+filename = fullfile(pwd,filename);
 
 % Check that the metadata structure is valid
 gridFile.checkMetadata( meta );

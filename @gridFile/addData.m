@@ -40,7 +40,7 @@ end
 
 % Check that the source grid dimensions are recognized and non-duplicate,
 % and that the metadata is allowed
-dimOrder = gridFile.checkSourceDims( dimOrder );
+[dimOrder] = gridFile.checkSourceDims( dimOrder );
 gridFile.checkMetadata( meta );
 
 % Build the source grid
@@ -52,6 +52,7 @@ elseif strcmp(type, 'array')
     dataName = sprintf('data%.f', numel(m.source)+1);
     sourceGrid = arrayGrid( source, dataName, dimOrder );
 end
+dimOrder = sourceGrid.dimOrder;
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified
 % singletons)
@@ -83,7 +84,7 @@ end
 % Get the size and name of all dimensions for the source grid.
 sourceSize = sourceGrid.fullSize( sourceGrid.size, nDims );
 tsDim = ~ismember(gridDims, dimOrder);
-dimOrder(end+1:numel(tsDim)) = gridDims( tsDim );
+dimOrder(end+(1:sum(tsDim))) = gridDims( tsDim );
 dimLimit = NaN( nDims, 2 );
 
 % For each dimension with metadata

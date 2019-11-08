@@ -63,23 +63,48 @@ classdef ncGrid < gridData
                 error('The %s variable is neither numeric nor logical.', varName );
             end
             
-            % Get the data size. Remove any trailing singletons
-            siz = info.Variables(v).Size;
-            obj.size = gridData.squeezeSize( siz );
-            
-            % Check there is a dimension for all non-trailing singletons.
-            % Add a singleton for any extra dimensions.
+            % Check the dimension names, and that there are enough
             if ~isstrlist( dimOrder )
                 error('dimOrder must be a vector that is a string, cellstring, or character row');
             end
             dimOrder = string(dimOrder);
-            nExtra = numel(dimOrder) - numel(siz);
-            if nExtra < 0
-                error('There are %.f named dimensions, but the netcdf variable has more (%.f) dimensions.', numel(dimOrder), numel(siz) );
-            else
-                obj.size = [obj.size, ones(1,nExtra)];
-            end 
-            obj.dimOrder = dimOrder;
+            nNCdim = numel( info.Variables(v).Dimensions );
+            if numel( dimOrder ) < nNCdim
+                error('There are %.f named dimensions, but the netcdf variable has more (%.f) dimensions.', numel(dimOrder), nNCdim );
+            end
+            
+            % Get the size of the dataset before dimensions are merged
+            siz = info.Variables(v).Size;
+            obj.unmergedSize = siz;
+            
+            % Note which dimensions are merged, get the merged size
+            [uniqDim] = unique( dimOrder, 'stable' );
+            merge = NaN( 1, numel(dimOrder) );
+            for d = 1:numel(uniqDim)
+                loc = find(strcmp( uniqDim(d), dimOrder ));
+                merge(loc) = d;
+                if numel(loc) > 1
+                    siz( loc(1) ) = prod( siz(loc) );
+                    siz( loc(2:end) ) = NaN;
+                end
+            end
+            obj.dimOrder = uniqDim;
+            obj.merge = merge;
+            
+            % Remove unassigned trailing singletons, pad with TS to match
+            % number of input dimensions
+            siz = siz( ~isnan(siz) );
+            obj.size = gridData.squeezeSize( siz );
+            obj.unmergedSize = gridData.squeezeSize( obj.unmergedSize );
+            
+            nExtraM = numel(uniqDim) - numel(obj.size);
+            nExtraUM = numel(dimOrder) - numel(obj.unmergedSize);
+            if nExtraM > 0
+                obj.size = [obj.size, ones(1,nExtraM)];
+            end
+            if nExtraUM > 0
+                obj.unmergedSize = [obj.unmergedSize, ones(1, nExtraUM)];
+            end
 
             % Also record the dimensions within the NetCDF file
             ncDim = cell( numel(info.Variables(v).Dimensions), 1 );
