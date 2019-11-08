@@ -61,9 +61,6 @@ classdef gridFile < handle
    
     % Utilities
     methods
-        
-       % Returns requested data from sources
-       [X, passVals] = read( file, start, count, stride );
        
        % Updates the object to reflect the saved file
        update( obj );
@@ -71,8 +68,11 @@ classdef gridFile < handle
     end
     
     
-   % Error checking
+   % Static Utils (error checking and read
    methods (Static)
+       
+       % Returns requested data from sources
+       [X, passVals] = read( obj, scs, passVals );
        
        % Check file existence / extension / correct fields
        fileCheck( file, flag );
