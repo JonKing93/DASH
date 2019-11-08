@@ -30,9 +30,6 @@ function[] = addData( obj, type, source, varName, dimOrder, meta )
 % Update the grid file in case changes have been made
 obj.update;
 
-% Check the file is grid / exists
-gridFile.fileCheck( file );
-
 % Check the type is recognized
 if ~isstrflag( type )
     error('type must be a string scalar or character row vector.');

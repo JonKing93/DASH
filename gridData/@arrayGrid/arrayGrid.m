@@ -19,13 +19,14 @@ classdef arrayGrid < gridData
             obj.dataName = sprintf('data%.f', numel(grid.source)+1);
             
             % Process dimensions, note merging
-            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge] = ...
+            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
                 gridData.processSourceDims( dimOrder, size(X) );
             
             % Merge the data dimensions
             X = obj.mergeDims( X, obj.merge );
             obj.unmergedSize = obj.size;
             obj.merge = NaN( 1, numel(obj.size) );
+            obj.mergeSet = NaN(1, numel(obj.size) );
         end
     end
     

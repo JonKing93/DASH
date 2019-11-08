@@ -1,4 +1,4 @@
-function[umSize, mSize, uniqDim, merge] = processSourceDims( dimOrder, iSize )
+function[umSize, mSize, uniqDim, merge, mergeSet] = processSourceDims( dimOrder, iSize )
 % Processes source grid dimensions
 %
 % iSize: Initial read size, as via inbuilt size.m
@@ -19,7 +19,7 @@ end
 % Note merged dimensions, get merged size
 [uniqDim] = unique( dimOrder, 'stable' );
 merge = NaN( 1, numel(dimOrder) );
-mSize = iSize;
+mSize = gridData.fullSize( iSize, numel(dimOrder) );
 for d = 1:numel(uniqDim)
     loc = find(strcmp( uniqDim(d), dimOrder ));
     if numel(loc) > 1
@@ -29,19 +29,14 @@ for d = 1:numel(uniqDim)
     end
 end
 
-% Remove unassigned trailing singleton
+% Restrict to merged dimensions
+mergeSet = merge( ~isnan(mSize) );
 mSize = mSize( ~isnan(mSize) );
-mSize = gridData.squeezeSize(mSize);
 
-% Pad with TS to match number of input dimensions
-nExtraM = numel(uniqDim) - numel(mSize);
-if nExtraM > 0
-    mSize = [mSize, ones(1, nExtraM)];
-end
-
-nExtraUM = numel(dimOrder) - numel(umSize);
-if nExtraUM > 0
-    umSize = [umSize, ones(1, nExtraUM)];
+% Pad unmerged size with trailing singleton to match number of input dims
+nExtra = numel(dimOrder) - numel(umSize);
+if nExtra > 0
+    umSize = [umSize, ones(1,nExtra)];
 end
 
 end

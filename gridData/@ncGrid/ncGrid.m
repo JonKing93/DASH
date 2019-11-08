@@ -64,7 +64,7 @@ classdef ncGrid < gridData
             end
             
             % Process the dimensions. Find merged / unmerged size.
-            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge] = ...
+            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
                 gridData.processSourceDims( dimOrder, info.Variables(v).Size );
 
             % Also record the dimensions saved in the NetCDF file.

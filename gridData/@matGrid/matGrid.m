@@ -55,7 +55,7 @@ classdef matGrid < gridData
             obj.varName = varName;
             
             % Process the dimensions. Record merging and sizes
-            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge] = ...
+            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
                 gridDta.processSourceDims( dimOrder, size(m,varName) );
            
             % Check the data is numeric or logical

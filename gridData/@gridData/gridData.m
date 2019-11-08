@@ -5,6 +5,7 @@ classdef (Abstract) gridData
     properties
         dimOrder; % The order of dimensions in the gridded dataset
         size;  % The size of the gridded dataset
+        mergeSet;  % An index for the set of merged dimensions
         unmergedSize;   % Size without any squashed dimensions
         merge; % Indicates which dimensions should be merged
     end
@@ -27,10 +28,15 @@ classdef (Abstract) gridData
         [siz] = fullSize( siz, d )
         
         % Initial processing of merged dimensions
-        [umSize, mSize, uniqDim, merge] = processSourceDims( dimOrder, iSize )
+        [umSize, mSize, uniqDim, merge, mergeSet] = processSourceDims( dimOrder, iSize )
         
         % Actually merge data dimension
         [X] = mergeDims( X, merge )
+    end
+    
+    methods
+        % Adjust SCS and keep for merged
+        [fullSCS, keep] = unmergeSCS( obj, scs )
     end
     
 end
