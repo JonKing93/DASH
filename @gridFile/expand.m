@@ -1,7 +1,7 @@
-function[] = expand( file, dim, newMeta )
+function[] = expand( obj, dim, newMeta )
 %% Increases the size of a dimension in a .grid File
 %
-% gridFile.expand( file, dim, newMeta )
+% obj.expand( dim, newMeta )
 %
 % ----- Inputs -----
 %
@@ -12,8 +12,8 @@ function[] = expand( file, dim, newMeta )
 % newMeta: New metadata for the dimension. Must have one row per new
 %          element along the dimension.
 
-% Check the file is .grid and exists.
-gridFile.fileCheck( file );
+% Update in case changes were made
+obj.update;
 
 % Check the dim is an ID
 if ~isstrflag( dim )
@@ -38,22 +38,20 @@ elseif isdatetime(newMeta) && any( isnat(newMeta(:)) )
 end
 
 % Check the old metadata is not a NaN singleton
-m = matfile( file, 'writable', true );
-metadata = m.metadata;
-if isscalar(metadata.(dim)) && isnumeric(metadata.(dim)) && isnan( metadata.(dim) )
+if isscalar(obj.metadata.(dim)) && isnumeric(obj.metadata.(dim)) && isnan( obj.metadata.(dim) )
     error('The metadata for the %s dimension in the file %s is NaN. Please write in a non-NaN value first. (See gridFile.rewriteMetadata)', dim, file);
 end
 
 % Check that the new metadata can be appended
-if size( metadata.(dim),2) ~= size(newMeta, 2)
+if size( obj.metadata.(dim),2) ~= size(newMeta, 2)
     error('The new %s metadata has a different number of columns than the metadata in file %s.', dim, file );
-elseif (isnumeric(newMeta) || islogical(newMeta)) && ~(isnumeric(metadata.(dim)) || islogical(metadata.(dim)))
+elseif (isnumeric(newMeta) || islogical(newMeta)) && ~(isnumeric(obj.metadata.(dim)) || islogical(obj.metadata.(dim)))
     error('The new %s metadata is numeric or logical, but the metadata in the %s file is not.', dim, file );
-elseif isstrlist(newMeta) && ~isstrlist(metadata.(dim))
+elseif isstrlist(newMeta) && ~isstrlist(obj.metadata.(dim))
     error('The new %s is a string, but the metadata in the %s file is not.', dim, file );
 end
 try
-    allmeta = cat(1, metadata.(dim), newMeta );
+    allmeta = cat(1, obj.metadata.(dim), newMeta );
 catch ME
     error('The new metadata cannot be appended to the existing metadata. It may be a different type.');
 end
@@ -63,13 +61,24 @@ if size(allmeta,1) ~= size( unique(allmeta, 'rows'), 1 )
     error('The new metadata duplicates existing metadata values.');
 end
 
-% Add the new metadata to the file
-metadata.(dim) = allmeta;
-d = find(  strcmp(dim, m.dimOrder) );
+% Update the fields
+obj.metadata.(dim) = allmeta;
+d = find(  strcmp(dim, obj.dimOrder) );
+obj.gridSize(1,d) = size(allmeta,1);
 
-m.valid = false;
-m.gridSize(1,d) = size(allmeta,1); %#ok<FNDSB>
-m.metadata = metadata;
-m.valid = true;
+% Write to file
+try
+    m = matfile( obj.filepath, 'Writable', true );
+    m.valid = false;
+    m.gridSize(1,d) = obj.gridSize(1,d);
+    m.metadata = obj.metadata;
+    m.valid = true;
+    
+% Delete the object if the write fails
+catch
+    [~, killStr] = fileparts( obj.filepath );
+    delete( obj );
+    error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
+end
 
 end

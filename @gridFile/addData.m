@@ -1,13 +1,13 @@
-function[] = addData( file, type, source, varName, dimOrder, meta )
+function[] = addData( obj, type, source, varName, dimOrder, meta )
 % Adds a data source to a .grid file.
 %
-% gridFile.addData( file, 'nc', ncFile, varName, dimOrder, meta )
+% gridFile.addData( obj, 'nc', ncFile, varName, dimOrder, meta )
 % Adds data from a netCDF file.
 %
-% gridFile.addData( file, 'mat', matFile, varName, dimOrder, meta )
+% gridFile.addData( obj, 'mat', matFile, varName, dimOrder, meta )
 % Adds data from a saved .mat file.
 %
-% gridFile.addData( file, 'array', X, [], dimOrder, meta )
+% gridFile.addData( obj, 'array', X, [], dimOrder, meta )
 % Adds data from a workspace array. Saves the array directly to file.
 %
 % ----- Inputs ----
@@ -27,9 +27,11 @@ function[] = addData( file, type, source, varName, dimOrder, meta )
 % meta: A metadata structure for the data source. See gridFile.defineMetadata
 %       for details.
 
+% Update the grid file in case changes have been made
+obj.update;
+
 % Check the file is grid / exists
 gridFile.fileCheck( file );
-m = matfile( file, 'Writable', true );
 
 % Check the type is recognized
 if ~isstrflag( type )
@@ -49,15 +51,15 @@ if strcmp(type, 'nc')
 elseif strcmp(type, 'mat')
     sourceGrid = matGrid( source, varName, dimOrder );
 elseif strcmp(type, 'array')
-    [sourceGrid, source] = arrayGrid( source, m, dimOrder );
+    [sourceGrid, source] = arrayGrid( source, numel(obj.source), dimOrder );
 end
 dimOrder = sourceGrid.dimOrder;
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified
 % singletons)
-gridDims = m.dimOrder;
+gridDims = obj.dimOrder;
 nDims = numel( gridDims );
-gridMeta = m.metadata;
+gridMeta = obj.metadata;
 
 notnan = false( 1, nDims );
 for d = 1:nDims
@@ -122,21 +124,29 @@ end
 dimLimit = dimLimit(reorder,:);
 
 % Check that the data does not overlap with other existing data
-gridFile.checkOverlap( dimLimit, m.dimLimit );
+gridFile.checkOverlap( dimLimit, obj.dimLimit );
 
-% Add the new data source to the .grid file
-newSource = m.source;
-newSource{end+1,1} = sourceGrid;
-newLimit = m.dimLimit;
-newLimit = cat(3, newLimit, dimLimit);
+% Update fields to include new data source
+obj.source{end+1,1} = sourceGrid;
+obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
 
-m.valid = false;
-m.nSource = m.nSource + 1;
-m.source = newSource;
-m.dimLimit = newLimit;
-if isa(sourceGrid, 'arrayGrid')
-    m.(sourceGrid.dataName) = source;    
+% Write to file
+try
+    m = matfile( obj.filepath, 'Writable', true );
+    m.valid = false;
+    m.nSource = m.nSource + 1;
+    m.source = obj.source;
+    m.dimLimit = obj.dimLimit;
+    if isa(sourceGrid, 'arrayGrid')
+        m.(sourceGrid.dataName) = source;    
+    end
+    m.valid = true;
+    
+% If the write operation failed, delete the object.
+catch ME
+    [~, killStr] = fileparts( obj.filepath );
+    delete( obj );
+    error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
 end
-m.valid = true;
     
 end

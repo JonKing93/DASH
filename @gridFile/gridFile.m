@@ -1,4 +1,4 @@
-classdef gridFile
+classdef gridFile < handle
     % Provides methods for creating and editing .grid files. These are
     % containers for various data sources, including NetCDF files, .mat
     % files, and MATLAB workspace arrays.
@@ -15,12 +15,21 @@ classdef gridFile
     % Jonathan King, University of Arizona, 2019
     
     properties
-        source; % A vector of data sources
+        filepath; % The current file
+        source;   % A vector of data sources
         dimOrder; % The internal dimensional order used by the .grid file
         dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
         metadata; % The metadata along each dimension and data attributes
         gridSize; % The total size of the gridded metadata.
     end
+    
+    % Constructor
+    methods
+        function obj = gridFile( file )
+            obj.filepath = string( which(file) );
+            obj.update;
+        end
+    end    
     
     % Static user methods
     methods (Static)
@@ -31,20 +40,37 @@ classdef gridFile
         % Create new grid file
         new( filename, type, source, varName, dimOrder, atts, varargin );
         
+    end
+    
+    % User methods
+    methods
+        
         % Adds data to a .grid file
-        addData( file, type, source, varName, dimOrder, meta );
+        addData( obj, type, source, varName, dimOrder, meta );
         
         % Exract metadata from existing .grid file
-        [meta, dimID, gridSize] = meta( file );
+        [meta, dimID, gridSize] = meta( obj );
         
         % Increase the size of a dimension in a .grid file.
-        expand( file, dim, newMeta );
+        expand( obj, dim, newMeta );
         
         % Change metadata along a dimension
-        rewriteMetadata( file, dim, newMeta );
-        
+        rewriteMetadata( obj, dim, newMeta );
+         
     end
    
+    % Utilities
+    methods
+        
+       % Returns requested data from sources
+       [X, passVals] = read( file, start, count, stride );
+       
+       % Updates the object to reflect the saved file
+       update( obj );
+        
+    end
+    
+    
    % Error checking
    methods (Static)
        
@@ -68,9 +94,6 @@ classdef gridFile
        
        % Permutes source grid data to match grid order
        [X] = permuteSource( X, sourceOrder, gridOrder );
-       
-       % Returns requested data from sources
-       [X, passVals] = read( file, start, count, stride );
        
        % Reorders grid scs for source grid order
        [scs] = reorderSCS( scs, gridOrder, sourceOrder )

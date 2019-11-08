@@ -1,4 +1,4 @@
-function[] = rewriteMetadata( file, dim, newMeta )
+function[] = rewriteMetadata( obj, dim, newMeta )
 %% Rewrites the metadata in a .grid file along a specified dimension.
 %
 % gridFile.rewriteMetadata( file, dim, newMeta )
@@ -12,9 +12,8 @@ function[] = rewriteMetadata( file, dim, newMeta )
 % newMeta: The new metadata. Must have one row per element along the
 %          dimension.
 
-% Check the file is .grid and exists
-gridFile.fileCheck( file );
-m = matfile( file, 'writable', true );
+% Update in case the matfile changed
+obj.udpate;
 
 % Check the dim is an ID
 if ~isstrflag( dim )
@@ -41,15 +40,25 @@ elseif size( newMeta, 1) ~= size( unique(newMeta,'rows'), 1)
 end
  
 % Check the new metadata is the correct size
-metadata = m.metadata;
-if size(newMeta,1) ~= size( metadata.(dim), 1 )
-    error('The new metadata must have %.f rows.', size(metadata.(dim),1) );
+if size(newMeta,1) ~= size( obj.metadata.(dim), 1 )
+    error('The new metadata must have %.f rows.', size(obj.metadata.(dim),1) );
 end
 
-% Write
-metadata.(dim) = newMeta;
-m.valid = false;
-m.metadata = metadata;
-m.valid = true;
+% Get the updated field
+obj.metadata.(dim) = newMeta;
+
+% Write to file
+try
+    m = matfile( obj.filepath, 'Writable', true );
+    m.valid = false;
+    m.metadata = obj.metadata;
+    m.valid = true;
+    
+% Delete the object if the write fails
+catch
+    [~, killStr] = fileparts( obj.filepath );
+    delete( obj );
+    error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
+end
 
 end
