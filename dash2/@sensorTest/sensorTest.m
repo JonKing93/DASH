@@ -1,4 +1,4 @@
-classdef sensorTest
+classdef sensorTest < handle
     % sensorTest
     % Implements tests for optimal sensor placement.
     %
