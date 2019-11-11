@@ -1,13 +1,32 @@
-function[output] = optimalSensor( obj, J, sites )
-% Runs an optimal sensor test
+function[output] = optimalSensor( M, Fj, sites, N, replace, radius )
+% Conducts an optimal sensor test
 %
-% output = obj.optimalSensor( J, sites )
+% output = dash.sensorTest( J, M, sites, N )
+% Finds the N best sensors.
+%
+% output = dash.sensorTest( J, M, sites, N, replace )
+% Specify whether to replace or remove sites from consideration after being
+% selected. Default is with replacement
+%
+% output = dash.sensorTest( J, M, sites, N, replace, radius )
+% Specify to remove sites within a given radius after a nearby site is
+% selected. Default is no radius.
 %
 % ----- Inputs -----
 %
-% J: A metric vector. Often a climate index. (1 x nEns)
+% J: A metric vector. (1 x nEns)
+%
+% M: A model ensemble (nState x nEns)
 %
 % sites: A sensorSites object
+%
+% N: The number of sensors to test. A positive integer.
+%
+% replace: Whether to replace sensors after selection. A scalar logical.
+%          Default is true.
+%
+% radius: The radius in which to remove sites after a nearby site is
+%         selected. Default is no radius.
 %
 % ----- Outputs -----
 %
@@ -15,32 +34,70 @@ function[output] = optimalSensor( obj, J, sites )
 %
 %   settings - Settings used to run the analysis
 %
-%   bestSites - The state vector indices of the best sites
+%   bestH - The state vector indices of the best sites
+%
+%   bestSite - The index of the best site in the sensorSites object.
 %
 %   skill - The relative reduction in J variance of each placement.
 
-% Error check
-if ~isvector(J) || numel(J)~=obj.nEns
-    error('J must be a vector with nEns elements (%.f)', obj.nEns );
-elseif ~isa( sites, 'sensorSites' ) || ~isscalar(sites)
-    error('sites must be a scalar sensorSites object.');
-elseif any(sites.H) > obj.nState
-    error('The state vector indices of the sensor sites (H) cannot be larger than the number of state vector elements (%.f).', obj.nState );
-end
-if iscolumn(J)
-    J = J';
+% Preallocate
+bestH = NaN( N, 1 );
+bestSite = NaN( N, 1 );
+skill = NaN( N, 1 );
+
+% Decompose
+[Mmean, Mdev] = dash.decompose(M);
+clearvars M;
+
+% For each new sensor, get the metric J
+progressbar(0)
+for s = 1:N
+    Mj = Mmean(Fj.H) + Mdev(Fj.H,:);
+    J = dash.processYeR( Fj, Mj, 1, NaN, NaN );    
+    [~, Jdev] = dash.decompose(J);
+    
+    % Test the skill of each site remaining for consideration
+    checkSites = find( sites.useSite );
+    expVar = sensorTest.assessPlacement( Jdev, Mdev(sites.H(checkSites), :), sites.R(checkSites) );
+    
+    % Find the best site.
+    currBest = find( expVar == max(expVar), 1 );
+    bestSite(s) = checkSites( currBest );
+    bestH(s) = sites.H( bestSite(s) );
+    skill(s) = expVar( currBest );
+    
+    % Optionally remove the site and sites within the radius. Stop the loop
+    % if no sites are left
+    sites = sites.removeRadius( curr, radius );
+    if ~replace
+        sites = sites.removeSite( curr );
+    end
+    if isempty(sites.H)
+        progressbar(1);
+        break;
+    end
+    
+    % Update the ensemble
+    H = sites.H(curr);
+    [K, a] = kalmanFilter.serialKalman( Mdev, Mdev(H,:), ones(size(Mmean)), sites.R(curr) );
+    Mmean = Mmean + K * Mdev(H,:);
+    Mdev = Mdev - a * K * Mdev(H,:);
+    
+    progressbar(s/N);
 end
 
-% Load the ensemble if necessary
-M = obj.M;
-if isa(M, 'ensemble')
-    M = M.load;
+% Remove any extra entries if quitting early
+bestSite(s+1:N) = [];
+bestH(s+1:N) = [];
+skill(s+1:N) = [];
+
+% Get the output structure
+output.settings = struct('Analysis', 'Optimal Sensor', 'N', N, 'Replacement', replace );
+if ~isnan(radius)
+    output.settings.Radius = radius;
 end
-
-% Get the current settings
-set = obj.settings.optimalSensor;
-
-% Run
-output = dash.sensorTest( J, M, sites, set.nSensor, set.replace, set.radius );
+output.bestH = bestH;
+output.bestSite = bestSite;
+output.skill = skill;
 
 end
