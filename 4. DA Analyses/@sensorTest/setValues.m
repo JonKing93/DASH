@@ -36,12 +36,17 @@ end
 if ~isa(Fj, 'PSM') || ~isscalar( Fj )
     error('Fj must be a scalar PSM object.');l
 end
-Fj.review;
+Fj.review( nState );
 
 % Check the H values in the sites
 if any(S.H > nState)
     badH = find( S.H > nState, 1 );
     error('The state vector index of site %.f (%.f) exceeds the number of state vector elements (%.f)', badH, sites.H(badH), nState );
 end
+
+% Save the values
+obj.M = M;
+obj.Fj = Fj;
+obj.S = S;
 
 end
