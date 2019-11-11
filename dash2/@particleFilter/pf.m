@@ -45,7 +45,7 @@ R = permute(R, [1 3 2]);
 
 % Sum of uncertainty weighted squared errors. Use to compute weights and update.
 sse = squeeze( sum(  (1./R) .* (D - Ye).^2,  1 ) );
-weights = dash.pfWeights( sse, N );
+weights = particleFilter.pfWeights( sse, N );
 A = M * weights;
 
 % Build the output structure

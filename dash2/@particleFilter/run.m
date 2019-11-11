@@ -17,7 +17,7 @@ function[output] = run( obj )
 
 % Switch to the alternative algorithm if using a large ensemble
 if obj.big
-    output = dash.bigpf( obj.M, obj.D, obj.R, obj.F, obj.N, obj.batchSize );
+    output = dash.bigpf( obj.M, obj.D, obj.R, obj.F, obj.N, obj.nEns );
     
 % Otherwise, load the ensemble if necessary, then run the normal algorithm
 else

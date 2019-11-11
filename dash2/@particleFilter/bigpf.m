@@ -62,7 +62,7 @@ for b = 1:nBatch
 end
 
 % Get the weights
-weights = dash.pfWeights( sse, N );
+weights = particleFilter.pfWeights( sse, N );
 
 % Use the weights to combine each batch
 for b = 1:nBatch

@@ -3,10 +3,10 @@ classdef particleFilter < handle
     
     properties
         % Settings
-        weights;    % Weighting scheme, N best or probabilistic
+        type;    % Weighting scheme, N best or probabilistic
         N;       % Number of best particles for N best weights
         big;     % Whether the ensemble is too large to fit into memory
-        batchSize;   % How many ensemble members to process per batch for large ensembles.
+        nEns;   % How many ensemble members to process per batch for large ensembles.
         
         % Analysis values
         M;   % Model prior
@@ -37,10 +37,10 @@ classdef particleFilter < handle
             % obj: A new particleFilter object.
             
             % Default settings
-            obj.type = 'bayesian';
+            obj.type = 'weight';
             obj.N = NaN;
             obj.big = false;
-            obj.batchSize = NaN;
+            obj.nEns = NaN;
             
             % Set values, prevent empty constructor
             if nargin < 4
@@ -76,6 +76,9 @@ classdef particleFilter < handle
         
         % Compute particle weights
         weights = pfWeights( sse, N );
+        
+        % Normalize exponentials by their combined sum (efficiently)
+        [Y] = normexp( X, dim, nanflag )
         
     end
     

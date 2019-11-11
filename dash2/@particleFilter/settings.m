@@ -1,4 +1,4 @@
-function[] = pfSettings( obj, varargin )
+function[] = settings( obj, varargin )
 % Specifies settings for a particle filter analysis
 %
 % obj.pfSettings( ..., 'type', type )
@@ -35,9 +35,8 @@ function[] = pfSettings( obj, varargin )
 %       faster.
 
 % Parse inputs
-curr = obj.settings.particleFilter;
 [type, N, big, nEns] = parseInputs( varargin, {'type','N','big','nEns'}, ...
-    {curr.type, curr.N, curr.big, curr.nEns}, {[],[],[],[]} );
+    {obj.type, obj.N, obj.big, obj.nEns}, {[],[],[],[]} );
 
 % Error check
 if ~isstrflag(type)
@@ -69,6 +68,9 @@ else
 end
 
 % Save the settings
-obj.settings.particleFilter = struct('type', type, 'N', N, 'big', big, 'nEns', nEns);
+obj.type = type;
+obj.N = N;
+obj.big = big;
+obj.nEns = nEns;
 
 end
