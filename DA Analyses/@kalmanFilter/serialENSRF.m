@@ -1,4 +1,4 @@
-function[output] = serialENSRF( M, D, R, F, w )
+function[output] = serialENSRF( M, D, R, F, w, fullDevs )
 %% Implements an ensemble square root kalman filter with serial updates.
 %
 % [output] = dash.serialENSRF( M, D, R, F, w )
@@ -46,7 +46,11 @@ clearvars M;
 
 % Preallocate
 Amean = NaN( nState, nTime );
-Avar = NaN( nState, nTime );
+if fullDevs
+    Adev = NaN( nState, nEns, nTime );
+else
+    Avar = NaN( nState, nTime );
+end
 Ye = NaN( nObs, nEns, nTime );
 sites = false( nObs, nTime );
 calibRatio = NaN( nObs, nTime );
@@ -79,9 +83,13 @@ for t = 1:nTime
         end
     end
     
-    % Record the mean and variance of the final analysis for the time step
+    % Record the updated mean and variance/deviations for the time step
     Amean(:,t) = Am;
-    Avar(:,t) = sum( Ad.^2, 2 ) ./ (nEns - 1);
+    if fullDevs
+        Adev(:,:,t) = Ad;
+    else
+        Avar(:,t) = sum( Ad.^2, 2 ) ./ (nEns - 1);
+    end
     progressbar(t/nTime);
 end
 
@@ -91,7 +99,11 @@ if ~all( w==1, 'all' )
     output.settings.Localize = w;
 end
 output.Amean = Amean;
-output.Avar = Avar;
+if fullDevs
+    output.Adev = Adev;
+else
+    output.Avar = Avar;
+end
 output.Ye = Ye;
 output.calibRatio = calibRatio;
 output.R = R;

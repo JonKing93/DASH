@@ -1,4 +1,4 @@
-function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
+function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs )
 %% Implements an ensemble square root kalman filter updating observations jointly
 %
 % [output] = dash.jointENSRF( M, D, R, F, w, yloc, meanOnly )
@@ -20,6 +20,8 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
 %
 % meanOnly: scalar logical.
 %
+% fullDevs: Whether to return full ensemble deviations. Scalar logical
+%
 % ----- Outputs -----
 %
 % output: A structure with the following fields
@@ -29,6 +31,8 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
 %   Amean - The updated ensemble mean (nState x nTime)
 %
 %   Avar - Updated ensemble variance (nState x nTime)
+%
+%   Adev - Updated ensemble deviations (nState x nEns x nTime)
 %
 %   Ye - Proxy estimates (nObs x nEns)
 %
@@ -48,8 +52,10 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly )
 Ye = NaN( nObs, nEns );
 sites = false(nObs, nTime);
 Amean = NaN(nState, nTime);
-if ~meanOnly
-    Avar = NaN(nState, nTime);
+if fullDevs
+    Adev = NaN( nState, nEns, nTime );
+elseif ~meanOnly
+    Avar = NaN( nState, nTime );
 end
 calibRatio = NaN( nObs, nTime );
 
@@ -64,24 +70,29 @@ end
 [Ymean, Ydev] = dash.decompose( Ye );
 [Mmean, Mdev] = dash.decompose(M);
 clearvars M;
-Knum = dash.jointKalman( 'Knum', Mdev, Ydev, w );
+Knum = obj.jointKalman( 'Knum', Mdev, Ydev, w );
 
 % Use the obs in each time step to compute the full kalman gain
 progressbar(0);
 for t = 1:nTime    
     sites(:,t) = sites(:,t) & ~isnan( D(:,t) );
     obs = sites(:,t);    
-    [K, Kdenom] = dash.jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) );
+    [K, Kdenom] = obj.jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) );
     
     % Update the mean and get the calibration ratio
     Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) );    
     calibRatio( obs, t ) = abs( D(obs,t) - Ymean(obs) ).^2 ./ ( diag(Kdenom) );
 
-    % Optionally update the variance using the adjusted kalman gain
-    if ~meanOnly    
-        Ka = dash.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
-        Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
+    % Optionally update the deviations / variance
+    if ~meanOnly
+        Ka = obj.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
+        if fullDevs
+            Adev(:,:,t) = Mdev - Ka * Ydev(obs,:);
+        else
+            Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
+        end
     end
+                    
     progressbar(t/nTime);
 end
 
@@ -91,7 +102,9 @@ if ~all(w==1, 'all') || ~all(yloc==1, 'all')
     output.settings.Localize = {w, yloc};
 end 
 output.Amean = Amean;
-if ~meanOnly
+if fullDevs
+    output.Adev = Adev;
+elseif ~meanOnly
     output.Avar = Avar;
 end
 output.Ye = Ye;

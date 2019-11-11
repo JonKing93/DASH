@@ -1,4 +1,4 @@
-function[] = ensrfSettings( obj, varargin )
+function[] = settings( obj, varargin )
 % Specifies settings for an Ensemble Square Root Kalman Filter analysis.
 %
 % obj.ensrfSettings( ..., 'type', type )
@@ -19,6 +19,10 @@ function[] = ensrfSettings( obj, varargin )
 % obj.ensrfSettings( ..., 'type', 'joint', 'meanOnly', meanOnly )
 % Specify whether to only update the ensemble mean. (This is typically much
 % faster than calculating the ensemble mean and variance.)
+%
+% obj.settings( ..., 'returnDevs', fullDevs )
+% Specify whether to return full ensembles deviations, or just the
+% variance. Default is just the variance.
 % 
 % ---- Inputs -----
 %
@@ -38,13 +42,15 @@ function[] = ensrfSettings( obj, varargin )
 %
 % meanOnly: A scalar logical indicating whether to only calculate the
 %           ensemble mean for joint updating schemes.
+%
+% fullDevs: A scalar logical indicating whether to return full ensemble
+%           deviations. Default is false.
 
 % Parse inputs
-curr = obj.settings.ensrf;
-[type, weights, inflate, append, meanOnly] = parseInputs( varargin, ...
-    {'type','localize','inflate','append','meanOnly'}, ...
-    {curr.type, curr.localize, curr.inflate, curr.append, curr.meanOnly}, ...
-    {[],[],[],[],[]} );
+[type, weights, inflate, append, meanOnly, fullDevs] = parseInputs( varargin, ...
+    {'type','localize','inflate','append','meanOnly','returnDevs'}, ...
+    {obj.type, obj.localize, obj.inflate, obj.append, obj.meanOnly, obj.fullDevs}, ...
+    {[],[],[],[],[],[]} );
 
 % Error checking
 if ~isstrflag(type)
@@ -53,6 +59,10 @@ elseif ~strcmpi(type,'joint') && ~strcmpi(type,'serial')
     error('Unrecognized type');
 elseif ~isnumeric(inflate) || ~isreal(inflate) || ~isscalar(inflate) || inflate<=0
     error('inflate must be a positive scalar value.');
+end
+
+if ~isscalar(fullDevs) || ~islogical(fullDevs)
+    error('fullDevs must be a scalar logical.');
 end
 
 if strcmpi(type,'joint')
@@ -65,6 +75,10 @@ if strcmpi(type, 'serial')
     meanOnly = false;
 elseif ~isscalar(meanOnly) || ~islogical(meanOnly)
     error('meanOnly must be a scalar logical.');
+end
+
+if fullDevs && meanOnly
+    error('Cannot compute only the ensemble mean when returning full ensemble deviations.');
 end
 
 if ~isempty(weights)
@@ -83,6 +97,11 @@ if ~isempty(weights)
 end
 
 % Save values
-obj.settings.ensrf = struct( 'type', type, 'localize', weights, 'inflate', inflate, 'append', append, 'meanOnly', meanOnly );
+obj.type = type;
+obj.weights = weights;
+obj.inflate = inflate;
+obj.append = append;
+obj.meanOnly = meanOnly;
+obj.fullDevs = fullDevs;
 
 end

@@ -1,7 +1,7 @@
-function[output] = ensrf( obj )
-% Runs an ensemble square root Kalman filter
+function[output] = run( obj )
+% Runs an ensemble square root Kalman filter for a specific object
 %
-% output = obj.ensrf
+% output = obj.run
 %
 % ---- Outputs -----
 %
@@ -12,6 +12,8 @@ function[output] = ensrf( obj )
 %   Amean - The updated ensemble mean (nState x nTime)
 %
 %   Avar - Updated ensemble variance (nState x nTime)
+%
+%   Adev - Updated ensemble deviations (nState x nEns x nTime)
 %
 %   Ye - Proxy estimates
 %           Joint Updates:  (nObs x nEns)
@@ -28,39 +30,40 @@ function[output] = ensrf( obj )
 %           time step. (nObs x nTime)
 
 % Get settings. Load the ensemble if necessary
-set = obj.settings.ensrf;
 M = obj.M;
 if isa(M,'ensemble')
     M = M.load;
 end
 
-
 % Inflate ensemble
-M = dash.inflate( M, set.inflate );
+M = dash.inflate( M, obj.inflate );
 
+% Sizes
+nState = size(M,1);
+nObs = size(D,1);
 
 % Serial updates
-if strcmp(set.type, 'serial')
+if strcmp(obj.type, 'serial')
     
     % Default localization
-    w = set.localize;
+    w = obj.localize;
     if isempty(w)
-        w = ones( obj.nState, obj.nObs );
+        w = ones( nState, nObs );
     end 
     
     % Optionally append Ye
     F = obj.F;
-    if set.append
-        [M, F, Yi] = dash.appendYe( M, F );
+    if obj.append
+        [M, F, Yi] = obj.appendYe( M, F );
     end
     
     % Do the updates
-    output = dash.serialENSRF( M, obj.D, obj.R, F, w );
+    output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.fullDevs );
     
     % Unappend if necessary
     output.Append = false;
-    if set.append
-        dash.unappendYe;
+    if obj.append
+        obj.unappendYe;
         output.Yi = Yi;
         output.Append = true;
     end
@@ -69,16 +72,16 @@ if strcmp(set.type, 'serial')
 else
     
     % Default localization
-    if isempty(set.localize)
-        w = ones(obj.nState, obj.nObs);
-        yloc = ones(obj.nObs, obj.nObs);
+    if isempty(obj.localize)
+        w = ones( nState, nObs);
+        yloc = ones( nObs, nObs);
     else
-        w = set.localize{1};
-        yloc = set.localize{2};
+        w = obj.localize{1};
+        yloc = obj.localize{2};
     end
     
     % Do the updates
-    output = dash.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, set.meanOnly );
+    output = dash.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs );
 end
 
 end
