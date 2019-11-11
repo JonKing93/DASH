@@ -20,6 +20,29 @@ classdef kalmanFilter < dashFilter
     % Constructor
     methods
         function obj = kalmanFilter( M, D, R, F )
+            % Creates a new kalmanFilter object
+            %
+            % obj = kalmanFilter( M, D, R, F )
+            %
+            % ----- Inputs -----
+            %
+            % M: A model prior. Either an ensemble object or a matrix (nState x nEns)
+            %
+            % D: A matrix of observations (nObs x nTime)
+            %
+            % R: Observation uncertainty. NaN entries in time steps with observations
+            %    will be calculated dynamically via the PSMs.
+            %
+            %    scalar: (1 x 1) The same value will be used for all proxies in all time steps
+            %    row vector: (1 x nTime) The same value will be used for all proxies in each time step
+            %    column vector: (nObs x 1) The same value will be used for each proxy in all time steps.
+            %    matrix: (nObs x nTime) Each value will be used for one proxy in one time step.
+            %
+            % F: A cell vector of PSM objects. {nObs x 1}        
+            %
+            % ----- Outputs -----
+            %
+            % obj: A new kalmanFilter object
             
             % Default settings
             obj.type = 'joint';

@@ -25,7 +25,7 @@ classdef sensorTest < dash
         function obj = sensorTest( M, Fj, S )
             % Creates a new optimal sensor test.
             %
-            % obj = sensorTest( M, Fj, Hs, R )
+            % obj = sensorTest( M, Fj, S )
             %
             % ----- Inputs -----
             %
