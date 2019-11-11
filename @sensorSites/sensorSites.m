@@ -2,7 +2,7 @@ classdef sensorSites
     % sensorSites
     % Holds information on possible sensor placements
     
-    properties
+    properties (SetAccess = private)
         H;    % State vector indices
         R;    % Site observation uncertainty
         coordinates;    % lat-lon coordinates of each site

@@ -1,4 +1,4 @@
-classdef particleFilter < handle
+classdef particleFilter < dashFilter
     % Implements a particle filter.
     
     properties
@@ -59,9 +59,6 @@ classdef particleFilter < handle
         
         % Change the settings
         settings( obj, varargin );
-        
-        % Change the values
-        setValues( obj, M, D, R, F );
         
     end
     
