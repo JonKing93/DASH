@@ -75,10 +75,10 @@ classdef kalmanFilter < dashFilter
     methods (Static)
         
         % Serial updating scheme
-        [output] = serialENSRF( M, D, R, F, w );
+        [output] = serialENSRF( M, D, R, F, w, fullDevs );
         
         % Full inversion
-        [output] = jointENSRF( M, D, R, F, w, yloc, meanOnly );
+        [output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs );
         
         % Serial kalman gain
         [K, a] = serialKalman( Mdev, Ydev, w, R );

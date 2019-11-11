@@ -73,7 +73,7 @@ for t = 1:nTime
                 % Decompose the estimates, get the Kalman gain, and
                 % calibration ratio
                 [Ymean, Ydev] = dash.decompose( Ye(d,:,t) );
-                [K, a] = obj.serialKalman( Ad, Ydev, w(:,d), R(d,t) );
+                [K, a] = kalmanFilter.serialKalman( Ad, Ydev, w(:,d), R(d,t) );
                 calibRatio(d,t) = ( D(d,t) - Ymean ).^2 ./ ( var(Ye(d,:,t)) + R(d,t) );
                 
                 % Update

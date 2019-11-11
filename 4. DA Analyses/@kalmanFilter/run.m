@@ -40,7 +40,7 @@ M = dash.inflate( M, obj.inflate );
 
 % Sizes
 nState = size(M,1);
-nObs = size(D,1);
+nObs = size(obj.D,1);
 
 % Serial updates
 if strcmp(obj.type, 'serial')
@@ -81,7 +81,7 @@ else
     end
     
     % Do the updates
-    output = dash.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs );
+    output = obj.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs );
 end
 
 end

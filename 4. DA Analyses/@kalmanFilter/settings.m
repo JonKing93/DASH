@@ -98,7 +98,7 @@ end
 
 % Save values
 obj.type = type;
-obj.weights = weights;
+obj.localize = weights;
 obj.inflate = inflate;
 obj.append = append;
 obj.meanOnly = meanOnly;

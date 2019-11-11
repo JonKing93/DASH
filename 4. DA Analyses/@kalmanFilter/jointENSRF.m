@@ -70,14 +70,14 @@ end
 [Ymean, Ydev] = dash.decompose( Ye );
 [Mmean, Mdev] = dash.decompose(M);
 clearvars M;
-Knum = obj.jointKalman( 'Knum', Mdev, Ydev, w );
+Knum = kalmanFilter.jointKalman( 'Knum', Mdev, Ydev, w );
 
 % Use the obs in each time step to compute the full kalman gain
 progressbar(0);
 for t = 1:nTime    
     sites(:,t) = sites(:,t) & ~isnan( D(:,t) );
     obs = sites(:,t);    
-    [K, Kdenom] = obj.jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) );
+    [K, Kdenom] = kalmanFilter.jointKalman( 'K', Knum(:,obs), Ydev(obs,:), yloc(obs,obs), R(obs,t) );
     
     % Update the mean and get the calibration ratio
     Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) );    
@@ -85,7 +85,7 @@ for t = 1:nTime
 
     % Optionally update the deviations / variance
     if ~meanOnly
-        Ka = obj.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
+        Ka = kalmanFilter.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
         if fullDevs
             Adev(:,:,t) = Mdev - Ka * Ydev(obs,:);
         else
