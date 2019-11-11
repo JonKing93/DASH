@@ -23,6 +23,7 @@ if isnan(N)
     
 % Or best N particles
 else
+    [nEns, nTime] = size(sse);
     weights = zeros( nEns, nTime );
     for t = 1:nTime
         [~,rank] = sort( sse(:,t) );
