@@ -130,11 +130,23 @@ meta = gridFile.defineMetadata( 'lon', lon, 'lat', lat, 'time', time, 'run', run
 attributes = struct('Model', 'CESM-LME', 'Grid', 'f19_g16');
 
 % Alright, let's initialize the .grid file. We'll call it tutorial.grid
-gridFile.new( 'tutorial.grid', meta, attributes );
+myGrid = gridFile.new( 'tutorial.grid', meta, attributes );
 
 % this says: Create a new grid file named tutorial.grid,
 % the scope of the grid is defined by this metadata,
 % the grid also has non-dimensional metadata in attributes.
+
+% Note that this returns an output "myGrid", which is an object that
+% contains some information about this gridFile. Since different gridFiles
+% contain different data, we will interact with them individually. So, we
+% will need the "myGrid" object to add data to this grid file.
+%
+% You can also get a gridfile object for an existing gridFile by calling
+% the "gridFile" method on the file name. So, for example
+clearvars myGrid;
+myGrid = gridFile('tutorial.grid');
+
+% returns the same object.
 
 
 %% Add data to a grid file
@@ -220,7 +232,7 @@ for f = 1:numel( trefFiles )
     sourceMetadata = gridFile.defineMetadata('lon',lon, 'lat',lat, 'time', time, 'run', run, 'var', 'Tref' );
     
     % Add the data source
-    gridFile.addData('tutorial.grid', 'nc', trefFiles(f), "TREFHT", dimOrder, sourceMetadata );
+    myGrid.addData( 'nc', trefFiles(f), "TREFHT", dimOrder, sourceMetadata );
     
     % so, this says: Add some data to the grid file name 'tutorial.grid',
     % the data I am adding is from a NetCDF file, 
@@ -242,7 +254,7 @@ for f = 1:2:3
     end
     meta = gridFile.defineMetadata('lat',lat,'lon',lon,'time',time,'run',run,'var',"PSL");
     
-    gridFile.addData('tutorial.grid', 'nc', pslFiles(f), "PSL", dimOrder, meta );
+    myGrid.addData( 'nc', pslFiles(f), "PSL", dimOrder, meta );
 end
 
 % Also, note that we can mix the type of data source used in a .grid
@@ -270,7 +282,7 @@ end
 % Later, we will see that it is useful to catalogue data in a .grid file by
 % its metadata. To extract metadata for a file, use
 
-meta = gridFile.meta( 'tutorial.grid' );
+meta = gridFile.meta('tutorial.grid');
 
 % By looking at meta, we can see that it contains the metadata for each
 % dimension, and also the grid attributes.
@@ -312,7 +324,7 @@ newRuns = (4:13)';
 % For example, perhaps I decided to rename the variables. I can do
 newMetadata = ["T";"P"];
 
-gridFile.rewriteMetadata( 'tutorial.grid', 'var', newMetadata );
+myGrid.rewriteMetadata( 'var', newMetadata );
 % this says: rewrite some of the metadata in tutorial.grid,
 % specifically rewrite the metadata for the var dimension,
 % the new metadata is in newMetadata.
@@ -325,60 +337,53 @@ gridFile.rewriteMetadata( 'tutorial.grid', 'var', newMetadata );
 % grid will have a lat and a lon dimension, but the metadata at each grid
 % node will be unique. How to work with this?
 
-% To add a tripolar grid to a .grid file, we will first need to convert the
-% tripolar spatial grid to a vector. In this way, each index along the 
-% spatial tripolar vector (the tripolar dimension) will be described by a
-% unique lat-lon metadata point.
+% To address this issue in dash, we will want to combine the lat and lon
+% dimensions into a single vector. Then, each lat/lon metadata coordinate
+% will correspond to a single element down this new "tripolar" dimension.
+% 
+% Simply note which dimensions need to be merged, and Dash will handle the
+% rest.
 
 % Here we will do a demo using SSTs from a run of TRACE
 % Start by building a new gridFile
 clearvars;
 
-% First, get the data
+% First, get the data file
 file = "tos_sfc_Odec_CCSM3_TraCE21ka.nc";
-sst = ncread(file, 'tos');
 
-% And the associated metadata
+% Here we can see that the data in this file is lon x lat x time. 
+ncdisp( file, 'tos' );
+
+% However, looking at the metadata we see that lat and lon are matrices the
+% size of the spatial grid. We will need to convert them to a combined
+% "tripolar" dimension.
 lat = ncread( file, 'lat');
 lon = ncread( file, 'lon');
 time = ncread( file, 'time');
 
-% Note that lat and lon are matrices here, not vectors.
+% First, we will specify the dimension order in this file
+dimOrder = ["tri","tri","time"];
 
-% Now, convert the tripolar lat-lon spatial grid to a vector
-[nLon, nLat, nTime] = size( sst );
-sst = reshape( sst, [nLon*nLat, nTime] );
+% this line indicates that the data has three dimensions, but that the
+% first two dimensions will be merged into a common "tri" dimension.
 
-% Get the new "tripolar" metadata
+% Next, we will need to merge the metadata for lat and lon into a common
+% "tri dimension.
 lat = lat(:);
 lon = lon(:);
 tri = [lat, lon];
 
-% Define the scope of the grid file
+% We can now define the scope of the grid file
 meta = gridFile.defineMetadata('time', time, 'tri', tri );
+grid = gridFile.new( 'trace_sst.grid', meta );
 
-% Looking at the tri metadata, we see it is a 2 column matrix. Each row
-% corresponds to one index along the tripolar dimension (the vectorized
-% lat-lon dimensions), with a unique lat-lon metadata point.
-dimOrder = ["tri","time"];
-appendDims = [];
-
-% Later, we will see that it can be useful to know the location of land
-% elements (NaN values) in a tripolar ocean grid. Let's record those and save
-% them to the grid attributes.
-land = any( isnan(sst), 2 );
-attributes = struct('Model', 'TRaCE', 'land_indices', land );
-
-% Now initialize the grid file
-gridFile.new( 'trace_sst.grid', meta, attributes );
-
-% And add the data
-gridFile.addData( 'trace_sst.grid', 'array', sst, [], dimOrder, meta );
+% And add in the file
+grid.addData( 'nc', file, 'tos', ["tri","tri","time"], meta );
 
 % This says:
 % Add a data source to trace_sst.grid,
-% The data source is a workspace array,
-% Specifically this sst array,
-% the order of the dimensions is tripolar (merged lat-lon) x time,
+% The data source is a netcdf file
+% The variable of interest is name "tos"
+% tos has three dimensions -- the first two should be merged into a common "tri" dimension.
 % the array has this metadata.
 

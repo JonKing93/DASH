@@ -114,7 +114,7 @@ design = design.add( 'PSL', 'tutorial.grid' );
 % We'll need to note which indices to extract data from along each
 % dimension in the .grid file. Some metadata might be useful. To get .grid
 % file metadata use
-meta = gridFile.meta( 'tutorial.grid' );
+meta = gridFile.meta('tutorial.grid');
 
 % We can see that meta has a field for each dimension. And each field
 % contains the metadata for the dimension.
