@@ -1,5 +1,11 @@
 classdef kalmanFilter < dashFilter
     % Implements an offline, ensemble square root kalman filter.
+    %
+    % kalmanFilter Methods:
+    %   kalmanFilter - Creates a new kalmanFilter
+    %   settings - Adjusts the settings for the kalman filter
+    %   run - Runs the kalman filter
+    %   setValues - Changes the data used in the kalman filter
     
     properties
         % Settings
@@ -64,3 +70,5 @@ classdef kalmanFilter < dashFilter
         [Amean, Avar] = unappendYe( Amean, Avar, nObs )
         
     end
+    
+end
