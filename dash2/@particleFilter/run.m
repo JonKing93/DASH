@@ -1,7 +1,7 @@
-function[output] = particleFilter( obj )
-% Runs a particle filter
+function[output] = run( obj )
+% Runs a particle filter for a specific particleFilter object.
 %
-% output = obj.particleFilter
+% output = obj.run
 %
 % ----- Outputs -----
 %
@@ -15,12 +15,9 @@ function[output] = particleFilter( obj )
 %
 %   weights - The weights used to compute the updated ensemble mean
 
-% Get the settings
-set = obj.settings.particleFilter;
-
 % Switch to the alternative algorithm if using a large ensemble
-if set.big
-    output = dash.bigpf( obj.M, obj.D, obj.R, obj.F, set.N, set.batchSize );
+if obj.big
+    output = dash.bigpf( obj.M, obj.D, obj.R, obj.F, obj.N, obj.batchSize );
     
 % Otherwise, load the ensemble if necessary, then run the normal algorithm
 else
@@ -28,7 +25,7 @@ else
     if isa( obj.M, 'ensemble')
         M = obj.M.load;
     end
-    output = dash.pf( M, obj.D, obj.R, obj.F, set.N ); 
+    output = dash.pf( M, obj.D, obj.R, obj.F, obj.N ); 
 end
 
 end
