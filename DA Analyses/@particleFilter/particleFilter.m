@@ -7,12 +7,6 @@ classdef particleFilter < dashFilter
         N;       % Number of best particles for N best weights
         big;     % Whether the ensemble is too large to fit into memory
         nEns;   % How many ensemble members to process per batch for large ensembles.
-        
-        % Analysis values
-        M;   % Model prior
-        D;   % Observations
-        R;   % Observation uncertainty
-        F;   % Model estimates (Ye)
     end
     
     % Constructor
@@ -42,12 +36,11 @@ classdef particleFilter < dashFilter
             obj.big = false;
             obj.nEns = NaN;
             
-            % Set values, prevent empty constructor
-            if nargin < 4
-                error('Insufficient inputs')
+            % Block empty constructor, set values
+            if isempty(M) || isempty(D) || isempty(R) || isempty(F)
+                error('M, D, R, and F cannot be empty.');
             end
             obj.setValues( M, D, R, F );
-            
         end
     end
     
