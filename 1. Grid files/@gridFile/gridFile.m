@@ -36,9 +36,12 @@ classdef gridFile < handle
         
         % Create a metadata structure for a grid or gridded data
         [meta] = defineMetadata( varargin )
+
+        % Exract metadata from existing .grid file
+        [meta, dimID, gridSize] = meta( file );
         
         % Create new grid file
-        new( filename, type, source, varName, dimOrder, atts, varargin );
+        grid = new( filename, type, source, varName, dimOrder, atts, varargin );
         
     end
     
@@ -47,9 +50,6 @@ classdef gridFile < handle
         
         % Adds data to a .grid file
         addData( obj, type, source, varName, dimOrder, meta );
-        
-        % Exract metadata from existing .grid file
-        [meta, dimID, gridSize] = meta( obj );
         
         % Increase the size of a dimension in a .grid file.
         expand( obj, dim, newMeta );

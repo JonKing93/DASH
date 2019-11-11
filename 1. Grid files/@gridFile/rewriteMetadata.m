@@ -13,7 +13,7 @@ function[] = rewriteMetadata( obj, dim, newMeta )
 %          dimension.
 
 % Update in case the matfile changed
-obj.udpate;
+obj.update;
 
 % Check the dim is an ID
 if ~isstrflag( dim )

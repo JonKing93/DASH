@@ -1,4 +1,4 @@
-function[meta, dimID, gridSize] = meta( obj )
+function[meta, dimID, gridSize] = meta( file )
 %% Returns a structure with metadata for a gridded .mat file.
 % 
 % [meta, dimID, gridSize] = gridFile.meta( file )
@@ -19,12 +19,12 @@ function[meta, dimID, gridSize] = meta( obj )
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Update in case changes occured
-obj.update;
+% Check the file is real
+grid = gridFile(file);
 
 % Extract the output fields
-meta = obj.metadata;
-dimID = obj.dimOrder;
-gridSize = obj.gridSize;
+meta = grid.metadata;
+dimID = grid.dimOrder;
+gridSize = grid.gridSize;
 
 end

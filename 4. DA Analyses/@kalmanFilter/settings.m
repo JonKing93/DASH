@@ -81,18 +81,20 @@ if fullDevs && meanOnly
     error('Cannot compute only the ensemble mean when returning full ensemble deviations.');
 end
 
+nState = size(obj.M,1);
+nObs = size(obj.D,1);
 if ~isempty(weights)
     if strcmpi(type,'joint') 
         if ( ~iscell(weights) || numel(weights)~=2 )
             error(['Localization weights for joint updates must be provided as the 2-element cell: {w, yloc}\n',...
                'Please see dash.localizationWeights for details.'] );
-        elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [obj.nObs, obj.nObs])
-            error('The second element of joint localization weights must be a %.f x %.f numeric matrix', obj.nObs, obj.nObs );
-        elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [obj.nState, obj.nObs])
-            error('The first element of joint localization weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
+        elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [nObs, nObs])
+            error('The second element of joint localization weights must be a %.f x %.f numeric matrix', nObs, nObs );
+        elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [nState, nObs])
+            error('The first element of joint localization weights must be a %.f x %.f numeric matrix.', nState, nObs );
         end
-    elseif strcmpi(type, 'serial') && ( ~isnumeric(weights) || ~isreal(weights) || ~ismatrix(weights) || ~isequal(size(weights), [obj.nState, obj.nObs]) )
-        error('serial localization weights must be a %.f x %.f numeric matrix.', obj.nState, obj.nObs );
+    elseif strcmpi(type, 'serial') && ( ~isnumeric(weights) || ~isreal(weights) || ~ismatrix(weights) || ~isequal(size(weights), [nState, nObs]) )
+        error('serial localization weights must be a %.f x %.f numeric matrix.', nState, nObs );
     end
 end
 

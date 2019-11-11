@@ -1,4 +1,4 @@
-function[] = new( filename, meta, attributes )
+function[grid] = new( filename, meta, attributes )
 %% Initializes a new gridded data (.grid) file. This is a container object that
 % contains instructions on reading data from different sources, including:
 % NetCDF files, .mat Files, and Matlab numeric arrays.
@@ -66,5 +66,8 @@ m.nSource = 0;
 m.source = {};
 m.dimLimit = [];
 m.valid = true;
+
+% Return the object as output
+grid = gridFile( filename );
 
 end
