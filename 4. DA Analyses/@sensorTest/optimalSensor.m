@@ -68,9 +68,9 @@ for s = 1:N
     
     % Optionally remove the site and sites within the radius. Stop the loop
     % if no sites are left
-    sites = sites.removeRadius( curr, radius );
+    sites = sites.removeRadius( bestSite(s), radius );
     if ~replace
-        sites = sites.removeSite( curr );
+        sites = sites.removeSite( bestSite(s) );
     end
     if isempty(sites.H)
         progressbar(1);
@@ -78,9 +78,8 @@ for s = 1:N
     end
     
     % Update the ensemble
-    H = sites.H(curr);
-    [K, a] = kalmanFilter.serialKalman( Mdev, Mdev(H,:), ones(size(Mmean)), sites.R(curr) );
-    Mmean = Mmean + K * Mdev(H,:);
+    H = sites.H( bestSite(s) );
+    [K, a] = kalmanFilter.serialKalman( Mdev, Mdev(H,:), ones(size(Mmean)), sites.R( bestSite(s) ) );
     Mdev = Mdev - a * K * Mdev(H,:);
     
     progressbar(s/N);

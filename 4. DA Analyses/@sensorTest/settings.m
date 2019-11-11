@@ -34,7 +34,7 @@ elseif ~isnumeric(radius) || ~isscalar(radius) || radius<0
 end
 
 % Save the settings
-obj.replace = obj.replace;
+obj.replace = replace;
 obj.nSensor = N;
 obj.radius = radius;
 

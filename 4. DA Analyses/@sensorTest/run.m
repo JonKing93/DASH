@@ -16,6 +16,6 @@ function[output] = run( obj )
 %   skill - The relative reduction in J variance of each placement.
 
 % Run
-output = dash.optimalSensor( obj.M, obj.Fj, obj.S, obj.nSensor, obj.replace, obj.radius );
+output = obj.optimalSensor( obj.M, obj.Fj, obj.S, obj.nSensor, obj.replace, obj.radius );
 
 end
