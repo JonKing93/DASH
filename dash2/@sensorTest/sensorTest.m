@@ -14,13 +14,10 @@ classdef sensorTest < dash
         replace;  % Whether to select sensors with or without replacement
         radius;  % Limits selection of new sensors outside of a distance radius
         
-        % Prior and J metric
+        % Analysis values
         M; % A model prior
         Fj; % A forward model used to estimate J from M 
-        
-        % Site information
-        H;  % State vector indices of sensor sites
-        R;      % Observation uncertainty for sites
+        S;  % A sensorSites object.
     end
     
     % Constructor
@@ -62,8 +59,11 @@ classdef sensorTest < dash
         
     end
     
-    % Analysis utilities
-    methods
+    % Static analysis utilities
+    methods (Static)
+        
+        % Static call for optimal sensor test
+        output = optimalSensor( M, Fj, sites, N, replace, radius );
         
         % Test how J variance is reduced for a sensor.
         skill = assessPlacement( Jdev, HMdev, R );

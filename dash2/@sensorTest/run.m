@@ -1,13 +1,7 @@
-function[output] = run( obj, J, sites )
+function[output] = run( obj )
 % Does an optimal sensor test for a specific sensorTest object.
 %
-% output = obj.optimalSensor( J, sites )
-%
-% ----- Inputs -----
-%
-% J: A metric vector. Often a climate index. (1 x nEns)
-%
-% sites: A sensorSites object
+% output = obj.run
 %
 % ----- Outputs -----
 %
@@ -15,32 +9,13 @@ function[output] = run( obj, J, sites )
 %
 %   settings - Settings used to run the analysis
 %
-%   bestSites - The state vector indices of the best sites
+%   bestH - The state vector indices of the best sites
+%
+%   bestSites - The index of the best sites in the sensorSites object
 %
 %   skill - The relative reduction in J variance of each placement.
 
-% Error check
-if ~isvector(J) || numel(J)~=obj.nEns
-    error('J must be a vector with nEns elements (%.f)', obj.nEns );
-elseif ~isa( sites, 'sensorSites' ) || ~isscalar(sites)
-    error('sites must be a scalar sensorSites object.');
-elseif any(sites.H) > obj.nState
-    error('The state vector indices of the sensor sites (H) cannot be larger than the number of state vector elements (%.f).', obj.nState );
-end
-if iscolumn(J)
-    J = J';
-end
-
-% Load the ensemble if necessary
-M = obj.M;
-if isa(M, 'ensemble')
-    M = M.load;
-end
-
-% Get the current settings
-set = obj.settings.optimalSensor;
-
 % Run
-output = dash.sensorTest( J, M, sites, set.nSensor, set.replace, set.radius );
+output = dash.optimalSensor( obj.M, obj.Fj, obj.S, obj.nSensor, obj.replace, obj.radius );
 
 end
