@@ -1,19 +1,19 @@
 function[] = settings( obj, varargin )
 % Specifies settings for a particle filter analysis
 %
-% obj.pfSettings( ..., 'type', type )
+% obj.settings( ..., 'type', type )
 % Specify whether to use a probability weighting or N best particles to
 % create the analysis. Default is probability weighting.
 %
-% obj.pfSettings( ..., 'type', 'bestN', 'N', N )
+% obj.settings( ..., 'type', 'bestN', 'N', N )
 % Set the number of best particles to use to create the analysis. Default
 % of N = 1.
 %
-% obj.pfSettings( ..., 'big', big )
+% obj.settings( ..., 'big', big )
 % Indicate whether to use an alternative algorithm to process ensemble
 % too large to fit into active memory by processing particles in batches.
 %
-% obj.pfSettings( ..., 'big', true, 'batchSize', nEns )
+% obj.settings( ..., 'big', true, 'batchSize', nEns )
 % Specify the number of particles to use per batch. Must be specified by
 % the user when using the alternative algorithm for large ensembles.
 %

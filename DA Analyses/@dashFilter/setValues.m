@@ -121,10 +121,5 @@ obj.D = D;
 obj.R = R;
 obj.F = F;
 obj.Rtype = Rtype;
-
-obj.nState = nState;
-obj.nEns = nEns;
-obj.nObs = nObs;
-obj.nTime = nTime;
         
 end

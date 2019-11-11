@@ -1,14 +1,14 @@
 function[] = settings( obj, varargin )
 % Specifies settings for an optimal sensor analysis
 %
-% obj.sensorSettings( ..., 'replace', replace )
+% obj.settings( ..., 'replace', replace )
 % Specifies whether to select sensors with or without replacement. Default
 % is with replacement.
 %
-% obj.sensorSettings( ..., 'nSensor', N )
+% obj.settings( ..., 'nSensor', N )
 % Set the number of sensors to locate. Default is 1.
 %
-% obj.sensorSettings( ..., 'radius', R )
+% obj.settings( ..., 'radius', R )
 % Limits the selection of new sensors outside of a distance radius of
 % selected sensors.
 %
