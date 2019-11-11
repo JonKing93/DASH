@@ -5,7 +5,7 @@ classdef kalmanFilter < dashFilter
     %   kalmanFilter - Creates a new kalmanFilter
     %   settings - Adjusts the settings for the kalman filter
     %   run - Runs the kalman filter
-    %   setValues - Changes the data used in the kalman filter
+    %   setValues - Changes the data used in an existing kalman filter
     
     properties
         % Settings

@@ -15,6 +15,20 @@ classdef (Abstract) dash < handle
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
     
+    % Interface for analyses
+    methods (Abstract)
+        
+        % Runs a data assimilation test
+        run( obj );
+        
+        % Change the settings for a particular type of test
+        settings( obj, varargin);
+        
+        % Change the data in an existing test object
+        setValues( obj, values );
+        
+    end
+    
     % Regridding
     methods (Static)
         

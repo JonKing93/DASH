@@ -1,6 +1,10 @@
 classdef sensorSites
     % sensorSites
-    % Holds information on possible sensor placements
+    % Holds information on possible sensor placements for optimal sensor
+    % tests.
+    %
+    % sensorSites Methods:
+    %   sensorSites - Creates a new sensorSites object.
     
     properties (SetAccess = private)
         H;    % State vector indices

@@ -1,5 +1,11 @@
 classdef particleFilter < dashFilter
     % Implements a particle filter.
+    %
+    % particleFilter Methods:
+    %   particleFilter - Creates a new particleFilter
+    %   settings - Changes the settings for a particle filter
+    %   run - Runs the particle filter
+    %   setValues - Change the data used in an existing particle filter
     
     properties
         % Settings

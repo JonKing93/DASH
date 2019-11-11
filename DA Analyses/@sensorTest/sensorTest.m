@@ -1,12 +1,13 @@
-classdef sensorTest < handle
+classdef sensorTest < dash
     % sensorTest
     % Implements tests for optimal sensor placement.
     %
     % sensorTest Methods
-    %   sensorTest - Creates a new sensor test
+    %   sensorTest - Creates a new sensor test object
     %   settings - Changes the settings for the sensor test
-    %   setValues - Changes the values used in the sensor test.
     %   run - Runs the test
+    %   setValues - Changes the data used in an existing sensor test object
+
     
     properties (SetAccess = private)
         % Settings
