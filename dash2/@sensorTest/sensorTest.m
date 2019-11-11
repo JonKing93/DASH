@@ -1,4 +1,4 @@
-classdef sensorTest < dash
+classdef sensorTest
     % sensorTest
     % Implements tests for optimal sensor placement.
     %
@@ -40,7 +40,11 @@ classdef sensorTest < dash
             obj.nSensor = 1;
             obj.radius = NaN;
             
-            % Set the values
+            % Set the values. Don't allow empty values for initial
+            % constructor
+            if nargin < 3
+                error('Insufficient inputs.');
+            end
             obj.setValues( M, Fj, S );
         end
     end
