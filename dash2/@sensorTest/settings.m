@@ -1,4 +1,4 @@
-function[] = sensorSettings( obj, varargin )
+function[] = settings( obj, varargin )
 % Specifies settings for an optimal sensor analysis
 %
 % obj.sensorSettings( ..., 'replace', replace )
@@ -18,28 +18,24 @@ function[] = sensorSettings( obj, varargin )
 %
 % N: The number of sensors. A scalar, positive integer.
 %
-% H: The state vector indices of sensors sites under consideration. Either
-%    a logical vector with nState elements, or a vector of linear indices.
-%
 % R: The radius used to limit sensor placement. Units are km.
 
 % Parse the inputs
-curr = obj.settings.optimalSensor;
 [replace, N, radius] = parseInputs( varargin, {'replace', 'nSensor', 'radius'},...
-    {curr.replace, curr.nSensor, curr.radius}, {[],[],[]} );
+    {obj.replace, obj.nSensor, obj.radius}, {[],[],[]} );
 
 % Error check
 if ~isscalar(replace) || ~islogical(replace)
     error('replace must be a scalar logical.');
 elseif ~isnumeric(N) || ~isscalar(N) || N<=0 || mod(N,1)~=0
     error('N must be a positive scalar integer.');
-elseif N~=1
-    error('Currently nSensor must equal 1. An update is in the works...');
 elseif ~isnumeric(radius) || ~isscalar(radius) || radius<0
     error('radius must be a scalar, non-negative number.');
 end
 
 % Save the settings
-obj.settings.optimalSensor = struct('replace', replace, 'nSensor', N, 'radius', radius );
+obj.replace = obj.replace;
+obj.nSensor = N;
+obj.radius = radius;
 
 end
