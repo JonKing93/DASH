@@ -8,7 +8,7 @@ classdef sensorTest < dash
     %   setValues - Changes the values used in the sensor test.
     %   run - Runs the test
     
-    properties
+    properties (SetAccess = private)
         % Settings
         nSensor;  % The number of sensors to select
         replace;  % Whether to select sensors with or without replacement
