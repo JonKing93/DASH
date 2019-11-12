@@ -2,7 +2,7 @@ function[] = update( obj )
 
 % Check that the file still exists
 try
-    obj.fileCheck( obj.filepath );
+    grid = obj.fileCheck( obj.filepath );
 catch
     delete(obj);
     error('The grid file does not exist. It may have been deleted or removed from the active path. Deleting the current gridFile object.');
@@ -10,8 +10,6 @@ end
 
 % Update the properties
 try    
-    grid = load(obj.filepath, '-mat', 'source','dimOrder','dimLimit','metadata','gridSize');
-
     obj.source = grid.source;
     obj.dimOrder = grid.dimOrder;
     obj.dimLimit = grid.dimLimit;

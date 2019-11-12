@@ -75,7 +75,7 @@ classdef gridFile < handle
        [X, passVals] = read( obj, scs, passVals );
        
        % Check file existence / extension / correct fields
-       fileCheck( file, flag );
+       m = fileCheck( file, flag );
        
        % Check that dimensions are recognized
        [dims] = checkDimList( dims, errName );

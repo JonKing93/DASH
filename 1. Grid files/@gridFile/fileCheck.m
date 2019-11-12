@@ -1,4 +1,4 @@
-function[] = fileCheck( file, flag )
+function[m] = fileCheck( file, flag )
 %% Checks that a gridded .mat file exists. Returns a writable or read-only 
 % matfile object, as required.
 %
@@ -34,6 +34,7 @@ file = char(file);
 if ~strcmpi( file(end-4:end), '.grid' )
     error('File must end in a .grid extension.');
 end
+m = [];
 
 % If reading / writing
 if strcmp(flag, "use")
@@ -45,17 +46,9 @@ if strcmp(flag, "use")
     
     % Get the matfile object
     try
-        m = matfile( file );
+        m = load( file, '-mat', 'valid','dimOrder','gridSize','metadata','nSource','source','dimLimit');
     catch ME
         error('Could not open file %s. It may be corrupted or not actually a .grid file.', file );
-    end
-    
-    % Check that all the required fields are in the file
-    vars = who(m);
-    required = ["valid","dimOrder","gridSize","metadata","nSource","source","dimLimit"];
-    isvar = ismember( required, vars );
-    if any( ~isvar )
-        error('The %s field is missing from the .grid file.', required(find(~isvar,1)) );
     end
     
     % Check that the file was not corrupted during a write operation
