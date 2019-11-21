@@ -7,7 +7,7 @@ classdef arrayGrid < gridData
     
     % Constructor
     methods
-        function[obj, X] = arrayGrid( X, grid, dimOrder )
+        function[obj, X] = arrayGrid( X, nSource, dimOrder )
             % Creates a new arrayGrid object. 
             
             % Ensure the data is numeric or logical
@@ -16,7 +16,7 @@ classdef arrayGrid < gridData
             end
             
             % Get the data name
-            obj.dataName = sprintf('data%.f', numel(grid.source)+1);
+            obj.dataName = sprintf('data%.f', nSource+1);
             
             % Process dimensions, note merging
             [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...

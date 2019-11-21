@@ -56,7 +56,7 @@ classdef matGrid < gridData
             
             % Process the dimensions. Record merging and sizes
             [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
-                gridDta.processSourceDims( dimOrder, size(m,varName) );
+                gridData.processSourceDims( dimOrder, size(m,varName) );
            
             % Check the data is numeric or logical
             nDim = numel( obj.unmergedSize );
