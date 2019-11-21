@@ -55,6 +55,9 @@ classdef (Abstract) dash < handle
         % Error check Ye and R generation on the fly without crashing the analysis
         [Ye, R, use] = processYeR( F, Mpsm, R, t, d );
         
+        % Calculate Ye without running a data assimilation
+        Ye = calculateYe( M, F );
+        
     end 
     
 end
