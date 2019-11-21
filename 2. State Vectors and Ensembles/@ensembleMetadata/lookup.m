@@ -32,7 +32,8 @@ function[meta] = lookup( obj, dims, inArg )
 %   each queried dimension.
 
 % If the input is a variable name, just get the indices
-if isstrflag( inArg)              
+if isstrflag( inArg)   
+    v = obj.varCheck( inArg );
     H = obj.varIndices( inArg );
     
 % But don't allow multiple variable names
