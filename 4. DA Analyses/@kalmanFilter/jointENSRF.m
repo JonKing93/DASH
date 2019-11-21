@@ -104,7 +104,8 @@ end
 output.Amean = Amean;
 if fullDevs
     output.Adev = Adev;
-elseif ~meanOnly
+    output.Amean = permute( Amean, [1 3 2] );
+else
     output.Avar = Avar;
 end
 output.Ye = Ye;
