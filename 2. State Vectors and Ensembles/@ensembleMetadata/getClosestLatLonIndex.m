@@ -38,6 +38,7 @@ metaValue = cell( nDim, 1 );
 empty = repmat( {[]}, [nDim, 1] );
 
 [metaValue{:}] = parseInputs( varargin, cellstr(dimID), empty, empty );
+varNames = string(varNames);
 
 % Get the number of indices to search in each dimension. Throw error if
 % indices were provided for lat, lon, or tri
