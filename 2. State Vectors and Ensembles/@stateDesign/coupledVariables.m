@@ -14,7 +14,7 @@ unset = 1:nVar;
 for s = 1:nSets
     set = find( obj.isCoupled( unset(1), : ) );
     cv{s} = set;
-    unset( set ) = [];
+    unset( ismember(unset,set) ) = [];
 end
 
 end
