@@ -52,18 +52,18 @@ classdef matGrid < gridData
             if ~isvar
                 error('The file %s does not contain a %s variable.', filename, varName );
             end
-            obj.varName = varName;
+            obj.varName = char(varName);
             
             % Process the dimensions. Record merging and sizes
             [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
-                gridData.processSourceDims( dimOrder, size(m,varName) );
+                gridData.processSourceDims( dimOrder, size(m,char(varName)) );
            
             % Check the data is numeric or logical
             nDim = numel( obj.unmergedSize );
             load1 = repmat( {1}, [nDim,1] );
-            val1 = m.(varName)(load1{:});
+            val1 = m.(obj.varName)(load1{:});
             if ~isnumeric( val1 ) && ~islogical( val1 )
-                error('The variable %s is neither numeric nor logical.', varName );
+                error('The variable %s is neither numeric nor logical.', obj.varName );
             end 
         end
     end
