@@ -58,6 +58,9 @@ classdef (Abstract) dash < handle
         % Calculate Ye without running a data assimilation
         Ye = calculateYe( M, F );
         
+        % Return the current version of dash
+        versionString = version;
+        
     end 
     
 end
