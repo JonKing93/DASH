@@ -1,7 +1,7 @@
-function[] = loadVars( obj, vars )
+function[] = useVars( obj, vars )
 % Specifies which variables to load from a .ens file.
 %
-% obj.loadVars( vars )
+% obj.useVars( vars )
 %
 % ----- Inputs -----
 %
@@ -14,6 +14,6 @@ if ~isstrlist(vars)
 end
 obj.metadata.varCheck(vars);
 
-obj.vars = string(vars);
+obj.loadVars = string(vars);
 
 end

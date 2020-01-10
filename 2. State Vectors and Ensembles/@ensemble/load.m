@@ -82,10 +82,6 @@ if ~isempty( obj.vars )
 end
 
 % Return ensemble metadata
-ensMeta = obj.metadata;
-if ~isempty( obj.vars )
-    ensMeta = ensMeta.useVars( obj.vars );
-end
-ensMeta = ensMeta.useMembers( members );
+ensMeta = obj.loadMetadata;
 
 end

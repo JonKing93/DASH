@@ -14,7 +14,9 @@ classdef ensemble < handle
 % ensemble Methods:
 %   load - Loads desired ensemble members.
 %   add - Adds additional ensemble members to the stateDesign.
-%   loadVars - Specifies which variables to load
+%   useVars - Only load specific variables
+%   useMembers - Only load specific ensemble members
+%   loadMetadata - Return the metadata for loaded variables and ensemble members
 properties (SetAccess = private)
     file;              % The .ens file associated with the ensemble
     metadata;          % Ensemble metadata
@@ -25,7 +27,10 @@ properties (SetAccess = private)
     ensSize;           % The size of the full ensemble
     random;            % Whether the ensemble is ordered or random
     design;            % The state design associated with the ensemble
-    vars;              % Which variables to load
+    
+    % Load specifications
+    loadVars;              % Which variables to load
+    loadMembers;           % Which ensemble members to load
 end
 
 % Constructor
@@ -68,12 +73,15 @@ methods
 
     % Loads an ensemble from a .ens file
     [M, meta] = load( obj, members, nonan );
-    
+        
     % Specifies which ensemble members to load
-    loadMembers( obj, members );
+    useMembers( obj, members );
     
     % Specifies which variables to load
-    loadVars( obj, vars );
+    useVars( obj, vars );
+    
+    % Returns the metadata for the loaded variables and ensemble members
+    meta = loadMetadata( obj );
 end
 
 % Internal utilities
