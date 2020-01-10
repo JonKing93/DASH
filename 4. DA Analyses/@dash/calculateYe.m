@@ -15,8 +15,11 @@ function[Ye] = calculateYe( M, F )
 %
 % Ye: A set of Ye values
 
-% Initialize an empty Kalman Filter, just to error check M and F
+% Initialize an empty Kalman Filter, just to error check M and F. Load M.
 kalmanFilter( M, ones(size(F)), ones(size(F)), F );
+if isa(M, 'ensemble')
+    M = M.load;
+end
 
 % Preallocate
 nObs = size(F,1);
