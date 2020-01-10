@@ -72,7 +72,7 @@ methods
     add( obj, nAdd );
 
     % Loads an ensemble from a .ens file
-    [M, meta] = load( obj, members, nonan );
+    [M, meta] = load( obj );
         
     % Specifies which ensemble members to load
     useMembers( obj, members );
