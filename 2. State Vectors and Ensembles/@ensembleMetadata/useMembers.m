@@ -18,9 +18,7 @@ if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<
 end
 
 % Adjust the state design. Create new metadata
-for v = 1:numel( obj.design.var )
-    obj.design.var(v).drawDex = obj.design.var(v).drawDex(members);
-end
-ensMeta = ensembleMetadata( obj.design );
+design = obj.design.limitMembers( members );
+ensMeta = ensembleMetadata( design );
 
 end
