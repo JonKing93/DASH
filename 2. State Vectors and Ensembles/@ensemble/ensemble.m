@@ -58,10 +58,14 @@ methods
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.file = which( file );
-        obj.design = m.design;
+        obj.design = m.design;        
         
         % Create the ensemble metadata
         obj.metadata = ensembleMetadata( m.design );
+        
+        % By default, load everything
+        obj.loadVars = obj.metadata.varName;
+        obj.loadMembers = 1:obj.ensSize(2);
     end
 end
 
