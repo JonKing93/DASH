@@ -1,13 +1,13 @@
-function[M] = load( obj, members, nonan )
+function[M, ensMeta] = load( obj, members, nonan )
 %% Loads an ensemble from a .ens file.
 %
-% M = obj.load
-% Returns the entire ensemble.
+% [M, ensMeta] = obj.load
+% Returns the entire ensemble and associated metadata.
 %
-% M = obj.load( members )
+% [M, ensMeta] = obj.load( members )
 % Loads specific ensemble members. Leave empty to load all ensemble members
 %
-% M = obj.load( members, noNaN )
+% [M, ensMeta] = obj.load( members, noNaN )
 % Specify whether to prohibit loading ensemble members with NaN values.
 % Default is false.
 %
@@ -22,6 +22,8 @@ function[M] = load( obj, members, nonan )
 % ----- Outputs -----
 %
 % M: The loaded ensemble
+%
+% ensMeta: Metadata for the loaded ensemble.
 
 % Set defaults
 if ~exist('members','var') || isempty(members)
@@ -64,7 +66,26 @@ else
     end
 end
 
-% Reorder the members with a reverse sort
+% Reorder the members from scs with a reverse sort
 M = M(:, sort(order) );
+
+% Restrict to desired variables
+if ~isempty( obj.vars )
+    nVars = numel( obj.vars );
+    indices = cell( nVars, 1 );
+    
+    for v = 1:numel(obj.vars)
+        indices{v} = obj.metadata.varIndices( obj.vars(v) );
+    end
+    indices = cell2mat(indices);
+    M = M( indices, : );
+end
+
+% Return ensemble metadata
+ensMeta = obj.metadata;
+if ~isempty( obj.vars )
+    ensMeta = ensMeta.useVars( obj.vars );
+end
+ensMeta = ensMeta.useMembers( members );
 
 end
