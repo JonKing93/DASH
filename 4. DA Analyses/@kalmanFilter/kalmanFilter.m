@@ -75,7 +75,7 @@ classdef kalmanFilter < dashFilter
         settings( obj, varargin );
         
         % Set M, D, R, F
-        setValues( M, D, R, F );
+        setValues( obj, M, D, R, F );
         
     end
     

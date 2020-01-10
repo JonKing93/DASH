@@ -1,6 +1,30 @@
-function[] = setValues( M, D, R, F )
-% obj.reconstructVars( ens, vars );
+function[] = setValues( obj, M, D, R, F )
+% Changes values of model prior, observations, observation uncertainty, PSMs, and
+% sensor sites to use for a kalman filter.
 %
+% obj.setValues( M, D, R, F )
+%
+% ***Note: Use an empty array to keep the current value of a variable in
+% the kalman filter object. For example:
+%
+%    >> obj.setValues( [], D, R )
+%    would set new values for D and R, but use existing values for M and F
+%
+% ----- Inputs -----
+%
+% M: A model prior. Either an ensemble object or a matrix (nState x nEns)
+%
+% D: A matrix of observations (nObs x nTime)
+%
+% R: Observation uncertainty. NaN entries in time steps with observations
+%    will be calculated dynamically via the PSMs.
+%
+%    scalar: (1 x 1) The same value will be used for all proxies in all time steps
+%    row vector: (1 x nTime) The same value will be used for all proxies in each time step
+%    column vector: (nObs x 1) The same value will be used for each proxy in all time steps.
+%    matrix: (nObs x nTime) Each value will be used for one proxy in one time step.
+%
+% F: A cell vector of PSM objects. {nObs x 1}
 
 % Get saved/default values
 Rtype = 'new';
@@ -25,11 +49,10 @@ end
 if isa(M, 'ensemble')
     meta = M.loadMetadata;
     nState = meta.ensSize(1);
-    nEns = meta.ensSize(2);
 else
-    [nState, nEns] = size(M);
+    nState = size(M,1);
 end
-[nObs, nTime] = size(D);
+nObs = size(D,1);
 
 % Check that localization still works
 if ~isempty( obj.localize )
@@ -47,7 +70,7 @@ end
 % Check that reconstruction indices are still allowed
 if ~isempty( obj.reconstruct )
     if length(obj.reconstruct)~=nState
-        error('The size of the prior would change, so the previously specified reconstruction indices are no longer valid. You can reset them with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
+        error('The size of the prior would change, so the previously specified reconstruction indices would not be valid. You can reset them with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
     end
     
     % Check against PSM H indices if doing serial updates
@@ -69,6 +92,5 @@ obj.D = D;
 obj.R = R;
 obj.F = F;
 obj.Rtype = Rtype;
-
 
 end
