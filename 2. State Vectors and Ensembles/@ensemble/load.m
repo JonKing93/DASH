@@ -32,15 +32,13 @@ end
 M = M(:, sort(order) );
 
 % Restrict to desired variables
-if ~isempty( obj.loadVars )
-    nVars = numel( obj.loadVars );
-    indices = cell( nVars, 1 );
-    for v = 1:nVars
-        indices{v} = obj.metadata.varIndices( obj.vars(v) );
-    end
-    indices = cell2mat(indices);
-    M = M( indices, : );
+nVars = numel( obj.loadVars );
+indices = cell( nVars, 1 );
+for v = 1:nVars
+    indices{v} = obj.metadata.varIndices( obj.vars(v) );
 end
+indices = cell2mat(indices);
+M = M( indices, : );
 
 % Return ensemble metadata
 ensMeta = obj.loadMetadata;
