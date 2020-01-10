@@ -1,4 +1,4 @@
-function[] = checkValues( ~, M, D, ~, F, ~ )
+function[] = checkValues( obj, M, D, ~, F, ~ )
 % Check values against kalman filter settings
 
 % Get some sizes
@@ -29,17 +29,16 @@ if ~isempty( obj.reconstruct )
         error('The size of the prior would change, so the previously specified reconstruction indices would not be valid. You can reset them with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
     end
     
-    % Check against PSM H indices if doing serial updates
-    if strcmpi(type, 'serial')
-        psmIndices = cell(nObs,1);
-        for d = 1:nObs
-            psmIndices{d} = F{d}.H;
-        end
-        psmIndices = cell2mat(psmIndices);
-        if any( ~ismember(psmIndices, find(obj.reconstruct) ))
-            error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, or resetting the reconstruction indices with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
-        end
+    % Check if PSM H indices are reconstructed. Throw error if serial.
+    reconH = dash.checkReconH( obj.reconstruct, F );
+    if strcmpi(type, 'serial') && ~reconH
+        error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, or resetting the reconstruction indices with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
     end
+end
+
+% Set internal values
+if ~isempty( obj.reconstruct )
+    obj.reconH = reconH;
 end
 
 end

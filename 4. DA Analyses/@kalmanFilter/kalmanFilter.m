@@ -16,6 +16,7 @@ classdef kalmanFilter < dashFilter
         meanOnly;        % Whether to only calculate the ensemble mean
         fullDevs;        % Whether to return full ensemble deviations
         reconstruct;     % Which state vector elements to reconstruct
+        reconH;          % Whether all H indices are reconstructed
     end
     
     % Constructor
