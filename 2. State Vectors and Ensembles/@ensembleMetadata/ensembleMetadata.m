@@ -87,6 +87,9 @@ classdef ensembleMetadata
         
         % Reduces to specified variables
         ensMeta = useVars( obj, vars );
+        
+        % Reduces to specified ensemble members
+        ensMeta = useMembers( obj, members );
     end
     
     % Indexing
