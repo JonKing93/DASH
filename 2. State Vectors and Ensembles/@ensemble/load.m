@@ -46,7 +46,7 @@ ens = obj.checkEnsFile( obj.file );
 
 % Remove NaN members if prohibiting NaN
 if nonan
-    members( ismember(members, find(obj.hasnan)) ) = [];
+    members( ismember(members, find(any(obj.hasnan,1)) )) = [];
 end
 
 % If evenly spaced, only load desired values. Otherwise, load iteratively
