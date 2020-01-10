@@ -75,6 +75,9 @@ classdef kalmanFilter < dashFilter
         % Change settings
         settings( obj, varargin );
         
+        % Specify variables to reconstruct
+        reconstructVars( obj, vars, ensMeta )
+        
     end
     
     % Utilities

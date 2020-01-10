@@ -1,49 +1,54 @@
-function[] = reconstructVars( obj, vars )
-% Specifies which variables or state vector elements to reconstruct.
+function[] = reconstructVars( obj, vars, ensMeta )
+% Specifies to only reconstruct certain variables.
 %
-% obj.reconstructVars( vars )
-% Specify which variables to reconstruct. Requires M to be an ensemble
-% object. By default, all variables are reconstructed.
-%
-% obj.reconstructVars
-% Returns filter to default and reconstructs all variables.
+% obj.reconstructVars( vars, ensMeta )
+% Reconstructs specific variables given the ensemble metadata for the
+% prior.
 %
 % ----- Inputs -----
 %
-% vars: A list of variable names. A string array, cellstring, or character
-%       row vector.
+% vars: The names of the variables to reconstruct.
+%
+% ensMeta: The ensemble metadata for the prior.
 
 % Error check
-if ~isa( obj.M, 'ensemble' )
-    error('M must be an ensemble object.');
-elseif ~isstrlist(vars)
-    error('vars must be a string, cellstring, or character row vector.');
+if ~isscalar(ensMeta) || ~isa(ensMeta, 'ensembleMetadata')
+    error('ensMeta must be a scalar ensembleMetadata object.');
 end
-obj.M.metadata.varCheck(vars);
+ensMeta.varCheck( vars );
 vars = string(vars);
 
-% Get the variable indices to reconstruct
-reconIndex = [];
-for v = 1:numel(vars)
-    reconIndex = [reconIndex; obj.M.metadata.varIndices( vars(v) )]; %#ok<AGROW>
+% Check that this ensemble metadata matches the size of M
+if isa(obj.M, 'ensemble')
+    Mmeta = obj.M.loadMetadata;
+    nState = Mmeta.ensSize(1);
+else
+    nState = size(M,1);
+end
+if ensMeta.ensSize(1)~=nState
+    error('The ensemble metadata does not match the number of state elements (%.f) in the prior.', nState );
 end
 
-% Get the PSM indices needed
-psmIndex = [];
-for s = 1:numel( obj.F )
-    psmIndex = [psmIndex; obj.F{s}.H]; %#ok<AGROW>
+% Get the indices to reconstruct
+nVars = numel(vars);
+indices = cell( nVars, 1 );
+for v = 1:nVars
+    indices{v} = ensMeta.varIndices( vars(v) );
 end
-psmIndex = unique( psmIndex );
+indices = cell2mat( indices );
 
-% If serial updates, ensure that all of the psm elements will be
-% reconstructed
-if strcmpi(obj.type, 'serial') && any( ~ismember(psmIndex, reconIndex) )
-    error('When using serial updates, you must reconstruct every variable used to run the PSMs.');
+% Convert to logical
+reconstruct = false( nState, 1 );
+reconstruct( indices ) = true;
+
+% Check if PSM H indices are reconstructed. Throw error for serial
+reconH = dash.checkReconH( reconstruct, obj.F );
+if ~reconH && strcmpi(obj.type,'serial') && ~obj.append
+    error('When using serial updates without appended Ye, you must reconstruct all state elements used to run the PSMs.');
 end
 
-% Save
-obj.reconVars = vars;
-obj.reconIndex = reconIndex;
-obj.psmIndex = psmIndex;
+% Set the values
+obj.reconstruct = reconstruct;
+obj.reconH = reconH;
 
 end

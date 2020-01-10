@@ -31,8 +31,8 @@ if ~isempty( obj.reconstruct )
     
     % Check if PSM H indices are reconstructed. Throw error if serial.
     reconH = dash.checkReconH( obj.reconstruct, F );
-    if strcmpi(type, 'serial') && ~reconH
-        error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, or resetting the reconstruction indices with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
+    if ~reconH && strcmpi(type,'serial') && ~obj.append
+        error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, using the appended Ye method, or resetting the reconstruction indices with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
     end
 end
 
