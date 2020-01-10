@@ -9,17 +9,13 @@ classdef kalmanFilter < dashFilter
     
     properties
         % Settings
-        type;
-        localize;
-        inflate;
-        append;
-        meanOnly;
-        fullDevs;
-        
-        % Used to select toggle elements for reconstruction
-        reconVars;
-        reconIndex;
-        psmIndex;
+        type;            % Serial or joint updates
+        localize;        % Localization weights
+        inflate;         % The inflation factor
+        append;          % Whether to use the appended Ye method
+        meanOnly;        % Whether to only calculate the ensemble mean
+        fullDevs;        % Whether to return full ensemble deviations
+        reconstruct;     % Which state vector elements to reconstruct
     end
     
     % Constructor
@@ -77,6 +73,9 @@ classdef kalmanFilter < dashFilter
         
         % Change settings
         settings( obj, varargin );
+        
+        % Set M, D, R, F
+        setValues( M, D, R, F );
         
     end
     
