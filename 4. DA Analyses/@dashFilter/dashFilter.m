@@ -11,7 +11,7 @@ classdef (Abstract) dashFilter < dash
     
     methods
         % Error check values before setting
-        checkValues( obj, M, D, R, F)
+        checkValues( ~, M, D, R, F, Rtype)
     end
     
     % Set the values for a particular filter

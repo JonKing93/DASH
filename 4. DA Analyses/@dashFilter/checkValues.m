@@ -1,4 +1,4 @@
-function[M, D, R, F, Rtype] = checkValues( obj, M, D, R, F, Rtype)
+function[M, D, R, F, Rtype] = checkValues( ~, M, D, R, F, Rtype)
 % Error check a model prior, observations, observation uncertainty, PSMs, and
 % sensor sites to use for data assimilation.
 %
@@ -100,12 +100,5 @@ for d = 1:nObs
         error( [sprintf('PSM %.f failed with the following error message:\n',d), ME.message] );
     end
 end
-
-% % % Save the values
-% % obj.M = M;
-% % obj.D = D;
-% % obj.R = R;
-% % obj.F = F;
-% % obj.Rtype = Rtype;
         
 end
