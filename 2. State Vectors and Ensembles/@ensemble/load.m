@@ -73,7 +73,7 @@ M = M(:, sort(order) );
 if ~isempty( obj.vars )
     nVars = numel( obj.vars );
     indices = cell( nVars, 1 );
-    
+     
     for v = 1:numel(obj.vars)
         indices{v} = obj.metadata.varIndices( obj.vars(v) );
     end
