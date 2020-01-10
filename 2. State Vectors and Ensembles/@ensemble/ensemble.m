@@ -69,6 +69,9 @@ methods
     % Loads an ensemble from a .ens file
     [M, meta] = load( obj, members, nonan );
     
+    % Specifies which ensemble members to load
+    loadMembers( obj, members );
+    
     % Specifies which variables to load
     loadVars( obj, vars );
 end

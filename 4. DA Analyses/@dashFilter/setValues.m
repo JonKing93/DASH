@@ -50,12 +50,11 @@ if isa(M,'ensemble')
         error('Cannot load NaN values for data assimilation. Please use ensemble.load to only load ensemble members without NaN elements.');
     end
     nState = M.ensSize(1);
-    nEns = M.ensSize(2);
 else
     if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
         error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
     end
-    [nState, nEns] = size(M);
+    nState = size(M,1);
 end
 
 % Check the observations

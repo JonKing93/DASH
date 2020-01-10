@@ -15,6 +15,11 @@ classdef kalmanFilter < dashFilter
         append;
         meanOnly;
         fullDevs;
+        
+        % Used to select toggle elements for reconstruction
+        reconVars;
+        reconIndex;
+        psmIndex;
     end
     
     % Constructor
@@ -57,6 +62,10 @@ classdef kalmanFilter < dashFilter
                 error('M, D, R, and F not be empty.');
             end
             obj.setValues( M, D, R, F );
+            
+            % Defaults for reconstructed variables
+            obj.reconIndex = [];
+            obj.psmIndex = [];
         end
     end
         
