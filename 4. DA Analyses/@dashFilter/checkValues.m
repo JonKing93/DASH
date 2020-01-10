@@ -1,8 +1,8 @@
-function[] = setValues( obj, M, D, R, F)
-% Specify a model prior, observations, observation uncertainty, PSMs, and
-% sensor sites to use for data assimilation. Error checks everything.
+function[M, D, R, F, Rtype] = checkValues( obj, M, D, R, F, Rtype)
+% Error check a model prior, observations, observation uncertainty, PSMs, and
+% sensor sites to use for data assimilation.
 %
-% obj.setValues( M, D, R, F )
+% obj.checkValues( M, D, R, F )
 %
 % ***Note: Use an empty array to keep the current value of a variable in
 % the dash object. For example:
@@ -26,30 +26,17 @@ function[] = setValues( obj, M, D, R, F)
 %
 % F: A cell vector of PSM objects. {nObs x 1}
 
-% Get any saved variables
-Rtype = 'new';
-if ~exist('M','var') || isempty(M)
-    M = obj.M;
-end
-if ~exist('D','var') || isempty(D)
-    D = obj.D;
-end
-if ~exist('R','var') || isempty(R)
-    R = obj.R;
-    Rtype = obj.Rtype;
-end
-if ~exist('F','var') || isempty(F)
-    F = obj.F;
-end
-
 % Check M 
 if isa(M,'ensemble') 
     if ~isscalar(M)
         error('When M is an ensemble object, it must be scalar.');
-    elseif isa(M, 'ensemble') && any( ismember( M.loadMembers, find(M.hasnan) ) )
-        error('Cannot load NaN values for data assimilation. Please use ensemble.load to only load ensemble members without NaN elements.');
     end
-    nState = M.ensSize(1);
+    v = M.metadata.varCheck( M.loadVars );
+    if any( M.hasnan( v, M.loadMembers ), 'all' )
+        error('Cannot load NaN values for data assimilation. Please see ensemble.useMembers to only load ensemble members without NaN elements.');
+    end
+    meta = M.loadMetadata;
+    nState = meta.ensSize(1);
 else
     if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
         error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
@@ -114,11 +101,11 @@ for d = 1:nObs
     end
 end
 
-% Save the values
-obj.M = M;
-obj.D = D;
-obj.R = R;
-obj.F = F;
-obj.Rtype = Rtype;
+% % % Save the values
+% % obj.M = M;
+% % obj.D = D;
+% % obj.R = R;
+% % obj.F = F;
+% % obj.Rtype = Rtype;
         
 end
