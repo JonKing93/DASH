@@ -20,7 +20,7 @@ properties (SetAccess = private)
 
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
-    hasnan;            % Whether an ensemble member has NaN values
+    hasnan;            % Whether a variable in an ensemble member has NaN values
     ensSize;           % The size of the full ensemble
     random;            % Whether the ensemble is ordered or random
     design;
@@ -65,7 +65,7 @@ methods
     obj = add( obj, nAdd );
 
     % Loads an ensemble from a .ens file
-    M = load( obj, members );
+    M = load( obj, members, nonan );
 end
 
 % Internal utilities
