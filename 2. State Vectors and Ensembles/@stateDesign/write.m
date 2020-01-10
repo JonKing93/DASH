@@ -19,12 +19,12 @@ if new
     ens.random = random;
     ens.writenan = writenan;
     ens.hasnan = [];
-    hasnan = false(1, ensSize(2));
+    hasnan = false( numel(obj.var), ensSize(2));
 else
     nWritten = ens.ensSize(1,2);
     nNew = ensSize(2) - nWritten;
     ens.M( :, nWritten + (1:nNew) ) = NaN;
-    hasnan = false(1, nNew);
+    hasnan = false( numel(obj.var), nNew);
 end
 
 % Determine the unique gridFiles
@@ -48,7 +48,7 @@ end
 for v = 1:numel( obj.var )
     [M,  passVals{passIndex(v)}] = ...
         obj.var(v).buildEnsemble( nWritten, varSize(v,:), nMean(v,:), passVals{passIndex(v)} );
-    hasnan = hasnan | any( isnan(M), 1 );
+    hasnan(v,:) = any( isnan(M), 1 );
     ens.M( varLimit(v,1):varLimit(v,2), nWritten+(1:nNew) ) = M; 
 end
 
