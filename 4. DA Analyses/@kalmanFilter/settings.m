@@ -23,6 +23,8 @@ function[] = settings( obj, varargin )
 % obj.settings( ..., 'returnDevs', fullDevs )
 % Specify whether to return full ensembles deviations, or just the
 % variance. Default is just the variance.
+%
+% obj.settings( ..., '
 % 
 % ---- Inputs -----
 %

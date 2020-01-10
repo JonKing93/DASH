@@ -74,9 +74,11 @@ classdef kalmanFilter < dashFilter
         % Change settings
         settings( obj, varargin );
         
-        % Set M, D, R, F
-        setValues( obj, M, D, R, F );
-        
+    end
+    
+    % Utilities
+    methods
+        checkValues( obj, M, D, ~, F, ~ );
     end
     
     % Static analysis methods

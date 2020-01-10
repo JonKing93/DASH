@@ -1,8 +1,8 @@
-function[M, D, R, F, Rtype] = checkValues( ~, M, D, R, F, Rtype)
-% Error check a model prior, observations, observation uncertainty, PSMs, and
-% sensor sites to use for data assimilation.
+function[M, D, R, F, Rtype] = setValues( obj, M, D, R, F )
+% Sets the model prior, observations, observation uncertainty, and PSMs to
+% use with a data assimilation filter.
 %
-% obj.checkValues( M, D, R, F )
+% obj.setValues( M, D, R, F )
 %
 % ***Note: Use an empty array to keep the current value of a variable in
 % the dash object. For example:
@@ -25,6 +25,22 @@ function[M, D, R, F, Rtype] = checkValues( ~, M, D, R, F, Rtype)
 %    matrix: (nObs x nTime) Each value will be used for one proxy in one time step.
 %
 % F: A cell vector of PSM objects. {nObs x 1}
+
+% Get saved/default values
+Rtype = 'new';
+if ~exist('M','var') || isempty(M)
+    M = obj.M;
+end
+if ~exist('D','var') || isempty(D)
+    D = obj.D;
+end
+if ~exist('R','var') || isempty(R)
+    R = obj.R;
+    Rtype = obj.Rtype;
+end
+if ~exist('F','var') || isempty(F)
+    F = obj.F;
+end
 
 % Check M 
 if isa(M,'ensemble') 
@@ -100,5 +116,15 @@ for d = 1:nObs
         error( [sprintf('PSM %.f failed with the following error message:\n',d), ME.message] );
     end
 end
-        
+
+% Have the filter do any internal error checking
+obj.checkValues( M, D, R, F, Rtype );
+
+% Set the values
+obj.M = M;
+obj.D = D;
+obj.R = R;
+obj.F = F;
+obj.Rtype = Rtype;
+
 end

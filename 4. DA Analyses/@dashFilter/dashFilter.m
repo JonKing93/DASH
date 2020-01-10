@@ -11,12 +11,12 @@ classdef (Abstract) dashFilter < dash
     
     methods
         % Error check values before setting
-        checkValues( ~, M, D, R, F, Rtype)
+        setValues( obj, M, D, R, F )
     end
     
     % Set the values for a particular filter
     methods (Abstract)
-        setValues( M, D, R, F );
+        checkValues( obj, M, D, R, F, Rtype );
     end
     
 end
