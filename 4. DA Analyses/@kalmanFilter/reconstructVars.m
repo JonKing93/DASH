@@ -5,12 +5,22 @@ function[] = reconstructVars( obj, vars, ensMeta )
 % Reconstructs specific variables given the ensemble metadata for the
 % prior.
 %
+% obj.reconstructVars
+% Reconstruct all variables.
+%
 % ----- Inputs -----
 %
 % vars: The names of the variables to reconstruct.
 %
 % ensMeta: The ensemble metadata for the prior.
 
+% Reset to default if no inputs
+if (~exist('vars','var') || isempty(vars)) && (~exist('ensMeta','var') || isempty(ensMeta))
+    obj.reconstruct = [];
+    obj.reconH = [];
+    return;
+end
+    
 % Error check
 if ~isscalar(ensMeta) || ~isa(ensMeta, 'ensembleMetadata')
     error('ensMeta must be a scalar ensembleMetadata object.');

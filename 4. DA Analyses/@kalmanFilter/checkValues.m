@@ -26,13 +26,13 @@ end
 % Check that reconstruction indices are still allowed
 if ~isempty( obj.reconstruct )
     if length(obj.reconstruct)~=nState
-        error('The size of the prior would change, so the previously specified reconstruction indices would not be valid. You can reset them with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
+        error('The size of the prior would change, so the previously specified reconstruction indices would not be valid. You can reset them with the command:\n\t>> obj.reconstructVars%s','');
     end
     
     % Check if PSM H indices are reconstructed. Throw error if serial.
     reconH = dash.checkReconH( obj.reconstruct, F );
     if ~reconH && strcmpi(type,'serial') && ~obj.append
-        error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, using the appended Ye method, or resetting the reconstruction indices with the command:\n\t>> obj.settings(''reconstruct'', [])%s','');
+        error('The previously specified reconstruction indices would no longer include the PSM state indices (H). Consider switching to joint updates, using the appended Ye method, or resetting the reconstruction indices with the command:\n\t>> obj.reconstructVars%s','');
     end
 end
 

@@ -24,7 +24,9 @@ function[] = settings( obj, varargin )
 % Specify whether to return full ensembles deviations, or just the
 % variance. Default is just the variance.
 %
-% obj.settings( ..., '
+% obj.settings( ..., 'reconstruct', reconIndices )
+% Specify which state vector elements to reconstruct. Not recommended. See
+% "kalmanFilter.reconstructVars" instead.
 % 
 % ---- Inputs -----
 %
