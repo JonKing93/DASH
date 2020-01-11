@@ -117,8 +117,8 @@ if ~isempty(recon)
     if ~isvector(recon) || ~islogical(recon) || length(recon)~=nState
         error('reconstruct must be a logical vector with nState (%.f) indices.', nState);
     end
-    reconH = dash.checkReconH( reconstruct, obj.F );
-    if ~reconH && strcmpi(obj.type,'serial') && ~obj.append
+    reconH = dash.checkReconH( recon, obj.F );
+    if ~reconH && strcmpi(type,'serial') && ~append
         error('When using serial updates without appended Ye, you must reconstruct all state elements used to run the PSMs.');
     end
     reconstruct = recon;

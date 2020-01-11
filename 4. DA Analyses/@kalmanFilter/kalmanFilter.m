@@ -61,8 +61,8 @@ classdef kalmanFilter < dashFilter
             obj.setValues( M, D, R, F );
             
             % Defaults for reconstructed variables
-            obj.reconIndex = [];
-            obj.psmIndex = [];
+            obj.reconstruct = [];
+            obj.reconH = [];
         end
     end
         
