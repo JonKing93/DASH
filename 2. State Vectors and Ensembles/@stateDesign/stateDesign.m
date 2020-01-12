@@ -179,6 +179,9 @@ classdef stateDesign
         % each variable.
         [varLimits, varSize, isState, nMean] = varIndices( obj );
         
+        % Reduce the number of ensemble members used
+        design = limitMembers( obj, members );
+        
     end
     
     % Methods for generating ensembles 

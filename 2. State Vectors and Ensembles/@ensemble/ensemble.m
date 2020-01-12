@@ -14,16 +14,23 @@ classdef ensemble < handle
 % ensemble Methods:
 %   load - Loads desired ensemble members.
 %   add - Adds additional ensemble members to the stateDesign.
+%   useVars - Only load specific variables
+%   useMembers - Only load specific ensemble members
+%   loadMetadata - Return the metadata for loaded variables and ensemble members
 properties (SetAccess = private)
     file;              % The .ens file associated with the ensemble
     metadata;          % Ensemble metadata
 
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
-    hasnan;            % Whether an ensemble member has NaN values
+    hasnan;            % Whether a variable in an ensemble member has NaN values
     ensSize;           % The size of the full ensemble
     random;            % Whether the ensemble is ordered or random
-    design;
+    design;            % The state design associated with the ensemble
+    
+    % Load specifications
+    loadVars;              % Which variables to load
+    loadMembers;           % Which ensemble members to load
 end
 
 % Constructor
@@ -51,10 +58,14 @@ methods
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.file = which( file );
-        obj.design = m.design;
+        obj.design = m.design;        
         
         % Create the ensemble metadata
         obj.metadata = ensembleMetadata( m.design );
+        
+        % By default, load everything
+        obj.loadVars = obj.metadata.varName;
+        obj.loadMembers = 1:obj.ensSize(2);
     end
 end
 
@@ -62,10 +73,19 @@ end
 methods
 
     % Adds additional ensemble members to an ensemble.
-    obj = add( obj, nAdd );
+    add( obj, nAdd );
 
     % Loads an ensemble from a .ens file
-    M = load( obj, members );
+    [M, meta] = load( obj );
+        
+    % Specifies which ensemble members to load
+    useMembers( obj, members );
+    
+    % Specifies which variables to load
+    useVars( obj, vars );
+    
+    % Returns the metadata for the loaded variables and ensemble members
+    meta = loadMetadata( obj );
 end
 
 % Internal utilities

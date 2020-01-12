@@ -1,6 +1,6 @@
-function[] = setValues( obj, M, D, R, F)
-% Specify a model prior, observations, observation uncertainty, PSMs, and
-% sensor sites to use for data assimilation. Error checks everything.
+function[M, D, R, F, Rtype] = setValues( obj, M, D, R, F )
+% Sets the model prior, observations, observation uncertainty, and PSMs to
+% use with a data assimilation filter.
 %
 % obj.setValues( M, D, R, F )
 %
@@ -26,7 +26,7 @@ function[] = setValues( obj, M, D, R, F)
 %
 % F: A cell vector of PSM objects. {nObs x 1}
 
-% Get any saved variables
+% Get saved/default values
 Rtype = 'new';
 if ~exist('M','var') || isempty(M)
     M = obj.M;
@@ -46,16 +46,18 @@ end
 if isa(M,'ensemble') 
     if ~isscalar(M)
         error('When M is an ensemble object, it must be scalar.');
-    elseif isa(M, 'ensemble') && any( ismember( M.loadMembers, find(M.hasnan) ) )
-        error('Cannot load NaN values for data assimilation. Please use ensemble.load to only load ensemble members without NaN elements.');
     end
-    nState = M.ensSize(1);
-    nEns = M.ensSize(2);
+    v = M.metadata.varCheck( M.loadVars );
+    if any( M.hasnan( v, M.loadMembers ), 'all' )
+        error('Cannot load NaN values for data assimilation. Please see ensemble.useMembers to only load ensemble members without NaN elements.');
+    end
+    meta = M.loadMetadata;
+    nState = meta.ensSize(1);
 else
     if ~ismatrix(M) || ~isreal(M) || ~isnumeric(M) || any(isinf(M(:))) || any(isnan(M(:)))
         error('M must be a matrix of real, numeric, finite values and may not contain NaN.');
     end
-    [nState, nEns] = size(M);
+    nState = size(M,1);
 end
 
 % Check the observations
@@ -115,11 +117,14 @@ for d = 1:nObs
     end
 end
 
-% Save the values
+% Have the filter do any internal error checking
+obj.checkValues( M, D, R, F, Rtype );
+
+% Set the values
 obj.M = M;
 obj.D = D;
 obj.R = R;
 obj.F = F;
 obj.Rtype = Rtype;
-        
+
 end

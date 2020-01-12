@@ -6,6 +6,7 @@ classdef ensembleMetadata
     %   ensembleMetadata - Creates a new ensemble metadata object
     %   lookup - Returns metadata at specified indices
     %   varIndices - Returns the state vector indices associated with a variable
+    %   useVars - Returns ensemble metadata for a state vector comprised of specified variables
     %
     % ensembleMetadata Utility Methods:
     %   dimCheck - Checks that a set of dimensions are in the metadata
@@ -23,11 +24,8 @@ classdef ensembleMetadata
         stateMeta     % Metadata for each state element
         ensMeta      % Metadata for each ensemble member
         
-        fileName    % Ensemble metadata file
-        design      % The stateDesign associated with the ensemble
-        
+        design      % The stateDesign associated with the ensemble        
         ensSize     % The number of state elements and members
-        hasnan      % Whether ensemble members contain NaN values
     end
         
     % Constructor block
@@ -65,8 +63,6 @@ classdef ensembleMetadata
                 checkFile( inArg, 'extension', '.ens', 'exist', true );
                 m = matfile( inArg );
                 obj.design = m.design;
-                obj.fileName = string(inArg);
-                obj.hasnan = m.hasnan;
             end
 
             % Record the variable names, index limits, dimensional sizes,
@@ -88,6 +84,12 @@ classdef ensembleMetadata
         
         % Return the indices associated with a variable
         H = varIndices( obj, varName ); 
+        
+        % Reduces to specified variables
+        ensMeta = useVars( obj, vars );
+        
+        % Reduces to specified ensemble members
+        ensMeta = useMembers( obj, members );
     end
     
     % Indexing

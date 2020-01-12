@@ -23,6 +23,10 @@ function[] = settings( obj, varargin )
 % obj.settings( ..., 'returnDevs', fullDevs )
 % Specify whether to return full ensembles deviations, or just the
 % variance. Default is just the variance.
+%
+% obj.settings( ..., 'reconstruct', reconIndices )
+% Specify which state vector elements to reconstruct. Not recommended. See
+% "kalmanFilter.reconstructVars" instead.
 % 
 % ---- Inputs -----
 %
@@ -45,12 +49,15 @@ function[] = settings( obj, varargin )
 %
 % fullDevs: A scalar logical indicating whether to return full ensemble
 %           deviations. Default is false.
+%
+% reconstruct: A logical vector specifying which state vector elements to
+%              reconstruct. (nState x 1)
 
 % Parse inputs
-[type, weights, inflate, append, meanOnly, fullDevs] = parseInputs( varargin, ...
-    {'type','localize','inflate','append','meanOnly','returnDevs'}, ...
-    {obj.type, obj.localize, obj.inflate, obj.append, obj.meanOnly, obj.fullDevs}, ...
-    {[],[],[],[],[],[]} );
+[type, weights, inflate, append, meanOnly, fullDevs, recon] = parseInputs( varargin, ...
+    {'type','localize','inflate','append','meanOnly','returnDevs','reconstruct'}, ...
+    {obj.type, obj.localize, obj.inflate, obj.append, obj.meanOnly, obj.fullDevs, obj.reconstruct}, ...
+    {[],[],[],[],[],[],[]} );
 
 % Error checking
 if ~isstrflag(type)
@@ -81,7 +88,12 @@ if fullDevs && meanOnly
     error('Cannot compute only the ensemble mean when returning full ensemble deviations.');
 end
 
-nState = size(obj.M,1);
+if isa(obj.M,'ensemble')
+    ensMeta = obj.M.loadMetadata;
+    nState = ensMeta.ensSize(1);
+else
+    nState = size(obj.M,1);
+end
 nObs = size(obj.D,1);
 if ~isempty(weights)
     if strcmpi(type,'joint') 
@@ -98,6 +110,20 @@ if ~isempty(weights)
     end
 end
 
+% Reconstruction indices
+reconH = [];
+reconstruct = [];
+if ~isempty(recon)
+    if ~isvector(recon) || ~islogical(recon) || length(recon)~=nState
+        error('reconstruct must be a logical vector with nState (%.f) indices.', nState);
+    end
+    reconH = dash.checkReconH( recon, obj.F );
+    if ~reconH && strcmpi(type,'serial') && ~append
+        error('When using serial updates without appended Ye, you must reconstruct all state elements used to run the PSMs.');
+    end
+    reconstruct = recon;
+end
+
 % Save values
 obj.type = type;
 obj.localize = weights;
@@ -105,5 +131,7 @@ obj.inflate = inflate;
 obj.append = append;
 obj.meanOnly = meanOnly;
 obj.fullDevs = fullDevs;
+obj.reconstruct = reconstruct;
+obj.reconH = reconH;
 
 end
