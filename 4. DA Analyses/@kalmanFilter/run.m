@@ -29,10 +29,17 @@ function[output] = run( obj )
 %   sites - A logical array indicating which sites were used to update each
 %           time step. (nObs x nTime)
 
-% Get settings. Load the ensemble if necessary
+% Load the ensemble if necessary
 M = obj.M;
 if isa(M,'ensemble')
     M = M.load;
+end
+
+% Default reconstruction indices
+if isempty( obj.reconstruct )
+    reconstruct = true( size(M,1), 1 );
+else
+    reconstruct = obj.reconstruct;
 end
 
 % Inflate ensemble
@@ -54,8 +61,12 @@ if strcmp(obj.type, 'serial')
     % Optionally append Ye
     F = obj.F;
     if obj.append
-        [M, F, Yi] = obj.appendYe( M, F );
+        [M, F, Yi, reconstruct] = obj.appendYe( M, F, reconstruct );
     end
+    
+    % Reduce prior to reconstructed variables. Adjust H indices
+    M = M( reconstruct, : );
+    F = obj.adjustH( F, reconstruct );
     
     % Do the updates
     output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.fullDevs );
@@ -79,9 +90,9 @@ else
         w = obj.localize{1};
         yloc = obj.localize{2};
     end
-    
+        
     % Do the updates
-    output = obj.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs );
+    output = obj.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs, reconstruct );
 end
 
 end

@@ -1,4 +1,4 @@
-function[M, F, Yi] = appendYe( M, F )
+function[M, F, Yi, reconstruct] = appendYe( M, F, reconstruct )
 %% Precalculates Ye and appends them to the end of the prior.
 %
 % [Ma, Fa, Yi] = dash.appendYe( M, F );
@@ -13,6 +13,9 @@ function[M, F, Yi] = appendYe( M, F )
 %
 % Yi: The initial, appended Ye values. (nObs x 1)
 %
+% reconstruct: Logical vector indicating which state vector elements to
+%              reconstruct. (nState x 1)
+%
 % ----- Outputs -----
 %
 % Ma: The appended model. (nState + nObs x nEns)
@@ -20,6 +23,8 @@ function[M, F, Yi] = appendYe( M, F )
 % F: A set of trivial PSMs. {nObs x 1}
 %
 % Yi: The initial Ye values. (nObs x nEns)
+%
+% reconstruct: Updated reconstruction indices (nState + nObs x nEns)
 
 % Get sizes, preallocate
 nObs = numel(F);
@@ -35,5 +40,8 @@ end
 
 % Get the initial Ye values
 Yi = M( nState+(1:nObs), : );
+
+% Update the reconstruction indices
+reconstruct = [reconstruct; true(nObs,1)];
 
 end

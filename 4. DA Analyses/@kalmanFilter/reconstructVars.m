@@ -10,7 +10,8 @@ function[] = reconstructVars( obj, vars, ensMeta )
 %
 % ----- Inputs -----
 %
-% vars: The names of the variables to reconstruct.
+% vars: The names of the variables to reconstruct. String, cellstring, or
+%       character row vector.
 %
 % ensMeta: The ensemble metadata for the prior.
 

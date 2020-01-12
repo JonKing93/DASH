@@ -6,6 +6,7 @@ classdef kalmanFilter < dashFilter
     %   settings - Adjusts the settings for the kalman filter
     %   run - Runs the kalman filter
     %   setValues - Changes the data used in an existing kalman filter
+    %   reconstructVars - Specify which variables to reconstruct
     
     properties
         % Settings
@@ -92,7 +93,7 @@ classdef kalmanFilter < dashFilter
         [output] = serialENSRF( M, D, R, F, w, fullDevs );
         
         % Full inversion
-        [output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs );
+        [output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, reconstruct );
         
         % Serial kalman gain
         [K, a] = serialKalman( Mdev, Ydev, w, R );
@@ -101,10 +102,13 @@ classdef kalmanFilter < dashFilter
         [varargout] = jointKalman(type, varargin);
         
         % Append Ye
-        [M, F, Yi] = appendYe( M, F );
+        [M, F, Yi, reconstruct] = appendYe( M, F, reconstruct );
         
         % Unappend Ye
         [Amean, Avar] = unappendYe( Amean, Avar, nObs )
+        
+        % Adjust PSM H indices for partial reconstruction
+        F = adjustH( F, reconstruct );
         
     end
     
