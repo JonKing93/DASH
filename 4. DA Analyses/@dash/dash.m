@@ -61,6 +61,9 @@ classdef (Abstract) dash < handle
         % Return the current version of dash
         versionString = version;
         
+        % Checks if reconstructed indices include all PSM indices
+        reconH = checkReconH( recon, F );
+        
     end 
     
 end
