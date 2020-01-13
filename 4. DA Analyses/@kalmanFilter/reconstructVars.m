@@ -6,7 +6,7 @@ function[] = reconstructVars( obj, vars, ensMeta )
 % prior.
 %
 % obj.reconstructVars
-% Reconstruct all variables.
+% Reset to the default of reconstructing all variables.
 %
 % ----- Inputs -----
 %
@@ -34,7 +34,7 @@ if isa(obj.M, 'ensemble')
     Mmeta = obj.M.loadMetadata;
     nState = Mmeta.ensSize(1);
 else
-    nState = size(M,1);
+    nState = size(obj.M,1);
 end
 if ensMeta.ensSize(1)~=nState
     error('The ensemble metadata does not match the number of state elements (%.f) in the prior.', nState );
@@ -57,6 +57,18 @@ reconH = dash.checkReconH( reconstruct, obj.F );
 if ~reconH && strcmpi(obj.type,'serial') && ~obj.append
     error('When using serial updates without appended Ye, you must reconstruct all state elements used to run the PSMs.');
 end
+
+% Check if localization exists. Require reset
+if ~isempty(obj.localize)
+    if iscell(obj.localize)
+        w = obj.localize{1};
+    else
+        w = obj.localize;
+    end
+    if size(w,1)~=sum(reconstruct)
+        error('The previously specified localization weights would no longer match the size of the reconstructed prior. You can reset them with the command:\n\t>> obj.settings(''localize'',[])%s','');
+    end
+end 
 
 % Set the values
 obj.reconstruct = reconstruct;

@@ -84,7 +84,7 @@ else
     
     % Default localization
     if isempty(obj.localize)
-        w = ones( nState, nObs);
+        w = ones( sum(obj.reconstruct), nObs);
         yloc = ones( nObs, nObs);
     else
         w = obj.localize{1};

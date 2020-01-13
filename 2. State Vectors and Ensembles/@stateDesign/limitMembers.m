@@ -22,7 +22,7 @@ end
 
 % Limit the ensemble members
 for v = 1:numel( obj.var )
-    obj.var(v).drawDex = obj.var(v).drawDex(members);
+    obj.var(v).drawDex = obj.var(v).drawDex(members,:);
 end
 
 end

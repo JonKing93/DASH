@@ -11,6 +11,6 @@ function[] = useMembers( obj, members )
 if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>obj.ensSize(2))
     error('members must be a vector of positive integers that do not exceed %.f.', obj.ensSize(2) );
 end
-obj.loadMembers = members;
+obj.loadMembers = members(:)';
 
 end

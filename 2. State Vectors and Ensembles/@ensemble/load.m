@@ -35,7 +35,7 @@ M = M(:, sort(order) );
 nVars = numel( obj.loadVars );
 indices = cell( nVars, 1 );
 for v = 1:nVars
-    indices{v} = obj.metadata.varIndices( obj.vars(v) );
+    indices{v} = obj.metadata.varIndices( obj.loadVars(v) );
 end
 indices = cell2mat(indices);
 M = M( indices, : );

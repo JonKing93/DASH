@@ -24,7 +24,7 @@ function[] = settings( obj, varargin )
 % Specify whether to return full ensembles deviations, or just the
 % variance. Default is just the variance.
 %
-% obj.settings( ..., 'reconstruct', reconIndices )
+% obj.settings( ..., 'reconstruct', reconstruct )
 % Specify which state vector elements to reconstruct. Not recommended. See
 % "kalmanFilter.reconstructVars" instead.
 % 
@@ -83,34 +83,17 @@ if strcmpi(type, 'serial')
 elseif ~isscalar(meanOnly) || ~islogical(meanOnly)
     error('meanOnly must be a scalar logical.');
 end
-
 if fullDevs && meanOnly
     error('Cannot compute only the ensemble mean when returning full ensemble deviations.');
 end
 
+% Reconstruction indices
 if isa(obj.M,'ensemble')
     ensMeta = obj.M.loadMetadata;
     nState = ensMeta.ensSize(1);
 else
     nState = size(obj.M,1);
 end
-nObs = size(obj.D,1);
-if ~isempty(weights)
-    if strcmpi(type,'joint') 
-        if ( ~iscell(weights) || numel(weights)~=2 )
-            error(['Localization weights for joint updates must be provided as the 2-element cell: {w, yloc}\n',...
-               'Please see dash.localizationWeights for details.'] );
-        elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [nObs, nObs])
-            error('The second element of joint localization weights must be a %.f x %.f numeric matrix', nObs, nObs );
-        elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [nState, nObs])
-            error('The first element of joint localization weights must be a %.f x %.f numeric matrix.', nState, nObs );
-        end
-    elseif strcmpi(type, 'serial') && ( ~isnumeric(weights) || ~isreal(weights) || ~ismatrix(weights) || ~isequal(size(weights), [nState, nObs]) )
-        error('serial localization weights must be a %.f x %.f numeric matrix.', nState, nObs );
-    end
-end
-
-% Reconstruction indices
 reconH = [];
 reconstruct = [];
 if ~isempty(recon)
@@ -122,6 +105,27 @@ if ~isempty(recon)
         error('When using serial updates without appended Ye, you must reconstruct all state elements used to run the PSMs.');
     end
     reconstruct = recon;
+end
+
+% Localization Weights
+nRecon = nState;
+if ~isempty(obj.reconstruct)
+    nRecon = sum( obj.reconstruct );
+end
+nObs = size(obj.D,1);
+if ~isempty(weights)
+    if strcmpi(type,'joint') 
+        if ( ~iscell(weights) || numel(weights)~=2 )
+            error(['Localization weights for joint updates must be provided as the 2-element cell: {w, yloc}\n',...
+               'Please see dash.localizationWeights for details.'] );
+        elseif ~isnumeric(weights{2}) || ~isreal(weights{2}) || ~ismatrix(weights{2}) || ~isequal(size(weights{2}), [nObs, nObs])
+            error('The second element of joint localization weights must be a %.f x %.f numeric matrix', nObs, nObs );
+        elseif ~isnumeric(weights{1}) || ~isreal(weights{1}) || ~ismatrix(weights{1}) || ~isequal(size(weights{1}), [nRecon, nObs])
+            error('The first element of joint localization weights must be a %.f x %.f numeric matrix.', nRecon, nObs );
+        end
+    elseif strcmpi(type, 'serial') && ( ~isnumeric(weights) || ~isreal(weights) || ~ismatrix(weights) || ~isequal(size(weights), [nRecon, nObs]) )
+        error('serial localization weights must be a %.f x %.f numeric matrix.', nRecon, nObs );
+    end
 end
 
 % Save values

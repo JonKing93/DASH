@@ -103,3 +103,47 @@ meta.time
 % ocean grids from a tripolar coordinate system are use for data assimilation.
 % The extra input is simply the indices of these grids in the complete state
 % vector.
+
+
+%% Reconstruct only a few selected variables.
+
+% It is also possible to only reconstruct a few variables for the kalman
+% filter. For example, you may need many variables to run some PSMs, but
+% are only interested in reconstructing one output variable. 
+%
+% If an ensemble contains many variables, only reconstructing a few of them
+% can greatly speed up the analysis. Note that this is only possible for
+% joint updating schemes, or serial updating schemes with appended Ye.
+
+% To only reconstruct specific variables, use the method "reconstructVars".
+% Inputs are the desired variables, and metadata for the ensemble.
+%
+% From our previous examples, let's say we now wish to only reconstruct the
+% global temperature variable, but need the full spatial field to run the
+% PSMs. Here, we'll use a joint updating scheme with no localization.
+kf.settings('type','joint','localize',[]);
+kf.reconstructVars( "T_globe", ens.metadata );
+
+% When we run the filter
+output = kf.run;
+
+% we can from the size of Amean that only the monthly global mean
+% temperature was reconstructed.
+size( output.Amean );
+
+% Note that you will need to use modified ensemble metadata when generating
+% localization weights or regridding partially reconstructed ensembles. Do
+% this via the ensembleMetadata method: "useVars"
+
+% For example, this provides localization weights for the global
+% temperature reconstruction
+partialMeta = ens.metadata.useVars("T_globe");
+w = dash.localizationWeights( [lats, lons], partialMeta, 10000 );
+
+% (note that the localization weights are now only 12 x 5, rather than the
+% previous 82956 x 5).
+
+% Similarly, use the metadata for the partially reconstructed ensemble to
+% regrid the output.
+Tglobe = dash.regrid( output.Amean, 'T_globe', partialMeta );
+

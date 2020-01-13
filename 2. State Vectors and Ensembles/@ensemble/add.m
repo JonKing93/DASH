@@ -28,5 +28,8 @@ obj.ensSize = m.ensSize;
 obj.design = m.design;
 obj.hasnan = m.hasnan;
 obj.metadata = ensembleMetadata( obj.design );
+if isequal(obj.loadMembers, 1:obj.ensSize(2)-nEns )
+    obj.loadMembers = 1:obj.ensSize(2);
+end
 
 end

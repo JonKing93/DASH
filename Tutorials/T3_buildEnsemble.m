@@ -92,7 +92,7 @@ ens.hasnan
 % For example, if we do
 ens.ensSize
 
-% we can see that the ensemble we built has 13826 state vector elements,
+% we can see that the ensemble we built has 6913 state vector elements,
 % and 50 ensemble members.
 
 % But we can do
@@ -109,12 +109,14 @@ M = ens.load;
 
 % This returns the actual ensemble data array stored in the .ens file.
 
-% It is also possible to only load a few specific ensemble members. Simply
-% specify which ones you want.
-M = ens.load( [1 5 55] );
-
-% loads the first, fifth, and 55th ensemble members in tutorial.ens.
-
+% It is also possible to only load a few specific ensemble members or a few
+% specific variables. Specify which ones you want, and then load.
+%
+% For example, the following lines cause only the first, fifth and 55th
+% ensemble members of the global mean PSL variable to be loaded.
+ens.useMembers( [1 5 55] );
+ens.useVars( "PSL_globe" );
+M = ens.load; 
 
 %% Ensemble metadata
 
@@ -153,6 +155,15 @@ meta.time
 % of an existing .ens file as the input. For example 
 ensMeta2 = ensembleMetadata( d );
 ensMeta3 = ensembleMetadata( 'tutorial.ens' );
+
+% If you specified specific ensemble members or variables, you can get the
+% metadata for just the loaded data use the method "loadMetadata"
+%
+% For example, the following command
+ensMeta = ens.loadMetadata;
+
+% returns the metdata structure for the 5 member, global PSL ensemble we
+% loaded earlier.
 
 
 %% Existing ensembles
