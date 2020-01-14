@@ -75,6 +75,19 @@ elseif strcmp(Rtype, 'column')
     R = R(:,1);
 end
 
+if isscalar(R)
+    R = R * ones( size(D) );
+    Rtype = 'scalar';
+elseif isrow(R)
+    R = repmat( R, [nObs, 1] );
+    Rtype = 'row';
+elseif iscolumn(R)
+    R = repmat( R, [1, nTime] );
+    Rtype = 'column';
+else
+    Rtype = 'matrix';
+end
+
 if ~isnumeric(R) || ~isreal(R) || any(R(:)<0) || ~ismatrix(R)
     error('R must be a set of real, numeric, positive values and cannot have more than 2 dimensions.');
 elseif isrow(R)
@@ -87,19 +100,6 @@ elseif iscolumn(R)
     end
 elseif ismatrix(R) && ~isequal( size(R), [nObs, nTime])
     error('R must be a (%.f x %.f) matrix.', nObs, nTime );
-end
-
-if isscalar(R)
-    R = R * ones( size(D) );
-    Rtype = 'scalar';
-elseif isrow(R)
-    R = repmat( R, [nObs, 1] );
-    Rtype = 'row';
-elseif iscolumn(R)
-    R = repmat( R, [1, nTime] );
-    Rtype = 'column';
-else
-    Rtype = 'matrix';
 end
 
 % Check the PSMs. Have them do an internal review
