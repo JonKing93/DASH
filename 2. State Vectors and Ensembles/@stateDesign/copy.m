@@ -55,7 +55,7 @@ for d = 1:numel(tvar.dimID)
         % Edit state dimensions. Must have the same number of state indices
         if tvar.isState(d)
             if numel(index) ~= size(meta,1)
-                error('The %s variable does not have metadata matching all state indices of the template %s variable in the %s dimension.', var.name, tvar.name, tvar.dimID(dim));
+                error('The %s variable does not have metadata matching all state indices of the template %s variable in the %s dimension.', var.name, tvar.name, tvar.dimID(d));
             end
             obj = obj.stateDimension( v(k), d, 'index', index, 'mean', tvar.takeMean(d), 'nanflag', tvar.nanflag{d} );
             
@@ -63,7 +63,7 @@ for d = 1:numel(tvar.dimID)
         % Edit ensemble dimension. Must have some ensemble indices.
         else
             if isempty(index)
-                error('The %s variable does not have metadata matching any of the metadata for the template variable %s in the %s dimension.', var.name, tvar.name, tvar.dimID(dim) );
+                error('The %s variable does not have metadata matching any of the metadata for the template variable %s in the %s dimension.', var.name, tvar.name, tvar.dimID(d) );
             end
             obj = obj.ensDimension( v(k), d, 'index', index, 'seq', tvar.seqDex{d}, 'meta', tvar.seqMeta{d}, 'mean', tvar.meanDex{d}, 'nanflag', tvar.nanflag{d} );
         end
