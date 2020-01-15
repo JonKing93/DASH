@@ -18,15 +18,17 @@ function[obj] = remove(obj, varNames)
 % ----- Written By -----
 % Jonathan King, University of Arizona, 2019
 
-% Get the variable indices
-v = obj.findVarIndices( varNames );
+if ~isempty( varNames )
+    % Get the variable indices
+    v = obj.findVarIndices( varNames );
 
-% Delete from design fields
-obj.var(v) = [];
-obj.varName(v) = [];
-obj.isCoupled(v,:) = [];
-obj.isCoupled(:,v) = [];
-obj.autoCouple(v) = [];
-obj.allowOverlap(v) = [];
+    % Delete from design fields
+    obj.var(v) = [];
+    obj.varName(v) = [];
+    obj.isCoupled(v,:) = [];
+    obj.isCoupled(:,v) = [];
+    obj.autoCouple(v) = [];
+    obj.allowOverlap(v) = [];
+end
 
 end
