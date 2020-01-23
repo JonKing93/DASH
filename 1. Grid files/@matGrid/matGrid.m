@@ -73,4 +73,10 @@ classdef matGrid < gridData
         [X, passVal] = read( obj, scs, ~, passVal );
     end
     
+    % Static initialization
+    methods (Static)
+        [path, file, var, order, msize, umsize, merge, unmerge] = ...
+        matGrid.initialize( file, var, dimOrder );
+    end
+    
 end
