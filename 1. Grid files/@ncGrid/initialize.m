@@ -1,5 +1,5 @@
 function[path, file, var, dims, order, msize, umsize, merge, unmerge] = ...
-                              initialize( file, var, dimOrder )
+         initialize( file, var, dimOrder )
 % Gets the initial fields required to write a ncgrid to .grid file
 
 % Check that the file exists, get the full path

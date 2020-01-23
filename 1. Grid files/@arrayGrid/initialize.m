@@ -20,4 +20,7 @@ umsize = msize;
 merge = NaN( 1, numel(msize) );
 unmerge = NaN( 1, numel(msize) );
 
+% Convert to char for .grid file
+order = gridData.dims2char( order );
+
 end
