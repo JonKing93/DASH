@@ -26,7 +26,7 @@ classdef gridFile < handle
     
     % Preallocation constants for source properties
     properties (Constant, Hidden)
-        preSource = 100;
+        preSource = 500;
         prePathChar = 500;
         preFileChar = 200;
         preVarChar = 50;
