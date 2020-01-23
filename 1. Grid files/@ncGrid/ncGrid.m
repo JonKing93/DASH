@@ -29,48 +29,7 @@ classdef ncGrid < gridData
             %
             % obj: The new ncGrid object.
             
-            % Check that the file exists, get the full path
-            if ~isstrflag( filename )
-                error('filename must be a string scalar or character row vector.');
-            elseif ~exist( filename, 'file' )
-                error('The file %s does not exist. It may be misspelled or not on the active path.', filename );
-            end
-            obj.filepath = which( filename );
-            obj.filename = filename;
             
-            % Check that the file is actually a netcdf
-            try
-                info = ncinfo( obj.filepath );
-            catch ME
-                error('The file %s is not a valid NetCDF file.', filename );
-            end
-            
-            % Check that the variable name is allowed and exists
-            if ~isstrflag( varName )
-                error('varName must be a string scalar or character row vector.');
-            end
-            ncNames = cell( numel(info.Variables), 1 );
-            [ncNames{:}] = deal( info.Variables.Name );        
-            ncNames = string( ncNames );
-            [isvar, v] = ismember( varName, ncNames );
-            if ~isvar
-                error('The file %s does not contain a %s variable.', filename, varName );
-            end
-            obj.varName = varName;
-            
-            % Ensure the data field is numeric or logical
-            if ~ismember( info.Variables(v).Datatype, [gridData.numericTypes;"logical"] )
-                error('The %s variable is neither numeric nor logical.', varName );
-            end
-            
-            % Process the dimensions. Find merged / unmerged size.
-            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
-                gridData.processSourceDims( dimOrder, info.Variables(v).Size );
-
-            % Also record the dimensions saved in the NetCDF file.
-            ncDim = cell( numel(info.Variables(v).Dimensions), 1 );
-            [ncDim{:}] = deal( info.Variables(v).Dimensions.Name );
-            obj.ncDim = string( ncDim );
         end
     end
     
@@ -85,4 +44,10 @@ classdef ncGrid < gridData
         
     end
     
+    % Static initialization
+    methods (Static)
+        [path, file, var, dims, order, msize, umsize, merge, unmerge] = ...
+                  initialize( source, varName, dimOrder );
+    end
+        
 end
