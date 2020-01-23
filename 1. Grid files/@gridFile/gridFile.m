@@ -90,11 +90,14 @@ classdef gridFile < handle
        
        % Updates the object to reflect the saved file
        update( obj );
+       
+       % Increases the preallocated size of fields in the .grid file when
+       % they are too short
+       ensureFieldSize( obj, s, counter );
         
     end
     
-    
-   % Static Utils (error checking and read
+   % Static Utils (error checking and read)
    methods (Static)
        
        % Returns requested data from sources
@@ -123,11 +126,6 @@ classdef gridFile < handle
        
        % Reorders grid scs for source grid order
        [scs] = reorderSCS( scs, gridOrder, sourceOrder )
-       
-       % Increases the preallocated size of fields in the .grid file when
-       % they are too short
-       m = ensureFieldSize( m, s, counter );
-       
        
    end
         

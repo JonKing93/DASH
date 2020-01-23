@@ -129,12 +129,11 @@ dimLimit = dimLimit(reorder,:);
 % Check that the data does not overlap with other existing data
 gridFile.checkOverlap( dimLimit, obj.dimLimit );
 
-% !!!!!!!!! TODO !!!!!!!!!!!!
-% Check if the preallocated fields need expanding
+% Preallocate more space if the fields need expanding
 counter = [numel(path), numel(file), numel(var), numel(dims), numel(dimOrder), ...
            numel(msize), numel(umsize), numel(merge), numel(unmerge)];
-s = m.nSource + 1;
-m = gridFile.ensureFieldSize( m, s, counter );
+s = obj.nSource + 1;
+obj.ensureFieldSize( s, counter )
 
 % Write to file
 try
