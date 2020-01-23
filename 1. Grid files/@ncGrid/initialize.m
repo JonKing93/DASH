@@ -48,6 +48,5 @@ path = char(path);
 file = char(file);
 var = char(var);
 dims = gridData.dims2char( dims );
-order = gridData.dims2char( order );
 
 end

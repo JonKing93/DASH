@@ -43,6 +43,5 @@ end
 % Convert to comma delimited for file write
 path = char(path);
 file = char(file);
-order = gridData.dims2char( order );
 
 end

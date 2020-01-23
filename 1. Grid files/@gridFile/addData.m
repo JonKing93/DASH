@@ -130,6 +130,7 @@ dimLimit = dimLimit(reorder,:);
 gridFile.checkOverlap( dimLimit, obj.dimLimit );
 
 % Preallocate more space if the fields need expanding
+dimOrder = gridData.dims2char( dimOrder );
 counter = [numel(path), numel(file), numel(var), numel(dims), numel(dimOrder), ...
            numel(msize), numel(umsize), numel(merge), numel(unmerge)];
 s = obj.nSource + 1;
