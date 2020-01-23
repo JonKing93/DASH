@@ -94,6 +94,9 @@ classdef gridFile < handle
        % Increases the preallocated size of fields in the .grid file when
        % they are too short
        ensureFieldSize( obj, s, counter );
+       
+       % Create a dataGrid object from stored data
+       [source] = buildSource( obj, s );
         
     end
     

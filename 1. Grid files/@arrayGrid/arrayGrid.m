@@ -7,26 +7,13 @@ classdef arrayGrid < gridData
     
     % Constructor
     methods
-        function[obj, X] = arrayGrid( X, nSource, dimOrder )
-            % Creates a new arrayGrid object. 
-            
-            % Ensure the data is numeric or logical
-            if ~isnumeric(X) && ~islogical(X)
-                error('X must be a numeric or logical array.');
-            end
-            
-            % Get the data name
-            obj.dataName = sprintf('data%.f', nSource+1);
-            
-            % Process dimensions, note merging
-            [obj.unmergedSize, obj.size, obj.dimOrder, obj.merge, obj.mergeSet] = ...
-                gridData.processSourceDims( dimOrder, size(X) );
-            
-            % Merge the data dimensions
-            X = obj.mergeDims( X, obj.merge );
-            obj.unmergedSize = obj.size;
-            obj.merge = NaN( 1, numel(obj.size) );
-            obj.mergeSet = NaN(1, numel(obj.size) );
+        function[obj] = arrayGrid( var, order, msize, umsize, merge, unmerge )
+            obj.dataName = var;
+            obj.dimOrder = order;
+            obj.size = msize;
+            obj.unmergedSize = umsize;
+            obj.merge = merge;
+            obj.mergeSet = unmerge;
         end
     end
     

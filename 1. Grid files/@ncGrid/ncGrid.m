@@ -11,25 +11,16 @@ classdef ncGrid < gridData
     
     % Constructor
     methods
-        function[obj] = ncGrid( filename, varName, dimOrder )
-            % Creates a new ncGrid object
-            %
-            % obj = ncGrid( filename, varName, dimOrder )
-            %
-            % ----- Inputs -----
-            %
-            % filename: The name of the netcdf file
-            %
-            % varname: The name of the variable in the netcdf file
-            %
-            % dimOrder: The order of the dimensions of the variable in the
-            %           netcdf file. Must use the names from getDimIDs.m
-            %
-            % ----- Outputs -----
-            %
-            % obj: The new ncGrid object.
-            
-            
+        function[obj] = ncGrid(  path, file, var, dims, order, msize, umsize, merge, unmerge  )
+            obj.filepath = path;
+            obj.filename = file;
+            obj.varName = var;
+            obj.ncDim = dims;
+            obj.dimOrder = order;
+            obj.size = msize;
+            obj.unmergedSize = umsize;
+            obj.merge = merge;
+            obj.mergeSet = unmerge;
         end
     end
     
