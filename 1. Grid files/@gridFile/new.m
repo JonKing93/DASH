@@ -78,7 +78,9 @@ m.sourceSize = NaN( nSource, nDim );
 m.unmergedSize = NaN( nSource, nDim );
 m.merge = NaN( nSource, nDim );
 m.unmerge = NaN( nSource, nDim );
+
 m.counter = NaN( nSource, 9 );
+m.type = repmat( blanks(5), [nSource, 1] );
 
 % Return the object as output
 m.valid = true;

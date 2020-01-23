@@ -29,6 +29,7 @@ if s > maxSource
     addSource = true;
     m.dimLimit(:,:,newSource) = NaN;
     m.counter(newSource,:) = NaN;
+    m.type(newSource,:) = ' ';
 end
 
 % Get the fill value for each field

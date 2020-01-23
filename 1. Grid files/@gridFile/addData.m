@@ -48,10 +48,12 @@ dims = '';
 if strcmp(type, 'nc')
     [path, file, var, dims, dimOrder, msize, umsize, merge, unmerge] = ...
         ncGrid.initialize( source, varName, dimOrder );
+    type = 'nc   ';
     
 elseif strcmp(type, 'mat')
     [path, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
         matGrid.initialize( source, varName, dimOrder );
+    type = 'mat  ';
     
 elseif strcmp(type, 'array')
     [source, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
@@ -153,6 +155,7 @@ try
     m.merge(s, 1:counter(8)) = merge;
     m.unmerge(s, 1:counter(9)) = unmerge;
     m.counter(s, :) = counter;
+    m.type(s,:) = type;
     
     % Save workspace arrays directly to file
     if strcmp( type, 'array' )
