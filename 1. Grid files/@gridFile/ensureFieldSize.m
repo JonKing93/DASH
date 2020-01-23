@@ -13,10 +13,10 @@ maxSize = [size(m,'sourcePath',2), size(m,'sourceFile',2), size(m,'sourceVar',2)
            size(m,'unmergedSize',2), size(m,'merge',2), size(m,'unmerge',2)];
             
 % Get the fields and preallocation values associated with each size marker
-field = ["sourcePath","sourceFile","sourceVar","sourceDims","sourceOrder",...
-         "sourceSize","unmergedSize","merge","unmerge"];
-preField = ["prePathChar","preFileChar","preVarChar","preDimChar",...
-             "preDimChar","preDims","preDims","preDims","preDims"];
+field = {'sourcePath','sourceFile','sourceVar','sourceDims','sourceOrder',...
+         'sourceSize','unmergedSize','merge','unmerge'};
+preField = {'prePathChar','preFileChar','preVarChar','preDimChar',...
+             'preDimChar','preDims','preDims','preDims','preDims'};
          
 % Note if the file is unsuccessfully modified
 m.valid = false;
@@ -28,6 +28,7 @@ if s > maxSource
     newSource = maxSource+1 : maxSource+gridFile.preSource;
     addSource = true;
     m.dimLimit(:,:,newSource) = NaN;
+    m.counter(newSource,:) = NaN;
 end
 
 % Get the fill value for each field
@@ -39,13 +40,13 @@ for k = 1:numel(counter)
     
     % Add any new sources
     if addSource
-        m.(field(k))(newSource,:) = fillValue;
+        m.(field{k})(newSource,:) = fillValue;
     end
     
     % Lengthen the field if too short
     if counter(k) > maxSize(k)
-        newMax = counter(k)+gridFile.(preField(k));
-        m.(field(k))(:, maxSize(k)+1:newMax) = fillValue;
+        newMax = counter(k)+gridFile.(preField{k});
+        m.(field{k})(:, maxSize(k)+1:newMax) = fillValue;
     end
 end
  
