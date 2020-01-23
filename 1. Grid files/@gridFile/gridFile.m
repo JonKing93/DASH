@@ -14,14 +14,40 @@ classdef gridFile < handle
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019
     
+    % Properties for the full gridfile
     properties
         filepath; % The current file
-        source;   % A vector of data sources
         dimOrder; % The internal dimensional order used by the .grid file
-        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
-        metadata; % The metadata along each dimension and data attributes
         gridSize; % The total size of the gridded metadata.
+        metadata; % The metadata along each dimension and data attributes
+        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        nSource;  % Number of data sources
     end
+    
+    % Preallocation constants for source properties
+    properties (Constant, Hidden)
+        preSource = 100;
+        prePathChar = 500;
+        preFileChar = 200;
+        preVarChar = 50;
+        preDimChar = 100;
+        preDims = 20;
+    end
+    
+%     % File fields for data sources that are not actual properties of the grid object
+%         sourcePath;   % File path of a data source
+%         sourceFile;   % Just the file name
+%         sourceVar;    % Name of the variable in the data source
+%         sourceDims;   % Name of dimensions in the data source. Comma delimited char.
+%         sourceOrder;  % Dimension order in the data source. Comma delimited char
+%         sourceSize;   % Size of the (merged) dimensions in the data source.
+%         unmergedSize; % Size of unmerged data within the data source
+%         merge;        % Maps unmerged dimensions to merged dimensions
+%         unmerge;      % Maps merged dimensions to unmerged dimensions
+%         
+%         counter;      % Tracks how much of preallocated source fields are used.
+%                       %     (nChars) path, file, var, dims, order
+%                       %     (nDims)  merge size, unmerge size, merge, unmerge
     
     % Constructor
     methods
@@ -45,7 +71,7 @@ classdef gridFile < handle
         
     end
     
-    % User methods
+    % Object user methods
     methods
         
         % Adds data to a .grid file
@@ -97,6 +123,11 @@ classdef gridFile < handle
        
        % Reorders grid scs for source grid order
        [scs] = reorderSCS( scs, gridOrder, sourceOrder )
+       
+       % Increases the preallocated size of fields in the .grid file when
+       % they are too short
+       m = ensureFieldSize( m, s, counter );
+       
        
    end
         

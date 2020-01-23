@@ -1,4 +1,4 @@
-function[] = addData( obj, type, source, varName, dimOrder, meta )
+function[] = addData( obj, type, s, varName, dimOrder, meta )
 % Adds a data source to a .grid file.
 %
 % gridFile.addData( obj, 'nc', ncFile, varName, dimOrder, meta )
@@ -42,15 +42,21 @@ end
 [dimOrder] = gridFile.checkSourceDims( dimOrder );
 gridFile.checkMetadata( meta );
 
-% Build the source grid
+% Get source data for the data grid
+path = '';
+dims = '';
 if strcmp(type, 'nc')
-    sourceGrid = ncGrid( source, varName, dimOrder );
+    [path, file, var, dims, dimOrder, msize, umsize, merge, unmerge] = ...
+        ncGrid.initialize( source, varName, dimOrder );
+    
 elseif strcmp(type, 'mat')
-    sourceGrid = matGrid( source, varName, dimOrder );
+    [path, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
+        matGrid.initialize( source, varName, dimOrder );
+    
 elseif strcmp(type, 'array')
-    [sourceGrid, source] = arrayGrid( source, numel(obj.source), dimOrder );
+    [file, var, dimOrder, msize, umsize, merge, unmerge] = ...
+        arrayGrid.initialize( source, obj.nSource, dimOrder );
 end
-dimOrder = sourceGrid.dimOrder;
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified
 % singletons)
@@ -67,8 +73,8 @@ end
 notnanDim = gridDims( notnan );
 
 % Get the source dimensions that are not trailing singletons
-sourceSize = sourceGrid.squeezeSize( sourceGrid.size );
-notTS = sourceGrid.dimOrder( 1:numel(sourceSize) );
+sourceSize = gridData.squeezeSize( msize );   
+notTS = dimOrder( 1:numel(sourceSize) );
 
 % Ensure that both the non-nan grid dims, and the non-TS dims have metadata
 needMeta = unique( [notnanDim, notTS] );
@@ -80,7 +86,7 @@ if any( ~hasmeta )
 end
 
 % Get the size and name of all dimensions for the source grid.
-sourceSize = sourceGrid.fullSize( sourceGrid.size, nDims );
+sourceSize = gridData.fullSize( msize, nDims );
 tsDim = ~ismember(gridDims, dimOrder);
 dimOrder(end+(1:sum(tsDim))) = gridDims( tsDim );
 dimLimit = NaN( nDims, 2 );
@@ -123,20 +129,37 @@ dimLimit = dimLimit(reorder,:);
 % Check that the data does not overlap with other existing data
 gridFile.checkOverlap( dimLimit, obj.dimLimit );
 
-% Update fields to include new data source
-obj.source{end+1,1} = sourceGrid;
-obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
+% !!!!!!!!! TODO !!!!!!!!!!!!
+% Check if the preallocated fields need expanding
+counter = [numel(path), numel(file), numel(var), numel(dims), numel(dimOrder), ...
+           numel(msize), numel(umsize), numel(merge), numel(unmerge)];
+s = m.nSource + 1;
+m = gridFile.ensureFieldSize( m, s, counter );
 
 % Write to file
 try
     m = matfile( obj.filepath, 'Writable', true );
     m.valid = false;
-    m.nSource = m.nSource + 1;
-    m.source = obj.source;
-    m.dimLimit = obj.dimLimit;
-    if isa(sourceGrid, 'arrayGrid')
-        m.(sourceGrid.dataName) = source;    
+    m.nSource = s;
+    m.dimLimit(:,:,s) = dimLimit;
+    
+    m.sourcePath(s, 1:counter(1)) = path;
+    m.sourceFile(s, 1:counter(2)) = file;
+    m.sourceVar(s, 1:counter(3)) = var;
+    m.sourceDims(s, 1:counter(4)) = dims;
+    m.sourceOrder(s, 1:counter(5)) = dimOrder;
+    m.sourceSize(s, 1:counter(6)) = msize;
+    m.unmergedSize(s, 1:counter(7)) = umsize;
+    m.merge(s, 1:counter(8)) = merge;
+    m.unmerge(s, 1:counter(9)) = unmerge;
+    m.counter(s, :) = counter;
+    
+    % Save workspace arrays directly to file
+    if strcmp( type, 'array' )
+        m.(var) = source;
     end
+    
+    % Nice job, successful write
     m.valid = true;
     
 % If the write operation failed, delete the object.

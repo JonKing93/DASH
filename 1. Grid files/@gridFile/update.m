@@ -1,4 +1,5 @@
 function[] = update( obj )
+% Ensures that a grid object matches the associated file.
 
 % Check that the file still exists
 try
@@ -10,11 +11,11 @@ end
 
 % Update the properties
 try    
-    obj.source = grid.source;
     obj.dimOrder = grid.dimOrder;
-    obj.dimLimit = grid.dimLimit;
-    obj.metadata = grid.metadata;
     obj.gridSize = grid.gridSize;
+    obj.metadata = grid.metadata;
+    obj.dimLimit = grid.dimLimit;
+    obj.nSource = grid.nSource;
 catch
     delete(obj);
     error('The grid file is not valid. It may have been modified externally or failed during a write operation. Deleteing the current gridFile object.');

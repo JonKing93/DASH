@@ -1,7 +1,7 @@
 function[grid] = new( filename, meta, attributes )
 %% Initializes a new gridded data (.grid) file. This is a container object that
 % contains instructions on reading data from different sources, including:
-% NetCDF files, .mat Files, and Matlab numeric arrays.
+% NetCDF files, .mat Files, and Matlab workspace arrays.
 %
 % gridFile.new( filename, meta )
 % Initializes a new .grid file with pre-defined dimensional metadata.
@@ -56,18 +56,32 @@ if ~isempty( attributes )
 end
 
 % Initialize the .grid file
+nSource = gridFile.preSource;
+nDim = gridFile.preDims;
 m = matfile( filename );
-m.valid = false;
+m.valid = false;   % Marker for successful write operation
+
+% Global values
 m.dimOrder = dimID;
 m.gridSize = gridSize;
 m.metadata = allmeta;
-
+m.dimLimit = NaN( numel(dimID), 2, nSource );
 m.nSource = 0;
-m.source = {};
-m.dimLimit = [];
-m.valid = true;
+
+% Individual data sources
+m.sourcePath = repmat( blanks(gridFile.prePathChar), [nSource,1] );
+m.sourceFile = repmat( blanks(gridFile.preFileChar), [nSource,1] );
+m.sourceVar = repmat( blanks(gridFile.preVarChar), [nSource,1] );
+m.sourceDims = repmat( blanks(gridFile.preDimChar), [nSource,1] );
+m.sourceOrder = repmat( blanks(gridFile.preDimChar), [nSource,1] );
+m.sourceSize = NaN( nSource, nDim );
+m.unmergedSize = NaN( nSource, nDim );
+m.merge = NaN( nSource, nDim );
+m.unmerge = NaN( nSource, nDim );
+m.counter = NaN( nSource, 9 );
 
 % Return the object as output
+m.valid = true;
 grid = gridFile( filename );
 
 end
