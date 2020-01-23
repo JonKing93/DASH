@@ -46,19 +46,26 @@ if strcmp(flag, "use")
     
     % Get the matfile object
     try
-        m = load( file, '-mat', 'valid','dimOrder','gridSize','metadata',...
+        required = {'valid','dimOrder','gridSize','metadata',...
                   'dimLimit','nSource','sourcePath','sourceFile','sourceVar',...
                   'sourceDims','sourceOrder','sourceSize','unmergedSize',...
-                  'merge','unmerge','counter' );
+                  'merge','unmerge','counter'};
+        m = load( file, '-mat', required{:} );
     catch ME
         error('File %s is not a valid .grid file. It may be corrupted or not actually a .grid file.', file );
     end
     
     % Check that the file was not corrupted during a write operation
-    if ~isscalar(m.valid) || ~islogical(m.valid) || ~m.valid
+    if ~isfield(m, 'valid') || ~isscalar(m.valid) || ~islogical(m.valid) || ~m.valid
         error('The file %s is not valid. It may have failed during a write operation.', file);
     end
-
+    
+    % Check all fields exist
+    fileFields = fields(m);
+    if any( ~ismember(fileFields, required) )
+        error('File %s does not contain all required fields. It may be corrupted or not actually a .grid file.', file );
+    end
+    
 end
 
 end

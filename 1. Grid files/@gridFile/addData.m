@@ -1,4 +1,4 @@
-function[] = addData( obj, type, s, varName, dimOrder, meta )
+function[] = addData( obj, type, source, varName, dimOrder, meta )
 % Adds a data source to a .grid file.
 %
 % gridFile.addData( obj, 'nc', ncFile, varName, dimOrder, meta )
@@ -54,7 +54,7 @@ elseif strcmp(type, 'mat')
         matGrid.initialize( source, varName, dimOrder );
     
 elseif strcmp(type, 'array')
-    [file, var, dimOrder, msize, umsize, merge, unmerge] = ...
+    [source, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
         arrayGrid.initialize( source, obj.nSource, dimOrder );
 end
 
