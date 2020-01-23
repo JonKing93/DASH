@@ -5,7 +5,7 @@ classdef (Abstract) gridData
     properties
         dimOrder; % The order of dimensions in the gridded dataset
         size;  % The size of the gridded dataset
-        mergeSet;  % An index for the set of merged dimensions
+        mergeSet;  % Maps the merged dimensions back onto unmerged dimensions
         unmergedSize;   % Size without any squashed dimensions
         merge; % Indicates which dimensions should be merged
     end
@@ -32,6 +32,12 @@ classdef (Abstract) gridData
         
         % Actually merge data dimension
         [X] = mergeDims( X, merge )
+        
+        % Convert string array of dimensions to comma delimited char
+        dimChar = dims2char( dims );
+        
+        % Convert comma delimietd char to string array of dimensions
+        dims = char2dims( dimChar );
     end
     
     methods
