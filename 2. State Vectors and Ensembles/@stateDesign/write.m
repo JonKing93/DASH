@@ -39,8 +39,8 @@ nGrid = numel( uniqGrids );
 [~, passIndex] = ismember( gridFiles, uniqGrids );
 passVals = cell( nGrid, 1 );
 for g = 1:nGrid
-    grid = load( uniqGrids(g), '-mat', 'source' );
-    passVals{g} = cell( 1, numel(grid.source)+1 );
+    grid = load( uniqGrids(g), '-mat', 'nSource' );
+    passVals{g} = cell( 1, grid.nSource+1 );
 end
 
 % Get the ensemble for each variable. Record NaN members and write to file

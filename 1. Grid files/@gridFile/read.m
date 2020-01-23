@@ -52,7 +52,7 @@ for s = 1 : grid.nSource
     % Read data from the source. Create a dataGrid object to coordinate the
     % read. Permute scs/output to match source/grid dimension order.
     if useSource
-        source = obj.buildSource( s );
+        source = grid.buildSource( s );
         sSCS = gridFile.reorderSCS( sSCS, grid.dimOrder, source.dimOrder );
         [Xsource, passVals{s+1}] = source.read( sSCS, file, passVals{s+1} );
         X( readIndex{:} ) = gridFile.permuteSource( Xsource, source.dimOrder, grid.dimOrder );
