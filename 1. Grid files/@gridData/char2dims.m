@@ -8,7 +8,7 @@ start = [1, comma+1];
 stop = [comma-1, numel(dimChar)];
 
 for d = 1:nDims
-    dims{d} = dimChar( start:stop );
+    dims{d} = dimChar( start(d):stop(d) );
 end
 
 dims = string( dims );
