@@ -3,23 +3,25 @@ classdef arrayGrid < gridData
     
     properties (SetAccess = private)
         dataName; % The name of the data field in the gridFile
+        m;        % A matfile for the grid
     end
     
     % Constructor
     methods
-        function[obj] = arrayGrid( var, order, msize, umsize, merge, unmerge )
-            obj.dataName = var;
+        function[obj] = arrayGrid( path, var, order, msize, umsize, merge, unmerge )
+            obj.dataName = char(var);
             obj.dimOrder = order;
             obj.size = msize;
             obj.unmergedSize = umsize;
             obj.merge = merge;
             obj.mergeSet = unmerge;
+            obj.m = matfile( path );
         end
     end
     
     % Interface utilities
     methods
-        [X, passVal] = read(obj, scs, gridpath, passVal );
+        [X] = read(obj, scs );
     end
     
     % Static initialization

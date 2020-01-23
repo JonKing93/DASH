@@ -43,8 +43,7 @@ end
 gridFile.checkMetadata( meta );
 
 % Get source data for the data grid
-path = '';
-dims = '';
+dims = ' ';
 if strcmp(type, 'nc')
     [path, file, var, dims, dimOrder, msize, umsize, merge, unmerge] = ...
         ncGrid.initialize( source, varName, dimOrder );
@@ -58,6 +57,7 @@ elseif strcmp(type, 'mat')
 elseif strcmp(type, 'array')
     [source, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
         arrayGrid.initialize( source, obj.nSource, dimOrder );
+    path = char( obj.filepath );
 end
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified

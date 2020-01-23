@@ -1,4 +1,4 @@
-function[X, passVal] = read( obj, scs, ~, ~ )
+function[X] = read( obj, scs )
 % Reads data from a NetCDF file in a gridFile.
 
 % Adjust the start count and stride for merged dimensions.
@@ -16,7 +16,6 @@ end
 
 % Read from the netcdf file
 X = ncread( obj.filepath, obj.varName, fullscs(1,:), fullscs(2,:), fullscs(3,:) );
-passVal = [];
 
 % Merge dimensions. Apply keep indices to merged dims
 X = obj.mergeDims( X, obj.merge );

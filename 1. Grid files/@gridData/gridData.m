@@ -13,7 +13,7 @@ classdef (Abstract) gridData
     % Interface methods
     methods (Abstract = true)
         % Reads data from the data structure
-        [X, passVal] = read( obj, scs, gridpath, passVal ); 
+        [X] = read( obj, scs ); 
     end
     
     % Static Utilities

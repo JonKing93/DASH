@@ -28,7 +28,7 @@ classdef ncGrid < gridData
     methods
         
         % Reads data from the netcdf file
-        [X, passVal] = read( obj, scs, ~, ~ )
+        [X] = read( obj, scs )
         
         % Adjust scs for nc dimensions
         [scs] = trimSCS( obj, scs );
