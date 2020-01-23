@@ -35,4 +35,10 @@ classdef arrayGrid < gridData
         [X, passVal] = read(obj, scs, gridpath, passVal );
     end
     
+    % Static initialization
+    methods (Static)
+        [X, file, var, order, msize, umsize, merge, unmerge] = ...
+            initialize( X, nSource, dimOrder );
+    end
+    
 end
