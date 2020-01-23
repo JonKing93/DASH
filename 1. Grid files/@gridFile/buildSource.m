@@ -2,10 +2,10 @@ function[source] = buildSource( obj, s )
 % Returns the dataGrid object for a particular data source in a .grid file.
 
 % Extract the info for the source
-m = matfile( obj.filepath );
+m = load( obj.filepath, '-mat', 'sourcePath', 'sourceFile', 'sourceVar', ...
+          'sourceDims','sourceOrder','sourceSize','unmergedSize', 'merge', 'unmerge', 'counter', 'type' );
 counter = m.counter(s,:);
 type = m.type(s,:);
-
 path = string( m.sourcePath( s, 1:counter(1) ) );
 file = string( m.sourceFile( s, 1:counter(2) ) );
 var = string( m.sourceVar( s, 1:counter(3) ) );
