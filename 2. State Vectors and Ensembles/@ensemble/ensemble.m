@@ -49,20 +49,37 @@ methods
         %
         % obj: A new ensemble object
 
-        % Error check the file
-        m = obj.checkEnsFile( file );
-
-        % Get the file values
+        % Check that the file exists.
+        checkFile( file, 'extension', '.ens', 'exist', true );
+        obj.file = string( which( file ) );
+        
+        % Load the fields
+        try
+            required = {'random','ensSize','hasnan','writenan','design','complete'};
+            m = load( file, '-mat', required{:} );
+        catch
+            error('The ensemble file may be corrupted.');
+        end
+            
+        % Check for failed write or missing fields
+        if ~isfield(m, 'complete') || ~isscalar(m.complete) || ~islogical(m.complete) || ~m.complete
+            error('The file %s is not valid. It may have failed during a write operation.', file );
+        end
+        fileFields = fields(m);
+        if any( ~ismember(fileFields, required) )
+            error('File %s does not contain all required fields. It may be corrupted.');
+        end
+        
+        % Set the properties
         obj.random = m.random;
         obj.ensSize = m.ensSize;
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
-        obj.file = which( file );
-        obj.design = m.design;        
+        obj.design = m.design;
         
-        % Create the ensemble metadata
+        % Create ensemble metadata
         obj.metadata = ensembleMetadata( m.design );
-        
+
         % By default, load everything
         obj.loadVars = obj.metadata.varName;
         obj.loadMembers = 1:obj.ensSize(2);

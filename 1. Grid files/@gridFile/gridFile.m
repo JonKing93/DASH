@@ -94,7 +94,7 @@ classdef gridFile < handle
        
        % Increases the preallocated size of fields in the .grid file when
        % they are too short
-       [m, newVars] = ensureFieldSize( m, newVars );
+       [m, newVars, newCount] = ensureFieldSize( m, newVars );
        
        % Check file existence / extension / correct fields
        m = fileCheck( file, flag );

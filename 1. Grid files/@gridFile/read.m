@@ -24,44 +24,50 @@ X = NaN( scs(2,:) );
 % Get the grid Indices to be loaded for each dimension.
 nDim = numel( grid.dimOrder );
 gridIndex = cell( nDim,1 );
+readLimit = NaN( nDim, 2 );
 for d = 1:nDim
     gridIndex{d} = scs(1,d) : scs(3,d) : scs(1,d)+scs(3,d)*(scs(2,d)-1);
+    readLimit(d,:) = [gridIndex{d}(1), gridIndex{d}(end)];
 end
 
-% Preallocate scs for each source grid and indices in overall read grid
+% Check each source to see if it contains any necessary data
 for s = 1 : grid.nSource
     useSource = true;
-    sSCS = [NaN(2, nDim); scs(3,:)];
-    readIndex = cell( nDim, 1 );
     
-    % Check if it contains any data to be read. If so, get the start and
-    % count within the source grid. Also note which data it is reading
-    for d = 1:nDim
-        [~, loc] = ismember( gridIndex{d}, grid.dimLimit(d,1,s):grid.dimLimit(d,2,s) );
-        if all(loc==0)
+    % Check each dimension for overlap
+    for d = nDim:-1:1
+        if all( readLimit(d,:) < grid.dimLimit(d,1,s) ) || all( readLimit(d,:) > grid.dimLimit(d,2,s) )
             useSource = false;
-            break;
+            break
         end
-        
-        readIndex{d} = find( loc~=0 );
-        sourceIndex = loc( loc~=0 );
-        sSCS(1,d) = sourceIndex(1);
-        sSCS(2,d) = numel( sourceIndex );
     end
     
-    % Read data from the source. Create a dataGrid object to coordinate the
-    % read. Permute scs/output to match source/grid dimension order.
+    % If the source was useful, get the scs
     if useSource
+        sSCS = [NaN(2, nDim); scs(3,:)];
+        readIndex = cell( nDim, 1 );
+        
+        % Get the scs for each dimension
+        for d = 1:nDim
+            [~,loc] = ismember( gridIndex{d}, grid.dimLimit(d,1,s):grid.dimLimit(d,2,s) );
+            readIndex{d} = find( loc~=0 );
+            sourceIndex = loc( loc~=0 );
+            sSCS(1,d) = sourceIndex(1);
+            sSCS(2,d) = numel( sourceIndex );
+        end
+            
+        % Build a dataGrid object to read from the source or retrieve
+        % from a previous build.
         if isempty( passVals{s+1} )
             passVals{s+1} = grid.buildSource( s );
         end
         source = passVals{s+1};
             
+        % Permute scs to match source order. Read. Permute back to grid order
         sSCS = gridFile.reorderSCS( sSCS, grid.dimOrder, source.dimOrder );
         [Xsource] = source.read( sSCS );
         X( readIndex{:} ) = gridFile.permuteSource( Xsource, source.dimOrder, grid.dimOrder );
     end
-    
 end
 
 end

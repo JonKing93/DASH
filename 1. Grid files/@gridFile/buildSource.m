@@ -23,9 +23,6 @@ if strcmp( type, 'nc   ')
 % matGrid
 elseif strcmp(type, 'mat  ')
     source = matGrid( path, file, var, order, msize, umsize, merge, unmerge );
-    
-elseif strcmp(type, 'array')
-    source = arrayGrid( path, var, order, msize, umsize, merge, unmerge );
 end
 
 end

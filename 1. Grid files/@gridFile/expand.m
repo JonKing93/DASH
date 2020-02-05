@@ -81,4 +81,7 @@ catch
     error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
 end
 
+% Update user object
+obj.update;
+
 end

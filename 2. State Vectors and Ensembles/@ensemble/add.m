@@ -23,7 +23,7 @@ end
 obj.design.write( obj.file, obj.random, obj.writenan, false );
 
 % Update the ensemble object.
-m = matfile( obj.file );
+m = load( obj.file, '-mat', 'ensSize', 'design', 'hasnan' );
 obj.ensSize = m.ensSize;
 obj.design = m.design;
 obj.hasnan = m.hasnan;

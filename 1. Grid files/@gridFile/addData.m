@@ -126,7 +126,7 @@ try
     m = load( obj.filepath, '-mat' );
     dimOrder = gridData.dims2char( dimOrder );
     newVars = {path, file, var, dims, dimOrder, msize, umsize, merge, unmerge};
-    [m, newVars] = gridFile.ensureFieldSize( m, newVars );
+    [m, newVars, counter] = gridFile.ensureFieldSize( m, newVars );
     
     % Update the file variables.
     valid = true;
@@ -144,12 +144,13 @@ try
     unmergedSize = cat(1, m.unmergedSize, newVars{7} );
     merge = cat(1, m.merge, newVars{8} );
     unmerge = cat(1, m.unmerge, newVars{9} );
-    counter = m.counter;
+    counter = cat(1, m.counter, counter);
+    maxCounter = m.maxCounter;
     type = cat(1, m.type, type );    
     
     save( obj.filepath, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
           'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
-          'sourceOrder','sourceSize','unmergedSize','merge','unmerge','counter', 'type' );
+          'sourceOrder','sourceSize','unmergedSize','merge','unmerge','counter', 'maxCounter', 'type' );
     
 % If the write operation failed, delete the object.
 catch ME

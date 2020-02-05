@@ -68,12 +68,13 @@ sourceSize = [];
 unmergedSize = [];
 merge = [];
 unmerge = [];
-counter = zeros(1,9);
+counter = [];
+maxCounter = zeros(1,9);
 type = '';
 save( filename, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
       'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
       'sourceOrder', 'sourceSize', 'unmergedSize', 'merge', 'unmerge', ...
-      'counter', 'type' );
+      'counter', 'maxCounter', 'type' );
 
 % Return grid object as output
 grid = gridFile( filename );

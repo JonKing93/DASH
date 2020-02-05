@@ -1,11 +1,11 @@
-function[m, newVars] = ensureFieldSize( m, newVars )
+function[m, newVars, newCount] = ensureFieldSize( m, newVars )
 
 % Get the size of the new variables and save variables
 newCount = NaN( 1,9 );
 for k = 1:9
     newCount(k) = numel( newVars{k} );
 end
-saveCount = m.counter;
+saveCount = m.maxCounter;
 
 % Don't bother for a new file
 if ~all( saveCount==0 )
@@ -38,7 +38,7 @@ if ~all( saveCount==0 )
 end
 
 % Update the counter
-m.counter = max( [newCount; saveCount] );
+m.maxCounter = max( [newCount; saveCount] );
 
 end
     
