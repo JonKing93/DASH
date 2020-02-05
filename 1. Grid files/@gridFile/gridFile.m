@@ -81,20 +81,20 @@ classdef gridFile < handle
        % Updates the object to reflect the saved file
        update( obj );
        
-       % Increases the preallocated size of fields in the .grid file when
-       % they are too short
-       ensureFieldSize( obj, s, counter );
-       
        % Create a dataGrid object from stored data
        [source] = buildSource( obj, s );
         
     end
     
-   % Static Utils (error checking and read)
-   methods (Static)
+    % Static Utils (error checking and read)
+    methods (Static)
        
        % Returns requested data from sources
        [X, passVals] = read( obj, scs, passVals );
+       
+       % Increases the preallocated size of fields in the .grid file when
+       % they are too short
+       [m, newVars] = ensureFieldSize( m, newVars );
        
        % Check file existence / extension / correct fields
        m = fileCheck( file, flag );

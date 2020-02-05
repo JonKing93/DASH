@@ -121,10 +121,6 @@ dimLimit = dimLimit(reorder,:);
 % Check that the data does not overlap with other existing data
 gridFile.checkOverlap( dimLimit, obj.dimLimit(:,:,1:obj.nSource) );
 
-% Convert to char
-counter = [numel(path), numel(file), numel(var), numel(dims), numel(dimOrder), ...
-           numel(msize), numel(umsize), numel(merge), numel(unmerge)];
-
 % Load the file variables. Ensure correct sizing
 try
     m = load( obj.filepath, '-mat' );
@@ -134,6 +130,9 @@ try
     
     % Update the file variables.
     valid = true;
+    dimOrder = m.dimOrder;
+    gridSize = m.gridSize;
+    metadata = m.metadata;
     nSource = obj.nSource + 1;
     dimLimit = cat(3, m.dimLimit, dimLimit );
     sourcePath = cat(1, m.sourcePath, newVars{1} );
@@ -145,14 +144,12 @@ try
     unmergedSize = cat(1, m.unmergedSize, newVars{7} );
     merge = cat(1, m.merge, newVars{8} );
     unmerge = cat(1, m.unmerge, newVars{9} );
-    type = cat(1, m.type, type );
+    counter = m.counter;
+    type = cat(1, m.type, type );    
     
-    % Extract any saved workspace arrays
-    
-    
-    save( obj.filepath, '-mat', 'valid', 'nSource', 'dimLimit', 'sourcePath', ...
-          'sourceFile','sourceVar','sourceDims','sourceOrder','sourceSize',...
-          'unmergedSize','merge','unmerge','type' );
+    save( obj.filepath, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
+          'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
+          'sourceOrder','sourceSize','unmergedSize','merge','unmerge','counter', 'type' );
     
 % If the write operation failed, delete the object.
 catch ME
@@ -161,4 +158,7 @@ catch ME
     error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
 end
     
+% Update user object
+obj.update;   
+
 end

@@ -68,7 +68,7 @@ sourceSize = [];
 unmergedSize = [];
 merge = [];
 unmerge = [];
-counter = [];    % Has 9 cols
+counter = zeros(1,9);
 type = '';
 save( filename, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
       'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
