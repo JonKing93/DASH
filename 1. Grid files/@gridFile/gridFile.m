@@ -20,18 +20,8 @@ classdef gridFile < handle
         dimOrder; % The internal dimensional order used by the .grid file
         gridSize; % The total size of the gridded metadata.
         metadata; % The metadata along each dimension and data attributes
-        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
         nSource;  % Number of data sources
-    end
-    
-    % Preallocation constants for source properties
-    properties (Constant, Hidden)
-        preSource = 500;
-        prePathChar = 500;
-        preFileChar = 200;
-        preVarChar = 50;
-        preDimChar = 100;
-        preDims = 20;
+        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
     end
     
 %     % File fields for data sources that are not actual properties of the grid object

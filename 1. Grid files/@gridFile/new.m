@@ -37,53 +37,45 @@ end
 
 % Get the internal metadata structure. Include attributes. Give undefined
 % dimensions NaN metadata
-[dimID, attsName] = getDimIDs;
-nDim = numel(dimID);
-allmeta = struct();
+[dimOrder, attsName] = getDimIDs;
+nDim = numel(dimOrder);
+metadata = struct();
 gridSize = NaN(1, nDim);
 
 for d = 1:nDim
-    if isfield( meta, dimID(d) )
-        allmeta.( dimID(d) ) = meta.( dimID(d) );
-        gridSize(d) = size( meta.(dimID(d)), 1 );
+    if isfield( meta, dimOrder(d) )
+        metadata.( dimOrder(d) ) = meta.( dimOrder(d) );
+        gridSize(d) = size( meta.(dimOrder(d)), 1 );
     else
-        allmeta.( dimID(d) ) = NaN;
+        metadata.( dimOrder(d) ) = NaN;
         gridSize(d) = 1;
     end
 end
 if ~isempty( attributes )
-    allmeta.(attsName) = attributes;
+    metadata.(attsName) = attributes;
 end
 
 % Initialize the .grid file
-nSource = gridFile.preSource;
-nDim = gridFile.preDims;
-m = matfile( filename );
-m.valid = false;   % Marker for successful write operation
+valid = true;
+nSource = 0;
+dimLimit = [];
+sourcePath = '';
+sourceFile = '';
+sourceVar = '';
+sourceDims = '';
+sourceOrder = '';
+sourceSize = [];
+unmergedSize = [];
+merge = [];
+unmerge = [];
+counter = [];    % Has 9 cols
+type = '';
+save( filename, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
+      'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
+      'sourceOrder', 'sourceSize', 'unmergedSize', 'merge', 'unmerge', ...
+      'counter', 'type' );
 
-% Global values
-m.dimOrder = dimID;
-m.gridSize = gridSize;
-m.metadata = allmeta;
-m.dimLimit = NaN( numel(dimID), 2, nSource );
-m.nSource = 0;
-
-% Individual data sources
-m.sourcePath = repmat( blanks(gridFile.prePathChar), [nSource,1] );
-m.sourceFile = repmat( blanks(gridFile.preFileChar), [nSource,1] );
-m.sourceVar = repmat( blanks(gridFile.preVarChar), [nSource,1] );
-m.sourceDims = repmat( blanks(gridFile.preDimChar), [nSource,1] );
-m.sourceOrder = repmat( blanks(gridFile.preDimChar), [nSource,1] );
-m.sourceSize = NaN( nSource, nDim );
-m.unmergedSize = NaN( nSource, nDim );
-m.merge = NaN( nSource, nDim );
-m.unmerge = NaN( nSource, nDim );
-
-m.counter = NaN( nSource, 9 );
-m.type = repmat( blanks(5), [nSource, 1] );
-
-% Return the object as output
-m.valid = true;
+% Return grid object as output
 grid = gridFile( filename );
 
 end

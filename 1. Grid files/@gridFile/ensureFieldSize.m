@@ -5,53 +5,58 @@ function[] = ensureFieldSize( obj, s, counter )
 % s: The source number
 %
 % counter: The size of each field
-
-% Get the maximum size of the fields in the matfile
-m = matfile( obj.filepath, 'Writable', true );
-maxSize = [size(m,'sourcePath',2), size(m,'sourceFile',2), size(m,'sourceVar',2), ...
-           size(m,'sourceDims',2), size(m,'sourceOrder',2), size(m,'sourceSize',2), ...
-           size(m,'unmergedSize',2), size(m,'merge',2), size(m,'unmerge',2)];
             
 % Get the fields and preallocation values associated with each size marker
-field = {'sourcePath','sourceFile','sourceVar','sourceDims','sourceOrder',...
-         'sourceSize','unmergedSize','merge','unmerge'};
+fields = {'sourcePath','sourceFile','sourceVar','sourceDims','sourceOrder',...
+         'sourceSize','unmergedSize','merge','unmerge', 'dimLimit'};
+nField = numel(fields);
 preField = {'prePathChar','preFileChar','preVarChar','preDimChar',...
              'preDimChar','preDims','preDims','preDims','preDims'};
          
-% Note if the file is unsuccessfully modified
-m.valid = false;
-         
-% Note if more sources are needed
-maxSource = size(m,'dimLimit',3); %#ok<*GTARG>
-addSource = false;
-if s > maxSource
-    newSource = maxSource+1 : maxSource+gridFile.preSource;
-    addSource = true;
-    m.dimLimit(:,:,newSource) = NaN;
-    m.counter(newSource,:) = NaN;
-    m.type(newSource,:) = ' ';
+% Get the size of each field in the file
+m = load( obj.filepath, '-mat', fields{:} );
+maxSize = NaN( 1, nField-1 );
+for f = 1:nField-1
+    maxSize(f) = size( m.(fields{f}), 2 );
 end
+maxSource = size(m.dimLimit,3);
 
-% Get the fill value for each field
-for k = 1:numel(counter)
-    fillValue = ' ';
-    if k > 5
-        fillValue = NaN;
+% If preallocation is needed, get a writable matfile, note if successfully modified
+if s>maxSource || any(counter > maxSize)
+    m = matfile( obj.filepath, 'Writable', true );
+    m.valid = false;
+         
+    % Note if more sources are needed
+    addSource = false;
+    if s > maxSource
+        newSource = maxSource+1 : maxSource+gridFile.preSource;
+        addSource = true;
+        m.dimLimit(:,:,newSource) = NaN;
+        m.counter(newSource,:) = NaN;
+        m.type(newSource,:) = ' ';
     end
-    
-    % Add any new sources
-    if addSource
-        m.(field{k})(newSource,:) = fillValue;
+
+    % Get the fill value for each field
+    for k = 1:numel(counter)
+        fillValue = ' ';
+        if k > 5
+            fillValue = NaN;
+        end
+
+        % Add any new sources
+        if addSource
+            m.(fields{k})(newSource,:) = fillValue;
+        end
+
+        % Lengthen the field if too short
+        if counter(k) > maxSize(k)
+            newMax = counter(k)+gridFile.(preField{k});
+            m.(fields{k})(:, maxSize(k)+1:newMax) = fillValue;
+        end
     end
-    
-    % Lengthen the field if too short
-    if counter(k) > maxSize(k)
-        newMax = counter(k)+gridFile.(preField{k});
-        m.(field{k})(:, maxSize(k)+1:newMax) = fillValue;
-    end
-end
  
-% Successful writing
-m.valid = true;
+    % Successful writing
+    m.valid = true;
+end
       
 end

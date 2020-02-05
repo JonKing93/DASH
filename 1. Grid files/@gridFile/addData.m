@@ -7,9 +7,6 @@ function[] = addData( obj, type, source, varName, dimOrder, meta )
 % gridFile.addData( obj, 'mat', matFile, varName, dimOrder, meta )
 % Adds data from a saved .mat file.
 %
-% gridFile.addData( obj, 'array', X, [], dimOrder, meta )
-% Adds data from a workspace array. Saves the array directly to file.
-%
 % ----- Inputs ----
 %
 % file: The name of the .grid file. A string. Must end with ".grid"
@@ -17,8 +14,6 @@ function[] = addData( obj, type, source, varName, dimOrder, meta )
 % ncFile: The name of a NetCDF file. Must be on the active path. A string.
 %
 % matFile: The name of a .mat file. Must be on the active path. A string.
-%
-% X: A numeric or logical array.
 %
 % varName: The name of a variable in a NetCDF or .mat file.
 %
@@ -53,11 +48,6 @@ elseif strcmp(type, 'mat')
     [path, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
         matGrid.initialize( source, varName, dimOrder );
     type = 'mat  ';
-    
-elseif strcmp(type, 'array')
-    [source, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
-        arrayGrid.initialize( source, obj.nSource, dimOrder );
-    path = char( obj.filepath );
 end
 
 % Get the grid dimensions that have metadata (i.e. are not unspecified
@@ -129,41 +119,40 @@ end
 dimLimit = dimLimit(reorder,:);
 
 % Check that the data does not overlap with other existing data
-gridFile.checkOverlap( dimLimit, obj.dimLimit );
+gridFile.checkOverlap( dimLimit, obj.dimLimit(:,:,1:obj.nSource) );
 
-% Preallocate more space if the fields need expanding
-dimOrder = gridData.dims2char( dimOrder );
+% Convert to char
 counter = [numel(path), numel(file), numel(var), numel(dims), numel(dimOrder), ...
            numel(msize), numel(umsize), numel(merge), numel(unmerge)];
-s = obj.nSource + 1;
-obj.ensureFieldSize( s, counter )
 
-% Write to file
+% Load the file variables. Ensure correct sizing
 try
-    m = matfile( obj.filepath, 'Writable', true );
-    m.valid = false;
-    m.nSource = s;
-    m.dimLimit(:,:,s) = dimLimit;
+    m = load( obj.filepath, '-mat' );
+    dimOrder = gridData.dims2char( dimOrder );
+    newVars = {path, file, var, dims, dimOrder, msize, umsize, merge, unmerge};
+    [m, newVars] = gridFile.ensureFieldSize( m, newVars );
     
-    m.sourcePath(s, 1:counter(1)) = path;
-    m.sourceFile(s, 1:counter(2)) = file;
-    m.sourceVar(s, 1:counter(3)) = var;
-    m.sourceDims(s, 1:counter(4)) = dims;
-    m.sourceOrder(s, 1:counter(5)) = dimOrder;
-    m.sourceSize(s, 1:counter(6)) = msize;
-    m.unmergedSize(s, 1:counter(7)) = umsize;
-    m.merge(s, 1:counter(8)) = merge;
-    m.unmerge(s, 1:counter(9)) = unmerge;
-    m.counter(s, :) = counter;
-    m.type(s,:) = type;
+    % Update the file variables.
+    valid = true;
+    nSource = obj.nSource + 1;
+    dimLimit = cat(3, m.dimLimit, dimLimit );
+    sourcePath = cat(1, m.sourcePath, newVars{1} );
+    sourceFile = cat(1, m.sourceFile, newVars{2} );
+    sourceVar = cat(1, m.sourceVar, newVars{3} );
+    sourceDims = cat(1, m.sourceDims, newVars{4} );
+    sourceOrder = cat(1, m.sourceOrder, newVars{5} );
+    sourceSize = cat(1, m.sourceSize, newVars{6} );
+    unmergedSize = cat(1, m.unmergedSize, newVars{7} );
+    merge = cat(1, m.merge, newVars{8} );
+    unmerge = cat(1, m.unmerge, newVars{9} );
+    type = cat(1, m.type, type );
     
-    % Save workspace arrays directly to file
-    if strcmp( type, 'array' )
-        m.(var) = source;
-    end
+    % Extract any saved workspace arrays
     
-    % Nice job, successful write
-    m.valid = true;
+    
+    save( obj.filepath, '-mat', 'valid', 'nSource', 'dimLimit', 'sourcePath', ...
+          'sourceFile','sourceVar','sourceDims','sourceOrder','sourceSize',...
+          'unmergedSize','merge','unmerge','type' );
     
 % If the write operation failed, delete the object.
 catch ME
