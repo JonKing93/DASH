@@ -264,14 +264,6 @@ end
 % do
 %
 % >> gridFile.addData( 'tutorial.grid', 'mat', "LME_SLP_run4_850-1850.mat", "SLP", ["lat", "time", "lon"], sourceMetadata );
-%
-% Or if I had the data in an array named X loaded into the workspace, I
-% could do
-%
-% >> gridFile.addData( 'tutorial.grid', 'array', X, [], ["lat","time","lon"], sourceMetadata )
-% (Note that workspace arrays are written directly to the .grid file. So
-% you can clear your workspace later, and the data will still be
-% available.)
 
 % Nice! We've successfully added data to a .grid file. You can stop here if
 % you like, but the next two sections explain a few more useful methods for
