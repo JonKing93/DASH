@@ -37,7 +37,7 @@ if ~ismatrix(A)
 elseif ~isa( ensMeta, 'ensembleMetadata' ) || ~isscalar(ensMeta)
     error('ensMeta must be a scalar ensembleMetadata object.')
 elseif size(A,1) ~= ensMeta.varLimit(end)
-    error('The number of rows in A (%.f) must match the number of elements in the ensemble metadata (%.f).', size(A,1), ensMeta.varIndices(end) );
+    error('The number of rows in A (%.f) must match the number of elements in the ensemble metadata (%.f).', size(A,1), ensMeta.varLimit(end) );
 elseif ~isscalar(keepSingleton) || ~islogical(keepSingleton)
     error('keepSingleton must be a scalar logical.');
 end

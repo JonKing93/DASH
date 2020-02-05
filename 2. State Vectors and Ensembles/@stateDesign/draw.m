@@ -7,7 +7,7 @@ if nDraws > numel(undrawn)
 end
 
 % Draw in a random or ordered method
- if random
+if random
     drawIndex = randperm( numel(undrawn), nDraws );
 else 
     drawIndex = 1:nDraws;
