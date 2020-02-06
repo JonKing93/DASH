@@ -21,19 +21,22 @@ for v = 1:nVar
                 dimMeta = permute( dimMeta, [3 2 1] );
             end
             
-        % For ensemble dimensions, use the sequence metadata
+        % For ensemble dimensions, use the sequence metadata. If there were
+        % draws, record them as ensemble metadata
         else
             dimMeta = var.seqMeta{d};
+            
+            if ~isempty( var.drawDex )
+                ensMeta.(obj.varName(v)).(var.dimID(d)) = ...
+                        var.meta.(var.dimID(d))( var.indices{d}(var.drawDex(:,ensDim)), : );
+                ensDim = ensDim + 1;
+            end
         end
-        stateMeta.(obj.varName(v)).(var.dimID(d)) = dimMeta;
-                    
-        % Record grid metadata associated with ensemble members.
-        if ~isempty( var.drawDex )
-            ensMeta.(obj.varName(v)).(var.dimID(d)) = ...
-                    var.meta.(var.dimID(d))( var.indices{d}(var.drawDex(:,ensDim)), : );
-            ensDim = ensDim + 1;
+            
+        % Update the statemetadata if it exists
+        if ~isnan(dimMeta)
+            stateMeta.(obj.varName(v)).(var.dimID(d)) = dimMeta;
         end
-        
     end
 end
 
