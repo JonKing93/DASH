@@ -82,7 +82,7 @@ end
 % Let's use that to redo the previous section of code:
 
 coords = [lats, lons];
-H = ens.metadata.closestLatLonIndices( coords, "T", months );
+H = ens.metadata.closestLatLonIndices( coords, "T", 'time', months );
 
 % Here, each column of H is the state vector indices for one of the PSMs.
 % (If you want to check they are the same as in the previous section,
