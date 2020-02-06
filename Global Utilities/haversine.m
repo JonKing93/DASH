@@ -1,37 +1,32 @@
-function[D] = haversine( lli, llf )
-%% Calculate the surface distance between lat-lon coordinates (in kilometers).
+function[D] = haversine( coord, ensCoord )
+%% Computes the distance between lat-lon coordinates and a set of ensemble
+% coordinates.
 %
-% D = haversine( lli, llf )
-% Computes the distance between sets of lat, lon coordinates.
+% D = haversine( coord, ensCoord )
 %
-% ----- Inputs -----
-% 
-% lli: Initial lat lon coordinates. Lat is first column, lon is second.
+% ---- Inputs -----
 %
-% llf: Final lat-lon coordinates. Lat is first column, lon is second.
+% coord: A set of coordinates. First column lat, second column lon. (nCoord1 x 2)
 %
-% ----- Outputs -----
-%
-% D: The distance between initial and final coordinates in kilometers.
-%
-% ----- Written By -----
-% Jonathan King, University of Arizona, 2019
+% ensCoord: A second set of coordinates. First column lat, second column
+%           lon. (nCoord2 x 2)
 
-% Set the radius of the Earth (in kilometers)
+% Set the radius of the Earth
 R = 6378.137;
 
-% Convert latitude to radians
-lli = lli * pi/180;
-llf = llf * pi/180;
+% Convert to radians
+coord = coord * pi/180;
+ensCoord = ensCoord * pi/180;
 
-% Get the change in latitude
-dLat = llf(:,1) - lli(:,1);
+% Transpose ensCoord for binary singleton expansion
+ensCoord = ensCoord';
 
-% Get the change in longitude
-dLon = llf(:,2) - lli(:,2);
+% Get the change in lat and lon
+dLat = coord(:,1) - ensCoord(1,:);
+dLon = coord(:,2) - ensCoord(2,:);
 
-% Get the haversine function of the central angle
-a = sin(dLat/2).^2 + ( cos(lli(:,1)) .* cos(llf(:,1)) .* sin(dLon/2).^2 );
+% Get haversine function of the central angle
+a = sin(dLat/2).^2 + ( cos(coord(:,1)) .* cos(ensCoord(1,:)) .* sin(dLon/2).^2);
 c = 2 * atan2( sqrt(a), sqrt(1-a) );
 
 % Get the distance
