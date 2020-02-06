@@ -114,6 +114,9 @@ classdef ensembleMetadata
         % Gets the lat lon metadata for the entire ensemble
         latlon = coordinates( obj );
         
+        % Temporary file for write
+        H = closestLatLonIndices( obj, coords, varNames, varargin );
+        
     end
              
 end
