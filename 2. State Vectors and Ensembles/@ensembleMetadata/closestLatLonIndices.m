@@ -72,11 +72,7 @@ for var = 1:numel(varNames)
     v = obj.varCheck( varNames(var) );
     latlon = obj.getLatLonMetadata( varNames(var) );
     dist = haversine( coords, latlon );
-    
-    % Find the closest index for each site in site order
-    [row, site] = find( dist == min(dist,[],2) );
-    [~,sortIndex] = sort( row );
-    site = site(sortIndex);
+    [~, site] = min( dist, [], 2 );
     
     % Initialize the dimension search
     searchIndex = cell(nDim,1);
@@ -107,7 +103,7 @@ for var = 1:numel(varNames)
     if ~isempty( subSearch )
         nAdd = sum( (subSearch-1).*nModulus, 2 );
     end
-    H((var-1).*nComb+(1:nComb)) = (obj.varLimit(v,1) - 1) + nAdd + site;
+    H((var-1).*nComb+(1:nComb),:) = (obj.varLimit(v,1) - 1) + nAdd + site';
     
 end
 
