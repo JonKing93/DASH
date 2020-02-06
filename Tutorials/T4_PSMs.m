@@ -70,6 +70,33 @@ end
 
 % Great! The PSMs are ready for use
 
+
+%% State indices for many PSMs
+
+% If you have many PSMs, it can be faster to calculate state indices all at
+% once. To do this, determine which state vector indices are
+% appropriate, and then use the method "setStateIndices"
+
+% For example, the ensembleMetadata method "closestLatLonIndices" can be
+% used to determine the closest state vector indices to a given variable.
+% Let's use that to redo the previous section of code:
+
+coords = [lats, lons];
+H = ens.metadata.closestLatLonIndices( coords, "T", months );
+
+% Here, each column of H is the state vector indices for one of the PSMs.
+% (If you want to check they are the same as in the previous section,
+% compare:
+% >> H(:,1)
+% >> F{1}.H
+
+% Continuing our example, we can now set the state vector indices for each
+% PSM
+for s = 1:nSites
+    F{s}.setStateIndices( H(:,s) );
+end
+
+
 %% Unit correction
 
 % The ukPSM are written to process data in celsius. But model output is
