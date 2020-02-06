@@ -1,3 +1,3 @@
 function[versionString] = version
-versionString = "v3.3.2";
+versionString = "v3.4.0";
 end
