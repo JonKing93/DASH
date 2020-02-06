@@ -33,10 +33,8 @@ for v = 1:nVar
             end
         end
             
-        % Update the statemetadata if it exists
-        if ~isnan(dimMeta)
-            stateMeta.(obj.varName(v)).(var.dimID(d)) = dimMeta;
-        end
+        % Update the statemetadata regardless of dimension type
+        stateMeta.(obj.varName(v)).(var.dimID(d)) = dimMeta;
     end
 end
 
