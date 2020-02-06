@@ -36,9 +36,6 @@ classdef (Abstract) PSM < handle
         % This method will require the ensemble metadata as an input. When
         % this method is implemented in concrete PSM classes, it may also
         % use additional input arguments.
-        
-        setStateIndices( obj, H );
-        % Set state vector indices manually
 
         errorCheckPSM( obj );
         % This method implements internal error checking for specific PSM.
@@ -95,6 +92,9 @@ classdef (Abstract) PSM < handle
         % Interface error checking for bias correction, unit conversion,
         % dash, and unique PSMs.
         review( obj, nState );
+        
+        % Set state indices manually
+        setStateIndices( obj, H );
         
     end
     
