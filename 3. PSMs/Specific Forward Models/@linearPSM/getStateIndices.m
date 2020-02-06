@@ -59,7 +59,7 @@ obj.Hlim = NaN( numel(obj.slopes), 2 );
 % Get the state indices for each variable
 k = 0;
 for v = 1:numel(varNames)
-    Hvar = ensMeta.getClosestLatLonIndex( obj.coord, varNames(v), searchParams{v}{:} );
+    Hvar = ensMeta.closestLatLonIndices( obj.coord, varNames(v), searchParams{v}{:} );
     obj.H = [obj.H; Hvar];
     obj.Hlim(v,:) = k + [1, numel(Hvar)];
     k = k + numel(Hvar);

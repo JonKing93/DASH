@@ -19,7 +19,7 @@ function[] = getStateIndices( obj, ensMeta, Tname, monthMeta, varargin )
 % Get the closest indices
 [~,~,~,~,~,~,time] = getDimIDs;
             
-obj.H = ensMeta.getClosestLatLonIndex( [obj.lat, obj.lon], Tname, time, ...
+obj.H = ensMeta.closestLatLonIndices( [obj.lat, obj.lon], Tname, time, ...
                                         monthMeta, varargin{:} );
                          
 end

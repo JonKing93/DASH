@@ -7,6 +7,6 @@ function[] = getStateIndices( obj, ensMeta, sstName, deloName, monthMeta, vararg
     % varNames = [string(sstName), string(deloName)];
     % Get the time dimension
     [~,~,~,~,~,~,timeID] = getDimIDs;
-    obj.H = ensMeta.getClosestLatLonIndex( obj.coord, sstName, timeID, monthMeta, varargin{:} );
-    obj.H(13) = ensMeta.getClosestLatLonIndex( obj.coord, deloName);
+    obj.H = ensMeta.closestLatLonIndices( obj.coord, sstName, timeID, monthMeta, varargin{:} );
+    obj.H(13) = ensMeta.closestLatLonIndices( obj.coord, deloName);
 end

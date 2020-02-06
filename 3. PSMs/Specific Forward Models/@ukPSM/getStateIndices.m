@@ -32,6 +32,6 @@ end
 
 % Finds the closest SST variable in each of the specified months
 [~,~,~,~,~,~,time] = getDimIDs;
-obj.H = ensMeta.getClosestLatLonIndex( obj.coord, sstName, time, monthMeta, varargin{:} );
+obj.H = ensMeta.closestLatLonIndices( obj.coord, sstName, time, monthMeta, varargin{:} );
 
 end
