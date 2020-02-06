@@ -7,6 +7,8 @@ classdef ensembleMetadata
     %   lookup - Returns metadata at specified indices
     %   varIndices - Returns the state vector indices associated with a variable
     %   useVars - Returns ensemble metadata for a state vector comprised of specified variables
+    %   closestLatLonIndices - Returns state vector indices closest to a
+    %                          set of lat-lon coordinates.
     %
     % ensembleMetadata Utility Methods:
     %   dimCheck - Checks that a set of dimensions are in the metadata
@@ -109,13 +111,10 @@ classdef ensembleMetadata
         latlon = getLatLonMetadata( obj, varName );
         
         % Finds the closest state vector elements to a lat-lon coordinate
-        H = getClosestLatLonIndex( obj, coord, varNames, varargin );
+        H = closestLatLonIndices( obj, coords, varNames, varargin );
         
         % Gets the lat lon metadata for the entire ensemble
         latlon = coordinates( obj );
-        
-        % Temporary file for write
-        H = closestLatLonIndices( obj, coords, varNames, varargin );
         
     end
              
