@@ -64,6 +64,9 @@ classdef (Abstract) dash < handle
         % Checks if reconstructed indices include all PSM indices
         reconH = checkReconH( recon, F );
         
+        % Error propagation for spatial means
+        [E, sigma] = uncertainMean( X, Xvar, dim, weights );
+        
     end 
     
 end
