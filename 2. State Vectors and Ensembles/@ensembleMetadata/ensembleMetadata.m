@@ -113,6 +113,9 @@ classdef ensembleMetadata
         % Finds the closest state vector elements to a lat-lon coordinate
         H = closestLatLonIndices( obj, coords, varNames, varargin );
         
+        % !!!! Patch for rename to closestLatLonIndices, this will be removed in a future release.
+        H = getClosestLatLonIndex( obj, coords, varNames, varargin )
+        
         % Gets the lat lon metadata for the entire ensemble
         latlon = coordinates( obj );
         

@@ -9,7 +9,7 @@ function[H] = closestLatLonIndices( obj, coords, varNames, varargin )
 % Searches each index associated with elements in the specified metadata.
 %
 % For Example:
-%   >> H = obj.getClosestLatLonIndex( ..., 'lev', [100 200 300] )
+%   >> H = obj.closestLatLonIndices( ..., 'lev', [100 200 300] )
 %
 %   would find three state elements. The closest on the level with metadata
 %   equal to 100, the closest on level 200, and the closest on level 300.
