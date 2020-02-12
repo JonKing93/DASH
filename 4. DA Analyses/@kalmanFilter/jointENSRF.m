@@ -105,14 +105,14 @@ for t = 1:nTime
         if fullDevs
             Adev(:,:,t) = Mdev - Ka * Ydev(obs,:);
             if nPerc > 0
-                Aperc(:,:,t) = prctile( Adev(:,:,t), percentiles, 2 );
+                Aperc(:,:,t) = Amean(:,t) + prctile( Adev(:,:,t), percentiles, 2 );
             end
         elseif nPerc == 0
             Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
         else
             Adev = Mdev - Ka * Ydev(obs,:);
             Avar(:,t) = sum( Adev.^2, 2 ) ./ (nEns-1);
-            Aperc = prctile( Adev, percentiles, 2 );
+            Aperc = Amean(:,t) + prctile( Adev, percentiles, 2 );
         end
     end
                     

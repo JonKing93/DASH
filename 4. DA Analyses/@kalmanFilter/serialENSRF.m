@@ -103,7 +103,7 @@ for t = 1:nTime
         Avar(:,t) = sum( Ad.^2, 2 ) ./ (nEns - 1);
     end
     if nPerc > 0
-        Aperc(:,:,t) = prctile( Ad, percentiles, 2 );
+        Aperc(:,:,t) = Am + prctile( Ad, percentiles, 2 );
     end
     progressbar(t/nTime);
 end
