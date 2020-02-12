@@ -96,6 +96,23 @@ for s = 1:nSites
     F{s}.setStateIndices( H(:,s) );
 end
 
+% Currently, closestLatLonIndices can only search one variable at a time.
+% So if your PSMs need information from multiple variables, then:
+%     1. calculate H for each variable
+%     2. concatenate all the Hs
+%     3. Call setStateIndices.
+
+% The following code gives an example. 
+secondVariableName = "T";    % Only one variable in the tutorial ensemble has
+                             % lat-lon data, so pretend this is a different variable   
+H1 = ens.metadata.closestLatLonIndices( coords, "T", 'time', months );
+H2 = ens.metadata.closestLatLonIndices( coords, secondVariableName, 'time', months );
+H = cat(1, H1, H2);
+
+for s = 1:nSites
+    F{s}.setStateIndices( H(:,s) );
+end
+
 
 %% Unit correction
 
