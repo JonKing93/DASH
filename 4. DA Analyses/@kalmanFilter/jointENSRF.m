@@ -112,7 +112,7 @@ for t = 1:nTime
         else
             Adev = Mdev - Ka * Ydev(obs,:);
             Avar(:,t) = sum( Adev.^2, 2 ) ./ (nEns-1);
-            Aperc = perctile( Adev, percentiles, 2 );
+            Aperc = prctile( Adev, percentiles, 2 );
         end
     end
                     
