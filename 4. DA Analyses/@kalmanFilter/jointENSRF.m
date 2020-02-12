@@ -104,7 +104,9 @@ for t = 1:nTime
         Ka = kalmanFilter.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
         if fullDevs
             Adev(:,:,t) = Mdev - Ka * Ydev(obs,:);
-            Aperc(:,:,t) = prctile( Adev(:,:,t), percentiles, 2 );
+            if nPerc > 0
+                Aperc(:,:,t) = prctile( Adev(:,:,t), percentiles, 2 );
+            end
         elseif nPerc == 0
             Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
         else
