@@ -16,6 +16,7 @@ classdef kalmanFilter < dashFilter
         append;          % Whether to use the appended Ye method
         meanOnly;        % Whether to only calculate the ensemble mean
         fullDevs;        % Whether to return full ensemble deviations
+        percentiles;     % Which percentiles of the ensemble to return
         reconstruct;     % Which state vector elements to reconstruct
         reconH;          % Whether all H indices are reconstructed
     end
@@ -54,10 +55,11 @@ classdef kalmanFilter < dashFilter
             obj.append = false;
             obj.meanOnly = false;
             obj.fullDevs = false;
+            obj.percentiles = [];
             
             % Block empty constructor, set values
             if isempty(M) || isempty(D) || isempty(R) || isempty(F)
-                error('M, D, R, and F not be empty.');
+                error('M, D, R, and F cannot be empty.');
             end
             obj.setValues( M, D, R, F );
             

@@ -15,6 +15,9 @@ function[output] = run( obj )
 %
 %   Adev - Updated ensemble deviations (nState x nEns x nTime)
 %
+%   Aperc - Percentiles of the updated ensemble (nState x nPercentile x nTime)
+%           (See output.settings for the percentiles calculated) 
+%
 %   Ye - Proxy estimates
 %           Joint Updates:  (nObs x nEns)
 %           Serial Updates: (nObs x nEns x nTime)
@@ -69,7 +72,7 @@ if strcmp(obj.type, 'serial')
     F = obj.adjustH( F, reconstruct );
     
     % Do the updates
-    output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.fullDevs );
+    output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.percentiles, obj.fullDevs );
     
     % Unappend if necessary
     output.Append = false;
@@ -92,7 +95,7 @@ else
     end
         
     % Do the updates
-    output = obj.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs, reconstruct );
+    output = obj.jointENSRF( M, obj.D, obj.R, obj.F, w, yloc, obj.meanOnly, obj.fullDevs, obj.percentiles, reconstruct );
 end
 
 end
