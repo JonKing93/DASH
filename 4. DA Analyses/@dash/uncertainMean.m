@@ -2,7 +2,8 @@ function[E, sigma] = uncertainMean( X, Xvar, dim, weights )
 %% Calculates the mean of uncertain, correlated variables and propagates error.
 %
 % Uses the first order, second moment approximations to propagate error.
-% Assumes observations along the mean dimension are independent.
+% Assumes observations along the mean dimension are independent and
+% calculates correlation coefficients along this dimension.
 %
 % [E, sigma] = uncertainMean( X, Xvar )
 % Calculates the mean and associated uncertainty for data X with associated
@@ -33,6 +34,8 @@ function[E, sigma] = uncertainMean( X, Xvar, dim, weights )
 %
 % sigma: The standard deviation of each value in the mean.
 
+warning('This function is still in development. It may change in a future release.');
+
 % Set defaults. First dimension. Unweighted mean.
 if ~exist('dim','var') || isempty(dim)
     dim = 1;
@@ -52,11 +55,16 @@ elseif ~isnumeric(Xvar) || any(isnan(Xvar),'all') || any(isinf(Xvar),'all') || a
     error('Xvar must be numeric array and cannot contain NaN, Inf, or negative values.');
 elseif ~isnumeric(weights) || any(isnan(weights),'all') || any(isinf(weights),'all') || any(weights<0,'all')
     error('weights must be a numeric array and cannot contain NaN, Inf, or negative values.');
+elseif ~isequal( size(X), size(Xvar) )
+    error('X and Xvar must be the same size.');
 end
 
 sizeX = size(X);
-sizeWeight = size( weight );
-if ~isequal( sizeX, size(Xvar) )
+sizeWeight = size( weights );
+maxDims = max( dim, ndims(X) );
+sizeX( end+1:maxDims ) = 1;
+sizeWeight( end+1:maxDims ) = 1;
+if ~isequal( size(X), size(Xvar) )
     error('X and Xvar must be the same size.');
 elseif ~isequal( sizeX([1:dim-1,dim+1:end]), sizeWeight([1:dim-1,dim+1:end]) ) || sizeWeight(dim)~=1
     error('weights must be a singleton in the mean dimension, and the same size as X in all other dimensions.');
