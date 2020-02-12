@@ -53,8 +53,8 @@ function[] = settings( obj, varargin )
 % fullDevs: A scalar logical indicating whether to return full ensemble
 %           deviations. Default is false.
 %
-% percentiles: A vector specifying which percentiles of the ensemble to
-%              return. Units in percent.
+% percentiles: A vector of values between 0 and 100, specifying which
+%              ensemble percentiles to return.
 %
 % reconstruct: A logical vector specifying which state vector elements to
 %              reconstruct. (nState x 1)

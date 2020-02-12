@@ -22,7 +22,8 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, percenti
 %
 % fullDevs: Whether to return full ensemble deviations. Scalar logical
 %
-% percentiles: Which percentiles to return
+% percentiles: Which percentiles to return. A vector of values between 0
+%              and 100 (nPerc x 1)
 %
 % reconstruct: Logical vector indicating which state vector elements to
 %              reconstruct. (nState x 1)
