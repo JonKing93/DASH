@@ -1,4 +1,4 @@
-function[output] = serialENSRF( M, D, R, F, w, percentiles, fullDevs )
+function[output] = serialENSRF( M, D, R, F, w, fullDevs, percentiles )
 %% Implements an ensemble square root kalman filter with serial updates.
 %
 % [output] = dash.serialENSRF( M, D, R, F, w )

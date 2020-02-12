@@ -72,7 +72,7 @@ if strcmp(obj.type, 'serial')
     F = obj.adjustH( F, reconstruct );
     
     % Do the updates
-    output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.percentiles, obj.fullDevs );
+    output = obj.serialENSRF( M, obj.D, obj.R, F, w, obj.fullDevs, obj.percentiles );
     
     % Unappend if necessary
     output.Append = false;
