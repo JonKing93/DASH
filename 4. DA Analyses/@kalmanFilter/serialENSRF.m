@@ -120,6 +120,10 @@ if fullDevs
 else
     output.Avar = Avar;
 end
+if nPerc > 0
+    output.settings.percentiles = percentiles(:)';
+    output.Aperc = Aperc;
+end
 output.Ye = Ye;
 output.calibRatio = calibRatio;
 output.R = R;
