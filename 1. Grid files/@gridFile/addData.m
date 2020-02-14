@@ -28,8 +28,8 @@ obj.update;
 % Check the type is recognized
 if ~isstrflag( type )
     error('type must be a string scalar or character row vector.');
-elseif ~ismember( type, ["nc","mat","array"])
-    error('type must be either "nc", "mat", or "array".');
+elseif ~ismember( type, ["nc","mat"])
+    error('type must be either "nc", or "mat".');
 end
 
 % Check that the source grid dimensions are recognized and non-duplicate,
