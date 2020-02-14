@@ -17,7 +17,7 @@ function[rA, dimID] = regridTripolar( A, var, ensMeta, gridSize, notnan, keepSin
 %
 % gridSize: The size of the original tripolar spatial grid.
 %
-% notnan: A set of logical indices that point to non-nan indices on a
+% notnan: A set of logicals indices that point to non-nan indices on a
 %   tripolar grid. Typically, the indices of ocean grid nodes. (nTripole x 1)
 %
 % keepSingleton: A scalar logical indicating whether to keep or remove
@@ -39,12 +39,12 @@ end
 % Error check
 if numel(gridSize)~=2 || any(gridSize<1) || any(mod(gridSize,1)~=0) 
     error('gridSize must be a 2-element vector with the size of the original tripolar spatial grid.');
-elseif ~islogical(ocnDex) || ~isvector(ocnDex) || prod(gridSize)~=numel(notnan)
-    error('ocnDex must be a logical vector with one element for each element in the original tripolar grid (%.f)', prod(gridSize));
+elseif ~islogical(notnan) || ~isvector(notnan) || prod(gridSize)~=numel(notnan)
+    error('notnan must be a logical vector with one element for each element in the original tripolar grid (%.f)', prod(gridSize));
 end
 
 % Intial regird
-[A, ~, dimID] = regridAnalysis( A, var, ensMeta, design, true );
+[A, ~, dimID] = dash.regrid( A, var, ensMeta, keepSingleton );
 
 % Get the tripole dimension
 [~,~,~,~,~,~,~,~,triDim] = getDimIDs;
