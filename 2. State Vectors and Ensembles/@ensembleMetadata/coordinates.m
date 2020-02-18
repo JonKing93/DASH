@@ -23,6 +23,7 @@ for v = 1:numel(obj.varName)
         nRep = nIndex ./ size(latlon,1);
         coord( obj.varIndices(obj.varName(v)), : ) = repmat( latlon, [nRep, 1]);
     catch
+        warning( 'Unable to determine coordinates for variable %s.', obj.varName(v) );
     end
 end
 
