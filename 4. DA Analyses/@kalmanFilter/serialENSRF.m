@@ -109,7 +109,7 @@ for t = 1:nTime
 end
 
 % Create the output structure
-output.settings = struct('Analysis', 'EnSRF', 'Type', 'Serial');
+output.settings = struct('Analysis', 'EnSRF', 'Type', 'Serial','version', dash.version, 'Time_Completed', datetime(clock));
 if ~all( w==1, 'all' )
     output.settings.Localize = w;
 end

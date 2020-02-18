@@ -120,7 +120,7 @@ for t = 1:nTime
 end
 
 % Create the output structure
-output.settings = struct('Updates', 'Joint', 'Mean_Only', meanOnly);
+output.settings = struct('Updates', 'Joint', 'Mean_Only', meanOnly, 'version', dash.version, 'Time_Completed', datetime(clock));
 if ~all(w==1, 'all') || ~all(yloc==1, 'all')
     output.settings.Localize = {w, yloc};
 end 
