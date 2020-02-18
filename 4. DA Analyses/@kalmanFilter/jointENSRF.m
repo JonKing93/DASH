@@ -1,7 +1,7 @@
 function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, percentiles, reconstruct )
 %% Implements an ensemble square root kalman filter updating observations jointly
 %
-% [output] = dash.jointENSRF( M, D, R, F, w, yloc, meanOnly, reconstruct )
+% [output] = dash.jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, percentiles, reconstruct )
 %
 % ----- Inputs -----
 %
@@ -112,7 +112,7 @@ for t = 1:nTime
         else
             Adev = Mdev - Ka * Ydev(obs,:);
             Avar(:,t) = sum( Adev.^2, 2 ) ./ (nEns-1);
-            Aperc = Amean(:,t) + prctile( Adev, percentiles, 2 );
+            Aperc(:,:,t) = Amean(:,t) + prctile( Adev, percentiles, 2 );
         end
     end
                     
