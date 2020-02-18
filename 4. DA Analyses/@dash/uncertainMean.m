@@ -1,6 +1,8 @@
 function[E, sigma] = uncertainMean( X, Xvar, dim, weights )
 %% Calculates the mean of uncertain, correlated variables and propagates error.
 %
+% *** THIS IS A PROTOTYPE. IT MAY CHANGE WITHOUT WARNING IN THE FUTURE. ***
+%
 % Uses the first order, second moment approximations to propagate error.
 % Assumes observations along the mean dimension are independent and
 % calculates correlation coefficients along this dimension.
@@ -34,7 +36,7 @@ function[E, sigma] = uncertainMean( X, Xvar, dim, weights )
 %
 % sigma: The standard deviation of each value in the mean.
 
-warning('This function is still in development. It may change in a future release.');
+warning('This function is a prototype. It may change without warning in the future.');
 
 % Set defaults. First dimension. Unweighted mean.
 if ~exist('dim','var') || isempty(dim)
