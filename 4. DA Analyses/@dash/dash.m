@@ -49,7 +49,10 @@ classdef (Abstract) dash < handle
         % Breaks an ensemble into mean and devations. Also variance.
         [Mmean, Mdev, Mvar] = decompose( M );
         
-        % Calculate localization weights
+        % Spatial localization weights
+        [weights, yloc] = spatialLocalization( siteCoord, stateCoord, R, scale );
+        
+        % Redirect of old method
         [weights, yloc] = localizationWeights( siteCoord, stateCoord, R, scale);
         
         % Error check Ye and R generation on the fly without crashing the analysis
