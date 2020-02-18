@@ -1,5 +1,7 @@
 function[weights] = gaspariCohn( dist, R, scale )
-% Uses a gaspariCohn polynomial to determine localization weights
+% Uses a gaspariCohn 5th order polynomial to determine localization weights
+%
+% [weights] = gaspariCohn( dist, R, scale )
 
 % Set defaults
 if ~exist('scale','var') || isempty(scale)
@@ -9,8 +11,12 @@ elseif strcmpi(scale, 'optimal')
 end
 
 % Error check
-if ~isscalar(scale) || scale<0 || scale>0.5
+if ~isscalar(scale) || ~isnumeric(scale) || scale<0 || scale>0.5
     error('The length scale must be a scalar on the interval [0, 0.5].');
+elseif ~isscalar(R) || ~isnumeric(R) || R<0
+    error('R must be a positive numeric scalar.');
+elseif ~isnumeric(dist) || any(dist(:)<0)
+    error('dist must be a numeric array with no negative values.');
 end
 
 % Get the length scale and covariance localization radius. 
