@@ -14,49 +14,66 @@ while exist( tempfile, 'file' )
     tempfile = [tempfile, '.tmp']; %#ok<AGROW>
 end
 
-% Test that the file is actually a matfile.
+% Test that the file is actually a matfile and not already v7.3
 try
     m = matfile( filename );
 catch
     error('File %s may not actually be a .mat file.', filename);
 end
+if m.Properties.SupportsPartialAccess
+    error('File %s is already v7.3', filename);
+end
 
 % Get data fields, check for naming conflicts
-fields = fields( m );
-if any( ismember( fields, ["m","tempfile","f","fields","load","fullfile","error"] ) )
+fieldNames = string( fields( m ) );
+fieldNames(1) = [];
+if any( ismember( fieldNames, ["m","tempfile","f","fields","load","fullfile","error"] ) )
+    error('File %s contains variables that conflict with named variables in this function. You will need to resave it manually.', filename );
+end
+
+% Check for matfile naming conflict. Temporarily disable warning message.
+id = 'MATLAB:load:variableNotFound';
+w = warning('query', id);
+warning('off', id);
+try
+    badProp = load( fullfile, 'Properties' );
+    warning(w.state, id);
+catch
+    warning(w.state, id);
+end
+if ~isempty(fields(badProp))
     error('File %s contains variables that conflict with named variables in this function. You will need to resave it manually.', filename );
 end
 
 % Attempt to load all the data at once. 
 fullLoad = true;
 try
-    load( fullfile, '-mat', fields );
+    load( fullfile, '-mat', fieldNames{:} );
 catch
     fullLoad = false;
 end
     
 % Save all the data at once
 if fullLoad
-    save( tempFile, '-mat', '-v7.3', fields{:} );
+    save( tempfile, '-mat', '-v7.3', fieldNames{:} );
 
 % Save variables iteratively
 else
-    m = matfile( tempFile );
-    for f = 1:numel(fields)
+    m = matfile( tempfile );
+    for f = 1:numel(fieldNames)
         
         % Try to load each variable in full
         try
-            load( fullfile, '-mat', fields{f} );
+            load( fullfile, '-mat', fieldNames{f} );
         catch
-            error('Variable %s is too large to load into memory.', fields{f} );
+            error('Variable %s is too large to load into memory.', fieldNames{f} );
         end
-        m.(fields{f}) = fields{f};
+        m.(fieldNames{f}) = fieldNames{f};
     end
 end
 
 % Delete the old file and rename
 delete( fullfile );
 movefile( tempfile, fullfile );
-
 
 end        
