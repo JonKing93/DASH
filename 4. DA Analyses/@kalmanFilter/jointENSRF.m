@@ -1,7 +1,7 @@
-function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, reconstruct )
+function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, percentiles, reconstruct )
 %% Implements an ensemble square root kalman filter updating observations jointly
 %
-% [output] = dash.jointENSRF( M, D, R, F, w, yloc, meanOnly, reconstruct )
+% [output] = dash.jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, percentiles, reconstruct )
 %
 % ----- Inputs -----
 %
@@ -22,6 +22,9 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, reconstr
 %
 % fullDevs: Whether to return full ensemble deviations. Scalar logical
 %
+% percentiles: Which percentiles to return. A vector of values between 0
+%              and 100 (nPerc x 1)
+%
 % reconstruct: Logical vector indicating which state vector elements to
 %              reconstruct. (nState x 1)
 %
@@ -37,6 +40,8 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, reconstr
 %
 %   Adev - Updated ensemble deviations (nState x nEns x nTime)
 %
+%   Aperc - Percentiles of the updated ensemble. (nState x nPercentile x nTime)
+%
 %   Ye - Proxy estimates (nObs x nEns)
 %
 %   calibRatio - The calibration ratio. (nObs x nTime)
@@ -49,6 +54,7 @@ function[output] = jointENSRF( M, D, R, F, w, yloc, meanOnly, fullDevs, reconstr
 
 % Get sizes
 [nObs, nTime] = size(D);
+nPerc = numel( percentiles );
 nEns = size(M,2);
 
 % Preallocate PSM outputs and calibration ratio
@@ -74,6 +80,7 @@ if fullDevs
 elseif ~meanOnly
     Avar = NaN( nState, nTime );
 end
+Aperc = NaN( nState, nPerc, nTime );
 
 % Get (static) Kalman numerator. Clear M for space
 [Mmean, Mdev] = dash.decompose( M );
@@ -92,13 +99,20 @@ for t = 1:nTime
     Amean(:,t) = Mmean + K * ( D(obs,t) - Ymean(obs) );    
     calibRatio( obs, t ) = abs( D(obs,t) - Ymean(obs) ).^2 ./ ( diag(Kdenom) );
 
-    % Optionally update the deviations / variance
+    % Optionally update the deviations / variance / percentiles
     if ~meanOnly
         Ka = kalmanFilter.jointKalman( 'Ka', Knum(:,obs), Kdenom, R(obs,t) );
         if fullDevs
             Adev(:,:,t) = Mdev - Ka * Ydev(obs,:);
-        else
+            if nPerc > 0
+                Aperc(:,:,t) = Amean(:,t) + prctile( Adev(:,:,t), percentiles, 2 );
+            end
+        elseif nPerc == 0
             Avar(:,t) = sum(   (Mdev - Ka * Ydev(obs,:)).^2, 2) ./ (nEns-1);
+        else
+            Adev = Mdev - Ka * Ydev(obs,:);
+            Avar(:,t) = sum( Adev.^2, 2 ) ./ (nEns-1);
+            Aperc(:,:,t) = Amean(:,t) + prctile( Adev, percentiles, 2 );
         end
     end
                     
@@ -116,6 +130,10 @@ if fullDevs
     output.Amean = permute( Amean, [1 3 2] );
 elseif ~meanOnly
     output.Avar = Avar;
+end
+if nPerc > 0
+    output.settings.percentiles = percentiles(:)';
+    output.Aperc = Aperc;
 end
 output.Ye = Ye;
 output.calibRatio = calibRatio;

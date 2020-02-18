@@ -1,4 +1,4 @@
-function[output] = serialENSRF( M, D, R, F, w, fullDevs )
+function[output] = serialENSRF( M, D, R, F, w, fullDevs, percentiles )
 %% Implements an ensemble square root kalman filter with serial updates.
 %
 % [output] = dash.serialENSRF( M, D, R, F, w )
@@ -16,6 +16,12 @@ function[output] = serialENSRF( M, D, R, F, w, fullDevs )
 %
 % w: Covariance localization weights. (nState x nObs)
 %
+% percentiles: A vector of values between 0 and 100 specifying which
+%              percentiles to return. (nPerc x 1)
+%
+% fullDevs: Scalar logical indicating whether to return full ensemble
+%           deviations.
+%
 % ----- Outputs -----
 %
 % output: A structure with the following fields
@@ -24,7 +30,11 @@ function[output] = serialENSRF( M, D, R, F, w, fullDevs )
 %
 %   Amean - The updated ensemble mean (nState x nTime)
 %
+%   Adev - Updated ensemble deviations (nState x nEns x nTime)
+%
 %   Avar - Updated ensemble variance (nState x nTime)
+%
+%   Aperc - Percentiles of the updated ensemble. (nState x nPerc x nTime)
 %
 %   Ye - Proxy estimates (nObs x nEns x nTime)
 %
@@ -39,6 +49,7 @@ function[output] = serialENSRF( M, D, R, F, w, fullDevs )
 % Get some sizes
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
+nPerc = numel( percentiles );
 
 % Decompose the initial ensemble. Clear the ensemble to free memory.
 [Mmean, Mdev] = dash.decompose(M);
@@ -51,6 +62,7 @@ if fullDevs
 else
     Avar = NaN( nState, nTime );
 end
+Aperc = NaN( nState, nPerc, nTime );
 Ye = NaN( nObs, nEns, nTime );
 sites = false( nObs, nTime );
 calibRatio = NaN( nObs, nTime );
@@ -90,6 +102,9 @@ for t = 1:nTime
     else
         Avar(:,t) = sum( Ad.^2, 2 ) ./ (nEns - 1);
     end
+    if nPerc > 0
+        Aperc(:,:,t) = Am + prctile( Ad, percentiles, 2 );
+    end
     progressbar(t/nTime);
 end
 
@@ -104,6 +119,10 @@ if fullDevs
     output.Amean = permute( Amean, [1 3 2] );
 else
     output.Avar = Avar;
+end
+if nPerc > 0
+    output.settings.percentiles = percentiles(:)';
+    output.Aperc = Aperc;
 end
 output.Ye = Ye;
 output.calibRatio = calibRatio;

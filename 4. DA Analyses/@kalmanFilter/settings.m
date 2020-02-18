@@ -24,6 +24,9 @@ function[] = settings( obj, varargin )
 % Specify whether to return full ensembles deviations, or just the
 % variance. Default is just the variance.
 %
+% obj.settings( ..., 'percentiles', percentiles )
+% Specify which percentiles of the ensemble to return
+%
 % obj.settings( ..., 'reconstruct', reconstruct )
 % Specify which state vector elements to reconstruct. Not recommended. See
 % "kalmanFilter.reconstructVars" instead.
@@ -50,14 +53,17 @@ function[] = settings( obj, varargin )
 % fullDevs: A scalar logical indicating whether to return full ensemble
 %           deviations. Default is false.
 %
+% percentiles: A vector of values between 0 and 100, specifying which
+%              ensemble percentiles to return.
+%
 % reconstruct: A logical vector specifying which state vector elements to
 %              reconstruct. (nState x 1)
 
 % Parse inputs
-[type, weights, inflate, append, meanOnly, fullDevs, recon] = parseInputs( varargin, ...
-    {'type','localize','inflate','append','meanOnly','returnDevs','reconstruct'}, ...
-    {obj.type, obj.localize, obj.inflate, obj.append, obj.meanOnly, obj.fullDevs, obj.reconstruct}, ...
-    {[],[],[],[],[],[],[]} );
+[type, weights, inflate, append, meanOnly, fullDevs, percentiles, recon] = parseInputs( varargin, ...
+    {'type','localize','inflate','append','meanOnly','returnDevs','percentiles','reconstruct'}, ...
+    {obj.type, obj.localize, obj.inflate, obj.append, obj.meanOnly, obj.fullDevs, obj.percentiles, obj.reconstruct}, ...
+    {[],[],[],[],[],[],[],[]} );
 
 % Error checking
 if ~isstrflag(type)
@@ -128,6 +134,15 @@ if ~isempty(weights)
     end
 end
 
+% Percentiles
+if ~isempty( percentiles )
+    if meanOnly
+        error('Cannot calculate ensemble percentiles when only updating the ensemble mean.');
+    elseif ~isnumeric(percentiles) || ~isvector(percentiles) || any(percentiles<0) || any(percentiles>100) || any(isnan(percentiles)) 
+        error('percentiles must be a vector of numeric values between 0 and 100 that do not contain NaN values.');
+    end
+end
+
 % Save values
 obj.type = type;
 obj.localize = weights;
@@ -136,6 +151,7 @@ obj.append = append;
 obj.meanOnly = meanOnly;
 obj.fullDevs = fullDevs;
 obj.reconstruct = reconstruct;
+obj.percentiles = percentiles;
 obj.reconH = reconH;
 
 end
