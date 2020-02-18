@@ -49,6 +49,9 @@ classdef (Abstract) dash < handle
         % Breaks an ensemble into mean and devations. Also variance.
         [Mmean, Mdev, Mvar] = decompose( M );
         
+        % Temporal localization weights
+        [weights, yloc] = temporalLocalization( siteTime, stateTime, R, scale );
+        
         % Spatial localization weights
         [weights, yloc] = spatialLocalization( siteCoord, stateCoord, R, scale );
         

@@ -41,6 +41,8 @@ function[weights, yloc] = spatialLocalization( siteCoord, stateCoord, R, scale)
 %           Ideally, site coordinates are the coordinates of the model grid
 %           nodes closest to the individual sites. However, when using
 %           multiple grids, the actual site coordinates are a good approximation.
+%
+% ensMeta: An ensemble metadata object.
 % 
 % stateCoord: A set of state vector coordinates. A two column matrix. First
 %     column is latitude, second is longitude. Supports both 0-360 and
@@ -78,6 +80,9 @@ function[weights, yloc] = spatialLocalization( siteCoord, stateCoord, R, scale)
 % Y localization weights by Jonathan King
 
 % Get defaults
+if ~exist('scale','var')
+    scale = [];
+end
 if isa(stateCoord, 'ensembleMetadata')
     if ~isscalar(stateCoord)
         error('ensMeta must be a scalar ensembleMetadata object.');
