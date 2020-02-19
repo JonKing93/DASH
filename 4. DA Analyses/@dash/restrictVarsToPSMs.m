@@ -72,8 +72,8 @@ newH = allH( ~ismember(allH, varH) | ismember(allH, psmH) );
 M = M(newH, :);
 last = 0;
 for k = 1:numel(ensMeta.varName)
-    nIndex = sum( ismember(ensMeta.varIndices(k), newH) );
-    ensMeta.varLimit = [last+1, last+nIndex];
+    nIndex = sum( ismember(ensMeta.varIndices(ensMeta.varName(k)), newH) );
+    ensMeta.varLimit(k,:) = [last+1, last+nIndex];
     if ismember(k,v)
         ensMeta.noRegrid(k) = true;
     end

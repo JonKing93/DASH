@@ -43,6 +43,10 @@ elseif ~isscalar(keepSingleton) || ~islogical(keepSingleton)
 end
 v = ensMeta.varCheck(varName);
 
+if ensMeta.noRegrid(v)
+    error('This variable was restricted to PSM indices and cannot be regridded.');
+end
+
 % Get the metadata
 meta = ensMeta.design.varMetadata;
 meta = meta.(varName);
