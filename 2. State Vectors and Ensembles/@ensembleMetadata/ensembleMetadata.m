@@ -21,7 +21,7 @@ classdef ensembleMetadata
     % values must be set by the constructor and looked up elsewhere.
     properties (SetAccess = private)
         varName     % Variable name
-        varLimit     % Index limits in state vector
+%         varLimit     % Index limits in state vector
         varSize     % Size of gridded data for each variable
         stateMeta     % Metadata for each state element
         ensMeta      % Metadata for each ensemble member
@@ -29,6 +29,13 @@ classdef ensembleMetadata
         design      % The stateDesign associated with the ensemble        
         ensSize     % The number of state elements and members
     end
+    
+    % Prototype props
+    properties
+        noRegrid;
+        varLimit;
+    end
+    
         
     % Constructor block
     methods
@@ -72,6 +79,8 @@ classdef ensembleMetadata
             obj.varName = obj.design.varName;
             [obj.varLimit, obj.varSize] = obj.design.varIndices;
             [obj.stateMeta, obj.ensMeta] = obj.design.varMetadata;
+            
+            obj.noRegrid = false( numel(obj.varName), 1 );
             
             % Get the size of the ensemble
             obj.ensSize = obj.design.ensembleSize;
