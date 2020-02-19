@@ -62,7 +62,7 @@ end
 allH = (1:nState)';
 varH = [];
 for k = 1:numel(vars)
-    varH = [varH; ensMeta.varIndices( v(k) )]; %#ok<AGROW>
+    varH = [varH; ensMeta.varIndices( vars(k) )]; %#ok<AGROW>
 end
 
 % Remove all indices for specified variables not in PSMs
