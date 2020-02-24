@@ -15,8 +15,9 @@ classdef ensemble < handle
 %   load - Loads desired ensemble members.
 %   add - Adds additional ensemble members to the stateDesign.
 %   useVars - Only load specific variables
+%   useVarsForPSMs - Only load the elements of specified variables needed
+%                    to run PSMs
 %   useMembers - Only load specific ensemble members
-%   loadMetadata - Return the metadata for loaded variables and ensemble members
 properties (SetAccess = private)
     file;              % The .ens file associated with the ensemble
     metadata;          % Ensemble metadata
@@ -31,6 +32,7 @@ properties (SetAccess = private)
     % Load specifications
     loadVars;              % Which variables to load
     loadMembers;           % Which ensemble members to load
+    psmElements;           % Which elements are needed for PSMs
 end
 
 % Constructor
@@ -83,6 +85,7 @@ methods
         % By default, load everything
         obj.loadVars = obj.metadata.varName;
         obj.loadMembers = 1:obj.ensSize(2);
+        obj.psmElements = cell( numel(obj.metadata.varName) , 1 );
     end
 end
 
@@ -101,7 +104,16 @@ methods
     % Specifies which variables to load
     useVars( obj, vars );
     
-    % Returns the metadata for the loaded variables and ensemble members
+    % Specifies to only load elements required for PSMs for specified
+    % variables
+    useVarsForPSMs( obj, vars, F );
+    
+    % Reset the ensemble to loading everything
+    reset( obj );
+end
+
+% To be removed
+methods
     meta = loadMetadata( obj );
 end
 
