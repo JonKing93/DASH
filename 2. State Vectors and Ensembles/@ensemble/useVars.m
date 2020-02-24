@@ -14,6 +14,10 @@ if ~isstrlist(vars)
 end
 obj.metadata.varCheck(vars);
 
+% Update load parameters
 obj.loadVars = string(vars);
+
+% Update metadata
+obj.metadata.useVars( obj.loadVars );
 
 end
