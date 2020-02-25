@@ -11,7 +11,7 @@ if nNcdim < nGdim
     fullscs = fullscs(:,1:nNcdim);
 elseif nNcdim > nGdim
     nExtra = nNcdim - nGdim;
-    fullscs(:,end + (1:nExtra)) = 1;
+    fullscs(:, end+(1:nExtra)) = 1;
 end
 
 % Read from the netcdf file

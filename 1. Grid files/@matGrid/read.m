@@ -8,7 +8,7 @@ function[X] = read( obj, scs )
 nDim = size(fullscs,2);
 loadIndex = cell(nDim,1);
 for d = 1:nDim
-    loadIndex{d} = fullscs(1,d) : fullscs(3,d) : fullscs(1,d)+fullscs(3,d)*(fullscs(2,d)-1);
+    loadIndex{d} = scsIndices( fullscs(:,d) );
 end
 X = obj.m.(obj.varName)( loadIndex{:} );
 
