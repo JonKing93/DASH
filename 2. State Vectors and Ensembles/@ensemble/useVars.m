@@ -15,9 +15,9 @@ end
 obj.metadata.varCheck(vars);
 
 % Update load parameters
-obj.loadVars = string(vars);
+obj.loadVar = string(vars);
 
 % Update metadata
-obj.metadata.useVars( obj.loadVars );
+obj.metadata.useVars( obj.loadVar );
 
 end

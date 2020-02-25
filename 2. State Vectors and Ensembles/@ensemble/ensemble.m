@@ -25,14 +25,15 @@ properties (SetAccess = private)
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
     hasnan;            % Whether a variable in an ensemble member has NaN values
-    ensSize;           % The size of the full ensemble
+    ensSize;           % The size of the loaded ensemble
     random;            % Whether the ensemble is ordered or random
     design;            % The state design associated with the ensemble
     
     % Load specifications
-    loadVars;              % Which variables to load
-    loadMembers;           % Which ensemble members to load
-    psmElements;           % Which elements are needed for PSMs
+    loadMembers;       % Which ensemble members to load
+    loadVar;           % Which variables to load
+    psmVar;            % Whether a variable is only used to run PSMs
+    psmElements;       % Which indices to use for a psm variable
 end
 
 % Constructor
@@ -83,9 +84,11 @@ methods
         obj.metadata = ensembleMetadata( m.design );
 
         % By default, load everything
-        obj.loadVars = obj.metadata.varName;
+        nVar = numel( obj.metadata.varName );
         obj.loadMembers = 1:obj.ensSize(2);
-        obj.psmElements = cell( numel(obj.metadata.varName) , 1 );
+        obj.loadVar = true( nVar, 1 );
+        obj.psmVar = false( nVar, 1 );
+        obj.psmElements = cell( nVar, 1 );
     end
 end
 
