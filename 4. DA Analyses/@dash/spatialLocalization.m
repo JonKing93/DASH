@@ -102,7 +102,7 @@ wdist = haversine( siteCoord, stateCoord );
 ydist = haversine( siteCoord, siteCoord );
 
 % Use a Gaspari-Cohn polynomial to get the localization weights
-weights = gaspariCohn( wdist, R, scale );
+weights = gaspariCohn( wdist, R, scale )';
 yloc = gaspariCohn( ydist, R, scale );
 
 end
