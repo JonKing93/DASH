@@ -1,4 +1,11 @@
-# Prevent .mat files and .DS_Store (for mac users) from being accidentally uploaded.
+# Files that github should not upload
 
+# For mac users
 **.DS_Store
+
+# To prevent uploading giant data files
 **.mat
+**.nc
+
+# Matlab autosaves
+**.asv
