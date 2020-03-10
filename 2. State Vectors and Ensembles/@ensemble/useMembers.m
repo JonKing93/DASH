@@ -2,8 +2,7 @@ function[] = useMembers( obj, members )
 % Specify which ensemble members to load.
 %
 % obj.useMembers( members )
-% Specify which ensemble members to load. Ensemble members will be loaded
-% in the order specified by members.
+% Specify which ensemble members to load.
 %
 % obj.useMembers( 'all' )
 % Load all ensemble members
