@@ -27,11 +27,12 @@ removeVars = ensMeta.varName( ~vars );
 
 remove = find( ~ismember(ensMeta.varName, useVars) );
 [copy, loc] = ismember(useVars, obj.varName);
+copy = find(copy);
 copyVars = useVars(copy);
 
 % Update the metadata
 ensMeta.varName(remove) = [];
-ensMeta.varSize(remove) = [];
+ensMeta.varSize(remove,:) = [];
 ensMeta.stateMeta = rmfield( ensMeta.stateMeta, removeVars );
 ensMeta.ensMeta = rmfield( ensMeta.ensMeta, removeVars );
 
@@ -42,8 +43,8 @@ for v = 1:numel(copyVars)
 end
 
 % Recalculate limits and ensemble size
-ensMeta.varLimit(remove) = [];
-ensMeta.varLimit(copy,:) = obj.varLimit(copy,:);
+ensMeta.varLimit(remove,:) = [];
+ensMeta.varLimit(copy,:) = obj.varLimit(loc,:);
 lastIndex = cumsum( ensMeta.varLimit(:,2) - ensMeta.varLimit(:,1) + 1 );
 firstIndex = [1; lastIndex(1:end-1)-1];
 ensMeta.varLimit = [firstIndex, lastIndex];
