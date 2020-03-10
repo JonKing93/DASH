@@ -32,9 +32,7 @@ properties (SetAccess = private)
     
     % Load specifications
     loadMembers;       % Which ensemble members to load
-    loadVar;           % Which variables to load
-    psmVar;            % Whether a variable is only used to run PSMs
-    psmElements;       % Which indices to use for a psm variable
+    loadH;                 % Which state indices to load
 end
 
 % Constructor
@@ -86,11 +84,8 @@ methods
         obj.metadata = ensembleMetadata( m.design );
 
         % By default, load everything
-        nVar = numel( obj.metadata.varName );
         obj.loadMembers = 1:obj.ensSize(2);
-        obj.loadVar = true( nVar, 1 );
-        obj.psmVar = false( nVar, 1 );
-        obj.psmElements = cell( nVar, 1 );
+        obj.loadH = [];
     end
 end
 

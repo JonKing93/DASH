@@ -24,11 +24,22 @@ end
 allMeta = ensembleMetadata( obj.design );
 v = allMeta.varCheck(vars);
 
-% Update load parameters
-nVar = numel(allMeta.varName);
-obj.loadVar = ismember( 1:nVar, v );
+% Collect variable indices
+nVars = numel(v);
+indices = cell( nVars, 1 );
+for k = 1:nVars
+    indices{k} = allMeta.varIndices( allMeta.varName(v(k)) );
+end
+indices = cell2mat(indices);
+
+% Combine with any previously specified load indices. Update load
+% parameters
+varH = false( obj.ensSize(1), 1 );
+varH(indices) = true;
+obj.loadH = obj.loadH & varH;
 
 % Update metadata
-obj.updateMetadata( 'vars', obj.loadVar );
+obj.loadSize(1) = sum(obj.loadH);
+obj.updateMetadata;
 
 end

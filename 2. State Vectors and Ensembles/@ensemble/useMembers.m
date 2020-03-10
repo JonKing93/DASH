@@ -34,6 +34,7 @@ end
 obj.loadMembers = members(:)';
 
 % Update metadata
-obj.updateMetadata( 'members', members );
+obj.loadSize(2) = numel(members);
+obj.updateMetadata;
 
 end

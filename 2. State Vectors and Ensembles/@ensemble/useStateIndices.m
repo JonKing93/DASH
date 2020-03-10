@@ -24,9 +24,10 @@ if ~isvector(H) || ~islogical(H) || numel(H)~=nState
 end
 
 % Update load parameters
-obj.loadStateIndices = H;
+obj.loadH = H;
 
 % Update metadata
-obj.updateMetadata( 'state', H );
+obj.loadSize(2) = numel(members);
+obj.updateMetadata;
 
 end
