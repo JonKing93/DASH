@@ -29,7 +29,8 @@ classdef ensembleMetadata
         design      % The stateDesign associated with the ensemble        
         ensSize     % The number of state elements and members
         partialGrid  % Whether a variable has a complete grid
-        nEls        % The number of elements in partial grids
+        partialH     % Which elements to use in a partial grid
+        nEls         % Number of elements in partial grids
     end
     
         
@@ -79,6 +80,7 @@ classdef ensembleMetadata
             % Info for incomplete grids
             nVar = numel(obj.varName);
             obj.partialGrid = false(nVar,1);
+            obj.partialH = cell( nVar, 1 );
             obj.nEls = NaN( nVar, 1 );
             
             % Get the size of the ensemble

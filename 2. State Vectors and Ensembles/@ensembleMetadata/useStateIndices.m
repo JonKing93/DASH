@@ -33,19 +33,22 @@ for v = nVar:-1:1
     
     % The variable is in not in the state indices
     if ~any( varIndices )
-        ensMeta.varName(v) = [];
         ensMeta.varSize(v,:) = [];
         ensMeta.stateMeta = rmfield( ensMeta.stateMeta, ensMeta.varName(v) );
         ensMeta.ensMeta = rmfield( ensMeta.ensMeta, ensMeta.varName(v) );
         ensMeta.varLimit(v,:) = [];
         ensMeta.partialGrid(v) = [];
+        ensMeta.partialH(v) = [];
         ensMeta.nEls(v) = [];
+        ensMeta.varName(v) = [];
+
         
     % The variable is in the indices. Check for a partial grid
     else
         nEls = sum(varIndices);
         if nEls < prod(ensMeta.varSize(v,:))
             ensMeta.partialGrid(v) = true;
+            ensMeta.partialH{v} = ismember( ensMeta.varIndices(ensMeta.varName(v)), H );
             ensMeta.nEls(v) = nEls;
         end
     end
