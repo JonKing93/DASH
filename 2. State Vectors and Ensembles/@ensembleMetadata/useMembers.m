@@ -1,12 +1,16 @@
-function[ensMeta] = useMembers( obj, members )
+function[obj] = useMembers( obj, members )
 % Limits ensemble metadata to specific ensemble members.
 %
 % ensMeta = obj.useMembers( members )
 % Reduces the ensemble metadata for a specific set of ensemble members.
 %
-% ----- Inputs ----
+% ----- Inputs -----
 %
 % members: A vector of linear indices of ensemble members.
+%
+% ----- Outputs -----
+%
+% ensMeta: The reduced ensemble metadata
 
 % Error check
 if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>obj.ensSize(2))
