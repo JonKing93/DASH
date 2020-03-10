@@ -35,6 +35,6 @@ end
 obj.loadMembers = members(:)';
 
 % Update metadata
-obj.metadata.useMembers( obj.loadMembers );
+obj.updateMetadata( 'members', members );
 
 end
