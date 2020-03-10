@@ -12,9 +12,13 @@ function[obj] = useMembers( obj, members )
 %
 % ensMeta: The reduced ensemble metadata
 
+% Get the number of ensemble members
+siz = obj.design.ensembleSize;
+nEns = siz(2);
+
 % Error check
-if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>obj.ensSize(2))
-    error('members must be a vector of positive integers on the interval [1 %.f].', obj.ensSize(2) );
+if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>nEns)
+    error('members must be a vector of positive integers on the interval [1 %.f].', nEns );
 end
 
 % Update the metadata
