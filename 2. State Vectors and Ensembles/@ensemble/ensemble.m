@@ -25,7 +25,8 @@ properties (SetAccess = private)
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
     hasnan;            % Whether a variable in an ensemble member has NaN values
-    ensSize;           % The size of the loaded ensemble
+    ensSize;           % The size of saved ensemble
+    loadSize;          % The size of the loaded ensemble
     random;            % Whether the ensemble is ordered or random
     design;            % The state design associated with the ensemble
     
@@ -76,6 +77,7 @@ methods
         % Set the properties
         obj.random = m.random;
         obj.ensSize = m.ensSize;
+        obj.loadSize = m.ensSize;
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.design = m.design;

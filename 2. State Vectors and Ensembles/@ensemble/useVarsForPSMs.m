@@ -6,7 +6,7 @@ function[F] = useVarsForPSMs( obj, vars, F )
 % ----- Inputs -----
 %
 % vars: A list of variables that are only needed to run PSMs. A string,
-%       cellstring, or character row vector.
+%       vector, cellstring vector, or character row vector.
 %
 % F: A cell array of PSM objects with state indices.
 %
