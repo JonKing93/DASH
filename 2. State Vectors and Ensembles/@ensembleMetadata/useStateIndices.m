@@ -29,7 +29,7 @@ nVar = numel(ensMeta.varName);
 % Update the metadata for each variable
 H = find(H);
 for v = nVar:-1:1
-    varIndices = H>=ensMeta.varLim(v,1) & H<=ensMeta.varLim(v,2);
+    varIndices = H>=ensMeta.varLimit(v,1) & H<=ensMeta.varLimit(v,2);
     
     % The variable is in not in the state indices
     if ~any( varIndices )
@@ -38,6 +38,8 @@ for v = nVar:-1:1
         ensMeta.stateMeta = rmfield( ensMeta.stateMeta, ensMeta.varName(v) );
         ensMeta.ensMeta = rmfield( ensMeta.ensMeta, ensMeta.varName(v) );
         ensMeta.varLimit(v,:) = [];
+        ensMeta.partialGrid(v) = [];
+        ensMeta.nEls(v) = [];
         
     % The variable is in the indices. Check for a partial grid
     else
@@ -50,7 +52,9 @@ for v = nVar:-1:1
 end 
    
 % Recalculate limits and ensemble size
-lastIndex = cumsum( ensMeta.varLimit(:,2) - ensMeta.varLimit(:,1) + 1 );
+nEls = ensMeta.varLimit(:,2) - ensMeta.varLimit(:,1) + 1;
+nEls( ensMeta.partialGrid ) = ensMeta.nEls;
+lastIndex = cumsum( nEls );
 firstIndex = [1; lastIndex(1:end-1)-1];
 ensMeta.varLimit = [firstIndex, lastIndex];
 ensMeta.ensSize(1) = lastIndex(end);
