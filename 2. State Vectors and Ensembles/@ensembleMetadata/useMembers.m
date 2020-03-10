@@ -1,4 +1,4 @@
-function[] = useMembers( obj, members )
+function[ensMeta] = useMembers( obj, members )
 % Limits ensemble metadata to specific ensemble members.
 %
 % ensMeta = obj.useMembers( members )
