@@ -12,7 +12,7 @@ function[obj] = useMembers( obj, members )
 %
 % ensMeta: The reduced ensemble metadata
 
-% Get the number of ensemble members
+% Get the number of ensemble members in the original ensemble
 siz = obj.design.ensembleSize;
 nEns = siz(2);
 

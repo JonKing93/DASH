@@ -21,19 +21,15 @@ classdef ensembleMetadata
     % values must be set by the constructor and looked up elsewhere.
     properties (SetAccess = private)
         varName     % Variable name
-%         varLimit     % Index limits in state vector
+        varLimit     % Index limits in state vector
         varSize     % Size of gridded data for each variable
         stateMeta     % Metadata for each state element
         ensMeta      % Metadata for each ensemble member
         
         design      % The stateDesign associated with the ensemble        
         ensSize     % The number of state elements and members
-    end
-    
-    % Prototype props
-    properties
-        noRegrid;
-        varLimit;
+        partialGrid  % Whether a variable has a complete grid
+        nEls        % The number of elements in partial grids
     end
     
         
@@ -80,7 +76,10 @@ classdef ensembleMetadata
             [obj.varLimit, obj.varSize] = obj.design.varIndices;
             [obj.stateMeta, obj.ensMeta] = obj.design.varMetadata;
             
-            obj.noRegrid = false( numel(obj.varName), 1 );
+            % Info for incomplete grids
+            nVar = numel(obj.varName);
+            obj.partialGrid = false(nVar,1);
+            obj.nEls = NaN( nVar, 1 );
             
             % Get the size of the ensemble
             obj.ensSize = obj.design.ensembleSize;
