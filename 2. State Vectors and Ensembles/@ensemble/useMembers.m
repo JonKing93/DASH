@@ -29,6 +29,9 @@ elseif ~isnumeric(members) || ~isreal(members) || any(members<1) || any(mod(memb
 end
 
 % Update load parameters
+if islogical(members)
+    members = find(members);
+end
 obj.loadMembers = members(:)';
 
 % Update metadata
