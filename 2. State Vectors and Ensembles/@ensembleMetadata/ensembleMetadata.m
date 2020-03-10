@@ -1,4 +1,4 @@
-classdef ensembleMetadata
+classdef ensembleMetadata < handle
     % ensembleMetadata
     % Manages metadata for a state vector ensemble
     %   
@@ -100,7 +100,7 @@ classdef ensembleMetadata
         ensMeta = useVars( obj, vars );
         
         % Reduces to specified ensemble members
-        ensMeta = useMembers( obj, members );
+        useMembers( obj, members );
     end
     
     % Indexing
