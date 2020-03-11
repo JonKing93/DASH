@@ -36,12 +36,9 @@ end
 % If tripolar
 if hasmeta(3)
     
-    % Subindex the metadata for a complete grid
-    nEls = obj.varSize(v,3);
-    subDex = subdim( (1:nEls)', obj.varSize(v,3) );
-    
     % Get the metadata
-    latlon = obj.stateMeta.(obj.varName(v)).(tri)(subDex(:));
+    nEls = obj.varSize(v,3);
+    latlon = obj.stateMeta.(obj.varName(v)).(tri)(1:nEls,:,:);
     
     % Error check the metadata
     if ~ismatrix( latlon )
@@ -58,8 +55,8 @@ else
     subDex = subdim( (1:nEls)', obj.varSize(v, [1 2]) );
     
     % Get the metadata
-    lat = obj.stateMeta.(obj.varName(v)).(lat)(subDex(:,2));
-    lon = obj.stateMeta.(obj.varName(v)).(lon)(subDex(:,1));
+    lat = obj.stateMeta.(obj.varName(v)).(lat)(subDex(:,2),:,:);
+    lon = obj.stateMeta.(obj.varName(v)).(lon)(subDex(:,1),:,:);
     
     % Error check
     if ~ismatrix(lat)
