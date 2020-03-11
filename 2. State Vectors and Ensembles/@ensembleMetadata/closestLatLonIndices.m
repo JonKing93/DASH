@@ -113,17 +113,17 @@ for var = 1:numel(varNames)
         
     % On a partial grid, cycle through the subsearches.
     else
-        nEls = numel(dist);
+        nEls = size(dist,2);
         for s = 1:nComb
             
-            % Get the linear indices of the subgrid.
+            % Get the linear indices of the subsearch sequence.
             sub = ones(1, numel(dimID));
             sub(searchDim) = subSearch(s,:);
             sub = num2cell(sub);
             ind = sub2ind( obj.varSize(v,:), sub{:}) + (0:nEls-1);
             
-            % Use the partialH to reduce the distances. Find the minimum
-            % and get the H index
+            % Use the partialH for the sequence to reduce the distances. 
+            % Find the minimum and get the H index
             partial = obj.partialH{v}(ind);
             seqdist = dist(:, partial);
             [~, site] = min( seqdist, [], 2 );           
