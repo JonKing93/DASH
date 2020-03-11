@@ -1,4 +1,4 @@
-function[F, varargout] = restrictVarsToPSMs( vars, F, meta, M )
+function[F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
 %
 % [F, ens] = restrictVarsToPSMs( vars, F, ens )
 %
@@ -7,12 +7,12 @@ function[F, varargout] = restrictVarsToPSMs( vars, F, meta, M )
 % [F, ensMeta, M] = restrictVarsToPSMs( vars, F, ensMeta, M )
 
 % Parse inputs
-if isa(meta, 'ensemble')
-    if ~isscalar(meta)
+if isa(ensMeta, 'ensemble')
+    if ~isscalar(ensMeta)
         error('ens must be a scalar ensemble object.');
     else
-        ens = meta;
-        meta = ens.metadata;
+        ens = ensMeta;
+        ensMeta = ens.metadata;
     end
 end
 
@@ -22,16 +22,16 @@ if exist('M','var')
 end
 
 % Error check
-if ~isscalar(meta) || ~isa(meta, 'ensembleMetadata')
+if ~isscalar(ensMeta) || ~isa(ensMeta, 'ensembleMetadata')
     error('meta must be a scalar ensembleMetadata object.');
 elseif ~isstrlist(vars)
     error('vars must be a string vector, cellstring vector, or character row vector.');
 elseif ~isvector(F) || ~iscell(F)
     error('F must be a cell vector.');
-elseif hasM && (~ismatrix(M) || ~isequal(size(M),meta.ensSize))
-    error('M must be a (%.f x %.f) matrix', meta.ensSize(1), meta.ensSize(2) );
+elseif hasM && (~ismatrix(M) || ~isequal(size(M),ensMeta.ensSize))
+    error('M must be a (%.f x %.f) matrix', ensMeta.ensSize(1), ensMeta.ensSize(2) );
 end
-v = unique( meta.varCheck(vars) );
+v = unique( ensMeta.varCheck(vars) );
 nVar = numel(v);
 
 % Run through the PSMs, collect H indices
@@ -69,8 +69,8 @@ if exist('ens','var')
     ens.useStateIndices( Hnew );
     varargout = {ens};
 else
-    meta = meta.useStateIndices( Hnew );
-    varargout = {meta};
+    ensMeta = ensMeta.useStateIndices( Hnew );
+    varargout = {ensMeta};
     if hasM
         M = M(Hnew,:);
         varargout = [varargout, {M}];

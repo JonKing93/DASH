@@ -75,7 +75,7 @@ classdef (Abstract) dash < handle
         
         % PROTOTYPE: restricts variables in an ensemble to sites essential
         % to run PSMs
-        [F, M, ensMeta] = restrictVarsToPSMs( vars, F, M, ensMeta )
+        [F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
         
     end 
     
