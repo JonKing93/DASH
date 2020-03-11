@@ -17,17 +17,24 @@ coord = NaN( obj.varLimit(end), 2 );
 % fails, or if they are spatial means.
 for v = 1:numel(obj.varName)
     try
-        latlon = obj.getLatLonMetadata( obj.varName(v) );
+        latlon = obj.getLatLonSequence( obj.varName(v) );
     catch
         warning('Unable to determine coordinates for variable %s.', obj.varName(v));
     end
     
-    nIndex = obj.varLimit(v,2) - obj.varLimit(v,1) + 1;
+    % Replicate over a complete grid
+    nIndex = prod(obj.varSize(v,:));
     nRep = nIndex ./ size(latlon,1);
+    latlon = repmat( latlon, [nRep,1] );
+    
+    % Reduce if a partial grid
+    if obj.partialGrid(v)
+        latlon = latlon(obj.partialH{v}, :);
+    end
     
     % Try concatenating the data
     try
-        coord( obj.varIndices(obj.varName(v)), : ) = repmat( latlon, [nRep, 1]);
+        coord( obj.varIndices(obj.varName(v)), : ) = latlon;
     catch
         warning('Cannot concatenate coordinates for variable %s.', obj.varName(v) );
     end
