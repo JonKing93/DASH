@@ -104,9 +104,8 @@ methods
     % Specifies which variables to load
     useVars( obj, vars );
     
-    % Specifies to only load elements required for PSMs for specified
-    % variables
-    useVarsForPSMs( obj, vars, F );
+    % Specify which state indices to load
+    useStateIndices( obj, H );
     
     % Reset the ensemble to loading everything
     reset( obj );
