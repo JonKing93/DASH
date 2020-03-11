@@ -20,7 +20,11 @@ nMembers = numel(members);
 cols = scsIndices( scsCol );
 
 % Get load / keep for rows
-[scsRow, keepRows] = loadKeep( find(obj.loadH) );
+loadH = obj.loadH;
+if isempty(loadH)
+    loadH = 1:obj.ensSize(1);
+end
+[scsRow, keepRows] = loadKeep( loadH );
 rows = scsIndices( scsRow );
 
 % Attempt to load the entire panel
