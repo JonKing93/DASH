@@ -121,7 +121,7 @@ classdef ensembleMetadata
         latlon = getLatLonSequence( obj, varName );
         
         % Time metadata for one sequence element
-        time = getTimeMetadata( obj, varName );
+        time = getTimeSequence( obj, varName );
         
         % Finds the closest state vector elements to a lat-lon coordinate
         H = closestLatLonIndices( obj, coords, varNames, varargin );
