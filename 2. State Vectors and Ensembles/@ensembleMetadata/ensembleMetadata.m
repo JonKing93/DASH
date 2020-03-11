@@ -118,7 +118,7 @@ classdef ensembleMetadata
     methods
         
         % Gets lat-lon metadata for one sequence element of a variable
-        latlon = getLatLonMetadata( obj, varName );
+        latlon = getLatLonSequence( obj, varName );
         
         % Time metadata for one sequence element
         time = getTimeMetadata( obj, varName );

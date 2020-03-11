@@ -14,6 +14,12 @@ function[H] = closestLatLonIndices( obj, coords, varNames, varargin )
 %   would find three state elements. The closest on the level with metadata
 %   equal to 100, the closest on level 200, and the closest on level 300.
 %
+% Similarly:
+%   >> H = obj.closestLatLonIndices( ..., 'lev', [100 200], 'run', [1 2] )
+%
+%   would find 4 state elements. The closest on level 100 in runs 1 and 2,
+%   and the closest on level 200 in runs 1 and 2.
+%
 % ----- Inputs -----
 %
 % coords: A set of lat-lon coordinates. First column is lat, 
