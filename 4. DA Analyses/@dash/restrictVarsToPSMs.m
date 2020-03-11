@@ -66,7 +66,7 @@ v = unique( ensMeta.varCheck(vars) );
 nVar = numel(v);
 
 % Run through the PSMs, collect H indices
-nPSM = numel(f);
+nPSM = numel(F);
 indices = cell(nPSM, 1);
 for s = 1:nPSM
     if ~isa(F{s}, 'PSM') || ~isscalar(F{s})
@@ -81,26 +81,27 @@ Hpsm = cell2mat(indices);
 % Get the set of all indices and restrictable indices
 indices = cell( nVar, 1 );
 for var = 1:nVar
-    indices{var} = obj.varIndices( obj.varName(v(var)) );
+    indices{var} = ensMeta.varIndices( ensMeta.varName(v(var)) );
 end
 Hvar = cell2mat(indices);
-Hall = (1:obj.ensSize(1))';
+Hall = (1:ensMeta.ensSize(1))';
 
 % Remove all indices not in PSMs
-Hnew = allH( ~ismember(Hall, Hvar) | ismember(Hall, Hpsm) );
+useH = ~ismember(Hall, Hvar) | ismember(Hall, Hpsm);
+Hnew = Hall( useH );
 
 % Update the H indices in the PSMs
 for s = 1:nPSM
-    [~, psmH] = ismember( F{s}.H, newH );
+    [~, psmH] = ismember( F{s}.H, Hnew );
     F{s}.setStateIndices( psmH );
 end
 
 % Update the ensemble / metadata / M
 if exist('ens','var')
-    ens.useStateIndices( Hnew );
+    ens.useStateIndices( useH );
     varargout = {ens};
 else
-    ensMeta = ensMeta.useStateIndices( Hnew );
+    ensMeta = ensMeta.useStateIndices( useH );
     varargout = {ensMeta};
     if hasM
         M = M(Hnew,:);
