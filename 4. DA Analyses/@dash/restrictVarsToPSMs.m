@@ -1,10 +1,41 @@
 function[F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
+%% Limits the state indices of specified variables to only include values required to run PSMs.
 %
 % [F, ens] = restrictVarsToPSMs( vars, F, ens )
+% Restricts what values will be loaded from the specified variables in an
+% ensemble object and updates PSM H indices.
 %
 % [F, ensMeta] = restrictVarsToPSMs( vars, F, ensMeta )
+% Updates an ensembleMetadata object and PSM H indices.
 %
 % [F, ensMeta, M] = restrictVarsToPSMs( vars, F, ensMeta, M )
+% Also updates a loaded ensemble (M) for the specified variables.
+%
+% ----- Inputs -----
+%
+% vars: A list of variables for which state elements should be limited to
+%       values required to run PSMs. A string vector, cellstring vector, or
+%       character row vector.
+%
+% F: A cell array of PSMs. (nSite x 1)
+%
+% ens: An ensemble object.
+%
+% ensMeta: An ensembleMetadata object
+%
+% M: An ensemble matrix (nState x nEns)
+%
+% ----- Outputs -----
+%
+% F: PSMs for which the state indices (H) have been adjusted to match the
+%    smaller, restricted ensemble. (nSite x 1)
+%
+% ens: An ensemble object that will only load the reduced ensemble
+%      (and corresponding reduced metadata).
+%
+% ensMeta: Ensemble metadata for the reduced ensemble.
+%
+% M: The reduced ensemble.
 
 % Parse inputs
 if isa(ensMeta, 'ensemble')
