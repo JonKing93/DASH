@@ -13,34 +13,35 @@ function[M, ensMeta] = load( obj )
 % Error check. Get the matfile
 ens = obj.checkEnsFile( obj.file );
 
-% If evenly spaced, only load desired values. Otherwise, load iteratively
-[members, order] = sort(obj.loadMembers);
-spacing = unique( diff( members ) );
+% Get load / keep for columns
+[members, order] = sort( obj.loadMembers );
 nMembers = numel(members);
+[scsCol, keepCols] = loadKeep( members );
+cols = scsIndices( scsCol );
 
-if nMembers==1 || numel(spacing) == 1
-    M = ens.M( :, members );
+% Get load / keep for rows
+[scsRow, keepRows] = loadKeep( find(obj.loadH) );
+rows = scsIndices( scsRow );
+
+% Attempt to load the entire panel
+try
+    M = ens.M(rows, cols);
+    M = M(:, keepCols);
     
-else
-    M = NaN( obj.ensSize(1), nMembers );
-    for m = 1:nMembers
-        M(:,m) = ens.M( :, members(m) );
+% If the panel is too big for memory, load ensemble members iteratively.
+catch
+    M = NaN( numel(rows), nMembers );
+    progressbar(0);
+    for k = 1:nMembers
+        M(:,m) = ens.M( rows, members(m) );
+        progressbar(m/nMembers);
     end
 end
 
-% Reorder the members from scs with a reverse sort
-M = M(:, sort(order) );
+% Remove unncessary rows. Reorder ensemble members from scs with reverse sort
+M = M(keepRows, sort(order));
 
-% Restrict to desired variables
-nVars = numel( obj.loadVars );
-indices = cell( nVars, 1 );
-for v = 1:nVars
-    indices{v} = obj.metadata.varIndices( obj.loadVars(v) );
-end
-indices = cell2mat(indices);
-M = M( indices, : );
-
-% Return ensemble metadata
-ensMeta = obj.loadMetadata;
+% Return metadata
+ensMeta = obj.metadata;
 
 end

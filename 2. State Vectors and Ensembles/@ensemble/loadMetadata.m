@@ -8,14 +8,6 @@ function[meta] = loadMetadata( obj )
 % meta: Metadata for the loaded variables and ensemble members
 
 % Warn of future removal
-warning('ensemble.loadMetadata is no longer necessary and will be removed in a future release. Please update your code to "ens.metadata"');
-
+warning('ensemble.loadMetadata is no longer necessary and will be removed in a future release. Please update your code to "ensemble.metadata"');
 meta = obj.metadata;
-if ~isempty( obj.loadVars )
-    meta = meta.useVars( obj.loadVars );
-end
-if ~isempty( obj.loadMembers )
-    meta = meta.useMembers( obj.loadMembers );
-end
-
 end
