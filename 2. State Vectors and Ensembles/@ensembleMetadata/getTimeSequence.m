@@ -2,7 +2,7 @@ function[time] = getTimeSequence( obj, varName )
 % Gets the time metadata for one sequence element of a variable in an
 % ensemble.
 %
-% time = obj.getTimeMetadata( varName )
+% time = obj.getTimeSequence( varName )
 
 % Dimension names, variable index
 [~,~,~,~,~,~,time] = getDimIDs;

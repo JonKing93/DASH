@@ -1,8 +1,8 @@
 function[latlon] = getLatLonSequence( obj, varName )
 %% Gets the set of lat-lon coordinates for one sequence element of a
-% variable in an ensemble. Cannot be used with partial grids.
+% variable in an ensemble.
 %
-% latlon = obj.getLatLonMetadata( varName )
+% latlon = obj.getLatLonSequence( varName )
 %
 % ----- Inputs -----
 %

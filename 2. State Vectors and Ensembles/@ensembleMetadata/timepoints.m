@@ -2,8 +2,6 @@ function[times] = timepoints( obj )
 % Gets time metadata for the entire ensemble
 %
 % times = obj.timepoints
-%
-% 
 
 % Find the first variable with non-NaN metadata
 [~,~,~,~,~,~,time] = getDimIDs;
@@ -26,14 +24,20 @@ end
 % Try to extract time points for each variable
 for v = 1:numel(obj.varName)
     try
-        times = obj.getTimeMetadata( obj.varName(v) );
+        times = obj.getTimeSequence( obj.varName(v) );
     catch
         warning('Unable to determine coordinates for variable %s.', obj.varName(v) );
     end
     
-    % Replicate over each sequence element
-    nIndex = obj.varLimit(v,2) - obj.varLimit(v,1) + 1;
+    % Replicate over a complete grid
+    nIndex = prod(obj.varSize(v,:));
     nRep = nIndex ./ size(times,1);
+    times = repmat( times, [nRep,1] );
+    
+    % Reduce if a partial grid
+    if obj.partialGrid(v)
+        times = times(obj.partialH{v});
+    end
     
     % Concatenate
     try
