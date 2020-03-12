@@ -43,6 +43,10 @@ elseif ~isscalar(keepSingleton) || ~islogical(keepSingleton)
 end
 v = ensMeta.varCheck(varName);
 
+if ensMeta.partialGrid(v)
+    error('Variable %s is not a complete grid thus cannot be regridded. (It may have been restricted to PSM indices).', varName);
+end
+
 % Get the metadata
 meta = ensMeta.design.varMetadata;
 meta = meta.(varName);
