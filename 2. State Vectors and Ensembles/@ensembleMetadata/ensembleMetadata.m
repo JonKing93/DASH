@@ -102,6 +102,9 @@ classdef ensembleMetadata
         
         % Reduces to specified ensemble members
         ensMeta = useMembers( obj, members );
+        
+        % Reduces to specific state indices
+        ensMeta = useStateIndices( obj, H );
     end
     
     % Indexing
@@ -112,6 +115,9 @@ classdef ensembleMetadata
         
         % Checks that variables are in the metadata. Returns variable index
         v = varCheck( obj, vars );
+        
+        % Which values should be kept from the original ensemble
+        H = useH( obj );
     end
     
     % Lat-lon lookup for PSM development
