@@ -73,6 +73,9 @@ classdef (Abstract) dash < handle
         % Error propagation for spatial means
         [E, sigma] = uncertainMean( X, Xvar, dim, weights );
         
+        % Restrict variables to values needed to run PSMs
+        restrictVarsToPSMs( vars, F, ens );
+        
     end 
     
 end
