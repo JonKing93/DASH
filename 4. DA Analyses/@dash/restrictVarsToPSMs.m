@@ -1,15 +1,11 @@
-function[F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
-%% Limits the state indices of specified variables to only include values required to run PSMs.
+function[] = restrictVarsToPSMs( vars, F, ens )
+%% For specified variables, only load values required to run PSMs.
 %
-% [F, ens] = restrictVarsToPSMs( vars, F, ens )
-% Restricts what values will be loaded from the specified variables in an
-% ensemble object and updates PSM H indices.
-%
-% [F, ensMeta] = restrictVarsToPSMs( vars, F, ensMeta )
-% Updates an ensembleMetadata object and PSM H indices.
-%
-% [F, ensMeta, M] = restrictVarsToPSMs( vars, F, ensMeta, M )
-% Also updates a loaded ensemble (M) for the specified variables.
+% dash.restrictVarsToPSMs( vars, F, ens )
+% For the specified variables, only values required to run PSMs will be
+% loaded from the ensemble. Updates the ensemble object and its metadata.
+% Also updates the PSM array so that state indices (H) point to the correct
+% locations in the reduced ensemble.
 %
 % ----- Inputs -----
 %
@@ -21,10 +17,6 @@ function[F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
 %
 % ens: An ensemble object.
 %
-% ensMeta: An ensembleMetadata object
-%
-% M: An ensemble matrix (nState x nEns)
-%
 % ----- Outputs -----
 %
 % F: PSMs for which the state indices (H) have been adjusted to match the
@@ -32,38 +24,18 @@ function[F, varargout] = restrictVarsToPSMs( vars, F, ensMeta, M )
 %
 % ens: An ensemble object that will only load the reduced ensemble
 %      (and corresponding reduced metadata).
-%
-% ensMeta: Ensemble metadata for the reduced ensemble.
-%
-% M: The reduced ensemble.
-
-% Parse inputs
-if isa(ensMeta, 'ensemble')
-    if ~isscalar(ensMeta)
-        error('ens must be a scalar ensemble object.');
-    else
-        ens = ensMeta;
-        ensMeta = ens.metadata;
-    end
-end
-
-hasM = false;
-if exist('M','var')
-    hasM = true;
-end
 
 % Error check
-if ~isscalar(ensMeta) || ~isa(ensMeta, 'ensembleMetadata')
-    error('meta must be a scalar ensembleMetadata object.');
+if ~isa('ens', 'ensemble') || ~isscalar(ens)
+    error('ens must be a scalar ensemble object.');
 elseif ~isstrlist(vars)
     error('vars must be a string vector, cellstring vector, or character row vector.');
 elseif ~isvector(F) || ~iscell(F)
     error('F must be a cell vector.');
-elseif hasM && (~ismatrix(M) || ~isequal(size(M),ensMeta.ensSize))
-    error('M must be a (%.f x %.f) matrix', ensMeta.ensSize(1), ensMeta.ensSize(2) );
 end
-v = unique( ensMeta.varCheck(vars) );
+v = unique( ens.metadata.varCheck(vars) );
 nVar = numel(v);
+ensMeta = ens.metadata;
 
 % Run through the PSMs, collect H indices
 nPSM = numel(F);
@@ -96,17 +68,7 @@ for s = 1:nPSM
     F{s}.setStateIndices( psmH );
 end
 
-% Update the ensemble / metadata / M
-if exist('ens','var')
-    ens.useStateIndices( useH );
-    varargout = {ens};
-else
-    ensMeta = ensMeta.useStateIndices( useH );
-    varargout = {ensMeta};
-    if hasM
-        M = M(Hnew,:);
-        varargout = [varargout, {M}];
-    end
-end
+% Update the ensemble
+ens.useStateIndices( useH );
 
 end
