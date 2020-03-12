@@ -162,15 +162,28 @@ Tglobe = dash.regrid( output.Amean, 'T_globe', partialMeta );
 
 % To limit certain variables to PSMs, use the "dash.restrictVarsToPSMs"
 % method. Inputs are the PSMs, and either an ensemble object, or its
-% metadata. For example:
+% metadata. For example, let's look at an intial ensemble and PSMs
 
-[Fa, meta, Msmall] = dash.restrictVarsToPSMs( ["T"], F, ens.metadata, M );
-% specifies that we only need to reconstruct the values in the "T" variable
-% that are used to run the PSMs. 
-%
-% As output we receive a reduced ensemble (Msmall), its associated
-% metadata, and adjusted PSMs (Fa). Investigating the state indices (H) of
-% the adjusted PSMs have been updated to match the new reduced ensemble.
+ens = ensemble('tutorial_sequence.ens');
+M1 = ens.load;
+size(M1)
+F{1}.H
+Y1 = dash.calculateYe( M1, F );
 
-% From here, we can proceed as normal with the kalman filter
-kf = kalmanFilter( Msmall, D, R, Fa );
+% We can see that M1 is fairly large, and F{1}.H points to certain state
+% vector indices. Let's say we actually only need to the parts of the "T"
+% variable that are used to run PSMs. We can do
+dash.restrictVarsToPSMs( ["T"], F, ens );
+
+% Now if we look at the ensemble and PSMs, we can see that M2 is smaller.
+M2 = ens.load;
+size(M2)
+
+% And that the PSMs state indices have been updated to reflect the reduced
+% ensemble
+F{1}.H
+
+% Furthermore, we can check that the Ye values are the same as would have
+% been calculated for the full ensemble.
+Y2 = dash.calculateYe( M2, F );
+isequal( Y1, Y2 )
