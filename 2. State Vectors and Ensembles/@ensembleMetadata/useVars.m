@@ -34,7 +34,7 @@ end
 % If there are any partial grids, this follows useStateIndices. Do the new
 % variables in full, as well as all previous indices.
 if any( obj.partialGrid )
-    Hnew = Hcurr & Hvar;
+    Hnew = Hcurr | Hvar;
     
 % But if all grids are complete, remove any unspecified variables
 else
