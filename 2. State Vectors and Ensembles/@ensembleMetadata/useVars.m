@@ -6,48 +6,42 @@ function[ensMeta] = useVars( obj, vars )
 %
 % ----- Inputs -----
 % 
-% vars: A logical vector indicating which variables are used.
+% vars: A list of variable names. A string vector, cellstring vector, or
+%       character row vector.
 %
 % ----- Outputs -----
 %
 % ensMeta: The reduced ensemble metadata
 
-% Get the number of variables
-nVar = numel( obj.design.var );
-
 % Error check
-if ~isvector(vars) || ~islogical(vars) || numel(vars)~=nVar
-    error('vars must be a logical vector with %.f elements', nVar);
+if ~isstrlist( vars )
+    error('vars must be a string vector, cellstring vector, or character row vector.');
 end
-
-% Determine which variables to remove, and which to copy current metadata
 ensMeta = ensembleMetadata( obj.design );
-useVars = ensMeta.varName(vars);
-removeVars = ensMeta.varName( ~vars );
+v = ensMeta.varCheck( vars );
+nVar = numel(v);
 
-remove = find( ~ismember(ensMeta.varName, useVars) );
-[copy, loc] = ismember(useVars, obj.varName);
-copy = find(copy);
-copyVars = useVars(copy);
+% Get the state indices used in the current ensemble
+Hcurr = obj.useH;
 
-% Update the metadata
-ensMeta.varName(remove) = [];
-ensMeta.varSize(remove,:) = [];
-ensMeta.stateMeta = rmfield( ensMeta.stateMeta, removeVars );
-ensMeta.ensMeta = rmfield( ensMeta.ensMeta, removeVars );
-
-ensMeta.varSize(copy,:) = obj.varSize(loc,:);
-for v = 1:numel(copyVars)
-    ensMeta.stateMeta.(copyVars(v)) = obj.stateMeta.(copyVars(v));
-    ensMeta.ensMeta.(copyVars(v)) = obj.ensMeta.(copyVars(v));
+% Get state indices of all specified variables
+Hvar = false( ensMeta.ensSize(1), 1 );
+for k = 1:nVar
+    varIndex = ensMeta.varIndices( ensMeta.varName(v(k)) );
+    Hvar(varIndex) = true;
 end
 
-% Recalculate limits and ensemble size
-ensMeta.varLimit(remove,:) = [];
-ensMeta.varLimit(copy,:) = obj.varLimit(loc,:);
-lastIndex = cumsum( ensMeta.varLimit(:,2) - ensMeta.varLimit(:,1) + 1 );
-firstIndex = [1; lastIndex(1:end-1)-1];
-ensMeta.varLimit = [firstIndex, lastIndex];
-ensMeta.ensSize(1) = lastIndex(end);
+% If there are any partial grids, this follows useStateIndices. Do the new
+% variables in full, as well as all previous indices.
+if any( obj.partialGrid )
+    Hnew = Hcurr & Hvar;
+    
+% But if all grids are complete, remove any unspecified variables
+else
+    Hnew = Hvar;
+end
+
+% Update
+ensMeta = obj.useStateIndices( Hnew );
 
 end
