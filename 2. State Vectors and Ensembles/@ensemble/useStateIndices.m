@@ -27,7 +27,7 @@ end
 obj.loadH = H;
 
 % Update metadata
-obj.loadSize(2) = numel(members);
+obj.loadSize(1) = sum(obj.loadH);
 obj.updateMetadata;
 
 end
