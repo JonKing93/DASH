@@ -147,3 +147,30 @@ w = dash.localizationWeights( [lats, lons], partialMeta, 10000 );
 % regrid the output.
 Tglobe = dash.regrid( output.Amean, 'T_globe', partialMeta );
 
+
+%% Limit variables to only the values needed to run PSMs
+
+% Sometimes, it is desirable to only reconstruct a few values from certain
+% variables. This is most common for proxy verification analyses. 
+%
+% For example: Say we have a large gridded ocean variable used to run
+% several PSMs. We want to do a proxy validation study, reconstructing
+% proxies from the posterior ensemble. We only need a few values from the
+% ocean field to run these PSMs, thus don't need to reconstruct the
+% *entire* ocean. However, we do need to reconstruct the values used to run
+% the PSMs.
+
+% To limit certain variables to PSMs, use the "dash.restrictVarsToPSMs"
+% method. Inputs are the PSMs, and either an ensemble object, or its
+% metadata. For example:
+
+[Fa, meta, Msmall] = dash.restrictVarsToPSMs( ["T"], F, ens.metadata, M );
+% specifies that we only need to reconstruct the values in the "T" variable
+% that are used to run the PSMs. 
+%
+% As output we receive a reduced ensemble (Msmall), its associated
+% metadata, and adjusted PSMs (Fa). Investigating the state indices (H) of
+% the adjusted PSMs have been updated to match the new reduced ensemble.
+
+% From here, we can proceed as normal with the kalman filter
+kf = kalmanFilter( Msmall, D, R, Fa );
