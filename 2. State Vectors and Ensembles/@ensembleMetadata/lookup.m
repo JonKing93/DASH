@@ -59,17 +59,33 @@ else
 end
 dims = obj.dimCheck( dims );
 
-% Adjust indices to just the variable and get ND subscript indices
-H = H - obj.varLimit(v,1) + 1;
-subDex = subdim( H, obj.varSize(v,:) );
+% For a partial grid, need to load all variable indices. But for a complete
+% grid, we can subscript the metadata
+loadH = H;
+if obj.partialGrid(v)
+    loadH = obj.varLimit(1) + (0:prod(obj.varSize(v,:))-1)'; 
+    H = H - obj.varLimit(v,1) + 1;
+end
 
-% Get the metadata structure at each index for each dimension. If there's
-% only a single dimension, just return the array
+% Adjust load H to just the variable and subscript
+loadH = loadH - obj.varLimit(v,1) + 1;
+subDex = subdim( loadH, obj.varSize(v,:) );
+
+% Get the metadata structure at each loaded index for each dimension
 meta = struct();
 for d = 1:numel(dims)
-    col = find( ismember(obj.design.var(v).dimID, dims(d)) );
-    meta.(dims(d)) = obj.stateMeta.(obj.varName(v)).(dims(d))( subDex(:,col), :, : );
+    col = ismember(obj.design.var(v).dimID, dims(d));
+    meta.(dims(d)) = obj.stateMeta.(obj.varName(v)).(dims(d))(subDex(:,col),:,:);
+    
+    % If on a partial grid, reduce by partialH. Then extract the requested
+    % indices
+    if obj.partialGrid(v)
+        meta.(dims(d)) = meta.(dims(d))(obj.partialH{v},:,:);
+        meta.(dims(d)) = meta.(dims(d))(H,:,:);
+    end
 end
+
+% If a single dimension was requested, return the array directly
 if numel(dims) == 1
     meta = meta.(dims);
 end

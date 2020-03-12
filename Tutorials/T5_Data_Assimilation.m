@@ -147,3 +147,43 @@ w = dash.localizationWeights( [lats, lons], partialMeta, 10000 );
 % regrid the output.
 Tglobe = dash.regrid( output.Amean, 'T_globe', partialMeta );
 
+
+%% Limit variables to only the values needed to run PSMs
+
+% Sometimes, it is desirable to only reconstruct a few values from certain
+% variables. This is most common for proxy verification analyses. 
+%
+% For example: Say we have a large gridded ocean variable used to run
+% several PSMs. We want to do a proxy validation study, reconstructing
+% proxies from the posterior ensemble. We only need a few values from the
+% ocean field to run these PSMs, thus don't need to reconstruct the
+% *entire* ocean. However, we do need to reconstruct the values used to run
+% the PSMs.
+
+% To limit certain variables to PSMs, use the "dash.restrictVarsToPSMs"
+% method. Inputs are the PSMs, and either an ensemble object, or its
+% metadata. For example, let's look at an intial ensemble and PSMs
+
+ens = ensemble('tutorial_sequence.ens');
+M1 = ens.load;
+size(M1)
+F{1}.H
+Y1 = dash.calculateYe( M1, F );
+
+% We can see that M1 is fairly large, and F{1}.H points to certain state
+% vector indices. Let's say we actually only need to the parts of the "T"
+% variable that are used to run PSMs. We can do
+dash.restrictVarsToPSMs( ["T"], F, ens );
+
+% Now if we look at the ensemble and PSMs, we can see that M2 is smaller.
+M2 = ens.load;
+size(M2)
+
+% And that the PSMs state indices have been updated to reflect the reduced
+% ensemble
+F{1}.H
+
+% Furthermore, we can check that the Ye values are the same as would have
+% been calculated for the full ensemble.
+Y2 = dash.calculateYe( M2, F );
+isequal( Y1, Y2 )

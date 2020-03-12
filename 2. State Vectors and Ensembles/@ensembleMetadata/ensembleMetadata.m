@@ -28,7 +28,11 @@ classdef ensembleMetadata
         
         design      % The stateDesign associated with the ensemble        
         ensSize     % The number of state elements and members
+        partialGrid  % Whether a variable has a complete grid
+        partialH     % Which elements to use in a partial grid
+        nEls         % Number of elements in partial grids
     end
+    
         
     % Constructor block
     methods
@@ -73,6 +77,12 @@ classdef ensembleMetadata
             [obj.varLimit, obj.varSize] = obj.design.varIndices;
             [obj.stateMeta, obj.ensMeta] = obj.design.varMetadata;
             
+            % Info for incomplete grids
+            nVar = numel(obj.varName);
+            obj.partialGrid = false(nVar,1);
+            obj.partialH = cell( nVar, 1 );
+            obj.nEls = NaN( nVar, 1 );
+            
             % Get the size of the ensemble
             obj.ensSize = obj.design.ensembleSize;
         end
@@ -92,6 +102,9 @@ classdef ensembleMetadata
         
         % Reduces to specified ensemble members
         ensMeta = useMembers( obj, members );
+        
+        % Reduces to specific state indices
+        ensMeta = useStateIndices( obj, H );
     end
     
     % Indexing
@@ -102,16 +115,19 @@ classdef ensembleMetadata
         
         % Checks that variables are in the metadata. Returns variable index
         v = varCheck( obj, vars );
+        
+        % Which values should be kept from the original ensemble
+        H = useH( obj );
     end
     
     % Lat-lon lookup for PSM development
     methods
         
         % Gets lat-lon metadata for one sequence element of a variable
-        latlon = getLatLonMetadata( obj, varName );
+        latlon = getLatLonSequence( obj, varName );
         
         % Time metadata for one sequence element
-        time = getTimeMetadata( obj, varName );
+        time = getTimeSequence( obj, varName );
         
         % Finds the closest state vector elements to a lat-lon coordinate
         H = closestLatLonIndices( obj, coords, varNames, varargin );

@@ -15,8 +15,9 @@ classdef ensemble < handle
 %   load - Loads desired ensemble members.
 %   add - Adds additional ensemble members to the stateDesign.
 %   useVars - Only load specific variables
+%   useVarsForPSMs - Only load the elements of specified variables needed
+%                    to run PSMs
 %   useMembers - Only load specific ensemble members
-%   loadMetadata - Return the metadata for loaded variables and ensemble members
 properties (SetAccess = private)
     file;              % The .ens file associated with the ensemble
     metadata;          % Ensemble metadata
@@ -24,13 +25,14 @@ properties (SetAccess = private)
     % Values also in the .ens file
     writenan;          % Whether NaN values have been written to file.
     hasnan;            % Whether a variable in an ensemble member has NaN values
-    ensSize;           % The size of the full ensemble
+    ensSize;           % The size of saved ensemble
+    loadSize;          % The size of the loaded ensemble
     random;            % Whether the ensemble is ordered or random
     design;            % The state design associated with the ensemble
     
     % Load specifications
-    loadVars;              % Which variables to load
-    loadMembers;           % Which ensemble members to load
+    loadMembers;       % Which ensemble members to load
+    loadH;                 % Which state indices to load
 end
 
 % Constructor
@@ -73,6 +75,7 @@ methods
         % Set the properties
         obj.random = m.random;
         obj.ensSize = m.ensSize;
+        obj.loadSize = m.ensSize;
         obj.hasnan = m.hasnan;
         obj.writenan = m.writenan;
         obj.design = m.design;
@@ -81,8 +84,8 @@ methods
         obj.metadata = ensembleMetadata( m.design );
 
         % By default, load everything
-        obj.loadVars = obj.metadata.varName;
         obj.loadMembers = 1:obj.ensSize(2);
+        obj.loadH = [];
     end
 end
 
@@ -101,7 +104,15 @@ methods
     % Specifies which variables to load
     useVars( obj, vars );
     
-    % Returns the metadata for the loaded variables and ensemble members
+    % Specify which state indices to load
+    useStateIndices( obj, H );
+    
+    % Reset the ensemble to loading everything
+    reset( obj );
+end
+
+% To be removed
+methods
     meta = loadMetadata( obj );
 end
 

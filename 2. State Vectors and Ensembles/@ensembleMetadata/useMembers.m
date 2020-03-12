@@ -1,24 +1,31 @@
-function[ensMeta] = useMembers( obj, members )
-% Returns ensemble metadata limited to specific ensemble members.
+function[obj] = useMembers( obj, members )
+% Limits ensemble metadata to specific ensemble members.
 %
 % ensMeta = obj.useMembers( members )
-% Reduces the ensemble metadata to specified ensemble members
+% Reduces the ensemble metadata for a specific set of ensemble members.
 %
-% ----- Inputs ----
+% ----- Inputs -----
 %
 % members: A vector of linear indices of ensemble members.
 %
-% ----- Outputs ----
+% ----- Outputs -----
 %
 % ensMeta: The reduced ensemble metadata
 
+% Get the number of ensemble members in the original ensemble
+siz = obj.design.ensembleSize;
+nEns = siz(2);
+
 % Error check
-if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>obj.ensSize(2))
-    error('members must be a vector of positive integers that do not exceed %.f.', obj.ensSize(2) );
+if ~isvector(members) || ~isnumeric(members) || ~isreal(members) || any(members<1) || any( mod(members,1)~=0 ) || any(members>nEns)
+    error('members must be a vector of positive integers on the interval [1 %.f].', nEns );
 end
 
-% Adjust the state design. Create new metadata
+% Update the metadata
+obj.ensSize(2) = numel(members);
+
 design = obj.design.limitMembers( members );
-ensMeta = ensembleMetadata( design );
+newMeta = ensembleMetadata( design );
+obj.ensMeta = newMeta.ensMeta;
 
 end
