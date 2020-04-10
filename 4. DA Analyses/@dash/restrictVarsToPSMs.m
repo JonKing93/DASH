@@ -26,7 +26,7 @@ function[] = restrictVarsToPSMs( vars, F, ens )
 %      (and corresponding reduced metadata).
 
 % Error check
-if ~isa('ens', 'ensemble') || ~isscalar(ens)
+if ~isa(ens, 'ensemble') || ~isscalar(ens)
     error('ens must be a scalar ensemble object.');
 elseif ~isstrlist(vars)
     error('vars must be a string vector, cellstring vector, or character row vector.');
