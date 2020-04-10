@@ -24,7 +24,7 @@ loadH = obj.loadH;
 if isempty(loadH)
     loadH = 1:obj.ensSize(1);
 end
-[scsRow, keepRows] = loadKeep( loadH );
+[scsRow, keepRows] = loadKeep( find(loadH) );
 rows = scsIndices( scsRow );
 
 % Attempt to load the entire panel

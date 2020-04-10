@@ -18,25 +18,29 @@ coord = NaN( obj.varLimit(end), 2 );
 for v = 1:numel(obj.varName)
     try
         latlon = obj.getLatLonSequence( obj.varName(v) );
+        
+        % Replicate over a complete grid
+        nIndex = prod(obj.varSize(v,:));
+        nRep = nIndex ./ size(latlon,1);
+        latlon = repmat( latlon, [nRep,1] );
+
+        % Reduce if a partial grid
+        if obj.partialGrid(v)
+            latlon = latlon(obj.partialH{v}, :);
+        end
+        trycat = true;
     catch
-        warning('Unable to determine coordinates for variable %s.', obj.varName(v));
-    end
-    
-    % Replicate over a complete grid
-    nIndex = prod(obj.varSize(v,:));
-    nRep = nIndex ./ size(latlon,1);
-    latlon = repmat( latlon, [nRep,1] );
-    
-    % Reduce if a partial grid
-    if obj.partialGrid(v)
-        latlon = latlon(obj.partialH{v}, :);
+        fprintf('Warning: Unable to determine coordinates for variable %s.\n', obj.varName(v));
+        trycat = false;
     end
     
     % Try concatenating the data
-    try
-        coord( obj.varIndices(obj.varName(v)), : ) = latlon;
-    catch
-        warning('Cannot concatenate coordinates for variable %s.', obj.varName(v) );
+    if trycat
+        try
+            coord( obj.varIndices(obj.varName(v)), : ) = latlon;
+        catch
+            fprintf('Warning: Cannot concatenate coordinates for variable %s.\n', obj.varName(v) );
+        end
     end
 end
 
