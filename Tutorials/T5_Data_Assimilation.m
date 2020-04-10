@@ -186,4 +186,8 @@ F{1}.H
 % Furthermore, we can check that the Ye values are the same as would have
 % been calculated for the full ensemble.
 Y2 = dash.calculateYe( M2, F );
-isequal( Y1, Y2 )
+isequal( Y1, Y2 );
+
+% Do get covariance localization weights for the new ensemble, proceed as
+% normal using
+w = dash.localizationWeigths( [last, lons], ens.metadata, 10000 );
