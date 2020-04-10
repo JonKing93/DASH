@@ -30,7 +30,7 @@ classdef ensembleMetadata
         ensSize     % The number of state elements and members
         partialGrid  % Whether a variable has a complete grid
         partialH     % Which elements to use in a partial grid
-        nEls         % Number of elements in partial grids
+        nEls         % Number of elements in partial grids (NaN for complete grids)
     end
     
         

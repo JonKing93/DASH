@@ -36,7 +36,10 @@ indices = cell2mat(indices);
 % parameters
 varH = false( obj.ensSize(1), 1 );
 varH(indices) = true;
-obj.loadH = obj.loadH & varH;
+if ~isempty(obj.loadH)
+    varH = varH | obj.loadH;
+end
+obj.loadH = varH;
 
 % Update metadata
 obj.loadSize(1) = sum(obj.loadH);

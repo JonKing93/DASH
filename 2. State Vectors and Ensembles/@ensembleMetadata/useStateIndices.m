@@ -56,9 +56,9 @@ end
    
 % Recalculate limits and ensemble size
 nEls = ensMeta.varLimit(:,2) - ensMeta.varLimit(:,1) + 1;
-nEls( ensMeta.partialGrid ) = ensMeta.nEls;
+nEls(ensMeta.partialGrid) = ensMeta.nEls(ensMeta.partialGrid);
 lastIndex = cumsum( nEls );
-firstIndex = [1; lastIndex(1:end-1)-1];
+firstIndex = [1; lastIndex(1:end-1)+1];
 ensMeta.varLimit = [firstIndex, lastIndex];
 ensMeta.ensSize(1) = lastIndex(end);
 
