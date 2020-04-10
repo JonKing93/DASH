@@ -119,6 +119,7 @@ ens.useVars( "PSL_globe" );
 M = ens.load; 
 
 %% Ensemble metadata
+ens = ensemble('tutorial.ens');
 
 % The field
 ens.metadata
@@ -157,13 +158,16 @@ ensMeta2 = ensembleMetadata( d );
 ensMeta3 = ensembleMetadata( 'tutorial.ens' );
 
 % If you specified specific ensemble members or variables, you can get the
-% metadata for just the loaded data use the method "loadMetadata"
+% metadata for just the loaded data by calling ens.metadata
 %
-% For example, the following command
-ensMeta = ens.loadMetadata;
+% For example, after calling
+ens.useMembers( [1 5 55] );
+ens.useVars( "PSL_globe" );
 
-% returns the metdata structure for the 5 member, global PSL ensemble we
-% loaded earlier.
+% The command
+ensMeta = ens.metadata;
+
+% returns the metdata structure for the 5 member, global PSL ensemble
 
 
 %% Existing ensembles

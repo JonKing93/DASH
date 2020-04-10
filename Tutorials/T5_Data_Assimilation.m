@@ -50,7 +50,7 @@ kf = kalmanFilter(M, D, R, F);
 %
 % Provide site coordinates,
 % the ensemble metadata object, and the localization radius in km.
-w = dash.localizationWeights( [lats, lons], ens.metadata, 10000);
+w = dash.spatialLocalization( [lats, lons], ens.metadata, 10000);
 
 % Great, let's adjust the settings
 kf.settings('type', 'serial', 'inflate', 3, 'localize', w );
@@ -138,7 +138,7 @@ size( output.Amean );
 % For example, this provides localization weights for the global
 % temperature reconstruction
 partialMeta = ens.metadata.useVars("T_globe");
-w = dash.localizationWeights( [lats, lons], partialMeta, 10000 );
+w = dash.spatialLocalization( [lats, lons], partialMeta, 10000 );
 
 % (note that the localization weights are now only 12 x 5, rather than the
 % previous 82956 x 5).
@@ -190,4 +190,4 @@ isequal( Y1, Y2 );
 
 % Do get covariance localization weights for the new ensemble, proceed as
 % normal using
-w = dash.localizationWeigths( [last, lons], ens.metadata, 10000 );
+w = dash.spatialLocalization( [lats, lons], ens.metadata, 10000 );

@@ -107,14 +107,19 @@ secondVariableName = "T";    % Only one variable in the tutorial ensemble has
                              % lat-lon data, so pretend this is a different variable   
 H1 = ens.metadata.closestLatLonIndices( coords, "T", 'time', months );
 H2 = ens.metadata.closestLatLonIndices( coords, secondVariableName, 'time', months );
-H = cat(1, H1, H2);
+Hcat = cat(1, H1, H2);
 
 for s = 1:nSites
-    F{s}.setStateIndices( H(:,s) );
+    F{s}.setStateIndices( Hcat(:,s) );
 end
 
 
 %% Unit correction
+
+% (Revert to the original state indices)
+for s = 1:nSites
+    F{s}.setStateIndices( H(:,s) );
+end
 
 % The ukPSM are written to process data in celsius. But model output is
 % often in Kelvin, so it may be necessary to convert units when passing
