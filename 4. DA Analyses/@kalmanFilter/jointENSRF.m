@@ -89,7 +89,7 @@ clearvars M;
 Knum = kalmanFilter.jointKalman( 'Knum', Mdev, Ydev, w );
 
 % Use the obs in each time step to compute the full kalman gain
-progressbar(0);
+% progressbar(0);
 for t = 1:nTime    
     sites(:,t) = sites(:,t) & ~isnan( D(:,t) );
     obs = sites(:,t);    
@@ -116,7 +116,7 @@ for t = 1:nTime
         end
     end
                     
-    progressbar(t/nTime);
+%     progressbar(t/nTime);
 end
 
 % Create the output structure
