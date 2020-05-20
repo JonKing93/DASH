@@ -1,0 +1,80 @@
+function[output] = ensrfUpdates( Mmean, Mdev, D, R, Ymean, Ydev, Knum, Ycov, ...
+             returnMean, returnVar, percentiles, returnDevs, showProgress )
+%% This loop actually updates the ensemble
+
+% Preallocate output
+[nObs, nTime] = size(D);
+[nState, nEns] = size(Mdev);
+[output, calculateMean, calculateDevs] = obj.preallocateENSRF( nObs, nTime, ...
+    nState, nEns, returnMean, returnVar, percentiles, returnDevs );
+
+% Get the unique sets of obs + R for the various time steps (each set has
+% a unique Kalman Gain)
+hasobs = ~isnan(D);
+obsR = [hasobs;R]';
+[~, iA, iC] = unique( obsR, 'rows' );
+nSet = numel(iA);
+
+% Progress bar
+if showProgress
+    progressbar(0);
+end
+
+% Get the time steps, obs, and R for each set
+for k = 1:nSet
+    t = (iC==k);
+    nt = numel(t);   % Numer of time steps in the set
+    obs = hasobs(:, t(1));
+    Rset = R(obs, t(1));
+    
+    % Get the Kalman Gain
+    Kdenom = obj.kalmanDenominator( Ycov(obs,obs), Rset );
+    K = Knum(:,obs) / Kdenom;
+    
+    % Update the mean
+    if calculateMean
+        Amean = obj.updateMean( Mmean, K, D(obs,t), Ymean(obs) );
+    end
+    
+    % Calibration ratio
+    output.calibRatio(obs,t) = (D(obs,t)-Ymean(obs)).^2 ./ diag(Kdenom);
+    
+    % Update the deviations
+    if calculateDevs
+        Ka = obj.kalmanAdjusted( Knum(:,obs), Kdenom, Rset );
+        Adev = obj.updateDeviations( Mdev, Ka, Ydev );
+    end
+    
+    % Save mean
+    if returnMean
+        output.Amean(:,t) = Amean;
+    end
+    
+    % Save deviations
+    if returnDevs
+        output.Adev(:,:,t) = repmat( Adev, [1,1,nt]);
+    end
+    
+    % Ensemble variance
+    if returnVar
+        Avar = sum(Adev.^2, 2) ./ (nEns-1);
+        output.Avar(:,t) = repmat( Avar, [1,nt] );
+    end
+    
+    % Ensemble percentiles
+    if returnPercs
+        Amean = permute(Amean, [1 3 2]);
+        Aperc = prctile( Adev, percentiles, 2 );
+        output.Aperc(:,:,t) = Amean + Aperc;
+    end
+    
+    % Posterior calculations
+    if posteriorCalcs
+        output.calcs(:,:,t) = posteriorCalculations( Amean, Adev, Q );
+    end
+    
+    % Progress bar
+    if showProgress
+        progressbar(k/nSet);
+    end
+end

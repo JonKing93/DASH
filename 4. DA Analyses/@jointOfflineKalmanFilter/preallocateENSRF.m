@@ -1,12 +1,12 @@
 function[output, calculateMean, calculateDevs] = preallocateENSRF( nObs, ...
-          nTime, nState, nEns, returnMean, returnVar, percentiles, returnDevs )
+          nTime, nState, nEns, nPercs, nCalcs, returnMean, returnVar, returnDevs )
 %% Preallocates output for the filter. Determines whether to update
 % ensemble means and deviations based on required output.
 
 % Initialize structure
 output = struct;
 
-% REcord which calculations are necessary
+% Record which calculations are necessary
 calculateMean = false;
 calculateDevs = false;
 
@@ -25,17 +25,23 @@ if returnVar
     calculateDevs = true;
 end
 
+% Ensemble deviations
+if returnDevs
+    output.Adev = NaN( nState, nEns, nTime );
+    calculateDevs = true;
+end
+
 % Ensemble percentiles
-if ~isempty(percentiles)
-    nPerc = numel(percentiles);
-    output.Aperc = NaN( nState, nPerc, nTime );
+if nPercs > 0
+    output.Aperc = NaN( nState, nPercs, nTime );
     calculateMean = true;
     calculateDevs = true;
 end
 
-% Ensemble deviations
-if returnDevs
-    output.Adev = NaN( nState, nEns, nTime );
+% Posterior calculations
+if nCalcs > 0
+    output.calcs = NaN( nCalcs, nEns, nTime );
+    calculateMean = true;
     calculateDevs = true;
 end
 

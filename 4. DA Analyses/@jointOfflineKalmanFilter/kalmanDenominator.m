@@ -1,5 +1,4 @@
-function[] = kalmanDenominator( Ydev, R, yloc )
-unbias = 1 / (size(Ydev,2)-1);
+function[Kdenom] = kalmanDenominator( Ycov, R )
 R = diag(R);
-Kdenom = unbias .* yloc .* (Ydev * Ydev') + R;
+Kdenom = Ycov + R;
 end
