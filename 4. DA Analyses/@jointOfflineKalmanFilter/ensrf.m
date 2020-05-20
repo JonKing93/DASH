@@ -30,6 +30,8 @@ function[output] = ensrf( M, D, R, Y, w, yloc, returnMean, returnVar, percentile
 % returnDevs: Whether to return the updated ensemble deviations as output.
 %             A scalar logical.
 %
+% showProgress: Whether to display a progress bar. Scalar logical.
+%
 % ----- Output -----
 %
 % output: A structure that may contain the following fields
