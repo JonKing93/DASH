@@ -9,7 +9,7 @@ function[output] = ensrfUpdates( Mmean, Mdev, D, R, Ymean, Ydev, ...
 [nState, nEns] = size(M);
 nPercs = numel(percentiles);
 nCalcs = numel(Q);
-[output, calculateMean, calculateDevs] = obj.preallocateENSRF( nObs, nTime, ...
+[output, calculateMean, calculateDevs] = preallocateENSRF( nObs, nTime, ...
     nState, nEns, nPercs, nCalcs, returnMean, returnVar, returnDevs );
 
 % Get the unique sets of obs + R for the various time steps (each set has
@@ -32,21 +32,21 @@ for k = 1:nSet
     Rset = R(obs, t(1));
     
     % Get the Kalman Gain
-    Kdenom = obj.kalmanDenominator( Ycov(obs,obs), Rset );
-    K = obj.kalmanGain( Knum(:,obs), Kdenom );
+    Kdenom = kalmanDenominator( Ycov(obs,obs), Rset );
+    K = kalmanGain( Knum(:,obs), Kdenom );
     
     % Update the mean
     if calculateMean
-        Amean = obj.updateMean( Mmean, K, D(obs,t), Ymean(obs) );
+        Amean = updateMean( Mmean, K, D(obs,t), Ymean(obs) );
     end
     
     % Calibration ratio
-    output.calibRatio(obs,t) = obj.calibrationRatio( D(obs,t), Ymean(obs), Kdenom );
+    output.calibRatio(obs,t) = calibrationRatio( D(obs,t), Ymean(obs), Kdenom );
     
     % Update the deviations
     if calculateDevs
-        Ka = obj.kalmanAdjusted( Knum(:,obs), Kdenom, Rset );
-        Adev = obj.updateDeviations( Mdev, Ka, Ydev );
+        Ka = kalmanAdjusted( Knum(:,obs), Kdenom, Rset );
+        Adev = updateDeviations( Mdev, Ka, Ydev );
     end
     
     % Save mean
