@@ -1,12 +1,16 @@
-function[output] = ensrfUpdates( Mmean, Mdev, D, R, Ymean, Ydev, Knum, Ycov, ...
-             returnMean, returnVar, percentiles, returnDevs, showProgress )
-%% This loop actually updates the ensemble
+function[output] = ensrfUpdates( Mmean, Mdev, D, R, Ymean, Ydev, ... 
+                                 Knum, Ycov, ...
+                                 Q, percentiles, ...
+                                 returnMean, returnVar, returnDevs, ...
+                                 showProgress )
 
-% Preallocate output
+% Preallocate output. Determine whether to calculate mean and deviations.
 [nObs, nTime] = size(D);
-[nState, nEns] = size(Mdev);
+[nState, nEns] = size(M);
+nPercs = numel(percentiles);
+nCalcs = numel(Q);
 [output, calculateMean, calculateDevs] = obj.preallocateENSRF( nObs, nTime, ...
-    nState, nEns, returnMean, returnVar, percentiles, returnDevs );
+    nState, nEns, nPercs, nCalcs, returnMean, returnVar, returnDevs );
 
 % Get the unique sets of obs + R for the various time steps (each set has
 % a unique Kalman Gain)
@@ -29,7 +33,7 @@ for k = 1:nSet
     
     % Get the Kalman Gain
     Kdenom = obj.kalmanDenominator( Ycov(obs,obs), Rset );
-    K = Knum(:,obs) / Kdenom;
+    K = obj.kalmanGain( Knum(:,obs), Kdenom );
     
     % Update the mean
     if calculateMean
@@ -37,7 +41,7 @@ for k = 1:nSet
     end
     
     % Calibration ratio
-    output.calibRatio(obs,t) = (D(obs,t)-Ymean(obs)).^2 ./ diag(Kdenom);
+    output.calibRatio(obs,t) = obj.calibrationRatio( D(obs,t), Ymean(obs), Kdenom );
     
     % Update the deviations
     if calculateDevs
@@ -50,15 +54,20 @@ for k = 1:nSet
         output.Amean(:,t) = Amean;
     end
     
+    % Save variance
+    if returnVar
+        Avar = sum(Adev.^2, 2) ./ (nEns-1);
+        output.Avar(:,t) = repmat( Avar, [1,nt] );
+    end
+    
     % Save deviations
     if returnDevs
         output.Adev(:,:,t) = repmat( Adev, [1,1,nt]);
     end
     
-    % Ensemble variance
-    if returnVar
-        Avar = sum(Adev.^2, 2) ./ (nEns-1);
-        output.Avar(:,t) = repmat( Avar, [1,nt] );
+    % Posterior calculations
+    if posteriorCalcs
+        output.calcs(:,:,t) = posteriorCalculations( Amean, Adev, Q );
     end
     
     % Ensemble percentiles
@@ -68,13 +77,10 @@ for k = 1:nSet
         output.Aperc(:,:,t) = Amean + Aperc;
     end
     
-    % Posterior calculations
-    if posteriorCalcs
-        output.calcs(:,:,t) = posteriorCalculations( Amean, Adev, Q );
-    end
-    
     % Progress bar
     if showProgress
         progressbar(k/nSet);
     end
+end
+
 end
