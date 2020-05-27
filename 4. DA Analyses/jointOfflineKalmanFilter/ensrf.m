@@ -1,5 +1,5 @@
 function[output] = ensrf( M, D, R, Y, ... % Basic inputs
-                          inflate, w, yloc, Knum_clim, Ycov_clim, ... % Covariance calculations
+                          inflate, w, yloc, Knum_clim, Ycov_clim, b,... % Covariance calculations
                           Q, percentiles, ... % Posterior calculations
                           returnMean, returnVar, returnDevs, ...  % Returned output
                           showProgress ) % Batch options

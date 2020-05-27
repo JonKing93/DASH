@@ -6,7 +6,7 @@ function[output] = ensrfUpdates( Mmean, Mdev, D, R, Ymean, Ydev, ...
 
 % Preallocate output. Determine whether to calculate mean and deviations.
 [nObs, nTime] = size(D);
-[nState, nEns] = size(M);
+[nState, nEns] = size(Mdev);
 nPercs = numel(percentiles);
 nCalcs = numel(Q);
 [output, calculateMean, calculateDevs] = preallocateENSRF( nObs, nTime, ...
@@ -26,7 +26,7 @@ end
 
 % Get the time steps, obs, and R for each set
 for k = 1:nSet
-    t = (iC==k);
+    t = find(iC==k);
     nt = numel(t);   % Numer of time steps in the set
     obs = hasobs(:, t(1));
     Rset = R(obs, t(1));
@@ -46,7 +46,7 @@ for k = 1:nSet
     % Update the deviations
     if calculateDevs
         Ka = kalmanAdjusted( Knum(:,obs), Kdenom, Rset );
-        Adev = updateDeviations( Mdev, Ka, Ydev );
+        Adev = updateDeviations( Mdev, Ka, Ydev(obs,:) );
     end
     
     % Save mean
@@ -66,12 +66,12 @@ for k = 1:nSet
     end
     
     % Posterior calculations
-    if posteriorCalcs
+    if ~isempty(Q)
         output.calcs(:,:,t) = posteriorCalculations( Amean, Adev, Q );
     end
     
     % Ensemble percentiles
-    if returnPercs
+    if ~isempty(percentiles)
         Amean = permute(Amean, [1 3 2]);
         Aperc = prctile( Adev, percentiles, 2 );
         output.Aperc(:,:,t) = Amean + Aperc;

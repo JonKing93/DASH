@@ -6,19 +6,14 @@ function[calcs] = posteriorCalculations( Amean, Adev, Q )
 % Q: nCalcs x 1
 
 % Preallocate the output
-nTime = size(Amean);
+nTime = size(Amean,2);
 nCalc = numel(Q);
-calcs = NaN( nCalc, nEns, nTime );
+calcs = NaN( nCalc, 2, nTime );
 
 % Get the indices for each calculator
 for s = 1:numel(Q)
     H = Q{s}.H;
-    
-    % Perform the calculations in each time step
-    for t = 1:nTime
-        Acalc = Amean(H,t) + Adev(H,:);
-        calcs(:,:,t) = Q{s}.run( Acalc );
-    end
+    calcs(s,:,:) = Q{s}.run( Amean(H,:), Adev(H,:) );
 end
 
 end

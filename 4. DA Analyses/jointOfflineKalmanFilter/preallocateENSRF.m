@@ -40,7 +40,7 @@ end
 
 % Posterior calculations
 if nCalcs > 0
-    output.calcs = NaN( nCalcs, nEns, nTime );
+    output.calcs = NaN( nCalcs, 2, nTime );
     calculateMean = true;
     calculateDevs = true;
 end
