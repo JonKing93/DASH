@@ -4,7 +4,7 @@ Begin liquid test
 
 {% highlight matlab %}
 for k = 1:4
-   runFunction(k);
+   runFunction(k);  # Here is a commented line
 end
 {% endhighlight %}
 
@@ -14,7 +14,7 @@ Begin backtick test
 
 ```matlab
 for k = 1:4
-    runFunction(k);
+    runFunction(k);   # Here is a commented line
 end
 ```
 
