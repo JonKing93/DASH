@@ -1,7 +1,6 @@
 classdef gridFile < handle
     % Provides methods for creating and editing .grid files. These are
-    % containers for various data sources, including NetCDF files, .mat
-    % files, and MATLAB workspace arrays.
+    % containers that organize data source, such as NetCDF and .mat files.
     %
     % gridFile Methods:
     %   defineMetadata - Creates a metadata structure for a .grid file, or gridded data source.
@@ -12,7 +11,7 @@ classdef gridFile < handle
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file.
     
     % ----- Written By -----
-    % Jonathan King, University of Arizona, 2019
+    % Jonathan King, University of Arizona, 2019-2020
     
     % Properties for the full gridfile
     properties

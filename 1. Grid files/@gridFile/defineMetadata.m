@@ -51,7 +51,7 @@ for v = 2:2:nargin
     value = varargin{v+1};
     
     % Types, matrix, NaN, Inf, NaT
-    if ~gridFile.ismetadatatype( value )
+    if ~gridfile.ismetadatatype( value )
         error('The %s metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime', varargin{v-1});
     elseif ~ismatrix( value )
         error('The %s metadata is not a matrix.', varargin{v-1} );
