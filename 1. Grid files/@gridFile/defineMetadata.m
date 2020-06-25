@@ -33,7 +33,7 @@ meta = struct();
 
 % Error check the user dimension names. Prevent duplicates.
 for v = 1:2:nargin-1
-    if ~isstrflag( varargin{v} )
+    if ~dash.isstrflag( varargin{v} )
         error('Input %0.f must be a string scalar or character row vector.', v);
     end
     
