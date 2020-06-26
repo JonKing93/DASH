@@ -9,9 +9,9 @@ if ~isscalar(meta) || ~isstruct(meta)
 end
 
 % Recognized field names
-metaFields = string( fields(meta) );
+metaFields = fields(meta);
 if any( ~ismember(metaFields, dash.dimensionNames) )
-    error('meta contains unrecognized fields. Allowed fields are dimension names (see dash.dimensionNames)');
+    error('meta contains unrecognized fields. Allowed fields are dimension names (see dash.dimensionNames).');
 end
 
 % Metadata values
