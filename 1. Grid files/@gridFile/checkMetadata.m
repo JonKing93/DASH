@@ -1,5 +1,5 @@
 function[] = checkMetadata( meta )
-%% Checks that metadata structure is valid. 
+%% Checks that a metadata structure is valid. 
 
 if ~isscalar(meta) || ~isstruct(meta)
     error('meta must be a scalar structure.');
