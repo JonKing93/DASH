@@ -1,29 +1,72 @@
-function[grid] = new( filename, meta, attributes )
-%% Initializes a new gridded data (.grid) file. This is a container object that
-% contains instructions on reading data from different sources, including:
-% NetCDF files, .mat Files, and Matlab workspace arrays.
+function[grid] = new( filename, meta, attributes, overwrite )
+%% Initializes a new .grid file. Each .grid file organizes a collection of
+% gridded data. The .grid file stores instructions on how to read data from
+% different sources (such as NetCDF and .mat files), and organizes metadata
+% for the values in each data source.
 %
-% gridFile.new( filename, meta )
-% Initializes a new .grid file with pre-defined dimensional metadata.
+% gridfile.new( filename, meta )
+% Initializes a new .grid file with dimensional metadata. If only a file
+% name is specified, creates the file in the current directory. Use a full
+% file path to create the .grid file in a custom directory. Adds a ".grid"
+% extension to the file name if it does not already have one.
 %
-% gridFile.new( filename, meta, attributes )
-% Includes any desired non-dimensional metadata.
+% gridfile.new( filename, meta, attributes )
+% Includes additional non-dimensional metadata in the .grid file.
+%
+% gridfile.new( filename, meta, attributes, overwrite )
+% Specify whether the method may overwrite a pre-existing file.
 %
 % ----- Inputs -----
 %
-% filename: The name of the .grid file
+% filename: The name of the .grid file. A string. Use only a file name to
+%    write to the current directory. Use a full path to write to a
+%    custom location.
 %
-% meta: A metadata structure defining the grid. See gridFile.defineMetadata
+% meta: Dimensional metadata for the grid. See gridfile.defineMetadata.
 %
-% attributes: A scalar structure whose fields contain any non-dimensional
-%             metadata of interest.
+% attributes: A scalar structure. Any fields are allowed, and should store
+%    non-dimensional metadata for the grid. If attributes=[], no
+%    non-dimensional metadata is included for the grid.
+%
+% overwrite: A scalar logical. Indicates whether the method may overwrite
+%    an existing file. Default is false.
 
-% Check the file extension and that it does not exist
-gridFile.fileCheck( filename, 'ext' );
-if exist(fullfile(pwd,filename),'file')
-    error('The file %s already exists!', filename );
+% Default values of unset inputs
+if ~exist('attributes','var') || isempty(attributes)
+    attributes = struct();
 end
-filename = fullfile(pwd,filename);
+if ~exist('overwrite','var') || isempty(overwrite)
+    overwrite = false;
+end
+
+% Error check
+if ~isstrflag(filename)
+    error('filename must be a string scalar or character row vector.');
+elseif ~isstruct(attributes) || ~isscalar(attributes)
+    error('attributes must be a scalar struct.');
+elseif ~islogical(overwrite) || ~isscalar(overwrite)
+    error('overwrite must be a scalar logical.');
+end
+gridfile.checkMetadataStructure( meta );
+
+% Ensure the file name has a .grid extension
+filename = char( filename );
+[path, name, ext] = fileparts( filename );
+if ~strcmpi(ext, '.grid')
+    filename = [filename, '.grid'];
+end
+
+% Get the full name for the file. If not overwriting, ensure that the file
+% does not already exist.
+if isempty(path)
+    filename = fullfile(pwd, filename);
+end
+if ~overwrite && exist(filename, 'file')
+    error('The file %s already exists.', filename );
+end
+
+
+
 
 % Check that the metadata structure is valid
 gridFile.checkMetadata( meta );

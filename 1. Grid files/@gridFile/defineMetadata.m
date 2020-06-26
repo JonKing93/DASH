@@ -1,20 +1,20 @@
 function[meta] = defineMetadata( varargin )
 % Creates a structure to define the metadata of a gridded dataset.
 %
-% meta = gridFile.defineMetadata( dim1, meta1, dim2, meta2, ..., dimN, metaN )
+% meta = gridfile.defineMetadata( dim1, meta1, dim2, meta2, ..., dimN, metaN )
 % Sets the metadata for specified data dimensions.
 %
 % ----- Inputs -----
 %
 % dimN: The name of the Nth dimension for which metadata is specified. A
-%       string. Names cannot be specified more than once. 
-%       See dash.dimensionNames for a list of recognized data dimension names.
+%    string. Names cannot be specified more than once. See 
+%    dash.dimensionNames for a list of recognized data dimension names.
 %
 % metaN: Metadata for the Nth specified dimension. A numeric, logical,
-%        char, string, cellstring, or datetime matrix. Each row is treated
-%        as the metadata for one dimension element. Each row must be unique
-%        and cannot contain NaN, Inf, or NaT elements. Cellstring metadata
-%        will be converted into the "string" type.
+%    char, string, cellstring, or datetime matrix. Each row is treated
+%    as the metadata for one dimension element. Each row must be unique
+%    and cannot contain NaN, Inf, or NaT elements. Cellstring metadata
+%    will be converted into the "string" type.
 %
 % ----- Outputs -----
 %
@@ -48,34 +48,12 @@ end
 
 % Error check the input metadata values
 for v = 2:2:nargin
-    value = varargin{v+1};
+    value = varargin{v};
+    gridfile.checkMetadataField( value );
     
-    % Types, matrix, NaN, Inf, NaT
-    if ~gridfile.ismetadatatype( value )
-        error('The %s metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime', varargin{v-1});
-    elseif ~ismatrix( value )
-        error('The %s metadata is not a matrix.', varargin{v-1} );
-    elseif isnumeric( value ) && any(isnan(value(:)))
-        error('The %s metadata contains NaN elements.', varargin{v-1} );
-    elseif isnumeric( value) && any(isinf(value(:)))
-        error('The %s metadata contains Inf elements.', varargin{v-1} );
-    elseif isdatetime(value) && any( isnat(value(:)) )
-        error('The %s metadata contains NaT elements.', varargin{v-1} );
-    end
-    
-    % Warn user if the metadata is a row vector. They probably meant to use
-    % a column vector.
+    % Warn user if metadata is a row vector. (They probably want a column)
     if isrow(value) && ~isscalar(value)
         warning('The %s metadata is a row vector and will be used for a single %s element.', varargin{v-1}, varargin{v-1});
-    end
-    
-    % Prevent duplicates. Need to convert cellstring to string to use
-    % unique with the rows option.
-    if iscellstring(value)
-        value = string(value);
-    end
-    if size(value,1) ~= size(unique(value,'rows'),1)
-        error('The %s metadata contains duplicate rows.', varargin{v-1});
     end
     
     % Add to the output metadata structure

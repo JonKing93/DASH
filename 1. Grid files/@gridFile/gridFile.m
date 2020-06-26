@@ -23,6 +23,10 @@ classdef gridFile < handle
         dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
     end
     
+    properties (Constant)
+        attributesName = 'attributes';
+    end
+    
 %     % File fields for data sources that are not actual properties of the grid object
 %         sourcePath;   % File path of a data source
 %         sourceFile;   % Just the file name
