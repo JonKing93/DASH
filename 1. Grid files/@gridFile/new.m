@@ -68,9 +68,6 @@ end
 
 
 
-% Check that the metadata structure is valid
-gridFile.checkMetadata( meta );
-
 % Error check attributes / set default
 if ~exist('attributes','var')
     attributes = [];
