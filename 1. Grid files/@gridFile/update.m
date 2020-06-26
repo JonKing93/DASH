@@ -16,7 +16,7 @@ try
     obj.metadata = grid.metadata;
     obj.dimLimit = grid.dimLimit;
     obj.nSource = grid.nSource;
-catch ME
+catch
     delete(obj);
     error('The grid file is not valid. It may have been modified externally or failed during a write operation. Deleteing the current gridFile object.');
 end

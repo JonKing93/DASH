@@ -5,7 +5,7 @@ classdef gridFile < handle
     % gridFile Methods:
     %   defineMetadata - Creates a metadata structure for a .grid file, or gridded data source.
     %   new - Creates a new .grid file.
-    %   addData - Adds data to a .grid file.
+    %   add - Adds data to a .grid file.
     %   meta - Returns the metadata for a .grid file.
     %   expand - Increases the size of a dimension in a .grid file
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file.
@@ -15,12 +15,12 @@ classdef gridFile < handle
     
     % Properties for the full gridfile
     properties
-        filepath; % The current file
-        dimOrder; % The internal dimensional order used by the .grid file
-        gridSize; % The total size of the gridded metadata.
+        file; % The name and path of the associated .grid file 
+        dims; % The dimensions recorded in the .grid file.
+        size; % The size of the gridded dataset organized by the .grid file.
         metadata; % The metadata along each dimension and data attributes
-        nSource;  % Number of data sources
-        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        sources;  % The names and paths of the data sources.
+        limits; % The index limits of each data source in each dimension (nDim x 2 x nSource)
     end
     
     properties (Constant)
@@ -44,8 +44,8 @@ classdef gridFile < handle
     
     % Constructor
     methods
-        function obj = gridFile( file )
-            obj.filepath = string( which(file) );
+        function obj = gridfile( file )
+            obj.filepath = string(which(file));
             obj.update;
         end
     end    

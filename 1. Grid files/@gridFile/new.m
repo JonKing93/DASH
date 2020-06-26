@@ -7,8 +7,9 @@ function[grid] = new( filename, meta, attributes, overwrite )
 % gridfile.new( filename, meta )
 % Initializes a new .grid file with dimensional metadata. If only a file
 % name is specified, creates the file in the current directory. Use a full
-% file path to create the .grid file in a custom directory. Adds a ".grid"
-% extension to the file name if it does not already have one.
+% file name (including the path) to create the .grid file in a custom
+% directory. Adds a ".grid" extension to the file name if it does not
+% already have one.
 %
 % gridfile.new( filename, meta, attributes )
 % Includes additional non-dimensional metadata in the .grid file.
@@ -40,7 +41,7 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 
 % Error check
-if ~isstrflag(filename)
+if ~dash.isstrflag(filename)
     error('filename must be a string scalar or character row vector.');
 elseif ~isstruct(attributes) || ~isscalar(attributes)
     error('attributes must be a scalar struct.');
@@ -51,7 +52,7 @@ gridfile.checkMetadataStructure( meta );
 
 % Ensure the file name has a .grid extension
 filename = char( filename );
-[path, name, ext] = fileparts( filename );
+[path, ~, ext] = fileparts( filename );
 if ~strcmpi(ext, '.grid')
     filename = [filename, '.grid'];
 end
@@ -65,58 +66,47 @@ if ~overwrite && exist(filename, 'file')
     error('The file %s already exists.', filename );
 end
 
+% Get all internal metadata names. Preallocate the grid size.
+dims = dash.dimensionNames;
+atts = gridfile.attributesName;
+nDim = numel(dims);
+gridSize = NaN(1,nDim);
 
-
-
-% Error check attributes / set default
-if ~exist('attributes','var')
-    attributes = [];
-elseif ~isstruct(attributes) || ~isscalar(attributes)
-    error('attributes must be a scalar struct.');
-end
-
-% Get the internal metadata structure. Include attributes. Give undefined
-% dimensions NaN metadata
-[dimOrder, attsName] = getDimIDs;
-nDim = numel(dimOrder);
+% Create the internal metadata structure. Use NaN as metadata for
+% dimensions with unspecified metadata. Record dimension sizes.
 metadata = struct();
-gridSize = NaN(1, nDim);
-
 for d = 1:nDim
-    if isfield( meta, dimOrder(d) )
-        metadata.( dimOrder(d) ) = meta.( dimOrder(d) );
-        gridSize(d) = size( meta.(dimOrder(d)), 1 );
+    if isfield(meta, dims(d))
+        metadata.(dims(d)) = meta.(dims(d));
+        gridSize(d) = size( meta.(dims(d)), 1 );
     else
-        metadata.( dimOrder(d) ) = NaN;
+        metadata.(dim(d)) = NaN;
         gridSize(d) = 1;
     end
 end
-if ~isempty( attributes )
-    metadata.(attsName) = attributes;
-end
-
+metadata.(atts) = attributes;
+        
 % Initialize the .grid file
 valid = true;
 nSource = 0;
 dimLimit = [];
-sourcePath = '';
-sourceFile = '';
-sourceVar = '';
-sourceDims = '';
-sourceOrder = '';
-sourceSize = [];
+file = '';
+type = '';
+var = '';
+dims = '';
+order = '';
 unmergedSize = [];
+mergedSize = [];
 merge = [];
 unmerge = [];
 counter = [];
 maxCounter = zeros(1,9);
-type = '';
-save( filename, '-mat', 'valid', 'dimOrder', 'gridSize', 'metadata', ...
+save( filename, '-mat', 'valid', 'dims', 'gridSize', 'metadata', ...
       'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
       'sourceOrder', 'sourceSize', 'unmergedSize', 'merge', 'unmerge', ...
       'counter', 'maxCounter', 'type' );
 
 % Return grid object as output
-grid = gridFile( filename );
+grid = gridfile( filename );
 
 end
