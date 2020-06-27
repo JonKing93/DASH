@@ -1,19 +1,16 @@
-function[] = addData( obj, type, file, var, dims, meta )
+function[] = add( obj, type, file, var, dims, meta )
 % Adds a data source to a .grid file.
 %
-% obj.add( 'nc', ncfile, var, dims, meta )
-% Adds values in a netCDF file to the .grid file. 
-%
-% obj.add( 'mat', matfile, var, dims, meta )
-% Adds values in a .mat file to the .grid file.
+% obj.add( type, file, var, dims, meta )
+% Adds values in a data file to the .grid file.
 %
 % ----- Inputs -----
 %
-% ncfile: The name of a netCDF file. A string. If only the file name is
-%    specified, the file must be on the active path. Use the full file name
-%    (including path) to add a file off the active path.
+% type: The type of data source. A string. 
+%    "nc": Use when the data source is a NetCDF file.
+%    "mat": Use when the data source is a .mat file.
 %
-% matfile: The name of a .mat file. A string. If only the file name is
+% file: The name of the data source file. A string. If only the file name is
 %    specified, the file must be on the active path. Use the full file name
 %    (including path) to add a file off the active path.
 %
@@ -22,49 +19,27 @@ function[] = addData( obj, type, file, var, dims, meta )
 % dims: The order of the dimensions of the variable in the source file. A
 %    string or cellstring vector.
 %
-% meta: A dimensional metadata structure for the data in the source file.
+% meta: The dimensional metadata structure for the data in the source file.
 %    See gridfile.defineMetadata.
 
-% Error check
-if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat"])
-    error('The first input must be either "nc" or "mat".');
-elseif ~dash.isstrflag(file)
-    error('The file name must be a string scalar or character row vector.');
-elseif ~dash.isstrflag(var)
-    error('The variable name must be a string scalar or character row vector.');
-elseif ~dash.isstrlist(dims)
-    error('dims must be a string vector or cellstring vector.');
+% Create the dataSource object. This will error check type, file, var, and
+% dims. It also has information on the size of the merged / unmerged data.
+source = dataSource.new(type, file, var, dims);
+
+% Check that the dimensions are all in the grid
+recognized = ismember(dims, obj.dims);
+if any(~recognized)
+    error('Element %.f in dims (%s) is not a dimension recognized by this gridfile. See <location>.', find(~recognized,1), dims(find(~recognized,1)) );
 end
+
 gridfile.checkMetadataStructure(meta);
 
-% Check that the source file exists. Get the full name.
-haspath = false;
-if ~isempty(fileparts(file))
-    haspath = true;
-end
-if haspath && ~exist(file,'file')
-    error('The file %s does not exist.', file);
-elseif ~haspath && ~exist(file,'file')
-    error('Could not find file %s. It may be misspelled or not on the active path.', file);
-end
-file = which(file);
 
-% Check that the dimensions are recognized. 
-ismem = ismember(dims, dash.dimensionNames);
-if any(~ismem)
-    error('Element %.f of dims is not a recognized dimension name. (see dash.dimensionNames)', find(~ismem,1));
-end
 
-% Notify user that duplicate dimensions will be merged.
-uniqueDims = unique(dims);
-for d = 1:numel(uniqueDims)
-    isdim = find(strcmp(dims, uniqueDims(d)));
-    if numel(isdim) > 1
-        fprintf('Dimensions %s have the same name and will be merged.\n', [sprintf('%.f, ',dim),sprintf('\b\b')] );
-    end
-end
 
-% 
+
+
+
         
 
     
@@ -129,9 +104,9 @@ for d = 1:nDims
         
         % Check the metadata is an exact, increasing sequence within the
         % grid metadata
-        [ismem, loc] = ismember( meta.(dims(d)), gridMeta.(dims(d)), 'rows' );
-        if any( ~ismem )
-            error('The %s metadata in row %.f does not match any %s metadata in file %s.', dims(d), find(~ismem,1), dims(d), file );
+        [recognized, loc] = ismember( meta.(dims(d)), gridMeta.(dims(d)), 'rows' );
+        if any( ~recognized )
+            error('The %s metadata in row %.f does not match any %s metadata in file %s.', dims(d), find(~recognized,1), dims(d), file );
         elseif size(meta.(dims(d)),1)>1 && issorted( loc, 'strictdescend' )
             error('The %s metadata is in the opposite order of file %s.', dims(d), file );
         elseif ~issorted( loc, 'strictascend' )

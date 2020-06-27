@@ -80,30 +80,20 @@ for d = 1:nDim
         metadata.(dims(d)) = meta.(dims(d));
         gridSize(d) = size( meta.(dims(d)), 1 );
     else
-        metadata.(dim(d)) = NaN;
+        metadata.(dims(d)) = NaN;
         gridSize(d) = 1;
     end
 end
 metadata.(atts) = attributes;
         
-% Initialize the .grid file
+% Create the initial .grid file.
 valid = true;       % A marker that the file is not corrupted
-nSource = 0;        % The number of data sources organized by the file
-dimLimit = [];      % The limit of each data source along each dimension (nDim x 2 x nSource)
-file = '';          % The full file name for each data source. Char vector
-type = '';          % The type of each data source (nc vs mat). Char vector
-var = '';           % The name of the variable in the data source. Char vector
-dims = '';          % The order of dimensions in the data source. Comma delimited char vector
-unmergedSize = [];  % The size of the original data grid in the source.
-mergedSize = [];    % The size of the data after merging dimensions
-merge = [];         % Records which dimensions should be merged
-unmerge = [];       % Records how to unmerge dimensions
-counter = [];       % The number of elements in the various data for the source
-maxCounter = zeros(1,9);
-save( filename, '-mat', 'valid', 'dims', 'gridSize', 'metadata', ...
-      'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
-      'sourceOrder', 'sourceSize', 'unmergedSize', 'merge', 'unmerge', ...
-      'counter', 'maxCounter', 'type' );
+% dims              % The internal dimension order in the .grid file
+% gridSize;         % The size of each dimension
+% metadata          % The metadata along each dimension (and also non-dimensional attributes)
+source = {};        % The data sources organized by the .grid file.
+dimLimit = [];      % The index limits of each data source along each dimension (nDim x 2 x nSource)
+save( filename, '-mat', 'valid', 'dims', 'gridSize', 'metadata', 'source', 'dimLimit' );
 
 % Return grid object as output
 grid = gridfile( filename );

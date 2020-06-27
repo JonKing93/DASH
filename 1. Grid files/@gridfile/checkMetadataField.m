@@ -25,7 +25,7 @@ elseif isdatetime(meta) && any( isnat(meta(:)) )
 end
 
 % Duplicate rows. Convert cellstring to string for unique with rows option
-if iscellstring(meta)
+if iscellstr(meta) %#ok<ISCLSTR>
     meta = string(meta);
 end
 if size(meta,1) ~= size(unique(meta,'rows'),1)

@@ -50,6 +50,19 @@ classdef gridfile < handle
         end
     end    
     
+    
+    % Recent Additions
+    methods (Static)
+        checkMetadataField(value, dim);
+        checkMetadataStructure(meta);
+    end
+    
+    
+    
+    
+    
+    
+    
     % Static user methods
     methods (Static)
         
