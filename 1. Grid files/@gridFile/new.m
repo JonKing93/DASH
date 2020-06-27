@@ -87,13 +87,13 @@ end
 metadata.(atts) = attributes;
         
 % Initialize the .grid file
-valid = true;
-nSource = 0;
-dimLimit = [];
-file = '';
-type = '';
-var = '';
-dims = '';
+valid = true;       % A marker that the file is not corrupted
+nSource = 0;        % The number of data sources organized by the file
+dimLimit = [];      % The limit of each data source along each dimension (nDim x 2 x nSource)
+file = '';          % The full file name for each data source. Char vector
+type = '';          % The type of each data source (nc vs mat). Char vector
+var = '';           % The name of the variable in the data source. Char vector
+dims = '';          % The 
 order = '';
 unmergedSize = [];
 mergedSize = [];

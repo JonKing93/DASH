@@ -80,7 +80,7 @@ if strcmp(type, 'nc')
     type = 'nc   ';
     
 elseif strcmp(type, 'mat')
-    [path, file, var, dims, msize, umsize, merge, unmerge] = ...
+    [path, file, var, dimOrder, msize, umsize, merge, unmerge] = ...
         matGrid.initialize( file, var, dims );
     type = 'mat  ';
 end
@@ -101,7 +101,7 @@ notnanDim = gridDims( notnan );
 
 % Get the source dimensions that are not trailing singletons
 sourceSize = gridData.squeezeSize( msize );   
-notTS = dims( 1:numel(sourceSize) );
+notTS = dimOrder( 1:numel(sourceSize) );
 
 % Ensure that both the non-nan grid dims, and the non-TS dims have metadata
 needMeta = unique( [notnanDim, notTS] );

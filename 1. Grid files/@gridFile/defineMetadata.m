@@ -26,6 +26,17 @@ if mod(nDim,1)~=0
     error('There must be an even number of inputs. One metadata matrix for each specified dimension name.');
 end
 
+% Error check and collect the user dimension names
+for v = 1:2:nargin-1
+    if ~dash.isstrflag( varargin{v} )
+        error('Input %.f must be a string scalar or character row vector.', v);
+    end
+    varargin{v} = string(varargin{v});
+end
+dims = [varargin{1:2:nargin-1}];
+gridfile.checkDims( dims, true, 'Input', '');
+
+
 % Get recognized dimension names. Track user dimensions. Initialize output
 allDims = dash.dimensionNames;
 usedDims = NaN(nDim, 1);
