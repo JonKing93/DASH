@@ -1,7 +1,7 @@
 function[tf] = isstrflag( input )
 %% Tests if an input is a character row vector or string scalar.
 %
-% tf = isstrflag( input )
+% tf = dash.isstrflag( input )
 %
 % ----- Inputs -----
 %

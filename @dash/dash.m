@@ -7,6 +7,12 @@ classdef dash
         % Global data for dimension names
         names = dimensionNames;
         
+        % String scalar or character row vector
+        tf = isstrflag( input );
+        
+        % String list
+        tf = isstrlist( input );
+        
     end
     
 end

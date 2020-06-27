@@ -32,7 +32,14 @@ if any(~recognized)
     error('Element %.f in dims (%s) is not a dimension recognized by this gridfile. See <location>.', find(~recognized,1), dims(find(~recognized,1)) );
 end
 
-gridfile.checkMetadataStructure(meta);
+% Check that every grid dimension with metadata is listed in dims
+requiredDims = obj.dims( obj.hasmetadata );
+missing = ~ismember( requiredDims, dims );
+if any(missing)
+    error('
+
+% Basic error check
+gridfile.checkMetadataStructure(meta, obj.dims, 2);
 
 
 
