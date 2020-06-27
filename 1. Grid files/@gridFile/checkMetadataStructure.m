@@ -10,8 +10,9 @@ end
 
 % Recognized field names
 metaFields = fields(meta);
-if any( ~ismember(metaFields, dash.dimensionNames) )
-    error('meta contains unrecognized fields. Allowed fields are dimension names (see dash.dimensionNames).');
+recognized = ismember(metaFields, dash.dimensionNames);
+if any( ~recognized )
+    error('The field "%s" in meta is not allowed. Only recognized dimension names are allowed as field names in meta. (see dash.dimensionNames for the list of recognized dimension names).', metaFields(find(~recognized,1)) );
 end
 
 % Metadata values

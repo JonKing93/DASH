@@ -93,13 +93,12 @@ dimLimit = [];      % The limit of each data source along each dimension (nDim x
 file = '';          % The full file name for each data source. Char vector
 type = '';          % The type of each data source (nc vs mat). Char vector
 var = '';           % The name of the variable in the data source. Char vector
-dims = '';          % The 
-order = '';
-unmergedSize = [];
-mergedSize = [];
-merge = [];
-unmerge = [];
-counter = [];
+dims = '';          % The order of dimensions in the data source. Comma delimited char vector
+unmergedSize = [];  % The size of the original data grid in the source.
+mergedSize = [];    % The size of the data after merging dimensions
+merge = [];         % Records which dimensions should be merged
+unmerge = [];       % Records how to unmerge dimensions
+counter = [];       % The number of elements in the various data for the source
 maxCounter = zeros(1,9);
 save( filename, '-mat', 'valid', 'dims', 'gridSize', 'metadata', ...
       'nSource', 'dimLimit', 'sourcePath', 'sourceFile', 'sourceVar', 'sourceDims', ...
