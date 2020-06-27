@@ -1,4 +1,4 @@
-classdef gridFile < handle
+classdef gridfile < handle
     % Provides methods for creating and editing .grid files. These are
     % containers that organize data source, such as NetCDF and .mat files.
     %
