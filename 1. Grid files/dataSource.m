@@ -24,27 +24,15 @@ classdef (Abstract) dataSource
             % values.
             
             % Error check strings, vectors
-            if ~dash.isstrflag(file)
-                error('The file name must be a string scalar or character row vector.');
-            elseif ~dash.isstrflag(var)
+            dash.checkFileExists(file);
+            if ~dash.isstrflag(var)
                 error('The variable name must be a string scalar or character row vector.');
             elseif ~dash.isstrlist(dims)
                 error('dims must be a string vector or cellstring vector.');
             end
             
-            % Check that the source file exists. Get the full name.
-            haspath = false;
-            if ~isempty(fileparts(file))
-                haspath = true;
-            end
-            if haspath && ~exist(file,'file')
-                error('The file %s does not exist.', file);
-            elseif ~haspath && ~exist(file,'file')
-                error('Could not find file %s. It may be misspelled or not on the active path.', file);
-            end
-            
             % Save file, var, dims
-            obj.file = which(file);
+            obj.file = string(which(file));
             obj.var = var;
             obj.unmergedDims = string(dims);        
                         
@@ -86,15 +74,10 @@ classdef (Abstract) dataSource
                 end
             end
             
-            % Find the last non-trailing singleton dimension. Ensure each
-            % dimension to this point has a name. Pad the unmerged size
-            % with ones for any named trailing singletons.
+            % Ensure all non-trailing singleton dimensions are named. Pad
+            % the unmerged size for any named trailing singletons.
             nDims = numel(source.unmergedDims);
-            minimumDims = find(source.unmergedSize~=1, 1, 'last');
-            if isempty(minimumDims)
-                minimumDims = 1;
-            end
-            
+            minimumDims = dash.lastNTS( source.unmergedSize );
             if nDims < minimumDims
                 error('The first %.f dimensions of variable %s in file %s require names, but dims only contains %.f elements',minimumDims, obj.var, obj.file, numel(obj.dims) );
             elseif numel(source.unmergedSize) < nDims
@@ -103,11 +86,11 @@ classdef (Abstract) dataSource
             
             % Get the merge map and merged data size
             source.mergedDims = unique(source.unmergedDims, 'stable');
-            nUnique = numel(source.mergedDims);
+            nUniqueDims = numel(source.mergedDims);
             source.merge = NaN(1,nDims);
-            source.mergedSize = NaN(1,nUnique);
+            source.mergedSize = NaN(1,nUniqueDims);
             
-            for d = 1:nUnique
+            for d = 1:nUniqueDims
                 isdim = find( strcmp(source.mergedDims(d), source.unmergedDims) );
                 source.merge(isdim) = d;
                 source.mergedSize(d) = prod( source.unmergedSize(isdim) );

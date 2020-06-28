@@ -13,6 +13,9 @@ classdef dash
         % String list
         tf = isstrlist( input );
         
+        % Last non-trailing singleton
+        checkFileExists(file);
+        
     end
     
 end

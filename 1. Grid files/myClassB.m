@@ -9,6 +9,10 @@ classdef myClassB < myClassA
             obj@myClassA(arg1);
             obj.w = 5;
         end
+        
+        function w = myfun(obj, w)
+            disp(obj.w);
+        end
     end
     
 end
