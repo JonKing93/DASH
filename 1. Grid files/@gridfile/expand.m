@@ -1,87 +1,62 @@
-function[] = expand( obj, dim, newMeta )
-%% Increases the size of a dimension in a .grid File
+function[] = expand( obj, dim, meta )
+%% Increases the size of a dimension in a .grid file and defines metadata 
+% for the new elements along the dimension.
 %
-% obj.expand( dim, newMeta )
+% obj.expand( dim, meta )
 %
 % ----- Inputs -----
 %
-% file: A .grid file.
+% dim: The name of the dimension being expanded. A string.
 %
-% dim: The name of the dimension being expanded. A string
-%
-% newMeta: New metadata for the dimension. Must have one row per new
-%          element along the dimension.
+% meta: New metadata values for the dimension. A numeric, logical,
+%    char, string, cellstring, or datetime matrix. Each row is treated
+%    as the metadata for one dimension element. Each row must be unique
+%    and cannot contain NaN, Inf, or NaT elements. Cellstring metadata
+%    will be converted into the "string" type.
 
-% Update in case changes were made
+% Update in case the file was changed.
 obj.update;
 
-% Check the dim is an ID
-if ~isstrflag( dim )
+% Error check
+if ~isstrflag(dim)
     error('dim must be a string scalar or character row vector.');
-elseif ~ismember( dim, getDimIDs )
-    error('dim is not a recognized dimension ID.');
+elseif ~ismember(dim, obj.dims)
+    error('%s is not a dimension recognized by .grid file %s.', dim, obj.file);
+end
+obj.checkMetadataField(meta, dim);
+
+% Check that the dimension has defined metadata in the .grid file.
+oldMeta = obj.meta.(dim);
+if isscalar(oldMeta) && isnumeric(oldMeta) && isnan(oldMeta)
+    error('The %s metadata in .grid file %s has not been defined. Please define metadata for this dimension first (see gridfile.rewriteMetadata).', dim, obj.file);
 end
 
-% Check the new metadata is allowed
- if ~gridFile.ismetadatatype( newMeta )
-    error('The new metadata must be one of the following datatypes: numeric, logical, char, string, cellstring, or datetime');
-elseif iscellstr( newMeta ) %#ok<ISCLSTR>
-    error('The new metadata is a cellstring.');
-elseif ~ismatrix( newMeta )
-    error('The new metadata is not a matrix.' );
-elseif isnumeric( newMeta ) && any(isnan(newMeta(:)))
-    error('The new metadata contains NaN elements.' );
-elseif isnumeric( newMeta) && any(isinf(newMeta(:)))
-    error('The new metadata contains Inf elements.' );
-elseif isdatetime(newMeta) && any( isnat(newMeta(:)) )
-    error('The new metadata contains NaT elements.' );
-end
-
-% Check the old metadata is not a NaN singleton
-if isscalar(obj.metadata.(dim)) && isnumeric(obj.metadata.(dim)) && isnan( obj.metadata.(dim) )
-    error('The metadata for the %s dimension in the file %s is NaN. Please write in a non-NaN value first. (See gridFile.rewriteMetadata)', dim, file);
-end
-
-% Check that the new metadata can be appended
-if size( obj.metadata.(dim),2) ~= size(newMeta, 2)
-    error('The new %s metadata has a different number of columns than the metadata in file %s.', dim, file );
-elseif (isnumeric(newMeta) || islogical(newMeta)) && ~(isnumeric(obj.metadata.(dim)) || islogical(obj.metadata.(dim)))
-    error('The new %s metadata is numeric or logical, but the metadata in the %s file is not.', dim, file );
-elseif isstrlist(newMeta) && ~isstrlist(obj.metadata.(dim))
-    error('The new %s is a string, but the metadata in the %s file is not.', dim, file );
+% Check that the new metadata can be appended to the old
+if size(meta,2) ~= size(oldMeta,2)
+    error('The new %s metadata has a different number of columns than the %s metadata in .grid file %s.', dim, dim, obj.file );
+elseif (isstring(meta) || iscellstr(meta) || ischar(meta)) && ...
+        ~(isstring(oldMeta) || iscellstr(oldMeta) || ~ischar(oldMeta))
+    error('The new %s metadata is a string, char, or cellstring, but the %s metadata in .grid file %s is not.', dim, dim, obj.file);
+elseif (isnumeric(meta) || islogical(meta)) && ~(isnumeric(oldMeta) || islogical(oldMeta))
+    error('The new %s metadata is numeric or logical, but the %s metadata in .grid file %s is not.', dim, dim, obj.file );
+elseif isdatetime(meta) && ~isdatetime(oldMeta)
+    error('The new %s metadata is datetime, but the %s metadata in .grid file %s is not.', dim, dim, obj.file);
 end
 try
-    allmeta = cat(1, obj.metadata.(dim), newMeta );
-catch ME
-    error('The new metadata cannot be appended to the existing metadata. It may be a different type.');
-end
-   
-% Check the new metadata does not duplicate the old or itself
-if size(allmeta,1) ~= size( unique(allmeta, 'rows'), 1 )
-    error('The new metadata duplicates existing metadata values.');
-end
-
-% Update the fields
-obj.metadata.(dim) = allmeta;
-d = find(  strcmp(dim, obj.dimOrder) );
-obj.gridSize(1,d) = size(allmeta,1);
-
-% Write to file
-try
-    m = matfile( obj.filepath, 'Writable', true );
-    m.valid = false;
-    m.gridSize(1,d) = obj.gridSize(1,d);
-    m.metadata = obj.metadata;
-    m.valid = true;
-    
-% Delete the object if the write fails
+    meta = cat(1, oldMeta, meta);
 catch
-    [~, killStr] = fileparts( obj.filepath );
-    delete( obj );
-    error('Failed to add new data source. The file %s is no longer valid. Deleting the current gridFile object.', killStr);
+    error('The new %s metadata cannot be appended to the existing %s metadata in .grid file %s.', dim , dim, obj.file);
 end
 
-% Update user object
-obj.update;
+% Check that the new metadata does not duplicate rows in the old metadata
+if gridfile.duplicateRows(meta)
+    error('The new %s metadata duplicates rows in the existing %s metadata in .grid file %s.', dim, dim, obj.file);
+end
+
+% Update the .grid file fields and save to file
+obj.meta.(dim) = meta;
+d = strcmp(dim, obj.dims);
+obj.gridSize(d) = size(meta,1);
+obj.save;
 
 end
