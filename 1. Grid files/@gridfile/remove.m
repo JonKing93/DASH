@@ -37,8 +37,9 @@ elseif ~isempty(var) && ~dash.isstrflag(var)
 end
 
 % Determine whether to compare file paths and variable names
-file = string(file);
-haspath = ~isempty(fileparts(file));
+file = char(file);
+[path, name] = fileparts(file);
+haspath = ~isempty(path);
 hasvar = ~isempty(var);
 
 % Track which sources match the removal criteria
@@ -48,14 +49,15 @@ matchesVar = true(nSource, 1);
 
 % Compare the user inputs to the values for each source.
 for s = 1:nSource
-    [~, name] = fileparts(obj.source(s).file);
-    if haspath && strcmp(file, obj.source(s).file)
+    [~, sourceName] = fileparts(obj.source{s}.file);
+    
+    if haspath && strcmp(file, obj.source{s}.file)
         matchesFile(s) = true;
-    elseif ~haspath && strcmp(file, name)
+    elseif ~haspath && strcmp(name, sourceName)
         matchesFile(s) = true;
     end
     
-    if hasvar && matchesFile(s) && ~strcmp(var, obj.source(s).var)
+    if hasvar && matchesFile(s) && ~strcmp(var, obj.source{s}.var)
         matchesVar(s) = false;
     end
 end

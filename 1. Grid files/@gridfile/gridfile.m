@@ -31,7 +31,7 @@ classdef gridfile < handle
         isdefined; % Whether each dimension has defined metadata.
         meta; % The metadata along each dimension and data attributes
         source;  % The names and paths of the data sources.
-        limits; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
     end
     
     % Global configuration.
@@ -64,6 +64,7 @@ classdef gridfile < handle
         add(obj, type, file, var, dims, meta);
         expand(obj, dim, meta);
         rewriteMetadata( obj, dim, meta );
+        remove( obj, file, var );
     end
     
     % Constructor
@@ -74,10 +75,10 @@ classdef gridfile < handle
         m = matfile(obj.file);
         obj.dims = m.dims;
         obj.size = m.gridSize;
-        obj.isdefined = ~isnan(obj.size);
+        obj.isdefined = m.isdefined;
         obj.meta = m.metadata;
         obj.source = m.source;
-        obj.limits = m.dimLimit;
+        obj.dimLimit = m.dimLimit;
         end
     end
             

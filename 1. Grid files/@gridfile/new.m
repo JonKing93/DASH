@@ -33,8 +33,8 @@ function[grid] = new( filename, meta, attributes, overwrite )
 %    an existing file. Default is false.
 
 % Default values of unset inputs
-if ~exist('attributes','var') || isempty(attributes)
-    attributes = struct();
+if ~exist('attributes','var')
+    attributes = [];
 end
 if ~exist('overwrite','var') || isempty(overwrite)
     overwrite = false;
@@ -43,7 +43,7 @@ end
 % Error check
 if ~dash.isstrflag(filename)
     error('filename must be a string scalar or character row vector.');
-elseif ~isstruct(attributes) || ~isscalar(attributes)
+elseif ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 elseif ~islogical(overwrite) || ~isscalar(overwrite)
     error('overwrite must be a scalar logical.');
@@ -66,25 +66,31 @@ if ~overwrite && exist(filename,'file')
     error('The file %s already exists.', filename );
 end
 
-% Get all internal metadata names. Preallocate the grid size.
+% Get all internal metadata names.
 dims = dash.dimensionNames;
 atts = gridfile.attributesName;
 nDim = numel(dims);
+
+% Initialize metadata variables
+metadata = struct();
+isdefined = false(1,nDim);
 gridSize = NaN(1,nDim);
 
-% Create the internal metadata structure. Use NaN as metadata for
-% dimensions with unspecified metadata. Record dimension sizes.
-metadata = struct();
+% Build the internal metadata structure. Use NaN as metadata for
+% dimensions with undefined metadata.
 for d = 1:nDim
     if isfield(meta, dims(d))
         metadata.(dims(d)) = meta.(dims(d));
         gridSize(d) = size( meta.(dims(d)), 1 );
+        isdefined(d) = true;
     else
         metadata.(dims(d)) = NaN;
         gridSize(d) = 1;
     end
 end
-metadata.(atts) = attributes;
+if ~isempty(attributes)
+    metadata.(atts) = attributes;
+end
         
 % Create the initial .grid file.
 valid = true;       % A marker that the file is not corrupted
@@ -92,8 +98,8 @@ valid = true;       % A marker that the file is not corrupted
 % gridSize;         % The size of each dimension
 % metadata          % The metadata along each dimension (and also non-dimensional attributes)
 source = {};        % The data sources organized by the .grid file.
-dimLimit = [];      % The index limits of each data source along each dimension (nDim x 2 x nSource)
-save( filename, '-mat', 'valid', 'dims', 'gridSize', 'metadata', 'source', 'dimLimit' );
+dimLimit = NaN(nDim, 2, 0);      % The index limits of each data source along each dimension (nDim x 2 x nSource)
+save( filename, '-mat', 'valid', 'dims', 'gridSize', 'isdefined', 'metadata', 'source', 'dimLimit' );
 
 % Return grid object as output
 grid = gridfile( filename );
