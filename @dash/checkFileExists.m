@@ -17,10 +17,13 @@ if ~dash.isstrflag(file)
     error('file must be a string scalar or character row vector.');
 end
 
+file = char(file);
 haspath = ~isempty(fileparts(file));
-if haspath && ~exist(file,'file')
+exist = ~isempty(which(file));
+
+if haspath && ~exist
     error('The file %s does not exist.', file);
-elseif ~haspath && ~exist(file,'file')
+elseif ~haspath && ~exist
     error('Could not find file %s. It may be misspelled or not on the active path.', file);
 end
 

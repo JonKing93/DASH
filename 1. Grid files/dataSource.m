@@ -77,7 +77,7 @@ classdef (Abstract) dataSource
             % Ensure all non-trailing singleton dimensions are named. Pad
             % the unmerged size for any named trailing singletons.
             nDims = numel(source.unmergedDims);
-            minimumDims = dash.lastNTS( source.unmergedSize );
+            minimumDims = max( [1, find(source.unmergedSize~=1,1,'last')] );            
             if nDims < minimumDims
                 error('The first %.f dimensions of variable %s in file %s require names, but dims only contains %.f elements',minimumDims, obj.var, obj.file, numel(obj.dims) );
             elseif numel(source.unmergedSize) < nDims
