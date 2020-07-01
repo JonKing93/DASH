@@ -1,18 +1,22 @@
 function[] = expand( obj, dim, meta )
-%% Increases the size of a dimension in a .grid file and defines metadata 
+%% Increases the length of a dimension in a .grid file and defines metadata 
 % for the new elements along the dimension.
 %
 % obj.expand( dim, meta )
 %
 % ----- Inputs -----
 %
-% dim: The name of the dimension being expanded. A string.
+% dim: The name of the dimension being expanded. A string. The dimension
+%    must already have defined metadata in the .grid file.
 %
 % meta: New metadata values for the dimension. A numeric, logical,
-%    char, string, cellstring, or datetime matrix. Each row is treated
-%    as the metadata for one dimension element. Each row must be unique
-%    and cannot contain NaN, Inf, or NaT elements. Cellstring metadata
-%    will be converted into the "string" type.
+%    char, string, cellstring, or datetime matrix. Must have one row for
+%    each new elements along the dimension. Each row must be unique and
+%    cannot contain NaN, Inf, or NaT elements. Must have one column for
+%    each column in the existing .grid file metadata. It must be possible
+%    to append the data type of the new metadata to the data type of the
+%    existing metadata in the .grid file. Compatible types are
+%    (numeric/logical), (char/string/cellstring), and (datetime).
 
 % Update in case the file was changed.
 obj.update;

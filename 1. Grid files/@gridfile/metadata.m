@@ -19,8 +19,6 @@ function[meta] = metadata(file, includeUndefined)
 %    for internal .grid dimensions with undefined metadata. Default is
 %    false.
 %
-% grid: An instance of a gridfile object.
-%
 % ----- Outputs -----
 %
 % meta: The metadata structure for the .grid file.

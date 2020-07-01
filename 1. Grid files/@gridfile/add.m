@@ -20,7 +20,12 @@ function[] = add( obj, type, file, var, dims, meta )
 %    string or cellstring vector.
 %
 % meta: The dimensional metadata structure for the data in the source file.
-%    See gridfile.defineMetadata.
+%    See gridfile.defineMetadata. Must include metadata for all
+%    non-singleton dimensions in the .grid file (see <include>) and for all
+%    non-trailing dimensions in the source file. The number of rows in each
+%    metadata field must match the length of the dimension in the source
+%    file. Each metadata field must exactly match a contiguous sequence of
+%    metadata in the .grid file.
 
 % Update the gridfile object in case the file was changed.
 obj.update;
@@ -69,7 +74,7 @@ for d = 1:numel(metaDims)
     nRows = size(value,1);
     s = ismember(source.mergedDims, metaDims(d));
     if nRows ~= source.mergedSize(s)
-        error('The number of rows in the %s metadata (%.f) does not match the size of the %s dimension in the data source (%.f).', metaDims(d), size(value,1), metaDims(d), source.mergedSize(s) );
+        error('The number of rows in the %s metadata (%.f) does not match the length of the %s dimension in the data source (%.f).', metaDims(d), size(value,1), metaDims(d), source.mergedSize(s) );
     end
     
     % The source metadata must exactly match a sequence of .grid metadata

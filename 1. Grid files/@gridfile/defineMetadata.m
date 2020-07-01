@@ -2,7 +2,7 @@ function[meta] = defineMetadata( varargin )
 % Creates a structure to define the metadata of a gridded dataset.
 %
 % meta = gridfile.defineMetadata( dim1, meta1, dim2, meta2, ..., dimN, metaN )
-% Sets the metadata for specified data dimensions.
+% Defines the metadata for specified data dimensions.
 %
 % ----- Inputs -----
 %

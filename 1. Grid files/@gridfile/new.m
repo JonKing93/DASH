@@ -7,7 +7,7 @@ function[grid] = new( filename, meta, attributes, overwrite )
 % gridfile.new( filename, meta )
 % Initializes a new .grid file with dimensional metadata. If only a file
 % name is specified, creates the file in the current directory. Use a full
-% file name (including the path) to create the .grid file in a custom
+% file name (including path) to create the .grid file in a custom
 % directory. Adds a ".grid" extension to the file name if it does not
 % already have one.
 %
@@ -62,7 +62,7 @@ end
 if isempty(path)
     filename = fullfile(pwd, filename);
 end
-if ~overwrite && exist(filename, 'file')
+if ~overwrite && ~exist(filename,'file')
     error('The file %s already exists.', filename );
 end
 
