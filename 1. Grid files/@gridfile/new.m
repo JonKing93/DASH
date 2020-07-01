@@ -62,7 +62,7 @@ end
 if isempty(path)
     filename = fullfile(pwd, filename);
 end
-if ~overwrite && ~exist(filename,'file')
+if ~overwrite && exist(filename,'file')
     error('The file %s already exists.', filename );
 end
 

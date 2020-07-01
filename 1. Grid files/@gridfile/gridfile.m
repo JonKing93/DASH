@@ -66,4 +66,20 @@ classdef gridfile < handle
         rewriteMetadata( obj, dim, meta );
     end
     
+    % Constructor
+    methods
+        function[obj] = gridfile( file )
+        warning('This constructor is only for testing!!!');
+        obj.file = string(which(file));
+        m = matfile(obj.file);
+        obj.dims = m.dims;
+        obj.size = m.gridSize;
+        obj.isdefined = ~isnan(obj.size);
+        obj.meta = m.metadata;
+        obj.source = m.source;
+        obj.limits = m.dimLimit;
+        end
+    end
+            
+    
 end

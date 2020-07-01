@@ -39,7 +39,7 @@ for v = 1:2:nargin-1
     
     [recognized, d] = ismember( varargin{v}, allDims );
     if ~recognized
-        error('Input %.f is not a recognized dimension name. See dash.dimensionNames for a list of recognized data dimension names.', v);
+        error('Input %.f ("%s") is not a recognized dimension name. See dash.dimensionNames for a list of recognized data dimension names.', v, varargin{v});
     elseif ismember(d, usedDims)
         error('Dimension name "%s" is specified multiple times.', varargin{v});
     end

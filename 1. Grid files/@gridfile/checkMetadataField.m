@@ -25,7 +25,7 @@ elseif isdatetime(meta) && any( isnat(meta(:)) )
 end
 
 % Duplicate rows. Convert cellstring to string for unique with rows option
-if gridfile.duplicateRows(meta)
+if gridfile.hasDuplicateRows(meta)
     error('The %s metadata contains duplicate rows.', dim);
 end
 
