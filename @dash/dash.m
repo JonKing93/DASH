@@ -14,7 +14,7 @@ classdef dash
         tf = isstrlist( input );
         
         % Last non-trailing singleton
-        checkFileExists(file);
+        file = checkFileExists(file);
         
         assertStrFlag(input, name);
         
