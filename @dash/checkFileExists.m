@@ -1,4 +1,4 @@
-function[] = checkFileExists( file )
+function[file] = checkFileExists( file )
 %% Error checking to see if a file exists.
 %
 % dash.checkFileExists( fullname )
@@ -7,15 +7,14 @@ function[] = checkFileExists( file )
 % dash.checkFileExists( filename )
 % Checks if a file on the active path matches the file name.
 %
+% file = dash.checkFileExists(...)
+% Returns the full file name as a string.
+%
 % ----- Inputs -----
 %
 % fullname: An full file name including path.
 %
 % file: Just a file name
-
-if ~dash.isstrflag(file)
-    error('file must be a string scalar or character row vector.');
-end
 
 file = char(file);
 haspath = ~isempty(fileparts(file));
@@ -26,5 +25,7 @@ if haspath && ~exist
 elseif ~haspath && ~exist
     error('Could not find file %s. It may be misspelled or not on the active path.', file);
 end
+
+file = string(which(file));
 
 end

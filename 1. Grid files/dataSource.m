@@ -7,7 +7,7 @@ classdef (Abstract) dataSource
         unmergedDims;  % The order of the dimensions in the file
         unmergedSize; % The size of the original data in the file
         merge; % A record of which dimenions should be merged
-        mergedDims; % The dimensions of the merged dataset
+        mergedDims; % The order of the dimensions in the merged dataset
         mergedSize;   % The size of the data after merging dimensions
     end
     
@@ -24,15 +24,15 @@ classdef (Abstract) dataSource
             % values.
             
             % Error check strings, vectors
-            dash.checkFileExists(file);
-            if ~dash.isstrflag(var)
-                error('The variable name must be a string scalar or character row vector.');
-            elseif ~dash.isstrlist(dims)
+            dash.assertStrFlag(file, "file");
+            dash.assertStrFlag(var, "var");
+            if ~dash.isstrlist(dims)
                 error('dims must be a string vector or cellstring vector.');
             end
+            file = dash.checkFileExists(file);
             
             % Save file, var, dims
-            obj.file = string(which(file));
+            obj.file = file;
             obj.var = var;
             obj.unmergedDims = string(dims);        
                         

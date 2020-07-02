@@ -16,6 +16,8 @@ classdef dash
         % Last non-trailing singleton
         checkFileExists(file);
         
+        assertStrFlag(input, name);
+        
     end
     
 end
