@@ -6,10 +6,12 @@ valid = true;
 dims = obj.dims;
 isdefined = obj.isdefined;
 gridSize = obj.size;
-meta = obj.meta;
+metadata = obj.meta;
 source = obj.source;
+fieldLength = obj.fieldLength;
+maxLength = obj.maxLength;
 dimLimit = obj.dimLimit;
-save(obj.file, '-mat', 'valid','dims','isdefined','gridSize','meta','source','dimLimit');
+save(obj.file, '-mat', 'valid','dims','isdefined','gridSize','metadata','source','fieldLength','maxLength','dimLimit');
 
 % Update the user object
 obj.update;

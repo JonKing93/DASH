@@ -30,7 +30,9 @@ classdef gridfile < handle
         size; % The size of the gridded dataset organized by the .grid file.
         isdefined; % Whether each dimension has defined metadata.
         meta; % The metadata along each dimension and data attributes
-        source;  % The names and paths of the data sources.
+        source;  % Information for each data source
+        fieldLength; % The length of primitive arrays for the source fields
+        maxLength; % The length of the padded primitive arrays in the .grid file
         dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
     end
     
@@ -44,12 +46,17 @@ classdef gridfile < handle
         checkMetadataField( meta, dim );
         checkMetadataStructure( meta );
         tf = hasDuplicateRows(meta);
+        source = convertSourceToPrimitives(source);
+        dims = commaDelimitedDims(dims);
+        X = padPrimitives(X, maxCol);
     end
     
     % Object utilities
     methods
         update(obj);
         save(obj);
+        varargout = collectPrimitives(obj, fields);
+        match = findFileSources(obj, file);
     end
     
     % Static user methods
@@ -78,6 +85,8 @@ classdef gridfile < handle
         obj.isdefined = m.isdefined;
         obj.meta = m.metadata;
         obj.source = m.source;
+        obj.fieldLength = m.fieldLength;
+        obj.maxLength = m.maxLength;
         obj.dimLimit = m.dimLimit;
         end
     end

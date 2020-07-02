@@ -41,9 +41,8 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 
 % Error check
-if ~dash.isstrflag(filename)
-    error('filename must be a string scalar or character row vector.');
-elseif ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
+dash.assertStrFlag( filename, "filename" );
+if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 elseif ~islogical(overwrite) || ~isscalar(overwrite)
     error('overwrite must be a scalar logical.');
@@ -91,15 +90,28 @@ end
 if ~isempty(attributes)
     metadata.(atts) = attributes;
 end
-        
+
+% Initialize the data source information
+source = struct('file',[],'var',[],'dataType',[],'unmergedDims',[],...
+                'unmergedSize',[],'merge',[],'mergedDims',[],...
+                'mergedSize',[]);
+nField = numel(fields(source));
+fieldLength = NaN(0, nField);
+maxLength = zeros(1, nField);
+dimLimit = NaN(nDim, 2, 0);
+            
 % Create the initial .grid file.
 valid = true;       % A marker that the file is not corrupted
 % dims              % The internal dimension order in the .grid file
 % gridSize;         % The size of each dimension
+% isdefined         % Whether a dimension has defined metadata
 % metadata          % The metadata along each dimension (and also non-dimensional attributes)
-source = {};        % The data sources organized by the .grid file.
-dimLimit = NaN(nDim, 2, 0);      % The index limits of each data source along each dimension (nDim x 2 x nSource)
-save( filename, '-mat', 'valid', 'dims', 'gridSize', 'isdefined', 'metadata', 'source', 'dimLimit' );
+% source            % The data sources organized by the .grid file.
+% fieldLength       % Length of the primitive arrays for each source
+% maxLength         % Length of the padded primitive arrays in the .grid file
+% dimLimit          % The index limits of each data source along each dimension (nDim x 2 x nSource)
+save( filename, '-mat', 'valid', 'dims', 'gridSize', 'isdefined', ...
+      'metadata', 'source', 'fieldLength', 'maxLength', 'dimLimit' );
 
 % Return grid object as output
 grid = gridfile( filename );

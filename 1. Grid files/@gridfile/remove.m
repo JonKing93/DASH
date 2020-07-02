@@ -24,55 +24,51 @@ function[] = remove(obj, file, var)
 % Update the grid object in case the .grid file was changed.
 obj.update;
 
-% Defaults for unset variables.
+% Default for unset var
 if ~exist('var','var') || isempty(var)
     var = [];
 end
 
 % Error check
-if ~dash.isstrflag(file)
-    error('file must be a string scalar or character row vector.');
-elseif ~isempty(var) && ~dash.isstrflag(var)
-    error('var must be a string scalar or character row vector.');
+dash.assertStrFlag(file, "file");
+if ~isempty(var)
+    dash.assertStrFlag(var, "var");
 end
 
-% Determine whether to compare file paths and variable names
-file = char(file);
-[path, name] = fileparts(file);
-haspath = ~isempty(path);
-hasvar = ~isempty(var);
-
-% Track which sources match the removal criteria
-nSource = numel(obj.source);
-matchesFile = false(nSource, 1);
-matchesVar = true(nSource, 1);
-
-% Compare the user inputs to the values for each source.
-for s = 1:nSource
-    [~, sourceName] = fileparts(obj.source{s}.file);
-    
-    if haspath && strcmp(file, obj.source{s}.file)
-        matchesFile(s) = true;
-    elseif ~haspath && strcmp(name, sourceName)
-        matchesFile(s) = true;
-    end
-    
-    if hasvar && matchesFile(s) && ~strcmp(var, obj.source{s}.var)
-        matchesVar(s) = false;
-    end
-end
-
-% Check that there are actually sources to remove
-if all(~matchesFile)
+% Determine which sources match the file name
+remove = obj.findFileSources( file );
+if ~any(remove)
     error('None of the data sources in %s are named %s.', obj.file, file);
-elseif all(~matchesVar)
-    error('None of data sources in %s with a file name %s have a variable named %s.', obj.file, file, var);
 end
 
-% Remove the sources. Update the .grid file
-remove = matchesFile & matchesVar;
-obj.source(remove) = [];
+% Optionally find sources that match a variable name
+if ~isempty(var)
+    sourceVar = obj.collectPrimitives("var");
+    remove = remove & strcmp(var, sourceVar);
+    
+    if ~any(remove)
+        error('None of data sources in %s with a file name %s have a variable named %s.', obj.file, file, var);
+    end
+end
+
+% Remove the sources from .grid variables. Update the primitive array size
 obj.dimLimit(:,:,remove) = [];
+obj.fieldLength(remove,:) = [];
+obj.maxLength = max(obj.fieldLength,[],1);
+
+% Remove the sources from the primitive arrays.
+sourceFields = fields(obj.source);
+nField = numel(sourceFields);
+for f = 1:nField
+    name = sourceFields{f};
+    obj.source.(name)(remove,:) = [];
+    
+    % Unpad primitives if the size of the primitive array changed
+    unpad = size(obj.source.(name),2) - obj.fieldLength(f);
+    obj.source.(name)(:,end-unpad+1:end) = [];
+end
+
+% Update the .grid file
 obj.save;
 
 end

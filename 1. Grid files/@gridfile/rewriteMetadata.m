@@ -18,9 +18,8 @@ function[] = rewriteMetadata( obj, dim, meta )
 obj.update;
 
 % Error check
-if ~isstrflag(dim)
-    error('dim must be a string scalar or character row vector.');
-elseif ~ismember(dim, obj.dims)
+dash.checkStrFlag({dim}, "dim");
+if ~ismember(dim, obj.dims)
     error('%s is not a dimension recognized by .grid file %s.', dim, obj.file);
 end
 obj.checkMetadataField(meta, dim);

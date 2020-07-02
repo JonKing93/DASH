@@ -103,8 +103,34 @@ if any(overlap)
     error('The data in new source file %s overlaps data in file %s, which is already in .grid file %s.', source.file, obj.source{find(overlap,1)}.file, obj.file);
 end
 
-% Update the fields and save to file
-obj.source = [obj.source, {source}];
+% Convert the dataSource object into a structure of primitives.
+source = gridfile.convertSourceToPrimitives(source);
+
+% Preallocate the length of each of the primitive fields
+sourceFields = fields(obj.source);
+nField = numel(sourceFields);
+fieldLength = NaN(1,nField);
+
+% Get the length of each field in the new source. Update the maximum length
+% of the primitive arrays in the .grid file
+for f = 1:numel(sourceFields)
+    name = sourceFields{f};
+    fieldLength(f) = length( source.(name) );
+    obj.maxLength(f) = max( obj.maxLength(f), fieldLength(f) );
+    
+    % Pad the primitives for the new source or for the .grid file as necessary
+    if obj.maxLength(f) > fieldLength(f)
+        source.(name) = gridfile.padPrimitives( source.(name), obj.maxLength(f) );
+    elseif ~isempty(obj.source.(name))
+        obj.source.(name) = gridfile.padPrimitives( obj.source.(name), fieldLength(f) );
+    end
+    
+    % Add the new primitives to the source structure.
+    obj.source.(name) = cat(1, obj.source.(name), source.(name));
+end
+    
+% Update the other source variables and save
+obj.fieldLength = cat(1, obj.fieldLength, fieldLength);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
 obj.save;
 

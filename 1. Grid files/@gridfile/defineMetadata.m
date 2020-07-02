@@ -33,9 +33,7 @@ meta = struct();
 
 % Error check the user dimensions names. Prevent duplicates
 for v = 1:2:nargin-1
-    if ~dash.isstrflag( varargin{v} )
-        error('Input %.f must be a string scalar or character row vector.', v);
-    end
+    dash.assertStrFlag( varargin{v}, sprintf("Input %.f",v) );
     
     [recognized, d] = ismember( varargin{v}, allDims );
     if ~recognized
