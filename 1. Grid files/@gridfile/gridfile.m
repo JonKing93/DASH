@@ -18,6 +18,7 @@ classdef gridfile < handle
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file
     %   info - Returns a summary of a .grid file.
     %   read - Reads out data from a .grid file
+    %   renameSource - Changes the file name associated with a data source.
     %   remove - Removes a data source from a .grid file.
     
     % ----- Written By -----
@@ -48,6 +49,7 @@ classdef gridfile < handle
         tf = hasDuplicateRows(meta);
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
+        dims = commaDelimitedToString(dims);
         X = padPrimitives(X, maxCol);
     end
     
@@ -55,7 +57,7 @@ classdef gridfile < handle
     methods
         update(obj);
         save(obj);
-        varargout = collectPrimitives(obj, fields);
+        varargout = collectPrimitives(obj, fields, sources);
         match = findFileSources(obj, file);
     end
     

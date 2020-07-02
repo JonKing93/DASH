@@ -1,4 +1,4 @@
-function[varargout] = collectPrimitives(obj, fieldNames)
+function[varargout] = collectPrimitives(obj, fieldNames, sources)
 %% Collects source primitive arrays in a cell.
 %
 % X = obj.collectPrimitives( fieldName )
@@ -8,15 +8,25 @@ function[varargout] = collectPrimitives(obj, fieldNames)
 % [X, Y, ..., Z] = obj.collectPrimitives( fieldNames )
 % Collects multiple fields.
 %
+% [...] = obj.collectPrimitives( fieldNames, sources )
+% Only collect values for specified sources.
+%
 % ----- Inputs -----
 %
 % fieldName: The name of a field, a string.
 %
 % fieldNames: String vector.
 %
+% sources: Linear source indices.
+%
 % ----- Outputs -----
 %
 % X: The cell or string array extract from the primitive array.
+
+% Default if sources is unset
+if ~exist('sources','var') || isempty(sources)
+    sources = 1:size(obj.fieldLength,1);
+end
 
 % Determine which field to convert
 sourceFields = fields(obj.source);
@@ -24,14 +34,15 @@ sourceFields = fields(obj.source);
 
 % Preallocate the cell output
 nVars = numel(fieldNames);
-nSource = size(obj.fieldLength, 1);
+nSource = numel(sources);
 varargout = repmat({cell(nSource,1)}, [1 nVars]);
 
 % Collect primitives
 for v = 1:nVars
     name = fieldNames(v);
     for s = 1:nSource
-        varargout{v}{s} = obj.source.(name)(s, 1:obj.fieldLength(s,f(v)));
+        row = sources(s);
+        varargout{v}{s} = obj.source.(name)(row, 1:obj.fieldLength(row,f(v)));
     end
     
     % Convert chars to string
