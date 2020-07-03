@@ -3,10 +3,10 @@ classdef matSource < dataSource
     
     methods
         % Constructor
-        function obj = matSource(file, var, dims)
+        function obj = matSource(file, var, dims, fill, range, convert)
             % First call the data source constructor for initial error
             % checking and to save the input args
-            obj@dataSource(file, var, dims);
+            obj@dataSource(file, var, dims, fill, range, convert);
             
             % Check that the file is a matfile
             try

@@ -9,6 +9,9 @@ classdef (Abstract) dataSource
         merge; % A record of which dimenions should be merged
         mergedDims; % The order of the dimensions in the merged dataset
         mergedSize;   % The size of the data after merging dimensions
+        fill; % The fill value for the data
+        range;   % A valid range for the data
+        convert;  % A linear transformation to apply to the data.
     end
     
     % Fields that must be set by the subclass constructor
@@ -18,7 +21,7 @@ classdef (Abstract) dataSource
     
     % Constructor and object methods.
     methods
-        function[obj] = dataSource(file, var, dims)
+        function[obj] = dataSource(file, var, dims, fill, range, convert)
             %% Does constructor operations essential for any data source.
             % Error check input strings. Checks source existence. Saves
             % values.
@@ -31,10 +34,28 @@ classdef (Abstract) dataSource
             end
             file = dash.checkFileExists(file);
             
-            % Save file, var, dims
+            % Error check the post-processing values
+            if ~isnumeric(fill) || ~isscalar(fill)
+                error('fill must be a numeric scalar.');
+            elseif ~isvector(range) || numel(range)~=2 || ~isnumeric(range)
+                error('range must be a numeric vector with two elements.');
+            elseif ~isreal(range) || any(isnan(range))
+                error('range may not contain contain complex values or NaN.');
+            elseif range(1) > range(2)
+                error('The first element of range cannot be larger than the second element.');
+            elseif ~isvector(range) || ~isnumeric(convert) || numel(convert)~=2
+                error('convert must be a numeric vector with two elements.');
+            elseif ~isreal(convert) || any(isnan(convert)) || any(isinf(convert))
+                error('convert may not contain complex values, NaN, or Inf.');
+            end
+            
+            % Save properties
             obj.file = file;
             obj.var = var;
             obj.unmergedDims = string(dims);        
+            obj.fill = fill;
+            obj.range = range;
+            obj.convert = convert;
                         
         end        
         function[] = checkVariable( obj, fileVariables )
@@ -42,8 +63,7 @@ classdef (Abstract) dataSource
             if ~infile
                 error('File %s does not contain a %s variable.', obj.file, obj.var);
             end
-        end
-        
+        end   
         function[X] = read( obj, mergedIndices )
         %% Reads values from a data source.
         %
@@ -131,25 +151,52 @@ classdef (Abstract) dataSource
             % elements that were loaded to fulfill equal spacing requirements
             X = squeeze(X);
             X = X(keepElements{:});
+            
+            % Convert fill value to NaN
+            if ~isnan(obj.fill)
+                X(X==obj.fill) = NaN;
+            end
+            
+            % Convert values outside the valid range to NaN
+            if ~isequal(obj.range, [-Inf Inf])
+                valid = (X>=obj.range(1)) & (X<=obj.range(2));
+                X(~valid) = NaN;
+            end
+            
+            % Apply linear transformation
+            if ~isequal(obj.convert, [1 0])
+                X = obj.convert(1)*X + obj.convert(2);
+            end
         end
     end
     
     % Create new dataSource subclass
     methods (Static)
-        function[source] = new(type, file, var, dims)
+        function[source] = new(type, file, var, dims, fill, range, convert)
             
             % Check the type is allowed
             if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat"])
                 error('type must be either the string "nc" or "mat".');
             end
             
+            % Set defaults for optional values
+            if ~exist('fill','var') || isempty(fill)
+                fill = NaN;
+            end
+            if ~exist('range','var') || isempty(range)
+                range = [-Inf Inf];
+            end
+            if ~exist('convert','var') || isempty(convert)
+                convert = [1 0];
+            end
+            
             % Create the subclass dataSource object. This will error check
             % file, var, and dims and get the size of the raw unmerged data
             % in the source.
             if strcmp(type,'nc')
-                source = ncSource(file, var, dims);
+                source = ncSource(file, var, dims, fill, range, convert);
             elseif strcmp(type, 'mat')
-                source = matSource(file, var, dims);
+                source = matSource(file, var, dims, fill, range, convert);
             end
             
             % Check that the subclass constructor set all fields for which

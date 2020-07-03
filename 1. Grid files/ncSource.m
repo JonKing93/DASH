@@ -3,11 +3,11 @@ classdef ncSource < dataSource
     
     methods
         % Constructor
-        function obj = ncSource(file, var, dims)
+        function obj = ncSource(file, var, dims, fill, range, convert)
             
             % First call the data source constructor for initial error
             % checking and to save the input args
-            obj@dataSource(file, var, dims);
+            obj@dataSource(file, var, dims, fill, range, convert);
             
             % Check the file is actually a NetCDF
             try
