@@ -17,6 +17,9 @@ classdef dash
         file = checkFileExists(file);
         
         assertStrFlag(input, name);
+        assertStrList(input, name);
+        assertNumericVectorN(input, N, name);
+        assertPositiveIntegers(input, name);
         
     end
     
