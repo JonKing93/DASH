@@ -16,8 +16,8 @@ classdef (Abstract) dataSource
         subclassResponsibilities = ["dataType", "unmergedSize"];
     end
     
+    % Constructor and object methods.
     methods
-        % Constructor
         function[obj] = dataSource(file, var, dims)
             %% Does constructor operations essential for any data source.
             % Error check input strings. Checks source existence. Saves
@@ -36,9 +36,7 @@ classdef (Abstract) dataSource
             obj.var = var;
             obj.unmergedDims = string(dims);        
                         
-        end
-        
-        % Check that a variable exists in the source
+        end        
         function[] = checkVariable( obj, fileVariables )
             infile = ismember(obj.var, fileVariables);
             if ~infile
@@ -47,7 +45,7 @@ classdef (Abstract) dataSource
         end
     end
     
-    % Used to create a new data source from subclasses.
+    % Create new dataSource subclass
     methods (Static)
         function[source] = new(type, file, var, dims)
             
@@ -96,6 +94,11 @@ classdef (Abstract) dataSource
                 source.mergedSize(d) = prod( source.unmergedSize(isdim) );
             end
         end
+    end
+    
+    % Subclass read
+    methods (Abstract)
+        X = readSource(obj, start, count, stride);
     end
     
 end

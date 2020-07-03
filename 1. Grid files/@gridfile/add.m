@@ -2,7 +2,6 @@ function[] = add( obj, type, file, var, dims, meta )
 % Adds a data source to a .grid file.
 %
 % obj.add( type, file, var, dims, meta )
-% Adds values in a data file to the .grid file.
 %
 % ----- Inputs -----
 %

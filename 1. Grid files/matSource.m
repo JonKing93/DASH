@@ -1,8 +1,8 @@
 classdef matSource < dataSource
     %% Implements a .mat file data source
     
-    % Constructor
     methods
+        % Constructor
         function obj = matSource(file, var, dims)
             % First call the data source constructor for initial error
             % checking and to save the input args
@@ -23,6 +23,23 @@ classdef matSource < dataSource
             info = whos(m, obj.var);
             obj.dataType = info.class;
             obj.unmergedSize = info.size;
+        end
+        
+        % Read data from a .mat file
+        function[X] = readSource( obj, start, count, stride )
+            %% Reads data from a .mat data source.
+            %
+            % X = obj.readSource(start, count, stride)
+            
+            % Convert start, count, and stride to indices
+            nDim = size(start,2);
+            indices = cell(1,nDim);
+            for d = 1:nDim
+                indices{d} = start(d):stride(d):start(1)+stride(d)*(count(d)-1);
+            end
+            
+            % Read the data
+            X = obj.m.(obj.var)(indices{:});
         end
     end
     
