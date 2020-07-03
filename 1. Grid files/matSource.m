@@ -26,19 +26,18 @@ classdef matSource < dataSource
         end
         
         % Read data from a .mat file
-        function[X] = readSource( obj, start, count, stride )
-            %% Reads data from a .mat data source.
+        function[X] = load( obj, indices )
+            %% Loads data from a .mat data source.
             %
-            % X = obj.readSource(start, count, stride)
+            % X = obj.readSource(indices)
+            %
+            % ----- Inputs -----
+            %
+            % indices: A cell array. Each element contains the linear 
+            %    indices to load for a dimension. Indices must be equally
+            %    spaced and monotonically increasing. Dimensions must be in
+            %    the order of the unmerged dimensions.
             
-            % Convert start, count, and stride to indices
-            nDim = size(start,2);
-            indices = cell(1,nDim);
-            for d = 1:nDim
-                indices{d} = start(d):stride(d):start(1)+stride(d)*(count(d)-1);
-            end
-            
-            % Read the data
             X = obj.m.(obj.var)(indices{:});
         end
     end

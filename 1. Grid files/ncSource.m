@@ -29,24 +29,32 @@ classdef ncSource < dataSource
         end
         
         % Read from NetCDF
-        function[X] = readSource(obj, start, count, stride)
-            %% Reads data from a netCDF data source.
+        function[X] = load(obj, indices)
+            %% Loads data from a netCDF data source.
             %
-            % X = obj.readSource(start, count, stride)
-
-            % Adjust start, count, and stride to match the number of 
-            % dimensions defined in the netCDF file.
-            nDims = size(start,2);
-            scs = [start;count;stride];
-
-            if nDims > obj.nDims
-                scs = scs(:,1:obj.nDims);
-            elseif nDims < obj.nDims
-                scs(:, (end+1):obj.nDims) = 1;
+            % X = obj.load(indices)
+            %
+            % ----- Inputs -----
+            %
+            % indices: A cell array. Each element contains the linear 
+            %    indices to load for a dimension. Indices must be equally
+            %    spaced and monotonically increasing. Dimensions must be in
+            %    the order of the unmerged dimensions.
+            
+            % Preallocate
+            start = NaN(1, obj.nDims);
+            count = NaN(1, obj.nDims);
+            stride = NaN(1, obj.nDims);
+            
+            % Convert indices to start, count, stride syntax
+            for d = 1:numel(indices)
+                start(d) = indices{d}(1);
+                count(d) = numel(indices{d});
+                stride(d) = indices{d}(2) - indices{d}(1);
             end
-
-            % Read from the netcdf file
-            X = ncread( obj.file, obj.var, scs(1,:), scs(2,:), scs(3,:) );
+            
+            % Load the data
+            X = ncread( obj.file, obj.var, start, count, stride ); 
         end
     end
     
