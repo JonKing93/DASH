@@ -1,27 +1,37 @@
-classdef gridFile < handle
+classdef gridfile < handle
     % Provides methods for creating and editing .grid files. These are
-    % containers for various data sources, including NetCDF files, .mat
-    % files, and MATLAB workspace arrays.
+    % containers that organize data source, such as NetCDF and .mat files.
     %
+    % *** Essential ***
     % gridFile Methods:
-    %   defineMetadata - Creates a metadata structure for a .grid file, or gridded data source.
-    %   new - Creates a new .grid file.
-    %   addData - Adds data to a .grid file.
-    %   meta - Returns the metadata for a .grid file.
+    %   defineMetadata - Defines metadata for a .grid file or data source
+    %   new - Initializes a new .grid file.
+    %   add - Adds a data source to a .grid file.
+    %   metadata - Returns the metadata for a .grid file.
+    % 
+    % *** Advanced ***
+    % gridFile Methods:
     %   expand - Increases the size of a dimension in a .grid file
-    %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file.
+    %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file
+    %   info - Returns a summary of a .grid file.
+    %   read - Reads out data from a .grid file
+    %
     
     % ----- Written By -----
-    % Jonathan King, University of Arizona, 2019
+    % Jonathan King, University of Arizona, 2019-2020
     
     % Properties for the full gridfile
     properties
-        filepath; % The current file
-        dimOrder; % The internal dimensional order used by the .grid file
-        gridSize; % The total size of the gridded metadata.
+        file; % The name and path of the associated .grid file 
+        dims; % The dimensions recorded in the .grid file.
+        size; % The size of the gridded dataset organized by the .grid file.
         metadata; % The metadata along each dimension and data attributes
-        nSource;  % Number of data sources
-        dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        sources;  % The names and paths of the data sources.
+        limits; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+    end
+    
+    properties (Constant)
+        attributesName = 'attributes';
     end
     
 %     % File fields for data sources that are not actual properties of the grid object
@@ -41,11 +51,26 @@ classdef gridFile < handle
     
     % Constructor
     methods
-        function obj = gridFile( file )
-            obj.filepath = string( which(file) );
+        function obj = gridfile( file )
+            obj.file = string(which(file));
             obj.update;
         end
     end    
+    
+    
+    % Recent Additions
+    methods (Static)
+        checkMetadataField(value, dim);
+        checkMetadataStructure(meta);
+    end
+    
+    
+    
+    
+    
+    
+    
+    
     
     % Static user methods
     methods (Static)
