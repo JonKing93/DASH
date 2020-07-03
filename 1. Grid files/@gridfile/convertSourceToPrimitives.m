@@ -38,4 +38,9 @@ elseif isa(source, 'matSource')
     s.type = 'mat';
 end
 
+% Post-processing fields
+s.fill = source.fill;
+s.range = source.range;
+s.convert = source.convert;
+
 end

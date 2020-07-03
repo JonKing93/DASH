@@ -30,6 +30,8 @@ if size(meta,1) ~= size(obj.meta.(dim),1)
 end
 
 % Update the field and write to file
+d = strcmp(obj.dim, dim);
+obj.isdefined(d) = true;
 obj.meta.(dim) = meta;
 obj.save;
 
