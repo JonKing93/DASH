@@ -101,7 +101,6 @@ maxLength = zeros(1, nField);
 dimLimit = NaN(nDim, 2, 0);
             
 % Create the initial .grid file.
-valid = true;       % A marker that the file is not corrupted
 % dims              % The internal dimension order in the .grid file
 % gridSize;         % The size of each dimension
 % isdefined         % Whether a dimension has defined metadata
@@ -110,8 +109,8 @@ valid = true;       % A marker that the file is not corrupted
 % fieldLength       % Length of the primitive arrays for each source
 % maxLength         % Length of the padded primitive arrays in the .grid file
 % dimLimit          % The index limits of each data source along each dimension (nDim x 2 x nSource)
-save( filename, '-mat', 'valid', 'dims', 'gridSize', 'isdefined', ...
-      'metadata', 'source', 'fieldLength', 'maxLength', 'dimLimit' );
+save( filename, '-mat', 'dims', 'gridSize', 'isdefined', 'metadata', ...
+      'source', 'fieldLength', 'maxLength', 'dimLimit' );
 
 % Return grid object as output
 grid = gridfile( filename );

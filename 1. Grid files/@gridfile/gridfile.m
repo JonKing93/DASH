@@ -82,19 +82,33 @@ classdef gridfile < handle
     % Constructor
     methods
         function[obj] = gridfile( file )
-        warning('This constructor is only for testing!!!');
-        obj.file = string(which(file));
-        m = matfile(obj.file);
-        obj.dims = m.dims;
-        obj.size = m.gridSize;
-        obj.isdefined = m.isdefined;
-        obj.meta = m.metadata;
-        obj.source = m.source;
-        obj.fieldLength = m.fieldLength;
-        obj.maxLength = m.maxLength;
-        obj.dimLimit = m.dimLimit;
+            %% Creates a gridfile object for a saved .grid file.
+            %
+            % obj = gridfile( filename )
+            % Finds a .grid file with the specified name on the active path
+            % and returns an associated gridfile object.
+            %
+            % obj = gridfile( fullname )
+            % Returns a gridfile obejct for a .grid file with the specified
+            % full file name (including path).
+            %
+            % ----- Inputs -----
+            %
+            % filename: A file name. A string.
+            %
+            % fullname: A full file name (including path). A string.
+            %
+            % ----- Outputs -----
+            %
+            % obj: A gridfile object for the specified .grid file.
+            
+            % Check the input is a file name
+            dash.assertStrFlag(file, "file");
+            obj.file = dash.checkFileExists(file);
+            
+            % Fill the fields
+            obj.update;
         end
     end
-            
     
 end
