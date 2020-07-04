@@ -29,9 +29,14 @@ if size(meta,1) ~= size(obj.meta.(dim),1)
     error('The new %s metadata for .grid file %s must have %.f rows.', dim, obj.file, size(obj.meta.(dim),1));
 end
 
-% Update the field and write to file
+% The dimension has defined metadata
 d = strcmp(obj.dim, dim);
 obj.isdefined(d) = true;
+
+% Update metadata, write to file
+if iscellstr(meta) %#ok<ISCLSTR>
+    meta = string(meta);
+end
 obj.meta.(dim) = meta;
 obj.save;
 

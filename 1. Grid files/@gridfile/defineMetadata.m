@@ -56,6 +56,9 @@ for v = 2:2:nargin
     end
     
     % Add to the output metadata structure
+    if iscellstr(value) %#ok<ISCLSTR>
+        value = string(value);
+    end
     meta.(varargin{v-1}) = value;
 end
 
