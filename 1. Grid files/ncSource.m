@@ -1,6 +1,10 @@
 classdef ncSource < dataSource
     %% Implements a NetCDF data source
     
+    properties
+        nDims; % The number of defined dimensions for the variable in the netCDF
+    end
+    
     methods
         % Constructor
         function obj = ncSource(file, var, dims, fill, range, convert)
@@ -26,6 +30,7 @@ classdef ncSource < dataSource
             [~,v] = ismember(obj.var, fileVariables);
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
+            obj.nDims = numel(info.Variables(v).Dimensions);
         end
         
         % Read from NetCDF
