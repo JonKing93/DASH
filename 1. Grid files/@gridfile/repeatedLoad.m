@@ -4,7 +4,8 @@ function[X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources
 % when building state vector ensembles, by saving and returning pre-built
 % dataSource objects. This is a low level method. It provides little error
 % checking and is not intended for users. For a user-friendly method
-% see "gridfile.load".
+% see "gridfile.load". It may be useful to call "gridfile.review" before
+% using this method for repeated loads.
 %
 % [X, meta, sources] = obj.repeatedLoad(inputOrder, inputIndices, sources)
 %
@@ -19,7 +20,8 @@ function[X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources
 %
 % sources: A cell vector with an element for each data source in the .grid
 %    file. May contain pre-built dataSource objects to hasten repeated
-%    loads. Use an empty array if not performing repeated loads.
+%    loads (see gridfile.review). Use an empty array if not performing
+%    repeated loads.
 %
 % ----- Outputs -----
 %
@@ -65,9 +67,7 @@ useSource = find(~tooLow & ~tooHigh);
 % pre-built object.
 for s = 1:numel(useSource)
     if isempty(sources) || isempty(sources{useSource(s)})
-        [type, file, var, unmergedDims] = obj.collectPrimitives(["type","file","var","unmergedDims"], useSource(s));
-        unmerged = gridfile.commaDelimitedToString( unmergedDims );
-        sources{useSource(s)} = dataSource.new( type, file, var, unmerged );
+        sources{useSource(s)} = obj.buildSources(useSource(s));
     end
     source = sources{useSource(s)};    
     

@@ -65,6 +65,7 @@ classdef gridfile < handle
         updateMetadataField(obj, dim, meta);
         sources = buildSources(obj, s);
         [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
+        sources = review(obj);
     end
     
     % Static user methods
