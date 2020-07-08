@@ -47,7 +47,7 @@ if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
 elseif ~islogical(overwrite) || ~isscalar(overwrite)
     error('overwrite must be a scalar logical.');
 end
-gridfile.checkMetadataStructure( meta );
+gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
 
 % Ensure the file name has a .grid extension
 filename = char( filename );

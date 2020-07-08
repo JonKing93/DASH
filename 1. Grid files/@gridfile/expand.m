@@ -24,7 +24,7 @@ obj.update;
 % Error check
 dash.checkStrFlag({dim}, "dim");
 if ~ismember(dim, obj.dims)
-    error('%s is not a dimension recognized by .grid file %s.', dim, obj.file);
+    error('"%s" is not a dimension recognized by .grid file %s. Recognized dimensions are %s', dim, obj.file, gridfile.dimsErrorString(obj.dims));
 end
 obj.checkMetadataField(meta, dim);
 

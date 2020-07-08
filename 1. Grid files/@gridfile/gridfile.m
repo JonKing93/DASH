@@ -11,6 +11,7 @@ classdef gridfile < handle
     %   new - Initializes a new .grid file.
     %   add - Adds a data source to a .grid file.
     %   metadata - Returns the metadata for a .grid file.
+    %   load - Loads values from the data sources organized by the .grid file
     % 
     % *** Advanced ***
     % gridFile Methods:
@@ -45,12 +46,13 @@ classdef gridfile < handle
     % Static utilities
     methods (Static)
         checkMetadataField( meta, dim );
-        checkMetadataStructure( meta );
+        checkMetadataStructure( meta, dims, errorString );
         tf = hasDuplicateRows(meta);
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
         dims = commaDelimitedToString(dims);
         X = padPrimitives(X, maxCol);
+        str = dimsErrorString(dims);
     end
     
     % Object utilities

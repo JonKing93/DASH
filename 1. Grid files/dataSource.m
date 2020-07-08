@@ -79,6 +79,7 @@ classdef (Abstract) dataSource
         %
         % X: The read values.
         
+        
             % Preallocate
             nMerged = numel(obj.mergedDims);
             nUnmerged = numel(obj.unmergedDims);

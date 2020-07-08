@@ -1,7 +1,16 @@
-function[] = checkMetadataStructure( meta )
+function[] = checkMetadataStructure( meta, dims, errorString )
 %% Checks that a dimensional metadata structure is valid.
 %
-% gridfile.checkMetadataStructure( meta )
+% gridfile.checkMetadataStructure( meta, dims )
+%
+% ----- Inputs -----
+%
+% meta: A metadata structure being tested.
+%
+% dims: The dimension names allowed in the metadata.
+%
+% errorString: An identifier for the allowed dimension names for use in an
+%    error message.
 
 % Scalar struct
 if ~isscalar(meta) || ~isstruct(meta)
@@ -10,9 +19,9 @@ end
 
 % Recognized field names
 metaFields = string(fields(meta));
-allowed = ismember(metaFields, dash.dimensionNames);
+allowed = ismember(metaFields, dims);
 if any( ~allowed )
-    error('The field "%s" in meta is not allowed. Only recognized dimension names are allowed as field names in meta. (See dash.dimensionNames)', metaFields(find(~allowed,1)) );
+    error('Only %s (%s) are allowed as field names in meta.', errorString, gridfile.dimsErrorString(dims) );
 end
 
 % Metadata values

@@ -79,11 +79,11 @@ end
 % dims. It also has information on the size of the merged / unmerged data.
 source = dataSource.new(type, file, var, dims, fill, range, convert);
 
-% Check that all dims are recognized by the grid. Any undefined dims must
-% be trailing singletons
+% Check that all dims are recognized by the grid. Any dims with undefined
+% .grid metadata must be trailing dimensions in the data source.
 recognized = ismember(dims, obj.dims);
 if any(~recognized)
-    error('Element %.f in dims (%s) is not a dimension recognized by this gridfile. See <location>.', find(~recognized,1), dims(find(~recognized,1)) );
+    error('Element %.f in dims (%s) is not a dimension recognized by this gridfile. Recognized dimensions are %s.', find(~recognized,1), dims(find(~recognized,1)), gridfile.dimsErrorString(obj.dims) );
 end
 
 ts1 = max( [2, find(source.mergedSize~=1,1,'last')+1] );
@@ -91,12 +91,12 @@ trailingDims = source.mergedDims( ts1:end );
 defined = ismember(dims, obj.dims(obj.isdefined));
 trailing = ismember(dims, trailingDims);
 if any(~defined & ~trailing)
-    error('The %s dimension has no defined metadata in the .grid file, but is not a trailing singleton in the data source.', dims(find(~defined&~trailing,1)) );
+    error('The %s dimension has no defined metadata in the .grid file, but is not a trailing singleton dimension in the data source.', dims(find(~defined&~trailing,1)) );
 end
 
 % Error check the metadata. Require values for non-singleton grid
 % dimensions and non-trailing dimensions in the source data.
-gridfile.checkMetadataStructure(meta);
+gridfile.checkMetadataStructure(meta, obj.dims(obj.isdefined), "dimensions with defined metadata in the .grid file");
 metaFields = string(fields(meta));
 gridRequired = obj.dims( obj.size~=1 );
 sourceRequired = source.mergedDims(1:ts1-1);

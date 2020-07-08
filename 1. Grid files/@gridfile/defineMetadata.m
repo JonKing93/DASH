@@ -27,21 +27,16 @@ if mod(nDim,1)~=0
 end
 
 % Get rcognized dimension names. Track user dimensions. Initialize output
-allDims = dash.dimensionNames;
-usedDims = NaN(nDim,1);
+userDims = strings(nDim,1);
 meta = struct();
 
-% Error check the user dimensions names. Prevent duplicates
+% Prevent duplicate dimension names
 for v = 1:2:nargin-1
     dash.assertStrFlag( varargin{v}, sprintf("Input %.f",v) );
-    
-    [recognized, d] = ismember( varargin{v}, allDims );
-    if ~recognized
-        error('Input %.f ("%s") is not a recognized dimension name. See dash.dimensionNames for a list of recognized data dimension names.', v, varargin{v});
-    elseif ismember(d, usedDims)
+    if ismember( varargin{v}, userDims )
         error('Dimension name "%s" is specified multiple times.', varargin{v});
     end
-    usedDims((v+1)/2) = d;
+    userDims((v+1)/2) = string(varargin{v});
 end
 
 % Error check the input metadata values
