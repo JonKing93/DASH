@@ -90,11 +90,8 @@ end
 
 % Error check the dimensions
 dash.assertStrList(dims, "dims");
-defined = strcmp(dims, obj.dims(obj.isdefined));
-if any(~defined)
-    bad = find(~defined,1);
-    error('Element %.f of dims (%s) is not a dimension with defined metadata in .grid file %s. Only dimensions with defined metadata (%s) are allowed.', bad, dims(bad), obj.file, gridfile.dimsErrorString(obj.dims(obj.isdefined)) );
-elseif numel(dims) < numel(unique(dims))
+obj.checkAllowedDims(dims, true);
+if numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');
 end
 

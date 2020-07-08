@@ -81,10 +81,7 @@ source = dataSource.new(type, file, var, dims, fill, range, convert);
 
 % Check that all dims are recognized by the grid. Any dims with undefined
 % .grid metadata must be trailing dimensions in the data source.
-recognized = ismember(dims, obj.dims);
-if any(~recognized)
-    error('Element %.f in dims (%s) is not a dimension recognized by this gridfile. Recognized dimensions are %s.', find(~recognized,1), dims(find(~recognized,1)), gridfile.dimsErrorString(obj.dims) );
-end
+obj.checkAllowedDims(dims);
 
 ts1 = max( [2, find(source.mergedSize~=1,1,'last')+1] );
 trailingDims = source.mergedDims( ts1:end );

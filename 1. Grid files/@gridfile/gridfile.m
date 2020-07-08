@@ -61,6 +61,7 @@ classdef gridfile < handle
         save(obj);
         varargout = collectPrimitives(obj, fields, sources);
         match = findFileSources(obj, file);
+        checkAllowedDims(obj, dims, requireDefined);
     end
     
     % Static user methods

@@ -18,10 +18,8 @@ function[] = rewriteMetadata( obj, dim, meta )
 obj.update;
 
 % Error check
-dash.checkStrFlag({dim}, "dim");
-if ~ismember(dim, obj.dims)
-    error('%s is not a dimension recognized by .grid file %s.', dim, obj.file);
-end
+dash.assertStrFlag(dim, "dim");
+obj.checkAllowedDims(dim);
 obj.checkMetadataField(meta, dim);
 
 % Check the new metadata is the correct size
@@ -29,7 +27,7 @@ if size(meta,1) ~= size(obj.meta.(dim),1)
     error('The new %s metadata for .grid file %s must have %.f rows.', dim, obj.file, size(obj.meta.(dim),1));
 end
 
-% The dimension has defined metadata
+% Mark that dimension has defined metadata
 d = strcmp(obj.dim, dim);
 obj.isdefined(d) = true;
 

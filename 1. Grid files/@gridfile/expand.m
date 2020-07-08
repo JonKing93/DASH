@@ -22,10 +22,8 @@ function[] = expand( obj, dim, meta )
 obj.update;
 
 % Error check
-dash.checkStrFlag({dim}, "dim");
-if ~ismember(dim, obj.dims)
-    error('"%s" is not a dimension recognized by .grid file %s. Recognized dimensions are %s', dim, obj.file, gridfile.dimsErrorString(obj.dims));
-end
+dash.assertStrFlag(dim, "dim");
+obj.checkAllowedDims(dim);
 obj.checkMetadataField(meta, dim);
 
 % Check that the dimension has defined metadata in the .grid file.
