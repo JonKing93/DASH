@@ -61,6 +61,9 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % meta: The dimensional metadata for the loaded data grid and any
 %    non-dimensional data attributes.
 
+% ***Note: This method is mostly an error checker for user inputs. Most of
+% the actual work is done by the "repeatedLoad" method.
+
 % Update the object in case the file changed
 obj.update;
 
@@ -158,85 +161,8 @@ else
     end
 end
 
-% Preallocate indices for all dimensions, the size of the output grid, and
-% the dimension limits of the requested values, and the output metadata
-nDims = numel(obj.dims);
-indices = cell(nDims, 1);
-outputSize = NaN(1, nDims);
-loadLimit = NaN(nDims, 2); 
-meta = obj.meta;
+% Load the values. The "load" method doesn't actually make repeated load
+% operations, so use a placeholder dataSource array.
+[X, meta] = obj.repeatedLoad(inputOrder, inputIndices, []);
 
-% Get indices for all .grid dimensions
-indices(inputOrder) = inputIndices;
-for d = 1:nDims
-    if isempty(indices{d})
-        indices{d} = 1:obj.size(d);
-    end
-    
-    % Determine the size of the dimension, and dimensions limits
-    outputSize(d) = numel(indices{d});
-    loadLimit(d,:) = [min(indices{d}), max(indices{d})];
-    
-    % Limit the metadata to these indices
-    meta.(obj.dims(d)) = meta.(obj.dims(d))(indices{d},:);
-end
-
-% Preallocate the output
-X = NaN( outputSize );
-
-% Check each data source to see if it contains any requested data
-tooLow = any(all(loadLimit < obj.dimLimit, 2), 1);
-tooHigh = any(all(loadLimit > obj.dimLimit, 2), 1);
-useSource = find(~tooLow & ~tooHigh);
-
-% Build a data source object for each source with required data
-[type, file, var, unmergedDims] = obj.collectPrimitives(["type","file","var","unmergedDims"], useSource);
-for s = 1:numel(useSource)
-    unmerged = gridfile.commaDelimitedToString( unmergedDims(s) );
-    source = dataSource.new( type(s), file(s), var(s), unmerged );
-    
-    % Preallocate the location of requested data relative to the source
-    % grid, and relative to the output grid
-    nMerged = numel(source.mergedDims);
-    sourceIndices = cell(1, nMerged);
-    outputIndices = repmat({':'}, [1,nDims]);
-    
-    % Get the .grid dimension indices covered by the data source
-    for d = 1:nDims
-        limit = obj.dimLimit(d,:,useSource(s));
-        dimIndices = limit(1):limit(2);
-        
-        % Get the indices of the requested data relative to the source grid
-        % and the output grid
-        [ismem, sourceDim] = ismember(obj.dims(d), source.mergedDims);
-        if ismem
-            [~, loc] = ismember( indices{d}, dimIndices );
-            sourceIndices{sourceDim} = loc(loc~=0);
-            [~, outputIndices{d}] = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
-        end
-    end
-    
-    % Load the data from the data source
-    Xsource = source.read( sourceIndices );
-    
-    % Permute to match the order of the .grid dimensions. Add to output
-    dimOrder = 1:nDims;
-    [~, gridOrder] = ismember( obj.dims, source.mergedDims );
-    gridOrder(gridOrder==0) = dimOrder(~ismember(dimOrder,gridOrder));
-    X(outputIndices{:}) = permute(Xsource, gridOrder);
-end
-
-% Permute to match the user's specified dimension order
-dimOrder = 1:nDims;
-inputOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
-X = permute(X, inputOrder);
-meta = orderfields(meta, inputOrder);
-dims = obj.dims(inputOrder);
-
-% Remove any undefined singleton dimensions from the data and the metadata
-isdefined = obj.isdefined(inputOrder);
-order = [find(isdefined), find(~isdefined)];
-X = permute(X, order);
-meta = rmfield( meta, dims(~isdefined) );
-    
 end

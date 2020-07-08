@@ -64,6 +64,7 @@ classdef gridfile < handle
         match = findFileSources(obj, file);
         checkAllowedDims(obj, dims, requireDefined);
         updateMetadataField(obj, dim, meta);
+        [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
     end
     
     % Static user methods
@@ -82,7 +83,6 @@ classdef gridfile < handle
         rewriteMetadata( obj, dim, meta );
         renameSource(obj, name, newname);
         remove( obj, file, var );
-        [X, sources] = repeatedLoad(obj, dims, inputIndices, sources)
     end
     
     % Constructor
