@@ -54,13 +54,7 @@ if gridfile.hasDuplicateRows(meta)
     error('The new %s metadata duplicates rows in the existing %s metadata in .grid file %s.', dim, dim, obj.file);
 end
 
-% Update the .grid file fields and save to file
-if iscellstr(meta) %#ok<ISCLSTR>
-    meta = string(meta);
-end
-obj.meta.(dim) = meta;
-d = strcmp(dim, obj.dims);
-obj.gridSize(d) = size(meta,1);
-obj.save;
+% Update the metadata
+obj.updateMetadataField(dim, meta);
 
 end

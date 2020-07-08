@@ -79,8 +79,7 @@ gridSize = NaN(1,nDim);
 % dimensions with undefined metadata.
 for d = 1:nDim
     if isfield(meta, dims(d))
-        metadata.(dims(d)) = meta.(dims(d));
-        gridSize(d) = size( meta.(dims(d)), 1 );
+        [metadata.(dims(d)), gridSize(d)] = gridfile.processMetadata(meta.(dims(d)));
         isdefined(d) = true;
     else
         metadata.(dims(d)) = NaN;

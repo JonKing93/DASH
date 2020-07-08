@@ -53,6 +53,7 @@ classdef gridfile < handle
         dims = commaDelimitedToString(dims);
         X = padPrimitives(X, maxCol);
         str = dimsErrorString(dims);
+        [meta, siz] = processMetadata(meta);
     end
     
     % Object utilities
@@ -62,6 +63,7 @@ classdef gridfile < handle
         varargout = collectPrimitives(obj, fields, sources);
         match = findFileSources(obj, file);
         checkAllowedDims(obj, dims, requireDefined);
+        updateMetadataField(obj, dim, meta);
     end
     
     % Static user methods
