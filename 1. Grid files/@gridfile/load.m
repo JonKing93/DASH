@@ -6,8 +6,12 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % each dimension of the returned data grid. The order of the metadata
 % fields is the dimension order of the output data grid.
 %
+% [X, meta] = obj.load( dims )
+% Returns the data grid in the specified dimension order.
+%
 % [X, meta] = obj.load( dims, indices )
-% Only returns data at requested indices for specified dimensions.
+% Only returns data at requested indices for specified dimensions. Loads
+% all elements of remaining dimensions.
 %
 % [X, meta] = obj.load(dims, start)
 % Specify the index at which to start loading data in specified dimensions.
@@ -57,6 +61,9 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % meta: The dimensional metadata for the loaded data grid and any
 %    non-dimensional data attributes.
 
+% Update the object in case the file changed
+obj.update;
+
 % Defaults for unset variables
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims(obj.isdefined);
@@ -86,7 +93,7 @@ dash.assertStrList(dims, "dims");
 defined = strcmp(dims, obj.dims(obj.isdefined));
 if any(~defined)
     bad = find(~defined,1);
-    error('Element %.f of dims (%s) is not a dimension with defined metadata in .grid file %s.', bad, dims(bad), obj.file);
+    error('Element %.f of dims (%s) is not a dimension with defined metadata in .grid file %s. Only dimensions with defined metadata (%s) are allowed.', bad, dims(bad), obj.file, gridfile.dimsErrorString(obj.dims(obj.isdefined)) );
 elseif numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');
 end
@@ -218,9 +225,17 @@ for s = 1:numel(useSource)
     X(outputIndices{:}) = permute(Xsource, gridOrder);
 end
 
+% Permute to match the user's specified dimension order
+dimOrder = 1:nDims;
+inputOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
+X = permute(X, inputOrder);
+meta = orderfields(meta, inputOrder);
+dims = obj.dims(inputOrder);
+
 % Remove any undefined singleton dimensions from the data and the metadata
-order = [find(obj.isdefined), find(~obj.isdefined)];
+isdefined = obj.isdefined(inputOrder);
+order = [find(isdefined), find(~isdefined)];
 X = permute(X, order);
-meta = rmfield( meta, obj.dims(~obj.isdefined) );
+meta = rmfield( meta, dims(~isdefined) );
     
 end
