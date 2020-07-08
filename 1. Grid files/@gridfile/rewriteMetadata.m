@@ -27,7 +27,7 @@ if size(meta,1) ~= size(obj.meta.(dim),1)
     error('The new %s metadata for .grid file %s must have %.f rows.', dim, obj.file, size(obj.meta.(dim),1));
 end
 
-% Update the metadata
+% Update the metadata. Convert from cellstring. Update isdefined.
 obj.updateMetadataField(dim, meta);
 
 end

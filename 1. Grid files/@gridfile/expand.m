@@ -54,7 +54,7 @@ if gridfile.hasDuplicateRows(meta)
     error('The new %s metadata duplicates rows in the existing %s metadata in .grid file %s.', dim, dim, obj.file);
 end
 
-% Update the metadata
+% Update the metadata. Convert from cellstring. Update size.
 obj.updateMetadataField(dim, meta);
 
 end
