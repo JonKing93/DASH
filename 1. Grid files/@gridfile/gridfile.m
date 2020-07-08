@@ -50,7 +50,6 @@ classdef gridfile < handle
         tf = hasDuplicateRows(meta);
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
-        dims = commaDelimitedToString(dims);
         X = padPrimitives(X, maxCol);
         str = dimsErrorString(dims);
         [meta, siz] = processMetadata(meta);
@@ -64,6 +63,7 @@ classdef gridfile < handle
         match = findFileSources(obj, file);
         checkAllowedDims(obj, dims, requireDefined);
         updateMetadataField(obj, dim, meta);
+        sources = buildSources(obj, s);
         [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
     end
     
