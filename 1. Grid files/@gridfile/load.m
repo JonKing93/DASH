@@ -212,9 +212,7 @@ for s = 1:numel(useSource)
         if ismem
             [~, loc] = ismember( indices{d}, dimIndices );
             sourceIndices{sourceDim} = loc(loc~=0);
-            outputIndices{d} = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
-        else
-            outputIndices{d} = dimIndices;
+            [~, outputIndices{d}] = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
         end
     end
     
@@ -223,8 +221,8 @@ for s = 1:numel(useSource)
     
     % Permute to match the order of the .grid dimensions. Add to output
     dimOrder = 1:nDims;
-    [~, gridOrder] = ismember( source.mergedDims, obj.dims );
-    gridOrder(end+1:nDims) = dimOrder(~ismember(dimOrder, gridOrder));
+    [~, gridOrder] = ismember( obj.dims, source.mergedDims );
+    gridOrder(gridOrder==0) = dimOrder(~ismember(dimOrder,gridOrder));
     X(outputIndices{:}) = permute(Xsource, gridOrder);
 end
 

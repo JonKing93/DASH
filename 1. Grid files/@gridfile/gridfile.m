@@ -82,6 +82,7 @@ classdef gridfile < handle
         rewriteMetadata( obj, dim, meta );
         renameSource(obj, name, newname);
         remove( obj, file, var );
+        [X, sources] = repeatedLoad(obj, dims, inputIndices, sources)
     end
     
     % Constructor

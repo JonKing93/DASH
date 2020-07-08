@@ -120,11 +120,15 @@ classdef (Abstract) dataSource
             % Load the values from the data source
             X = obj.load( loadIndices );
 
-            % Permute dimensions being merged to the front 
+            % Track which dimensions become singletons via merging
+            remove = NaN(1, nUnmerged-nMerged);
+            
+            % Permute dimensions being merged to the front
             for d = 1:nMerged
                 order = 1:nUnmerged;
                 isdim = strcmp(obj.unmergedDims, obj.mergedDims(d));
                 order = [order(isdim), order(~isdim)];
+                isdim = find(isdim);
                 X = permute(X, order);
 
                 % Reshape dimensions being merged into a single dimension. Use
@@ -136,23 +140,30 @@ classdef (Abstract) dataSource
                 newSize = [prod(siz(1:nDim)), ones(1,nDim-1), siz(nDim+1:end)];
                 X = reshape(X, newSize);
 
-                % Unpermute
+                % Unpermute and note if any dimensions should be removed
                 [~, reorder] = sort(order);
                 X = permute( X, reorder );
+                
+                k = find(isnan(remove), 1, 'first');
+                remove(k:d+nDim-1) = isdim(2:end);
 
                 % Convert data indices for unmerged dimensions to linear indices for
                 % the merged dimension
                 siz = loadSize(isdim);
-                if sum(isdim) > 1
+                if numel(isdim) > 1
                     keepElements{d} = sub2ind(siz, dataIndices{isdim});
                 else
                     keepElements{d} = dataIndices{isdim};
                 end
             end
 
-            % Remove singletons resulting from the merge. Remove any unrequested data
-            % elements that were loaded to fulfill equal spacing requirements
-            X = squeeze(X);
+            % Remove singletons resulting from the merge. 
+            dimOrder = 1:nUnmerged;
+            order = [dimOrder(~ismember(dimOrder,remove)), remove];
+            X = permute(X, order);
+            
+            % Remove any unrequested data elements that were loaded to
+            % fulfill equal spacing requirements
             X = X(keepElements{:});
             
             % Convert fill value to NaN
