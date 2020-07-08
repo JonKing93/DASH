@@ -110,15 +110,11 @@ classdef (Abstract) dataSource
                 % Determine the location of requested data elements in the loaded data
                 % grid.
                 start = loadIndices{d}(1);
-                stride = loadIndices{d}(2) - loadIndices{d}(1);
+                stride = 1;
+                if numel(loadIndices{d})>1
+                    stride = loadIndices{d}(2) - loadIndices{d}(1);
+                end
                 dataIndices{d} = ((unmergedIndices{d}-start) / stride) + 1;
-            end
-
-            % Convert unmerged data indices into linear indices for the merged dimensions.
-            for d = 1:nMerged
-                isdim = find( strcmp(obj.unmergedDims, obj.mergedDims(d)) );
-                siz = loadSize(isdim);
-                keepElements{d} = sub2ind(siz, dataIndices{isdim});
             end
 
             % Load the values from the data source
@@ -135,6 +131,8 @@ classdef (Abstract) dataSource
                 % singletons for secondary merged dimensions to preserve dimension order
                 siz = size(X);
                 nDim = numel(isdim);
+                siz(end+1:nDim) = 1;
+                
                 newSize = [prod(siz(1:nDim)), ones(1,nDim-1), siz(nDim+1:end)];
                 X = reshape(X, newSize);
 
@@ -145,7 +143,11 @@ classdef (Abstract) dataSource
                 % Convert data indices for unmerged dimensions to linear indices for
                 % the merged dimension
                 siz = loadSize(isdim);
-                keepElements{d} = sub2ind(siz, dataIndices{isdim});
+                if sum(isdim) > 1
+                    keepElements{d} = sub2ind(siz, dataIndices{isdim});
+                else
+                    keepElements{d} = dataIndices{isdim};
+                end
             end
 
             % Remove singletons resulting from the merge. Remove any unrequested data

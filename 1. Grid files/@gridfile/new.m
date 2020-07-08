@@ -91,9 +91,11 @@ if ~isempty(attributes)
 end
 
 % Initialize the data source information
-source = struct('file',[],'var',[],'dataType',[],'unmergedDims',[],...
-                'unmergedSize',[],'merge',[],'mergedDims',[],...
-                'mergedSize',[]);
+props = properties('dataSource');
+pre = cell((numel(props)+1)*2, 1);
+pre(1:2:end-3) = props;
+pre{end-1} = 'type';
+source = struct( pre{:} );
 nField = numel(fields(source));
 fieldLength = NaN(0, nField);
 maxLength = zeros(1, nField);

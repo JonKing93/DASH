@@ -80,6 +80,7 @@ if ~exist('stride','var') || isempty(stride)
 end
 
 % Parse the input style: indices vs start,count,stride
+haveIndices = false;
 if iscell(start)
     haveIndices = true;
     inputIndices = start;
@@ -110,9 +111,9 @@ if ~haveIndices
     for i = 1:numel(input)
         dash.assertNumericVectorN( input{i}, nInputDims, name(i) );
         dash.assertPositiveIntegers( input{i}, false, allowInf(i), name(i) );
-        if any(input{i} > obj.size(inputOrder))
+        if any( input{i}>obj.size(inputOrder) & ~isinf(input{i}) )
             bad = find(input{i}>obj.size(inputOrder),1);
-            error('Element %.f of %s (%.f) is larger than the length of the %s dimension (%.f)', bad, names(i), start(bad), obj.dims(inputOrder(bad)), obj.size(inputOrder(bad)) );
+            error('Element %.f of %s (%.f) is larger than the length of the %s dimension (%.f)', bad, name(i), start(bad), obj.dims(inputOrder(bad)), obj.size(inputOrder(bad)) );
         end
     end
 
@@ -161,15 +162,15 @@ end
 % the dimension limits of the requested values, and the output metadata
 nDims = numel(obj.dims);
 indices = cell(nDims, 1);
-outputSize = NaN(nDims, 1);
+outputSize = NaN(1, nDims);
 loadLimit = NaN(nDims, 2); 
 meta = obj.meta;
 
-% Get indices for all defined .grid dimensions
+% Get indices for all .grid dimensions
 indices(inputOrder) = inputIndices;
 for d = 1:nDims
     if isempty(indices{d})
-        indices{d} = 1:definedSize(d);
+        indices{d} = 1:obj.size(d);
     end
     
     % Determine the size of the dimension, and dimensions limits
@@ -184,8 +185,8 @@ end
 X = NaN( outputSize );
 
 % Check each data source to see if it contains any requested data
-tooLow = any(all(loadLimit < grid.dimLimit, 2), 1);
-tooHigh = any(all(loadLimit > grid.dimLimit, 2), 1);
+tooLow = any(all(loadLimit < obj.dimLimit, 2), 1);
+tooHigh = any(all(loadLimit > obj.dimLimit, 2), 1);
 useSource = find(~tooLow & ~tooHigh);
 
 % Build a data source object for each source with required data
@@ -201,24 +202,29 @@ for s = 1:numel(useSource)
     outputIndices = repmat({':'}, [1,nDims]);
     
     % Get the .grid dimension indices covered by the data source
-    for d = 1:nMerged
-        gridDim = find(strcmp(source.mergedDims(d), grid.dims));
-        limit = grid.dimLimit(gridDim, :, useSource(s));
+    for d = 1:nDims
+        limit = obj.dimLimit(d,:,useSource(s));
         dimIndices = limit(1):limit(2);
         
-        % Get the indices of the data relative to the source grid and the
-        % output grid
-        [~, loc] = ismember( indices{gridDim}, dimIndices );
-        sourceIndices{d} = loc(loc~=0);
-        outputIndices{gridDim} = ismember( dimIndices(sourceIndices{d}), indices{gridDim} );
+        % Get the indices of the requested data relative to the source grid
+        % and the output grid
+        [ismem, sourceDim] = ismember(obj.dims(d), source.mergedDims);
+        if ismem
+            [~, loc] = ismember( indices{d}, dimIndices );
+            sourceIndices{sourceDim} = loc(loc~=0);
+            outputIndices{d} = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
+        else
+            outputIndices{d} = dimIndices;
+        end
     end
     
     % Load the data from the data source
     Xsource = source.read( sourceIndices );
     
     % Permute to match the order of the .grid dimensions. Add to output
+    dimOrder = 1:nDims;
     [~, gridOrder] = ismember( source.mergedDims, obj.dims );
-    gridOrder(end+1:nDims) = 1;
+    gridOrder(end+1:nDims) = dimOrder(~ismember(dimOrder, gridOrder));
     X(outputIndices{:}) = permute(Xsource, gridOrder);
 end
 

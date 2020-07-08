@@ -49,13 +49,15 @@ classdef ncSource < dataSource
             % Preallocate
             start = NaN(1, obj.nDims);
             count = NaN(1, obj.nDims);
-            stride = NaN(1, obj.nDims);
+            stride = ones(1, obj.nDims);
             
             % Convert indices to start, count, stride syntax
             for d = 1:numel(indices)
                 start(d) = indices{d}(1);
                 count(d) = numel(indices{d});
-                stride(d) = indices{d}(2) - indices{d}(1);
+                if numel(indices{d})>1
+                    stride(d) = indices{d}(2) - indices{d}(1);
+                end
             end
             
             % Load the data

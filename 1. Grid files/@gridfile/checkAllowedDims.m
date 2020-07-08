@@ -5,6 +5,7 @@ function[] = checkAllowedDims(obj, dims, requireDefined)
 if ~exist('requireDefined','var') || isempty(requireDefined)
     requireDefined = false;
 end
+dims = string(dims);
 
 % Check that the dims are all allowed names
 gridDims = obj.dims;

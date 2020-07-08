@@ -32,6 +32,7 @@ s.unmergedDims = gridfile.commaDelimitedDims( source.unmergedDims );
 s.mergedDims = gridfile.commaDelimitedDims( source.mergedDims );
 
 % Record whether this is an .nc or .mat data source
+s.type = '';
 if isa(source, 'ncSource')
     s.type = 'nc';
 elseif isa(source, 'matSource')

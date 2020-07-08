@@ -78,7 +78,7 @@ classdef gridfile < handle
         add(obj, type, file, var, dims, meta);
         expand(obj, dim, meta);
         info(obj);
-        load(obj, start, count, stride);
+        [X, meta] = load(obj, start, count, stride);
         rewriteMetadata( obj, dim, meta );
         renameSource(obj, name, newname);
         remove( obj, file, var );

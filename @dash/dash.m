@@ -19,7 +19,9 @@ classdef dash
         assertStrFlag(input, name);
         assertStrList(input, name);
         assertNumericVectorN(input, N, name);
-        assertPositiveIntegers(input, name);
+        assertPositiveIntegers(input, allowNaN, allowInf, name);
+        
+        indices = equallySpacedIndices(indices);
         
     end
     

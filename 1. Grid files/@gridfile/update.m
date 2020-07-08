@@ -9,12 +9,13 @@ if ~isfile(obj.file)
 end
 
 % Load the data in the .grid file
-m = load(obj.file);
+m = load(obj.file, '-mat');
 
 % Update the gridfile properties
-differentName = ["gridSize", "size"; "metadata","meta"];
+differentName = ["size", "gridSize"; "meta","metadata"];
 fileVariables = fields(m);
 props = string(properties('gridfile'));
+props(strcmp(props, 'file')) = [];
 for p = 1:numel(props)
     
     % Get the name of the file variable associated with the property
@@ -26,7 +27,7 @@ for p = 1:numel(props)
     
     % Check that the variable is in the file
     if ~ismember(variable, fileVariables)
-        error('%s does not contain the %s field.', obj.file, variable);
+        error('%s does not contain the "%s" field.', obj.file, variable);
     end
     
     % Update the property
