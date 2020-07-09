@@ -1,0 +1,72 @@
+defineMetadata
+    checkMetadataField
+        hasDuplicateRows
+new
+    checkMetadataStructure
+        checkMetadataField
+            hasDupicateRows
+        dimsErrorString
+    processMetadata
+    gridfile
+        update
+gridfile
+    update
+
+add
+    update
+    dataSource.new
+        dataSource
+        checkVariable
+    checkMetadataStructure
+        checkMetadataField
+            hasDuplicateRows
+    checkAllowedDims
+        dimsErrorString
+    convertSourceToPrimitives
+        commaDelimitedDims
+    save
+        update
+remove
+    update
+    findFileSources
+        collectPrimitives
+    save
+        update
+
+metadata
+    gridfile
+        update
+rewriteMetadata
+    update
+    checkMetadataField
+        hasDuplicateRows
+    checkAllowedDims
+        dimsErrorString
+    updateMetadataField
+        processMetadata
+        save
+            update
+expand
+    update
+    checkMetadataField
+        hasDuplicateRows
+    checkAllowedDims
+        dimsErrorString
+    updateMetadataField
+        processMetadata
+        save
+            update
+info
+
+load
+    update
+    checkAllowedDims
+        dimsErrorString
+    collectPrimitives
+    commaDelimitedToString
+    dataSource.new
+        dataSource
+        checkVariable
+    dataSource.read
+        dash.equallySpacedIndices
+        dataSource.load
