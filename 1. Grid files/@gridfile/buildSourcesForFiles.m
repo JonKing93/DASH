@@ -1,4 +1,4 @@
-function[sources] = buildSourcesForFiles(s, filenames)
+function[sources] = buildSourcesForFiles(obj, s, filenames)
 
 % Get the primitive values needed to build dataSource objects
 [type, var, dims, fill, range, convert] = ...
