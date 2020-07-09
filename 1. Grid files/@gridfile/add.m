@@ -27,7 +27,8 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %
 % file: The name of the data source file. A string. If only the file name is
 %    specified, the file must be on the active path. Use the full file name
-%    (including path) to add a file off the active path.
+%    (including path) to add a file off the active path. All file names
+%    must include the file extension.
 %
 % var: The name of the variable in the source file.
 %

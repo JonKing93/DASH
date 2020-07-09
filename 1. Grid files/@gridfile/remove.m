@@ -15,9 +15,10 @@ function[] = remove(obj, file, var)
 %
 % ----- Inputs -----
 %
-% file: A file name. A string.
+% file: A file name. A string. Must include the file extension.
 %
-% fullname: A full file name including path. A string.
+% fullname: A full file name including path. A string. Must include the
+%    file extension.
 %
 % var: The name of the variable in the source file. A string.
 
