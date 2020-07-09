@@ -48,42 +48,51 @@ classdef gridfile < handle
         checkMetadataField( meta, dim );
         checkMetadataStructure( meta, dims, errorString );
         tf = hasDuplicateRows(meta);
+        [meta, siz] = processMetadata(meta);
+        
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
         X = padPrimitives(X, maxCol);
+        
         str = dimsErrorString(dims);
-        [meta, siz] = processMetadata(meta);
     end
     
     % Object utilities
     methods
+        varargout = collectPrimitives(obj, fields, sources);
+        checkAllowedDims(obj, dims, requireDefined);
+        
         update(obj);
         save(obj);
-        varargout = collectPrimitives(obj, fields, sources);
-        match = findFileSources(obj, file);
-        checkAllowedDims(obj, dims, requireDefined);
         updateMetadataField(obj, dim, meta);
+
+        match = findFileSources(obj, file);
         sources = buildSources(obj, s);
-        [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
+        sources = buildSourcesForFiles(obj, s, filenames);
+        checkSourcesMatchGrid(obj, sources, index);
+
         sources = review(obj);
+        [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
     end
     
     % Static user methods
     methods (Static)
         meta = defineMetadata( varargin );
-        meta = metadata(file, includeUndefined);
         grid = new(filename, meta, attributes, overwrite);
+        meta = metadata(file, includeUndefined);
     end
     
     % User methods
     methods
         add(obj, type, file, var, dims, meta);
-        expand(obj, dim, meta);
-        info(obj);
-        [X, meta] = load(obj, start, count, stride);
-        rewriteMetadata( obj, dim, meta );
-        renameSource(obj, name, newname);
         remove( obj, file, var );
+        renameSources(obj, name, newname);
+
+        info(obj);
+        rewriteMetadata( obj, dim, meta );
+        expand(obj, dim, meta);
+        
+        [X, meta] = load(obj, start, count, stride);
     end
     
     % Constructor
