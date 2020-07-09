@@ -9,3 +9,7 @@
 
 # Matlab autosaves
 **.asv
+
+# Dash data file extensions
+**.grid
+**.ens
