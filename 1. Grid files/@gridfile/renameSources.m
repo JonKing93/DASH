@@ -44,6 +44,7 @@ nSource = size(obj.fieldLength,1);
 % Defaults and error checking for name
 if ~exist('name','var') || isempty(name)
     name = obj.collectPrimitives("file", 1:nSource);
+    name(isfile(name)) = [];
 end
 dash.assertStrList(name, "name");
 name = string(name);
@@ -52,7 +53,7 @@ name = string(name);
 nFile = numel(name);
 fileSources = false(nSource, nFile);
 for f = 1:nFile
-    fileSources(:,f) = findFileSources(name(f));
+    fileSources(:,f) = obj.findFileSources(name(f));
     if all( ~fileSources(:,f) )
         error('There are no data sources associated with file name %s in .grid file %s', name(f), obj.file);
     end
@@ -68,18 +69,15 @@ if numel(newname) ~= numel(name)
     error('newname must have one element for each element in name (%.f), but newname currently has %.f elements.', numel(name), numel(newname));
 end
 
-% Get the file name for empty newname elements
-empty = find(strcmp(newname, ""));
-for k = 1:numel(empty)
-    f = empty(k);
-    [~, file, ext] = fileparts( char(name(f)) );
-    filename = [file, ext];
-    newname(f) = which(filename);
-end
-
-% Check that each new file exists
+% Get the full new file names
 for f = 1:nFile
+    if strcmp(newname(f), "")
+        [~, file, ext] = fileparts( char(name(f)) );
+        newname(f) = [file, ext];
+    end
     newname(f) = which(newname(f));
+    
+    % Check that each new file exists
     if strcmp(newname(f),"") || ~isfile(newname(f))
         error('File %s cannot be found. Either it is not on the active path, or it does not exist.', newname(f));
     end
