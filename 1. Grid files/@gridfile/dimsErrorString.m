@@ -10,6 +10,7 @@ function[str] = dimsErrorString(dims)
 % ----- Ouputs -----
 %
 % str: A formatted string listing the dimensions.
+
 if numel(dims)==1
     str = sprintf('"%s"',dims);
 elseif numel(dims)==2
@@ -17,5 +18,6 @@ elseif numel(dims)==2
 else
     str = [sprintf('"%s", ', dims(1:end-1)), sprintf('and "%s"', dims(end))];
 end
+
 end
     
