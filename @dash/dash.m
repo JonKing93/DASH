@@ -23,6 +23,8 @@ classdef dash
         
         indices = equallySpacedIndices(indices);
         
+        str = errorStringList(strings);
+        
     end
     
 end
