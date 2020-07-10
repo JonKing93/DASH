@@ -3,8 +3,12 @@ function[] = checkMetadataField( meta, dim )
 % 
 % gridfile.checkMetadataField(meta, dim)
 %
-% meta: The metadata field
-% dim: The name of the dimension
+% ----- Input -----
+%
+% meta: The metadata field being error checked
+%
+% dim: The name of the dimension associated with the metadata field. (Used
+%    for error messages.)
 
 % Type
 if ~isnumeric(meta) && ~islogical(meta) && ~ischar(meta) && ...

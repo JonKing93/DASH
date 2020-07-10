@@ -1,5 +1,6 @@
 function[] = update(obj)
-%% Updates the current gridfile object to match an altered .grid file.
+%% Updates the current gridfile object to ensure it matches the values
+% stored in the associated .grid file.
 %
 % obj.update;
 

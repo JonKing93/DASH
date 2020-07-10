@@ -1,4 +1,8 @@
 classdef (Abstract) dataSource
+    %% Implements an object that can extract information from a data source
+    % file. dataSource is an abstract class. Concrete subclasses
+    % implement functionality for different types of data files. (For
+    % example, netCDF and .mat files).
     
     properties
         file;  % The file name
@@ -13,25 +17,49 @@ classdef (Abstract) dataSource
         range;   % A valid range for the data
         convert;  % A linear transformation to apply to the data.
     end
-    
-    % Fields that must be set by the subclass constructor
     properties (Constant, Hidden)
+        % Fields that must be set by the subclass constructor
         subclassResponsibilities = ["dataType", "unmergedSize"];
     end
     
     % Constructor and object methods.
     methods
         function[obj] = dataSource(file, var, dims, fill, range, convert)
-            %% Does constructor operations essential for any data source.
-            % Error check input strings. Checks source existence. Saves
-            % values.
+            %% Class constructor for a dataSource object. dataSource is an 
+            % abstract class, so this provides constructor operations necessary
+            % for any data source.
+            %
+            % obj = dataSource(file, var, dims, fill, range, convert)
+            %
+            % ----- Inputs -----
+            %
+            % file: The name of the data source file. A string. If only the file name is
+            %    specified, the file must be on the active path. Use the full file name
+            %    (including path) to add a file off the active path. All file names
+            %    must include the file extension.
+            %
+            % var: The name of the variable in the source file.
+            %
+            % dims: The order of the dimensions of the variable in the source file. A
+            %    string or cellstring vector.
+            %
+            % fill: A fill value. Must be a scalar. When data is loaded from the file, 
+            %    values matching fill are converted to NaN. 
+            %
+            % range: A valid range. A two element vector. The first element is the
+            %    lower bound of the valid range. The second elements is the upper bound
+            %    of the valid range. When data is loaded from the file, values outside
+            %    of the range are converted to NaN.
+            %
+            % convert: Applies a linear transformation of form: Y = aX + b
+            %    to loaded data. A two element vector. The first element specifies the
+            %    multiplicative constant (a). The second element specifieds the
+            %    additive constant (b).
             
             % Error check strings, vectors
             dash.assertStrFlag(file, "file");
             dash.assertStrFlag(var, "var");
-            if ~dash.isstrlist(dims)
-                error('dims must be a string vector or cellstring vector.');
-            end
+            dash.assertStrList(dims, "dims");
             file = dash.checkFileExists(file);
             
             % Error check the post-processing values
@@ -59,15 +87,25 @@ classdef (Abstract) dataSource
                         
         end        
         function[] = checkVariable( obj, fileVariables )
+            %% Returns an error message when a data source file does not contain
+            % the specified data source variable.
+            %
+            % obj.checkVariable(fileVariables);
+            %
+            % ----- Inputs -----
+            %
+            % fileVariables: A list a variables in the data source file. A
+            %    string vector or cellstring vector.
+            
             infile = ismember(obj.var, fileVariables);
             if ~infile
                 error('File %s does not contain a %s variable.', obj.file, obj.var);
-            end
-        end   
+            end    
+        end  
         function[X] = read( obj, mergedIndices )
         %% Reads values from a data source.
         %
-        % X = obj.read( indices )
+        % X = obj.read( mergedIndices )
         %
         % ----- Inputs -----
         %
@@ -77,8 +115,8 @@ classdef (Abstract) dataSource
         %
         % ----- Outputs -----
         %
-        % X: The read values.
-        
+        % X: The values read from the data source file. Dimensions are in
+        %    the order of the merged dimensions.
         
             % Preallocate
             nMerged = numel(obj.mergedDims);
@@ -187,6 +225,40 @@ classdef (Abstract) dataSource
     % Create new dataSource subclass
     methods (Static)
         function[source] = new(type, file, var, dims, fill, range, convert)
+            %% Creates a new dataSource object. dataSource is an abstract
+            % class, so this method routes to the constructor of the
+            % appropriate subclass.
+            %
+            % source = dataSource.new(type, file, var, dims, fill, range, convert)
+            %
+            % ----- Inputs -----
+            %
+            % type: The type of data source. A string. 
+            %    "nc": Use when the data source is a NetCDF file.
+            %    "mat": Use when the data source is a .mat file.
+            %
+            % file: The name of the data source file. A string. If only the file name is
+            %    specified, the file must be on the active path. Use the full file name
+            %    (including path) to add a file off the active path. All file names
+            %    must include the file extension.
+            %
+            % var: The name of the variable in the source file.
+            %
+            % dims: The order of the dimensions of the variable in the source file. A
+            %    string or cellstring vector.
+            %
+            % fill: A fill value. Must be a scalar. When data is loaded from the file, 
+            %    values matching fill are converted to NaN. 
+            %
+            % range: A valid range. A two element vector. The first element is the
+            %    lower bound of the valid range. The second elements is the upper bound
+            %    of the valid range. When data is loaded from the file, values outside
+            %    of the range are converted to NaN.
+            %
+            % convert: Applies a linear transformation of form: Y = aX + b
+            %    to loaded data. A two element vector. The first element specifies the
+            %    multiplicative constant (a). The second element specifieds the
+            %    additive constant (b).
             
             % Check the type is allowed
             if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat"])
@@ -246,7 +318,7 @@ classdef (Abstract) dataSource
         end
     end
     
-    % Subclass load values from data source
+    % Subclasses must load values from data source files
     methods (Abstract)
         X = load(obj, indices);
     end

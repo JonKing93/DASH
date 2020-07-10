@@ -2,7 +2,10 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 % Adds a data source to a .grid file.
 %
 % obj.add( type, file, var, dims, meta )
-% Add a data source.
+% Add a data source. Notes the type of data source (NetCDF vs .mat), the
+% name of the file, the name of the data variable in the file, the order of
+% the dimensions for the variable, and the metadata associated with each
+% dimension.
 %
 % obj.add( ..., 'fill', fill )
 % Specifies a fill value for the data source. When data is loaded from the
@@ -60,8 +63,8 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 obj.update;
 
 % Parse and error check the optional inputs (fill, range, convert)
-[fill, range, convert] = parseInputs( varargin, {'fill','validRange','convert'}, ...
-                                      {NaN, [-Inf, Inf], [1 0]}, {[],[],[]} );
+[fill, range, convert] = dash.parseInputs( varargin, {'fill','validRange','convert'}, ...
+                                      {NaN, [-Inf, Inf], [1 0]}, 5 );
 if ~isnumeric(fill) || ~isscalar(fill)
     error('fill must be a numeric scalar.');
 elseif ~isvector(range) || numel(range)~=2 || ~isnumeric(range)

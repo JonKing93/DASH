@@ -1,13 +1,23 @@
 classdef ncSource < dataSource
-    %% Implements a NetCDF data source
+    %% Implements a data source object that can read values from a netCDF file.
     
     properties
         nDims; % The number of defined dimensions for the variable in the netCDF
     end
     
     methods
-        % Constructor
         function obj = ncSource(file, var, dims, fill, range, convert)
+            %% Creates a new ncSource object.
+            %
+            % obj = ncSource(file, var, dims, fill, range, convert)
+            %
+            % ----- Inputs -----
+            %
+            % See the documentation in dataSource.new
+            %
+            % ----- Outputs -----
+            %
+            % obj: A new ncSource object
             
             % First call the data source constructor for initial error
             % checking and to save the input args
@@ -31,9 +41,7 @@ classdef ncSource < dataSource
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
-        end
-        
-        % Read from NetCDF
+        end        
         function[X] = load(obj, indices)
             %% Loads data from a netCDF data source.
             %
@@ -45,6 +53,10 @@ classdef ncSource < dataSource
             %    indices to load for a dimension. Indices must be equally
             %    spaced and monotonically increasing. Dimensions must be in
             %    the order of the unmerged dimensions.
+            %
+            % ----- Outputs -----
+            %
+            % X: The data located at the requested indices.
             
             % Preallocate
             start = NaN(1, obj.nDims);

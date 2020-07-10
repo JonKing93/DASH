@@ -1,6 +1,15 @@
 function[] = checkSourcesMatchGrid(obj, sources, index)
-%% This checks that the size and dataType of specified data sources match
+%% Checks that the size and dataType of specified data sources match
 % match the values recorded in the .grid file.
+%
+% obj.checkSourcesMatchGrid(sources, index)
+%
+% ----- Inputs -----
+%
+% sources: A cell array of dataSource objects.
+%
+% index: The linear index of each dataSource object in the .grid file
+%    sources.
 
 % Get the recorded values
 [siz, dataType] = obj.collectPrimitives(["mergedSize","dataType"], index);

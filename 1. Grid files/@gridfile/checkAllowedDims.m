@@ -1,5 +1,17 @@
 function[] = checkAllowedDims(obj, dims, requireDefined)
 %% Checks that input dimensions are allowed for a gridfile operation.
+%
+% obj.checkAllowedDims(dims, requireDefined)
+% Checks that input dimensions are recognized by a .grid file and
+% optionally checks that they are also dimensions with defined metadata.
+%
+% ----- Inputs -----
+%
+% dims: A list of dimensions input for a gridfile operation. A string
+%    vector or cellstring vector.
+%
+% requireDefined: Scalar logical. Indicates whether the input dimensions
+%    must have defined metadata (true) or not (false).
 
 % Default for unset variable.
 if ~exist('requireDefined','var') || isempty(requireDefined)
@@ -30,7 +42,7 @@ if any(~allowed)
         require = ["with defined metadata in", "Dimensions with define metadata"];
     end
     
-    error('%s is not a dimension %s .grid file %s. %s are %s.', id, require(1), obj.file, require(2), gridfile.dimsErrorString(gridDims)); 
+    error('%s is not a dimension %s .grid file %s. %s are %s.', id, require(1), obj.file, require(2), dash.errorStringList(gridDims)); 
 end
 
 end

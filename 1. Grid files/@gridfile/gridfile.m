@@ -52,9 +52,7 @@ classdef gridfile < handle
         
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
-        X = padPrimitives(X, maxCol);
-        
-        str = dimsErrorString(dims);
+        X = padPrimitives(X, maxCol);        
     end
     
     % Object utilities

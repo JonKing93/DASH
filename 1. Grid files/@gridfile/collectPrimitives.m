@@ -21,7 +21,7 @@ function[varargout] = collectPrimitives(obj, fieldNames, sources)
 %
 % ----- Outputs -----
 %
-% X: The cell or string array extract from the primitive array.
+% X, Y, Z: The cell or string arrays extracted from the primitive array.
 
 % Default if sources is unset
 if ~exist('sources','var') || isempty(sources)

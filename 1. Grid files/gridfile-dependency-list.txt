@@ -1,72 +1,189 @@
 defineMetadata
+    dash.assertStrFlag
+        dash.isstrflag
     checkMetadataField
         hasDuplicateRows
 new
+    dash.assertStrFlag
+        dash.isstrflag
     checkMetadataStructure
         checkMetadataField
             hasDupicateRows
-        dimsErrorString
+        dash.errorStringList
+    dash.dimensionNames
     processMetadata
     gridfile
+        dash.assertStrFlag
+            dash.isstrflag
+        dash.checkFileExists
         update
+metadata
+    gridfile
+        dash.assertStrFlag
+            dash.isstrflag
+        dash.checkFileExists
 gridfile
+    dash.assertStrFlag
+        dash.isstrflag
+    dash.checkFileExists
     update
-
 add
     update
+    dash.parseInputs
+        dash.assertStrList
+            dash.isstrlist
+        dash.errorStringList
     dataSource.new
-        dataSource
-        checkVariable
+        matSource
+            dataSource.checkVariable
+            dataSource
+                dash.assertStrList
+                    dash.isstrlist
+                dash.assertStrFlag
+                    dash.isstrflag
+                dash.checkFileExists
+        ncSource
+            dataSource.checkVariable
+            dataSource
+                dash.assertStrList
+                    dash.isstrlist
+                dash.assertStrFlag
+                    dash.isstrflag
+                dash.checkFileExists
+    checkAllowedDims
+        dash.errorStringList
     checkMetadataStructure
         checkMetadataField
-            hasDuplicateRows
-    checkAllowedDims
-        dimsErrorString
+            hasDupicateRows
+        dash.errorStringList
     convertSourceToPrimitives
         commaDelimitedDims
+    padPrimitives
     save
         update
 remove
     update
+    dash.assertStrFlag
+        dash.isstrflag
     findFileSources
         collectPrimitives
+    collectPrimitives
     save
         update
-
-metadata
-    gridfile
+renameSources
+    update
+    collectPrimitives
+    dash.assertStrList
+        dash.isstrlist
+    findFileSources
+        collectPrimitives
+    buildSourcesForFiles
+        collectPrimitives
+        dataSource.new
+            matSource
+                dataSource.checkVariable
+                dataSource
+                    dash.assertStrList
+                        dash.isstrlist
+                    dash.assertStrFlag
+                        dash.isstrflag
+                    dash.checkFileExists
+            ncSource
+                dataSource.checkVariable
+                dataSource
+                    dash.assertStrList
+                        dash.isstrlist
+                    dash.assertStrFlag
+                        dash.isstrflag
+                    dash.checkFileExists
+    checkSourcesMatchGrid
+        collectPrimitives
+    padPrimitives
+    save
         update
 rewriteMetadata
     update
+    dash.assertStrFlag
+        dash.isstrflag
+    checkAllowedDims
+        dash.errorStringList
     checkMetadataField
         hasDuplicateRows
-    checkAllowedDims
-        dimsErrorString
     updateMetadataField
         processMetadata
         save
             update
 expand
     update
+    dash.assertStrFlag
+        dash.isstrflag
+    checkAllowedDims
+        dash.errorStringList
     checkMetadataField
         hasDuplicateRows
-    checkAllowedDims
-        dimsErrorString
+    hasDuplicateRows
     updateMetadataField
-        processMetadata
-        save
-            update
+    processMetadata
+    save
+        update
 info
-
+    update
+    dash.isstrlist
+    findFileSources
+        collectPrimitives
+    dash.assertPositiveIntegers
+    buildSources
+        collectPrimitives
+        buildSourcesForFiles
+                collectPrimitives
+                dataSource.new
+                    matSource
+                        dataSource.checkVariable
+                        dataSource
+                            dash.assertStrList
+                                dash.isstrlist
+                            dash.assertStrFlag
+                                dash.isstrflag
+                            dash.checkFileExists
+                    ncSource
+                        dataSource.checkVariable
+                        dataSource
+                            dash.assertStrList
+                                dash.isstrlist
+                            dash.assertStrFlag
+                                dash.isstrflag
+                            dash.checkFileExists
 load
     update
+    dash.assertStrList
+        dash.isstrlist
     checkAllowedDims
-        dimsErrorString
-    collectPrimitives
-    commaDelimitedToString
-    dataSource.new
-        dataSource
-        checkVariable
-    dataSource.read
-        dash.equallySpacedIndices
-        dataSource.load
+        dash.errorStringList
+    dash.assertNumericVectorN
+    dash.assertPositiveIntegers
+    repeatedLoad
+        buildSources
+            collectPrimitives
+            buildSourcesForFiles
+                    collectPrimitives
+                    dataSource.new
+                        matSource
+                            dataSource.checkVariable
+                            dataSource
+                                dash.assertStrList
+                                    dash.isstrlist
+                                dash.assertStrFlag
+                                    dash.isstrflag
+                                dash.checkFileExists
+                        ncSource
+                            dataSource.checkVariable
+                            dataSource
+                                dash.assertStrList
+                                    dash.isstrlist
+                                dash.assertStrFlag
+                                    dash.isstrflag
+                                dash.checkFileExists
+        dataSource.read
+            dash.equallySpacedIndices
+            ncSource.load
+            matSource.load

@@ -1,7 +1,7 @@
 function[varargout] = parseInputs( inArgs, flags, defaults, nPrev )
 %% Parses inputs for flag, value input pairs. 
 %
-% [values] = parseInputs( inArgs, flags, defaults, switches )
+% [values] = dash.parseInputs( inArgs, flags, defaults, switches )
 %
 % ----- Inputs -----
 %

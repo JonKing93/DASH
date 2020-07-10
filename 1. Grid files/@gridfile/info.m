@@ -71,6 +71,9 @@ elseif isnumeric(sources)
 else
     error('The first input may be ''all'', a list of file names, or a set of linear indices.');
 end
+
+% Update the object in case the file changed
+obj.update;
         
 % .grid file information
 nDim = sum(obj.isdefined);

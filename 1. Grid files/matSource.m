@@ -1,17 +1,28 @@
 classdef matSource < dataSource
-    %% Implements a .mat file data source
+    %% Implements a data source object that can read values from .mat files.
+    
     properties
         m; % A matfile object
     end
-    
-    % Used to toggle the inefficient partial load warning.
     properties (Constant, Hidden)
+        % Used to toggle the inefficient partial load warning.
         warnID = 'MATLAB:MatFile:OlderFormat';
     end
     
     methods
-        % Constructor
         function obj = matSource(file, var, dims, fill, range, convert)
+            %% Creates a new matSource object.
+            %
+            % obj = matSource(file, var, dims, fill, range, convert)
+            %
+            % ----- Inputs -----
+            %
+            % See the documentation in dataSource.new
+            %
+            % ----- Outputs -----
+            %
+            % obj: A new matSource object.
+            
             % First call the data source constructor for initial error
             % checking and to save the input args
             obj@dataSource(file, var, dims, fill, range, convert);
@@ -43,9 +54,7 @@ classdef matSource < dataSource
             end
             warning( warn.state, obj.warnID );  
             
-        end
-        
-        % Read data from a .mat file
+        end        
         function[X] = load( obj, indices )
             %% Loads data from a .mat data source.
             %
@@ -57,6 +66,10 @@ classdef matSource < dataSource
             %    indices to load for a dimension. Indices must be equally
             %    spaced and monotonically increasing. Dimensions must be in
             %    the order of the unmerged dimensions.
+            %
+            % ----- Outputs -----
+            %
+            % X: The data located at the requested indices.
             
             % Disable the partial load warning and load
             warn = warning('query', obj.warnID);
@@ -69,5 +82,3 @@ classdef matSource < dataSource
     end
     
 end
-            
-            

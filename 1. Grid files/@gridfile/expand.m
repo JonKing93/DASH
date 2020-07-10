@@ -23,14 +23,8 @@ obj.update;
 
 % Error check
 dash.assertStrFlag(dim, "dim");
-obj.checkAllowedDims(dim);
+obj.checkAllowedDims(dim, true);
 obj.checkMetadataField(meta, dim);
-
-% Check that the dimension has defined metadata in the .grid file.
-oldMeta = obj.meta.(dim);
-if isscalar(oldMeta) && isnumeric(oldMeta) && isnan(oldMeta)
-    error('The %s metadata in .grid file %s has not been defined. Please define metadata for this dimension first (see gridfile.rewriteMetadata).', dim, obj.file);
-end
 
 % Check that the new metadata can be appended to the old
 if size(meta,2) ~= size(oldMeta,2)

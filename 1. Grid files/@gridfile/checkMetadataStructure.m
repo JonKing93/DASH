@@ -1,7 +1,7 @@
 function[] = checkMetadataStructure( meta, dims, errorString )
 %% Checks that a dimensional metadata structure is valid.
 %
-% gridfile.checkMetadataStructure( meta, dims )
+% gridfile.checkMetadataStructure( meta, dims, errorString )
 %
 % ----- Inputs -----
 %
@@ -21,7 +21,7 @@ end
 metaFields = string(fields(meta));
 allowed = ismember(metaFields, dims);
 if any( ~allowed )
-    error('Only %s (%s) are allowed as field names in meta.', errorString, gridfile.dimsErrorString(dims) );
+    error('Only %s (%s) are allowed as field names in meta.', errorString, dash.errorStringList(dims) );
 end
 
 % Metadata values
