@@ -34,9 +34,10 @@ function[X, meta] = load(obj, dims, start, count, stride)
 %
 % indices: A cell vector. Must have the same number of elements as dims. 
 %    Each element contains the indices at which to load data for one
-%    dimension. Indices may be either linear indices or a logical vector
-%    the length of the dimension. Must be in the same order as the
-%    dimension names listed in dims.
+%    dimension. Must be in the same order as the dimension names listed in
+%    dims. Indices may be linear indices, a logical vector the length of
+%    the dimension, or an empty array. If an empty array, loads all
+%    elements along the dimension.
 %
 % start: A vector whose elements indicate the starting element at which to 
 %    begin loading data from a specified dimension. Must have one element
@@ -131,11 +132,18 @@ if ~haveIndices
     end
 
 % If the user specified the indices, error check 
-else
+else 
     if ~isvector(inputIndices) || numel(inputIndices) ~= nInputDims
         error('indices must be a vector with %.f elements.', nInputDims);
     end
+    
+    % Default for empty indices
     for d = 1:nInputDims
+        if isempty(inputIndices{d})
+            inputIndices{d} = 1:obj.size(inputOrder(d));
+        end
+        
+        % Error check
         if ~isvector(inputIndices{d})
             error('Element %.f of indices must be a vector.', d);
         end
