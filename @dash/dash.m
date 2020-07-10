@@ -7,24 +7,19 @@ classdef dash
         % Global data for dimension names
         names = dimensionNames;
         
-        % String scalar or character row vector
-        tf = isstrflag( input );
-        
-        % String list
+        % Input error checks
+        tf = isstrflag( input );        
         tf = isstrlist( input );
-        
-        % Last non-trailing singleton
-        file = checkFileExists(file);
-        
+        file = checkFileExists(file);        
         assertStrFlag(input, name);
         assertStrList(input, name);
         assertNumericVectorN(input, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);
-        
-        indices = equallySpacedIndices(indices);
-        
         str = errorStringList(strings);
-        
+        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+
+        % Indices and start, count, stride.
+        indices = equallySpacedIndices(indices);
     end
     
 end
