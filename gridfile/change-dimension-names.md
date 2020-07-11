@@ -28,7 +28,8 @@ dims = [lon, lat, coord, lev, time, run, var];
 
 end
 ```
-To change the name of a dimension, change it's name here. For example to to rename the latitude dimension from <span style="color:#cc00cc">"lat"</span> to <span style="color:#cc00cc">"latitude"</span>, you should change
+
+To change the name of a dimension, change it's name here. For example to rename the latitude dimension from <span style="color:#cc00cc">"lat"</span> to <span style="color:#cc00cc">"latitude"</span>, you should change
 ```matlab
 lat = "lat";
 ```
