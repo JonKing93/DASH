@@ -1,6 +1,6 @@
 ---
 layout: simple_layout
-title: Welcome
+title: "Welcome"
 permalink: \gridfile\welcome
 ---
 
