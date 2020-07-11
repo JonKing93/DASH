@@ -1,5 +1,7 @@
 ---
 layout: simple_layout
+title: Welcome
+permalink: \gridfile\welcome
 ---
 
 # Welcome to the gridfile tutorial!
