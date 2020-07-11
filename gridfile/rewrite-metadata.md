@@ -1,6 +1,6 @@
 ---
 layout: simple_layout
-title: Rewrite Metadata
+title: "Rewrite Metadata"
 ---
 
 # Change the metadata in a .grid file
