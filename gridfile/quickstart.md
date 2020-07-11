@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: Quickstart
 ---
 
 # Welcome to the gridfile quickstart!

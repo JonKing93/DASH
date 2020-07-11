@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Remove Sources"
 ---
 # Remove data source files from a .grid file.
 

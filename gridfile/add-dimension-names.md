@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Add Dimensions"
 ---
 
 # Add New Dimensions

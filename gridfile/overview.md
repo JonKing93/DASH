@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: Overview
 ---
 
 # So, how does this all work?

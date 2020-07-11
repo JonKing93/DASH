@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: Introduction
 ---
 
 # So, why use gridfile?

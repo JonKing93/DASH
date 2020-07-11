@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Expand ND Array"
 ---
 
 # Expand the size of a .grid file's array

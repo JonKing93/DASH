@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Advanced Topics"
 ---
 
 # Advanced topics

@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Summarize .grid File"
 ---
 
 # Get a summary of a .grid file's contents

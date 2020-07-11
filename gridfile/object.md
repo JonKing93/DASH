@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "Gridfile Objects"
 ---
 # Create gridfile object
 

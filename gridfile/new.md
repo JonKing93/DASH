@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: "New .grid File"
 ---
 
 # Create a new .grid file
