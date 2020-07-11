@@ -5,21 +5,26 @@ classdef gridfile < handle
     % NetCDF and .mat files), and organizes metadata for the values in each
     % data source.
     %
+    % To create a new gridfile object, use:
+    %   obj = gridfile(filename)
+    %
     % *** Essential ***
     % gridFile Methods:
     %   defineMetadata - Defines metadata for a .grid file or data source
     %   new - Initializes a new .grid file.
+    %   gridfile - Creates a new gridfile object.
     %   add - Adds a data source to a .grid file.
     %   metadata - Returns the metadata for a .grid file.
     %   load - Loads values from the data sources organized by the .grid file
     % 
     % *** Advanced ***
     % gridFile Methods:
-    %   expand - Increases the size of a dimension in a .grid file
+    %   info - Returns a summary of a .grid file's contents.
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file
-    %   info - Returns a summary of a .grid file.
-    %   read - Reads out data from a .grid file
-    %   renameSource - Changes the file name associated with a data source.
+    %   renameSources - Changes the file name associated with a data source.
+
+
+    %   expand - Increases the size of a dimension in a .grid file
     %   remove - Removes a data source from a .grid file.
     
     % ----- Written By -----
@@ -96,25 +101,25 @@ classdef gridfile < handle
     % Constructor
     methods
         function[obj] = gridfile( file )
-            %% Creates a gridfile object for a saved .grid file.
-            %
-            % obj = gridfile( filename )
-            % Finds a .grid file with the specified name on the active path
-            % and returns an associated gridfile object.
-            %
-            % obj = gridfile( fullname )
-            % Returns a gridfile obejct for a .grid file with the specified
-            % full file name (including path).
-            %
-            % ----- Inputs -----
-            %
-            % filename: A file name. A string.
-            %
-            % fullname: A full file name (including path). A string.
-            %
-            % ----- Outputs -----
-            %
-            % obj: A gridfile object for the specified .grid file.
+        % Creates a gridfile object for a saved .grid file.
+        %
+        % obj = gridfile( filename )
+        % Finds a .grid file with the specified name on the active path
+        % and returns an associated gridfile object.
+        %
+        % obj = gridfile( fullname )
+        % Returns a gridfile obejct for a .grid file with the specified
+        % full file name (including path).
+        %
+        % ----- Inputs -----
+        %
+        % filename: A file name. A string.
+        %
+        % fullname: A full file name (including path). A string.
+        %
+        % ----- Outputs -----
+        %
+        % obj: A gridfile object for the specified .grid file.
             
             % Check the input is a file name
             dash.assertStrFlag(file, "file");
