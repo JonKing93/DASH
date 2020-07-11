@@ -51,4 +51,4 @@ will allow us to load Northern Hemisphere temperature values post 1800 CE from A
 Pretty convenient!
 
 
-[Previous](\gridfile\welcome)    [Next](\gridfile\overview)
+[Previous](\DASH\gridfile\welcome)    [Next](\DASH\gridfile\overview)

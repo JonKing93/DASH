@@ -35,7 +35,7 @@ sourceMeta = gridfile.DefineMetadata("lon", lonMeta, "lat", latMeta, "time", tim
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
-**Important Note:** .grid files record the absolute file path of data source files. If you move or rename data source files after adding them to a .grid file, see how to [rename them in the .gridfile](\gridfile\rename-sources).
+**Important Note:** .grid files record the absolute file path of data source files. If you move or rename data source files after adding them to a .grid file, see how to [rename them in the .gridfile](\DASH\gridfile\rename-sources).
 
 <br>
 ### Non-Regular Grids (Tripolar, Irregular Locations)
@@ -76,4 +76,4 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'validRange', val
 Here validRange is a two element vector. The first element is the lower bound of the range and the second element is the upper bound.
 
 
-[Previous](\gridfile\object) [Next](\gridfile\load)
+[Previous](\DASH\gridfile\object) [Next](\DASH\gridfile\load)

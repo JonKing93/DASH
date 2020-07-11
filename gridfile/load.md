@@ -64,6 +64,6 @@ grid.load(["lat","lon"], [1 5], [6, Inf], [3 4])
 ```
 will load 6 latitude elements, starting with the first element and loading every third element after that. This will also load every fourth longitude element from the fifth element to the end of the dimension.
 
-Nice! That's the tutorial. If you'd like more control over gridfile, check out the [Advanced Topics](\gridfile\advanced) page.
+Nice! That's the tutorial. If you'd like more control over gridfile, check out the [Advanced Topics](\DASH\gridfile\advanced) page.
 
-[Previous](\gridfile\add) [Next](\gridfile\advanced)
+[Previous](\DASH\gridfile\add) [Next](\DASH\gridfile\advanced)
