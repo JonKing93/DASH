@@ -18,14 +18,21 @@ function[file] = checkFileExists( file )
 
 file = char(file);
 haspath = ~isempty(fileparts(file));
-exist = ~isempty(which(file));
 
-if haspath && ~exist
-    error('The file %s does not exist.', file);
-elseif ~haspath && ~exist
-    error('Could not find file %s. It may be misspelled or not on the active path.', file);
+% File with path
+if haspath
+    if ~isfile(file)
+        error('The file %s does not exist.', file);
+    end
+    
+% File without path
+else
+    file = which(file);
+    if isempty(file)
+        error('Could not find file %s. It may be misspelled or not on the active path.', file);
+    end
 end
 
-file = string(which(file));
+file = string(file);
 
 end
