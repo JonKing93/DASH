@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: Rewrite Metadata
 ---
 
 # Change the metadata in a .grid file

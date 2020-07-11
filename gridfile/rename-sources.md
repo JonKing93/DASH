@@ -1,5 +1,6 @@
 ---
 layout: simple_layout
+title: Rename Sources
 ---
 
 # Move / rename data source files
