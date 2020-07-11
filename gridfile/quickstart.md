@@ -6,7 +6,8 @@ layout: simple_layout
 
 This provides a brief overview of gridfile workflow. If you're looking for something a bit more in depth, check out the step by step [tutorial](\DASH\gridfile\welcome).
 
-If you'd like to use the quickstart offline or from the Matlab console, you can download it [here](\DASH\gridfile\quickstart.m) or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
+If you'd like to use the quickstart offline or from the Matlab console, you can download it
+<a href="\DASH\gridfile\quickstart.m" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
 
 #### Define metadata for a .grid file.
 ```matlab
