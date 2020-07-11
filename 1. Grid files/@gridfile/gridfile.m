@@ -82,7 +82,6 @@ classdef gridfile < handle
     methods (Static)
         meta = defineMetadata( varargin );
         grid = new(filename, meta, attributes, overwrite);
-        meta = metadata(file, includeUndefined);
     end
     
     % User methods
@@ -94,7 +93,8 @@ classdef gridfile < handle
         rewriteMetadata( obj, dim, meta );
         expand(obj, dim, meta);
         [gridInfo, sourceInfo] = info(obj, sources);
-        
+
+        meta = metadata(obj, includeUndefined);
         [X, meta] = load(obj, start, count, stride);
     end
     

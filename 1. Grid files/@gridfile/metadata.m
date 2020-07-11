@@ -1,19 +1,14 @@
-function[meta] = metadata(file, includeUndefined)
+function[meta] = metadata(obj, includeUndefined)
 %% Returns the metadata for a .grid file.
 %
-% meta = gridfile.metadata(file)
-% Returns the metadata for the specified file.
+% meta = obj.metadata
+% Returns the metadata for a .grid file.
 %
-% meta = gridfile.metadata(file, includeUndefined)
+% meta = obj.metadata(includeUndefined)
 % Optionally include metadata for internal .grid dimensions with undefined
 % metadata. Default is to only return defined metadata.
 %
-% *** Note: If you would like to access the metadata in a gridfile object,
-% use:  >> obj.meta
-%
 % ----- Inputs -----
-%
-% file: The name of the .grid file.
 %
 % includeUndefined: A scalar logical indicating whether to include metadata
 %    for internal .grid dimensions with undefined metadata. Default is
@@ -23,19 +18,16 @@ function[meta] = metadata(file, includeUndefined)
 %
 % meta: The metadata structure for the .grid file.
 
-% Defaults for unset variables
+% Defaults  and error check for includeUndefined
 if ~exist('includeUndefined','var') || isempty(includeUndefined)
     includeUndefined = false;
 end
-
-% Error check
 if ~isscalar(includeUndefined) || ~islogical(includeUndefined)
     error('includeUndefined must be a scalar logical.');
 end
 
-% Get a gridfile object (this will error check the file). Extract the metadata
-grid = gridfile(file);
-meta = grid.meta;
+% Extract the metadata
+meta = obj.meta;
 
 % Optionally remove undefined dimensions
 if ~includeUndefined
