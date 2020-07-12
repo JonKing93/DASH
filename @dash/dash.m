@@ -20,6 +20,9 @@ classdef dash
 
         % Indices and start, count, stride.
         indices = equallySpacedIndices(indices);
+        
+        % File formats
+        convertToV7_3(filename);
     end
     
 end

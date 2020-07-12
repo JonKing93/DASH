@@ -1,5 +1,6 @@
 function[file] = checkFileExists( file )
-%% Error checking to see if a file exists.
+%% Error checking to see if a file exists. If the file exists, returns the
+% full name as a string.
 %
 % dash.checkFileExists( fullname )
 % Checks if the file exists.
@@ -15,6 +16,10 @@ function[file] = checkFileExists( file )
 % fullname: An full file name including path.
 %
 % file: Just a file name
+%
+% ----- Outputs -----
+%
+% file: The full file name including path and extension. A string.
 
 file = char(file);
 haspath = ~isempty(fileparts(file));
