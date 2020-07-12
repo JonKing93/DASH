@@ -126,7 +126,7 @@ for d = 1:numel(metaDims)
     % The source metadata must exactly match a sequence of .grid metadata
     [inGrid, order] = ismember(value, obj.meta.(metaDims(d)), 'rows');
     if any(~inGrid)
-        error('The %s metadata in row %.f of data source %s does not match any %s metadata in .grid file %s.', metaDims(d), source.file, find(~inGrid,1), metaDims(d), obj.file);
+        error('The %s metadata in row %.f of data source %s does not match any %s metadata in .grid file %s.', metaDims(d), find(~inGrid,1), source.file, metaDims(d), obj.file);
     elseif nRows>1 && issorted(order, 'strictdescend')
         error('The %s metadata for data source %s is in the opposite order of the %s metadata in .grid file %s.', metaDims(d), source.file, metaDims(d), obj.file );
     elseif ~issorted(order, 'strictascend')
@@ -146,7 +146,7 @@ lower = all(dimLimit<obj.dimLimit(:,1,:), 2);
 higher = all(dimLimit>obj.dimLimit(:,2,:), 2);
 overlap = all(~(lower|higher), 1);
 if any(overlap)
-    error('The data in new source file %s overlaps data in file %s, which is already in .grid file %s.', source.file, obj.source{find(overlap,1)}.file, obj.file);
+    error('The data in new source file %s overlaps data in file %s, which is already in .grid file %s.', source.file, obj.source.file(find(overlap,1),:), obj.file);
 end
 
 % Convert the dataSource object into a structure of primitives.

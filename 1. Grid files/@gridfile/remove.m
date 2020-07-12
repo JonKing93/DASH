@@ -57,16 +57,25 @@ obj.dimLimit(:,:,remove) = [];
 obj.fieldLength(remove,:) = [];
 obj.maxLength = max(obj.fieldLength,[],1);
 
-% Remove the sources from the primitive arrays.
+% Correct for empty max length
 sourceFields = fields(obj.source);
 nField = numel(sourceFields);
+if isempty(obj.maxLength)
+    obj.maxLength = zeros(1, nField);
+end
+
+% Remove the sources from the primitive arrays.
 for f = 1:nField
     name = sourceFields{f};
     obj.source.(name)(remove,:) = [];
     
     % Unpad primitives if the size of the primitive array changed
-    unpad = size(obj.source.(name),2) - obj.fieldLength(f);
-    obj.source.(name)(:,end-unpad+1:end) = [];
+    if obj.maxLength(f)==0
+        obj.source.(name) = [];
+    else
+        unpad = size(obj.source.(name),2) - obj.maxLength(f);
+        obj.source.(name)(:,end-unpad+1:end) = [];
+    end
 end
 
 % Update the .grid file

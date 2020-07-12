@@ -86,7 +86,7 @@ classdef gridfile < handle
     
     % User methods
     methods
-        add(obj, type, file, var, dims, meta);
+        add(obj, type, file, var, dims, meta, varargin);
         remove( obj, file, var );
         renameSources(obj, name, newname);
 

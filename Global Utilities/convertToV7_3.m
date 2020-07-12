@@ -1,7 +1,7 @@
 function[] = convertToV7_3( filename )
-% Converts a matfile to v7.3
+% Converts a .mat file to a version 7.3 (v7.3) .mat file.
 %
-% convertToV7_3( filename )
+% dash.convertToV7_3( filename )
 % Resaves a mat file as -v7.3
 
 % Check the file exists, get path
