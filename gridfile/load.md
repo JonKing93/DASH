@@ -32,6 +32,10 @@ The returned structure contains the metadata for the specified .grid file. Each 
 ```matlab
 NH = meta.lat > 0;
 ```
+Or values arranged from 0 to 360 longitude
+```matlab
+[~, lon360] = sort(meta.lon);
+```
 Or if we want values after 1800 CE
 ```matlab
 post1800 = meta.time > 1800;
@@ -44,13 +48,36 @@ The possibilities are endless!
 
 Once we have determined the indices of desired data elements, we can request that the .grid file loads only those elements. For example,
 ```matlab
-[X, Xmeta] = grid.load(["lat","lev","time"], {NH, high, post1800});
+[X, Xmeta] = grid.load(["lon","lat","lev","time"], {lon360, NH, high, post1800});
 ```
-will load Northern Hemisphere temperatures values at a height of 250 after 1800 CE. The output data will be (latitude x level x time) and Xmeta will only contain metadata for this data subset. Note that the requested indices must occur in the same order as the specified dimensions. Gridfile will load all elements of dimensions that are not specified. If you want to specify a dimension order, but only want to subset a few dimensions, you can use an empty array to load every element from a dimension. For example:
+will load Northern Hemisphere temperatures values at a height of 250 after 1800 CE in order from 0 to 360 longitude. The output data will be (longitude x latitude x level x time) and Xmeta will only contain metadata for this data subset. Note that the requested indices must occur in the same order as the specified dimensions. Gridfile will load all elements of dimensions that are not specified. For example, if this dataset also included 5 ensemble members, then the previous call to load would load the values for all 5 ensemble members.
+
+<br>
+
+#### Specify order of loaded data values
+If you specify linear indices for a dimension (as opposed to logical indices) gridfile will load the values for the dimension in the specified order (just like a normal matlab array). For example, if the values in meta.lon use a [0, 360] coordinate system, then:
 ```matlab
-[X, Xmeta] = grid.load(["lat","lon","lev"], {NH, [], high});
+[~, lon] = sort(meta.lon);
 ```
-will return X as a (latitude x longitude x level) array and will load every element along the longitude dimension.
+would load the data from 0 to 360,
+```matlab
+[~, lon] = sort(meta.lon, 1, 'descend');
+```
+will load the data from 360 to 0, and
+```matlab
+lon = [5 4 19];
+```
+would load the fifth, then the fourth, then the nineteenth element along the longitude dimension.
+
+<br>
+
+#### Request dimension order without subsetting a dimension
+
+If you want to specify a dimension order, but only want to subset a few dimensions, you can use an empty array to load every element from a dimension. For example:
+```matlab
+[X, Xmeta] = grid.load(["lon","lat","lev","time"], {NH, [], [], post1800});
+```
+will return X as a (longitude x latitude x level x time) array and will load every element along the latitude and level dimensions.
 
 <br>
 
@@ -63,7 +90,7 @@ where start, count and stride are vectors with one element per specified dimensi
 ```matlab
 grid.load(["lat","lon"], [1 5], [6, Inf], [3 4])
 ```
-will load 6 latitude elements, starting with the first element and loading every third element after that. This will also load every fourth longitude element from the fifth element to the end of the dimension.
+will load 6 latitude elements, starting with the first element and loading every third element after that. This will also load every fourth longitude element starting from the fifth element until the end of the dimension.
 
 Nice! That's the tutorial. If you'd like more control over gridfile, check out the [Advanced Topics](\DASH\gridfile\advanced) page.
 
