@@ -37,7 +37,7 @@ Then the following 5 lines of code:
 ```matlab
 grid = gridfile( gridname );
 
-metadata = gridfile.metadata( gridname );
+metadata = grid.metadata;
 NH = metadata.lat > 0;
 post1800 = metadata.time > 1800;
 
