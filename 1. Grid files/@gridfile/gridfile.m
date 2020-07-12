@@ -31,7 +31,7 @@ classdef gridfile < handle
     % Jonathan King, University of Arizona, 2019-2020
     
     % Properties for the grid file object
-    properties
+    properties (SetAccess = private)
         file; % full name of the .grid file
         dims; % The dimensions recorded in the .grid file.
         size; % The size of the gridded dataset organized by the .grid file.
