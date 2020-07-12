@@ -35,11 +35,12 @@ These datasets use many different conventions, and preparing the data for analys
 Then the following 5 lines of code:
 
 ```matlab
+grid = gridfile( gridname );
+
 metadata = gridfile.metadata( gridname );
 NH = metadata.lat > 0;
 post1800 = metadata.time > 1800;
 
-grid = gridfile( gridname );
 [T, Tmetadata] = grid.load( ["time", "lat"], {post1800, NH});
 ```
 
