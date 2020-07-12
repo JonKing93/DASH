@@ -14,7 +14,7 @@ If you've already done this tutorial, you may be interested in the [Advanced Top
 <br>
 
 #### Prerequisites
-The gridfile package requires MATLAB2016B or higher. If you are using an earlier version, you will need to [upgrade](https://www.mathworks.com/help/install/ug/upgrade-matlab-release.html) your release.
+The gridfile package requires MATLAB2018B or higher. If you are using an earlier version, you will need to [upgrade](https://www.mathworks.com/help/install/ug/upgrade-matlab-release.html) your release.
 
 <br>
 
