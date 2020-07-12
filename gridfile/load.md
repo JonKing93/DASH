@@ -67,7 +67,7 @@ will load the data from 360 to 0, and
 ```matlab
 lon = [5 4 19];
 ```
-would load the fifth, then the fourth, then the nineteenth element along the longitude dimension.
+would load the fifth, then the fourth, and then the nineteenth element along the longitude dimension.
 
 <br>
 
