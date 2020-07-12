@@ -55,3 +55,5 @@ dims = [lon, lat, coord, lev, time, run, var, myNewDim];
 
 end
 ```
+
+**Important:** All new dimension names must be [valid Matlab variable names](https://www.mathworks.com/help/matlab/matlab_prog/variable-names.html).
