@@ -358,29 +358,52 @@ meta = grid.metadata;
 % Northern Hemisphere, we could do:
 NH = meta.lat > 0;
 
+% Or values arranged from 0 to 360 longitude
+[~, lon360] = sort(meta.lon);
+
 % Or if we want values after 1800 CE
 post1800 = meta.time > 1800;
 
 % Or values at a certain height
 high = meta.lev == 250;
 
-% The possibilities are endless! Once we have determined the indices of 
-% desired data elements, we can request that the .grid file loads only 
+%The possibilities are endless! Once we have determined the indices of 
+% desired data elements, we can request that the .grid file loads only
 % those elements. For example,
-[X, Xmeta] = grid.load(["lat","lev","time"], {NH, high, post1800});
+[X, Xmeta] = grid.load(["lon","lat","lev","time"], {lon360, NH, high, post1800});
 
-% will load Northern Hemisphere temperatures values at a height of 250
-% after 1800 CE. The output data will be (latitude x level x time) and 
-% Xmeta will only contain metadata for this data subset. Note that the 
-% requested indices must occur in the same order as the specified 
-% dimensions. Gridfile will load all elements of dimensions that are not 
-% specified. If you want to specify a dimension order, but only want to 
-% subset a few dimensions, you can use an empty array to load every element
-% from a dimension. For example:
-[X, Xmeta] = grid.load(["lat","lon","lev"], {NH, [], high});
+% will load Northern Hemisphere temperatures values at a height of 250 
+% after 1800 CE in order from 0 to 360 longitude. The output data will be 
+% (longitude x latitude x level x time) and Xmeta will only contain
+% metadata for this data subset. Note that the requested indices must occur
+% in the same order as the specified dimensions. Gridfile will load all
+% elements of dimensions that are not specified. For example, if this 
+% dataset also included 5 ensemble members, then the previous call to load
+% would load the values for all 5 ensemble members.
+%
+% Specify order of loaded data values
+% If you specify linear indices for a dimension (as opposed to logical 
+% indices) gridfile will load the values for the dimension in the specified
+% order (just like a normal matlab array). For example, if the values in 
+% meta.lon use a [0, 360] coordinate system, then:
+[~, lon] = sort(meta.lon);
+% would load the data from 0 to 360,
 
-% will return X as a (latitude x longitude x level) array and will load 
-% every element along the longitude dimension.
+[~, lon] = sort(meta.lon, 1, 'descend');
+% will load the data from 360 to 0, and
+
+lon = [5 4 19];
+% would load the fifth, then the fourth, and then the nineteenth element 
+% along the longitude dimension.
+%
+% Request dimension order without subsetting a dimension
+% If you want to specify a dimension order, but only want to subset a few 
+% dimensions, you can use an empty array to load every element from a 
+% dimension. For example:
+[X, Xmeta] = grid.load(["lon","lat","lev","time"], {NH, [], [], post1800});
+
+% will return X as a (longitude x latitude x level x time) array and will 
+% load every element along the latitude and level dimensions.
 %
 % Optional: Start, Count, Stride Syntax
 % gridfile.load also supports the start/count/stride syntax as an 
