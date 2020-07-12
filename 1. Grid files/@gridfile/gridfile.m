@@ -22,8 +22,6 @@ classdef gridfile < handle
     %   info - Returns a summary of a .grid file's contents.
     %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file
     %   renameSources - Changes the file name associated with a data source.
-
-
     %   expand - Increases the size of a dimension in a .grid file
     %   remove - Removes a data source from a .grid file.
     

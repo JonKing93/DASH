@@ -27,6 +27,9 @@ classdef matSource < dataSource
             % checking and to save the input args
             obj@dataSource(file, var, dims, fill, range, convert);
             
+            % Matfile access is via chars
+            obj.var = char(obj.var);
+            
             % Check that the file is a matfile
             try
                 obj.m = matfile(file);

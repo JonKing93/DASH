@@ -183,7 +183,7 @@ classdef (Abstract) dataSource
                 X = permute( X, reorder );
                 
                 k = find(isnan(remove), 1, 'first');
-                remove(k:d+nDim-1) = isdim(2:end);
+                remove(k:k+nDim-2) = isdim(2:end);
 
                 % Convert data indices for unmerged dimensions to linear indices for
                 % the merged dimension

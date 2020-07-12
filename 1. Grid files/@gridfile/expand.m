@@ -26,6 +26,9 @@ dash.assertStrFlag(dim, "dim");
 obj.checkAllowedDims(dim, true);
 obj.checkMetadataField(meta, dim);
 
+% Get the old metadata
+oldMeta = obj.meta.(dim);
+
 % Check that the new metadata can be appended to the old
 if size(meta,2) ~= size(oldMeta,2)
     error('The new %s metadata has a different number of columns than the %s metadata in .grid file %s.', dim, dim, obj.file );

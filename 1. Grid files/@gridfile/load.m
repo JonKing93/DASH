@@ -171,6 +171,6 @@ end
 
 % Load the values. The "load" method doesn't actually make repeated load
 % operations, so use a placeholder dataSource array.
-[X, meta] = obj.repeatedLoad(inputOrder, inputIndices, []);
+[X, meta] = obj.repeatedLoad(inputOrder, inputIndices);
 
 end

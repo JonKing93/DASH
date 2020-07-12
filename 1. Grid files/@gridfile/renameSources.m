@@ -111,10 +111,11 @@ else
 end
 
 % Rename the sources. Save to .grid file
+[~, k] = ismember('file', fields(obj.source));
 for f = 1:nFile
     s = find(fileSources(:,f));
     obj.source.file(s,:) = newname(f,:);
-    obj.fieldLength(s,:) = newLength(f);
+    obj.fieldLength(s,k) = newLength(f);
 end
 obj.save;
 
