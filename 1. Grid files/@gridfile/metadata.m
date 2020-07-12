@@ -31,7 +31,7 @@ meta = obj.meta;
 
 % Optionally remove undefined dimensions
 if ~includeUndefined
-    undefined = grid.dims( ~grid.isdefined );
+    undefined = obj.dims( ~obj.isdefined );
     meta = rmfield(meta, undefined);
 end
 
