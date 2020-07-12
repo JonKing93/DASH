@@ -295,6 +295,22 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 % single dimension by specifying the same dimension name multiple times in
 % the dimension order for the add operation.
 %
+% Important: Merged dimensions should have the same relative dimension order
+% in data source files. So, if longitude comes before latitude in a data 
+% source’s dimension order, it should come before latitude in other data 
+% sources. For example:
+%
+%    Data Source 1: Lon x Lat x Time, and
+%    Data Source 2: Lon x Time x Lev x Lat
+%
+% would be fine because “lon” comes before “lat” in both data sources. However,
+%
+%    Data source 1: Lon x Lat x Time, and
+%    Data source 2: Lat x Lon x Time
+%
+% would not because “lon” comes before “lat” in one source, but after 
+% “lat” in another source.
+%
 % Optional: Convert Units
 % You can optionally have the .grid file convert the units of data values 
 % loaded from a particular data source. Gridfile converts units using a 
