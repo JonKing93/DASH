@@ -3,6 +3,12 @@ layout: simple_layout
 title: "Rename Sources"
 ---
 
+# Warning: This page is currently under construction. Any and all information could be wrong. Proceed at your own peril!
+
+
+
+
+
 # Move / rename data source files
 
 When a data source file is added to a .grid file, its absolute file path is added to the .grid file's collection. If you move the data source or rename it, then the file path in the .grid file will need to be updated.
