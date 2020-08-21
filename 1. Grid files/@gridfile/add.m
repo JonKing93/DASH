@@ -33,10 +33,10 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %    "nc": Use when the data source is a NetCDF file.
 %    "mat": Use when the data source is a .mat file.
 %
-% file: The name of the data source file. A string. If only the file name is
-%    specified, the file must be on the active path. Use the full file name
-%    (including path) to add a file off the active path. All file names
-%    must include the file extension.
+% file: The name of the data source file. A string. If only the file name 
+%    or part of the file path is specified, the file must be on the active
+%    path. Use the full file path to add a file off the active path. All
+%    file names must include the file extension.
 %
 % var: The name of the variable in the source file.
 %
@@ -160,14 +160,10 @@ if any(overlap)
     error('The data in new source file %s overlaps data in file %s, which is already in .grid file %s.', source.file, obj.source.file(find(overlap,1),:), obj.file);
 end
 
-% Convert the dataSource object into a structure of primitives.
+% Convert the dataSource object into a structure of primitives and
+% implement the desired filepath style
 source = gridfile.convertSourceToPrimitives(source);
-
-% Use file paths relative to the .grid file and use UNIX style separators
-if relative
-    source.file = dash.relativePath( source.file, obj.file );
-end
-source.file = dash.unixStylePath(source.file);
+source.file = obj.sourceFilepath(source.file, relative);
 
 % Preallocate the length of each of the primitive fields
 sourceFields = fields(obj.source);

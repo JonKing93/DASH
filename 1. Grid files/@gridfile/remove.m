@@ -5,10 +5,6 @@ function[] = remove(obj, file, var)
 % Finds all data sources with the specified file name and removes them from
 % the grid file.
 %
-% obj.remove( fullname )
-% Finds all data sources with the full file name (including path) and
-% removes them from the .grid file.
-%
 % obj.remove( ..., var )
 % Only removes data sources that have both the specified file and variable
 % name.
@@ -16,9 +12,6 @@ function[] = remove(obj, file, var)
 % ----- Inputs -----
 %
 % file: A file name. A string. Must include the file extension.
-%
-% fullname: A full file name including path. A string. Must include the
-%    file extension.
 %
 % var: The name of the variable in the source file. A string.
 

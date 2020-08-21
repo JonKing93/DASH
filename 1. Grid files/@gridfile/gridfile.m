@@ -59,8 +59,10 @@ classdef gridfile < handle
     end
     
     % Object utilities
-    methods
+    methods        
         varargout = collectPrimitives(obj, fields, sources);
+        paths = collectFullPaths(obj, s);
+        path = sourceFilepath(obj, path, relative);
         checkAllowedDims(obj, dims, requireDefined);
         
         update(obj);
@@ -86,7 +88,7 @@ classdef gridfile < handle
     methods
         add(obj, type, file, var, dims, meta, varargin);
         remove( obj, file, var );
-        renameSources(obj, name, newname);
+        renameSources(obj, name, newname, relativePath);
 
         rewriteMetadata( obj, dim, meta );
         expand(obj, dim, meta);

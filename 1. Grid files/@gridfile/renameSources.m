@@ -1,4 +1,4 @@
-function[] = renameSources( obj, name, newname )
+function[] = renameSources( obj, name, newname, relativePath )
 %% Changes the file name associated with data sources to a new name. Useful
 % if data files are moved to a new location after being added to a .grid
 % file.
@@ -6,36 +6,39 @@ function[] = renameSources( obj, name, newname )
 % obj.renameSources
 % Iterates through each data source in a .grid file and checks that the
 % data source file still exists. If the source file no longer exists, 
-% finds a file with the same name (excluding path) on the active path and
-% associates the data source with this file. Checks to make sure the new
-% file contains the same data as the old.
+% finds a file with the same name on the active path and associates the
+% data source with this file. Checks to make sure the new file contains the
+% same data as the old.
 %
 % obj.renameSources( name )
-% Only checks and renames source files in the given list of file names. If
-% an element of name is a full file name (including path), only checks
-% sources matching the full file name. If an element of name is just a file
-% name, changes all data sources with a matching file name regardless of
-% the file path.
+% Only checks and renames source files in a given list of file names. Only
+% considers file name and extension, ignores file paths.
 %
 % obj.renameSources( name, newname )
 % Changes source file names to specified new names. If an element of 
-% newname is a full file name (including path), the element is used
-% directly as the new file name. If an element of newname is just a file
-% name, finds a file on the active path with a name matching newname and
-% associates the data sources with this file. If an element of newname is
-% an empty string, uses the same file name (excluding path) as the
-% associated element of name.
+% newname includes the full file path, the element is used directly as the 
+% new file name. If an element is an empty string, uses the original file
+% name and updates the path. If an element includes a partial file path or
+% just a file name, searches the active path for a matching file.
+%
+% obj.renameSources( name, newname, relativePath )
+% Specify whether to save new file names as absolute paths or as paths
+% relative to the .grid file location. If unspecified, uses whichever style
+% each data source used previously.
 %
 % ----- Inputs -----
 %
-% name: A list of file names. A string vector or cellstring vector.
-%    Elements may be full file names (including path), or just file names.
-%    All file names must include the extension.
+% name: A list of file names. A string vector or cellstring vector. All 
+%    file names must include the extension. File paths are ignored.
 %
 % newname: A list of new file names. A string vector or cellstring vector.
 %    Must have one element for each element in name. Elements may be a full
 %    file name (including path), just file name, or an empty string. All 
 %    file names must include the extension.
+%
+% relativePath: A scalar logical vector. Must have one element for each
+%    element of "name". True elements indicate that the path for the file
+%    should be saved as a relative path. If false, saves an absolute path.
 
 % Update the grid object in case the file changed
 obj.update
@@ -43,7 +46,7 @@ nSource = size(obj.fieldLength,1);
 
 % Defaults and error checking for name
 if ~exist('name','var') || isempty(name)
-    name = obj.collectPrimitives("file", 1:nSource);
+    name = obj.collectFullPaths(1:nSource);
     name(isfile(name)) = [];
 end
 dash.assertStrList(name, "name");
@@ -54,7 +57,7 @@ nFile = numel(name);
 fileSources = false(nSource, nFile);
 for f = 1:nFile
     fileSources(:,f) = obj.findFileSources(name(f));
-    if all( ~fileSources(:,f) )
+    if ~any( fileSources(:,f) )
         error('There are no data sources associated with file name %s in .grid file %s', name(f), obj.file);
     end
 end
@@ -69,21 +72,28 @@ if numel(newname) ~= numel(name)
     error('newname must have one element for each element in name (%.f), but newname currently has %.f elements.', numel(name), numel(newname));
 end
 
-% Get the full new file names
+% Default and error checking for relativePath
+if ~exist('relativePath','var') || isempty(relativePath)
+    [row, col] = find(fileSources);
+    [~, first] = unique(col);
+    path = char(obj.collectPrimitives("file", row(first)));
+    relativePath = path(:,1)=='.';
+elseif ~isvector(relativePath) || ~islogical(relativePath) || numel(relativePath)~=numel(name)
+    error('relativePath must be a logical vector');
+elseif numel(relativePath) ~= numel(name)
+    error('relativePath must have one element for each element in name (%.f), but relativePath currently has %.f elements.', numel(name), numel(relativePath));
+end
+
+% Get the full new file paths and check the files exist
 for f = 1:nFile
     if strcmp(newname(f), "")
         [~, file, ext] = fileparts( char(name(f)) );
         newname(f) = [file, ext];
     end
-    newname(f) = which(newname(f));
-    
-    % Check that each new file exists
-    if strcmp(newname(f),"") || ~isfile(newname(f))
-        error('File %s cannot be found. Either it is not on the active path, or it does not exist.', newname(f));
-    end
+    newname(f) = dash.checkFileExists(newname(f));
 end
 
-% Record the length of each new file name
+% Preallocate the length of each new file path
 newLength = NaN(nFile, 1);
 
 % Build data sources for each new file
@@ -95,7 +105,10 @@ for f = 1:nFile
     % Check that the new data sources match the recorded values in the
     % .grid file.
     obj.checkSourcesMatchGrid( sources, s );
-    newLength(f) = numel(char(newname(f)));
+    
+    % Implement the desired filepath style. Record the new field length
+    newname(f) = obj.sourceFilepath(newname(f), relativePath(f));
+    newLength(f) = numel( char(newname(f)) );
 end
 
 % Convert the new file names to primitives. Update primitive array size

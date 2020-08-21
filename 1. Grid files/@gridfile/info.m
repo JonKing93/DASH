@@ -24,11 +24,8 @@ function[gridInfo, sourceInfo] = info(obj, sources)
 %    managed by the .grid file.
 %
 % filenames: A list of data source filenames. A string vector or cellstring
-%    vector. Elements may either be full file names (including path), or
-%    just the file name. If just a file name, returns information on all
-%    data sources with a matching name, regardless of path. All filenames
-%    must include the file extension.
-%
+%    vector. Must include the file extension. Ignores the file path.
+% 
 % ----- Outputs -----
 %
 % gridInfo: A structure containing information about the .grid file.
