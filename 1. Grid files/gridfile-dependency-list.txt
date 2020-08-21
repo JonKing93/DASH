@@ -58,6 +58,9 @@ add
         dash.errorStringList
     convertSourceToPrimitives
         commaDelimitedDims
+    sourceFilepath
+        dash.relativePath
+        dash.unixStylePath
     padPrimitives
     save
         update
@@ -72,11 +75,13 @@ remove
         update
 renameSources
     update
-    collectPrimitives
+    collectFullPaths
+        collectPrimitives
     dash.assertStrList
         dash.isstrlist
     findFileSources
         collectPrimitives
+    collectPrimitives
     buildSourcesForFiles
         collectPrimitives
         dataSource.new
@@ -98,6 +103,9 @@ renameSources
                     dash.checkFileExists
     checkSourcesMatchGrid
         collectPrimitives
+    sourceFilepath
+        dash.relativePath
+        dash.unixStylePath
     padPrimitives
     save
         update
@@ -133,7 +141,8 @@ info
         collectPrimitives
     dash.assertPositiveIntegers
     buildSources
-        collectPrimitives
+        collectFullPaths
+            collectPrimitives
         buildSourcesForFiles
                 collectPrimitives
                 dataSource.new
@@ -163,7 +172,8 @@ load
     dash.assertPositiveIntegers
     repeatedLoad
         buildSources
-            collectPrimitives
+            collectFullPaths
+                collectPrimitives
             buildSourcesForFiles
                     collectPrimitives
                     dataSource.new
