@@ -7,10 +7,15 @@ classdef dash
         % Global data for dimension names
         names = dimensionNames;
         
+        % Files and paths
+        path = checkFileExists(file);  
+        path = unixStylePath(path);
+        path = relativePath(to, from);
+        
         % Input error checks
         tf = isstrflag( input );        
         tf = isstrlist( input );
-        file = checkFileExists(file);        
+        tf = isrelative( name );
         assertStrFlag(input, name);
         assertStrList(input, name);
         assertNumericVectorN(input, N, name);

@@ -1,6 +1,6 @@
-function[file] = checkFileExists( file )
+function[path] = checkFileExists( file )
 %% Error checking to see if a file exists. If the file exists, returns the
-% full name as a string.
+% absolute path as a string with UNIX style file separators.
 %
 % dash.checkFileExists( fullname )
 % Checks if the file exists.
@@ -8,36 +8,32 @@ function[file] = checkFileExists( file )
 % dash.checkFileExists( filename )
 % Checks if a file on the active path matches the file name.
 %
-% file = dash.checkFileExists(...)
-% Returns the full file name as a string.
+% path = dash.checkFileExists(...)
+% Returns the full file name (including path and extension) as a string.
 %
 % ----- Inputs -----
 %
-% fullname: An full file name including path.
+% fullname: An full file name including path. A string
 %
-% file: Just a file name
+% file: Just the file name. A string. Must include the file extension.
 %
 % ----- Outputs -----
 %
-% file: The full file name including path and extension. A string.
+% path: The full file name including path and extension. A string.
 
-file = char(file);
-haspath = ~isempty(fileparts(file));
-
-% File with path
-if haspath
-    if ~isfile(file)
-        error('The file %s does not exist.', file);
-    end
-    
-% File without path
-else
-    file = which(file);
-    if isempty(file)
-        error('Could not find file %s. It may be misspelled or not on the active path.', file);
-    end
+% Check that the file exists and that the user didn't provide a folder
+if isfolder(file)
+    error('%s is a folder instead of a file.', file);
+elseif ~isfile(file)
+    error('Could not find file %s. It may be misspelled or not on the active path.', file);
 end
 
-file = string(file);
+% Get the full path for the file
+path = which(file);
+if isempty(path)
+    addpath(fileparts(file));
+    path = which(file);
+    rmpath(fileparts(file));
+end
 
 end
