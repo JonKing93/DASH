@@ -1,11 +1,11 @@
 function[X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources)
 %% Loads values from the data sources managed by a .grid file. Optimizes
-% the process for repeated load operations, which is a common task
-% when building state vector ensembles, by saving and returning pre-built
+% the process for repeated load operations (which is a common task
+% when building state vector ensembles) by saving and returning pre-built
 % dataSource objects. This is a low level method. It provides little error
 % checking and is not intended for users. For a user-friendly method
-% see "gridfile.load". It may be useful to call "gridfile.review" before
-% using this method for repeated loads.
+% see "gridfile.load". It may be useful to call "gridfile.review" to 
+% implement error checking before using this method.
 %
 % [X, meta, sources] = obj.repeatedLoad(inputOrder, inputIndices, sources)
 %

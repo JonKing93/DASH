@@ -164,10 +164,10 @@ end
 source = gridfile.convertSourceToPrimitives(source);
 
 % Use file paths relative to the .grid file and use UNIX style separators
-source.file = dash.unixStylePath(source.file);
 if relative
     source.file = dash.relativePath( source.file, obj.file );
 end
+source.file = dash.unixStylePath(source.file);
 
 % Preallocate the length of each of the primitive fields
 sourceFields = fields(obj.source);

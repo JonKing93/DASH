@@ -11,7 +11,20 @@ function[sources] = buildSources(obj, s)
 %
 % sources: A cell array of dataSource objects
 
+% Get the saved file names for the requested sources
 filenames = obj.collectPrimitives("file", s);
+
+% Convert relative paths to absolute
+gridFolders = split(obj.file, filesep);
+for f = 1:numel(filenames)
+    file = char(filenames(f));
+    if file(1)=='.'
+        fileFolders = split(file,'/');
+        filenames(f) = fullfile(gridFolders{:}, fileFolders{:});
+    end
+end
+
+% Build data sources
 sources = obj.buildSourcesForFiles(s, filenames);
 
 end
