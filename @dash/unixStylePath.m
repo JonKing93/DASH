@@ -1,6 +1,6 @@
 function[path] = unixStylePath(path)
-% Converts a path string for the current machine to a path using UNIX style
-% file separators.
+% Converts a file path string for the current machine to a path using UNIX 
+% style file separators.
 %
 % path = dash.unixStylePath(path);
 %
@@ -15,5 +15,6 @@ function[path] = unixStylePath(path)
 folders = split(path, filesep)';
 folders = [folders; repmat({'/'}, [1 numel(folders)])];
 path = strcat(folders{:});
+path(end) = [];
 
 end

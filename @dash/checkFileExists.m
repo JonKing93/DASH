@@ -21,16 +21,22 @@ function[path] = checkFileExists( file )
 %
 % path: The full file name including path and extension. A string.
 
-% Check that the file exists and that the user didn't provide a folder
+% Check that user didn't provide a folder
 if isfolder(file)
     error('%s is a folder instead of a file.', file);
-elseif ~isfile(file)
-    error('Could not find file %s. It may be misspelled or not on the active path.', file);
 end
 
-% Get the full path for the file
+% Check if the file exists or has a path string.
+exist = isfile(file);
 path = which(file);
+
+% Throw error if the file doesn't exist
 if isempty(path)
+    if ~exist
+        error('Could not find file %s. It may be misspelled or not on the active path.', file);
+    end
+
+    % Get the path string if off the active path.
     addpath(fileparts(file));
     path = which(file);
     rmpath(fileparts(file));

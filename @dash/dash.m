@@ -10,7 +10,7 @@ classdef dash
         % Files and paths
         path = checkFileExists(file);  
         path = unixStylePath(path);
-        path = relativePath(to, from);
+        path = relativePath(toFile, fromFolder);
         
         % Input error checks
         tf = isstrflag( input );        
