@@ -36,7 +36,7 @@ sourceMeta = gridfile.DefineMetadata("lon", lonMeta, "lat", latMeta, "time", tim
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
-**Important Note:** By default, .grid files record the relative path between the .grid file and data source files. If you move data source files without moving the .grid file, see how to [update data source file paths](\DASH\gridfile\rename-sources).
+**Important Note:** By default, .grid files record the relative path between the .grid file and data source files. If you move data source files without moving the .grid file or vice versa, see how to [update data source file paths](\DASH\gridfile\rename-sources).
 
 <br>
 ### Non-Regular Grids (Tripolar, Irregular Locations)
@@ -86,6 +86,15 @@ You can also have the .grid file convert data outside of a valid range to NaN us
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'validRange', validRange);
 ```
 Here validRange is a two element vector. The first element is the lower bound of the range and the second element is the upper bound.
+
+<br>
+
+#### Optiontal: Save Absolute File Paths
+
+You may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the optional 'relativePath' flag and select the false option:
+```matlab
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'relativePath', false)
+```
 
 
 [Previous](\DASH\gridfile\object) [Next](\DASH\gridfile\load)

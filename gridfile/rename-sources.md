@@ -3,15 +3,9 @@ layout: simple_layout
 title: "Rename Sources"
 ---
 
-# Warning: This page is currently under construction. Any and all information could be wrong. Proceed at your own peril!
-
-
-
-
-
 # Move / rename data source files
 
-When a data source file is added to a .grid file, its absolute file path is added to the .grid file's collection. If you move the data source or rename it, then the file path in the .grid file will need to be updated.
+By default, when a data source file is added to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection. If you change the relative path to the data source file (by moving either the .grid file or the data source file without moving the other), then you will need to update the file path in the .grid file.
 
 <br>
 #### Check / update all data sources
@@ -20,7 +14,7 @@ The easiest way to ensure that all data source file paths are up to date is to u
 ```matlab
 grid.updateSources;
 ```
-where grid is a gridfile object. This will iterate through each data source in the .grid file and check that the file still exists. If the file no longer exists, the function will search the Matlab active path for a file with the same name (excluding path), and record that new name instead. For example, if you move "\Users\path1\myfile.nc" to "\Users\path2\subfolder\myfile.nc", the .grid file will update the full file path and name accordingly.
+where grid is a gridfile object. This will iterate through each data source in the .grid file and check that the file still exists. If the file no longer exists, the function will search the Matlab active path for a file with the same name (excluding path), and record the path to the new location name instead. For example, if you move "\Users\path1\myfile.nc" to "\Users\path2\subfolder\myfile.nc", the .grid file will update the file path accordingly.
 
 <br>
 
@@ -36,8 +30,12 @@ where filenames is a string vector or cellstring vector of data source file name
 
 #### Specify the renamed files.
 
-If you renamed a data source (for example, from "myfile.nc" to "different-name.nc"), or if you moved data source files off the Matlab active path, then you will need to specify the new name of the files. Do so via:
+If you renamed a data source (for example, from "myfile.nc" to "different-name.nc"), or if you moved data source files off the Matlab active path, then you will need to specify the new name of the file. Do so via:
 ```matlab
 grid.renameSources( filenames, newnames )
 ```
-where newnames is a string vector or cellstring vector containing the updated file names. Each element of newnames must be for the corresponding element in filenames. If an element of newnames includes a file path, then the new file path is used directly. If an element of new names does not include a file path, then the method searches the Matlab active path for a file with the matching name and records its path.
+where newnames is a string vector or cellstring vector containing the updated file names. Each element of newnames must be for the corresponding element in filenames. If an element of newnames includes a file path, then the new file path is used directly. If an element of new names has no file path or only a partial path, then the method searches the Matlab active path for a file with the matching name and records its path.
+
+<br>
+
+#### Specify whether to save relative or absolute file paths
