@@ -38,4 +38,10 @@ where newnames is a string vector or cellstring vector containing the updated fi
 
 <br>
 
-#### Specify whether to save relative or absolute file paths
+#### Optional: Specify whether to save relative or absolute file paths
+
+By default, renameSources will use the same type of file path (relative or absolute) when updating the file path or renaming a data source. However, you can specify which type of path to use with the optional 'relativePath' flag, as per:
+```matlab
+grid.renameSources( filenames, newnames, relativePath)
+```
+where relativePath is a logical vector indicating whether the file paths to the renamed data sources should be stored as relative paths. 

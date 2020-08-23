@@ -36,7 +36,7 @@ sourceMeta = gridfile.DefineMetadata("lon", lonMeta, "lat", latMeta, "time", tim
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
-**Important Note:** By default, .grid files record the relative path between the .grid file and data source files. If you move data source files without moving the .grid file or vice versa, see how to [update data source file paths](\DASH\gridfile\rename-sources).
+**Important Note:** .grid files record the relative path between the .grid file and data source files when both files are on the same drive. If you move data source files without moving the .grid file or vice versa, see how to [update data source file paths](\DASH\gridfile\rename-sources). Alternatively, [save the absolute file path](\DASH\gridfile\add).
 
 <br>
 ### Non-Regular Grids (Tripolar, Irregular Locations)
@@ -89,9 +89,9 @@ Here validRange is a two element vector. The first element is the lower bound of
 
 <br>
 
-#### Optiontal: Save Absolute File Paths
+#### Optional: Save Absolute File Paths
 
-You may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the optional 'relativePath' flag and select the false option:
+When you add a data source file to a .grid file, by default the relative path from the .grid file to the data source is added to the .grid file's collection. One exception to this behavior occurs when the data source file is on a different drive than the .grid file; in this case, the absolute path to the data source file is stored in the .grid file. However, you may want to save the absolute path to a data source file on the same drive if you anticipate moving the .grid file but not the data source. To do so, use the optional 'relative' flag and select the false option:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'relativePath', false)
 ```
