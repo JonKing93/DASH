@@ -1,4 +1,4 @@
-function[] = renameSources( obj, name, newname, relativePath )
+function[] = renameSources( obj, name, newname, absolutePath )
 %% Changes the file name associated with data sources to a new name. Useful
 % if data files are moved to a new location after being added to a .grid
 % file.
@@ -21,7 +21,7 @@ function[] = renameSources( obj, name, newname, relativePath )
 % name and updates the path. If an element includes a partial file path or
 % just a file name, searches the active path for a matching file.
 %
-% obj.renameSources( name, newname, relativePath )
+% obj.renameSources( name, newname, absolutePath )
 % Specify whether to save new file names as absolute paths or as paths
 % relative to the .grid file location. If unspecified, uses whichever style
 % each data source used previously.
@@ -36,9 +36,10 @@ function[] = renameSources( obj, name, newname, relativePath )
 %    file name (including path), just file name, or an empty string. All 
 %    file names must include the extension.
 %
-% relativePath: A scalar logical vector. Must have one element for each
+% absolutePath: A scalar logical vector. Must have one element for each
 %    element of "name". True elements indicate that the path for the file
-%    should be saved as a relative path. If false, saves an absolute path.
+%    should be saved as an absolute path. If false, saves the path relative
+%    to the .grid file.
 
 % Update the grid object in case the file changed
 obj.update
@@ -73,15 +74,15 @@ if numel(newname) ~= numel(name)
 end
 
 % Default and error checking for relativePath
-if ~exist('relativePath','var') || isempty(relativePath)
+if ~exist('absolutePath','var') || isempty(absolutePath)
     [row, col] = find(fileSources);
     [~, first] = unique(col);
     path = char(obj.collectPrimitives("file", row(first)));
-    relativePath = path(:,1)=='.';
-elseif ~isvector(relativePath) || ~islogical(relativePath) || numel(relativePath)~=numel(name)
-    error('relativePath must be a logical vector');
-elseif numel(relativePath) ~= numel(name)
-    error('relativePath must have one element for each element in name (%.f), but relativePath currently has %.f elements.', numel(name), numel(relativePath));
+    absolutePath = path(:,1)~='.';
+elseif ~isvector(absolutePath) || ~islogical(absolutePath) || numel(absolutePath)~=numel(name)
+    error('absolutePath must be a logical vector');
+elseif numel(absolutePath) ~= numel(name)
+    error('absolutePath must have one element for each element in name (%.f), but absolutePath currently has %.f elements.', numel(name), numel(absolutePath));
 end
 
 % Get the full new file paths and check the files exist
@@ -107,7 +108,7 @@ for f = 1:nFile
     obj.checkSourcesMatchGrid( sources, s );
     
     % Implement the desired filepath style. Record the new field length
-    newname(f) = obj.sourceFilepath(newname(f), relativePath(f));
+    newname(f) = obj.sourceFilepath(newname(f), absolutePath(f));
     newLength(f) = numel( char(newname(f)) );
 end
 

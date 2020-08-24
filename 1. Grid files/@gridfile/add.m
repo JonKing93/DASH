@@ -22,10 +22,10 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 % Y = aX + b  to all values. See the details of the "convert" input. If unset,
 % does not apply a linear transformation to loaded data.
 %
-% obj.add( ..., 'relativePath', relative )
-% Specify whether to save the data source file name as a path relative to
-% the .grid file or as an absolute path. If unspecified, uses the relative
-% path.
+% obj.add( ..., 'absolutePath', absolute )
+% Specify whether to save the data source file name as an absolute path or
+% as a path relative to the .grid file. If unspecified, uses a relative
+% path when possible.
 %
 % ----- Inputs -----
 %
@@ -64,16 +64,16 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %    multiplicative constant (a). The second element specifieds the
 %    additive constant (b).
 %
-% relative: A scalar logical indicating whether to save data source file
-%    names as a path relative to the .grid file (true), or as an absolute
-%    path (false).
+% absolute: A scalar logical indicating whether to save data source file
+%    names as an absolute path (true), or as a path relative to the .grid
+%    file (false). Default is false.
 
 % Update the gridfile object in case the file was changed.
 obj.update;
 
 % Parse and error check the optional inputs (fill, range, convert)
-[fill, range, convert, relative] = dash.parseInputs( varargin, {'fill','validRange','convert','relative'}, ...
-                                      {NaN, [-Inf, Inf], [1 0], true}, 5 );
+[fill, range, convert, absolute] = dash.parseInputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
+                                      {NaN, [-Inf, Inf], [1 0], false}, 5 );
 if ~isnumeric(fill) || ~isscalar(fill)
     error('fill must be a numeric scalar.');
 elseif ~isvector(range) || numel(range)~=2 || ~isnumeric(range)
@@ -86,8 +86,8 @@ elseif ~isvector(range) || ~isnumeric(convert) || numel(convert)~=2
     error('convert must be a numeric vector with two elements.');
 elseif ~isreal(convert) || any(isnan(convert)) || any(isinf(convert))
     error('convert may not contain complex values, NaN, or Inf.');
-elseif ~isscalar(relative) || ~islogical(relative)
-    error('relative must be a scalar logical.');
+elseif ~isscalar(absolute) || ~islogical(absolute)
+    error('absolute must be a scalar logical.');
 end
     
 % Create the dataSource object. This will error check type, file, var, and
@@ -163,7 +163,7 @@ end
 % Convert the dataSource object into a structure of primitives and
 % implement the desired filepath style
 source = gridfile.convertSourceToPrimitives(source);
-source.file = obj.sourceFilepath(source.file, relative);
+source.file = obj.sourceFilepath(source.file, absolute);
 
 % Preallocate the length of each of the primitive fields
 sourceFields = fields(obj.source);
