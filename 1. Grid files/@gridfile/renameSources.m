@@ -77,9 +77,9 @@ end
 if ~exist('absolutePath','var') || isempty(absolutePath)
     [row, col] = find(fileSources);
     [~, first] = unique(col);
-    path = char(obj.collectPrimitives("file", row(first)));
-    absolutePath = path(:,1)~='.';
-elseif ~isvector(absolutePath) || ~islogical(absolutePath) || numel(absolutePath)~=numel(name)
+    absolutePath = obj.absolutePath( row(first) );
+end
+if ~isvector(absolutePath) || ~islogical(absolutePath) || numel(absolutePath)~=numel(name)
     error('absolutePath must be a logical vector');
 elseif numel(absolutePath) ~= numel(name)
     error('absolutePath must have one element for each element in name (%.f), but absolutePath currently has %.f elements.', numel(name), numel(absolutePath));
@@ -130,6 +130,7 @@ for f = 1:nFile
     s = find(fileSources(:,f));
     obj.source.file(s,:) = newname(f,:);
     obj.fieldLength(s,k) = newLength(f);
+    obj.absolutePath(s) = absolutePath(f);
 end
 obj.save;
 

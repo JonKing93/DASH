@@ -49,6 +49,7 @@ end
 obj.dimLimit(:,:,remove) = [];
 obj.fieldLength(remove,:) = [];
 obj.maxLength = max(obj.fieldLength,[],1);
+obj.absolutePath(remove,:) = [];
 
 % Correct for empty max length
 sourceFields = fields(obj.source);

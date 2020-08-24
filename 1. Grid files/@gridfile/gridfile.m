@@ -39,6 +39,7 @@ classdef gridfile < handle
         fieldLength; % The length of primitive arrays for the source fields
         maxLength; % The length of the padded primitive arrays in the .grid file
         dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        absolutePath; % Whether to store a data source file name exclusively as an absolute path
     end
     
     % Global configuration.

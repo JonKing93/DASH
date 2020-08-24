@@ -191,6 +191,7 @@ end
 % Update the other source variables and save
 obj.fieldLength = cat(1, obj.fieldLength, fieldLength);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
+obj.absolutePath = cat(1, obj.absolutePath, absolute);
 obj.save;
 
 end

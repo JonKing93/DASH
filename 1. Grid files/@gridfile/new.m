@@ -100,6 +100,7 @@ nField = numel(fields(source));
 fieldLength = NaN(0, nField);
 maxLength = zeros(1, nField);
 dimLimit = NaN(nDim, 2, 0);
+absolutePath = false(0,1);
             
 % Create the initial .grid file.
 % dims              % The internal dimension order in the .grid file
@@ -110,8 +111,9 @@ dimLimit = NaN(nDim, 2, 0);
 % fieldLength       % Length of the primitive arrays for each source
 % maxLength         % Length of the padded primitive arrays in the .grid file
 % dimLimit          % The index limits of each data source along each dimension (nDim x 2 x nSource)
+% absolutePath      % Whether to store a data source file path exclusively as an absolute path
 save( filename, '-mat', 'dims', 'gridSize', 'isdefined', 'metadata', ...
-      'source', 'fieldLength', 'maxLength', 'dimLimit' );
+      'source', 'fieldLength', 'maxLength', 'dimLimit', 'absolutePath' );
 
 % Return grid object as output
 grid = gridfile( filename );
