@@ -113,7 +113,7 @@ if ~haveIndices
     allowInf = [false true false];
 
     for i = 1:numel(input)
-        dash.assertNumericVectorN( input{i}, nInputDims, name(i) );
+        dash.assertVectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
         dash.assertPositiveIntegers( input{i}, false, allowInf(i), name(i) );
         if any( input{i}>obj.size(inputOrder) & ~isinf(input{i}) )
             bad = find(input{i}>obj.size(inputOrder),1);

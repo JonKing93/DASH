@@ -8,6 +8,8 @@ classdef stateVector
     properties
         title; % An optional identifier for the state vector
         variables; % The array of variable designs
+        allowOverlap; % Whether the variable allows the same data to be used in multiple ensemble members
+        coupled; % Notes which variables are coupled
     end
     
     % Constructor

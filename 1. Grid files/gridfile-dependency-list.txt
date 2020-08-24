@@ -168,7 +168,7 @@ load
         dash.isstrlist
     checkAllowedDims
         dash.errorStringList
-    dash.assertNumericVectorN
+    dash.assertVectorTypeN
     dash.assertPositiveIntegers
     repeatedLoad
         buildSources

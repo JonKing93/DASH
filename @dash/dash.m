@@ -15,10 +15,9 @@ classdef dash
         % Input error checks
         tf = isstrflag( input );        
         tf = isstrlist( input );
-        tf = isrelative( name );
         assertStrFlag(input, name);
         assertStrList(input, name);
-        assertNumericVectorN(input, N, name);
+        assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);
         str = errorStringList(strings);
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
