@@ -10,7 +10,11 @@ if ~isfile(obj.file)
 end
 
 % Load the data in the .grid file
-m = load(obj.file, '-mat');
+try
+    m = load(obj.file, '-mat');
+catch
+    error('Could not load gridfile data from "%s". It may not be a .grid file. If it is a .grid file, it may have become corrupted.', obj.file);
+end
 
 % Update the gridfile properties
 differentName = ["size", "gridSize"; "meta","metadata"];
