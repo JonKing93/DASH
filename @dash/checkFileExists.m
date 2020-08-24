@@ -42,4 +42,7 @@ if isempty(path)
     rmpath(fileparts(file));
 end
 
+% Use string internally
+path = string(path);
+
 end
