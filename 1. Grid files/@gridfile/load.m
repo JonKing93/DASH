@@ -144,28 +144,8 @@ else
         end
         
         % Error check
-        if ~isvector(inputIndices{d})
-            error('Element %.f of indices must be a vector.', d);
-        end
-        
-        % Error check logical indices. Convert to linear.
-        if islogical(inputIndices{d})
-            if numel(inputIndices{d})~=obj.size(inputOrder(d))
-                error('Element %.f of indices is a logical vector, but it is not the length of the %s dimension (%.f)', d, obj.dims(inputOrder(d)), obj.size(inputOrder(d)) );
-            end
-            inputIndices{d} = find(inputIndices{d});
-            
-        % Error check linear indices.
-        elseif isnumeric(inputIndices{d})
-            dash.assertPositiveIntegers(inputIndices{d}, false, false, sprintf('Element %.f of indices',d));
-            if max(inputIndices{d})>obj.size(inputOrder(d))
-                error('Element %.f of indices specifies values up to %.f, which is larger than the length of the %s dimension (%.f)', find(inputIndices{d}==max(inputIndices{d},1)), max(inputIndices{d}), obj.dims(inputOrder(d)), obj.size(inputOrder(d)) );
-            end
-            
-        % Other types are not allowed
-        else
-            error('Element %.f of indices must be a logical or numeric vector.', d);
-        end
+        name = sprintf('Element %.f of indices', d);
+        inputIndices{d} = dash.checkIndices(inputIndices{d}, name, obj.size(inputOrder(d)), obj.dims(inputOrder(d)) );
     end
 end
 

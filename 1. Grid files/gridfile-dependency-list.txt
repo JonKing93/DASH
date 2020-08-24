@@ -170,6 +170,8 @@ load
         dash.errorStringList
     dash.assertVectorTypeN
     dash.assertPositiveIntegers
+    dash.checkIndices
+        dash.assertPositiveIntegers
     repeatedLoad
         buildSources
             collectFullPaths

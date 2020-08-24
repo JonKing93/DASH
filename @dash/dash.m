@@ -17,6 +17,7 @@ classdef dash
         tf = isstrlist( input );
         assertStrFlag(input, name);
         assertStrList(input, name);
+        indices = checkIndices(indices, name, dimLength, dimName);
         assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);
         str = errorStringList(strings);
