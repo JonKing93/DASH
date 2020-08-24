@@ -127,7 +127,7 @@ for s = 1:numel(sources)
             fprintf('The valid range is %s to %s.\n', num2str(sources{s}.range(1)), num2str(sources{s}.range(2)));
         end
         if ~isequal(sources{s}.convert, [1 0])
-            fprintf('The data will be linearly transformed via: Y = %sX * %s\n', num2str(sources{s}.convert(1)), num2str(sources{s}.convert(2)) );
+            fprintf('The data will be linearly transformed via: Y = %s * X + %s\n', num2str(sources{s}.convert(1)), num2str(sources{s}.convert(2)) );
         end
         dimStr = sprintf('%s x ', sourceDims);
         fprintf('%s is (%s\b\b\b).\n', sources{s}.var, dimStr);
