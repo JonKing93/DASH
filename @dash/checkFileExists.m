@@ -33,7 +33,7 @@ path = which(file);
 % Throw error if the file doesn't exist
 if isempty(path)
     if ~exist
-        error('Could not find file %s. It may be misspelled or not on the active path.', file);
+        error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
     end
 
     % Get the path string if off the active path.
