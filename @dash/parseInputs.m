@@ -20,9 +20,9 @@ function[varargout] = parseInputs( inArgs, flags, defaults, nPrev )
 % values: The parsed values. A cell vector. Has one element for each flag.
 
 % Error check the inputs
-assertCellVector(inArgs, "inArgs");
+dash.assertVectorTypeN(inArgs, 'cell', [], 'inArgs');
 dash.assertStrList(flags, "flags");
-assertCellVector(defaults, "defaults");
+dash.assertVectorTypeN(inArgs, 'cell', [], 'defaults');
 
 flags = string(flags);
 nFlags = numel(flags);
@@ -58,10 +58,4 @@ if ~isempty(inArgs)
     end
 end
 
-end
-
-function[] = assertCellVector(input, name)
-    if ~iscell(input) || ~isvector(name)
-        error('%s must be a cell vector.', name);
-    end
 end

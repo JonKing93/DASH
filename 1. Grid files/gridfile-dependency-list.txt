@@ -30,9 +30,12 @@ gridfile
 add
     update
     dash.parseInputs
+        dash.assertVectorTypeN
         dash.assertStrList
             dash.isstrlist
-        dash.errorStringList
+        dash.assertStrFlag
+        dash.checkStrsinList
+            dash.errorStringList
     dataSource.new
         matSource
             dataSource.checkVariable

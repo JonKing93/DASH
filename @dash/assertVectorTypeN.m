@@ -4,9 +4,12 @@ function[] = assertVectorTypeN( input, type, N, name )
 %
 % dash.assertVectorTypeN(input, [], N, name)
 % Checks the input is a vector of length N.
+%
+% dash.assertVectorTypeN(input, type, [], name)
+% Checks the input is a vector of a specific type.
 % 
 % dash.assertVectorTypeN(input, type, N, name)
-% Also checks the input is a specific data type.
+% Checks both type and length.
 %
 % ----- Inputs -----
 %
@@ -18,10 +21,11 @@ function[] = assertVectorTypeN( input, type, N, name )
 %
 % name: The name of the input. Used for custom error message.
 
-if ~isvector(input) || numel(input)~=N
-    error('%s must be a vector with %.f elements, but it has %.f elements instead.', name, N, numel(input));
-end
-if ~isempty(type) && ~isa(input, type)
+if ~isvector(input)
+    error('%s must be a vector.', name);
+elseif ~isempty(N) && numel(input)~=N
+    error('%s must have %.f elements, but it has %.f elements instead.', name, N, numel(input));
+elseif ~isempty(type) && ~isa(input, type)
     error('%s must be a %s vector, but it is a %s vector instead.', name, type, class(input));
 end
 
