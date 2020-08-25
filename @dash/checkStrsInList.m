@@ -17,6 +17,7 @@ function[k] = checkStrsInList(input, list, name, listName )
 
 % Check the input is a string list
 dash.assertStrList(input, name);
+input = string(input);
 
 % Check all strings are allowed. Get their indices in the list.
 [inList, k] = ismember(input, list);

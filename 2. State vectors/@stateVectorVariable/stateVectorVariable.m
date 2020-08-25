@@ -13,6 +13,9 @@ classdef stateVectorVariable
         stateIndices; % Data indices to use for state dimensions
         ensIndices; % Reference indices to use for ensemble dimensions
         
+        seqIndices; % Sequence indices
+        seqMetadata; % Sequence metadata
+        
     end
     
     % Constructor
@@ -52,12 +55,20 @@ classdef stateVectorVariable
             obj.isState = true(1, nDims);
             obj.stateIndices = cell(1, nDims);
             obj.ensIndices = cell(1, nDims);
+            
+            obj.seqIndices = cell(1, nDims);
+            obj.seqMetadata = cell(1, nDims);
+            
+            % Initialize all dimensions as state dimensions
+            for d = 1:numel(obj.dims)
+                obj = obj.design(obj.dims(d), 'state');
+            end
         end
     end
     
     % Object utilities
     methods
-        d = dimensionIndex(obj, dims);
+        d = checkDimensions(obj, dims, multiple);
     end
     
     % Interface methods

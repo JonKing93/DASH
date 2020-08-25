@@ -47,7 +47,7 @@ classdef stateVector
     % Object utilities
     methods
         varNames = variableNames(obj);
-        v = variableIndex(obj, varNames);
+        v = checkVariables(obj, varNames, multiple);
         str = errorTitle(obj);
     end
     

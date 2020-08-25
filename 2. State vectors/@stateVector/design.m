@@ -5,12 +5,12 @@ function[obj] = design(obj, varName, dim, type, indices)
 % Specify whether a dimension of a state vector variable is a state
 % dimension or an ensemble dimension.
 %
-% obj = obj.design( varName, dim, 'state', stateIndices )
+% obj = obj.design( varName, dim, 'state'/'s', stateIndices )
 % Marks a dimension of a state vector variable as a state dimension.
 % Specifies the indices of required data along this dimension in the 
 % variable's .grid file.
 %
-% obj = obj.design( varName, dim, 'ensemble', ensIndices )
+% obj = obj.design( varName, dim, 'ensemble'/'ens'/'e', ensIndices )
 % Marks a dimension of a state vector variable as an ensemble dimension.
 % Specifies the reference indices of required data along this dimension in
 % the variable's .grid file.
@@ -21,16 +21,16 @@ function[obj] = design(obj, varName, dim, type, indices)
 %
 % dim: The name of one of the variable's dimensions. A string.
 %
-% type: A string indicating the type of the dimension. Either 'state' or
-%    'ensemble'.
+% type: A string indicating the type of the dimension. 
+%    'state': A state dimension
+%    'ensemble' or 'ens' or 'ens' or 'e': An ensemble dimension
 %
 % stateIndices: The indices of required data along the dimension in the
 %    variable's .grid file. Either a vector of linear indices or a logical
 %    vector the length of the dimension.
 
-% Error check the variable names. Get the variable index
-dash.assertStrFlag(varName, 'varName');
-v = obj.variableIndex(varName);
+% Error check the variable name. Get the variable index
+v = obj.checkVariables(varName, false);
 
 % Default for indices
 if ~exist('indices','var')

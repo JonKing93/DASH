@@ -5,14 +5,16 @@ function[obj] = design(obj, dim, type, indices)
 %
 % obj = obj.design(dim, 'state', stateIndices)
 %
+% obj = obj.design(dim, 'ens', ensIndices)
 % obj = obj.design(dim, 'ensemble', ensIndices)
 %
 % ----- Inputs -----
 %
 % dim: The name of one of the variable's dimensions. A string.
 %
-% type: A string indicating the type of the dimension. Either 'state' or
-%    'ensemble'.
+% type: A string indicating the type of the dimension.
+%    'state' or 's': A state dimension
+%    'ensemble' or 'ens' or 'e': An ensemble dimension
 %
 % stateIndices: The indices of required data along the dimension in the
 %    variable's .grid file. Either a vector of linear indices or a logical
@@ -24,12 +26,15 @@ dash.assertStrFlag(type, 'type');
 d = obj.dimensionIndex(dim);
 
 % Check that type is recognized and get the name of the indices
-if strcmpi(type, "state")
+t = dash.checkStrsInList(type, ["state","s","ensemble","ens","e"], 'type', 'recognized flag');
+
+% Toggles and names for state vs ens
+if t<3
+    isState = true;
     name = 'stateIndices';
-elseif strcmpi(type,"ensemble")
-    name = 'ensIndices';
 else
-    error('type must either be "state" or "ensemble"');
+    isState = false;
+    name = 'ensIndices';
 end
 
 % Default for indices and error check
@@ -39,20 +44,26 @@ end
 indices = dash.checkIndices(indices, name, obj.size(d), obj.dims(d));
 
 % State dimension
-if strcmpi(type, 'state')
+if isState
     obj.isState(d) = true;
     obj.stateIndices{d} = indices;
     
     % Reset ensemble properties
-    obj.variables(v).ensIndices{d} = [];
+    obj.ensIndices{d} = [];
+    obj.seqIndices{d} = [];
+    obj.seqMetadata{d} = [];
     
 % Ensemble dimension
 else
     obj.isState(d) = false;
     obj.ensIndices{d} = indices;
     
+    % Initialize ensemble properties
+    obj.seqIndices{d} = 0;
+    obj.seqMetadata{d} = NaN;
+    
     % Reset state properties
-    obj.stateIndices{d} = indices;
+    obj.stateIndices{d} = [];
 end
 
 end
