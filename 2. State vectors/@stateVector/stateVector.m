@@ -83,11 +83,8 @@ classdef stateVector
             
             % Error check
             dash.assertStrFlag(title, 'title');
-            if ~isscalar(verbose) || ~islogical(verbose)
-                error('verbose must be a scalar logical');
-            elseif ~isscalar(warn) || ~islogical(warn)
-                error('warn must be a scalar logical.');
-            end
+            dash.assertScalarLogical(verbose, 'verbose');
+            dash.assertScalarLogical(warn, 'warn');
             
             % Save
             obj.title = string(title);
@@ -108,6 +105,7 @@ classdef stateVector
         obj = add(obj, varName, file);
         obj = design(obj, varName, dim, type, indices);
         obj = sequence(obj, varName, dim, indices, metadata);
+        obj = toggleConsoleOutput(obj, verbose, warn);
     end
      
 end
