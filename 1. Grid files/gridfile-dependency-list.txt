@@ -51,7 +51,8 @@ add
                     dash.isstrflag
                 dash.checkFileExists
     checkAllowedDims
-        dash.errorStringList
+        dash.checkStrsInList
+            dash.errorStringList
     checkMetadataStructure
         checkMetadataField
             hasDupicateRows
@@ -114,7 +115,8 @@ rewriteMetadata
     dash.assertStrFlag
         dash.isstrflag
     checkAllowedDims
-        dash.errorStringList
+        dash.checkStrsInList
+            dash.errorStringList
     checkMetadataField
         hasDuplicateRows
     updateMetadataField
@@ -126,7 +128,8 @@ expand
     dash.assertStrFlag
         dash.isstrflag
     checkAllowedDims
-        dash.errorStringList
+        dash.checkStrsInList
+            dash.errorStringList
     checkMetadataField
         hasDuplicateRows
     hasDuplicateRows
@@ -167,7 +170,8 @@ load
     dash.assertStrList
         dash.isstrlist
     checkAllowedDims
-        dash.errorStringList
+        dash.checkStrsInList
+            dash.errorStringList
     dash.assertVectorTypeN
     dash.assertPositiveIntegers
     dash.checkIndices

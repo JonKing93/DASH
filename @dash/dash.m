@@ -4,30 +4,29 @@ classdef dash
     
     methods (Static)
         
-        % Global data for dimension names
+        % Misc
         names = dimensionNames;
+        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+        convertToV7_3(filename);
         
-        % Files and paths
+        % File paths
         path = checkFileExists(file);  
         path = unixStylePath(path);
         path = relativePath(toFile, fromFolder);
         
-        % Input error checks
+        % Strings and string lists
         tf = isstrflag( input );        
         tf = isstrlist( input );
         assertStrFlag(input, name);
         assertStrList(input, name);
+        k = checkStrsInList(input, list, name, message);
+        str = errorStringList(strings);
+
+        % Indices
         indices = checkIndices(indices, name, dimLength, dimName);
         assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);
-        str = errorStringList(strings);
-        varargout = parseInputs(inArgs, flags, defaults, nPrev);
-
-        % Indices and start, count, stride.
         indices = equallySpacedIndices(indices);
-        
-        % File formats
-        convertToV7_3(filename);
     end
     
 end
