@@ -39,7 +39,7 @@ classdef stateVector
             
             % Error check and save
             dash.assertStrFlag(title, 'title');
-            obj.title = title;
+            obj.title = string(title);
             
         end
     end
@@ -47,12 +47,14 @@ classdef stateVector
     % Object utilities
     methods
         varNames = variableNames(obj);
+        v = variableIndex(obj, varNames);
         str = errorTitle(obj);
     end
     
     % User methods
     methods
         obj = add(obj, varName, file);
+        obj = design(obj, varName, dim, type, indices);
     end
      
 end

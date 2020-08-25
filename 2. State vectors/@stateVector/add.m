@@ -20,7 +20,7 @@ function[obj] = add(obj, varName, file)
 
 % Error check, use string internally
 dash.assertStrFlag(varName, 'varName');
-varName = stirng(varName);
+varName = string(varName);
 
 % Check the name is not a duplicate
 currentNames = obj.variableNames;
