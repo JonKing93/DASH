@@ -1,8 +1,12 @@
-function[obj] = add(obj, varName, file)
+function[obj] = add(obj, varName, file, autoCouple)
 %% Adds a variable to a stateVector.
 %
 % obj = obj.add(varName, file)
 % Adds a variable to the state vector from a .grid file.
+%
+% obj = obj.add(varName, file, autoCouple)
+% Specify whether the variable should be automatically coupled to other
+% variables in the state vector. Default is true.
 %
 % ----- Inputs -----
 % 
@@ -14,22 +18,36 @@ function[obj] = add(obj, varName, file)
 % file: The name of the .grid file that holds data for the variable. A
 %    string scalar or character row vector.
 %
+% autoCouple: A scalar logical indicating whether to automatically couple
+%    the variable to other variables in the state vector (true -- default)
+%    or not (false).
+%
 % ----- Outputs -----
 %
 % obj: The updated stateVector object.
 
+% Default for autoCouple
+if ~exist('autoCouple','var') || isempty(autoCouple)
+    autoCouple = true;
+end
+
 % Error check, use string internally
+dash.assertScalarLogical(autoCouple, 'autoCouple');
 dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
 
 % Check the name is not a duplicate
-currentNames = obj.variableNames;
-if ismember(varName, currentNames)
+currentVars = obj.variableNames;
+if ismember(varName, currentVars)
     error('There is already a "%s" variable in %s.', varName, obj.errorTitle);
 end
 
-% Create the stateVectorVariable object. (Error checks varName and file)
+% Create the new variable (error checks file). Save
 newVar = stateVectorVariable(varName, file);
 obj.variables = [obj.variables; newVar];
+
+% Update variable coupling
+obj.autoCouple = [obj.autoCouple; autoCouple];
+obj = obj.couple(varName, currentVars(obj.autoCouple));
 
 end
