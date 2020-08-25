@@ -74,6 +74,7 @@ classdef stateVectorVariable
     % Interface methods
     methods
         obj = design(obj, dim, type, indices);
+        obj = sequence(obj, dim, indices, metadata);
     end
 end
         

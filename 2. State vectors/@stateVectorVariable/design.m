@@ -23,7 +23,7 @@ function[obj] = design(obj, dim, type, indices)
 % Error check. Get the dimension index
 dash.assertStrFlag(dim, 'dim');
 dash.assertStrFlag(type, 'type');
-d = obj.dimensionIndex(dim);
+d = obj.checkDimensions(dim, false);
 
 % Check that type is recognized and get the name of the indices
 t = dash.checkStrsInList(type, ["state","s","ensemble","ens","e"], 'type', 'recognized flag');

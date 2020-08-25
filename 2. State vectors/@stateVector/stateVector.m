@@ -55,6 +55,7 @@ classdef stateVector
     methods
         obj = add(obj, varName, file);
         obj = design(obj, varName, dim, type, indices);
+        obj = sequence(obj, varName, dim, indices, metadata);
     end
      
 end
