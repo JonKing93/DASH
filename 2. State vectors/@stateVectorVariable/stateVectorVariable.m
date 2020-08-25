@@ -16,6 +16,12 @@ classdef stateVectorVariable
         seqIndices; % Sequence indices
         seqMetadata; % Sequence metadata
         
+        takeMean; % Whether to take a mean over a dimension
+        weightCell; % Weights for each dimension
+        weightMatrix; % N-dimensional matrix of weights
+        omitnan; % Whether to exclude NaN values
+        
+        
     end
     
     % Constructor
@@ -58,6 +64,11 @@ classdef stateVectorVariable
             
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);
+            
+            obj.takeMean = false(1, nDims);
+            obj.weightCell = cell(1, nDims);
+            obj.weightMatrix = [];
+            obj.omitnan = false(1, nDims);
             
             % Initialize all dimensions as state dimensions
             for d = 1:numel(obj.dims)

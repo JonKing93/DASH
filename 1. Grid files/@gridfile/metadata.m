@@ -22,9 +22,7 @@ function[meta] = metadata(obj, includeUndefined)
 if ~exist('includeUndefined','var') || isempty(includeUndefined)
     includeUndefined = false;
 end
-if ~isscalar(includeUndefined) || ~islogical(includeUndefined)
-    error('includeUndefined must be a scalar logical.');
-end
+dash.assertScalarLogical(includeUndefined, 'includeUndefined');
 
 % Extract the metadata
 meta = obj.meta;

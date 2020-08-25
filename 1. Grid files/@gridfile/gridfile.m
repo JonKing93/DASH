@@ -8,7 +8,6 @@ classdef gridfile < handle
     % To create a new gridfile object, use:
     %   obj = gridfile(filename)
     %
-    % *** Essential ***
     % gridFile Methods:
     %   defineMetadata - Defines metadata for a .grid file or data source
     %   new - Initializes a new .grid file.

@@ -86,9 +86,8 @@ elseif ~isvector(range) || ~isnumeric(convert) || numel(convert)~=2
     error('convert must be a numeric vector with two elements.');
 elseif ~isreal(convert) || any(isnan(convert)) || any(isinf(convert))
     error('convert may not contain complex values, NaN, or Inf.');
-elseif ~isscalar(absolute) || ~islogical(absolute)
-    error('absolute must be a scalar logical.');
 end
+dash.assertScalarLogical(absolute, 'absolute');
     
 % Create the dataSource object. This will error check type, file, var, and
 % dims. It also has information on the size of the merged / unmerged data.

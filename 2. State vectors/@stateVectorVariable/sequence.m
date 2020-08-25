@@ -12,6 +12,8 @@ function[obj] = sequence(obj, dim, indices, metadata)
 %    position of sequence data relative to the reference indices. 0
 %    indicates the reference index. 1 is the data index following the
 %    reference index. -1 is the data index before the reference index, etc.
+%    Sequence indices may be in any order and cannot have a magnitude
+%    larger than the length of the dimension.
 %
 % metadata: Metadata for the sequence. A numeric, logical,
 %    char, string, cellstring, or datetime matrix. Each row is treated

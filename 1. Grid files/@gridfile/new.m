@@ -44,9 +44,8 @@ end
 dash.assertStrFlag( filename, "filename" );
 if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
-elseif ~islogical(overwrite) || ~isscalar(overwrite)
-    error('overwrite must be a scalar logical.');
 end
+dash.assertScalarLogical(overwrite, 'overwrite');
 gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
 
 % Ensure the file name has a .grid extension

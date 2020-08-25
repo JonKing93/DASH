@@ -6,6 +6,7 @@ classdef dash
         
         % Misc
         names = dimensionNames;
+        assertScalarLogical(input, name);
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
         
