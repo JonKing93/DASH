@@ -37,17 +37,22 @@ dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
 
 % Check the name is not a duplicate
-currentVars = obj.variableNames;
-if ismember(varName, currentVars)
+vars = obj.variableNames;
+if ismember(varName, vars)
     error('There is already a "%s" variable in %s.', varName, obj.errorTitle);
 end
 
-% Create the new variable (error checks file). Save
+% Create the new variable (error checks file).
 newVar = stateVectorVariable(varName, file);
 obj.variables = [obj.variables; newVar];
+vars(end+1) = varName;
 
 % Update variable coupling
-obj.autoCouple = [obj.autoCouple; autoCouple];
-obj = obj.couple(varName, currentVars(obj.autoCouple));
+obj.autoCouple(end+1, 1) = autoCouple;
+obj.coupled(end+1, end+1) = true;
+if autoCouple
+    t = find(obj.autoCouple,1);
+    obj = obj.couple( vars(t), vars(obj.autoCouple) );
+end
 
 end

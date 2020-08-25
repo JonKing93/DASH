@@ -90,6 +90,11 @@ classdef stateVector
             obj.title = string(title);
             obj.verbose = verbose;
             obj.warn = warn;
+            
+            % Initialize
+            obj.autoCouple = false(0,1);
+            obj.coupled = false(0,0);
+            obj.variables = [];
         end
     end
     
