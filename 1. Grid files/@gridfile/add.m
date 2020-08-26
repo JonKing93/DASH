@@ -71,14 +71,14 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 % Update the gridfile object in case the file was changed.
 obj.update;
 
-% Parse and error check the optional inputs (fill, range, convert)
+% Parse and error check the optional inputs (fill, range, convert, absolute)
 [fill, range, convert, absolute] = dash.parseInputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
                                       {NaN, [-Inf, Inf], [1 0], false}, 5 );
 dash.assertScalarLogical(absolute, 'absolute');
 dash.assertVectorTypeN(fill, 'numeric', 1, 'fill');
-dash.assertVectorTypeN(range, 'numeric', 2, 'range');
 dash.assertVectorTypeN(convert, 'numeric', 2, 'convert');
 dash.assertRealDefined(convert, 'convert');
+dash.assertVectorTypeN(range, 'numeric', 2, 'range');
 dash.assertRealDefined(range, 'range', false, true);
 if range(1) > range(2)
     error('The first element of range cannot be larger than the second element.');

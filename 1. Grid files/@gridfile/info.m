@@ -58,7 +58,7 @@ elseif dash.isstrlist(sources)
         
 % If numeric, check for postive integers no higher than nSource
 elseif isnumeric(sources)
-    dash.assertPositiveIntegers(sources, false, false, "s");
+    dash.assertPositiveIntegers(sources, "s");
     if any(sources>nSource)
         error('The largest element in s (%.f) is greater than the number of data sources in the .grid file (%.f)', max(sources), nSource);
     end

@@ -114,7 +114,7 @@ if ~haveIndices
 
     for i = 1:numel(input)
         dash.assertVectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
-        dash.assertPositiveIntegers( input{i}, false, allowInf(i), name(i) );
+        dash.assertPositiveIntegers( input{i}, name(i), false, allowInf(i) );
         if any( input{i}>obj.size(inputOrder) & ~isinf(input{i}) )
             bad = find(input{i}>obj.size(inputOrder),1);
             error('Element %.f of %s (%.f) is larger than the length of the %s dimension (%.f)', bad, name(i), start(bad), obj.dims(inputOrder(bad)), obj.size(inputOrder(bad)) );

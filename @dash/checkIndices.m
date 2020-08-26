@@ -34,7 +34,7 @@ if islogical(indices)
     
 % Numeric indices
 elseif isnumeric(indices)
-    dash.assertPositiveIntegers(indices, false, false, name);
+    dash.assertPositiveIntegers(indices, name);
     if max(indices) > dimLength
         error('%s has elements larger than the length of the %s dimension (%.f).', name, dimName, dimLength);
     end
