@@ -35,9 +35,9 @@ end
 dash.assertVectorTypeN(indices, 'numeric', [], 'indices');
 if any(mod(indices,1)~=0)
     error('"indices" must be a vector of integers.');
-elseif any(abs(indices)>obj.size(d))
-    bad = find(abs(indices)>obj.size(d),1);
-    error('Element %.f of indices (%.f) has a magnitude larger than the length of the %s dimension (%.f).', bad, indices(bad), obj.dims(d), obj.size(d));
+elseif any(abs(indices)>obj.gridSize(d))
+    bad = find(abs(indices)>obj.gridSize(d),1);
+    error('Element %.f of indices (%.f) has a magnitude larger than the length of the %s dimension (%.f).', bad, indices(bad), obj.dims(d), obj.gridSize(d));
 end
 
 % Error check metadata
@@ -47,6 +47,7 @@ if size(metadata,1)~=numel(indices)
 end
 
 % Update
+obj.size(d) = numel(indices);
 obj.seqIndices{d} = indices;
 obj.seqMetadata{d} = metadata;
 

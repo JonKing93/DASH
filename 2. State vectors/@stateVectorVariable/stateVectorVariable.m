@@ -19,7 +19,7 @@ classdef stateVectorVariable
         
         takeMean; % Whether to take a mean over a dimension
         weightCell; % Weights for each dimension
-        weightMatrix; % N-dimensional matrix of weights
+        weightArray; % N-dimensional matrix of weights
         nWeights; % Number of weights in each dimension
         omitnan; % Whether to exclude NaN values
         
@@ -68,7 +68,7 @@ classdef stateVectorVariable
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);
             
-            obj.resetMean;
+            obj = obj.resetMean;
             
             % Initialize all dimensions as state dimensions
             for d = 1:numel(obj.dims)
