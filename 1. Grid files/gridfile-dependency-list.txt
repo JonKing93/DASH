@@ -35,6 +35,8 @@ add
         dash.checkStrsinList
             dash.errorStringList
     dash.assertScalarLogical
+    dash.assertVectorTypeN
+    dash.assertRealDefined
     dataSource.new
         matSource
             dataSource.checkVariable
@@ -145,6 +147,7 @@ info
     findFileSources
         collectPrimitives
     dash.assertPositiveIntegers
+        dash.assertRealDefined
     buildSources
         collectFullPaths
             collectPrimitives
@@ -176,8 +179,10 @@ load
             dash.errorStringList
     dash.assertVectorTypeN
     dash.assertPositiveIntegers
+        dash.assertRealDefined
     dash.checkIndices
         dash.assertPositiveIntegers
+            dash.assertRealDefined
     repeatedLoad
         buildSources
             collectFullPaths

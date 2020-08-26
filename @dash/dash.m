@@ -6,7 +6,6 @@ classdef dash
         
         % Misc
         names = dimensionNames;
-        assertScalarLogical(input, name);
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
         
@@ -22,11 +21,15 @@ classdef dash
         assertStrList(input, name);
         k = checkStrsInList(input, list, name, message);
         str = errorStringList(strings);
-
-        % Indices
-        indices = checkIndices(indices, name, dimLength, dimName);
+        
+        % Input assertions
+        assertScalarLogical(input, name);
+        assertRealDefined(input, name, allowNaN, allowInf, allowComplex);
         assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);
+        
+        % Indices
+        indices = checkIndices(indices, name, dimLength, dimName);
         indices = equallySpacedIndices(indices);
     end
     

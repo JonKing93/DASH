@@ -14,23 +14,19 @@ function[] = assertPositiveIntegers(input, allowNaN, allowInf, name)
 %
 % name: The name of the input. Used for custom error messages.
 
-% Process NaNs
-if allowNaN
-    input(isnan(input)) = 1;
-elseif any(isnan(input),'all')
-    error('%s may not contain NaN.', name);
+% Require numeric
+if ~isnumeric(input)
+    error('%s must be numeric', name);
 end
 
-% Process Inf
-if allowInf
-    input(isinf(input)) = 1;
-elseif any(isinf(input),'all')
-    error('%s may not contain Inf.', name);
-end
+% Process NaN and Inf
+dash.assertRealDefined(input, name, allowNaN, allowInf);
+input(isnan(input)) = 1;
+input(isinf(input)) = 1;
 
-% Everything else
-if ~isnumeric(input) || ~isreal(input) || any(input<1,'all') || any(mod(input,1)~=0,'all')
-    error('%s can only contain positive integers.', name);
+% Check for positive integers
+if any(input<1,'all') || any(mod(input,1)~=0,'all')
+    error('%s must only contain positive integers.', name);
 end
     
 end

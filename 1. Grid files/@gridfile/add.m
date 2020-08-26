@@ -74,20 +74,15 @@ obj.update;
 % Parse and error check the optional inputs (fill, range, convert)
 [fill, range, convert, absolute] = dash.parseInputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
                                       {NaN, [-Inf, Inf], [1 0], false}, 5 );
-if ~isnumeric(fill) || ~isscalar(fill)
-    error('fill must be a numeric scalar.');
-elseif ~isvector(range) || numel(range)~=2 || ~isnumeric(range)
-    error('range must be a numeric vector with two elements.');
-elseif ~isreal(range) || any(isnan(range))
-    error('range may not contain contain complex values or NaN.');
-elseif range(1) > range(2)
-    error('The first element of range cannot be larger than the second element.');
-elseif ~isvector(range) || ~isnumeric(convert) || numel(convert)~=2
-    error('convert must be a numeric vector with two elements.');
-elseif ~isreal(convert) || any(isnan(convert)) || any(isinf(convert))
-    error('convert may not contain complex values, NaN, or Inf.');
-end
 dash.assertScalarLogical(absolute, 'absolute');
+dash.assertVectorTypeN(fill, 'numeric', 1, 'fill');
+dash.assertVectorTypeN(range, 'numeric', 2, 'range');
+dash.assertVectorTypeN(convert, 'numeric', 2, 'convert');
+dash.assertRealDefined(convert, 'convert');
+dash.assertRealDefined(range, 'range', false, true);
+if range(1) > range(2)
+    error('The first element of range cannot be larger than the second element.');
+end
     
 % Create the dataSource object. This will error check type, file, var, and
 % dims. It also has information on the size of the merged / unmerged data.
