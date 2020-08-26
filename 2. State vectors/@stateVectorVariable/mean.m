@@ -1,24 +1,23 @@
-function[obj] = mean(obj, varName, dims, weights, nanflag)
-%% Specify to take a mean over dimensions of a variable in a state vector.
+function[obj] = mean(obj, dims, weights, nanflag)
+%% Specify to take a mean over dimensions of a stateVectorVariable
 %
-% obj = obj.mean(varName, dims)
-% Takes the mean over the specified dimensions of a variable in a state
-% vector.
+% obj = obj.mean(dims)
+% Takes the mean over the specified dimensions.
 %
-% obj = obj.mean(varName, dims, weightCell)
-% obj = obj.mean(varName, dims, weightMatrix)
+% obj = obj.mean(dims, weightCell)
+% obj = obj.mean(dims, weightMatrix)
 % Uses a weighted mean.
 %
-% obj = obj.mean(varName, dims, weights, nanflag)
-% obj = obj.mean(varName, dims, weights, omitnan)
+% obj = obj.mean(dims, weights, nanflag)
+% obj = obj.mean(dims, weights, omitnan)
 % Specify how to treat NaN values along each dimension. By default, NaN
 % values are included in means.
 %
-% obj = obj.mean(varName)
-% Resets the mean for a variable.
+% obj.mean
+% Resets the mean.
 %
-% ***Note: Each call to obj.mean(varName, ...) resets the settings for any
-% means for the variable. So any previous settings will be deleted.
+% ***Note: Each call to obj.mean(...) resets the settings for any means. So
+% any previous settings will be deleted.
 %
 % ----- Inputs -----
 %
@@ -55,21 +54,18 @@ function[obj] = mean(obj, varName, dims, weights, nanflag)
 %
 % ----- Outputs -----
 %
-% obj: The updated stateVector object
+% obj: The updated stateVectorVariable object
 
-% Defaults for unset variables
-if ~exist('dims','var')
-    dims = [];
-end
-if ~exist('weights','var')
-    weights = [];
-end
-if ~exist('nanflag','var')
-    nanflag = [];
+% Reset all mean specifications
+obj.resetMean;
+
+% dims defaults, error check, indices
+d = [];
+if exist('dims','var') && ~isempty(dims)
+    d = obj.checkDimensions(dims, true);
 end
 
-% Error check variable, get index, add mean
-v = obj.checkVariables(varName, false);
-obj.variables(v) = obj.variables(v).mean(dims, weights, nanflag);
 
-end
+
+obj.takeMean(d) = true;
+

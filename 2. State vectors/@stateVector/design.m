@@ -29,15 +29,16 @@ function[obj] = design(obj, varName, dim, type, indices)
 %    variable's .grid file. Either a vector of linear indices or a logical
 %    vector the length of the dimension.
 
-% Error check the variable name. Get the variable index
-v = obj.checkVariables(varName, false);
-
 % Default for indices
 if ~exist('indices','var')
     indices = [];
 end
 
-% Update the state vector variable
+% Error check variable, get index, update
+v = obj.checkVariables(varName, false);
 obj.variables(v) = obj.variables(v).design(dim, type, indices);
+
+% Update the dimensions of coupled variables
+obj.updateCoupledVariables(v);
 
 end

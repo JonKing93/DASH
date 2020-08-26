@@ -36,10 +36,12 @@ dash.assertScalarLogical(autoCouple, 'autoCouple');
 dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
 
-% Check the name is not a duplicate
+% Check the name is a valid variable name and not a duplicate
 vars = obj.variableNames;
 if ismember(varName, vars)
     error('There is already a "%s" variable in %s.', varName, obj.errorTitle);
+elseif ~isvarname(varName)
+    error('varName must be a valid MATLAB variable name (starts with a letter -- composed only of letters, numbers, and underscores)');
 end
 
 % Create the new variable (error checks file).
@@ -51,8 +53,7 @@ vars(end+1) = varName;
 obj.autoCouple(end+1, 1) = autoCouple;
 obj.coupled(end+1, end+1) = true;
 if autoCouple
-    t = find(obj.autoCouple,1);
-    obj = obj.couple( vars(t), vars(obj.autoCouple) );
+    obj = obj.couple( vars(obj.autoCouple) );
 end
 
 end

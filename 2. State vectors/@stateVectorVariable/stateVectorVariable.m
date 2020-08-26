@@ -7,7 +7,8 @@ classdef stateVectorVariable
         
         file; % Name of the .grid file
         dims; % .grid file dimension order
-        size; % .grid file size
+        gridSize; % .grid file size
+        size; % Size of the dimension in the state vector
         
         isState; % Whether a dimension is a state dimension
         stateIndices; % Data indices to use for state dimensions
@@ -19,6 +20,7 @@ classdef stateVectorVariable
         takeMean; % Whether to take a mean over a dimension
         weightCell; % Weights for each dimension
         weightMatrix; % N-dimensional matrix of weights
+        nWeights; % Number of weights in each dimension
         omitnan; % Whether to exclude NaN values
         
         
@@ -54,10 +56,11 @@ classdef stateVectorVariable
             grid = gridfile(file);
             obj.file = grid.file;
             obj.dims = grid.dims;
-            obj.size = grid.size;
+            obj.gridSize = grid.size;
             
             % Initialize dimension properties
             nDims = numel(obj.dims);
+            obj.size = NaN(1, nDims);
             obj.isState = true(1, nDims);
             obj.stateIndices = cell(1, nDims);
             obj.ensIndices = cell(1, nDims);
@@ -65,10 +68,7 @@ classdef stateVectorVariable
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);
             
-            obj.takeMean = false(1, nDims);
-            obj.weightCell = cell(1, nDims);
-            obj.weightMatrix = [];
-            obj.omitnan = false(1, nDims);
+            obj.resetMean;
             
             % Initialize all dimensions as state dimensions
             for d = 1:numel(obj.dims)
@@ -80,12 +80,14 @@ classdef stateVectorVariable
     % Object utilities
     methods
         d = checkDimensions(obj, dims, multiple);
+        obj = resetMean(obj);
     end
     
     % Interface methods
     methods
         obj = design(obj, dim, type, indices);
         obj = sequence(obj, dim, indices, metadata);
+        obj = mean(obj, dims, weights, nanflag);
     end
 end
         

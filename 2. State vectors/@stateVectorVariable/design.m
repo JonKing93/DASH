@@ -39,14 +39,15 @@ end
 
 % Default for indices and error check
 if ~exist('indices','var') || isempty(indices)
-    indices = (1:obj.size(d))';
+    indices = (1:obj.gridSize(d))';
 end
-indices = dash.checkIndices(indices, name, obj.size(d), obj.dims(d));
+indices = dash.checkIndices(indices, name, obj.gridSize(d), obj.dims(d));
 
 % State dimension
 if isState
     obj.isState(d) = true;
     obj.stateIndices{d} = indices;
+    obj.size(d) = numel(indices);
     
     % Reset ensemble properties
     obj.ensIndices{d} = [];
@@ -57,6 +58,7 @@ if isState
 else
     obj.isState(d) = false;
     obj.ensIndices{d} = indices;
+    obj.size(d) = 1;
     
     % Initialize ensemble properties
     obj.seqIndices{d} = 0;
@@ -64,6 +66,12 @@ else
     
     % Reset state properties
     obj.stateIndices{d} = [];
+end
+
+% Check the new size of the dimension matches the number of mean weights
+if obj.takeMean(d) && ~isnan(obj.nWeights(d)) && obj.size(d)~=obj.nWeights(d)
+    error(['The %s dimension of the %s variable was previously added to a weighted mean, and the new size of %s in the state vector (%.f) ',...
+        'no longer matches the number of weights (%.f). You may want to reset the weighted mean using "  >> obj.mean("%s")  ".'], dim, obj.name, dim, obj.size(d), meanSize, obj.name);
 end
 
 end
