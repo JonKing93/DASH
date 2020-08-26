@@ -131,9 +131,9 @@ elseif isnumeric(weights)
         error('Dimension %.f of weightArray (%s) must have %.f elements, but it has %.f elements instead.', bad, obj.dims(d(bad)), obj.size(d(bad)), siz(bad));
     end
     
-    % Save
+    % Permute to match internal order. Save
+    obj.weightArray = dash.permuteToOrder(weights, d, numel(obj.dims));
     obj.nWeights(d) = siz;
-    obj.weightArray = weights;
     
 % Anything else
 else

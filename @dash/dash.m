@@ -8,6 +8,7 @@ classdef dash
         names = dimensionNames;
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
+        X = permuteToOrder(X, order, nDims);
         
         % File paths
         path = checkFileExists(file);  

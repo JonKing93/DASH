@@ -98,14 +98,10 @@ for s = 1:numel(useSource)
         end
     end
     
-    % Load the data from the data source
+    % Load the data from the data source. Match .grid dimension order
     Xsource = source.read( sourceIndices );
-    
-    % Permute to match the order of the .grid dimensions. Add to output
-    dimOrder = 1:nDims;
-    [~, gridOrder] = ismember( obj.dims, source.mergedDims );
-    gridOrder(gridOrder==0) = dimOrder(~ismember(dimOrder,gridOrder));
-    X(outputIndices{:}) = permute(Xsource, gridOrder);
+    [~, order] = ismember(source.mergedDims, obj.dims);
+    X(outputIndices{:}) = dash.permuteToOrder(Xsource, order, nDims);
 end
 
 % Permute to match the requested dimension order
