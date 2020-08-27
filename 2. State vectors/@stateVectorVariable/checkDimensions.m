@@ -27,4 +27,9 @@ end
 listName = sprintf('dimension in the .grid file for the %s variable', obj.name);
 d = dash.checkStrsInList(dims, obj.dims, name, listName);
 
+% No duplicates
+if numel(d) ~= numel(unique(d))
+    error('dims cannot repeat dimension names.');
+end
+
 end

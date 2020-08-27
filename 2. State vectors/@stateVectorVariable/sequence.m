@@ -14,8 +14,8 @@ function[obj] = sequence(obj, dims, indices, metadata)
 % dim: The name of an ensemble dimension in the .grid file for the
 %    variable. A string.
 %
-% dims: The name of multiple ensemble dimensions. A string vector or
-%    cellstring vector.
+% dims: The names of multiple ensemble dimensions. A string vector or
+%    cellstring vector. May not repeat dimension names.
 %
 % indices: The sequence indices. A vector of integers that indicates the
 %    position of sequence data-elements relative to the reference indices.
@@ -46,9 +46,9 @@ if any(obj.isState(d))
 end
 nDims = numel(d);
 
-% Parse indices and metadata. Error check cells
-if iscell(indices)
-    dash.assertVectorTypeN(indices, [], nDims, 'indexCell');
+% Parse indices and metadata. Error check cell vectors
+if nDims>1
+    dash.assertVectorTypeN(indices, 'cell', nDims, 'indexCell');
     dash.assertVectorTypeN(metadata, 'cell', nDims, 'metadataCell');
 else
     indices = {indices};
