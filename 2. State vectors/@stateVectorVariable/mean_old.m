@@ -16,12 +16,6 @@ function[obj] = mean(obj, dims, indices, weights, omitnan)
 % Specify how to treat NaN values along each dimension. By default, NaN
 % values are included in means.
 %
-% obj.mean
-% Resets the mean.
-%
-% ***Note: Each call to obj.mean(...) resets the settings for any means. So
-% any previous settings will be deleted.
-%
 % ----- Inputs -----
 %
 % varName: The name of a variable in the state vector.

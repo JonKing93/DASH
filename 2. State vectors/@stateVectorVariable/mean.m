@@ -78,7 +78,7 @@ elseif ischar(omitnan) || isstring(omitnan) || iscellstr(omitnan)
         dash.assertVectorTypeN(omitnan, [], nDims, 'Since nanflag is not a string scalar, it');
     end
     dash.checkStrsInList(omitnan, ["includenan","omitnan"], 'nanflag', 'recognized flag');
-    omitnan = strcmpi(omitnan, omitnan);
+    omitnan = strcmpi(omitnan, "omitnan");
 else
     error('NaN options must either be logicals or strings.');
 end

@@ -17,8 +17,7 @@ obj.omitnan = false(1, nDims);
 obj.mean_Indices = cell(1, nDims);
 
 % Weighted means
-obj.hasWeights = zeros(1, nDims);
+obj.hasWeights = false(1, nDims);
 obj.weightCell = cell(1, nDims);
-obj.weightArray = [];
 
 end

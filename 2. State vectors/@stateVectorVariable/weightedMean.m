@@ -1,17 +1,33 @@
 function[obj] = weightedMean(obj, dim, weights)
-%% Use a weighted mean over a dimension
+%% Specify options for taking a weighted mean over dimensions.
 %
 % obj = obj.weightedMean(dim, weights)
+% Takes a weighted mean over a dimension.
+%
+% obj = obj.weightedMean(dims, weightCell)
+% obj = obj.weightedMean(dims, weightArray)
+% Takes a weighted mean over multiple dimensions.
 %
 % ----- Inputs -----
 %
 % dim: The name of a dimension over which to take a weighted mean. A string
 %
-% weights: A numeric vector containing the weights. If dim is a state
-%    dimension, weights are applied to each element in the state vector. If
-%    dim is an ensemble dimension, applies weights to each element of the
-%    mean indices. (See stateVector.info to summarize dimension
+% weights: A numeric vector containing the mean weights. If dim is a state
+%    dimension, must have a length equal to the number of state indices.
+%    If dim is an ensemble dimension, the length must be equal to the
+%    number of mean indices. (See stateVector.info to summarize dimension
 %    properties). May not contain NaN, Inf, or complex numbers.
+%
+% weightCell: A cell vector. Each element contains mean weights for one
+%    dimension listed in dims. Must be in the same order as dims.
+%
+% weightArray: An N-dimensional numeric array containing weights for taking
+%    a mean across specified dimensions. Must have a dimension for each
+%    dimension listed in dims and must have the same dimension order as
+%    dims. The length of each dimension of weightArray must be equal to
+%    either the number of state indices or mean indices, as appropriate.
+%    (See the "weights" input for details). May not contain NaN, Inf, or
+%    complex numbers.
 %
 % ----- Outputs -----
 %
@@ -33,7 +49,7 @@ dash.assertVectorTypeN(weights, 'numeric', obj.meanSize(d), name);
 dash.assertRealDefined(weights, 'weights');
 
 % Update
-obj.hasWeights(d) = 1;
+obj.hasWeights(d) = true;
 obj.weightCell{d} = weights(:);
 
 end

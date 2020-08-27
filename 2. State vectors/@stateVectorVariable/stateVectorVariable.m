@@ -27,9 +27,8 @@ classdef stateVectorVariable
         mean_Indices; % Mean indices for ensemble dimensions
         
         % Weighted means
-        hasWeights; % For each dimension: 0-No weights, 1-Cell weights, 2-Array weights
+        hasWeights; % Whether the dimension has weights
         weightCell; % Weights for each dimension
-        weightArray; % N-dimensional matrix of weights
     end
     
     % Constructor
