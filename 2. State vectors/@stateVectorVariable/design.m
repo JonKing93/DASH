@@ -23,6 +23,9 @@ function[obj] = design(obj, dim, type, indices)
 % stateIndices: The indices of required data along the dimension in the
 %    variable's .grid file. Either a vector of linear indices or a logical
 %    vector the length of the dimension.
+%
+% ensIndices: The ensemble reference indices. Either a vector of linear
+%    indices or a logical vector the length of the dimension.
 
 % Error check. Get the dimension index and flag
 dash.assertStrFlag(dim, 'dim');
