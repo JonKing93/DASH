@@ -23,7 +23,13 @@ function[obj] = sequence(obj, dim, indices, metadata)
 %
 % obj: The updated stateVectorVariable object.
 
-% Require ensemble dimension. Error check indices.
+% Error check the dimension. Only ensemble dimensions are allowed
+d = obj.checkDimensions(dim, false);
+if obj.isState(d)
+    error('Only ensemble dimensions can have mean indices, but %s (in variable %s) is a state dimension in variable %s. To make %s an ensemble dimension, see "stateVector.design".', obj.dims(d), obj.name, obj.name, obj.dims(d));
+end
+
+% Error check indices.
 d = obj.checkEnsembleIndices(dim, indices);
 
 % Error check metadata

@@ -87,16 +87,15 @@ classdef stateVectorVariable
     methods
         d = checkDimensions(obj, dims, multiple);
         d = checkEnsembleIndices(obj, dim, indices);
-        obj = resetMean(obj);
     end
     
     % Interface methods
     methods
         obj = sequence(obj, dim, indices, metadata);
-        obj = meanIndices(obj, dim, indices);
+        obj = mean(obj, dim, indices, omitnan);
+        obj = resetMean(obj);
 
         obj = design(obj, dim, type, indices);
-        obj = mean(obj, dims, weights, nanflag);
     end
 end
         
