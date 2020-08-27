@@ -1,4 +1,4 @@
-function[obj] = weightedMean(obj, dim, weights)
+function[obj] = weightedMean(obj, dims, weights)
 %% Specify options for taking a weighted mean over dimensions.
 %
 % obj = obj.weightedMean(dim, weights)
@@ -34,17 +34,32 @@ function[obj] = weightedMean(obj, dim, weights)
 % obj: The updated stateVectorVariable object
 
 % Error check, dimension index
-d = obj.checkDimensions(dim, false);
+d = obj.checkDimensions(dims, true);
+nDims = numel(d);
+
+% Error check the weights
+if nDims==1
+    dash.assertVectorTypeN(weights, 'numeric', obj.meanSize(d), name);
+elseif iscell(weights)
+    dash.assertVectorTypeN(weights, [], nDims, 'weightCell');
+    
+
+
+
+
+
+
+
 
 % Update properties for state dimensions with no previous mean
 if ~obj.takeMean(d) && obj.isState(d)
-    obj = obj.mean(dim);
+    obj = obj.mean(dims);
 elseif ~obj.takeMean(d)
-    error('No mean indices have been specified for ensemble dimension "%s" in variable %s. Use "stateVector.mean" to provide them.', dim, obj.name);
+    error('No mean indices have been specified for ensemble dimension "%s" in variable %s. Use "stateVector.mean" to provide them.', dims, obj.name);
 end
 
 % Error check the weights
-name = sprintf('weights for dimension "%s" of variable "s"', dim, obj.name);
+name = sprintf('weights for dimension "%s" of variable "s"', dims, obj.name);
 dash.assertVectorTypeN(weights, 'numeric', obj.meanSize(d), name);
 dash.assertRealDefined(weights, 'weights');
 

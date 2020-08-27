@@ -47,13 +47,8 @@ end
 nDims = numel(d);
 
 % Parse indices and metadata. Error check cell vectors
-if nDims>1
-    dash.assertVectorTypeN(indices, 'cell', nDims, 'indexCell');
-    dash.assertVectorTypeN(metadata, 'cell', nDims, 'metadataCell');
-else
-    indices = {indices};
-    metadata = {metadata};
-end
+indices = obj.parseInputCell(indices, nDims, 'indexCell');
+metadata = obj.parseInputCell(metadata, nDims, 'metadataCell');
 
 % Error check indices for each dimension
 for k = 1:nDims
@@ -84,7 +79,6 @@ error(['Only ensemble dimensions can have sequence indices, but %s ', ...
     'ensemble dimension, see "stateVector.design".'], obj.dims(bad), ...
     obj.name, obj.name, obj.dims(bad));
 end
-
 function[] = metadataSizeError(obj, dim, strs, nIndex, nRows)
 error(['When metadata is a %s, it must have one %s per sequence index (%.f), ',...
     'but the metadata for dimension %s in variable %s currently has %.f %ss.'], ...

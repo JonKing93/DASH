@@ -58,11 +58,7 @@ nDims = numel(d);
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-if nDims>1
-    dash.assertVectorTypeN(indices, 'cell', nDims, 'indexCell');
-else
-    indices = {indices};
-end
+indices = obj.parseInputCell(indices, nDims, 'indexCell');
 
 % Default, parse, error check omitnan
 if ~exist('omitnan','var') || isempty(omitnan)

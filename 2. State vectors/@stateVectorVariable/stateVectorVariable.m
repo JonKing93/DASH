@@ -88,6 +88,11 @@ classdef stateVectorVariable
         checkEnsembleIndices(obj, indices, d);
     end
     
+    % Static utilities
+    methods (Static)
+        input = parseInputCell(input, nDims, name);
+    end
+    
     % Interface methods
     methods
         obj = sequence(obj, dim, indices, metadata);
