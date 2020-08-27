@@ -56,10 +56,14 @@ if isState
     obj.seqIndices{d} = [];
     obj.seqMetadata{d} = [];
     
-    % Update mean properties
+    % Update mean properties. Ensure weights match the new size
     obj.mean_Indices{d} = [];
-    if takeMean(d)
-        meanSize = 
+    if obj.takeMean(d)
+        if obj.hasWeights(d) && obj.meanSize(d)~=obj.size(d)
+            error('Cannot convert the "%s" dimension of variable "%s" to a state dimension because %s is being used in a weighted mean, and the number of state indices (%.f) do not match the number of mean weights (%.f). Either use %.f state indices or reset the mean options using "stateVector.resetMeans".', dim, obj.name, dim, obj.size(d), obj.meanSize(d), obj.meanSize(d));
+        end
+        obj.meanSize(d) = obj.size(d);
+    end 
     
 % Ensemble dimension
 else
@@ -72,19 +76,10 @@ else
     obj.seqMetadata{d} = NaN;
     obj.stateIndices{d} = [];
     
-    % No mean indices, so throw error if previously taking a mean
+    % No mean indices, so throw error if taking a mean
     if obj.takeMean(d)
         error('Cannot convert dimension "%s" of variable "%s" to an ensemble dimension because it is being used in a mean and there are no mean indices. You may want to reset the mean options using "stateVector.resetMeans".', dim, obj.name);
     end
-end
-
-% Check that the new dimension does not disrupt a weighted mean
-if obj.hasWeights(d)
-
-% Check the new size of the dimension matches the number of mean weights
-if obj.takeMean(d) && ~isnan(obj.nWeights(d)) && obj.size(d)~=obj.nWeights(d)
-    error(['The %s dimension of variable "%s" was previously added to a weighted mean, and the new size of %s in the state vector (%.f) ',...
-        'no longer matches the number of weights (%.f). You may want to reset the weighted mean using: \n>> obj.mean("%s").'], dim, obj.name, dim, obj.size(d), obj.nWeights(d), obj.name);
 end
 
 end
