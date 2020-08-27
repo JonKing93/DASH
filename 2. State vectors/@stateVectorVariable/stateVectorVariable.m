@@ -3,25 +3,33 @@ classdef stateVectorVariable
     % for a variable in a state vector.
     
     properties (SetAccess = private)
+        % Set by constructor
         name;  % The identifying name of the variable
-        
         file; % Name of the .grid file
         dims; % .grid file dimension order
         gridSize; % .grid file size
 
-        size; % Size of the dimension in the state vector
+        % General design
+        size; % Length of each dimension in the state vector
         isState; % Whether a dimension is a state dimension
         stateIndices; % Data indices to use for state dimensions
         ensIndices; % Reference indices to use for ensemble dimensions
         
+        % Sequences
         seqIndices; % Sequence indices
         seqMetadata; % Sequence metadata
         
+        % Means
         takeMean; % Whether to take a mean over a dimension
+        meanSize; % Number of elements used in the mean along each dimension
+        omitnan; % Whether to exclude NaN values 
+        mean_Indices; % Mean indices for ensemble dimensions
+        
+        % Weighted means
+        hasWeights; % For each dimension: 0-No weights, 1-Cell weights, 2-Array weights
+        nWeights; % Number of weights in each dimension
         weightCell; % Weights for each dimension
         weightArray; % N-dimensional matrix of weights
-        nWeights; % Number of weights in each dimension
-        omitnan; % Whether to exclude NaN values 
     end
     
     % Constructor
@@ -78,13 +86,16 @@ classdef stateVectorVariable
     % Object utilities
     methods
         d = checkDimensions(obj, dims, multiple);
+        d = checkEnsembleIndices(obj, dim, indices);
         obj = resetMean(obj);
     end
     
     % Interface methods
     methods
-        obj = design(obj, dim, type, indices);
         obj = sequence(obj, dim, indices, metadata);
+        obj = meanIndices(obj, dim, indices);
+
+        obj = design(obj, dim, type, indices);
         obj = mean(obj, dims, weights, nanflag);
     end
 end
