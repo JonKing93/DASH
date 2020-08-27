@@ -28,7 +28,6 @@ classdef stateVectorVariable
         
         % Weighted means
         hasWeights; % For each dimension: 0-No weights, 1-Cell weights, 2-Array weights
-        nWeights; % Number of weights in each dimension
         weightCell; % Weights for each dimension
         weightArray; % N-dimensional matrix of weights
     end

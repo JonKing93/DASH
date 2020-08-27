@@ -34,7 +34,6 @@ dash.assertRealDefined(weights, 'weights');
 
 % Update
 obj.hasWeights(d) = 1;
-obj.nWeights(d) = obj.meanSize(d);
 obj.weightCell{d} = weights(:);
 
 end

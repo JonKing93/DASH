@@ -70,8 +70,8 @@ else
     
     % Check that the mean indices do not disrupt a weighted mean
     meanSize = numel(indices);
-    if obj.hasWeights(d) && meanSize~=obj.nWeights(d)
-        error('The "%s" dimension of variable "%s" is being used in a weighted mean, but the number of mean indices (%.f) does not match the number of weights (%.f). Either specify %.f mean indices or reset the weighted mean using:\n>> obj.resetMean("%s")', dim, obj.name, meanSize, obj.nWeights(d), obj.nWeights(d), obj.name);
+    if obj.hasWeights(d) && meanSize~=obj.meanSize(d)
+        error('The "%s" dimension of variable "%s" is being used in a weighted mean, but the number of mean indices (%.f) does not match the number of weights (%.f). Either specify %.f mean indices or reset the weighted mean using:\n>> obj.resetMean("%s")', dim, obj.name, meanSize, obj.meanSize(d), obj.meanSize(d), obj.name);
     end
 end
 
