@@ -58,7 +58,7 @@ nDims = numel(d);
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-indices = obj.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
 
 % Default, parse, error check omitnan
 if ~exist('omitnan','var') || isempty(omitnan)
@@ -79,27 +79,33 @@ else
     error('NaN options must either be logicals or strings.');
 end
 
-% State dimensions. Indices not allowed. Get mean size
+% Ensemble dimensions. Require indices
+name = 'indices';
 for k = 1:nDims
-    if obj.isState(d(k))
-        if ~isempty(indices{k})
-            stateHasIndicesError(obj, dims(k));
-        end
-        meanSize = obj.size(d(k));
-    
-    % Ensemble dimensions. Require indices, error check, save
-    else
+    if ~obj.isState(d(k))
         if isempty(indices{k})
             ensMissingIndicesError(obj, dims(k));
         end
-        obj.checkEnsembleIndices(indices{k}, d(k));
-        obj.mean_Indices{d(k)} = indices{k};
+        
+        % Error check indices. Save
+        if wasCell
+            name = sprintf('Element %.f of indexCell', k);
+        end
+        obj.assertEnsembleIndices(indices{k}, d(k), name);
+        obj.mean_Indices{d(k)} = indices{k}(:);
     
         % Check that the mean indices do not disrupt a weighted mean
         meanSize = numel(indices{k});
         if obj.hasWeights(d(k)) && meanSize~=obj.meanSize(d(k))
             weightsNumberError(obj, dims(k), meanSize, obj.meanSize(d(k)));
         end
+    
+    % State dimensions. Indices not allowed. Get mean size
+    else 
+        if ~isempty(indices{k})
+            stateHasIndicesError(obj, dims(k));
+        end
+        meanSize = obj.size(d(k));        
     end
 
     % Update mean Size

@@ -85,12 +85,12 @@ classdef stateVectorVariable
     % Object utilities
     methods
         d = checkDimensions(obj, dims, multiple);
-        checkEnsembleIndices(obj, indices, d);
+        assertEnsembleIndices(obj, indices, d, name);
     end
     
     % Static utilities
     methods (Static)
-        input = parseInputCell(input, nDims, name);
+        [input, wasCell] = parseInputCell(input, nDims, name);
     end
     
     % Interface methods

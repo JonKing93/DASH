@@ -47,12 +47,16 @@ end
 nDims = numel(d);
 
 % Parse indices and metadata. Error check cell vectors
-indices = obj.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
 metadata = obj.parseInputCell(metadata, nDims, 'metadataCell');
 
 % Error check indices for each dimension
+name = 'indices';
 for k = 1:nDims
-    obj.checkEnsembleIndices(indices{k}, d(k));
+    if wasCell
+        name = sprintf('Element %.f of indexCell', k);
+    end
+    obj.assertEnsembleIndices(indices{k}, d(k), name);
     
     % Error check metadata
     errorStrs = ['array', 'row'];
@@ -66,7 +70,7 @@ for k = 1:nDims
 
     % Update
     obj.size(d(k)) = numel(indices{k});
-    obj.seqIndices{d(k)} = indices{k};
+    obj.seqIndices{d(k)} = indices{k}(:);
     obj.seqMetadata{d(k)} = metadata{k};
 end
 
@@ -75,7 +79,7 @@ end
 % Long error messages
 function[] = stateDimensionError(obj, bad)
 error(['Only ensemble dimensions can have sequence indices, but %s ', ...
-    '(in variable %s) is a state dimension in variable %s. To make %s an ',...
+    'is a state dimension in variable %s. To make %s an ',...
     'ensemble dimension, see "stateVector.design".'], obj.dims(bad), ...
     obj.name, obj.name, obj.dims(bad));
 end

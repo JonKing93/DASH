@@ -37,34 +37,57 @@ function[obj] = weightedMean(obj, dims, weights)
 d = obj.checkDimensions(dims, true);
 nDims = numel(d);
 
-% Error check the weights
-if nDims==1
-    dash.assertVectorTypeN(weights, 'numeric', obj.meanSize(d), name);
-elseif iscell(weights)
-    dash.assertVectorTypeN(weights, [], nDims, 'weightCell');
+% Error check weightArray
+if nDims>1 && isnumeric(weights)
+    dash.assertRealDefined(weights, 'weightArray');
     
-
-
-
-
-
-
-
-
-% Update properties for state dimensions with no previous mean
-if ~obj.takeMean(d) && obj.isState(d)
-    obj = obj.mean(dims);
-elseif ~obj.takeMean(d)
-    error('No mean indices have been specified for ensemble dimension "%s" in variable %s. Use "stateVector.mean" to provide them.', dims, obj.name);
+    % Check there are no more than nDims non-singleton dimensions
+    siz = size(weights);
+    last = max([1, find(siz~=1, 1, 'last')]);
+    if last > nDims
+        tooManyDimsError(obj, last, nDims);
+    end
+    
+    % Get the size in all specified dims. Check they match dimension sizes
+    siz(last+1:end) = [];
+    siz(last+1:nDims) = 1;
+    if ~isequal(siz, obj.meanSize(d))
+        bad = find(siz~=obj.meanSize(d),1);
+        incorrectLengthError(obj, obj.dims(d(bad)), bad, siz(bad), obj.meanSize(d(bad)));
+    end
+    
+    % Permute to match internal order. Break into weightCell. Save
+    weights = dash.permuteToOrder(weights, d, numel(obj.dims));
+    for k = 1:nDims
+        weightVector = sum(weights, d([1:k-1,k+1:end]));
+        obj.weightCell{d(k)} = weightVector(:);
+    end
+    
+% Parse and error check weightCell
+else
+    [weights, wasCell] = obj.parseInputCell(weights, nDims, 'weightCell');
+    
+    % Error check weights and save
+    name = 'weights';
+    for k = 1:nDims
+        if wasCell
+            name = sprintf('Element %.f of weightCell', k);
+        end
+        dash.assertVectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
+        dash.assertRealDefined(weights{k}, name);
+        obj.weightCell{d(k)} = weights{k};
+    end
 end
 
-% Error check the weights
-name = sprintf('weights for dimension "%s" of variable "s"', dims, obj.name);
-dash.assertVectorTypeN(weights, 'numeric', obj.meanSize(d), name);
-dash.assertRealDefined(weights, 'weights');
+end
 
-% Update
-obj.hasWeights(d) = true;
-obj.weightCell{d} = weights(:);
-
+% Long error messages
+function[] = tooManyDimsError(obj, last, nDims)
+error(['weightArray for variable "%s" should have %.f dimensions, but it ', ...
+    'has %.f instead.'], obj.name, nDims, last);
+end
+function[] = incorrectLengthError(obj, dim, bad, newSize, oldSize)
+error(['Dimension %.f of weightArray (%s) for variable "%s" must have ',...
+    '%.f elements, but it has %.f elements instead.'], bad, dim, ...
+    obj.name, oldSize, newSize);
 end
