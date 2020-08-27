@@ -1,13 +1,21 @@
-function[obj] = sequence(obj, dim, indices, metadata)
-%% Specifies to use a sequence of data for an ensemble dimension.
+function[obj] = sequence(obj, dims, indices, metadata)
+%% Specifies to use a sequence of data for ensemble dimensions.
 %
 % obj = obj.sequence(dim, indices, metadata)
-% Designs a sequence for a dimension and provides sequence metadata.
+% Designs a sequence for an ensemble dimension and specifies sequence
+% metadata.
+%
+% obj = obj.sequence(dims, indexCell, metadataCell)
+% Designs a sequence and specifies metadata for multiple ensemble 
+% dimensions.
 %
 % ----- Inputs -----
 %
 % dim: The name of an ensemble dimension in the .grid file for the
 %    variable. A string.
+%
+% dims: The name of multiple ensemble dimensions. A string vector or
+%    cellstring vector.
 %
 % indices: The sequence indices. A vector of integers that indicates the
 %    position of sequence data-elements relative to the reference indices.
@@ -16,35 +24,69 @@ function[obj] = sequence(obj, dim, indices, metadata)
 %    Sequence indices may be in any order and cannot have a magnitude
 %    larger than the length of the dimension in the .grid file.
 %
+% indexCell: A cell vector. Each element contains the sequence indices for
+%    one dimension listed in dims. Must be in the same dimension order as
+%    dims.
+%
 % metadata: Metadata for the sequence. Either a vector with one element per
 %    sequence index or an array with one row per sequence index.
+%
+% metadataCell: A cell vector. Each element contains the metadata for one
+%    dimension listed in dims. Must be in the stame dimension order as dims
 %
 % ----- Output -----
 %
 % obj: The updated stateVectorVariable object.
 
-% Error check the dimension. Only ensemble dimensions are allowed
-d = obj.checkDimensions(dim, false);
-if obj.isState(d)
-    error('Only ensemble dimensions can have mean indices, but %s (in variable %s) is a state dimension in variable %s. To make %s an ensemble dimension, see "stateVector.design".', obj.dims(d), obj.name, obj.name, obj.dims(d));
+% Error check the dimensions. Only ensemble dimensions are allowed
+d = obj.checkDimensions(dims, true);
+if any(obj.isState(d))
+    bad = d(find(obj.isState(d),1));
+    stateDimensionError(obj, bad);
+end
+nDims = numel(d);
+
+% Parse indices and metadata. Error check cells
+if iscell(indices)
+    dash.assertVectorTypeN(indices, [], nDims, 'indexCell');
+    dash.assertVectorTypeN(metadata, 'cell', nDims, 'metadataCell');
+else
+    indices = {indices};
+    metadata = {metadata};
 end
 
-% Error check indices.
-d = obj.checkEnsembleIndices(indices, d);
+% Error check indices for each dimension
+for k = 1:nDims
+    obj.checkEnsembleIndices(indices{k}, d(k));
+    
+    % Error check metadata
+    errorStrs = ['array', 'row'];
+    if isvector(metadata{k})
+        errorStrs = ['vector', 'element'];
+        metadata{k} = metadata{k}(:);
+    end
+    if size(metadata{k},1)~=numel(indices{k})
+        metadataSizeError( obj, dims(k), errorStrs, numel(indices{k}), size(metadata{k},1) );
+    end
 
-% Error check metadata
-errorStrs = ['array', 'row'];
-if isvector(metadata)
-    errorStrs = ['vector', 'element'];
-    metadata = metadata(:);
+    % Update
+    obj.size(d(k)) = numel(indices{k});
+    obj.seqIndices{d(k)} = indices{k};
+    obj.seqMetadata{d(k)} = metadata{k};
 end
-if size(metadata,1)~=numel(indices)
-    error('When metadata is a %s, it must have one %s per sequence index (%.f), but metadata currently has %.f %ss.', errorStrs(1), errorStrs(2), numel(indices), size(metadata,1), errorStrs(2));
+
 end
 
-% Update
-obj.size(d) = numel(indices);
-obj.seqIndices{d} = indices;
-obj.seqMetadata{d} = metadata;
+% Long error messages
+function[] = stateDimensionError(obj, bad)
+error(['Only ensemble dimensions can have sequence indices, but %s ', ...
+    '(in variable %s) is a state dimension in variable %s. To make %s an ',...
+    'ensemble dimension, see "stateVector.design".'], obj.dims(bad), ...
+    obj.name, obj.name, obj.dims(bad));
+end
 
+function[] = metadataSizeError(obj, dim, strs, nIndex, nRows)
+error(['When metadata is a %s, it must have one %s per sequence index (%.f), ',...
+    'but the metadata for dimension %s in variable %s currently has %.f %ss.'], ...
+    strs(1), strs(2), nIndex, dim, obj.name, nRows, strs(2));
 end
