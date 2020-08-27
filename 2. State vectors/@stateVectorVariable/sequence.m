@@ -1,7 +1,7 @@
 function[obj] = sequence(obj, dim, indices, metadata)
 %% Specifies to use a sequence of data for an ensemble dimension.
 %
-% obj = obj.sequence(dim, seq, metadata)
+% obj = obj.sequence(dim, indices, metadata)
 % Designs a sequence for a dimension and provides sequence metadata.
 %
 % ----- Inputs -----
@@ -26,9 +26,9 @@ function[obj] = sequence(obj, dim, indices, metadata)
 % obj: The updated stateVectorVariable object.
 
 % Error check the dimension. Only ensemble dimensions are allowed
-d = obj.checkDimension(dim, false);
+d = obj.checkDimensions(dim, false);
 if obj.isState(d)
-    error('Only ensemble dimensions can have sequences, but %s is a state dimension. To make %s an ensemble dimension, see stateVector.design.', obj.dims(d), obj.dims(d));
+    error('Only ensemble dimensions can have sequences, but %s is a state dimension in variable %s. To make %s an ensemble dimension, see stateVector.design.', obj.dims(d), obj.name, obj.dims(d));
 end
 
 % Error check indices and metadata

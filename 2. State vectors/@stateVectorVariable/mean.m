@@ -1,15 +1,18 @@
-function[obj] = mean(obj, dims, weights, omitnan)
-%% Specify to take a mean over dimensions of a stateVectorVariable
+function[obj] = mean(obj, dims, indices, weights, omitnan)
+%% Specify to take a mean over multiple dimensions of a stateVectorVariable
 %
 % obj = obj.mean(dims)
 % Takes the mean over the specified dimensions.
 %
-% obj = obj.mean(dims, weightCell)
-% obj = obj.mean(dims, weightMatrix)
+% obj = obj.mean(dims, indices)
+% Specifies how to take a mean over ensemble dimensions.
+%
+% obj = obj.mean(dims, indices, weightCell)
+% obj = obj.mean(dims, indices, weightMatrix)
 % Uses a weighted mean.
 %
-% obj = obj.mean(dims, weights, nanflag)
-% obj = obj.mean(dims, weights, omitnan)
+% obj = obj.mean(dims, indices, weights, nanflag)
+% obj = obj.mean(dims, indices, weights, omitnan)
 % Specify how to treat NaN values along each dimension. By default, NaN
 % values are included in means.
 %
@@ -27,12 +30,25 @@ function[obj] = mean(obj, dims, weights, omitnan)
 %    or cellstring vector. Dimensions may be in any order and may not
 %    contain duplicate names.
 %
+% indices: Mean indices for ensemble dimensions. If dims only lists state
+%    dimensions, use an empty array. If dims includes ensemble dimensions,
+%    use a cell vector with one element for each dimension listed in dims. 
+%    Elements must follow the same order of dimensions as dims. If a
+%    dimension in dims is a state dimension, use an empty array for its
+%    element. If the dimension is an ensemble dimension, the element should
+%    contain a vector of integers.
+%    The integers indicate the position of data elements over which to take
+%    a mean relative to the sequence indices. 0 indicates the data at the
+%    sequence index. 1 is the data index following the sequence index. -1
+%    is the data index before the sequence index, etc. Mean indices may be
+%    in any order. You can use 
+%
 % weightCell: A cell vector. Each element contains the weights for one
-%    dimension; must follow the same order of dimensions as dims. The
-%    weights for each dimension may either be an empty array or a numeric
-%    vector the length of the dimension in the state vector. If empty,
-%    takes an unweighted mean over the dimension. If a vector, may not
-%    contain NaN or Inf elements.
+%    dimension listed in dims; must follow the same order of dimensions as 
+%    dims. The weights for each dimension may either be an empty array or a
+%    numeric vector the length of the dimension in the state vector. If
+%    empty, takes an unweighted mean over the dimension. If a vector, may
+%    not contain NaN or Inf elements.
 %
 % weightArray: An N-dimensional numeric array containing weights for 
 %    taking a mean across specified dimensions. Must have a dimension for 
@@ -98,7 +114,7 @@ if iscell(weights)
     % Error check the weights for each dimension
     for k = 1:nDims
         if ~isempty(weights{k})         
-            name = sprintf('The weights for dimension "%s" (element %.f of weightCell)', obj.dims(d(k)), k);
+            name = sprintf('The weights for dimension "%s" (element %.f of weightCell) in variable "%s"', obj.dims(d(k)), k, obj.name);
             dash.assertVectorTypeN(weights{k}, 'numeric', obj.size(d(k)), name);
             if any(isnan(weights{k})) || any(isinf(weights{k}))
                 error('%s may not contain NaN or Inf.', name);
@@ -120,7 +136,7 @@ elseif isnumeric(weights)
     siz = size(weights);
     last = max([1, find(siz~=1, 1, 'last')]);
     if last > nDims
-        error('weightArray should have %.f dimensions, but it has %.f instead.', nDims, last);
+        error('weightArray for variable "%s" should have %.f dimensions, but it has %.f instead.', obj.name, nDims, last);
     end
     
     % Get the size in all specified dims. Check they match dimension sizes
@@ -128,7 +144,7 @@ elseif isnumeric(weights)
     siz(last+1:nDims) = 1;
     if ~isequal(siz, obj.size(d))
         bad = find(siz~=obj.size(d), 1);
-        error('Dimension %.f of weightArray (%s) must have %.f elements, but it has %.f elements instead.', bad, obj.dims(d(bad)), obj.size(d(bad)), siz(bad));
+        error('Dimension %.f of weightArray (%s) for variable "%s" must have %.f elements, but it has %.f elements instead.', bad, obj.dims(d(bad)), obj.name, obj.size(d(bad)), siz(bad));
     end
     
     % Permute to match internal order. Save

@@ -8,8 +8,8 @@ classdef stateVectorVariable
         file; % Name of the .grid file
         dims; % .grid file dimension order
         gridSize; % .grid file size
+
         size; % Size of the dimension in the state vector
-        
         isState; % Whether a dimension is a state dimension
         stateIndices; % Data indices to use for state dimensions
         ensIndices; % Reference indices to use for ensemble dimensions
@@ -21,9 +21,7 @@ classdef stateVectorVariable
         weightCell; % Weights for each dimension
         weightArray; % N-dimensional matrix of weights
         nWeights; % Number of weights in each dimension
-        omitnan; % Whether to exclude NaN values
-        
-        
+        omitnan; % Whether to exclude NaN values 
     end
     
     % Constructor
