@@ -9,13 +9,14 @@ classdef stateVectorVariable
         dims; % .grid file dimension order
         gridSize; % .grid file size
 
-        % General design
+        % Design
         size; % Length of each dimension in the state vector
         isState; % Whether a dimension is a state dimension
         stateIndices; % Data indices to use for state dimensions
         ensIndices; % Reference indices to use for ensemble dimensions
         
         % Sequences
+        % size;
         seqIndices; % Sequence indices
         seqMetadata; % Sequence metadata
         
@@ -93,6 +94,7 @@ classdef stateVectorVariable
     methods
         obj = sequence(obj, dim, indices, metadata);
         obj = mean(obj, dim, indices, omitnan);
+        obj = weightedMean(obj, dim, weights);
         obj = resetMean(obj);
 
         obj = design(obj, dim, type, indices);
