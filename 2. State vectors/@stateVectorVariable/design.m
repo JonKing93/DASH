@@ -2,11 +2,15 @@ function[obj] = design(obj, dim, type, indices)
 %% Designs a dimension of a stateVectorVariable
 %
 % obj = obj.design(dim, type)
+% Specifies a dimension as a state dimension or ensemble dimension. Uses
+% all elements along the dimension as state indices or ensemble reference
+% indices, as appropriate.
 %
-% obj = obj.design(dim, 'state', stateIndices)
+% obj = obj.design(dim, 's'/'state', stateIndices)
+% Specify state indices for a dimension.
 %
-% obj = obj.design(dim, 'ens', ensIndices)
-% obj = obj.design(dim, 'ensemble', ensIndices)
+% obj = obj.design(dim, 'e'/'ens'/'ensemble', ensIndices)
+% Specify ensemble indices for a dimension.
 %
 % ----- Inputs -----
 %
@@ -20,12 +24,10 @@ function[obj] = design(obj, dim, type, indices)
 %    variable's .grid file. Either a vector of linear indices or a logical
 %    vector the length of the dimension.
 
-% Error check. Get the dimension index
+% Error check. Get the dimension index and flag
 dash.assertStrFlag(dim, 'dim');
 dash.assertStrFlag(type, 'type');
 d = obj.checkDimensions(dim, false);
-
-% Check that type is recognized and get the name of the indices
 t = dash.checkStrsInList(type, ["state","s","ensemble","ens","e"], 'type', 'recognized flag');
 
 % Toggles and names for state vs ens
@@ -54,19 +56,30 @@ if isState
     obj.seqIndices{d} = [];
     obj.seqMetadata{d} = [];
     
+    % Update mean properties
+    obj.mean_Indices{d} = [];
+    if takeMean(d)
+        meanSize = 
+    
 % Ensemble dimension
 else
     obj.isState(d) = false;
     obj.ensIndices{d} = indices;
     obj.size(d) = 1;
     
-    % Initialize ensemble properties
+    % Initialize ensemble properties, reset state
     obj.seqIndices{d} = 0;
     obj.seqMetadata{d} = NaN;
-    
-    % Reset state properties
     obj.stateIndices{d} = [];
+    
+    % No mean indices, so throw error if previously taking a mean
+    if obj.takeMean(d)
+        error('Cannot convert dimension "%s" of variable "%s" to an ensemble dimension because it is being used in a mean and there are no mean indices. You may want to reset the mean options using "stateVector.resetMeans".', dim, obj.name);
+    end
 end
+
+% Check that the new dimension does not disrupt a weighted mean
+if obj.hasWeights(d)
 
 % Check the new size of the dimension matches the number of mean weights
 if obj.takeMean(d) && ~isnan(obj.nWeights(d)) && obj.size(d)~=obj.nWeights(d)
