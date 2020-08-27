@@ -74,7 +74,7 @@ classdef stateVectorVariable
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);
             
-            obj = obj.resetMean;
+            obj = obj.resetMeans;
             
             % Initialize all dimensions as state dimensions
             for d = 1:numel(obj.dims)
@@ -94,7 +94,7 @@ classdef stateVectorVariable
         obj = sequence(obj, dim, indices, metadata);
         obj = mean(obj, dim, indices, omitnan);
         obj = weightedMean(obj, dim, weights);
-        obj = resetMean(obj);
+        obj = resetMeans(obj);
 
         obj = design(obj, dim, type, indices);
     end

@@ -1,7 +1,7 @@
-function[obj] = resetMean(obj)
+function[obj] = resetMeans(obj)
 %% Resets specifications for means for a stateVectorVariable
 %
-% obj = obj.resetMean;
+% obj = obj.resetMeans;
 %
 % ----- Outputs -----
 %
