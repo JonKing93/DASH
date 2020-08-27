@@ -65,7 +65,7 @@ else
     if ~hasIndices
         error('"%s" is an ensemble dimension in variable %s, so you must specify mean indices in order to take a mean.', dim, obj.name);
     end
-    dash.checkEnsembleIndices(indices);
+    obj.checkEnsembleIndices(indices, d);
     obj.mean_Indices{d} = indices;
     
     % Check that the mean indices do not disrupt a weighted mean

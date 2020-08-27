@@ -30,7 +30,7 @@ if obj.isState(d)
 end
 
 % Error check indices.
-d = obj.checkEnsembleIndices(dim, indices);
+d = obj.checkEnsembleIndices(indices, d);
 
 % Error check metadata
 errorStrs = ['array', 'row'];

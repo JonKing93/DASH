@@ -86,7 +86,7 @@ classdef stateVectorVariable
     % Object utilities
     methods
         d = checkDimensions(obj, dims, multiple);
-        d = checkEnsembleIndices(obj, dim, indices);
+        checkEnsembleIndices(obj, indices, d);
     end
     
     % Interface methods

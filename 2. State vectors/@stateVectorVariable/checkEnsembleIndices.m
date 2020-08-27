@@ -1,20 +1,14 @@
-function[d] = checkEnsembleIndices(obj, dim, indices)
-%% Checks that a dimension is an ensemble dimension and that indices are
-% valid sequence or mean indices. Returns the index of the dimension.
+function[] = checkEnsembleIndices(obj, indices, d)
+%% Checks that indices are a valid sequence or mean indices.
 %
-% d = obj.checkEnsembleIndices(dim, indices)
+% d = obj.checkEnsembleIndices(indices)
 %
 % ----- Inputs -----
 %
-% dim: The dimension name being checked
-%
 % indices: The sequence or mean indices being checked
 %
-% ----- Outputs -----
-%
-% d: The dimension index
+% d: Dimension index for the indices
 
-% Error check indices
 dash.assertVectorTypeN(indices, 'numeric', [], 'indices');
 if any(mod(indices,1)~=0)
     error('"indices" must be a vector of integers.');
