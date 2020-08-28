@@ -107,11 +107,10 @@ end
 if ~haveIndices
     inputIndices = cell(1, nInputDims);
 
-    % Error check inputs
+    % Error check start, count, stride inputs
     input = {start, count, stride};
     name = ["start","count","stride"];
     allowInf = [false true false];
-
     for i = 1:numel(input)
         dash.assertVectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
         dash.assertPositiveIntegers( input{i}, name(i), false, allowInf(i) );
@@ -131,11 +130,9 @@ if ~haveIndices
         inputIndices{d} = start(d):stride(d):stop;
     end
 
-% If the user specified the indices, error check 
-else 
-    if ~isvector(inputIndices) || numel(inputIndices) ~= nInputDims
-        error('indices must be a vector with %.f elements.', nInputDims);
-    end
+% User specified indices. Error check cell
+else
+    dash.assertVectorTypeN(inputIndices, 'cell', nInputDims, 'indices');
     
     % Default for empty indices
     for d = 1:nInputDims

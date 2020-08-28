@@ -23,7 +23,7 @@ dims = string(dims);
 [~,name,ext] = fileparts(obj.file);
 filename = strcat(name, ext);
 if requireDefined
-    allowed = obj.dims(obj.isDefined);
+    allowed = obj.dims(obj.isdefined);
     allowedName = sprintf('dimension with defined metadata in .grid file %s', filename);
 else
     allowed = obj.dims;

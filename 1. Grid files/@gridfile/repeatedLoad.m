@@ -108,19 +108,26 @@ end
 
 % Permute to match the requested dimension order
 dimOrder = 1:nDims;
-inputOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
-X = permute(X, inputOrder);
-dims = obj.dims(inputOrder);
-isdefined = obj.isdefined(inputOrder);
+dimOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
+X = permute(X, dimOrder);
+dims = obj.dims(dimOrder);
 
+% Determine which dimensions to keep and which to remove. Keep dimensions
+% that are defined or in the user input
+inputDims = 1:numel(inputOrder);
+isdefined = find(obj.isdefined(dimOrder));
+notdefined = find(~obj.isdefined(dimOrder));
+keep = [inputDims, isdefined(~ismember(isdefined, inputDims))];
+remove = notdefined(~ismember(notdefined, inputDims));
+
+% Arrange the metadata fields to match the dimension order
 if isfield(meta, obj.attributesName)
-    inputOrder(end+1) = max(inputOrder)+1;
+    dimOrder(end+1) = max(dimOrder)+1;
 end
-meta = orderfields(meta, inputOrder);
+meta = orderfields(meta, dimOrder);
 
-% Remove any undefined singleton dimensions from the data and the metadata
-order = [find(isdefined), find(~isdefined)];
-X = permute(X, order);
-meta = rmfield( meta, dims(~isdefined) );
+% Remove any dimensions from the data and the metadata
+X = permute(X, [keep, remove]);
+meta = rmfield( meta, dims(remove) );
     
 end
