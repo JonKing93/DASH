@@ -88,13 +88,15 @@ for s = 1:numel(useSource)
         limit = obj.dimLimit(d,:,useSource(s));
         dimIndices = limit(1):limit(2);
         
-        % Get the indices of the requested data relative to the source grid
-        % and the output grid
+        % Get the indices of requested data in the source grid. Note that
+        % some .grid dimensions may not be in the data source.
         [ismem, sourceDim] = ismember(obj.dims(d), source.mergedDims);
         if ismem
-            [~, loc] = ismember( indices{d}, dimIndices );
+            [~, loc] = ismember(indices{d}, dimIndices);
             sourceIndices{sourceDim} = loc(loc~=0);
             [~, outputIndices{d}] = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
+        else
+            [~, outputIndices{d}] = ismember( dimIndices, indices{d} );
         end
     end
     
