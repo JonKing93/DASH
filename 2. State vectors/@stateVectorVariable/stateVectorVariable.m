@@ -73,6 +73,7 @@ classdef stateVectorVariable
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);
             
+            obj.takeMean = false(1, nDims);
             obj = obj.resetMeans;
             
             % Initialize all dimensions as state dimensions

@@ -7,8 +7,10 @@ function[obj] = resetMeans(obj)
 %
 % obj: The updated stateVectorVariable object
 
-% Size
+% State size
 nDims = numel(obj.dims);
+stateMean = obj.isState & obj.takeMean;
+obj.size(stateMean) = obj.meanSize(stateMean);
 
 % Mean properties
 obj.takeMean = false(1, nDims);
