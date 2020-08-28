@@ -53,7 +53,7 @@ function[obj] = mean(obj, dims, indices, omitnan)
 % Error check, dimension index.
 d = [];
 if ~isempty(dims)
-    d = obj.checkDimensions(dims);
+    [d, dims] = obj.checkDimensions(dims);
 end
 nDims = numel(d);
 

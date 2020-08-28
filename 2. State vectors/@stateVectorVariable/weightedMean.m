@@ -34,11 +34,12 @@ function[obj] = weightedMean(obj, dims, weights)
 % obj: The updated stateVectorVariable object
 
 % Error check, dimension index
-d = obj.checkDimensions(dims);
+[d, dims] = obj.checkDimensions(dims);
 nDims = numel(d);
 
-% Add any new dimensions to mean
+% Add any new dimensions to mean. Note that weights exist
 obj = obj.mean( dims(~obj.takeMean(d)) );
+obj.hasWeights(d) = true;
 
 % Error check weightArray
 if nDims>1 && isnumeric(weights)

@@ -47,7 +47,7 @@ function[obj] = design(obj, dims, type, indices)
 %    empty array, uses all indices along the dimension.
 
 % Error check, dimension index
-d = obj.checkDimensions(dims);
+[d, dims] = obj.checkDimensions(dims);
 nDims = numel(d);
 
 % Parse, error check the dimension type. Save

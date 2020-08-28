@@ -1,8 +1,9 @@
-function[d] = checkDimensions(obj, dims)
+function[d, dims] = checkDimensions(obj, dims)
 %% Returns the indices of dimensions in a state vector variable. Returns an
 % error if any dimensions do not exist. Does not allow duplicate names.
+% Also returns the dimension names as strings
 %
-% d = obj.checkDimensions(dims)
+% [d, dims] = obj.checkDimensions(dims)
 %
 % ----- Inputs -----
 %
@@ -11,6 +12,8 @@ function[d] = checkDimensions(obj, dims)
 % ----- Outputs -----
 %
 % d: The indices in the stateVectorVariable dims array
+%
+% dims: The dimension names as strings
 
 % Option for empty dims
 d = [];
@@ -24,6 +27,9 @@ if ~isempty(dims)
     if numel(d) ~= numel(unique(d))
         error('dims cannot repeat dimension names.');
     end
+    
+    % Convert dims to string
+    dims = string(dims);
 end
 
 end

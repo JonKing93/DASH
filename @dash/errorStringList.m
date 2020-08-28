@@ -11,7 +11,9 @@ function[str] = errorStringList( strings )
 %
 % str: A formatted output string.
 
-if numel(strings)==1
+if numel(strings)==0
+    str = '';
+elseif numel(strings)==1
     str = sprintf('"%s"',strings);
 elseif numel(strings)==2
     str = sprintf('"%s" and "%s"', strings(1), strings(2));
