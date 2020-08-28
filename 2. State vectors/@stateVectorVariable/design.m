@@ -84,6 +84,7 @@ for k = 1:nDims
                 weightsNumberError(obj, dims(k), obj.size(d(k)), obj.meanSize(d(k)));
             end
             obj.meanSize(d) = obj.size(d);
+            obj.size(d) = 1;
         end
     
     % Ensemble dimension

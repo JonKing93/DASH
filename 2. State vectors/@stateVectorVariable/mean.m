@@ -90,12 +90,13 @@ for k = 1:nDims
             weightsNumberError(obj, dims(k), meanSize, obj.meanSize(d(k)));
         end
     
-    % State dimensions. Indices not allowed. Get mean size
+    % State dimensions. Indices not allowed. Update size and mean size.
     else 
         if ~isempty(indices{k})
             stateHasIndicesError(obj, dims(k));
         end
-        meanSize = obj.size(d(k));        
+        meanSize = obj.size(d(k));     
+        obj.size(d(k)) = 1;
     end
 
     % Update mean Size
