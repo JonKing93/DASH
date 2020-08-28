@@ -21,7 +21,7 @@ end
 metaFields = string(fields(meta));
 allowed = ismember(metaFields, dims);
 if any( ~allowed )
-    error('Only %s (%s) are allowed as field names in meta.', errorString, dash.errorStringList(dims) );
+    error('Only %s (%s) are allowed as field names in meta.', errorString, dash.messageList(dims) );
 end
 
 % Metadata values

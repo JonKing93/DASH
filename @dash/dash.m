@@ -21,7 +21,7 @@ classdef dash
         assertStrFlag(input, name);
         assertStrList(input, name);
         k = checkStrsInList(input, list, name, message);
-        str = errorStringList(strings);
+        str = messageList(list);
         
         % Input assertions
         assertScalarLogical(input, name);

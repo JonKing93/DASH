@@ -14,7 +14,7 @@ fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
 d = find(obj.gridSize~=1);
 nDims = numel(d);
 dims = obj.dims(d);
-fprintf('%s has %.f non-singleton dimensions: %s\n', obj.name, nDims, dash.errorStringList(dims));
+fprintf('%s has %.f non-singleton dimensions: %s\n', obj.name, nDims, dash.messageList(dims));
 
 % State dimensions
 sd = d(obj.isState(d));
@@ -57,6 +57,17 @@ for k = 1:numel(ensDims)
     fprintf('\t%s has %.f elements that can be used in an ensemble.\n', ensDims(k), numel(obj.ensIndices{sd(k)}));
     
     % Sequence information
+    if ~isequal(obj.seqIndices{sd(k)}, 0)
+        strs = ["a sequence of data elements", "data indices"];
+        if numel(obj.seqIndices{sd(k)}) == 1
+            strs(1) = "the data element";
+        elseif isequal( abs(obj.seqIndices{sd(k)}), 1)
+            strs(2) = "index";
+        end
+        list = dash.messageList(obj.seqIndices{sd(k)});
+        fprintf('\t\tIt has a length of %.f in the state vector, using %s %s %s after each reference element.\n', strs(1), list, strs(2));
+    end
+    
     
     
     

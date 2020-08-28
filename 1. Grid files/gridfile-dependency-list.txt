@@ -10,7 +10,7 @@ new
     checkMetadataStructure
         checkMetadataField
             hasDupicateRows
-        dash.errorStringList
+        dash.messageList
     dash.dimensionNames
     processMetadata
     gridfile
@@ -33,7 +33,7 @@ add
             dash.isstrlist
         dash.assertStrFlag
         dash.checkStrsinList
-            dash.errorStringList
+            dash.messageList
     dash.assertScalarLogical
     dash.assertVectorTypeN
     dash.assertRealDefined
@@ -56,11 +56,11 @@ add
                 dash.checkFileExists
     checkAllowedDims
         dash.checkStrsInList
-            dash.errorStringList
+            dash.messageList
     checkMetadataStructure
         checkMetadataField
             hasDupicateRows
-        dash.errorStringList
+        dash.messageList
     convertSourceToPrimitives
         commaDelimitedDims
     sourceFilepath
@@ -120,7 +120,7 @@ rewriteMetadata
         dash.isstrflag
     checkAllowedDims
         dash.checkStrsInList
-            dash.errorStringList
+            dash.messageList
     checkMetadataField
         hasDuplicateRows
     updateMetadataField
@@ -133,7 +133,7 @@ expand
         dash.isstrflag
     checkAllowedDims
         dash.checkStrsInList
-            dash.errorStringList
+            dash.messageList
     checkMetadataField
         hasDuplicateRows
     hasDuplicateRows
@@ -176,7 +176,7 @@ load
         dash.isstrlist
     checkAllowedDims
         dash.checkStrsInList
-            dash.errorStringList
+            dash.messageList
     dash.assertVectorTypeN
     dash.assertPositiveIntegers
         dash.assertRealDefined
