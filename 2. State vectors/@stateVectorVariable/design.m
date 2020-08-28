@@ -47,7 +47,7 @@ function[obj] = design(obj, dims, type, indices)
 %    empty array, uses all indices along the dimension.
 
 % Error check, dimension index
-d = obj.checkDimensions(dims, true);
+d = obj.checkDimensions(dims);
 nDims = numel(d);
 
 % Parse, error check the dimension type. Save
@@ -59,7 +59,7 @@ obj.isState(d) = isState;
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
+indices = obj.parseInputCell(indices, nDims, 'indexCell');
 
 % Use all indices if unspecified
 for k = 1:nDims

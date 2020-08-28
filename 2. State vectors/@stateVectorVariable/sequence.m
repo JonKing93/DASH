@@ -39,7 +39,7 @@ function[obj] = sequence(obj, dims, indices, metadata)
 % obj: The updated stateVectorVariable object.
 
 % Error check the dimensions. Only ensemble dimensions are allowed
-d = obj.checkDimensions(dims, true);
+d = obj.checkDimensions(dims);
 if any(obj.isState(d))
     bad = d(find(obj.isState(d),1));
     stateDimensionError(obj, bad);

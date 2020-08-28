@@ -51,7 +51,10 @@ function[obj] = mean(obj, dims, indices, omitnan)
 % obj: The updated stateVectorVariable object.
 
 % Error check, dimension index.
-d = obj.checkDimensions(dims, true);
+d = [];
+if ~isempty(dims)
+    d = obj.checkDimensions(dims);
+end
 nDims = numel(d);
 
 % Defaults, error check, parse indices

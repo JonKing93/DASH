@@ -84,7 +84,7 @@ classdef stateVectorVariable
     
     % Object utilities
     methods
-        d = checkDimensions(obj, dims, multiple);
+        d = checkDimensions(obj, dims);
         assertEnsembleIndices(obj, indices, d, name);
     end
     
