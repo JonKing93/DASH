@@ -28,8 +28,7 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % ----- Inputs -----
 %
 % dims: A list of dimension names for which additional load arguments are
-%    being specified. A string vector or cellstring vector. Only dimensions
-%    with defined metadata in the .grid file are allowed. Any dimensions
+%    being specified. A string vector or cellstring vector. Any dimensions
 %    not listed in dims will have all elements loaded.
 %
 % indices: A cell vector. Must have the same number of elements as dims. 
@@ -95,7 +94,7 @@ end
 
 % Error check the dimensions
 dash.assertStrList(dims, "dims");
-obj.checkAllowedDims(dims, true);
+obj.checkAllowedDims(dims, false);
 if numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');
 end
