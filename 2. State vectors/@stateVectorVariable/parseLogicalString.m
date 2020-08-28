@@ -25,6 +25,11 @@ function[input] = parseLogicalString(input, nDims, logicalName, stringName, allo
 %
 % input: The input as a logical
 
+% Default for empty calls
+if nDims==0 && isempty(input)
+    input = false(0,1);
+end
+
 % Logical
 if islogical(input)
     if ~isscalar(input)
