@@ -91,6 +91,7 @@ classdef stateVectorVariable
     % Static utilities
     methods (Static)
         [input, wasCell] = parseInputCell(input, nDims, name);
+        input = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name);
     end
     
     % Interface methods

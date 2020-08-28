@@ -64,20 +64,7 @@ end
 if ~exist('omitnan','var') || isempty(omitnan)
     omitnan = false;
 end
-if islogical(omitnan)
-    if ~isscalar(omitnan)
-        dash.assertVectorTypeN(omitnan, [], nDims, 'Since omitnan is not a scalar, it');
-    end
-elseif ischar(omitnan) || isstring(omitnan) || iscellstr(omitnan)
-    omitnan = string(omitnan);
-    if ~isscalar(omitnan)
-        dash.assertVectorTypeN(omitnan, [], nDims, 'Since nanflag is not a string scalar, it');
-    end
-    dash.checkStrsInList(omitnan, ["includenan","omitnan"], 'nanflag', 'recognized flag');
-    omitnan = strcmpi(omitnan, "omitnan");
-else
-    error('NaN options must either be logicals or strings.');
-end
+omitnan = obj.parseLogicalString(omitnan, nDims, 'omitnan', 'nanflag', ["omitnan","includenan"], 1, 'NaN options');
 
 % Ensemble dimensions. Require indices
 name = 'indices';
