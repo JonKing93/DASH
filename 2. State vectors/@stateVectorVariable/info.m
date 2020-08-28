@@ -10,6 +10,9 @@ fprintf('\n"%s" is a state vector variable.\n', obj.name);
 % File
 fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
 
+% Size overview
+fprintf('The state vector is %.f elements long. There are %.f possible ensemble members.\n', prod(obj.stateSize), prod(obj.ensSize));
+
 % Dimension overview
 d = find(obj.gridSize~=1);
 nDims = numel(d);
@@ -35,7 +38,7 @@ for k = 1:numel(stateDims)
         
         % Get string for spacing
         spaceStr = '';
-        spacing = unique(diff(sort(obj.stateIndices{sd(k)})));
+        spacing = unique(diff(sort(obj.indices{sd(k)})));
         if numel(spacing)==1 && spacing==1
             spaceStr = sprintf('spaced in steps of 1 data index');
         elseif numel(spacing)==1
@@ -54,7 +57,7 @@ sd = d(~obj.isState(d));
 ensDims = obj.dims(sd);
 fprintf('\n\tENSEMBLE DIMENSIONS: %s\n', dash.messageList(ensDims));
 for k = 1:numel(ensDims)
-    fprintf('\t%s has %.f elements that can be used in an ensemble.\n', ensDims(k), numel(obj.ensIndices{sd(k)}));
+    fprintf('\t%s has %.f elements that can be used in an ensemble.\n', ensDims(k), numel(obj.indices{sd(k)}));
     
     % Sequence information
     if ~isequal(obj.seqIndices{sd(k)}, 0)

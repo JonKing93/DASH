@@ -89,14 +89,13 @@ for k = 1:nDims
     
     % Ensemble dimension
     else
-        obj.ensIndices{d(k)} = indices{k}(:);
+        obj.indices{d(k)} = indices{k}(:);
         obj.stateSize(d(k)) = 1;
         obj.ensSize(d(k)) = numel(indices{k});
         
-        % Initialize ensemble properties. Reset state
+        % Initialize ensemble properties.
         obj.seqIndices{d(k)} = 0;
         obj.seqMetadata{d(k)} = NaN;
-        obj.stateIndices{d(k)} = [];
         
         % No mean indices, so throw error if taking a mean
         if obj.takeMean(d(k))
