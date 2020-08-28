@@ -102,7 +102,9 @@ classdef stateVectorVariable
         obj = weightedMean(obj, dim, weights);
         obj = resetMeans(obj);
         obj = design(obj, dim, type, indices);
+        
         info(obj);
+        M = buildEnsemble(obj, member);
     end
 end
         
