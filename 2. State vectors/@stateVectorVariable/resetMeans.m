@@ -10,7 +10,7 @@ function[obj] = resetMeans(obj)
 % State size
 nDims = numel(obj.dims);
 stateMean = obj.isState & obj.takeMean;
-obj.size(stateMean) = obj.meanSize(stateMean);
+obj.stateSize(stateMean) = obj.meanSize(stateMean);
 
 % Mean properties
 obj.takeMean = false(1, nDims);

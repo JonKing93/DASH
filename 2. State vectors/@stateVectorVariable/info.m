@@ -21,10 +21,10 @@ sd = d(obj.isState(d));
 stateDims = obj.dims(sd);
 fprintf('\n\tSTATE DIMENSIONS: %s\n', dash.messageList(stateDims));
 for k = 1:numel(stateDims)
-    fprintf('\t%s has a length of %.f in the state vector.\n', stateDims(k), obj.size(sd(k)));
+    fprintf('\t%s has a length of %.f in the state vector.\n', stateDims(k), obj.stateSize(sd(k)));
     
     % String for mean
-    if obj.size(sd(k))>1 || (obj.takeMean(sd(k)) && obj.meanSize(sd(k))>1)        
+    if obj.stateSize(sd(k))>1 || (obj.takeMean(sd(k)) && obj.meanSize(sd(k))>1)        
         if obj.meanSize(sd(k))==1 || ~obj.takeMean(sd(k))
             meanStr = sprintf('\b');
         elseif obj.hasWeights(sd(k)) 
@@ -66,7 +66,7 @@ for k = 1:numel(ensDims)
             strs(2) = "index";
         end
         list = dash.messageList(obj.seqIndices{sd(k)});
-        fprintf('\t\tIt has a length of %.f in the state vector.\n', obj.size(sd(k)));
+        fprintf('\t\tIt has a length of %.f in the state vector.\n', obj.stateSize(sd(k)));
         fprintf('\t\tIt uses %s %s %s after each reference element.\n', strs(1), list, strs(2));
     end
     

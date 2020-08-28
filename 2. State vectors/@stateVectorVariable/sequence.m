@@ -69,7 +69,7 @@ for k = 1:nDims
     end
 
     % Update
-    obj.size(d(k)) = numel(indices{k});
+    obj.stateSize(d(k)) = numel(indices{k});
     obj.seqIndices{d(k)} = indices{k}(:);
     obj.seqMetadata{d(k)} = metadata{k};
 end

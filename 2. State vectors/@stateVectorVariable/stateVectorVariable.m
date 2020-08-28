@@ -10,10 +10,10 @@ classdef stateVectorVariable
         gridSize; % .grid file size
 
         % Design
-        size; % Length of each dimension in the state vector
+        stateSize; % Length of each dimension in the state vector
+        ensSize; % Number of possible ensemble members
         isState; % Whether a dimension is a state dimension
-        stateIndices; % Data indices to use for state dimensions
-        ensIndices; % Reference indices to use for ensemble dimensions
+        indices; % State indices or ensemble reference indices, as appropriate
         
         % Sequences
         % size;
@@ -65,10 +65,10 @@ classdef stateVectorVariable
             
             % Initialize dimension properties
             nDims = numel(obj.dims);
-            obj.size = NaN(1, nDims);
+            obj.stateSize = NaN(1, nDims);
+            obj.ensSize = NaN(1, nDims);
             obj.isState = true(1, nDims);
-            obj.stateIndices = cell(1, nDims);
-            obj.ensIndices = cell(1, nDims);
+            obj.indices = cell(1, nDims);
             
             obj.seqIndices = cell(1, nDims);
             obj.seqMetadata = cell(1, nDims);

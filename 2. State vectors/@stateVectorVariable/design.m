@@ -69,28 +69,29 @@ for k = 1:nDims
     
     % State dimension
     if obj.isState(d(k))
-        obj.size(d(k)) = numel(indices{k});
-        obj.stateIndices{d(k)} = indices{k}(:);
+        obj.stateSize(d(k)) = numel(indices{k});
+        obj.ensSize(d(k)) = 1;
+        obj.indices{d(k)} = indices{k}(:);
         
         % Reset ensemble properties
-        obj.ensIndices{d(k)} = [];
         obj.seqIndices{d(k)} = [];
         obj.seqMetadata{d(k)} = [];
         
         % Update mean properties
         obj.mean_Indices{d(k)} = [];
         if obj.takeMean(d(k))
-            if obj.hasWeights(d(k)) && obj.meanSize(d(k))~=obj.size(d(k))
-                weightsNumberError(obj, dims(k), obj.size(d(k)), obj.meanSize(d(k)));
+            if obj.hasWeights(d(k)) && obj.meanSize(d(k))~=obj.stateSize(d(k))
+                weightsNumberError(obj, dims(k), obj.stateSize(d(k)), obj.meanSize(d(k)));
             end
-            obj.meanSize(d) = obj.size(d);
-            obj.size(d) = 1;
+            obj.meanSize(d) = obj.stateSize(d);
+            obj.stateSize(d) = 1;
         end
     
     % Ensemble dimension
     else
         obj.ensIndices{d(k)} = indices{k}(:);
-        obj.size(d(k)) = 1;
+        obj.stateSize(d(k)) = 1;
+        obj.ensSize(d(k)) = numel(indices{k});
         
         % Initialize ensemble properties. Reset state
         obj.seqIndices{d(k)} = 0;

@@ -95,8 +95,8 @@ for k = 1:nDims
         if ~isempty(indices{k})
             stateHasIndicesError(obj, dims(k));
         end
-        meanSize = obj.size(d(k));     
-        obj.size(d(k)) = 1;
+        meanSize = obj.stateSize(d(k));     
+        obj.stateSize(d(k)) = 1;
     end
 
     % Update mean Size
