@@ -95,8 +95,6 @@ for s = 1:numel(useSource)
             [~, loc] = ismember( indices{d}, dimIndices );
             sourceIndices{sourceDim} = loc(loc~=0);
             [~, outputIndices{d}] = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
-        else
-            outputIndices{d} = dimIndices;
         end
     end
     
