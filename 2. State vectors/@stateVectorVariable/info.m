@@ -11,7 +11,8 @@ fprintf('\n"%s" is a state vector variable.\n', obj.name);
 fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
 
 % Size overview
-fprintf('The state vector is %.f elements long. There are %.f possible ensemble members.\n', prod(obj.stateSize), prod(obj.ensSize));
+fprintf('The state vector for %s is %.f elements long. There are %.f possible ensemble members.\n', ...
+    obj.name, prod(obj.stateSize), prod(obj.ensSize));
 
 % Dimension overview
 d = find(obj.gridSize~=1);
@@ -91,5 +92,4 @@ for k = 1:numel(ensDims)
     end
 end
 
-fprintf('\n');
 end

@@ -55,17 +55,25 @@ isState = obj.parseLogicalString(type, nDims, 'isState', 'type', ...
                    ["state","s","ensemble","ens","e"], 2, 'The dimension type');
 obj.isState(d) = isState;
                
-% Default, error check, parse indices 
+% Parse indices. Get input name
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-indices = obj.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
+name = 'stateIndices';
+if ~wasCell && ~isState
+    name = 'ensIndices';
+end
 
-% Use all indices if unspecified
+% Use all indices if unspecified. Error check
 for k = 1:nDims
     if isempty(indices{k})
         indices{k} = (1:obj.gridSize(d(k)))';
     end
+    if wasCell
+        name = sprintf('Element %.f of indexCell', k);
+    end
+    indices{k} = dash.checkIndices(indices{k}, name, obj.gridSize(d(k)), obj.dims(d(k)));
     
     % State dimension
     if obj.isState(d(k))
