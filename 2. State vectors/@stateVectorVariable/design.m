@@ -7,11 +7,11 @@ function[obj] = design(obj, dims, type, indices)
 % all elements along the dimension as state indices or ensemble reference
 % indices, as appropriate.
 %
-% obj = obj.design(dim, 's'/'state', stateIndices)
+% obj = obj.design(dim, 's'/'state'/true, stateIndices)
 % Specify state indices for a dimension.
 %
-% obj = obj.design(dim, 'e'/'ens'/'ensemble', ensIndices)
-% Specify ensemble indices for a dimension.
+% obj = obj.design(dim, 'e'/'ens'/'ensemble'/false, refIndices)
+% Specify reference indices for an ensemble dimension.
 %
 % obj = obj.design(dims, isState/type, indexCell)
 % Specify dimension type and indices for multiple dimensions.
@@ -38,7 +38,7 @@ function[obj] = design(obj, dims, type, indices)
 %    variable's .grid file. Either a vector of linear indices or a logical
 %    vector the length of the dimension.
 %
-% ensIndices: The ensemble reference indices. Either a vector of linear
+% refIndices: The ensemble reference indices. Either a vector of linear
 %    indices or a logical vector the length of the dimension.
 %
 % indexCell: A cell vector. Each element contains the state indices or
