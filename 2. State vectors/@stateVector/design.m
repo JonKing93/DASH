@@ -58,17 +58,41 @@ v = obj.checkVariables(varNames);
 for k = 1:numel(v)
     obj.variables(v) = obj.variables(v).design(dims, type, indices);
     
-    % Find any secondary coupled variables not specified by the user
-    cv = find(obj.coupled(v(k),:));
-    sv = cv(~ismember(cv, v));
+    % Find coupled variables not specified by the user. Notify that these
+    % will also be updated
+    sv = find(obj.coupled(v(k),:));
+    sv = sv(~ismember(sv, v));
+    notifySecondaryVariables(obj, sv, t);
     
-    % Update these variables. Notify user. Add to variables list.
-    notifySecondaryVariables(sv);
-    
-    
-    
+    % Update these variables. Add them to the variable list to prevent
+    % redundant updates / notifications
+    obj = obj.updateCoupledVariables(v(k), sv);
+    v = [v(:); sv(:)];
+end
 
-% Update the dimensions of coupled variables
-% obj.updateCoupledVariables(v);
+end
+
+% Message
+function[] = notifySecondaryVariables(obj, sv, t)
+
+% No message if no secondary variables, or user disabled messages
+if ~isempty(sv) && obj.verbose
+    
+    % Plural vs singular
+    plural = ["s", "are", "them"];
+    if numel(sv)==1
+        plural = ["", "is", "it"];
+    end
+    
+    % Format variable names as string
+    names = obj.variableNames;
+    template = names(t);
+    secondary = dash.messageList( names(sv) );
+    
+    % Message
+    fprintf(['\nVariable%s %s %s coupled to "%s". Updating %s to match the ',...
+        'ensemble dimensions of %s.'], plural(1), secondary, plural(2), ...
+        template, plural(3), template);
+end
 
 end
