@@ -103,6 +103,7 @@ classdef stateVector
         varNames = variableNames(obj);
         [v, varNames] = checkVariables(obj, varNames, multiple);
         str = errorTitle(obj);
+        obj = updateCoupledVariables(obj, t, v);
     end
     
     % Variable user interface methods
@@ -111,16 +112,16 @@ classdef stateVector
         obj = mean(obj, varNames, dims, indices, omitnan);
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans;
-        obj = design;
+        obj = design(varNames, dims, isState, indices);
         
         info;
-        X = buildEnsemble;
+        buildEnsemble;
     end
     
     % User methods
     methods
         obj = add(obj, name, file, autoCouple);
-        remove;
+        obj = remove(obj, varNames);
         obj = couple(obj, varNames);
         uncouple;
         overlap;
