@@ -101,16 +101,34 @@ classdef stateVector
     % Object utilities
     methods
         varNames = variableNames(obj);
-        v = checkVariables(obj, varNames, multiple);
+        [v, varNames] = checkVariables(obj, varNames, multiple);
         str = errorTitle(obj);
+    end
+    
+    % Variable user interface methods
+    methods
+        obj = sequence(obj, varNames, dims, indices, metadata);
+        obj = mean(obj, varNames, dims, indices, omitnan);
+        obj = weightedMean(obj, varNames, dims, weights);
+        obj = resetMeans;
+        obj = design;
+        
+        info;
+        X = buildEnsemble;
     end
     
     % User methods
     methods
-        obj = add(obj, varName, file);
-        obj = design(obj, varName, dim, type, indices);
-        obj = sequence(obj, varName, dim, indices, metadata);
-        obj = toggleConsoleOutput(obj, verbose, warn);
+        add;
+        remove;
+        couple;
+        uncouple;
+        overlap;
+        copy;
+        
+        rename;
+        toggleConsoleOutput;
+        updatePaths;
     end
      
 end

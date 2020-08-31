@@ -1,75 +1,75 @@
-function[obj] = mean(obj, varName, dims, weights, nanflag)
-%% Specify to take a mean over dimensions of a variable in a state vector.
+function[obj] = mean(obj, varNames, dims, indices, omitnan)
+%% Specifies options for taking a mean over dimensions for specified variables.
 %
-% obj = obj.mean(varName, dims)
-% Takes the mean over the specified dimensions of a variable in a state
-% vector.
+% obj = obj.mean(varNames, stateDim)
+% obj = obj.mean(varNames, stateDim, []);
+% Take a mean over a state dimension.
 %
-% obj = obj.mean(varName, dims, weightCell)
-% obj = obj.mean(varName, dims, weightMatrix)
-% Uses a weighted mean.
+% obj = obj.mean(varNames, ensDim, indices);
+% Specify how to take a mean over an ensemble dimension.
 %
-% obj = obj.mean(varName, dims, weights, nanflag)
-% obj = obj.mean(varName, dims, weights, omitnan)
-% Specify how to treat NaN values along each dimension. By default, NaN
-% values are included in means.
+% obj = obj.mean(varNames, dims, indexCell)
+% Specify how to take a mean over multiple dimensions.
 %
-% obj = obj.mean(varName)
-% Resets the mean for a variable.
-%
-% ***Note: Each call to obj.mean(varName, ...) resets the settings for any
-% means for the variable. So any previous settings will be deleted.
+% obj = obj.mean(..., nanflag)
+% obj = obj.mean(..., omitnan)
+% Specify how to treat NaN values when taking a mean
 %
 % ----- Inputs -----
 %
-% varName: The name of a variable in the state vector.
+% varNames: The names of the variables over which to take a mean. A string
+%    vector or cellstring vector.
 %
-% dims: The names of dimensions over which to take a mean. A string vector 
-%    or cellstring vector. Dimensions may be in any order and may not
-%    contain duplicate names.
+% stateDim: The name of a state dimension for the variable. A string.
 %
-% weightCell: A cell vector. Each element contains the weights for one
-%    dimension; must follow the same order of dimensions as dims. The
-%    weights for each dimension must be a numeric vector the length of the
-%    dimension in the state vector and may not contain NaN or Inf elements.
+% ensDim: The name of an ensemble dimension for the variable. A string.
 %
-% weightMatrix: An N-dimensional numeric matrix containing weights for 
-%    taking a mean across specified dimensions. Must have a dimension for 
-%    each dimension listed in dims. The dimensions of weightMatri must
-%    follow the same order as dims and be the length of the dimension in
-%    the stateVector. May not contain NaN or Inf.
+% dims: The names of multiple dimensions. A string vector or cellstring
+%    vector. May not repeat dimension names.
 %
-% nanflag: A string or cellstring. If a scalar, specifies how to treat NaN
-%    values for all dimensions when taking a mean. Use "includenan"
-%    (the default), to include NaN values in means; use "omitnan" to
-%    exclude NaN values. If a vector, elements may be "includenan" or 
-%    "omitnan" and indicate how to treat NaNs along a particular dimension.
-%    Must have one element per dimension listed in dims and be in the same
-%    dimension order as dims.
+% indices: Mean indices for an ensemble dimension. A vector of integers
+%    that indicates the position of mean data-elements relative to the
+%    sequence data-elements. 0 indicates a sequence data-element. 1 is the
+%    data-element following a sequence data-element. -1 is the data-element
+%    before a sequence data-element, etc. Mean indices may be in any order 
+%    and cannot have a magnitude larger than the length of the dimension in
+%    the .grid file.
 %
-% omitnan: A logical. If a scalar, specifies whether to include NaN values
-%    (false -- the default), or exclude NaN values (true) from all
-%    dimensions when taking a mean. If a vector, each element indicates how
-%    to treat NaNs along a particular dimension. Must have one element per
-%    dimension listed in dims and be in the same dimension order as dims.
+% indexCell: A cell vector. Each element contains mean indices for one
+%    dimension listed in dims. Must be in the same order as dims. Use an
+%    empty array for elements corresponding to state dimensions.
+%
+% nanflag: Options are "includenan" to use NaN values (default) and
+%    "omitnan" to remove NaN values. Use a string scalar to specify an
+%    option for all dimensions listed in dims. Use a string vector to
+%    specify different options for the different dimensions listed in dims.
+%
+% omitnan: If false (default) includes NaN values in a mean. If true,
+%    removes NaN values. Use a scalar logical to use the same option for
+%    all dimensions listed in dims. Use a logical vector to specify
+%    different options for the different dimensions listed in dims.
 %
 % ----- Outputs -----
 %
-% obj: The updated stateVector object
+% obj: The updated stateVector object.
 
 % Defaults for unset variables
 if ~exist('dims','var')
     dims = [];
 end
-if ~exist('weights','var')
-    weights = [];
+if ~exist('indices','var')
+    indices = [];
 end
-if ~exist('nanflag','var')
-    nanflag = [];
+if ~exist('omitnan','var')
+    omitnan = [];
 end
 
-% Error check variable, get index, add mean
-v = obj.checkVariables(varName, false);
-obj.variables(v) = obj.variables(v).mean(dims, weights, nanflag);
+% Error check. Variable indices
+v = obj.checkVariables(varNames);
+
+% Update variables
+for k = 1:numel(v)
+    obj.variables(v(k)) = obj.variables(v(k)).mean(dims, indices, omitnan);
+end
 
 end
