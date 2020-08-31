@@ -33,7 +33,7 @@ ensDims = obj.variables(t).dims( ~obj.variables(t).isState );
 [~, col] = find(obj.coupled(uv,:));
 v = unique(col);
 sv = v(~ismember(v, uv));
-notifySecondaryVariables(obj.verbose, allNames, sv, t);
+notifySecondaryVariables(obj.verbose, allNames, uv, sv, t);
 
 % Check each variable has the required dimensions
 for k = 1:numel(v)
@@ -50,10 +50,11 @@ for k = 1:numel(v)
     varEnsDims = var.dims(~var.isState);
     toState = varEnsDims( ~ismember(varEnsDims, ensDims) );
     
-    % Change the dimension types. Notify user of changes.
-    obj.variables(v(k)) = var.design(toEns, 'ensemble');
-    obj.variables(v(k)) = var.design(toState, 'state');
+    % Change the dimension types. Notify user of changes. Save
+    var = var.design(toEns, 'ensemble');
+    var = var.design(toState, 'state');
     notifyChangedDimensions(obj.verbose, allNames, v(k), t, toEns, toState);
+    obj.variables(v(k)) = var;
     
     % Couple the variable to the others
     obj.coupled(v, v(k)) = true;
@@ -63,24 +64,25 @@ end
 end
 
 % Messages
-function[] = notifySecondaryVariables(verbose, names, sv, t)
+function[] = notifySecondaryVariables(verbose, names, uv, sv, t)
 
 % No message if no secondary variable, or user disabled messages
 if ~isempty(sv) && verbose
     
     % Plural vs singular variables
-    plural = ["s", "were"];
+    plural = ["s", "are"];
     if numel(sv)==1
-        plural = ["", "was"];
+        plural = ["", "is"];
     end
     
     % Format variables as string
     template = names(t);
+    input = dash.messageList( names(uv) );
     names = dash.messageList( names(sv) );
     
     % Message
-    fprintf(['\nVariable%s %s %s previously coupled to %s. Thus, %s will also be ', ...
-        'coupled to %s.\n'], plural(1), names, plural(2), names, template);
+    fprintf(['\nVariable%s %s %s coupled to %s. Thus, %s will also be ', ...
+        'coupled to "%s".\n'], plural(1), names, plural(2), input, names, template);
 end
 
 end

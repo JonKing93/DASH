@@ -119,9 +119,9 @@ classdef stateVector
     
     % User methods
     methods
-        add;
+        obj = add(obj, name, file, autoCouple);
         remove;
-        couple;
+        obj = couple(obj, varNames);
         uncouple;
         overlap;
         copy;
