@@ -4,28 +4,36 @@ function[obj] = couple(obj, varNames)
 % variable.
 %
 % obj = obj.couple(varNames)
+%
+% ----- Inputs -----
+%
+% varNames: A list a variable names to be coupled. A string vector or
+%    cellstring vector.
+%
+% ----- Outputs -----
+%
+% obj: The updated stateVector object
 
 % Glossary of indices
 % uv: User variables
 % v: All variables being coupled
 % sv: Secondary variables being coupled (those not listed by the user)
-% t: Template varialbe (first user variable)
+% t: Template variable (first user variable)
 
-% Error check. Get the indices of user variables
+% Error check. Get the indices of user variables. Get names for messages
 uv = obj.checkVariables(varNames);
+allNames = obj.variableNames;
+
+% Get the template variable and its ensemble dimensions
+t = uv(1);
+ensDims = obj.variables(t).dims( ~obj.variables(t).isState );
 
 % Find all variables coupled to those listed. Note any secondary coupled
 % variables.
 [~, col] = find(obj.coupled(uv,:));
 v = unique(col);
 sv = v(~ismember(v, uv));
-
-% Notify user of secondary variables being coupled
-secondaryVariablesMessage();
-
-% Get the template variable and its ensemble dimensions
-t = uv(1);
-ensDims = obj.variables(t).dims( ~obj.variables(t).isState );
+notifySecondaryVariables(obj.verbose, allNames, sv, t);
 
 % Check each variable has the required dimensions
 for k = 1:numel(v)
@@ -35,17 +43,17 @@ for k = 1:numel(v)
         missingDimsError();
     end
     
-    % Change state dimensions to ensemble dimensions when necessary
+    % Check if any state dimensions need to be converted to ensemble, and
+    % vice versa. Notify user of changes.
     varStateDims = var.dims(var.isState);
-    flip = ismember(varStateDims, ensDims);
-    obj.variables(v(k)) = var.design(varStateDims(flip), 'state');
-    notifyStateToEns();
-    
-    % Change ensemble dimensions to state dimensions when necessary
+    toEns = varStateDims( ismember(varStateDims, ensDims) );
     varEnsDims = var.dims(~var.isState);
-    flip = ~ismember(varEnsDims, ensDims);
-    obj.variables(v(k)) = var.design(varEnsDims(flip), 'ensemble');
-    notifyEnsToState();
+    toState = varEnsDims( ~ismember(varEnsDims, ensDims) );
+    
+    % Change the dimension types. Notify user of changes.
+    obj.variables(v(k)) = var.design(toEns, 'ensemble');
+    obj.variables(v(k)) = var.design(toState, 'state');
+    notifyChangedDimensions(obj.verbose, allNames, v(k), t, toEns, toState);
     
     % Couple the variable to the others
     obj.coupled(v, v(k)) = true;
@@ -54,77 +62,53 @@ end
 
 end
 
+% Messages
+function[] = notifySecondaryVariables(verbose, names, sv, t)
 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% 
-% % Error check the variables, get the indices, names, and template
-% userVars = obj.checkVariables(varNames, true);
-% allNames = obj.variableNames;
-% t = userVars(1);
-% 
-% % Find all variables coupled to those listed and note any secondary
-% % variables not in the user list
-% [~, col] = find(obj.coupled(userVars,:));
-% coupleVars = unique(col);
-% secondary = coupleVars( ~ismember(coupleVars, userVars) );
-% 
-% % Notify the user of secondary variables being coupled
-% secondaryNotification(obj.verbose, allNames, secondary, varNames, allNames(t));
-% 
-% % Get the ensemble dimensions from the template variable
-% ensDims = obj.variables(t).dims( ~obj.variables(t).isState );
-% 
-% % Couple each variable to the other variables
-% for cv = 1:numel(coupleVars)
-%     v = coupleVars(cv);
-%     obj.coupled(v, coupleVars) = true;
-%     obj.coupled(coupleVars, v) = true;
-%     var = obj.variables(v);
-%     
-%     % Check that the variable has all required dimensions
-%     missing = ~ismember(ensDims, var.dims);
-%     if missing
-%         error('Cannot couple variable "%s" to template variable "%s" because %s does not have the ensemble dimension "%s".', var.name, allNames(t), var.name, ensDims(find(missing,1)) );
-%     end
-%     
-%     % Determine if any dimensions will change type.
-%     varEnsDims = var.dims(~var.isState);
-%     varStateDims = var.dims(var.isState);
-%   
-%     changeToState = varEnsDims(~ismember(varEnsDims, ensDims));
-%     changeToEns = varStateDims(ismember(varStateDims, ensDims));
-%     
-%     % Optionally notify user
-%     notifyChangedDims(obj.verbose, allNames(v), allNames(t), changeToState, changeToEns);
-%     
-%     % Change the types
-%     d = var.checkDimensions(changeToState);
-%     var.changeToState(d);
-%     
-%     d = var.checkDimensions(changeToEns);
-%     var.changeToEns(d);
-% end
-%     
-%     
-%     
-% 
-% end
-% 
-% function[] = secondaryNotification(verbose, allNames, secondary, varNames, templateName)
-% % Optionally notify the user about secondary variable coupling.
-% if verbose
-%     fprintf('Variables(s) %s were previously coupled to %s, so will also be coupled to %s.\n\n', ...
-%         dash.errorStringList(allNames(secondary)), dash.errorStringList(varNames), templateName);
-% end
-% end
+% No message if no secondary variable, or user disabled messages
+if ~isempty(sv) && verbose
+    
+    % Plural vs singular variables
+    plural = ["s", "were"];
+    if numel(sv)==1
+        plural = ["", "was"];
+    end
+    
+    % Format variables as string
+    template = names(t);
+    names = dash.messageList( names(sv) );
+    
+    % Message
+    fprintf(['\nVariable%s %s %s previously coupled to %s. Thus, %s will also be ', ...
+        'coupled to %s.\n'], plural(1), names, plural(2), names, template);
+end
+
+end
+function[] = notifyChangedDimensions(verbose, names, v, t, toEns, toState)
+
+% Only notify if dimensions are changing and user has not disabled messages
+if verbose && (numel(toEns)>0 || numel(toState)>0)
+    fprintf('\nCoupling variable "%s" to "%s":\n', names(v), names(t));
+
+    % Converting to ensemble.
+    nEns = numel(toEns);
+    if nEns>0
+        plural = ["state dimensions", "ensemble dimensions"];
+        if nEns == 1
+            plural = ["a state dimension", "an ensemble dimension"];
+        end
+        fprintf('\tConverting %s from %s to %s.\n', dash.messageList(toEns), plural(1), plural(2));
+    end
+    
+    % Converting to state
+    nState = numel(toState);
+    if nState>0
+        plural = ["ensemble dimensions", "state dimensions"];
+        if nState == 1
+            plural = ["an ensemble dimension", "a state dimension"];
+        end
+        fprintf('\tConverting %s from %s to %s.\n', dash.messageList(toState), plural(1), plural(2));
+    end
+end
+
+end
