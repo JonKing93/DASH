@@ -1,7 +1,7 @@
-function[M] = buildEnsemble(obj, member)
+function[X] = buildEnsemble(obj, member)
 %% Builds an ensemble for the stateVectorVariable
 %
-% M = obj.buildEnsemble(draws)
+% X = obj.buildEnsemble(draws)
 %
 % ----- Inputs -----
 %
@@ -11,7 +11,7 @@ function[M] = buildEnsemble(obj, member)
 %
 % ----- Outputs -----
 %
-% M: The ensemble for the variable. A numeric matrix
+% X: The ensemble for the variable. A numeric matrix
 
 %%%%%% Currently building architecture for a single draw
 
@@ -38,8 +38,46 @@ for k = 1:numel(d)
     indices{d(k)} = indices{d(k)} + ensIndices;
 end
 
-% Load the data from the .grid file
+% Load the data from the .grid file and record its size
 grid = gridfile(obj.file);
-data = grid.load(obj.dims, indices);
+X = grid.load(obj.dims, indices);
+siz = obj.stateSize .* obj.meanSize;
+
+% Get values for means
+meanDims = 1:nDims;
+obj.meanSize(isnan(obj.meanSize)) = 1;
+nanflag = repmat("includenan", [1, nDims]);
+nanflag(obj.omitnan) = "omitnan";
+
+% Reshape sequences
+for d = 1:nDims
+    if ~obj.isState(d) && obj.stateSize(d)>1
+        siz = [siz(1:d-1), obj.meanSize(d), obj.stateSize(d), siz(d+1:end)];
+        X = reshape(X, siz);
+        meanDims(d+1:end) = meanDims(d+1:end)+1;
+    end
+    
+    % If taking a mean, permute weights for singleton expansion
+    if obj.takeMean(d)
+        if isempty(obj.weightCell{d})
+            obj.weightCell{d} = ones(obj.meanSize(d), 1);
+        end
+        w = permute(obj.weightCell{d}, [2:meanDim(d), 1]);
+        
+        % If omitting NaN, propagate weights over the matrix and infill NaN
+        if obj.omitnan(d)
+            nanIndex = isnan(X);
+            if any(nanIndex, 'all')
+                weightSize = siz;
+                weightSize(meanDims(d)+1) = 1;
+                w = repmat(w, weightSize);
+                w(nanIndex) = NaN;
+            end
+        end
+        
+        % Take mean.
+        X = sum(w.*X, meanDims(d), nanflag(d)) ./ sum(w, meanDims(d), nanflag(d));
+    end
+end
 
 end
