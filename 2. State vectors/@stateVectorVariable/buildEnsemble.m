@@ -1,4 +1,4 @@
-function[X] = buildEnsemble(obj, members)
+function[X] = buildEnsemble(obj, members, sources)
 %% Builds an ensemble for the stateVectorVariable
 %
 % X = obj.buildEnsemble(members)
@@ -8,6 +8,9 @@ function[X] = buildEnsemble(obj, members)
 % member: The linear index that specifies which ensemble member to build.
 %    Ensemble members are indexed by iterating through ensemble dimension
 %    elements in column major order.
+%
+% sources: An array for data sources being called in a gridfile repeated
+%    load. See gridfile.review
 %
 % ----- Outputs -----
 %
@@ -80,7 +83,7 @@ for m = 1:nMembers
     end
     
     % Load the data. Reshape sequences
-    Xm = grid.load(obj.dims, indices);
+    [Xm, ~, sources] = grid.repeatedLoad(1:nDims, indices, sources);
     Xm = reshape(Xm, siz);
     
     % If taking a mean over a dimension, get the weights

@@ -104,7 +104,7 @@ classdef stateVectorVariable
         obj = design(obj, dim, type, indices);
         
         info(obj);
-        M = buildEnsemble(obj, member);
+        M = buildEnsemble(obj, member, sources);
     end
 end
         
