@@ -1,7 +1,7 @@
-function[X] = buildEnsemble(obj, member)
+function[X] = buildEnsemble(obj, members)
 %% Builds an ensemble for the stateVectorVariable
 %
-% X = obj.buildEnsemble(draws)
+% X = obj.buildEnsemble(members)
 %
 % ----- Inputs -----
 %
@@ -11,20 +11,43 @@ function[X] = buildEnsemble(obj, member)
 %
 % ----- Outputs -----
 %
-% X: The ensemble for the variable. A numeric matrix
+% X: The ensemble for the variable. A numeric matrix. (nState x nEns)
 
-%%%%%% Currently building architecture for a single draw
+%% Means
 
-% Initialize the load indices with any state indices
+% Get nanflag and fill unspecified meanSize
 nDims = numel(obj.dims);
+nanflag = repmat("includenan", [1 nDims]);
+nanflag(obj.omitnan) = "omitnan";
+
+% Track the size and location of dimensions for taking means
+obj.meanSize(isnan(obj.meanSize)) = 1;
+siz = obj.stateSize .* obj.meanSize;
+meanDims = 1:nDims;
+
+% Get the weights for each dimension with a mean
+for d = 1:nDims
+    if obj.takeMean(d)
+        if isempty(obj.weightCell{d})
+            obj.weightCell{d} = ones(obj.meanSize(d), 1);
+        end
+        obj.weightCell{d} = permute(obj.weightCell{d}, [2:meanDims(d), 1]);
+    end
+end
+
+%% Ensemble dimensions: indices and sequences
+
+% Initialize load indices with state indices
 indices = cell(1, nDims);
 indices(obj.isState) = obj.indices(obj.isState);
 
-% Convert the draw index into reference indices for the ensemble dimensions
-siz = obj.ensSize(~obj.isState);
-[indices{~obj.isState}] = ind2sub(siz, member);
+% Convert the linear ensemble member index into a subscripted ensemble
+% member index. Preallocate the add indices for means/sequences.
+subMembers = indices(~obj.isState);
+[subMembers{:}] = ind2sub(obj.ensSize(~obj.isState), members);
+addIndices = cell(1, numel(subMembers));
 
-% Get mean indices for each ensemble dimension
+% Get mean indices
 d = find(~obj.isState);
 for k = 1:numel(d)
     meanIndices = obj.mean_Indices{d(k)};
@@ -32,52 +55,57 @@ for k = 1:numel(d)
         meanIndices = 0;
     end
     
-    % Propagate mean indices over sequence indices. Add to reference indices
-    ensIndices = meanIndices + obj.seqIndices{d(k)}';
-    ensIndices = ensIndices(:);
-    indices{d(k)} = indices{d(k)} + ensIndices;
+    % Propagate over sequences to get add indices
+    addIndices{k} = meanIndices + obj.seqIndices{d(k)}';
+    addIndices{k} = addIndices{k}(:);
+    
+    % Note if size or mean dimensions change for sequences
+    if obj.stateSize(d(k))>1
+        siz = [siz(1:d(k)-1), obj.meanSize(d(k)), obj.stateSize(d(k)), siz(d(k)+1:end)];
+        meanDims(d(k)+1:end) = meanDims(d(k)+1:end)+1;
+    end
 end
 
-% Load the data from the .grid file and record its size
+%% Load individual ensemble members
+
+% Create the gridfile and preallocate the ensemble
 grid = gridfile(obj.file);
-X = grid.load(obj.dims, indices);
-siz = obj.stateSize .* obj.meanSize;
+nMembers = numel(members);
+X = NaN( prod(obj.stateSize), nMembers );
 
-% Get values for means
-meanDims = 1:nDims;
-obj.meanSize(isnan(obj.meanSize)) = 1;
-nanflag = repmat("includenan", [1, nDims]);
-nanflag(obj.omitnan) = "omitnan";
-
-% Reshape sequences
-for d = 1:nDims
-    if ~obj.isState(d) && obj.stateSize(d)>1
-        siz = [siz(1:d-1), obj.meanSize(d), obj.stateSize(d), siz(d+1:end)];
-        X = reshape(X, siz);
-        meanDims(d+1:end) = meanDims(d+1:end)+1;
+% Get load indices for each ensemble member
+for m = 1:nMembers
+    for k = 1:numel(d)
+        indices{d(k)} = obj.indices{d(k)}(subMembers{k}(m)) + addIndices{k};
     end
     
-    % If taking a mean, permute weights for singleton expansion
-    if obj.takeMean(d)
-        if isempty(obj.weightCell{d})
-            obj.weightCell{d} = ones(obj.meanSize(d), 1);
-        end
-        w = permute(obj.weightCell{d}, [2:meanDim(d), 1]);
-        
-        % If omitting NaN, propagate weights over the matrix and infill NaN
-        if obj.omitnan(d)
-            nanIndex = isnan(X);
-            if any(nanIndex, 'all')
-                weightSize = siz;
-                weightSize(meanDims(d)+1) = 1;
-                w = repmat(w, weightSize);
-                w(nanIndex) = NaN;
+    % Load the data. Reshape sequences
+    Xm = grid.load(obj.dims, indices);
+    Xm = reshape(Xm, siz);
+    
+    % If taking a mean over a dimension, get the weights
+    for k = 1:nDims
+        if obj.takeMean(k)
+            w = obj.weightCell{k};
+            
+            % If omitting NaN, propagate weights over matrix and infill NaN
+            if obj.omitnan(k)
+                nanIndex = isnan(Xm);
+                if any(nanIndex, 'all')
+                    wSize = siz;
+                    wSize( meanDims(find(obj.takeMean(1:k))) ) = 1; %#ok<FNDSB>
+                    w = repmat(w, wSize);
+                    w(nanIndex) = NaN;
+                end
             end
+            
+            % Take the mean
+            Xm = sum(w.*Xm, meanDims(k), nanflag(k)) ./ sum(w, meanDims(k), nanflag(k));
         end
-        
-        % Take mean.
-        X = sum(w.*X, meanDims(d), nanflag(d)) ./ sum(w, meanDims(d), nanflag(d));
     end
+    
+    % Add the vector to the ensemble
+    X(:,m) = Xm(:);
 end
 
 end
