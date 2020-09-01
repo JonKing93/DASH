@@ -41,7 +41,7 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 
 % Error check
-dash.assertStrFlag( filename, "filename" );
+filename = dash.assertStrFlag( filename, "filename" );
 if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 end

@@ -50,8 +50,7 @@ if ~exist('name','var') || isempty(name)
     name = obj.collectFullPaths(1:nSource);
     name(isfile(name)) = [];
 end
-dash.assertStrList(name, "name");
-name = string(name);
+name = dash.assertStrList(name, "name");
 
 % Get the data sources associated with each file name.
 nFile = numel(name);
@@ -67,8 +66,7 @@ end
 if ~exist('newname','var') || isempty(newname)
     newname = strings(nFile,1);
 end
-dash.assertStrList(newname,"newname")
-newname = string(newname);
+newname = dash.assertStrList(newname,"newname");
 if numel(newname) ~= numel(name)
     error('newname must have one element for each element in name (%.f), but newname currently has %.f elements.', numel(name), numel(newname));
 end

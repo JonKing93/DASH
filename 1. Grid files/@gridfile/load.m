@@ -93,7 +93,7 @@ if iscell(start)
 end
 
 % Error check the dimensions
-dash.assertStrList(dims, "dims");
+dims = dash.assertStrList(dims, "dims");
 obj.checkAllowedDims(dims, false);
 if numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');

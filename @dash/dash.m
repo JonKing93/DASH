@@ -18,8 +18,8 @@ classdef dash
         % Strings and string lists
         tf = isstrflag( input );        
         tf = isstrlist( input );
-        assertStrFlag(input, name);
-        assertStrList(input, name);
+        input = assertStrFlag(input, name);
+        input = assertStrList(input, name);
         k = checkStrsInList(input, list, name, message);
         str = messageList(list);
         
