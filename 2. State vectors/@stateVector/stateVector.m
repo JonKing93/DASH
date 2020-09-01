@@ -115,10 +115,8 @@ classdef stateVector
         obj = allowOverlap(obj, varNames, overlap);
         
         obj = couple(obj, varNames);
-        uncouple;
+        obj = uncouple(obj, varNames);
         copy;
-        
-
     end
      
 end
