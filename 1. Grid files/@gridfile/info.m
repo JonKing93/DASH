@@ -105,7 +105,8 @@ for s = 1:numel(sources)
     sourceDims = [sources{s}.mergedDims, dims(singleton)];
     sourceSize = [sources{s}.mergedSize, ones(1,(numel(singleton)))];
     for d = 1:nDim
-        limit = obj.dimLimit(d,1,index(s)) : obj.dimLimit(d,2,index(s));
+        k = find(strcmp(dims(d), obj.dims));
+        limit = obj.dimLimit(k,1,index(s)) : obj.dimLimit(k,2,index(s));
         sourceMeta.(dims(d)) = obj.meta.(dims(d))(limit,:);
     end
     
