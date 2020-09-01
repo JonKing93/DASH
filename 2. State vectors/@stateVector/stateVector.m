@@ -1,32 +1,11 @@
 classdef stateVector
     % A class that designs and builds a state vector from data stored in
     % .grid files.
-    %
-    % stateVector Methods:
-    %    stateVector - Initializes a new state vector.
-    %    add - Adds a variable to the state vector.
-    %    design - Designs a variable in the state vector.
-    %    buildEnsemble - Builds an state vector ensemble
-    %
-    %    mean - Takes a mean over specified dimensions of a variable.
-    %    sequence - Uses a sequence of data along an ensemble dimension of a variable.
-    %    copy - Copies design parameters from one variable to others
-    %    info - Returns information about a state vector and its variables
-    % 
-    % *** Advanced ***
-    % stateVector Methods:
-    %    append - Appends two state vectors
-    %    convertMetadata - Converts metadata along a dimension of a variable to a different format
-    %    remove - Removes a variable from a state vector
-    %    couple - Couples variables in a state vector
-    %    uncouple - Uncouples variables
-    %    ***overlap***
-    %    
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
     
-    properties
+    properties %(SetAccess = private)
         name; % An optional identifier for the state vector
         verbose; % Whether to print a messages to the console
         
@@ -102,7 +81,6 @@ classdef stateVector
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans(obj, varNames);
         obj = design(varNames, dims, type, indices);
-        
         info;
         buildEnsemble;
     end
@@ -110,17 +88,14 @@ classdef stateVector
     % User methods
     methods
         obj = rename(obj, name);
-        obj = renameVariables(obj, varNames, newNames);
         obj = displayConsoleOutput(obj, verbose);
-        obj = append(obj, secondVector);
-        obj = extractVariables(obj, varNames);
-        
         obj = add(obj, name, file, autoCouple);
-        obj = remove(obj, varNames);
-        
         obj = autoCouple(obj, varNames, auto);
         obj = allowOverlap(obj, varNames, overlap);
-        
+        obj = renameVariables(obj, varNames, newNames);
+        obj = append(obj, secondVector);
+        obj = extractVariables(obj, varNames);
+        obj = remove(obj, varNames);
         obj = couple(obj, varNames);
         obj = uncouple(obj, varNames);
         copy;

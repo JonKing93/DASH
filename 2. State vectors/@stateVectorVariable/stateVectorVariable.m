@@ -50,8 +50,8 @@ classdef stateVectorVariable
             % obj: The new stateVectorVariable object
             
             % Error check
-            dash.assertStrFlag(varName, 'varName');
-            dash.assertStrFlag(file, 'file');
+            varName = dash.assertStrFlag(varName, 'varName');
+            file = dash.assertStrFlag(file, 'file');
             file = dash.checkFileExists(file);
             
             % Name. Use string internally
@@ -97,11 +97,11 @@ classdef stateVectorVariable
     
     % Interface methods
     methods
-        obj = sequence(obj, dim, indices, metadata);
-        obj = mean(obj, dim, indices, omitnan);
-        obj = weightedMean(obj, dim, weights);
+        obj = sequence(obj, dims, indices, metadata);
+        obj = mean(obj, dims, indices, omitnan);
+        obj = weightedMean(obj, dims, weights);
         obj = resetMeans(obj);
-        obj = design(obj, dim, type, indices);
+        obj = design(obj, dims, type, indices);
         
         info(obj);
         obj = rename(obj, newName);

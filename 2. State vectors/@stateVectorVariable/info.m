@@ -1,8 +1,15 @@
 function[] = info(obj)
 %% Returns information about a stateVectorVariable
 %
-% obj.info: Returns information about a state vector variable.
+% obj.info
+% Prints information about the state vector variable to the console
 %
+% varInfo = obj.info
+% Returns variable information as a structure
+%
+% ----- Outputs -----
+%
+% varInfo: A structure containing information on the state vector variable
 
 % Name
 fprintf('\n"%s" is a state vector variable.\n', obj.name);
