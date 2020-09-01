@@ -10,9 +10,9 @@ function[str] = errorTitle(obj)
 % str: An identifying string for error messages.
 
 if obj.name == ""
-    str = 'this stateVector';
+    str = obj.defaultName;
 else
-    str = sprintf('the stateVector "%s"', obj.title);
+    str = sprintf('the stateVector "%s"', obj.name);
 end
 
 end

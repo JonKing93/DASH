@@ -36,6 +36,10 @@ classdef stateVector
         auto_Couple; % Whether to automatically couple a variable to new variables
     end
     
+    properties (Hidden, Constant)
+        defaultName = 'this stateVector';
+    end
+    
     % Constructor
     methods
         function obj = stateVector( name, verbose )
@@ -107,6 +111,7 @@ classdef stateVector
     methods
         obj = rename(obj, name);
         obj = displayConsoleOutput(obj, verbose);
+        obj = append(obj, secondVector);
         
         obj = add(obj, name, file, autoCouple);
         obj = remove(obj, varNames);
