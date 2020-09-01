@@ -27,33 +27,29 @@ classdef stateVector
     % Jonathan King, University of Arizona, 2019-2020
     
     properties
-        title; % An optional identifier for the state vector
+        name; % An optional identifier for the state vector
         verbose; % Whether to print a messages to the console
         warn; % Whether to warn the user about certain requests
         
         variables; % The array of variable designs
         coupled; % Which variables are coupled
-        autoCouple; % Whether to automatically couple a variable to new variables
+        auto_Couple; % Whether to automatically couple a variable to new variables
     end
     
     % Constructor
     methods
-        function obj = stateVector( title, verbose, warn )
+        function obj = stateVector( name, verbose )
             % Creates a new state vector design.
             %
             % obj = stateVector;
             % Initializes a new stateVector object.
             %
-            % obj = stateVector(title)
-            % Includes an identifying title.
+            % obj = stateVector(name)
+            % Includes an identifying name.
             %
-            % obj = stateVector(title, verbose)
+            % obj = stateVector(name, verbose)
             % Specify whether to print various messages to console. Default
             % is true.
-            %
-            % obj = stateVector(title, verbose, warn)
-            % Specify whether to provide warnings for various design
-            % choices. Default is true.
             %
             % ----- Inputs -----
             %
@@ -63,36 +59,24 @@ classdef stateVector
             % verbose: A scalar logical indicating whether to print various
             %    messages to the console (true -- default) or not (false).
             %
-            % warn: A scalar logical indicating whether to provide warnings
-            %    for certain design choices (true -- default) or not (false)
-            %
             % ----- Outputs -----
             %
             % obj: A new, empty stateVector object.
             
             % Defaults
-            if ~exist('title','var') || isempty(title)
-                title = "";
+            if ~exist('title','var') || isempty(name)
+                name = "";
             end
             if ~exist('verbose','var') || isempty(verbose)
                 verbose = true;
             end
-            if ~exist('warn','var') || isempty(warn)
-                warn = true;
-            end
             
-            % Error check
-            dash.assertStrFlag(title, 'title');
-            dash.assertScalarLogical(verbose, 'verbose');
-            dash.assertScalarLogical(warn, 'warn');
-            
-            % Save
-            obj.title = string(title);
-            obj.verbose = verbose;
-            obj.warn = warn;
+            % Save name. Set console output
+            obj = obj.rename(name);
+            obj = obj.displayConsoleOutput(verbose);
             
             % Initialize
-            obj.autoCouple = false(0,1);
+            obj.auto_Couple = false(0,1);
             obj.coupled = false(0,0);
             obj.variables = [];
         end
@@ -106,7 +90,7 @@ classdef stateVector
         obj = updateCoupledVariables(obj, t, v);
     end
     
-    % Variable user interface methods
+    % User interface methods with stateVectorVariable
     methods
         obj = sequence(obj, varNames, dims, indices, metadata);
         obj = mean(obj, varNames, dims, indices, omitnan);
@@ -122,14 +106,14 @@ classdef stateVector
     methods
         obj = add(obj, name, file, autoCouple);
         obj = remove(obj, varNames);
+        obj = autoCouple(obj, varNames, auto);
         obj = couple(obj, varNames);
         uncouple;
         overlap;
         copy;
         
-        rename;
-        toggleConsoleOutput;
-        updatePaths;
+        obj = rename(obj, name);
+        obj = displayConsoleOutput(obj, verbose);
     end
      
 end

@@ -50,10 +50,10 @@ obj.variables = [obj.variables; newVar];
 vars(end+1) = varName;
 
 % Update variable coupling
-obj.autoCouple(end+1, 1) = autoCouple;
+obj.auto_Couple(end+1, 1) = autoCouple;
 obj.coupled(end+1, end+1) = true;
 if autoCouple
-    obj = obj.couple( vars(obj.autoCouple) );
+    obj = obj.couple( vars(obj.auto_Couple) );
 end
 
 end
