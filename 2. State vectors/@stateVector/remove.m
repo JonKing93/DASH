@@ -21,7 +21,8 @@ for k = numel(v):-1:1
     obj.variables(v(k)) = [];
     obj.coupled(v(k), :) = [];
     obj.coupled(:, v(k)) = [];
-    obj.autoCouple(v(k)) = [];
+    obj.auto_Couple(v(k)) = [];
+    obj.overlap(v(k)) = [];
 end
 
 end

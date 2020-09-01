@@ -29,9 +29,9 @@ classdef stateVector
     properties
         name; % An optional identifier for the state vector
         verbose; % Whether to print a messages to the console
-        warn; % Whether to warn the user about certain requests
         
         variables; % The array of variable designs
+        overlap; % Whether variable ensemble members can use overlapping, non-duplicate information
         coupled; % Which variables are coupled
         auto_Couple; % Whether to automatically couple a variable to new variables
     end
@@ -76,6 +76,7 @@ classdef stateVector
             obj = obj.displayConsoleOutput(verbose);
             
             % Initialize
+            obj.overlap = false(0,1);
             obj.auto_Couple = false(0,1);
             obj.coupled = false(0,0);
             obj.variables = [];
@@ -104,16 +105,20 @@ classdef stateVector
     
     % User methods
     methods
-        obj = add(obj, name, file, autoCouple);
-        obj = remove(obj, varNames);
-        obj = autoCouple(obj, varNames, auto);
-        obj = couple(obj, varNames);
-        uncouple;
-        overlap;
-        copy;
-        
         obj = rename(obj, name);
         obj = displayConsoleOutput(obj, verbose);
+        
+        obj = add(obj, name, file, autoCouple);
+        obj = remove(obj, varNames);
+        
+        obj = autoCouple(obj, varNames, auto);
+        obj = allowOverlap(obj, varNames, overlap);
+        
+        obj = couple(obj, varNames);
+        uncouple;
+        copy;
+        
+
     end
      
 end

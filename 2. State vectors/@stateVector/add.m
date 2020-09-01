@@ -1,4 +1,4 @@
-function[obj] = add(obj, varName, file, autoCouple)
+function[obj] = add(obj, varName, file, autoCouple, overlap)
 %% Adds a variable to a stateVector.
 %
 % obj = obj.add(varName, file)
@@ -7,6 +7,10 @@ function[obj] = add(obj, varName, file, autoCouple)
 % obj = obj.add(varName, file, autoCouple)
 % Specify whether the variable should be automatically coupled to other
 % variables in the state vector. Default is true.
+%
+% obj = obj.add(varName, file, autoCouple, overlap)
+% Specify whether ensemble members for the variable can use overlapping
+% information. Default is false.
 %
 % ----- Inputs -----
 % 
@@ -22,16 +26,23 @@ function[obj] = add(obj, varName, file, autoCouple)
 %    the variable to other variables in the state vector (true -- default)
 %    or not (false).
 %
+% overlap: A scalar logical indicating whether ensemble members for the
+%    variable can use overlapping data.
+%
 % ----- Outputs -----
 %
 % obj: The updated stateVector object.
 
-% Default for autoCouple
+% Default for autoCouple and overlap
 if ~exist('autoCouple','var') || isempty(autoCouple)
     autoCouple = true;
 end
+if ~exist('overlap','var') || isempty(overlap)
+    overlap = false;
+end
 
 % Error check, use string internally
+dash.assertScalarLogical(overlap, 'overlap');
 dash.assertScalarLogical(autoCouple, 'autoCouple');
 dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
@@ -49,7 +60,8 @@ newVar = stateVectorVariable(varName, file);
 obj.variables = [obj.variables; newVar];
 vars(end+1) = varName;
 
-% Update variable coupling
+% Update variable coupling and overlap
+obj.overlap(end+1, 1) = overlap;
 obj.auto_Couple(end+1, 1) = autoCouple;
 obj.coupled(end+1, end+1) = true;
 if autoCouple
