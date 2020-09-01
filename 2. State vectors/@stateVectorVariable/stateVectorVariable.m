@@ -87,6 +87,7 @@ classdef stateVectorVariable
     methods
         [d, dims] = checkDimensions(obj, dims);
         assertEnsembleIndices(obj, indices, d, name);
+        obj = trim(obj);
     end
     
     % Static utilities
