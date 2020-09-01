@@ -98,7 +98,7 @@ classdef stateVector
         obj = remove(obj, varNames);
         obj = couple(obj, varNames);
         obj = uncouple(obj, varNames);
-        copy;
+        obj = copy(obj, templateName, varNames, varargin);
     end
      
 end
