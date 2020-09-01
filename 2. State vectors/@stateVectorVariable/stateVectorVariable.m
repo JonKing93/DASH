@@ -104,6 +104,7 @@ classdef stateVectorVariable
         obj = design(obj, dim, type, indices);
         
         info(obj);
+        obj = rename(obj, newName);
         X = buildEnsemble(obj, member, sources);
     end
 end
