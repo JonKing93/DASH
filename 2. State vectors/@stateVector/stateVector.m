@@ -110,6 +110,7 @@ classdef stateVector
     % User methods
     methods
         obj = rename(obj, name);
+        obj = renameVariables(obj, varNames, newNames);s
         obj = displayConsoleOutput(obj, verbose);
         obj = append(obj, secondVector);
         
