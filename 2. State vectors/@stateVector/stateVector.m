@@ -68,7 +68,7 @@ classdef stateVector
             % obj: A new, empty stateVector object.
             
             % Defaults
-            if ~exist('title','var') || isempty(name)
+            if ~exist('name','var') || isempty(name)
                 name = "";
             end
             if ~exist('verbose','var') || isempty(verbose)

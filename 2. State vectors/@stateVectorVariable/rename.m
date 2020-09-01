@@ -12,9 +12,7 @@ function[obj] = rename(obj, newName)
 %
 % obj: The updated stateVectorVariable
 
-% Error check. Use string internally
-dash.assertStrFlag(newName, 'newName');
-newName = string(newName);
-obj.name = newName;
+% Change name. Use string internally
+obj.name = string(newName);
 
 end
