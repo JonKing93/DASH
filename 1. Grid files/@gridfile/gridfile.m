@@ -122,7 +122,7 @@ classdef gridfile < handle
         % obj: A gridfile object for the specified .grid file.
             
             % Check the input is a file name
-            dash.assertStrFlag(file, "file");
+            file = dash.assertStrFlag(file, "file");
             obj.file = dash.checkFileExists(file);
             
             % Fill the fields
