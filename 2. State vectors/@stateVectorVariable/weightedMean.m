@@ -79,7 +79,7 @@ else
         end
         dash.assertVectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
         dash.assertRealDefined(weights{k}, name);
-        obj.weightCell{d(k)} = weights{k};
+        obj.weightCell{d(k)} = weights{k}(:);
     end
 end
 
