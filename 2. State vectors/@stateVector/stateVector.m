@@ -71,7 +71,7 @@ classdef stateVector
     
     % Object utilities
     methods
-        varNames = variableNames(obj);
+        varNames = variableNames(obj, v);
         [v, varNames] = checkVariables(obj, varNames, multiple);
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);
