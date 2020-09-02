@@ -50,17 +50,10 @@ subMembers = indices(~obj.isState);
 [subMembers{:}] = ind2sub(obj.ensSize(~obj.isState), members);
 addIndices = cell(1, numel(subMembers));
 
-% Get mean indices
+% Propagate mean indices over sequences to get add indices
 d = find(~obj.isState);
 for k = 1:numel(d)
-    meanIndices = obj.mean_Indices{d(k)};
-    if isempty(meanIndices)
-        meanIndices = 0;
-    end
-    
-    % Propagate over sequences to get add indices
-    addIndices{k} = meanIndices + obj.seqIndices{d(k)}';
-    addIndices{k} = addIndices{k}(:);
+    addIndices{k} = obj.addIndices(d(k));
     
     % Note if size or mean dimensions change for sequences
     if obj.stateSize(d(k))>1
