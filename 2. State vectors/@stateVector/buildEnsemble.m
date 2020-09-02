@@ -87,7 +87,7 @@ for s = 1:nSets
         for k = 2:numel(v)
             meta = obj.variables(v(k)).matchingMetadata(meta, grids{f(v(k))}, dims(d));
             if isempty(meta)
-                noMatchingMetadataError();
+                noMatchingMetadataError(obj.variableNames(v), dims(d));
             end
         end
         
@@ -113,7 +113,7 @@ for s = 1:nSets
     % until the ensemble is complete.
     while nNeeded > 0
         if nNeeded > numel(unused)
-            notEnoughMembersError();
+            notEnoughMembersError(obj.variableNames(v), obj.overlap(v));
         end
         
         % Select members randomly or in an ordered manner. 
@@ -130,7 +130,7 @@ for s = 1:nSets
         % Optionally remove ensemble members with overlapping data. Update
         % the number of ensemble members needed
         for k = 1:numel(v)
-            if ~obj.overlap(k)
+            if ~obj.overlap(v(k))
                 subMembers = obj.variables(v(k)).removeOverlap(subMembers);
             end
         end
@@ -150,10 +150,39 @@ end
 
 end
 
-% Long messages
+% Long error messages
 function[] = badGridfileError(var, ME)
 message = sprintf('Could not build the gridfile object for variable %s.', var.name);
 cause = MException('DASH:stateVector:badGridfile', message);
 ME = addCause(ME, cause);
 rethrow(ME);
+end
+function[] = noMatchingMetadataError(varNames, dim)
+error(['Cannot couple variables %s because they have no common metadata ', ...
+    'along the "%s" dimension.'], dash.messageList(varNames), dim);
+end
+function[] = notEnoughMembersError(varNames, overlap)
+if numel(varNames) == 1
+    str1 = "non-overlapping";
+    str3 = 'or allowing overlap';
+    if overlap
+        str1 = sprintf('\b');
+        str3 = sprintf('\b');
+    end
+    str2 = sprintf('variable "%s"', varNames);
+else
+    str1 = sprintf('\b');
+    str2 = sprintf('couple variables %s', dash.messageList(varNames));
+    if sum(~overlap)==1
+        str2 = strcat(str2, sprintf(' with no overlap for variable "%s"', varNames(overlap)));
+    elseif sum(~overlap)>1
+        str2 = strcat(str2, sprintf(' with no overlap in variables %s', dash.messageList(varNames(overlap))));
+    end
+    str3 = '.';
+    if any(~overlap)
+        str3 = 'or allowing overlap';
+    end
+end
+error(['Cannot find %.f %s ensemble members for %s. Consider using fewer ', ...
+    'ensemble members %s.'], nEns, str1, str2, str3);
 end
