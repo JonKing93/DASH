@@ -1,13 +1,16 @@
-function[X] = buildEnsemble(obj, members, sources)
+function[X] = buildEnsemble(obj, subMembers, dims, sources)
 %% Builds an ensemble for the stateVectorVariable
 %
-% X = obj.buildEnsemble(members)
+% X = obj.buildEnsemble(subMembers, dims, sources)
 %
 % ----- Inputs -----
 %
-% member: The linear index that specifies which ensemble member to build.
-%    Ensemble members are indexed by iterating through ensemble dimension
-%    elements in column major order.
+% subMembers: A matrix of subscripted ensemble member indices. Each row
+%    holds the subscripted indices for one ensemble member. Each column is
+%    the indices for an ensemble dimension.
+%
+% dims: The names of ensemble dimensions in the order that appear in the
+%    columns of subMembers. A string vector or cellstring vector.
 %
 % sources: An array for data sources being called in a gridfile repeated
 %    load. See gridfile.review
@@ -29,29 +32,24 @@ siz = obj.stateSize .* obj.meanSize;
 meanDims = 1:nDims;
 
 % Get the weights for each dimension with a mean
-for d = 1:nDims
-    if obj.takeMean(d)
-        if isempty(obj.weightCell{d})
-            obj.weightCell{d} = ones(obj.meanSize(d), 1);
+for k = 1:nDims
+    if obj.takeMean(k)
+        if isempty(obj.weightCell{k})
+            obj.weightCell{k} = ones(obj.meanSize(k), 1);
         end
-        obj.weightCell{d} = permute(obj.weightCell{d}, [2:meanDims(d), 1]);
+        obj.weightCell{k} = permute(obj.weightCell{k}, [2:meanDims(k), 1]);
     end
 end
 
 %% Ensemble dimensions: indices and sequences
 
-% Initialize load indices with state indices
+% Initialize load indices with state indices.
 indices = cell(1, nDims);
 indices(obj.isState) = obj.indices(obj.isState);
 
-% Convert the linear ensemble member index into a subscripted ensemble
-% member index. Preallocate the add indices for means/sequences.
-subMembers = indices(~obj.isState);
-[subMembers{:}] = ind2sub(obj.ensSize(~obj.isState), members);
-addIndices = cell(1, numel(subMembers));
-
 % Propagate mean indices over sequences to get add indices
-d = find(~obj.isState);
+d = obj.checkDimensions(dims);
+addIndices = cell(1, numel(d));
 for k = 1:numel(d)
     addIndices{k} = obj.addIndices(d(k));
     
@@ -66,13 +64,13 @@ end
 
 % Create the gridfile and preallocate the ensemble
 grid = gridfile(obj.file);
-nMembers = numel(members);
-X = NaN( prod(obj.stateSize), nMembers );
+nEns = size(subMembers, 1);
+X = NaN( prod(obj.stateSize), nEns );
 
 % Get load indices for each ensemble member
-for m = 1:nMembers
+for m = 1:nEns
     for k = 1:numel(d)
-        indices{d(k)} = obj.indices{d(k)}(subMembers{k}(m)) + addIndices{k};
+        indices{d(k)} = obj.indices{d(k)}(subMembers(m,k)) + addIndices{k};
     end
     
     % Load the data. Reshape sequences

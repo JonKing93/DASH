@@ -29,17 +29,15 @@ for k = 1:nDims
     nAdd(k) = numel(addIndices{k});
 end
 
-% Subscript an index for add indices over all ensemble dimensions
+% Get subscript indices to propagate add indices over all ensemble dimensions
 nEls = prod(nAdd);
 addindexIndices = cell(1, nDims);
 [addindexIndices{:}] = ind2sub( nAdd, (1:nEls)' );
 addindexIndices = cell2mat(addindexIndices);
 
-% Preallocate subscripted add indices and subscripted reference indices
+% Get subscripted add indices and subscripted reference indices
 subAddIndices = NaN(nEls, nDims);
 subRefIndices = NaN(nEns, nDims);
-
-% Get subscripted add indices and subscripted reference indices
 for k = 1:nDims
     subAddIndices(:,d(k)) = addIndices(addindexIndices(:,d(k)));
     subRefIndices(:,d(k)) = obj.indices{d(k)}(subMembers(:,k));

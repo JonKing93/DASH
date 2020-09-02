@@ -3,8 +3,6 @@ function[X] = buildEnsemble(obj, nEns, random)
 % 
 % X = obj.buildEnsemble(nEns, random)
 
-% Here be dragons
-
 % Default
 if ~exist('random','var') || isempty(random)
     random = true;
@@ -16,6 +14,19 @@ if ~isscalar(nEns) || ~isnumeric(nEns)
     error('nEns must be a numeric scalar.');
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
+
+% Get state vector index limits for each variable
+nVars = numel(obj.variables);
+svLimit = zeros(nVars+1, 2);
+for v = 1:nVars
+    svLimit(v+1, 1) = svLimit(v,2)+1;
+    svLimit(v+1, 2) = svLimit(v,2) + prod(obj.variables(v).stateSize);
+end
+svLimit(1,:) = [];
+    
+% Preallocate the ensemble
+nState = svLimit(end, 2);
+X = NaN(nState, nEns);
 
 %% Gridfile and Trim
 % vf: Variable index associated with file
@@ -57,9 +68,12 @@ end
 % s: The index for a set of coupled variables
 % v: The indices of variables in a set
 
-% Get the sets of coupled variables
+% Get the sets of coupled variables. Initialize selected and unused
+% ensemble members.
 sets = unique(obj.coupled, 'rows');
 nSets = size(sets, 1);
+obj.subMembers = cell(nSets, 1);
+obj.unused = cell(nSets, 1);
 
 % Get the ensemble dimensions associated with each set of coupled variables
 for s = 1:nSets
@@ -96,8 +110,11 @@ for s = 1:nSets
     siz = var1.ensSize(~var1.isState);
     
     % Select ensemble members and optionally remove overlapping members
-    % until the ensemble is complete
+    % until the ensemble is complete.
     while nNeeded > 0
+        if nNeeded > numel(unused)
+            notEnoughMembersError();
+        end
         
         % Select members randomly or in an ordered manner. 
         if random
@@ -108,46 +125,28 @@ for s = 1:nSets
 
         % Get the subscript indices of ensemble members
         [subIndexCell{:}] = ind2sub(siz, members);
-        subMembers(end-nNeeded+1:end, :) = cell2mat(subIndexCell);
+        subMembers(nEns-nNeeded+1:nEns, :) = cell2mat(subIndexCell);
         
-        % Optionally remove ensemble members with overlapping data
+        % Optionally remove ensemble members with overlapping data. Update
+        % the number of ensemble members needed
         for k = 1:numel(v)
             if ~obj.overlap(k)
                 subMembers = obj.variables(v(k)).removeOverlap(subMembers);
             end
         end
-                
+        nNeeded = nEns - size(subMembers, 1);
+    end
     
-            
-            
-            
+    % Record the selected and unused ensemble members
+    obj.subMembers{s} = subMembers;
+    obj.unused{s} = unused;
     
-    
-
-
-    
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    % Build the ensemble for each variable
+    for k = 1:numel(v)
+        varIndices = svLimit(v(k),1) : svLimit(v(k),2);
+        X(varIndices, :) = obj.variables(v(k)).buildEnsemble( subMembers, dims, sources{f(v(k))} );
+    end
+end
 
 end
 

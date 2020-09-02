@@ -13,6 +13,9 @@ classdef stateVector
         overlap; % Whether variable ensemble members can use overlapping, non-duplicate information
         coupled; % Which variables are coupled
         auto_Couple; % Whether to automatically couple a variable to new variables
+        
+        subMembers; % Subscripted ensemble members for each set of coupled variables
+        unused; % Unselected ensemble members for each set of coupled variables
     end
     
     properties (Hidden, Constant)
