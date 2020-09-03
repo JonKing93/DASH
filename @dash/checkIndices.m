@@ -21,28 +21,32 @@ function[indices] = checkIndices( indices, name, length, lengthName )
 %
 % indices: Linear indices
 
-% Vector
-if ~isvector(indices)
-    error('%s must be a vector.',name);
-end
+% Allow empty call
+if ~isequal(indices, [])
 
-% Logical indices
-if islogical(indices)
-    if numel(indices)~=dimLength
-        error('%s is a logical vector, but it is not %s (%.f).', name, lengthName, length);
+    % Vector
+    if ~isvector(indices)
+        error('%s must be a vector.',name);
     end
-    indices = find(indices);
-    
-% Numeric indices
-elseif isnumeric(indices)
-    dash.assertPositiveIntegers(indices, name);
-    if max(indices) > dimLength
-        error('%s has elements larger than %s (%.f).', name, lengthName, dimLength);
+
+    % Logical indices
+    if islogical(indices)
+        if numel(indices)~=length
+            error('%s is a logical vector, but it is not %s (%.f).', name, lengthName, length);
+        end
+        indices = find(indices);
+
+    % Numeric indices
+    elseif isnumeric(indices)
+        dash.assertPositiveIntegers(indices, name);
+        if max(indices) > length
+            error('%s has elements larger than %s (%.f).', name, lengthName, length);
+        end
+
+    % Other types are not allowed
+    else
+        error('%s must either be logical or numeric.');
     end
-    
-% Other types are not allowed
-else
-    error('%s must either be logical or numeric.');
 end
 
 end
