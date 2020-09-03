@@ -31,6 +31,11 @@ classdef stateVectorVariable
         weightCell; % Weights for each dimension
     end
     
+    properties (Hidden, Constant)
+        infoFields = {'name','gridfile','stateSize','possibleMembers',...
+            'dimensions','stateDimensions','ensembleDimensions','singletonDimensions'};
+    end
+    
     % Constructor
     methods
         function obj = stateVectorVariable(varName, file)

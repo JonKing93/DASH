@@ -71,8 +71,7 @@ classdef stateVector
     
     % Object utilities
     methods
-        varNames = variableNames(obj, v);
-        [v, varNames] = checkVariables(obj, varNames, multiple);
+        [v, varNames] = checkVariables(obj, varNames);
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);
     end
@@ -84,7 +83,7 @@ classdef stateVector
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans(obj, varNames);
         obj = design(obj, varNames, dims, type, indices);
-        info;
+        [vectorInfo, varInfo] = info(obj, vars);
         X = buildEnsemble(obj, nEns, random);
     end
     
@@ -92,10 +91,11 @@ classdef stateVector
     methods
         obj = rename(obj, name);
         obj = displayConsoleOutput(obj, verbose);
+        varNames = variableNames(obj, v);
+        obj = renameVariables(obj, varNames, newNames);        
         obj = add(obj, name, file, autoCouple);
         obj = autoCouple(obj, varNames, auto);
         obj = allowOverlap(obj, varNames, overlap);
-        obj = renameVariables(obj, varNames, newNames);
         obj = append(obj, secondVector);
         obj = extractVariables(obj, varNames);
         obj = remove(obj, varNames);

@@ -23,15 +23,15 @@ obj = obj.trim;
 ensSize = prod(obj.ensSize);
 singleDims = obj.dims(obj.gridSize==1);
 dims = obj.dims(obj.gridSize~=1);
-stateDims = obj.dims(obj.isState);
-ensDims = obj.dims(~obj.isState);
+stateDims = obj.dims(obj.isState & obj.gridSize>1);
+ensDims = obj.dims(~obj.isState & obj.gridSize>1);
 
 % Output structure
 if nargout~=0
-    varInfo = struct('name', name, 'gridfile', file, 'stateSize', stateSize, ...,
-        'possibleMembers', ensSize, 'dimensions', dims, 'stateDimensions', ...
-        stateDims, 'ensembleDimensions', ensDims, 'singletonDimensions', ...
-        singleDims);
+    input = cell(1, numel(obj.infoFields)*2);
+    input(1:2:end) = obj.infoFields;
+    input(2:2:end) = {name, file, stateSize, ensSize, dims, stateDims, ensDims, singleDims};
+    varInfo = struct( input{:} );
     
     % Preallocate dimension structure
     nDims = numel(dims);
@@ -43,10 +43,18 @@ if nargout~=0
 
 % Print to console
 else
-    fprintf('\n"%s" is a state vector variable.\n', obj.name);
+    fprintf('"%s" is a state vector variable.\n', obj.name);
     fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
-    fprintf('The state vector for %s is %.f elements long. There are %.f possible ensemble members.\n', ...
-        obj.name, prod(obj.stateSize), prod(obj.ensSize));
+    statePlural = "s";
+    if stateSize == 1
+        statePlural = "";
+    end
+    ensPlural = ["are", "s"];
+    if ensSize==1
+        ensPlural = ["is",""];
+    end
+    fprintf('The state vector for %s is %.f element%s long. There %s %.f possible ensemble member%s.\n', ...
+        name, stateSize, statePlural, ensPlural(1), ensSize, ensPlural(2));
 end
 
 % Cycle through state dimensions first
