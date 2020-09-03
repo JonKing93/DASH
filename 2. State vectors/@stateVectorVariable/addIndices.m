@@ -13,7 +13,7 @@ function[addIndex] = addIndices(obj, d)
 % addIndices: The add indices for the dimension as a column vector
 
 % Get the mean indices
-meanIndices = obj.meanIndices{d};
+meanIndices = obj.mean_Indices{d};
 if isempty(meanIndices)
     meanIndices = 0;
 end

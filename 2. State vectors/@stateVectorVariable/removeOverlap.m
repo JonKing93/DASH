@@ -3,6 +3,8 @@ function[subMembers] = removeOverlap(obj, subMembers, dims)
 % non-overlapping data.
 %
 % subMembers = obj.removeOverlap(subMembers, dims)
+% Removes any ensemble members with overlapping data from a set of
+% subscripted ensemble members.
 %
 % ----- Inputs -----
 %
@@ -14,7 +16,7 @@ function[subMembers] = removeOverlap(obj, subMembers, dims)
 % ----- Outputs -----
 %
 % subMembers: The updated set of subscripted ensemble members. Any ensemble
-%   ??????????????????????????????
+%    member with overlapping data is deleted from the array
 
 % Get the dimension indices and sizes
 d = obj.checkDimensions(dims);
@@ -39,24 +41,48 @@ addindexIndices = cell2mat(addindexIndices);
 subAddIndices = NaN(nEls, nDims);
 subRefIndices = NaN(nEns, nDims);
 for k = 1:nDims
-    subAddIndices(:,d(k)) = addIndices(addindexIndices(:,d(k)));
-    subRefIndices(:,d(k)) = obj.indices{d(k)}(subMembers(:,k));
+    subAddIndices(:,k) = addIndices{k}(addindexIndices(:,k));
+    try
+    subRefIndices(:,k) = obj.indices{d(k)}(subMembers(:,k));
+    catch ME
+        'hi';
+    end
 end
 
-% Replicate the add indices over the reference indices and vice versa
+% Replicate the add indices over the reference indices and vice versa.
 subAddIndices = repmat(subAddIndices, [nEns, 1]);
 subRefIndices = repmat( subRefIndices(:)', [nEls, 1]);
 subRefIndices = reshape(subRefIndices, [nEns*nEls, nDims]);
 
-% Add the subscripted reference indices to the subscripted add indices to
-% get the load indices
-loadIndices = subRefIndices + subAddIndices;
+% Find overlapping data and iteratively remove ensemble members until no
+% overlap occurs
+overlap = findOverlap( subRefIndices, subAddIndices, nEls );
+while ~isempty(overlap)
+    r = ceil(overlap(1)/nEls);
+    remove = (r-1)*nEls + (1:nEls);
+    subRefIndices(remove, :) = [];
+    subAddIndices(remove, :) = [];
+    subMembers(r, :) = [];
+    overlap = findOverlap(subRefIndices, subAddIndices, nEls);
+end
 
-% Find duplicate load indices. Remove the associated ensemble members
-[~, uniqueIndex] = unique(loadIndices, 'rows', 'stable');
-overlap = 1:size(loadIndices,1);
-overlap = overlap(~ismember(overlap, uniqueIndex));
-badMember = unique(ceil(overlap/nEls));
-subMembers(badMember, :) = [];
+end
+
+% DRY helper method
+function[overlap] = findOverlap(subRefIndices, subAddIndices, nEls)
+
+% Get the load indices and their associated ensemble member
+loadIndices = subRefIndices + subAddIndices;
+index = 1:size(loadIndices,1);
+member = ceil(index/nEls);
+
+% Find all load indices that are not the first occurence
+[~, first, map] = unique(loadIndices, 'rows', 'stable');
+overlap = index(~ismember(index, first));
+
+% Allow overlap in the same ensemble member as the first occurrence
+overlapMember = member(overlap);
+firstMember = member(first(map(overlap)));
+overlap(overlapMember==firstMember) = [];
 
 end

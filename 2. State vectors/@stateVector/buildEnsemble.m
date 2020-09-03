@@ -1,7 +1,26 @@
 function[X] = buildEnsemble(obj, nEns, random)
-%% Builds an ensemble...
+%% Builds a state vector ensemble.
 % 
+% X = obj.buildEnsemble(nEns)
+% Builds a state vector ensemble with a specified member of ensemble
+% members.
+%
 % X = obj.buildEnsemble(nEns, random)
+% Sepcfiy whether to select ensemble members at random, or sequentially.
+% Default is random selection.
+%
+% ----- Inputs -----
+%
+% nEns: The number of ensemble members
+%
+% random: Scalar logical. If true (default), selects ensemble members at
+%    random. If false, selects ensemble members sequentially.
+%
+% ----- Outputs -----
+%
+% X: The state vector ensemble. A numeric matrix. (nState x nEns)
+
+%% Input error checks
 
 % Default
 if ~exist('random','var') || isempty(random)
@@ -15,20 +34,8 @@ if ~isscalar(nEns) || ~isnumeric(nEns)
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
 
-% Get state vector index limits for each variable
-nVars = numel(obj.variables);
-svLimit = zeros(nVars+1, 2);
-for v = 1:nVars
-    svLimit(v+1, 1) = svLimit(v,2)+1;
-    svLimit(v+1, 2) = svLimit(v,2) + prod(obj.variables(v).stateSize);
-end
-svLimit(1,:) = [];
-    
-% Preallocate the ensemble
-nState = svLimit(end, 2);
-X = NaN(nState, nEns);
 
-%% Gridfile and Trim
+%% All variables: check dimensions, gridfiles, index limits, trim
 % vf: Variable index associated with file
 % f: File index associated with variable
 % v: Index of variable in the state vector.
@@ -39,16 +46,27 @@ files = cell(nVar, 1);
 [files{:}] = deal(obj.variables.file);
 files = string(files);
 
-% Find the unique gridfiles. Preallocate data source arrays
+% Find the unique gridfiles. Preallocate data source arrays and the limits
+% of each varable in the state vector
 [files, vf, f] = unique(files);
 nGrids = numel(files);
 grids = cell(nGrids, 1);
 sources = cell(nGrids, 1);
+svLimit = zeros(nVars+1, 2);
 
-% Check the gridfile can still be built for each variable. Do an internal
-% review and get the data source array.
-nVar = numel(obj.variables);
-for v = 1:nVar
+% Check that each variable has both state and ensemble dimensions
+for v = 1:nVar    
+    if ~any(obj.variables(v).isState)
+        badDimensionsError(obj.variables(v).name, true);
+    elseif ~any(~obj.variables(v).isState)
+        badDimensionsError(obj.variables(v).name, false);
+    end
+    
+    % Get the state vector index limits
+    svLimit(v+1, 1) = svLimit(v,2)+1;
+    svLimit(v+1, 2) = svLimit(v,2) + prod(obj.variables(v).stateSize);
+    
+    % Check that all gridfiles are valid. Pre-build the data sources
     if ismember(v, vf)
         try
             grids{f(v)} = gridfile(obj.variables(v).file);
@@ -57,16 +75,25 @@ for v = 1:nVar
         end        
         sources{f(v)} = grids{f(v)}.review;
     end
-    
-    % Check the grid matches the values recorded by the variable. Trim
-    % reference indices to only allow complete means and sequences.
     obj.variables(v).checkGrid(grids{f(v)});
+
+    
+    % Trim reference indices to only allow complete means and sequences.
     obj.variables(v) = obj.variables(v).trim;
 end
 
-%% Coupled variables: Match metadata, Prevent overlap
+% Finish the state vector limits and preallocate the ensemble
+svLimit(1,:) = [];
+nState = svLimit(end, 2);
+X = NaN(nState, nEns);
+
+
+%% Coupled variables: match metadata, select ensemble members, remove overlap, build ensembles
 % s: The index for a set of coupled variables
 % v: The indices of variables in a set
+% dims: ensemble dimensions
+% d: Iterator for dims
+% k: Iterator for v
 
 % Get the sets of coupled variables. Initialize selected and unused
 % ensemble members.
@@ -152,6 +179,14 @@ end
 end
 
 % Long error messages
+function[] = badDimensionsError(name, noState)
+type = "ensemble";
+if noState
+    type = "state";
+end
+error(['Variable "%s" has no %s dimensions. See "stateVector.design" to ',...
+    'specify %s dimensions.'], name, type, type);
+end
 function[] = badGridfileError(var, ME)
 message = sprintf('Could not build the gridfile object for variable %s.', var.name);
 cause = MException('DASH:stateVector:invalidGridfile', message);

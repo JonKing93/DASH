@@ -12,15 +12,21 @@ d = find(~obj.isState);
 for k = 1:numel(d)
     dimLength = obj.gridSize(d(k));
     
+    % Get the maximum and minimum add indices
+    addIndices = obj.addIndices(d(k));
+    maxAdd = max(addIndices);
+    maxSubtract = min(addIndices);
+    
     % Remove reference indices that would exceed the dimension length
-    maxAdd = max(obj.seqIndices{d(k)}) + max(obj.meanIndices{d(k)});
-    remove = obj.indices{d(k)} + maxAdd > dimLength;
+    remove = (obj.indices{d(k)} + maxAdd) > dimLength;
     obj.indices{d(k)}(remove) = [];
     
     % Remove reference indices that would precede the dimension
-    maxSubtract = min(obj.seqIndices{d(k)}) + min(obj.meanIndices{d(k)});
-    remove = obj.indices{d(k)} + maxSubtract < 1;
+    remove = (obj.indices{d(k)} + maxSubtract) < 1;
     obj.indices{d(k)}(remove) = [];
+    
+    % Update the size of the ensemble dimension
+    obj.ensSize(d(k)) = numel(obj.indices{d(k)});
 end
 
 end

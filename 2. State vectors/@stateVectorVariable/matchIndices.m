@@ -20,7 +20,7 @@ varMeta = obj.dimMetadata(grid, dim);
 [~, keep] = intersect(varMeta, meta, 'rows', 'stable');
 
 % Update the reference indices
-d = var.checkDimensions(dim);
+d = obj.checkDimensions(dim);
 obj.indices{d} = obj.indices{d}(keep);
 
 end

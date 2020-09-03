@@ -37,7 +37,12 @@ for k = 1:nDims
         if isempty(obj.weightCell{k})
             obj.weightCell{k} = ones(obj.meanSize(k), 1);
         end
-        obj.weightCell{k} = permute(obj.weightCell{k}, [2:meanDims(k), 1]);
+        
+        % Permute for singleton expansion
+        order = 1:max(2, meanDims(k));
+        order(meanDims(k)) = 1;
+        order(1) = meanDims(k);
+        obj.weightCell{k} = permute(obj.weightCell{k}, order);
     end
 end
 
