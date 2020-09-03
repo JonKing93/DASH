@@ -60,7 +60,7 @@ for v = 1:nVar
     
     % Check the grid matches the values recorded by the variable. Trim
     % reference indices to only allow complete means and sequences.
-    obj.variables(v).checkGrid(grid);
+    obj.variables(v).checkGrid(grids{f(v)});
     obj.variables(v) = obj.variables(v).trim;
 end
 
@@ -104,7 +104,7 @@ for s = 1:nSets
     
     % Initialize a set of subscripted ensemble members
     subMembers = NaN(nEns, numel(dims));
-    unused = (1:prod(obj.ensSize))';
+    unused = (1:prod(obj.variables(v(1)).ensSize))';
     nNeeded = nEns;
     subIndexCell = cell(1, numel(dims));
     siz = var1.ensSize(~var1.isState);
@@ -116,12 +116,13 @@ for s = 1:nSets
             notEnoughMembersError(obj.variableNames(v), obj.overlap(v));
         end
         
-        % Select members randomly or in an ordered manner. 
+        % Select members randomly or in an ordered manner. Remove values
+        % from the unused members when selected
         if random
-            members = unused(randsample(numel(unused), nNeeded));
-        else
-            members = unused(1:nNeeded);
+            unused = unused( randperm(numel(unused)) );
         end
+        members = unused(1:nNeeded);
+        unused(1:nNeeded) = [];
 
         % Get the subscript indices of ensemble members
         [subIndexCell{:}] = ind2sub(siz, members);
@@ -131,7 +132,7 @@ for s = 1:nSets
         % the number of ensemble members needed
         for k = 1:numel(v)
             if ~obj.overlap(v(k))
-                subMembers = obj.variables(v(k)).removeOverlap(subMembers);
+                subMembers = obj.variables(v(k)).removeOverlap(subMembers, dims);
             end
         end
         nNeeded = nEns - size(subMembers, 1);
@@ -153,7 +154,7 @@ end
 % Long error messages
 function[] = badGridfileError(var, ME)
 message = sprintf('Could not build the gridfile object for variable %s.', var.name);
-cause = MException('DASH:stateVector:badGridfile', message);
+cause = MException('DASH:stateVector:invalidGridfile', message);
 ME = addCause(ME, cause);
 rethrow(ME);
 end

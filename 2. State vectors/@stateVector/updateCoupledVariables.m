@@ -40,7 +40,7 @@ end
 
 end
 
-% Error message
+% Notification message
 function[] = notifyChangedDimensions(obj, v, t, toEns, toState)
 
 % Only notify if dimensions are changing and user has not disabled messages

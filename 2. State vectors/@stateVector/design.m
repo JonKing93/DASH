@@ -56,13 +56,13 @@ v = obj.checkVariables(varNames);
 
 % Update each variable
 for k = 1:numel(v)
-    obj.variables(v) = obj.variables(v).design(dims, type, indices);
+    obj.variables(v(k)) = obj.variables(v(k)).design(dims, type, indices);
     
     % Find coupled variables not specified by the user. Notify that these
     % will also be updated
     sv = find(obj.coupled(v(k),:));
     sv = sv(~ismember(sv, v));
-    notifySecondaryVariables(obj, sv, t);
+    notifySecondaryVariables(obj, sv, v(1));
     
     % Update these variables. Add them to the variable list to prevent
     % redundant updates / notifications
@@ -91,7 +91,7 @@ if ~isempty(sv) && obj.verbose
     
     % Message
     fprintf(['\nVariable%s %s %s coupled to "%s". Updating %s to match the ',...
-        'ensemble dimensions of %s.'], plural(1), secondary, plural(2), ...
+        'ensemble dimensions of %s.\n'], plural(1), secondary, plural(2), ...
         template, plural(3), template);
 end
 
