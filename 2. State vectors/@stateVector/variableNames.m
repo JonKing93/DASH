@@ -2,7 +2,7 @@ function[varNames] = variableNames(obj, v)
 % Returns the names of the variables in a stateVector object.
 %
 % varNames = obj.variableNames;
-% Returns variable names.
+% Returns the names of all variables in the state vector.
 %
 % varNames = obj.variableNames(v);
 % Returns the names of the specified variables
@@ -21,14 +21,8 @@ function[varNames] = variableNames(obj, v)
 nVars = numel(obj.variables);
 if ~exist('v','var') || isempty(v)
     v = 1:nVars;
-elseif islogical(v)
-    dash.assertVectorTypeN(v, [], nVars, 'Since v is a logical, it');
-elseif isnumeric(v)
-    dash.assertPositiveIntegers(v, 'Since v is numeric, it');
-    if any(v>nVars)
-        bad = find(v>nVars, 1);
-        error('Element %.f of v (%.f) exceeds the number of variables (%.f).', bad, v(bad), nVars);
-    end
+elseif islogical(v) || isnumeric(v)
+    v = dash.checkIndices(v, 'v', nVars, 'the number of variables');
 else
     error('v must either be a logical or numeric vector.');
 end

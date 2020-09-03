@@ -73,7 +73,8 @@ for k = 1:nDims
     if wasCell
         name = sprintf('Element %.f of indexCell', k);
     end
-    indices{k} = dash.checkIndices(indices{k}, name, obj.gridSize(d(k)), obj.dims(d(k)));
+    lengthName = sprintf('the length of the %s dimension', obj.dims(d(k)));
+    indices{k} = dash.checkIndices(indices{k}, name, obj.gridSize(d(k)), lengthName);
     
     % State dimension
     if obj.isState(d(k))
