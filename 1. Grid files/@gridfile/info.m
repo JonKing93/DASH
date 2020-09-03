@@ -20,8 +20,9 @@ function[gridInfo, sourceInfo] = info(obj, sources)
 %
 % ----- Inputs -----
 %
-% s: A vector of linear indices. Cannot exceed the number of data sources
-%    managed by the .grid file.
+% s: The indices of specific data sources within the .grid file. Either a
+%    vector of linear indices or a logical vector with one element per data
+%    source.
 %
 % filenames: A list of data source filenames. A string vector or cellstring
 %    vector. Must include the file extension. Ignores the file path.
@@ -56,15 +57,9 @@ elseif dash.isstrlist(sources)
         index = unique([index, find(match)]);
     end
         
-% If numeric, check for postive integers no higher than nSource
-elseif isnumeric(sources)
-    dash.assertPositiveIntegers(sources, "s");
-    if any(sources>nSource)
-        error('The largest element in s (%.f) is greater than the number of data sources in the .grid file (%.f)', max(sources), nSource);
-    end
-    index = sources;
-        
-% Anything else throw error
+% Check indices are valid. Throw error for anything else
+elseif isnumeric(sources) || islogical(sources)
+    index = dash.checkIndices(sources, 's', nSource, 'the number of data sources in the .grid file');        
 else
     error('The first input may be ''all'', a list of file names, or a set of linear indices.');
 end

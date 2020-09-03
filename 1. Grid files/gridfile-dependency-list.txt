@@ -146,8 +146,9 @@ info
     dash.isstrlist
     findFileSources
         collectPrimitives
-    dash.assertPositiveIntegers
-        dash.assertRealDefined
+    dash.checkIndices
+        dash.assertPositiveIntegers
+            dash.assertRealDefined
     buildSources
         collectFullPaths
             collectPrimitives

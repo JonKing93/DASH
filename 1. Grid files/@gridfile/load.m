@@ -139,9 +139,10 @@ else
             inputIndices{d} = 1:obj.size(inputOrder(d));
         end
         
-        % Error check
+        % Error check indices for individual dimensions
         name = sprintf('Element %.f of indices', d);
-        inputIndices{d} = dash.checkIndices(inputIndices{d}, name, obj.size(inputOrder(d)), obj.dims(inputOrder(d)) );
+        lengthName = sprintf('the length of the %s dimension', obj.dims(inputOrder(d)));
+        inputIndices{d} = dash.checkIndices(inputIndices{d}, name, obj.size(inputOrder(d)), lengthName );
     end
 end
 
