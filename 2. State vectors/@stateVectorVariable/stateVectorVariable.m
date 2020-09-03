@@ -110,9 +110,9 @@ classdef stateVectorVariable
         obj = resetMeans(obj);
         obj = design(obj, dims, type, indices);
         
-        info(obj);
+        [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
-        X = buildEnsemble(obj, member, sources);
+        X = buildEnsemble(obj, subMembers, dims, sources);
     end
 end
         

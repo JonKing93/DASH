@@ -1,101 +1,167 @@
-function[] = info(obj)
+function[varInfo, dimInfo] = info(obj)
 %% Returns information about a stateVectorVariable
 %
 % obj.info
-% Prints information about the state vector variable to the console
+% Prints information about the state vector variable to the console.
 %
-% varInfo = obj.info
-% Returns variable information as a structure
+% [varInfo, dimInfo] = obj.info
+% Returns summary variable information as a structure, and dimension info
+% as a structure array. Does not print to console.
 %
 % ----- Outputs -----
 %
 % varInfo: A structure containing information on the state vector variable
+%
+% dimInfo: A structure containing information on the dimensions of the
+%    state vector variable
 
-% Name
-fprintf('\n"%s" is a state vector variable.\n', obj.name);
+% Variable summary
+name = obj.name;
+file = obj.file;
+stateSize = prod(obj.stateSize);
+obj = obj.trim;
+ensSize = prod(obj.ensSize);
+singleDims = obj.dims(obj.gridSize==1);
+dims = obj.dims(obj.gridSize~=1);
+stateDims = obj.dims(obj.isState);
+ensDims = obj.dims(~obj.isState);
 
-% File
-fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
-
-% Size overview
-fprintf('The state vector for %s is %.f elements long. There are %.f possible ensemble members.\n', ...
-    obj.name, prod(obj.stateSize), prod(obj.ensSize));
-
-% Dimension overview
-d = find(obj.gridSize~=1);
-nDims = numel(d);
-dims = obj.dims(d);
-fprintf('%s has %.f non-singleton dimensions: %s\n', obj.name, nDims, dash.messageList(dims));
-
-% State dimensions
-sd = d(obj.isState(d));
-stateDims = obj.dims(sd);
-fprintf('\n\tSTATE DIMENSIONS: %s\n', dash.messageList(stateDims));
-for k = 1:numel(stateDims)
-    fprintf('\t%s has a length of %.f in the state vector.\n', stateDims(k), obj.stateSize(sd(k)));
+% Output structure
+if nargout~=0
+    varInfo = struct('name', name, 'gridfile', file, 'stateSize', stateSize, ...,
+        'possibleMembers', ensSize, 'dimensions', dims, 'stateDimensions', ...
+        stateDims, 'ensembleDimensions', ensDims, 'singletonDimensions', ...
+        singleDims);
     
-    % String for mean
-    if obj.stateSize(sd(k))>1 || (obj.takeMean(sd(k)) && obj.meanSize(sd(k))>1)        
-        if obj.meanSize(sd(k))==1 || ~obj.takeMean(sd(k))
-            meanStr = sprintf('\b');
-        elseif obj.hasWeights(sd(k)) 
-            meanStr = sprintf('a weighted mean of %.f data elements', obj.meanSize(sd(k)));
-        elseif obj.takeMean(sd(k))
-            meanStr = sprintf('a mean of %.f data elements', obj.meanSize(sd(k)));
-        end
-        
-        % Get string for spacing
-        spaceStr = '';
-        spacing = unique(diff(sort(obj.indices{sd(k)})));
-        if numel(spacing)==1 && spacing==1
-            spaceStr = sprintf('spaced in steps of 1 data index');
-        elseif numel(spacing)==1
-            spaceStr = sprintf('spaced in steps of %.f data indices', spacing);
-        end
-        
-        % Final string
-        if numel(spacing)==1 || (obj.takeMean(sd(k)) && obj.meanSize(sd(k))>1)
-            fprintf('\t\tIt is %s %s\n', meanStr, spaceStr);
-        end
-    end
+    % Preallocate dimension structure
+    nDims = numel(dims);
+    dimFields = {"name","type","stateLength","ensembleMembers","indices",...
+        "sequence","hasMean","meanIndices","weights"};
+    pre = repmat( {[]}, [1, numel(dimFields)*2]);
+    pre(1:2:end) = dimFields;
+    dimInfo = repmat(struct(pre{:}), [nDims, 1]);
+
+% Print to console
+else
+    fprintf('\n"%s" is a state vector variable.\n', obj.name);
+    fprintf('Data for %s is organized by .grid file "%s"\n', obj.name, obj.file);
+    fprintf('The state vector for %s is %.f elements long. There are %.f possible ensemble members.\n', ...
+        obj.name, prod(obj.stateSize), prod(obj.ensSize));
 end
 
-% Ensemble dimensions
-sd = d(~obj.isState(d));
-ensDims = obj.dims(sd);
-fprintf('\n\tENSEMBLE DIMENSIONS: %s\n', dash.messageList(ensDims));
-for k = 1:numel(ensDims)
-    fprintf('\t%s has %.f elements that can be used in an ensemble.\n', ensDims(k), numel(obj.indices{sd(k)}));
-    
-    % Sequence information
-    if ~isequal(obj.seqIndices{sd(k)}, 0)
-        strs = ["a sequence of data elements:", "data indices"];
-        if numel(obj.seqIndices{sd(k)}) == 1
-            strs(1) = "the data element";
-        end
-        if isequal( abs(obj.seqIndices{sd(k)}), 1)
-            strs(2) = "index";
-        end
-        list = dash.messageList(obj.seqIndices{sd(k)});
-        fprintf('\t\tIt has a length of %.f in the state vector.\n', obj.stateSize(sd(k)));
-        fprintf('\t\tIt uses %s %s %s after each reference element.\n', strs(1), list, strs(2));
+% Cycle through state dimensions first
+sd = find(obj.isState & obj.gridSize>1);
+ed = find(~obj.isState & obj.gridSize>1);
+alldims = [sd, ed];
+
+% Dimension info
+for k = 1:numel(alldims)
+    d = alldims(k);
+    name = obj.dims(d);
+    indices = obj.indices{d};
+    hasMean = obj.takeMean(d);
+    weights = NaN;
+    if obj.hasWeights(d)
+        weights = obj.weightCell{d};
     end
-    
-    % Mean information
-    if obj.takeMean(sd(k)) && ~isequal(obj.mean_Indices{sd(k)},0)
-        type = sprintf('\b');
-        if obj.hasWeights(sd(k)) && obj.meanSize(sd(k))>1
-            type = 'weighted';
+
+    % State specific
+    if obj.isState(d)
+        type = "state";
+        stateSize = obj.stateSize(d);
+        ensSize = NaN;
+        sequence = NaN;
+        meanIndices = NaN;
+        
+    % Ensemble specific
+    else
+        type = "ensemble";
+        stateSize = obj.stateSize(d);
+        ensSize = obj.ensSize(d);
+        sequence = obj.seqIndices{d};
+        meanIndices = obj.mean_Indices{d};
+    end
+ 
+    % Output structure
+    if nargout>0
+        input = pre;
+        input(2:2:end) = {name, type, stateSize, ensSize, indices, sequence, ...
+                          hasMean, meanIndices, weights};
+        dimInfo(k) = struct(input{:});
+
+    % Print to console
+    else
+        % State dimension header
+        if strcmp(type,'state')
+            if d==sd(1)
+                fprintf('\n\tSTATE DIMENSIONS: %s\n', dash.messageList(stateDims));
+            end
+            fprintf('\t%s has a length of %.f in the state vector.\n', name, stateSize);
+
+            
+            % String for mean
+            if stateSize>1 || (hasMean && obj.meanSize(d)>1)
+                if obj.meanSize(d)==1 || ~hasMean
+                    meanStr = sprintf('\b');
+                elseif obj.hasWeights(d) 
+                    meanStr = sprintf('a weighted mean of %.f data elements', obj.meanSize(d));
+                elseif hasMean
+                    meanStr = sprintf('a mean of %.f data elements', obj.meanSize(d));
+                end
+                
+                % String for spacing
+                spaceStr = '';
+                spacing = unique(diff(sort(indices)));
+                if numel(spacing)==1 && spacing==1
+                    spaceStr = sprintf('spaced in steps of 1 data index');
+                elseif numel(spacing)==1
+                    spaceStr = sprintf('spaced in steps of %.f data indices', spacing);
+                end
+                
+                % Final string
+                if numel(spacing)==1 || (hasMean && obj.meanSize(d)>1)
+                    fprintf('\t\tIt is %s %s\n', meanStr, spaceStr);
+                end
+            end
+        
+        % Ensemble dimension header
+        else
+            if d==ed(1)
+                fprintf('\n\tENSEMBLE DIMENSIONS: %s\n', dash.messageList(ensDims));
+            end
+            fprintf('\t%s has %.f elements that can be used in an ensemble.\n', name, numel(indices));
+            
+            % Sequence information
+            if ~isequal(sequence, 0)
+                strs = ["a sequence of data elements:", "data indices"];
+                if numel(sequence)==1
+                    strs(1) = "the data element";
+                end
+                if isequal(abs(sequence), 1)
+                    strs(2) = "index";
+                end
+                list = dash.messageList(sequence);
+                fprintf('\t\tIt has a length of %.f in the state vector.\n', stateSize);
+                fprintf('\t\tIt uses %s %s %s after each reference element.\n', strs(1), list, strs(2));
+            end
+        
+            % Mean information
+            if hasMean && ~isequal(meanIndices,0)
+                weighted = sprintf('\b');
+                if obj.hasWeights(d) && obj.meanSize(d)>1
+                    weighted = 'weighted';
+                end
+                strs = ["elements", "data indices"];
+                if numel(meanIndices)==1
+                    strs(1) = "element";
+                end
+                if isequal(abs(meanIndices),1)
+                    strs(2) = "index";
+                end
+                list = dash.messageList(meanIndices);
+                fprintf('\t\tIt takes a %s mean over the data %s %s %s after each sequence element.\n', weighted, strs(1), list, strs(2));
+            end
         end
-        strs = ["elements", "data indices"];
-        if numel(obj.mean_Indices{sd(k)}) == 1
-            strs(1) = "element";
-        end
-        if isequal(abs(obj.mean_Indices{sd(k)}),1)
-            strs(2) = "index";
-        end
-        list = dash.messageList(obj.mean_Indices{sd(k)});
-        fprintf('\t\tIt takes a %s mean over the data %s %s %s after each sequence element.\n', type, strs(1), list, strs(2));
     end
 end
 
