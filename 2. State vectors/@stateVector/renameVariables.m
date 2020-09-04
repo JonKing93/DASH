@@ -32,6 +32,14 @@ if numel(names) < numel(unique(names))
     error('Cannot rename because there would be multiple variables named %s.', names(bad));
 end
 
+% Check names are valid Matlab variables
+if any(~isvarname(newNames))
+    bad = find(~isvarname(newNames),1);
+    error(['Element %.f of newNames (%s) is not a valid MATLAB variable name. ', ...
+        'Valid names start with a letter and include only letters, numbers, ',...
+        'and underscores.'], bad, newNames(bad));
+end
+
 % Rename
 for k = 1:numel(v)
     obj.variables(v(k)) = obj.variables(v(k)).rename( newNames(k) );
