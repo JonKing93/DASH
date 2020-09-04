@@ -15,9 +15,9 @@ function[] = assertVectorTypeN( input, type, N, name )
 %
 % input: The input being checked.
 %
-% type: The required data type. Use [] to only check vector length.
+% type: The required data type. Use [] to not check the type.
 %
-% N: The required length of the vector.
+% N: The required length of the vector. Use [] to not check the length.
 %
 % name: The name of the input. Used for custom error message.
 

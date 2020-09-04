@@ -83,6 +83,7 @@ classdef stateVector
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans(obj, varNames);
         obj = design(obj, varNames, dims, type, indices);
+        obj = convertMetadata(obj, varNames, dim, convertFunction, functionArgs);
         [vectorInfo, varInfo] = info(obj, vars);
         X = buildEnsemble(obj, nEns, random);
     end

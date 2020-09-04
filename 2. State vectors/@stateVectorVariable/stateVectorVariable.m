@@ -29,6 +29,11 @@ classdef stateVectorVariable
         % Weighted means
         hasWeights; % Whether the dimension has weights
         weightCell; % Weights for each dimension
+        
+        % Metadata conversion
+        convert;
+        convertFunction;
+        convertArgs;
     end
     
     properties (Hidden, Constant)
@@ -81,6 +86,10 @@ classdef stateVectorVariable
             obj.takeMean = false(1, nDims);
             obj = obj.resetMeans;
             
+            obj.convert = false(1, nDims);
+            obj.convertFunction = cell(1, nDims);
+            obj.convertArgs = cell(1, nDims);
+            
             % Initialize all dimensions as state dimensions
             for d = 1:numel(obj.dims)
                 obj = obj.design(obj.dims(d), 'state');
@@ -114,7 +123,7 @@ classdef stateVectorVariable
         obj = weightedMean(obj, dims, weights);
         obj = resetMeans(obj);
         obj = design(obj, dims, type, indices);
-        
+        obj = convertMetadata(obj, dim, convertFunction, functionArgs);
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
         X = buildEnsemble(obj, subMembers, dims, sources);

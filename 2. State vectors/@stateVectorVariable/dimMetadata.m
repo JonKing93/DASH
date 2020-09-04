@@ -1,4 +1,4 @@
-function[meta] = dimMetadata(obj, grid, dim)
+function[meta, d] = dimMetadata(obj, grid, dim)
 %% Gets the metadata along a dimension at the variable's indices along the
 % dimension.
 %
@@ -13,6 +13,8 @@ function[meta] = dimMetadata(obj, grid, dim)
 % ----- Outputs -----
 %
 % meta: The metadata along the dimension
+%
+% d: The index of the dimension.
 
 d = obj.checkDimensions(dim);
 meta = grid.meta.(dim)(obj.indices{d}, :);
