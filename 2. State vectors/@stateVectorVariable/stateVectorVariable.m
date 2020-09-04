@@ -30,7 +30,9 @@ classdef stateVectorVariable
         hasWeights; % Whether the dimension has weights
         weightCell; % Weights for each dimension
         
-        % Metadata conversion
+        % Metadata
+        hasMetadata;
+        metadata;
         convert;
         convertFunction;
         convertArgs;
@@ -86,6 +88,8 @@ classdef stateVectorVariable
             obj.takeMean = false(1, nDims);
             obj = obj.resetMeans;
             
+            obj.hasMetadata = false(1, nDims);
+            obj.metadata = cell(1, nDims);
             obj.convert = false(1, nDims);
             obj.convertFunction = cell(1, nDims);
             obj.convertArgs = cell(1, nDims);
@@ -99,7 +103,7 @@ classdef stateVectorVariable
     
     % Object utilities
     methods
-        [d, dims] = checkDimensions(obj, dims);
+        [d, dims] = checkDimensions(obj, dims, allowMultiple);
         assertEnsembleIndices(obj, indices, d, name);
         checkGrid(obj, grid);
         obj = trim(obj);
@@ -118,12 +122,17 @@ classdef stateVectorVariable
     
     % Interface methods
     methods
+        obj = design(obj, dims, type, indices);
         obj = sequence(obj, dims, indices, metadata);
+        
         obj = mean(obj, dims, indices, omitnan);
         obj = weightedMean(obj, dims, weights);
-        obj = resetMeans(obj);
-        obj = design(obj, dims, type, indices);
+        obj = resetMeans(obj, dims);
+        
+        obj = specifyMetadata(obj, dim, metadata);
         obj = convertMetadata(obj, dim, convertFunction, functionArgs);
+        obj = resetMetadata(obj, dims);
+        
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
         X = buildEnsemble(obj, subMembers, dims, sources);

@@ -1,25 +1,36 @@
-function[obj] = resetMeans(obj)
+function[obj] = resetMeans(obj, dims)
 %% Resets specifications for means for a stateVectorVariable
 %
-% obj = obj.resetMeans;
+% obj = obj.resetMeans
+% Resets metadata optiosn for all dimensions
+%
+% obj = obj.resetMetadata(dims)
+% Resets metadata options for specified dimensions
 %
 % ----- Outputs -----
 %
 % obj: The updated stateVectorVariable object
 
+% Default for no dims
+if ~exist('dims','var')
+    d = 1:numel(obj.dims);
+else
+    d = obj.checkDimensions(dims);
+end
+nDims = numel(d);
+
 % State size
-nDims = numel(obj.dims);
-stateMean = obj.isState & obj.takeMean;
+stateMean = obj.isState(d) & obj.takeMean(d);
 obj.stateSize(stateMean) = obj.meanSize(stateMean);
 
 % Mean properties
-obj.takeMean = false(1, nDims);
-obj.meanSize = NaN(1, nDims);
-obj.omitnan = false(1, nDims);
-obj.mean_Indices = cell(1, nDims);
+obj.takeMean(d) = false;
+obj.meanSize(d) = NaN;
+obj.omitnan(d) = false;
+obj.mean_Indices(d) = cell(1, nDims);
 
 % Weighted means
-obj.hasWeights = false(1, nDims);
-obj.weightCell = cell(1, nDims);
+obj.hasWeights(d) = false;
+obj.weightCell(d) = cell(1, nDims);
 
 end
