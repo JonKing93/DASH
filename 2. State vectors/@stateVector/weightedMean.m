@@ -31,7 +31,8 @@ function[obj] = weightedMean(obj, varNames, dims, weights)
 %    dims. The length of each dimension of weightArray must be equal to
 %    either the number of state indices or mean indices, as appropriate.
 %    (See the "weights" input for details). May not contain NaN, Inf, or
-%    complex numbers.
+%    complex numbers. If an element of weightCell is an empty array, uses
+%    equal weights for elements along the associated dimension.
 %
 % ----- Outputs -----
 %

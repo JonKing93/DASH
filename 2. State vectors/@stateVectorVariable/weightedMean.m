@@ -27,7 +27,8 @@ function[obj] = weightedMean(obj, dims, weights)
 %    dims. The length of each dimension of weightArray must be equal to
 %    either the number of state indices or mean indices, as appropriate.
 %    (See the "weights" input for details). May not contain NaN, Inf, or
-%    complex numbers.
+%    complex numbers. If an element of weightCell is an empty array, uses
+%    equal weights for elements along the associated dimension.
 %
 % ----- Outputs -----
 %
@@ -70,16 +71,22 @@ if nDims>1 && isnumeric(weights)
 % Parse and error check weightCell
 else
     [weights, wasCell] = obj.parseInputCell(weights, nDims, 'weightCell');
-    
-    % Error check weights and save
     name = 'weights';
+
+    % If weights is empty, this is an unweighted mean
     for k = 1:nDims
-        if wasCell
-            name = sprintf('Element %.f of weightCell', k);
+        if isempty(obj.weightCell{d(k)})
+            obj.hasWeights(d(k)) = false;
+            
+        % Otherwise, error check weights and update
+        else
+            if wasCell
+                name = sprintf('Element %.f of weightCell', k);
+            end
+            dash.assertVectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
+            dash.assertRealDefined(weights{k}, name);
+            obj.weightCell{d(k)} = weights{k}(:);
         end
-        dash.assertVectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
-        dash.assertRealDefined(weights{k}, name);
-        obj.weightCell{d(k)} = weights{k}(:);
     end
 end
 
