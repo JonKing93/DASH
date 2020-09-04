@@ -19,7 +19,12 @@ function[obj] = convertMetadata(obj, dim, convertFunction, functionArgs)
 %    metadata conversion. A string scalar or character row vector.
 %
 % convertFunction: The function handle for the function being used to
-%    convert the metadata.
+%    convert the metadata. The conversion function should convert metadata
+%    to a numeric, logical, char, string, cellstring, or datetime matrix.
+%    It must preserve the number of rows in the original metadata. Each row
+%    of the converted metadata will be used as the metadata for one element
+%    along the dimension. Converted metadata cannot contain NaN, Inf, or
+%    NaT elements. 
 %
 % functionArgs: A cell vector containing additional arguments that should
 %    be passed to the conversion function. Elements should be in the same
@@ -32,10 +37,10 @@ function[obj] = convertMetadata(obj, dim, convertFunction, functionArgs)
 %
 % obj: The updated stateVector object.
 
-% Check dimension, get index. Only allow a single dimension.
-d = obj.checkDimensions(dim);
-if numel(d)>1
-    error('dim can only list a one dimension.');
+% Error check, dimension index. Cannot conflict with previous metadata
+d = obj.checkDimensions(dim, false);
+if any(obj.hasMetadata(d))
+    previousMetadataError(obj, d);
 end
 
 % Error check function. Default and error check args.
@@ -54,3 +59,11 @@ obj.convertArgs{d} = functionArgs;
 
 end
 
+% Error message
+function[] = previousMetadataError(obj, d)
+bad = d(find(obj.convert(d),1));
+error('Cannot specify a metadata conversion function for the "%s" dimension ',...
+    'of variable "%s" because you previously specified metadata for the ',...
+    'reference indices of this dimension. You may want to reset the metadata ',...
+    'options using "stateVector.resetMetadata".', obj.dims(bad), obj.name);
+end

@@ -17,8 +17,11 @@ function[obj] = specifyMetadata(obj, dim, metadata)
 %
 % obj: The updated stateVectorVariable object
 
-% Error check, dimension index
+% Error check, dimension index. Cannot conflict with metadata conversion
 d = obj.checkDimensions(dim, false);
+if any(obj.convert(d))
+    previousMetadataError(obj, d);
+end
 
 % Check the metadata is an allowed gridfile type. Convert cellstrings
 gridfile.checkMetadataField(metadata, dim);
@@ -37,4 +40,13 @@ end
 obj.hasMetadata(d) = true;
 obj.metadata{d} = metadata;
 
+end
+
+% Error message
+function[] = previousMetadataError(obj, d)
+bad = d(find(obj.convert(d),1));
+error('Cannot specify metadata for the "%s" dimension of variable "%s" ',...
+    'because you previously specified a metadata conversion function ',...
+    'for this dimension. You may want to reset the metadata options ', ...
+    'using "stateVector.resetMetadata".', obj.dims(bad), obj.name);
 end
