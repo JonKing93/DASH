@@ -18,10 +18,11 @@ function[obj] = design(obj, varNames, dims, type, indices)
 %
 % ----- Inputs -----
 %
-% dim: The name of one of the variable's dimensions. A string.
+% varNames: The names of the variables over which to design dimensions. A
+%    string vector or cellstring vector.
 %
-% dims: The names of multiple dimensions. A string vector or cellstring
-%    vector. May not repeat dimension names.
+% dim(s): The name(s) of the variable's dimensions. A string vector,
+%    cellstring vector, or character row vector.
 %
 % type: Options are ("state" or "s") to indicate a state dimension, and
 %    ("ensemble" / "ens" / "e") to indicate an ensemble dimension. Use a
