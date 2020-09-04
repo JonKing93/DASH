@@ -17,15 +17,16 @@ for k = 1:numel(d)
     maxAdd = max(addIndices);
     maxSubtract = min(addIndices);
     
-    % Remove reference indices that would exceed the dimension length
-    remove = (obj.indices{d(k)} + maxAdd) > dimLength;
-    obj.indices{d(k)}(remove) = [];
+    % Find reference indices that would exceed or precede the dimension
+    tooLong = (obj.indices{d(k)} + maxAdd) > dimLength;
+    tooShort = (obj.indices{d(k)} + maxSubtract) < 1;
+    remove = tooLong | tooShort;
     
-    % Remove reference indices that would precede the dimension
-    remove = (obj.indices{d(k)} + maxSubtract) < 1;
+    % Remove the indices. Update metadata and size
     obj.indices{d(k)}(remove) = [];
-    
-    % Update the size of the ensemble dimension
+    if obj.hasMetadata(d(k))
+        obj.metadata{d(k)}(remove,:) = [];
+    end
     obj.ensSize(d(k)) = numel(obj.indices{d(k)});
 end
 
