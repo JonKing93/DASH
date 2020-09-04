@@ -86,6 +86,12 @@ for k = 1:nDims
         obj.seqIndices{d(k)} = [];
         obj.seqMetadata{d(k)} = [];
         
+        obj.hasMetadata(d) = false;
+        obj.metadata{d} = [];
+        obj.convert(d) = false;
+        obj.convertFunction{d} = [];
+        obj.convertArgs{d} = [];
+        
         % Update mean properties
         obj.mean_Indices{d(k)} = [];
         if obj.takeMean(d(k))
@@ -101,14 +107,20 @@ for k = 1:nDims
         obj.indices{d(k)} = indices{k}(:);
         obj.stateSize(d(k)) = 1;
         obj.ensSize(d(k)) = numel(indices{k});
+
+        % Check for a conflict with metadata
+        if obj.hasMetadata(d(k)) && size(obj.metadata{d(k)},1)~=obj.ensSize(d(k))
+            metadataConflictError(obj, d);
+        end
         
-        % Initialize ensemble properties.
-        obj.seqIndices{d(k)} = 0;
-        obj.seqMetadata{d(k)} = NaN;
-        
-        % No mean indices, so throw error if taking a mean
-        if obj.takeMean(d(k))
-            ensMeanError(obj, dims(k));
+        % If converting from state, initialize sequence properties and
+        % check for meanIndices conflict
+        if isempty(obj.seqIndices{d(k)})
+            obj.seqIndices{d(k)} = 0;
+            obj.seqMetadata{d(k)} = NaN;
+            if obj.takeMean(d(k))
+                ensMeanError(obj, dims(d(k)));
+            end
         end
     end
 end
@@ -122,6 +134,15 @@ error(['Cannot convert the "%s" dimension of variable "%s" to a state ',...
     'of state indices (%.f) does not match the number of mean weights ',...
     '(%.f). Either use %.f state indices or reset the mean options using ',...
     '"stateVector.resetMeans".'], dim, obj.name, dim, nIndex, nWeights, nWeights);
+end
+function[] = metadataConflictError(obj, d)
+oldSize = size(obj.metadata{d}, 1);
+newSize = obj.ensSize(d);
+error(['The new number of reference indices (%.f) for dimension "%s" of ',...
+    'variable "%s" does not match the number of rows in the specified ', ...
+    'metadata (%.f). Either use %.f indices or reset the metadata options ',...
+    'using "stateVector.resetMetadata".'], newSize, obj.dims(d), obj.name, ...
+    oldSize, oldSize);
 end
 function[] = ensMeanError(obj, dim)
 error(['Cannot convert dimension "%s" of variable "%s" to an ensemble ',...
