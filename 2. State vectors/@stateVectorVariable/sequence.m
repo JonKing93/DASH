@@ -11,11 +11,9 @@ function[obj] = sequence(obj, dims, indices, metadata)
 %
 % ----- Inputs -----
 %
-% dim: The name of an ensemble dimension in the .grid file for the
-%    variable. A string.
-%
-% dims: The names of multiple ensemble dimensions. A string vector or
-%    cellstring vector. May not repeat dimension names.
+% dim(s): The name(s) of ensemble dimension(s) in the .grid file for the
+%    variable. A string vector, cellstring vector, or character row vector.
+%    May not repeat dimension names.
 %
 % indices: The sequence indices. A vector of integers that indicates the
 %    position of sequence data-elements relative to the reference indices.

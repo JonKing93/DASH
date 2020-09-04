@@ -13,7 +13,8 @@ function[obj] = weightedMean(obj, varNames, dims, weights)
 % varNames: The names of the variables over which to take a mean. A string
 %    vector or cellstring vector.
 %
-% dim: The name of a dimension over which to take a weighted mean. A string
+% dim(s): The name(s) of dimension(s) over which to take a weighted mean.
+%    A string vector, cellstring vector, or character row vector.
 %
 % weights: A numeric vector containing the mean weights. If dim is a state
 %    dimension, must have a length equal to the number of state indices.

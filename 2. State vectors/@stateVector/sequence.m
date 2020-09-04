@@ -14,8 +14,8 @@ function[obj] = sequence(obj, varNames, dims, indices, metadata)
 % varNames: The names of variables in the state vector for which to use a
 %    sequence. A string vector or cellstring vector.
 %
-% dim: The name of an ensemble dimension in the .grid file for the
-%    variables. A string.
+% dim(s): The name(s) of ensemble dimension(s) in the .grid file for the
+%    variables. A string vector, cellstring vector, or character row vector.
 %
 % dims: The names of multiple ensemble dimensions. A string vector or
 %    cellstring vector. May not repeat dimension names.
