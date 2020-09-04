@@ -20,8 +20,8 @@ function[meta] = matchingMetadata(obj, meta, grid, dim)
 [varMeta, d] = obj.dimMetadata(grid, dim);
 
 % Optionally rewrite metadata
-if obj.rewrite(d)
-    varMeta = obj.rewriteMetadata{d};
+if obj.hasMetadata(d)
+    varMeta = obj.metadata{d};
 
 % Setup for converting metadata
 elseif obj.convert(d)
