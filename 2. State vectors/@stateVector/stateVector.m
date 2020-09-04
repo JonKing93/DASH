@@ -78,12 +78,18 @@ classdef stateVector
     
     % User interface methods with stateVectorVariable
     methods
+        obj = design(obj, varNames, dims, type, indices);
         obj = sequence(obj, varNames, dims, indices, metadata);
+        
         obj = mean(obj, varNames, dims, indices, omitnan);
         obj = weightedMean(obj, varNames, dims, weights);
-        obj = resetMeans(obj, varNames);
-        obj = design(obj, varNames, dims, type, indices);
+        obj = resetMeans(obj, varNames, dims);
+        
+        specifyMetadata;
         obj = convertMetadata(obj, varNames, dim, convertFunction, functionArgs);
+        obj = resetMetadata(obj, varNames, dims);
+        
+        obj = renameVariables(obj, varNames, newNames);        
         [vectorInfo, varInfo] = info(obj, vars);
         X = buildEnsemble(obj, nEns, random);
     end
@@ -93,7 +99,6 @@ classdef stateVector
         obj = rename(obj, name);
         obj = displayConsoleOutput(obj, verbose);
         varNames = variableNames(obj, v);
-        obj = renameVariables(obj, varNames, newNames);        
         obj = add(obj, name, file, autoCouple);
         obj = autoCouple(obj, varNames, auto);
         obj = allowOverlap(obj, varNames, overlap);

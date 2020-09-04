@@ -12,7 +12,7 @@ function[obj] = resetMeans(obj, dims)
 % obj: The updated stateVectorVariable object
 
 % Default for no dims
-if ~exist('dims','var')
+if ~exist('dims','var') || isempty(dims)
     d = 1:numel(obj.dims);
 else
     d = obj.checkDimensions(dims);
