@@ -54,7 +54,7 @@ for k = 1:nDims
     if wasCell
         name = sprintf('Element %.f of indexCell', k);
     end
-    obj.assertEnsembleIndices(indices{k}, d(k), name);
+    obj.assertAddIndices(indices{k}, d(k), name);
     
     % Error check metadata
     errorStrs = ['array', 'row'];

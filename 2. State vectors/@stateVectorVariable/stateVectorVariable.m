@@ -104,7 +104,7 @@ classdef stateVectorVariable
     % Object utilities
     methods
         [d, dims] = checkDimensions(obj, dims, allowMultiple);
-        assertEnsembleIndices(obj, indices, d, name);
+        assertAddIndices(obj, indices, d, name);
         checkGrid(obj, grid);
         obj = trim(obj);
         meta = dimMetadata(obj, grid, dim);

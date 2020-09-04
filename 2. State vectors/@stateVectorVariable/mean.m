@@ -81,7 +81,7 @@ for k = 1:nDims
         if wasCell
             name = sprintf('Element %.f of indexCell', k);
         end
-        obj.assertEnsembleIndices(indices{k}, d(k), name);
+        obj.assertAddIndices(indices{k}, d(k), name);
         obj.mean_Indices{d(k)} = indices{k}(:);
     
         % Check that the mean indices do not disrupt a weighted mean

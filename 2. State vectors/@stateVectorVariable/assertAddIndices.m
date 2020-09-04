@@ -1,7 +1,7 @@
-function[] = assertEnsembleIndices(obj, indices, d, name)
+function[] = assertAddIndices(obj, indices, d, name)
 %% Checks that an input is a valid set of sequence or mean indices.
 %
-% d = obj.assertEnsembleIndices(indices, d, name)
+% d = obj.assertAddIndices(indices, d, name)
 %
 % ----- Inputs -----
 %
