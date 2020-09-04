@@ -1,0 +1,19 @@
+assertPositiveIntegers
+    assertRealDefined
+assertStrFlag
+    isstrflag
+assertStrList
+    isStrList
+checkIndices
+    assertPositiveIntegers
+checkStrsInList
+    assertStrList
+    messageList
+convertToV7_3
+    assertStrFlag
+parseInputs
+    assertVectorTypeN
+    assertStrList
+    assertStrFlag
+    checkStrsInList
+    checkFileExists

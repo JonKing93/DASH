@@ -49,7 +49,7 @@ function[obj] = design(obj, varNames, dims, type, indices)
 
 % Default for indices
 if ~exist('indices','var')
-    indices = [];
+    indices = []; 
 end
 
 % Error check, variable index

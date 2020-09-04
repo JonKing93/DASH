@@ -22,6 +22,9 @@ function[obj] = copy(obj, templateName, varNames, varargin)
 % Specify whether to copy dimension types, state indices, and reference
 % indices.
 %
+% obj = obj.copy( ..., 'metadata', copyMetadata )
+% Specify whether to copy metadata and metadata conversion functions.
+%
 % ----- Inputs -----
 %
 % templateName: The name of a template variable. A string scalar or
@@ -42,23 +45,24 @@ function[obj] = copy(obj, templateName, varNames, varargin)
 % copyDesigns: Scalar logical. If true (default), copies dimension types,
 %    state indices, and reference indices. If false, does not.
 %
+% copyMetadata: Scalar logical. If true (default), copies specified
+%    metadata and metadata conversion functions. If false, does not.
+%
 % ----- Outputs -----
 %
 % obj: The updated stateVector object
 
-% Error check names and get dimension indices
+% Error check template, template index, parse inputs
 t = obj.checkVariables(templateName);
-v = obj.checkVariables(varNames);
-
-% Parse optional inputs
-[copySequences, copyMeans, copyWeights, copyDesigns] = parseInputs( varargin, ...
-    ["sequence","mean","weightedMean","design"], {true, true, true, true}, 2 );
+[copySequences, copyMeans, copyWeights, copyDesigns, copyMetadata] = dash.parseInputs( varargin, ...
+    ["sequence","mean","weightedMean","design"], {true, true, true, true, true}, 2 );
 
 % Error check
 dash.assertScalarLogical(copySequences, 'copySequences');
 dash.assertScalarLogical(copyMeans, 'copyMeans');
 dash.assertScalarLogical(copyWeights, 'copyWeights');
 dash.assertScalarLogical(copyDesigns, 'copyDesigns');
+dash.assertScalarLogical(copyMetadata, 'copyMetadata');
 
 % Get the template variable
 var = obj.variables(t);
@@ -84,6 +88,18 @@ end
 if copyWeights
     w = bar.hasWeights;
     obj = obj.weightedMean(varNames, var.dims(w), var.weightCell(w));
+end
+
+% Metadata
+if copyMetadata
+    d = find(var.hasMetadata);
+    for k = 1:numel(d)
+        obj = obj.specifyMetadata(varNames, var.dims(d(k)), var.metadata{d(k)});
+    end
+    d = find(var.convert);
+    for k = 1:numel(d)
+        obj = obj.convertMetadata(varNames, var.dims(d(k)), var.convertFunction{d(k)}, var.convertArgs{d(k)} );
+    end
 end
 
 end

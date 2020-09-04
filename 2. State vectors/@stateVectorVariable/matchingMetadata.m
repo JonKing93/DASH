@@ -76,7 +76,8 @@ elseif type == 3
         '(%.f) does not match the number of rows in the original metadata (%.f).'], ...
         newRows, oldRows);
 end
-message = sprintf('%s %s', head, reason);cause = MException('DASH:stateVector:failedMetadataConversion', message);
+message = sprintf('%s %s', head, reason);
+cause = MException('DASH:stateVector:failedMetadataConversion', message);
 ME = addCause(ME, cause);
 rethrow(ME);
 end

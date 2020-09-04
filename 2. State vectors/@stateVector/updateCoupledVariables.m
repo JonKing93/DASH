@@ -21,7 +21,7 @@ for k = 1:numel(v)
     var = obj.variables(v(k));
     missing = ~ismember(ensDims, var.dims);
     if any(missing)
-        missingDimsError();
+        missingDimsError(missing, ensDims, var);
     end
     
     % Check if any state dimensions need to be converted to ensemble, and
@@ -41,6 +41,11 @@ end
 end
 
 % Notification message
+function[] = missingDimsError(missing, ensDims, var)
+bad = find(missing,1);
+error(['Cannot update coupled variable "%s" because "%s" does not have a ',...
+    '"%s" dimension.'], var.name, var.name, ensDims(bad));
+end
 function[] = notifyChangedDimensions(obj, v, t, toEns, toState)
 
 % Only notify if dimensions are changing and user has not disabled messages

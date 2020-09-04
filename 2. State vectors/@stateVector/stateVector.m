@@ -79,20 +79,16 @@ classdef stateVector
     % User interface methods with stateVectorVariable
     methods
         obj = design(obj, varNames, dims, type, indices);
-        obj = sequence(obj, varNames, dims, indices, metadata);
-        
+        obj = sequence(obj, varNames, dims, indices, metadata);    
         obj = mean(obj, varNames, dims, indices, omitnan);
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans(obj, varNames, dims);
-        
         obj = specifyMetadata(obj, varNames, dim, metadata);
         obj = convertMetadata(obj, varNames, dim, convertFunction, functionArgs);
         obj = resetMetadata(obj, varNames, dims);
-        
         dims = dimensions(obj, varNames, type);
-        obj = renameVariables(obj, varNames, newNames);        
         [vectorInfo, varInfo] = info(obj, vars);
-        
+        obj = renameVariables(obj, varNames, newNames);        
         X = buildEnsemble(obj, nEns, random);
     end
     
@@ -100,16 +96,16 @@ classdef stateVector
     methods
         obj = rename(obj, name);
         obj = displayConsoleOutput(obj, verbose);
-        varNames = variableNames(obj, v);
         obj = add(obj, name, file, autoCouple);
+        obj = remove(obj, varNames);
+        obj = couple(obj, varNames);
+        obj = uncouple(obj, varNames);
         obj = autoCouple(obj, varNames, auto);
         obj = allowOverlap(obj, varNames, overlap);
         obj = append(obj, secondVector);
         obj = extractVariables(obj, varNames);
-        obj = remove(obj, varNames);
-        obj = couple(obj, varNames);
-        obj = uncouple(obj, varNames);
         obj = copy(obj, templateName, varNames, varargin);
+        varNames = variableNames(obj, v);
     end
      
 end
