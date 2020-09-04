@@ -172,7 +172,8 @@ for s = 1:nSets
     % Build the ensemble for each variable
     for k = 1:numel(v)
         varIndices = svLimit(v(k),1) : svLimit(v(k),2);
-        X(varIndices, :) = obj.variables(v(k)).buildEnsemble( subMembers, dims, sources{f(v(k))} );
+        X(varIndices, :) = obj.variables(v(k)).buildEnsemble( ...
+            subMembers, dims, grids{f(v(k))}, sources{f(v(k))} );
     end
 end
 

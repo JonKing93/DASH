@@ -1,4 +1,4 @@
-function[X] = buildEnsemble(obj, subMembers, dims, sources)
+function[X] = buildEnsemble(obj, subMembers, dims, grid, sources)
 %% Builds an ensemble for the stateVectorVariable
 %
 % X = obj.buildEnsemble(subMembers, dims, sources)
@@ -68,7 +68,6 @@ end
 %% Load individual ensemble members
 
 % Create the gridfile and preallocate the ensemble
-grid = gridfile(obj.file);
 nEns = size(subMembers, 1);
 X = NaN( prod(obj.stateSize), nEns );
 
