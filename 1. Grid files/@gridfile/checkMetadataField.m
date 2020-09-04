@@ -22,8 +22,6 @@ elseif ~ismatrix(meta)
 % Illegal elements
 elseif isnumeric(meta) && any(isnan(meta(:)))
     error('The %s metadata contains NaN elements.', dim );
-elseif isnumeric(meta) && any(isinf(meta(:)))
-    error('The %s metadata contains Inf elements.', dim );
 elseif isdatetime(meta) && any( isnat(meta(:)) )
     error('The %s metadata contains NaT elements.', dim );
 end

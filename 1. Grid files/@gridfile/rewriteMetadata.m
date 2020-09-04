@@ -11,7 +11,7 @@ function[] = rewriteMetadata( obj, dim, meta )
 % meta: The new metadata for the dimension. A numeric, logical,
 %    char, string, cellstring, or datetime matrix. Each row is treated
 %    as the metadata for one dimension element. Each row must be unique
-%    and cannot contain NaN, Inf, or NaT elements. Cellstring metadata
+%    and cannot contain NaN or NaT elements. Cellstring metadata
 %    will be converted into the "string" type.
 
 % Update in case the file was changed.

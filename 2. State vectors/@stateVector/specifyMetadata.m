@@ -14,7 +14,7 @@ function[obj] = specifyMetadata(obj, varNames, dim, metadata)
 % metadata: Metadata at the reference indices for an ensemble dimension.
 %    Metadata may be numeric, logical, char, string, cellstring, or
 %    datetime matrix. Must have one row per reference index. Each row must
-%    be unique and cannot contain NaN, Inf, or NaT elements. Cellstring
+%    be unique and cannot contain NaN or NaT elements. Cellstring
 %    metadata will be converted into the "string" type.
 %
 % ----- Outputs -----

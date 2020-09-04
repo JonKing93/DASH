@@ -22,7 +22,11 @@ function[obj] = convertMetadata(obj, varNames, dim, convertFunction, functionArg
 %    metadata conversion. A string scalar or character row vector.
 %
 % convertFunction: The function handle for the function being used to
-%    convert the metadata.
+%    convert the metadata. The conversion function should convert metadata
+%    to a numeric, logical, char, string, cellstring, or datetime matrix.
+%    It must preserve the number of rows in the original metadata. Each row
+%    of the converted metadata will be used as the metadata for one element
+%    along the dimension. Converted metadata cannot contain NaN or NaT elements. 
 %
 % functionArgs: A cell vector containing additional arguments that should
 %    be passed to the conversion function. Elements should be in the same
