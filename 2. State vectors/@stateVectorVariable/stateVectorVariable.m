@@ -133,8 +133,10 @@ classdef stateVectorVariable
         obj = convertMetadata(obj, dim, convertFunction, functionArgs);
         obj = resetMetadata(obj, dims);
         
+        dims = dimensions(obj, type);
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
+        
         X = buildEnsemble(obj, subMembers, dims, sources);
     end
 end
