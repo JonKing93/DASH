@@ -85,7 +85,7 @@ classdef stateVector
         obj = weightedMean(obj, varNames, dims, weights);
         obj = resetMeans(obj, varNames, dims);
         
-        specifyMetadata;
+        obj = specifyMetadata(obj, varNames, dim, metadata);
         obj = convertMetadata(obj, varNames, dim, convertFunction, functionArgs);
         obj = resetMetadata(obj, varNames, dims);
         
