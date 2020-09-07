@@ -22,7 +22,7 @@ Here, the syntax is to provide the name of a dimension and then its metadata, th
 * <span style="color:#cc00cc">"run"</span> -- for individual members of an ensemble
 * <span style="color:#cc00cc">"var"</span> -- for different variables on the same spatial/temporal grid
 
-You DO NOT need to provide metadata for all these dimensions; only the dimensions appearing in your dataset need metadata. Also, you may provide the dimensions in any order, regardless of the dimension order of your dataset. (If you would like to use different dimension names, you can [rename dimensions](\DASH\gridfile\change-dimension-names). If your dataset has more dimenions that the 7 defaults, you can [add new dimensions](\DASH\gridfile\add-dimension-names)).
+You DO NOT need to provide metadata for all these dimensions; only the dimensions appearing in your dataset need metadata. Also, you may provide the dimensions in any order, regardless of the dimension order of your dataset. (If you would like to use different dimension names, you can [rename dimensions](change-dimension-names). If your dataset has more dimenions that the 7 defaults, you can [add new dimensions](add-dimension-names)).
 
 Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN, Inf, or NaT elements. In general, it's best to use metadata values that's meaningful to you, as this will allow you to reuse the .grid file many times in the future. You DO NOT need to use metadata values found in data source files.
 
@@ -71,4 +71,4 @@ By default, gridfile.new will not overwrite an existing .grid file. However, if 
 gridfile.new(filename, meta, attributes, true);
 ```
 
-[Previous](\DASH\gridfile\overview)   [Next](\DASH\gridfile\object)
+[Previous](overview)   [Next](object)

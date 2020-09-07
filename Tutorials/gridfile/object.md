@@ -12,4 +12,4 @@ creates a gridfile object named grid that will allow us to interact with 'myfile
 
 Throughout the rest of this tutorial, I will use "grid" to refer to a gridfile object. However, feel free to use a different naming convention in your own code.
 
-[Previous](\DASH\gridfile\new) [Next](\DASH\gridfile\add)
+[Previous](new) [Next](add)

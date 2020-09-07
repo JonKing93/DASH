@@ -30,4 +30,4 @@ When you create a new .grid file, the N-dimensional array is initially empty. Ho
 Figure 3: Data source files located within an N-dimensional array.
 
 
-[Previous](\DASH\gridfile\intro)   [Next](\DASH\gridfile\new)
+[Previous](intro)   [Next](new)

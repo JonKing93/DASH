@@ -5,10 +5,10 @@ title: Quickstart
 
 # Welcome to the gridfile quickstart!
 
-This provides a brief overview of gridfile workflow. If you're looking for something a bit more in depth, check out the step by step [tutorial](\DASH\gridfile\welcome).
+This provides a brief overview of gridfile workflow. If you're looking for something a bit more in depth, check out the step by step [tutorial](welcome).
 
 If you'd like to use the quickstart offline or from the Matlab console, you can download it
-<a href="\DASH\gridfile\quickstart.m" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
+<a href="quickstart.m" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
 
 #### Define metadata for a .grid file.
 ```matlab
