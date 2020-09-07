@@ -1,6 +1,6 @@
 ---
 layout: simple_layout
-title: "Add Sources"
+title: "Add Data Sources"
 ---
 
 # Add data sources to a .grid file
