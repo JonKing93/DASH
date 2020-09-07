@@ -22,7 +22,7 @@ For example, a gridded monthly temperature field and gridded monthly precipitati
 2. Tmean - Annual, global mean temperature
 3. P - Gridded monthly precipitation
 
-Although T and Tmean both describe temperature, they are different state vector variables because they have different spatial and temporal resolution.
+Although T and Tmean both describe temperature, they are considered different variables because they have different spatial and temporal resolution.
 
 <br>
 
@@ -30,7 +30,8 @@ Although T and Tmean both describe temperature, they are different state vector 
 
 A second important concept is that of the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like Figure 3.
 
-INSERT FIGURE HERE.
+<img src="DASH\assets\images\ensemble.svg" alt="An example state vector ensemble." style="width:80%;display:block">
+Figure 2: A state vector ensemble (N=5)
 
 Here, each column is a different ensemble member. Each ensemble member has the T, P, and Tmean variables, but in a different time slice. In the case of ensemble member 5, the ensemble member is from the same time step as ensemble member 1, but from a different simulation.
 
