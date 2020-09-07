@@ -36,7 +36,7 @@ sourceMeta = gridfile.DefineMetadata("lon", lonMeta, "lat", latMeta, "time", tim
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
-**Important Note:** .grid files record the relative path between the .grid file and data source files when both files are on the same drive. If you move data source files without moving the .grid file or vice versa, see how to [update data source file paths](.\rename-sources). Alternatively, [save the absolute file path](#paths).
+**Important Note:** .grid files record the relative path between the .grid file and data source files when both files are on the same drive. If you move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#paths).
 
 <br>
 ### Non-Regular Grids (Tripolar, Irregular Locations)
@@ -97,4 +97,4 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'relativePath', f
 ```
 
 
-[Previous](\DASH\gridfile\object) [Next](\DASH\gridfile\load)
+[Previous](.\object) [Next](.\load)
