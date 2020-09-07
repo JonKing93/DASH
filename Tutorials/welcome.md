@@ -1,5 +1,5 @@
 ---
-layout: \DASH\_layouts\simple_layout
+layout: simple_layout
 title: Tutorials
 ---
 
