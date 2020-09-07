@@ -18,11 +18,11 @@ Within the DASH framework, different variables are defined as either
 2. Having different spatial or temporal resolution.
 
 For example, a gridded monthly temperature field and gridded monthly precipitation field are different variables because they describe different climate parameters. Monthly precipitation and annual precipitation would be different variables because they have different temporal resolution, and gridded temperatures and global mean temperatures are different variables because they have different spatial resolution. In my example state vector, there are 3 variables:
-1. Gridded monthly temperature -- let's call it "T"
-2. Gridded monthly precipitation -- I'll call it "P"
-3. Annual, global mean temperature -- we'll use "Tmean"
+1. T - Gridded monthly temperature
+2. Tmean - Annual, global mean temperature
+3. P - Gridded monthly precipitation
 
-INSERT FIGURE (State vector with variable abbreviations)
+Although T and Tmean both describe temperature, they are different state vector variables because they have different spatial and temporal resolution.
 
 <br>
 
