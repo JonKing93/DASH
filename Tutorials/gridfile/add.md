@@ -97,4 +97,4 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'relativePath', f
 ```
 
 
-[Previous](.\object) [Next](.\load)
+[Previous](object) [Next](load)
