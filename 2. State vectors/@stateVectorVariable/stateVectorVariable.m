@@ -108,7 +108,6 @@ classdef stateVectorVariable
         checkGrid(obj, grid);
         obj = trim(obj);
         meta = dimMetadata(obj, grid, dim);
-        meta = matchingMetadata(obj, meta, grid, dim);
         obj = matchIndices(obj, meta, grid, dim);
         addIndex = addIndices(obj, d);
         subMembers = removeOverlap(obj, subMembers, dims);

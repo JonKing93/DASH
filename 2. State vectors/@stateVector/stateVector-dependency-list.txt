@@ -141,10 +141,6 @@ buildEnsemble
     svv.dimMetadata
         checkDimensions
             dash.checkStrsInList
-    svv.matchingMetadata
-        svv.dimMetadata
-            checkDimensions
-                dash.checkStrsInList
         gridfile.checkMetadataField
     dash.messageList
     svv.matchIndices

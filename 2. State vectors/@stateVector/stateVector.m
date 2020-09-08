@@ -39,7 +39,7 @@ classdef stateVector
             %
             % ----- Inputs -----
             %
-            % title: An optional title for the state vector. A string scalar
+            % name: An optional title for the state vector. A string scalar
             %    or character row vector.
             %
             % verbose: A scalar logical indicating whether to print various

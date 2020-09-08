@@ -112,7 +112,14 @@ for s = 1:nSets
     for d = 1:numel(dims)
         meta = var1.dimMetadata(grids{f(v(1))}, dims(d));
         for k = 2:numel(v)
-            meta = obj.variables(v(k)).matchingMetadata(meta, grids{f(v(k))}, dims(d));
+            varMeta = obj.variables(v(k)).dimMetadata( grids{f(v(k))}, dims(d) );
+            try
+                meta = intersect(meta, varMeta, 'rows', 'stable');
+                
+            % Informative errors if there is no overlap or different formats
+            catch
+                incompatibleFormatsError(obj, v(1), v(k), dims(d));
+            end
             if isempty(meta)
                 noMatchingMetadataError(obj.variableNames(v), dims(d));
             end
@@ -193,6 +200,10 @@ message = sprintf('Could not build the gridfile object for variable %s.', var.na
 cause = MException('DASH:stateVector:invalidGridfile', message);
 ME = addCause(ME, cause);
 rethrow(ME);
+end
+function[] = incompatibleFormatsError(obj, v1, v, dim)
+error(['Coupled variables "%s" and "%s" use different metadata formats for ', ...
+    'the "%s" dimension.'], obj.variables(v1).name, obj.variables(v).name, dim);
 end
 function[] = noMatchingMetadataError(varNames, dim)
 error(['Cannot couple variables %s because they have no common metadata ', ...

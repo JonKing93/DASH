@@ -19,8 +19,12 @@ function[obj] = matchIndices(obj, meta, grid, dim)
 varMeta = obj.dimMetadata(grid, dim);
 [~, keep] = intersect(varMeta, meta, 'rows', 'stable');
 
-% Update the reference indices
+% Update the reference indices. Update metadata and size
 d = obj.checkDimensions(dim);
 obj.indices{d} = obj.indices{d}(keep);
+if obj.hasMetadata(d)
+    obj.metadata{d} = obj.metadata{d}(keep, :);
+end
+obj.ensSize(d) = numel(obj.indices{d});
 
 end
