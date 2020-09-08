@@ -45,7 +45,7 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %
 % meta: The dimensional metadata structure for the data in the source file.
 %    See gridfile.defineMetadata. Must include metadata for all
-%    non-singleton dimensions in the .grid file (see <include>) and for all
+%    non-singleton dimensions in the .grid file and for all
 %    non-trailing dimensions in the source file. The number of rows in each
 %    metadata field must match the length of the dimension in the source
 %    file. Each metadata field must exactly match a contiguous sequence of
@@ -102,7 +102,7 @@ end
 
 % Error check the metadata. Require values for non-singleton grid
 % dimensions and non-trailing dimensions in the source data.
-gridfile.checkMetadataStructure(meta, obj.dims(obj.isdefined), "dimensions with defined metadata in the .grid file");
+meta = gridfile.checkMetadataStructure(meta, obj.dims(obj.isdefined), "dimensions with defined metadata in the .grid file");
 metaFields = string(fields(meta));
 gridRequired = obj.dims( obj.size~=1 );
 sourceRequired = source.mergedDims(1:ts1-1);

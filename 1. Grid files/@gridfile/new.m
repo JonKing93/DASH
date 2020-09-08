@@ -46,7 +46,7 @@ if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 end
 dash.assertScalarLogical(overwrite, 'overwrite');
-gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
+meta = gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
 
 % Ensure the file name has a .grid extension
 filename = char( filename );
@@ -78,7 +78,8 @@ gridSize = NaN(1,nDim);
 % dimensions with undefined metadata.
 for d = 1:nDim
     if isfield(meta, dims(d))
-        [metadata.(dims(d)), gridSize(d)] = gridfile.processMetadata(meta.(dims(d)));
+        metadata.(dims(d)) = meta.(dims(d));
+        gridSize(d) = size(meta.(dims(d)), 1);
         isdefined(d) = true;
     else
         metadata.(dims(d)) = NaN;

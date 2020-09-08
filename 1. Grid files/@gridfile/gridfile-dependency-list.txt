@@ -12,7 +12,6 @@ new
             hasDupicateRows
         dash.messageList
     dash.dimensionNames
-    processMetadata
     gridfile
         dash.assertStrFlag
             dash.isstrflag
@@ -124,7 +123,6 @@ rewriteMetadata
     checkMetadataField
         hasDuplicateRows
     updateMetadataField
-        processMetadata
         save
             update
 expand
@@ -138,7 +136,6 @@ expand
         hasDuplicateRows
     hasDuplicateRows
     updateMetadataField
-    processMetadata
     save
         update
 info

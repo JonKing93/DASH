@@ -43,7 +43,7 @@ end
 for v = 2:2:nargin
     dim = varargin{v-1};
     value = varargin{v};
-    gridfile.checkMetadataField(value, dim);
+    value = gridfile.checkMetadataField(value, dim);
     
     % Warn user if metadata is a row vector. (They probably want a column)
     if isrow(value) && ~isscalar(value)
@@ -51,9 +51,6 @@ for v = 2:2:nargin
     end
     
     % Add to the output metadata structure
-    if iscellstr(value) %#ok<ISCLSTR>
-        value = string(value);
-    end
     meta.(varargin{v-1}) = value;
 end
 

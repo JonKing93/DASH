@@ -21,7 +21,7 @@ function[d, dims] = checkDimensions(obj, dims, allowMultiple)
 % dims: The dimension names as strings
 
 % Default and error check for allowMultiple
-if ~exist('allowMutliple','var') || isempty(allowMultiple)
+if ~exist('allowMultiple','var') || isempty(allowMultiple)
     allowMultiple = true;
 end
 

@@ -20,7 +20,7 @@ obj.update;
 % Error check
 dim = dash.assertStrFlag(dim, "dim");
 obj.checkAllowedDims(dim);
-obj.checkMetadataField(meta, dim);
+meta = obj.checkMetadataField(meta, dim);
 
 % Check the new metadata is the correct size
 if size(meta,1) ~= size(obj.meta.(dim),1)

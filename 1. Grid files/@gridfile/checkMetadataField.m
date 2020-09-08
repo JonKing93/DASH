@@ -1,7 +1,8 @@
-function[] = checkMetadataField( meta, dim )
-%% Error checks the metadata for a grid dimension.
+function[meta] = checkMetadataField( meta, dim )
+%% Error checks the metadata for a grid dimension. Converts cellstring to
+% string.
 % 
-% gridfile.checkMetadataField(meta, dim)
+% meta = gridfile.checkMetadataField(meta, dim)
 %
 % ----- Input -----
 %
@@ -9,6 +10,10 @@ function[] = checkMetadataField( meta, dim )
 %
 % dim: The name of the dimension associated with the metadata field. (Used
 %    for error messages.)
+%
+% ----- Outputs -----
+%
+% meta: The metadata field. Cellstrings converted to string.
 
 % Type
 if ~isnumeric(meta) && ~islogical(meta) && ~ischar(meta) && ...
@@ -26,7 +31,12 @@ elseif isdatetime(meta) && any( isnat(meta(:)) )
     error('The %s metadata contains NaT elements.', dim );
 end
 
-% Duplicate rows. Convert cellstring to string for unique with rows option
+% Convert cellstring to string
+if iscellstr(meta) %#ok<ISCLSTR>
+    meta = string(meta);
+end
+
+% Check there are no duplicate rows. 
 if gridfile.hasDuplicateRows(meta)
     error('The %s metadata contains duplicate rows.', dim);
 end

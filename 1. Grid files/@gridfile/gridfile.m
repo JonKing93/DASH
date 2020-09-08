@@ -48,10 +48,9 @@ classdef gridfile < handle
     
     % Static utilities
     methods (Static)
-        checkMetadataField( meta, dim );
-        checkMetadataStructure( meta, dims, errorString );
+        meta = checkMetadataField( meta, dim );
+        meta = checkMetadataStructure( meta, dims, errorString );
         tf = hasDuplicateRows(meta);
-        [meta, siz] = processMetadata(meta);
         
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);

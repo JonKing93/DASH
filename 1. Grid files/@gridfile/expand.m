@@ -24,7 +24,7 @@ obj.update;
 % Error check
 dim = dash.assertStrFlag(dim, "dim");
 obj.checkAllowedDims(dim, true);
-obj.checkMetadataField(meta, dim);
+meta = obj.checkMetadataField(meta, dim);
 
 % Get the old metadata
 oldMeta = obj.meta.(dim);
