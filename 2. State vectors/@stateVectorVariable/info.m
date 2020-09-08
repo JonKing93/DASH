@@ -37,9 +37,7 @@ if nargout~=0
     nDims = numel(dims);
     dimFields = {"name","type","stateLength","ensembleMembers","indices",...
         "sequence","hasMean","meanIndices","weights"};
-    pre = repmat( {[]}, [1, numel(dimFields)*2]);
-    pre(1:2:end) = dimFields;
-    dimInfo = repmat(struct(pre{:}), [nDims, 1]);
+    [dimInfo, dimInputs] = dash.preallocateStructs(dimFields, [nDims, 1]);
 
 % Print to console
 else
@@ -92,10 +90,9 @@ for k = 1:numel(alldims)
  
     % Output structure
     if nargout>0
-        input = pre;
-        input(2:2:end) = {name, type, stateSize, ensSize, indices, sequence, ...
+        dimInputs(2:2:end) = {name, type, stateSize, ensSize, indices, sequence, ...
                           hasMean, meanIndices, weights};
-        dimInfo(k) = struct(input{:});
+        dimInfo(k) = struct(dimInputs{:});
 
     % Print to console
     else

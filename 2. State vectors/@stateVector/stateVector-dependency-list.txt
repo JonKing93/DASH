@@ -118,8 +118,10 @@ info
     variableNames
         dash.checkIndices
     dash.messageList
+    dash.preallocateStructs
     svv.info
         dash.messageList
+        dash.preallocateStructs
 renameVariables
     checkVariables
         errorTitle

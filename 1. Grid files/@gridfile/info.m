@@ -89,9 +89,7 @@ end
 % Preallocate source structure
 nSource = numel(index);
 sourceFields = {"file","variable","dimensions","size","metadata","fillValue","validRange","linearTransformation"};
-pre = repmat( {[]}, [1, numel(sourceFields)*2]);
-pre(1:2:end) = sourceFields;
-sourceInfo = repmat(struct(pre{:}), [nSource, 1]);
+[sourceInfo, inputs] = dash.preallocateStructs(sourceFields, [nSource, 1]);
 
 % Source information
 sources = obj.buildSources(index);
@@ -107,10 +105,9 @@ for s = 1:numel(sources)
     
     % Source output structure
     if nargout~=0
-        input = pre;
-        input(2:2:end) = {sources{s}.file, sources{s}.var, sourceDims, sourceSize, ...
+        inputs(2:2:end) = {sources{s}.file, sources{s}.var, sourceDims, sourceSize, ...
             sourceMeta, sources{s}.fill, sources{s}.range, sources{s}.convert};
-        sourceInfo(s) = struct(input{:});
+        sourceInfo(s) = struct(inputs{:});
         
     % Print source to console
     else

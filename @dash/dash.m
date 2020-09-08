@@ -9,6 +9,7 @@ classdef dash
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
         X = permuteToOrder(X, order, nDims);
+        [s, inputs] = preallocateStructs(fields, siz);
         
         % File paths
         path = checkFileExists(file);  

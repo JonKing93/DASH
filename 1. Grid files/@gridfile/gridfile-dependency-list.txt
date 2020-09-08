@@ -149,6 +149,7 @@ info
     dash.checkIndices
         dash.assertPositiveIntegers
             dash.assertRealDefined
+    dash.preallocateStructs
     buildSources
         collectFullPaths
             collectPrimitives

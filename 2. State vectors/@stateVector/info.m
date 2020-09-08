@@ -69,9 +69,7 @@ if nargout > 0
     
     % Preallocate the variable structure
     nVars = numel(v);
-    pre = repmat({[]}, [1 numel(stateVectorVariable.infoFields)*2]);
-    pre(1:2:end) = stateVectorVariable.infoFields;
-    varInfo = repmat(struct(pre{:}), [nVars, 1]);
+    varInfo = dash.preallocateStructs(stateVectorVariable.infoFields, [nVars, 1]);
     
 % Print to console
 else
