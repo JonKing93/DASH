@@ -24,10 +24,7 @@ if any(obj.convert(d))
 end
 
 % Check the metadata is an allowed gridfile type. Convert cellstrings
-gridfile.checkMetadataField(metadata, dim);
-if iscellstr(metadata) %#ok<ISCLSTR>
-    metadata = string(metadata);
-end
+metadata = gridfile.checkMetadataField(metadata, dim);
 
 % Check the rows match the number of reference indices
 if size(metadata,1) ~= obj.ensSize(d)

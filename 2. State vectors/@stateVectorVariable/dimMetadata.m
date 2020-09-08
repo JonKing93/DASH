@@ -39,15 +39,12 @@ else
         % Check that converted metadata is still valid. Convert cellstring to
         % string.
         try
-            gridfile.checkMetadataField(meta);
+            meta = gridfile.checkMetadataField(meta);
         catch ME
             failedConversionError(obj.name, dim, funcName, 2, ME);
         end
         if size(meta, 1) ~= nRows
             failedConversionError(obj.name, dim, funcName, 3, ME, size(meta,1), nRows);
-        end
-        if iscellstr(meta) %#ok<ISCLSTR>
-            meta = string(meta);
         end
     end
 end
