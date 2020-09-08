@@ -41,15 +41,14 @@ dash.assertPositiveIntegers(nEns, 'nEns');
 % v: Index of variable in the state vector.
 
 % Get the .grid files associated with each variable.
-nVar = numel(obj.variables);
-files = cell(nVar, 1);
-[files{:}] = deal(obj.variables.file);
+files = dash.collectField(obj.variables, 'file');
 files = string(files);
 
-% Find the unique gridfiles. Preallocate data source arrays and the limits
-% of each varable in the state vector
+% Find the unique gridfiles. Preallocate data sources, grids, and the limits
+% of each variable in the state vector
 [files, vf, f] = unique(files);
 nGrids = numel(files);
+nVars = numel(obj.variables);
 grids = cell(nGrids, 1);
 sources = cell(nGrids, 1);
 svLimit = zeros(nVars+1, 2);

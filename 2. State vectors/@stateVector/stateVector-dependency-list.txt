@@ -4,6 +4,7 @@ design
         dash.checkStrsInList
         variableNames
             dash.checkIndices
+            dash.collectField
     svv.design
         svv.checkDimensions
             dash.checkStrsInList
@@ -21,6 +22,7 @@ sequence
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.sequence
         svv.checkDimensions
@@ -34,6 +36,7 @@ mean
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.mean
         svv.checkDimensions
@@ -50,6 +53,7 @@ weightedMean
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.weightedMean
         svv.checkDimensions
@@ -65,6 +69,7 @@ resetMeans
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.resetMeans
         svv.checkDimensions
@@ -74,6 +79,7 @@ specifyMetadata
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.specifyMetadata
         svv.checkDimensions
@@ -84,6 +90,7 @@ convertMetadata
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.convertMetadata
         svv.checkDimensions
@@ -94,6 +101,7 @@ resetMetadata
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     svv.resetMetadata
         svv.checkDimensions
@@ -103,6 +111,7 @@ dimensions
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.messageList
     svv.dimensions
@@ -112,10 +121,12 @@ info
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.checkIndices
     errorTitle
     variableNames
+        dash.collectField
         dash.checkIndices
     dash.messageList
     dash.preallocateStructs
@@ -127,15 +138,18 @@ renameVariables
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.assertStrList
     dash.assertVectorTypeN
     variableNames
+        dash.collectField
         dash.checkIndices
     svv.rename
 buildEnsemble
     dash.assertScalarLogical
     dash.assertPositiveIntegers
+    dash.collectField
     gridfile
     gridfile.review
     svv.checkGrid
@@ -152,6 +166,7 @@ buildEnsemble
         svv.checkDimensions
             dash.checkStrsInList
     variableNames
+        dash.collectField
         dash.checkIndices
     svv.removeOverlap
         svv.checkDimensions
@@ -168,6 +183,7 @@ add
     dash.assertScalarLogical
     dash.assertStrFlag
     variableNames
+        dash.collectField
         dash.checkIndices
     errorTitle
     stateVectorVariable (svv)
@@ -191,6 +207,7 @@ add
             errorTitle
             dash.checkStrsInList
             variableNames
+                dash.collectField
                 dash.checkIndices
         dash.messageList
         updateCoupledVariables
@@ -203,6 +220,7 @@ couple
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.messageList
     updateCoupledVariables
@@ -212,12 +230,14 @@ uncouple
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
 autoCouple
     checkVariables
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.assertVectorTypeN
 allowOverlap
@@ -225,10 +245,12 @@ allowOverlap
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.assertVectorTypeN
 append
     variableNames
+        dash.collectField
         dash.checkIndices
     errorTitle
     dash.messageList
@@ -237,14 +259,17 @@ extractVariables
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     variableNames
+        dash.collectField
         dash.checkIndices
 copy
     checkVariables
         errorTitle
         dash.checkStrsInList
         variableNames
+            dash.collectField
             dash.checkIndices
     dash.parseInputs
     dash.assertScalarLogical
@@ -292,4 +317,5 @@ copy
             dash.checkStrsInList
         dash.assertVectorTypeN
 variableNames
+    dash.collectField
     dash.checkIndices

@@ -32,8 +32,7 @@ varNames = strings(0,1);
 
 % Get the variable names
 if ~isempty(obj.variables)
-    varNames = cell( numel(v), 1 );
-    [varNames{:}] = deal(obj.variables(v).name);
+    varNames = dash.collectField(obj.variables(v), 'name');
     varNames = string(varNames);
 end
 
