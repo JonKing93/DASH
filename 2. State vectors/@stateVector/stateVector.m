@@ -1,6 +1,41 @@
 classdef stateVector
-    % A class that designs and builds a state vector from data stored in
-    % .grid files.
+    % A class that designs a state vector and builds an ensemble.
+    %
+    % stateVector Methods:
+    %   stateVector - Intializes a new state vector.
+    %   add - Adds a new variable to a state vector.
+    %   design - Options for dimensions of variables in a state vector.
+    %   mean - Options for taking a mean
+    %   weightedMean - Options for taking a weighted mean
+    %   sequence - Options designing a sequence.
+    %   copy - Copy options between variables
+    %   buildEnsemble - Builds a state vector ensemble
+    %
+    % *** Summary Information ***
+    % stateVector Methods:
+    %   variableNames - Returns a list of variables in the state vector
+    %   dimensions - Returns a list of dimensions for variables
+    %   info - Return a summary of a state vector
+    %
+    % *** Advanced ***
+    % stateVector Methods:
+    %   uncouple - Uncouple variables in a state vector
+    %   allowOverlap - Enable overlap for variables in a state vector
+    %   specifyMetadata - Specify metadata for a dimension of variables
+    %   convertMetadata - Convert metadata for a dimension of variables in
+    %   resetMeans - Reset options for means
+    %   resetMetadata - Reset options for metadata
+    %   remove - Removes a variable from a state vecto
+    %   couple - Couples variables
+    %    
+    % *** Additional Options ***
+    % stateVector Methods:
+    %   rename - Change the name of a state vector
+    %   renameVariables - Change the names of variables
+    %   displayConsoleOutput - Enable or disable console notifications
+    %   autoCouple - Specify whether to automatically couple variables
+    %   append - Concatenate state vectors
+    %   extractVariables - Get the state vector for specific variables
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
