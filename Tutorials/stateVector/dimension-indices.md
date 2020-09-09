@@ -22,7 +22,7 @@ The dimension indices for ensemble dimensions are slightly more complex. We will
 Figure 1: Reference indices for June ensemble members and accompanying state vector ensemble.
 
 # Example workflow
-You can use gridfile metadata to easily obtain data indices. As detailed in the gridfile tutorial, you can obtain a .grid file's metadata via:
+You can use gridfile metadata to easily obtain dimension indices. As detailed in the gridfile tutorial, you can obtain a .grid file's metadata via:
 ```matlab
 grid = gridfile('myfile.grid');
 meta = grid.metadata;
