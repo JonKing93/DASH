@@ -48,10 +48,11 @@ Throughout the stateVector tutorial, we will refer to "state dimensions" and "en
 <img src="\DASH\assets\images\state-dimensions.svg" alt="State dimensions in a state vector ensemble." style="width:80%;display:block">
 Figure 3: State dimensions in a state vector ensemble.
 
-Here, we can see that each row is associated with a unique spatial coordinate because each element in the state vector holds the data for a particular grid point. The latitude-longitude coordinate within each row is constant; for example, row 5 always describes the grid point at (X, Y) regardless of which ensemble member is selected. Thus, latitude and longitude are state dimensions. By contrast, each column is associated with a constant time and run coordinate.
+Here, we can see that each row is associated with a unique spatial coordinate because each element in the state vector holds the data for a particular grid point. The latitude-longitude coordinate within each row is constant; for example, row 5 always describes the grid point at (X, Y) regardless of which ensemble member is selected. Thus, latitude and longitude are state dimensions.
 
-
-
+By contrast, each column is associated with a constant time and run coordinate.
+<img src="\DASH\assets\images\ensemble-dimensions.svg" alt="Ensemble dimensions in a state vector ensemble." style="width:80%;display:block">
+Figure 4: Ensemble dimensions in a state vector ensemble.
 
 For example, column 5 always refers to data from year 1 in run 2, regardless of the spatial point. Thus, time and run are ensemble dimensions in this case. As a rule of thumb, the "lat","lon","coord","lev", and "var" dimensions are often state dimensions, and the "time" and "run" dimensions are often ensemble dimensions. However, this is just a rule of thumb and not a strict requirement; depending on your applications, any dimension could be a state dimension or ensemble dimension.
 <br>
@@ -62,7 +63,9 @@ Sometimes, you may want an ensemble dimension to have some structure along the s
 
 For example, let's say I want my "T" variable to include the spatial grid from June, July, and August in a given year. The state vector ensemble for this variable would have the following structure.
 
-INSERT FIGURE HERE
+By contrast, each column is associated with a constant time and run coordinate.
+<img src="\DASH\assets\images\sequence.svg" alt="An example of a sequence." style="width:80%;display:block">
+Figure 5: An example of a sequence for the time dimension.
 
 We can see that the ensemble dimension "time" now has metadata along both the state vector and the ensemble. The columns still refer to a unique (time, run) coordinate, but the rows also refer to a particular month. This additional metadata along the state vector forms a sequence for the time dimension. Note that time is still an ensemble dimension because metadata along the ensemble is still required to form a unique time coordinate. For example, we know an element in row 5 is from June, but we don't know the year until referencing a specific ensemble member.
 
