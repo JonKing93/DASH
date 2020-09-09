@@ -61,16 +61,29 @@ Figure 4: State vector ensemble with June reference indices and a three year seq
 
 If we want to take a mean over an ensemble dimension, we will need to provide a set of mean indices, which will indicate how to find elements in the mean for each ensemble member. The syntax here is similar to sequence indices: each mean index specifies how many data indices past the reference index to find the next element in the mean. If the reference indices point to the month of June, then
 ```matlab
-meanIndices = [0, 1, 2];
+meanIndices = [0, 1, 2, 3];
 ```
-would cause each state vector to hold the mean of data from June, July, and August in each year.
-INSERT FIGURE HERE.
+would cause each state vector to hold the mean of data from June, July, August, and September in each year.
+
+<img src="\DASH\assets\images\mean-indices.svg" alt="Mean indices pointing at June through September." style="width:80%;display:block">
+Figure 5: Mean indices pointing at June through September.
+
+<img src="\DASH\assets\images\mean-ensemble.svg" alt="An ensemble with a June through September mean." style="width:80%;display:block">
+Figure 6: An ensemble with a June through September mean.
 
 If you have both mean and sequence indices, then the mean indices will be applied to *each* sequence element. For example
 ```matlab
 seqIndices = [0, 12, 24];
-meanIndices = [0, 1, 2];
+meanIndices = [0, 1, 2, 3];
 ```
-would create state vectors consisting of the June, July, August summer mean in three consecutive years.
+would create state vectors consisting of the June-September mean in three consecutive years.
 
-INSERT FIGURE HERE.
+<img src="\DASH\assets\images\meanseq-indices.svg" alt="Mean indices pointing at June through September for a sequence of three years." style="width:80%;display:block">
+Figure 7: Mean indices pointing at June through September for a sequence of three years.
+
+<img src="\DASH\assets\images\meanseq-ensemble.svg" alt="An ensemble with a June through September mean and a three year sequence." style="width:80%;display:block">
+Figure 8: An ensemble with a June through September mean and a three year sequence.
+
+
+
+[Previous](concepts)   [Next](new)
