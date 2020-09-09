@@ -15,10 +15,11 @@ If I only want to include the Northern Hemisphere in my state vector, then I wil
 # State and Reference Indices
 
 As the name suggests, state indices are the dimension indices for a state dimension. They indicate which elements along a dimension to add to a state vector.
-INSERT FIGURE HERE
 
 The dimension indices for ensemble dimensions are slightly more complex. We will refer to these as "reference indices" (the reason for this name will become clear later). Reference indices specify which elements along a dimension can be used as ensemble members. For example, say that "time" is an ensemble dimension, and that the time consists of monthly data from 1850 to 2005. If I use reference indices that point to month of June, then all ensemble members will be selected from the month of June.
-INSERT FIGURE HERE
+<img src="\DASH\assets\images\reference-indices.svg" alt="Reference indices pointing at June." style="width:80%;display:block">
+<img src="\DASH\assets\images\ref-ensemble.svg" alt="A state vector ensemble with ensemble members selected from Junes." style="width:80%;display:block">
+Figure 1: Reference indices for June ensemble members and accompanying state vector ensemble.
 
 # Example workflow
 You can use gridfile metadata to easily obtain data indices. As detailed in the gridfile tutorial, you can obtain a .grid file's metadata via:
@@ -47,7 +48,8 @@ seqIndices = [0, 12, 24];
 ```
 The first sequence index (0), says to use the data at the reference index as the first June. Since the data is monthly, June of the following year is 12 data indices away from this first June, so sequence index 2 is 12. Finally, the third June is 24 months away from the first June, so its sequence index is 24.
 
-INSERT FIGURE HERE.
+<img src="\DASH\assets\images\sequence-indices.svg" alt="Sequence indices pointing at three consecutive Junes." style="width:80%;display:block">
+Figure 2: Sequence indices pointing to three consecutive Junes.
 
 
 # Mean Indices
