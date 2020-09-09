@@ -9,7 +9,7 @@ title: "New .grid File"
 
 We'll start by defining the metadata for the .grid file. This metadata specifies the metadata for each dimension in the .grid file, and is used to organize the N-dimensional array. To define metadata, use:
 
-```
+```matlab
 meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ..., dimensionN, metadataN);
 ```
 

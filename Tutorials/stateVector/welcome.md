@@ -12,6 +12,8 @@ If you're already familiar with stateVector and just want a refresher, or if you
 <br>
 ### Prerequisites
 
+The gridfile package requires MATLAB 2018B or higher. If you are using an earlier version, you will need to [upgrade](https://www.mathworks.com/help/install/ug/upgrade-matlab-release.html) your release.
+
 stateVector is based around the gridfile module. If you're not familiar with gridfile, you may want to check out the [gridfile tutorial](../gridfile/welcome).
 
 <br>
@@ -35,4 +37,4 @@ to show stateVector help in the Matlab documentation browser.
 
 Alright, let's start the tutorial!
 
-[Next](overview)
+[Next](concepts)
