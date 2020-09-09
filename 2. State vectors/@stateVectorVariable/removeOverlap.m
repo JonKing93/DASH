@@ -42,11 +42,7 @@ subAddIndices = NaN(nEls, nDims);
 subRefIndices = NaN(nEns, nDims);
 for k = 1:nDims
     subAddIndices(:,k) = addIndices{k}(addindexIndices(:,k));
-    try
     subRefIndices(:,k) = obj.indices{d(k)}(subMembers(:,k));
-    catch ME
-        'hi';
-    end
 end
 
 % Replicate the add indices over the reference indices and vice versa.
