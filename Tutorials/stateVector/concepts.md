@@ -28,11 +28,12 @@ Although T and Tmean both describe temperature, they are considered different va
 
 # Ensembles
 
-A second important concept is that of the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like Figure 3.
+A second important concept is that of the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like:
 
-<img src="\DASH\assets\images\ensemble.svg" alt="An example state vector." style="width:80%;display:block">
+<img src="\DASH\assets\images\ensemble.svg" alt="An example state vector ensemble." style="width:80%;display:block">
+Figure 2: An example state vector ensemble (N=5).
 
-Here, each column is a different ensemble member. Each ensemble member has the T, P, and Tmean variables, but in a different time slice. In the case of ensemble member 5, the ensemble member is from the same time step as ensemble member 1, but from a different simulation.
+Here, each column is a different ensemble member. Each ensemble member has the T, P, and Tmean variables, but in a different time slice. In the case of ensemble member 5, the ensemble member is from the same time step as ensemble member 1, but in a different simulation.
 
 <br>
 
