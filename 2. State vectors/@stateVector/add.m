@@ -48,12 +48,7 @@ dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
 
 % Check the name is a valid variable name and not a duplicate
-vars = obj.variableNames;
-if ismember(varName, vars)
-    error('There is already a "%s" variable in %s.', varName, obj.errorTitle);
-elseif ~isvarname(varName)
-    error('varName must be a valid MATLAB variable name (starts with a letter -- composed only of letters, numbers, and underscores)');
-end
+obj.checkVariableNames(varName, [], 'varName', 'add a new variable to');
 
 % Create the new variable (error checks file).
 newVar = stateVectorVariable(varName, file);

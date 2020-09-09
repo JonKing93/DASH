@@ -21,12 +21,11 @@ elseif ~isscalar(secondVector)
 end
 
 % Check there are no naming conflicts
-names1 = obj.variableNames;
-names2 = secondVector.variableNames;
-duplicate = intersect(names1, names2);
-if ~isempty(duplicate)
-    duplicateNameError(obj, secondVector, duplicate);
+title2 = secondVector.errorTitle;
+if strcmp(title2, obj.defaultName)
+    title2 = "secondVector";
 end
+obj.checkVariableNames(secondVector.variableNames, [], [], sprintf('append %s to', title2));
 
 % Notify user of autocoupling
 couple1 = names1(obj.auto_Couple);
@@ -46,15 +45,6 @@ obj = obj.couple([couple1; couple2]);
 end
 
 % Messages
-function[] = duplicateNameError(obj, secondVector, duplicate)
-title2 = secondVector.errorTitle;
-if strcmp(title2, obj.defaultName)
-    title2 = "secondVector";
-end
-error(['Cannot append %s to %s because both contain variables named %s. ',...
-    'To change variable names, see "stateVector.renameVariables".'], ...
-    obj.errorTitle, title2, dash.messageList(duplicate));
-end
 function[] = notifyAutocoupling(obj, names1, names2)
 
 % Only notify if there are variables to couple and the user enabled

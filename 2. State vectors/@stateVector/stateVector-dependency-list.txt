@@ -142,9 +142,11 @@ renameVariables
             dash.checkIndices
     dash.assertStrList
     dash.assertVectorTypeN
-    variableNames
-        dash.collectField
-        dash.checkIndices
+    checkVariableNames
+        variableNames
+            dash.collectField
+            dash.checkIndices
+        errorTitle
     svv.rename
 buildEnsemble
     dash.assertScalarLogical
@@ -182,10 +184,11 @@ displayConsoleOutput
 add
     dash.assertScalarLogical
     dash.assertStrFlag
-    variableNames
-        dash.collectField
-        dash.checkIndices
-    errorTitle
+    checkVariableNames
+        variableNames
+            dash.collectField
+            dash.checkIndices
+        errorTitle
     stateVectorVariable (svv)
         dash.assertStrFlag
         dash.checkFileExists
@@ -249,10 +252,12 @@ allowOverlap
             dash.checkIndices
     dash.assertVectorTypeN
 append
-    variableNames
-        dash.collectField
-        dash.checkIndices
     errorTitle
+    checkVariableNames
+        variableNames
+            dash.collectField
+            dash.checkIndices
+        errorTitle
     dash.messageList
 extractVariables
     checkVariables

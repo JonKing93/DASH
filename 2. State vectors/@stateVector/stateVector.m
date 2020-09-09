@@ -5,7 +5,7 @@ classdef stateVector
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
     
-    properties %(SetAccess = private)
+    properties (SetAccess = private)
         name; % An optional identifier for the state vector
         verbose; % Whether to print a messages to the console
         
@@ -72,6 +72,7 @@ classdef stateVector
     % Object utilities
     methods
         [v, varNames] = checkVariables(obj, varNames);
+        checkVariableNames(obj, newNames, v, inputName, methodName);
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);
     end
