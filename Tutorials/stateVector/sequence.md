@@ -10,6 +10,8 @@ To specify a sequence for a variable, use the "sequence" method. In order, you w
 2. the name of the ensemble dimension being given a sequence,
 3. [sequence indices](dimension-indices), and
 4. sequence metadata.
+
+
 For example:
 ```matlab
 sv = sv.sequence('T', 'time', [0 1 2], ["June";"July";"August"]);
