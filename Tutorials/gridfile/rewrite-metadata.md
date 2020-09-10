@@ -15,4 +15,4 @@ where
 * dimension is the name of a dimension, and
 * metadata is the new metadata for the dimension.
 
-As usual, the number of metadata rows must match the size of the dimension. Metadata can be numeric, logical, char, string, cellstring, or datetime.
+As usual, metadata can be numeric, logical, char, string, cellstring, or datetime matrix. The number of rows must match the length of the dimension. Each row must be unique, and may not contain NaN or NaT elements.

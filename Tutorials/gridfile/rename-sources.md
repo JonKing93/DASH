@@ -28,7 +28,7 @@ where filenames is a string vector or cellstring vector of data source file name
 
 <br>
 
-#### Specify the renamed files.
+#### Specify renamed files.
 
 If you renamed a data source (for example, from "myfile.nc" to "different-name.nc"), or if you moved data source files off the Matlab active path, then you will need to specify the new name of the file. Do so via:
 ```matlab
@@ -44,4 +44,4 @@ By default, renameSources will use the same type of file path (relative or absol
 ```matlab
 grid.renameSources( filenames, newnames, relativePath)
 ```
-where relativePath is a logical vector indicating whether the file paths to the renamed data sources should be stored as relative paths. 
+where relativePath is a logical vector indicating whether the file paths to the renamed data sources should be stored as relative paths.

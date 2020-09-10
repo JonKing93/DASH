@@ -14,4 +14,4 @@ where
 * dimension is the name of the dimension being expanded, and
 * newMetadata is the metadata for the new elements along the dimension.
 
-Note that the new metadata must use the same format as the existing metadata for the dimension in the .grid file. They must have the same number of columns and have compatible data types. Sets of compatible data types are (numeric and logical), (char, string and cellstring). Datetime metadata is only compatible with other datatime metadata.
+Note that the new metadata must use the same format as the existing metadata for the dimension in the .grid file. They must have the same number of columns and have compatible data types. Sets of compatible data types are (numeric and logical), and (char, string and cellstring). Datetime metadata is only compatible with other datetime metadata.
