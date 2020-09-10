@@ -27,11 +27,10 @@ For example, a gridded monthly temperature field and gridded monthly precipitati
 
 Although T and Tmean both describe temperature, they are considered different variables because they have different spatial and temporal resolution.
 
-<br>
 
 # Ensembles
 
-A second important concept is that of the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like:
+A second important concept is the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like:
 
 <img src="\DASH\assets\images\ensemble.svg" alt="An example state vector ensemble." style="width:80%;display:block">
 Figure 2: An example state vector ensemble (N=5).
@@ -69,4 +68,4 @@ Figure 5: An example of a sequence for the time dimension.
 We can see that the ensemble dimension "time" now has metadata along both the state vector and the ensemble. The columns still refer to a unique (time, run) coordinate, but the rows also refer to a particular month. This additional metadata along the state vector forms a sequence for the time dimension. Note that time is still an ensemble dimension because metadata along the ensemble is still required to form a unique time coordinate. For example, we know an element in row 1 is from June, but we don't know the year until referencing a specific ensemble member.
 
 
-[Previous](overview)   [Next](dimension-indices)
+[Previous](welcome)   [Next](dimension-indices)

@@ -84,6 +84,6 @@ Figure 7: Mean indices pointing at June through September for a sequence of thre
 <img src="\DASH\assets\images\meanseq-ensemble.svg" alt="An ensemble with a June through September mean and a three year sequence." style="width:80%;display:block">
 Figure 8: An ensemble with a June through September mean and a three year sequence.
 
-
+Alright, that's enough about indices. Let's start making a state vector!
 
 [Previous](concepts)   [Next](new)
