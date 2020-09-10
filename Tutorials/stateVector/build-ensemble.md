@@ -29,6 +29,6 @@ X = sv.buildEnsemble(50, false)
 ```
 will build an ensemble with 50 ensemble members. The first ensemble member will be the first month of year 1. The second ensemble member will be the first month of year 2, and the 50th ensemble member will be the first month of year 50, etc.
 
-Nice! That's the tutorial. If you'd like to try more advanced options, check out the [Advanced Topics](advanced) page.
+Nice! That's the tutorial. If you'd like more control over a state vector, check out the [Advanced Topics](advanced) page.
 
 [Previous](add)   [Next](advanced)
