@@ -30,7 +30,7 @@ Note that when a variable is first added to a state vector, all dimensions are s
 ```matlab
 sv = sv.design('myVariable', 'dimensionName', type, indices)
 ```
-specifies state or reference indices for a dimension. Note that type can be any of the inputs used to indicate a state or ensemble dimension.
+specifies state or reference indices for a dimension. Note that "type" can be any of the inputs used to indicate a state or ensemble dimension.
 
 <br>
 
