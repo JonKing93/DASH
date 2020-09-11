@@ -7,6 +7,7 @@ title: Mean
 
 It is often useful to take the mean of a dimension in a state vector variable. For example, you could take the mean over the "lon" dimension so that state vector elements are zonal means. Or you could take the mean over the "time" dimension if you want state vector elements to average over multiple months or years. To take a mean, we will use "mean" method.
 
+<br>
 ### Take a mean over state dimensions
 
 To take a mean over state dimensions of variables, provide in order
@@ -21,9 +22,10 @@ sv = sv.mean(vars, dims);
 ```
 will take a mean over the "lat" and "lon" dimensions of the "T" and "P" variables.
 
+<br>
 ### Take a mean over ensemble dimensions
 
-To take a mean over an ensemble dimension, you will also need to provide [mean indices](dimension-indices) as the third input. For example:
+To take a mean over an ensemble dimension, you will also need to provide [mean indices](dimension-indices#mean-indices) as the third input. For example:
 ```matlab
 sv = sv.mean('T', 'time', [0 1 2])
 ```
@@ -36,6 +38,7 @@ sv = sv.mean('T', dims, meanIndices);
 ```
 would take a 3 element mean over the time dimension, and a 12 element mean over the run dimension.
 
+<br>
 ### Take a mean over a mix of state and ensemble dimensions
 
 To specify mean options for both state and ensemble dimensions simultaneously, use the same syntax as for multiple ensemble dimensions and use empty arrays as the mean indices for the state dimensions. For example, say that "lat" and "lon" are state dimensions and "time" is an ensemble dimension. Then:
@@ -46,9 +49,10 @@ sv = sv.mean('T', dims, indices);
 ```
 would take a mean over all three dimensions.
 
+<br>
 ### Optional: Specify NaN options
 
-You can use the fourth input to specify how to treat NaN values in a mean. (By default, NaN values are included in means). To omit NaN values from the means of all listed dimensions, use either of the following options:
+You can use the fourth input to specify how to treat NaN values in a mean. By default, NaN values are included in means. To omit NaN values from the means of all listed dimensions, use either of the following options:
 ```matlab
 sv = sv.mean(variables, dimensions, indices, 'omitnan')
 sv = sv.mean(variables, dimensions, indices, true)
@@ -75,7 +79,6 @@ sv = sv.mean(variables, dims, indices, omitnan);
 would include NaN values in means taken over the "lat" and "time" dimensions, but omit NaN values in the mean taken over the "lon" dimension.
 
 <br>
-
 ### Optional: Reset Mean options
 
 You can reset mean options for variables and dimensions. When you reset the options, no mean is taken. Use

@@ -11,6 +11,7 @@ X = sv.buildEnsemble(150)
 ```
 will build and return a state vector ensemble with 150 ensemble members.
 
+<br>
 #### Select ensemble members sequentially
 
 By default, "buildEnsemble" selects ensemble members at random from the reference indices. For example, say that the time dimension for monthly data over 100 years. If we make time an ensemble dimension and use the first month of each year as the reference indices
@@ -31,4 +32,4 @@ will build an ensemble with 50 ensemble members. The first ensemble member will 
 
 Nice! That's the tutorial. If you'd like more control over a state vector, check out the [Advanced Topics](advanced) page.
 
-[Previous](add)   [Next](../welcome)
+[Previous](add)   [All Tutorials](../welcome)

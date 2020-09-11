@@ -100,4 +100,4 @@ will load 6 latitude elements, starting with the first element and loading every
 
 Nice! That's the tutorial. If you'd like more control over gridfile, check out the [Advanced Topics](advanced) page.
 
-[Previous](add) [Next](../welcome)
+[Previous](add) [All Tutorials](../welcome)

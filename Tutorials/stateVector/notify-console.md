@@ -13,3 +13,7 @@ To re-enable these messages, provide true as the first input
 ```matlab
 sv = sv.notifyConsolse( true )
 ```
+
+Alternatively, you can disable notifications when you first create a state vector. (See [here](new#optional-disable-console-output) for a refresher.)
+
+[Advanced Topics](advanced)

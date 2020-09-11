@@ -10,8 +10,6 @@ To rename a state vector, use the "rename" command and provide the new name as i
 sv = sv.rename("A new name")
 ```
 
-[jump](#rename-variables*)
-
 # Rename variables in a state vector
 
 To rename variables, use the "renameVariables" command and provide, in order
@@ -25,3 +23,5 @@ newNames = ["X","Y","Z"];
 sv = sv.rename(currentNames, newNames);
 ```
 would rename the "T", "P", and "Tmean" variables to "X", "Y", and "Z" respectively. Note that all new names must be valid MATLAB variable names: they must start with a letter and only include letters, numbers, and underscores.
+
+[Advanced Topics](advanced)
