@@ -3,7 +3,7 @@ layout: simple_layout
 title: Rename
 ---
 
-<h1 id="vector">Rename a state vector</h3>
+<h1 id="vector">Rename a state vector</h1>
 
 To rename a state vector, use the "rename" command and provide the new name as input. For example
 ```matlab
