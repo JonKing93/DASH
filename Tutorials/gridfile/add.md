@@ -41,7 +41,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 
 ### Data source file paths
 
-By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#optional-save-absolute*).
+By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#optional-save-absolute-file-paths).
 
 <br>
 
