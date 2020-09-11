@@ -34,3 +34,5 @@ You can also return the .grid file and data source summaries as a structure. Spe
 [gridInfo, sourceInfo] = grid.info( 'all' );
 ```
 will cause the method to return these structures and not print anything to the console.
+
+[Advanced Topics](advanced)

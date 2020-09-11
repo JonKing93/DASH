@@ -31,3 +31,5 @@ You can exercise greater control over the "remove" method by also specifying the
 grid.remove( filename, variable )
 ```
 In this case, only data sources that match both the file and variable name will be removed from the .grid file.
+
+[Advanced Topics](advanced)

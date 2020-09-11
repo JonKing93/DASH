@@ -45,3 +45,5 @@ By default, renameSources will use the same type of file path (relative or absol
 grid.renameSources( filenames, newnames, relativePath)
 ```
 where relativePath is a logical vector indicating whether the file paths to the renamed data sources should be stored as relative paths.
+
+[Advanced Topics](advanced)

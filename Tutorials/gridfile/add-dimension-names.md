@@ -57,3 +57,5 @@ end
 ```
 
 **Important:** All new dimension names must be [valid Matlab variable names](https://www.mathworks.com/help/matlab/matlab_prog/variable-names.html).
+
+[Advanced Topics](advanced)
