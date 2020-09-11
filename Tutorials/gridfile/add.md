@@ -41,7 +41,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 
 ### Data source file paths
 
-By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#paths).
+By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#optional-save-absolute*).
 
 <br>
 
@@ -95,7 +95,7 @@ Here validRange is a two element vector. The first element is the lower bound of
 
 <br>
 
-<h3 id="paths">Optional: Save Absolute File Paths</h3>
+# Optional: Save Absolute File Paths
 
 When you add a data source file to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection by default. However, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolute' flag and select true as the option:
 ```matlab
