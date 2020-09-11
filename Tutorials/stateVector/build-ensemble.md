@@ -32,4 +32,4 @@ will build an ensemble with 50 ensemble members. The first ensemble member will 
 
 Nice! That's the tutorial. If you'd like more control over a state vector, check out the [Advanced Topics](advanced) page.
 
-[Previous](add)-----[All Tutorials](../welcome)
+[Previous](add)---[All Tutorials](../welcome)
