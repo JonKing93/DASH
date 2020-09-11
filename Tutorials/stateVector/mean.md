@@ -93,7 +93,7 @@ sv.resetMeans(variableNames)
 ```
 to reset means for all dimensions of specific variables, and
 ```matlab
-sv.resetMetans(variableNames, dimensionNames)
+sv.resetMeans(variableNames, dimensionNames)
 ```
 to reset means for specific dimensions of listed variables.
 
