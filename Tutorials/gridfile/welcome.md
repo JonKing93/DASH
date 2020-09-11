@@ -5,7 +5,7 @@ title: Welcome!
 
 # Welcome to the gridfile tutorial!
 
-This tutorial provides a detailed overview of the gridfile package. It includes the motivation for gridfile, explains key concepts, and provides step by step instructions for using gridfile commands. If you'd like to work through the tutorial offline, or in the Matlab console, you can download it <a href="tutorial.m" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
+This tutorial provides a detailed overview of the gridfile package. It includes the motivation for gridfile, explains key concepts, and provides step by step instructions for using gridfile commands. If you'd like to work through the tutorial offline, or in the Matlab console, you can download it <a href="gridfile-tutorial.zip" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
 
 If you're already familiar with gridfile and just want a refresher, or if you're in a hurry, you may be interested in the gridfile [quickstart](quickstart).
 
