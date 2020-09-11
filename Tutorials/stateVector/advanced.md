@@ -12,4 +12,4 @@ The following pages contain tutorials on more advanced stateVector features.
 * [Adjust metadata for coupled variables](metadata)
 * [Append two state vectors](append)
 * [Remove or extract variables](remove-extract)
-* [Enable / Disable console notifications](console-output)
+* [Enable / Disable console notifications](notify-console)
