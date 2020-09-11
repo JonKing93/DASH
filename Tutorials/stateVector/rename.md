@@ -10,7 +10,7 @@ To rename a state vector, use the "rename" command and provide the new name as i
 sv = sv.rename("A new name")
 ```
 
-[jump](#rename-variables-in-a-state-vector)
+[jump](#rename-variables*)
 
 # Rename variables in a state vector
 
