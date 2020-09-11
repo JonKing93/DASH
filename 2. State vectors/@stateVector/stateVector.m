@@ -19,23 +19,23 @@ classdef stateVector
     %
     % *** Advanced ***
     % stateVector Methods:
+    %   autoCouple - Specify whether to automatically couple variables
     %   uncouple - Uncouple variables in a state vector
-    %   allowOverlap - Enable overlap for variables in a state vector
-    %   specifyMetadata - Specify metadata for a dimension of variables
-    %   convertMetadata - Convert metadata for a dimension of variables in
-    %   resetMeans - Reset options for means
-    %   resetMetadata - Reset options for metadata
-    %   remove - Removes a variable from a state vecto
     %   couple - Couples variables
+    %   allowOverlap - Enable overlap for variables in a state vector
+    %   specifyMetadata - Specify metadata for variable dimensions
+    %   convertMetadata - Convert metadata for variable dimensions
     %    
     % *** Additional Options ***
     % stateVector Methods:
+    %   notifyConsole - Enable or disable console notifications
     %   rename - Change the name of a state vector
     %   renameVariables - Change the names of variables
-    %   displayConsoleOutput - Enable or disable console notifications
-    %   autoCouple - Specify whether to automatically couple variables
     %   append - Concatenate state vectors
-    %   extractVariables - Get the state vector for specific variables
+    %   extract - Get the state vector for specific variables
+    %   remove - Removes a variable from a state vector
+    %   resetMeans - Reset options for means
+    %   resetMetadata - Reset options for metadata
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
@@ -131,7 +131,7 @@ classdef stateVector
     % User methods
     methods
         obj = rename(obj, name);
-        obj = displayConsoleOutput(obj, verbose);
+        obj = notifyConsole(obj, verbose);
         obj = add(obj, name, file, autoCouple);
         obj = remove(obj, varNames);
         obj = couple(obj, varNames);
@@ -139,7 +139,7 @@ classdef stateVector
         obj = autoCouple(obj, varNames, auto);
         obj = allowOverlap(obj, varNames, overlap);
         obj = append(obj, secondVector);
-        obj = extractVariables(obj, varNames);
+        obj = extract(obj, varNames);
         obj = copy(obj, templateName, varNames, varargin);
         varNames = variableNames(obj, v);
     end

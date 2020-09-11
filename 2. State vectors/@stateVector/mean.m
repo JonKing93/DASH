@@ -11,8 +11,8 @@ function[obj] = mean(obj, varNames, dims, indices, omitnan)
 % obj = obj.mean(varNames, dims, indexCell)
 % Specify how to take a mean over multiple dimensions.
 %
-% obj = obj.mean(..., nanflag)
-% obj = obj.mean(..., omitnan)
+% obj = obj.mean(varNames, dims, indices, nanflag)
+% obj = obj.mean(varNames, dims, indices, omitnan)
 % Specify how to treat NaN values when taking a mean
 %
 % ----- Inputs -----

@@ -1,7 +1,7 @@
-function[obj] = extractVariables(obj, varNames)
+function[obj] = extract(obj, varNames)
 %% Returns a state vector that only includes the specified variables
 %
-% obj = obj.extractVariables(varNames)
+% obj = obj.extract(varNames)
 %
 % ----- Inputs -----
 %

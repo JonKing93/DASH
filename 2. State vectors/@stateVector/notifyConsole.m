@@ -1,7 +1,7 @@
-function[obj] = displayConsoleOutput(obj, verbose)
+function[obj] = notifyConsole(obj, verbose)
 %% Specify whether the stateVector should print notifications to the console
 %
-% obj = obj.displayConsoleOutout( verbose )
+% obj = obj.notifyConsole( verbose )
 %
 % ----- Input -----
 %

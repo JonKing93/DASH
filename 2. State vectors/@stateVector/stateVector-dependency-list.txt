@@ -179,7 +179,7 @@ buildEnsemble
         gridfile.repeatedLoad
 rename
     dash.assertStrFlag
-displayConsoleOutput
+notifyConsole
     dash.assertScalarLogical
 add
     dash.assertScalarLogical
@@ -259,7 +259,7 @@ append
             dash.checkIndices
         errorTitle
     dash.messageList
-extractVariables
+extract
     checkVariables
         errorTitle
         dash.checkStrsInList
