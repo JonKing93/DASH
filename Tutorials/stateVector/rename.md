@@ -3,14 +3,15 @@ layout: simple_layout
 title: Rename
 ---
 
-# Rename a state vector
+### Rename a state vector
 
 To rename a state vector, use the "rename" command and provide the new name as input. For example
 ```matlab
 sv = sv.rename("A new name")
 ```
 
-# Rename variables in a state vector
+<br>
+### Rename variables in a state vector
 
 To rename variables, use the "renameVariables" command and provide, in order
 1. The current names of the variables being renamed, and
