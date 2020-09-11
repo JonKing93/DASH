@@ -41,7 +41,7 @@ You can use the "specifyMetadata" command to provide metadata directly at the re
 
  Note that when you specify metadata, it is applied to the reference indices and each row must be unique.
 
-<br.
+<br>
 ### Convert metadata
 
  Alternatively, you can provide a function to convert a dimension's metadata using the "convertMetadata" command. To do so, provide in order
