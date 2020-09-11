@@ -27,7 +27,6 @@ For example, a gridded monthly temperature field and gridded monthly precipitati
 
 Although T and Tmean both describe temperature, they are considered different variables because they have different spatial and temporal resolution.
 
-
 # Ensembles
 
 A second important concept is the state vector ensemble. This is a collection of multiple iterations of a state vector, and is typically used to estimate climate system covariance and as the prior for an assimilation. In paleoclimate, ensemble members (different iterations of the state vector) are typically selected from different time slices and/or ensemble members of climate model output. Continuing the previous example, a small ensemble for my state vector might look like:
@@ -36,8 +35,6 @@ A second important concept is the state vector ensemble. This is a collection of
 Figure 2: An example state vector ensemble (N=5).
 
 Here, each column is a different ensemble member. Each ensemble member has the T, P, and Tmean variables, but in a different time slice. In the case of ensemble member 5, the ensemble member is from the same time step as ensemble member 1, but in a different simulation.
-
-<br>
 
 
 # State and Ensemble Dimensions
@@ -53,8 +50,8 @@ By contrast, each column is associated with a constant time and run coordinate.
 <img src="\DASH\assets\images\ensemble-dimensions.svg" alt="Ensemble dimensions in a state vector ensemble." style="width:80%;display:block">
 Figure 4: Ensemble dimensions in a state vector ensemble.
 
-For example, column 5 always refers to data from year 1 in run 2, regardless of the spatial point. Thus, time and run are ensemble dimensions in this case. As a rule of thumb, the "lat","lon","coord","lev", and "var" dimensions are often state dimensions, and the "time" and "run" dimensions are often ensemble dimensions. However, this is just a rule of thumb and not a strict requirement; depending on your applications, any dimension could be a state dimension or ensemble dimension.
-<br>
+For example, column 5 always refers to data from year 1 in run 2, regardless of the spatial point. Thus, time and run are ensemble dimensions in this case. As a rule of thumb, the "lat","lon","coord","lev", and "var" dimensions are often state dimensions, and the "time" and "run" dimensions are often ensemble dimensions. However, this is just a rule of thumb and not a strict requirement; depending on the application, any dimension could be a state dimension or ensemble dimension.
+
 
 # Sequences
 

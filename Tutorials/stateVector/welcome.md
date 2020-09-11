@@ -17,7 +17,6 @@ The gridfile package requires MATLAB 2018B or higher. If you are using an earlie
 stateVector is based around the gridfile module. If you're not familiar with gridfile, you may want to check out the [gridfile tutorial](../gridfile/welcome).
 
 <br>
-
 #### Help from the Matlab console
 
 This tutorial covers most statevector commands. However, you can also use

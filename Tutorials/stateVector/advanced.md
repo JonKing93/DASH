@@ -13,3 +13,4 @@ The following pages contain tutorials on more advanced stateVector features.
 * [Append two state vectors](append)
 * [Remove or extract variables](remove-extract)
 * [Enable / Disable console notifications](notify-console)
+* [Rename a state vector or variables](rename)
