@@ -65,4 +65,4 @@ Figure 5: An example of a sequence for the time dimension.
 We can see that the ensemble dimension "time" now has metadata along both the state vector and the ensemble. The columns still refer to a unique (time, run) coordinate, but the rows also refer to a particular month. This additional metadata along the state vector forms a sequence for the time dimension. Note that time is still an ensemble dimension because metadata along the ensemble is still required to form a unique time coordinate. For example, we know an element in row 1 is from June, but we don't know the year until referencing a specific ensemble member.
 
 
-[Previous](welcome)   [Next](dimension-indices)
+[Previous](welcome)---[Next](dimension-indices)

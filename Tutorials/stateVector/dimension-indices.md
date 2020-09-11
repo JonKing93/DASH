@@ -86,4 +86,4 @@ Figure 8: An ensemble with a June through September mean and a three year sequen
 
 Alright, that's enough about indices. Let's start making a state vector!
 
-[Previous](concepts)   [Next](new)
+[Previous](concepts)---[Next](new)

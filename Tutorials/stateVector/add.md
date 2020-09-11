@@ -34,4 +34,4 @@ You can specify whether the variable should allow overlap in state vector ensemb
 sv = sv.add('myVariable', 'my-gridfile.grid', [], true)
 ```
 
-[Previous](new)   [Next](design)
+[Previous](new)---[Next](design)

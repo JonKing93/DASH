@@ -97,4 +97,4 @@ sv.resetMeans(variableNames, dimensionNames)
 ```
 to reset means for specific dimensions of listed variables.
 
-[Previous](sequence)   [Next](weighted-mean)
+[Previous](sequence)---[Next](weighted-mean)

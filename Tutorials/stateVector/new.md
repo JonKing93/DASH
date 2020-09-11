@@ -34,4 +34,4 @@ sv = stateVector('My name', false);
 ```
 If you change your mind, you can also [enable/disable notifications](notify-console) later.
 
-[Previous](dimension-indices)   [Next](add)
+[Previous](dimension-indices)---[Next](add)

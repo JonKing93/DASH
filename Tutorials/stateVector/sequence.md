@@ -30,4 +30,4 @@ sv = sv.design(variableNames, dims, indices, meta);
 ```
 would specify sequences for both the time and run dimensions.
 
-[Previous](design)   [Next](mean)
+[Previous](design)---[Next](mean)

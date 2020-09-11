@@ -82,4 +82,4 @@ would use elements 49 to 96 along the latitude dimension, all elements along the
 
 Sometimes, using the design method on a variable will alter the dimension settings for other variables and a notification will be printed to the console. Don't panic. This is the desired behavior for most assimilations and occurs because of [variable coupling](couple). You can [disable these notifications](notify-console) if you do not want to receive them.
 
-[Previous](add)   [Next](sequence)
+[Previous](add)---[Next](sequence)
