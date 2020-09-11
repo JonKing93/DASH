@@ -25,6 +25,7 @@ sv.name
 ```
 If you want to change the name of a state vector, you can also [rename](rename#rename-a-state-vector) it later.
 
+<br>
 ### Optional: Disable console output
 
 By default, state vectors will print notification messages to the console when certain design choices are made. You can use the second input to stateVector to specify whether to provide these notification. Use false to disable notifications, as per:
