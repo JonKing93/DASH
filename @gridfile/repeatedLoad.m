@@ -88,41 +88,46 @@ for s = 1:numel(useSource)
         limit = obj.dimLimit(d,:,useSource(s));
         dimIndices = limit(1):limit(2);
         
-        % Get the indices of the requested data relative to the source grid
-        % and the output grid
+        % Get the indices of requested data in the source grid. Note that
+        % some .grid dimensions may not be in the data source.
         [ismem, sourceDim] = ismember(obj.dims(d), source.mergedDims);
         if ismem
-            [~, loc] = ismember( indices{d}, dimIndices );
+            [~, loc] = ismember(indices{d}, dimIndices);
             sourceIndices{sourceDim} = loc(loc~=0);
             [~, outputIndices{d}] = ismember( dimIndices(sourceIndices{sourceDim}), indices{d} );
+        else
+            [~, outputIndices{d}] = ismember( dimIndices, indices{d} );
         end
     end
     
-    % Load the data from the data source
+    % Load the data from the data source. Match .grid dimension order
     Xsource = source.read( sourceIndices );
-    
-    % Permute to match the order of the .grid dimensions. Add to output
-    dimOrder = 1:nDims;
-    [~, gridOrder] = ismember( obj.dims, source.mergedDims );
-    gridOrder(gridOrder==0) = dimOrder(~ismember(dimOrder,gridOrder));
-    X(outputIndices{:}) = permute(Xsource, gridOrder);
+    [~, order] = ismember(source.mergedDims, obj.dims);
+    X(outputIndices{:}) = dash.permuteToOrder(Xsource, order, nDims);
 end
 
 % Permute to match the requested dimension order
 dimOrder = 1:nDims;
-inputOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
-X = permute(X, inputOrder);
-dims = obj.dims(inputOrder);
-isdefined = obj.isdefined(inputOrder);
+dimOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
+X = permute(X, dimOrder);
+dims = obj.dims(dimOrder);
 
+% Determine which dimensions to keep and which to remove. Keep dimensions
+% that are defined or in the user input
+inputDims = 1:numel(inputOrder);
+isdefined = find(obj.isdefined(dimOrder));
+notdefined = find(~obj.isdefined(dimOrder));
+keep = [inputDims, isdefined(~ismember(isdefined, inputDims))];
+remove = notdefined(~ismember(notdefined, inputDims));
+
+% Arrange the metadata fields to match the dimension order
 if isfield(meta, obj.attributesName)
-    inputOrder(end+1) = max(inputOrder)+1;
+    dimOrder(end+1) = max(dimOrder)+1;
 end
-meta = orderfields(meta, inputOrder);
+meta = orderfields(meta, dimOrder);
 
-% Remove any undefined singleton dimensions from the data and the metadata
-order = [find(isdefined), find(~isdefined)];
-X = permute(X, order);
-meta = rmfield( meta, dims(~isdefined) );
+% Remove any dimensions from the data and the metadata
+X = permute(X, [keep, remove]);
+meta = rmfield( meta, dims(remove) );
     
 end

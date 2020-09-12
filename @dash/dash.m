@@ -4,30 +4,38 @@ classdef dash
     
     methods (Static)
         
-        % Global data for dimension names
+        % Misc
         names = dimensionNames;
+        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+        convertToV7_3(filename);
+        X = permuteToOrder(X, order, nDims);
         
-        % Files and paths
+        % Structures
+        [s, inputs] = preallocateStructs(fields, siz);
+        values = collectField(s, field);
+        
+        % File paths
         path = checkFileExists(file);  
         path = unixStylePath(path);
         path = relativePath(toFile, fromFolder);
         
-        % Input error checks
+        % Strings and string lists
         tf = isstrflag( input );        
         tf = isstrlist( input );
-        tf = isrelative( name );
-        assertStrFlag(input, name);
-        assertStrList(input, name);
-        assertNumericVectorN(input, N, name);
-        assertPositiveIntegers(input, allowNaN, allowInf, name);
-        str = errorStringList(strings);
-        varargout = parseInputs(inArgs, flags, defaults, nPrev);
-
-        % Indices and start, count, stride.
-        indices = equallySpacedIndices(indices);
+        input = assertStrFlag(input, name);
+        input = assertStrList(input, name);
+        k = checkStrsInList(input, list, name, message);
+        str = messageList(list);
         
-        % File formats
-        convertToV7_3(filename);
+        % Input assertions
+        assertScalarLogical(input, name);
+        assertRealDefined(input, name, allowNaN, allowInf, allowComplex);
+        assertVectorTypeN(input, type, N, name);
+        assertPositiveIntegers(input, allowNaN, allowInf, name);
+        
+        % Indices
+        indices = checkIndices(indices, name, dimLength, dimName);
+        indices = equallySpacedIndices(indices);
     end
     
 end

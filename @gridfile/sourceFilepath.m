@@ -1,21 +1,21 @@
-function[path] = sourceFilepath(obj, path, relative)
+function[path] = sourceFilepath(obj, path, absolute)
 %% Converts an absolute path for a data source to the path stored by the .grid file
 %
-% path = obj.sourceFilepath(path, relative)
-% Optionally converts a data source file path to a path relative to the
-% .grid file. Implements UNIX style file separators.
+% path = obj.sourceFilepath(path, absolute)
+% Converts a data source file path to the path style requested for a .grid
+% file. Implements UNIX style file separators.
 %
 % ----- Inputs -----
 %
 % path: A filepath. A string.
 %
-% relative: A scalar logical.
+% absolute: A scalar logical. Whether to use an absolute path (true) or not.
 %
 % ----- Outputs -----
 %
-% path: The file path stored in the .grid file.
+% path: The file path for the .grid file.
 
-if relative
+if ~absolute
     path = dash.relativePath( path, obj.file );
 end
 path = dash.unixStylePath(path);

@@ -28,8 +28,7 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % ----- Inputs -----
 %
 % dims: A list of dimension names for which additional load arguments are
-%    being specified. A string vector or cellstring vector. Only dimensions
-%    with defined metadata in the .grid file are allowed. Any dimensions
+%    being specified. A string vector or cellstring vector. Any dimensions
 %    not listed in dims will have all elements loaded.
 %
 % indices: A cell vector. Must have the same number of elements as dims. 
@@ -94,8 +93,8 @@ if iscell(start)
 end
 
 % Error check the dimensions
-dash.assertStrList(dims, "dims");
-obj.checkAllowedDims(dims, true);
+dims = dash.assertStrList(dims, "dims");
+obj.checkAllowedDims(dims, false);
 if numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');
 end
@@ -107,14 +106,13 @@ end
 if ~haveIndices
     inputIndices = cell(1, nInputDims);
 
-    % Error check inputs
+    % Error check start, count, stride inputs
     input = {start, count, stride};
     name = ["start","count","stride"];
     allowInf = [false true false];
-
     for i = 1:numel(input)
-        dash.assertNumericVectorN( input{i}, nInputDims, name(i) );
-        dash.assertPositiveIntegers( input{i}, false, allowInf(i), name(i) );
+        dash.assertVectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
+        dash.assertPositiveIntegers( input{i}, name(i), false, allowInf(i) );
         if any( input{i}>obj.size(inputOrder) & ~isinf(input{i}) )
             bad = find(input{i}>obj.size(inputOrder),1);
             error('Element %.f of %s (%.f) is larger than the length of the %s dimension (%.f)', bad, name(i), start(bad), obj.dims(inputOrder(bad)), obj.size(inputOrder(bad)) );
@@ -131,11 +129,9 @@ if ~haveIndices
         inputIndices{d} = start(d):stride(d):stop;
     end
 
-% If the user specified the indices, error check 
-else 
-    if ~isvector(inputIndices) || numel(inputIndices) ~= nInputDims
-        error('indices must be a vector with %.f elements.', nInputDims);
-    end
+% User specified indices. Error check cell
+else
+    dash.assertVectorTypeN(inputIndices, 'cell', nInputDims, 'indices');
     
     % Default for empty indices
     for d = 1:nInputDims
@@ -143,29 +139,10 @@ else
             inputIndices{d} = 1:obj.size(inputOrder(d));
         end
         
-        % Error check
-        if ~isvector(inputIndices{d})
-            error('Element %.f of indices must be a vector.', d);
-        end
-        
-        % Error check logical indices. Convert to linear.
-        if islogical(inputIndices{d})
-            if numel(inputIndices{d})~=obj.size(inputOrder(d))
-                error('Element %.f of indices is a logical vector, but it is not the length of the %s dimension (%.f)', d, obj.dims(inputOrder(d)), obj.size(inputOrder(d)) );
-            end
-            inputIndices{d} = find(inputIndices{d});
-            
-        % Error check linear indices.
-        elseif isnumeric(inputIndices{d})
-            dash.assertPositiveIntegers(inputIndices{d}, false, false, sprintf('Element %.f of indices',d));
-            if max(inputIndices{d})>obj.size(inputOrder(d))
-                error('Element %.f of indices specifies values up to %.f, which is larger than the length of the %s dimension (%.f)', find(inputIndices{d}==max(inputIndices{d},1)), max(inputIndices{d}), obj.dims(inputOrder(d)), obj.size(inputOrder(d)) );
-            end
-            
-        % Other types are not allowed
-        else
-            error('Element %.f of indices must be a logical or numeric vector.', d);
-        end
+        % Error check indices for individual dimensions
+        name = sprintf('Element %.f of indices', d);
+        lengthName = sprintf('the length of the %s dimension', obj.dims(inputOrder(d)));
+        inputIndices{d} = dash.checkIndices(inputIndices{d}, name, obj.size(inputOrder(d)), lengthName );
     end
 end
 

@@ -41,13 +41,12 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 
 % Error check
-dash.assertStrFlag( filename, "filename" );
+filename = dash.assertStrFlag( filename, "filename" );
 if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
-elseif ~islogical(overwrite) || ~isscalar(overwrite)
-    error('overwrite must be a scalar logical.');
 end
-gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
+dash.assertScalarLogical(overwrite, 'overwrite');
+meta = gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
 
 % Ensure the file name has a .grid extension
 filename = char( filename );
@@ -79,7 +78,8 @@ gridSize = NaN(1,nDim);
 % dimensions with undefined metadata.
 for d = 1:nDim
     if isfield(meta, dims(d))
-        [metadata.(dims(d)), gridSize(d)] = gridfile.processMetadata(meta.(dims(d)));
+        metadata.(dims(d)) = meta.(dims(d));
+        gridSize(d) = size(meta.(dims(d)), 1);
         isdefined(d) = true;
     else
         metadata.(dims(d)) = NaN;
@@ -100,6 +100,7 @@ nField = numel(fields(source));
 fieldLength = NaN(0, nField);
 maxLength = zeros(1, nField);
 dimLimit = NaN(nDim, 2, 0);
+absolutePath = false(0,1);
             
 % Create the initial .grid file.
 % dims              % The internal dimension order in the .grid file
@@ -110,8 +111,9 @@ dimLimit = NaN(nDim, 2, 0);
 % fieldLength       % Length of the primitive arrays for each source
 % maxLength         % Length of the padded primitive arrays in the .grid file
 % dimLimit          % The index limits of each data source along each dimension (nDim x 2 x nSource)
+% absolutePath      % Whether to store a data source file path exclusively as an absolute path
 save( filename, '-mat', 'dims', 'gridSize', 'isdefined', 'metadata', ...
-      'source', 'fieldLength', 'maxLength', 'dimLimit' );
+      'source', 'fieldLength', 'maxLength', 'dimLimit', 'absolutePath' );
 
 % Return grid object as output
 grid = gridfile( filename );

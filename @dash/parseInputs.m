@@ -1,7 +1,7 @@
 function[varargout] = parseInputs( inArgs, flags, defaults, nPrev )
 %% Parses inputs for flag, value input pairs. 
 %
-% [values] = dash.parseInputs( inArgs, flags, defaults, switches )
+% [values] = dash.parseInputs( inArgs, flags, defaults, nPrev )
 %
 % ----- Inputs -----
 %
@@ -20,9 +20,11 @@ function[varargout] = parseInputs( inArgs, flags, defaults, nPrev )
 % values: The parsed values. A cell vector. Has one element for each flag.
 
 % Error check the inputs
-assertCellVector(inArgs, "inArgs");
+if ~isempty(inArgs)
+    dash.assertVectorTypeN(inArgs, 'cell', [], 'inArgs');
+end
 dash.assertStrList(flags, "flags");
-assertCellVector(defaults, "defaults");
+dash.assertVectorTypeN(defaults, 'cell', [], 'defaults');
 
 flags = string(flags);
 nFlags = numel(flags);
@@ -41,13 +43,14 @@ varargout = defaults;
 if ~isempty(inArgs)
     setValue = false(nFlags, 1);
     
-    % Check that the input flags are strings and recognized
+    % Check that the input flags are strings and recognized.
     for k = 1:2:numel(inArgs)
-        dash.assertStrFlag(inArgs{k}, sprintf('Input %.f', k+nPrev));
-        f = strcmp(inArgs{k}, flags);
-        if sum(f)==0
-            error('Input %.f is not a recognized flag. Allowed flags are %s.', k+nPrev, dash.errorStringList(flags));
-        elseif setValue(f)
+        name = sprintf('Input %.f', k+nPrev);
+        dash.assertStrFlag( inArgs{k}, name );
+        f = dash.checkStrsInList( inArgs{k}, flags, name, 'recognized flag');
+        
+        % Prevent duplicates
+        if setValue(f)
             error('The %s flag is set multiple times.', flags(f));
         end
         
@@ -57,10 +60,4 @@ if ~isempty(inArgs)
     end
 end
 
-end
-
-function[] = assertCellVector(input, name)
-    if ~iscell(input) || ~isvector(name)
-        error('%s must be a cell vector.', name);
-    end
 end

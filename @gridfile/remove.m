@@ -23,10 +23,10 @@ if ~exist('var','var') || isempty(var)
     var = [];
 end
 
-% Error check
-dash.assertStrFlag(file, "file");
+% Error check. Use string internally
+file = dash.assertStrFlag(file, "file");
 if ~isempty(var)
-    dash.assertStrFlag(var, "var");
+    var = dash.assertStrFlag(var, "var");
 end
 
 % Determine which sources match the file name
@@ -49,6 +49,7 @@ end
 obj.dimLimit(:,:,remove) = [];
 obj.fieldLength(remove,:) = [];
 obj.maxLength = max(obj.fieldLength,[],1);
+obj.absolutePath(remove,:) = [];
 
 % Correct for empty max length
 sourceFields = fields(obj.source);

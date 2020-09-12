@@ -30,9 +30,18 @@ for s = 1:nSource
     unmerge = textscan(char(dims(s)), '%s', 'Delimiter', ',');
     unmerge = string( unmerge{:}');    
     
-    % Build the data source
-    sources{s} = dataSource.new( type(s), filenames(s), var(s), unmerge, ...
+    % Build the data source.
+    try
+        sources{s} = dataSource.new( type(s), filenames(s), var(s), unmerge, ...
                                  fill{s}, range{s}, convert{s} );
+                             
+    % Provide extra error information if the data source file is missing
+    catch ME
+        if strcmp(ME.identifier, "DASH:missingFile")
+            error('Cannot find data source file "%s". It may have been moved, renamed, or deleted. If the file was moved or renamed, see "gridfile.renameSources" to update the data source file path.', filenames(s));
+        end
+        rethrow(ME);
+    end
 end
 
 end

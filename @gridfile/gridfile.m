@@ -8,7 +8,6 @@ classdef gridfile < handle
     % To create a new gridfile object, use:
     %   obj = gridfile(filename)
     %
-    % *** Essential ***
     % gridFile Methods:
     %   defineMetadata - Defines metadata for a .grid file or data source
     %   new - Initializes a new .grid file.
@@ -39,6 +38,7 @@ classdef gridfile < handle
         fieldLength; % The length of primitive arrays for the source fields
         maxLength; % The length of the padded primitive arrays in the .grid file
         dimLimit; % The index limits of each data source in each dimension (nDim x 2 x nSource)
+        absolutePath; % Whether to store a data source file name exclusively as an absolute path
     end
     
     % Global configuration.
@@ -48,10 +48,9 @@ classdef gridfile < handle
     
     % Static utilities
     methods (Static)
-        checkMetadataField( meta, dim );
-        checkMetadataStructure( meta, dims, errorString );
+        meta = checkMetadataField( meta, dim );
+        meta = checkMetadataStructure( meta, dims, errorString );
         tf = hasDuplicateRows(meta);
-        [meta, siz] = processMetadata(meta);
         
         source = convertSourceToPrimitives(source);
         dims = commaDelimitedDims(dims);
@@ -122,7 +121,7 @@ classdef gridfile < handle
         % obj: A gridfile object for the specified .grid file.
             
             % Check the input is a file name
-            dash.assertStrFlag(file, "file");
+            file = dash.assertStrFlag(file, "file");
             obj.file = dash.checkFileExists(file);
             
             % Fill the fields

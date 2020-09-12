@@ -22,9 +22,9 @@ function[] = expand( obj, dim, meta )
 obj.update;
 
 % Error check
-dash.assertStrFlag(dim, "dim");
+dim = dash.assertStrFlag(dim, "dim");
 obj.checkAllowedDims(dim, true);
-obj.checkMetadataField(meta, dim);
+meta = obj.checkMetadataField(meta, dim);
 
 % Get the old metadata
 oldMeta = obj.meta.(dim);

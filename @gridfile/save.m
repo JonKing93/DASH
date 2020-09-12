@@ -10,7 +10,8 @@ source = obj.source;
 fieldLength = obj.fieldLength;
 maxLength = obj.maxLength;
 dimLimit = obj.dimLimit;
-save(obj.file, '-mat', 'dims','isdefined','gridSize','metadata','source','fieldLength','maxLength','dimLimit');
+absolutePath = obj.absolutePath;
+save(obj.file, '-mat', 'dims','isdefined','gridSize','metadata','source','fieldLength','maxLength','dimLimit','absolutePath');
 
 % Update the user object
 obj.update;

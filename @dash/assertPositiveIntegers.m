@@ -1,36 +1,46 @@
-function[] = assertPositiveIntegers(input, allowNaN, allowInf, name)
+function[] = assertPositiveIntegers(input, name, allowNaN, allowInf)
 %% Checks that an input consists of positive integers. Optionally allows
 % NaN and Inf values. Returns customized error messages.
 %
-% dash.assertPositiveIntegers(input, allowNaN, allowInf, name)
+% dash.assertPositiveIntegers(input, name)
+% Checks the input consists of positive integers. Does not allow NaN or Inf
+%
+% dash.assertPositiveIntegers(input, name, allowNaN, allowInf)
+% Specify whether to allow NaN or Inf.
 %
 % ----- Inputs -----
 %
 % input: The input being checked
 %
-% allowNaN: A scalar logical. Whether to allow NaN values in the input.
+% name: The name of the input. A string. Used for custom error messages.
 %
-% allowInf: A scalar logical. Whether to allow Inf values in the input.
+% allowNaN: A scalar logical that indicates whether to allow NaN values in
+%    the input (true) or not (false -- default). 
 %
-% name: The name of the input. Used for custom error messages.
+% allowInf: A scalar logical that indicates whether to allow Inf values in
+%    the input (true) or not (false -- default).
 
-% Process NaNs
-if allowNaN
-    input(isnan(input)) = 1;
-elseif any(isnan(input),'all')
-    error('%s may not contain NaN.', name);
+% Defaults
+if ~exist('allowNaN','var') || isempty(allowNaN)
+    allowNaN = false;
+end
+if ~exist('allowInf','var') || isempty(allowInf)
+    allowInf = false;
 end
 
-% Process Inf
-if allowInf
-    input(isinf(input)) = 1;
-elseif any(isinf(input),'all')
-    error('%s may not contain Inf.', name);
+% Require numeric
+if ~isnumeric(input)
+    error('%s must be numeric', name);
 end
 
-% Everything else
-if ~isnumeric(input) || ~isreal(input) || any(input<1,'all') || any(mod(input,1)~=0,'all')
-    error('%s can only contain positive integers.', name);
+% Process NaN and Inf
+dash.assertRealDefined(input, name, allowNaN, allowInf);
+input(isnan(input)) = 1;
+input(isinf(input)) = 1;
+
+% Check for positive integers
+if any(input<1,'all') || any(mod(input,1)~=0,'all')
+    error('%s must only contain positive integers.', name);
 end
     
 end

@@ -20,8 +20,9 @@ function[gridInfo, sourceInfo] = info(obj, sources)
 %
 % ----- Inputs -----
 %
-% s: A vector of linear indices. Cannot exceed the number of data sources
-%    managed by the .grid file.
+% s: The indices of specific data sources within the .grid file. Either a
+%    vector of linear indices or a logical vector with one element per data
+%    source.
 %
 % filenames: A list of data source filenames. A string vector or cellstring
 %    vector. Must include the file extension. Ignores the file path.
@@ -56,15 +57,9 @@ elseif dash.isstrlist(sources)
         index = unique([index, find(match)]);
     end
         
-% If numeric, check for postive integers no higher than nSource
-elseif isnumeric(sources)
-    dash.assertPositiveIntegers(sources, false, false, "s");
-    if any(sources>nSource)
-        error('The largest element in s (%.f) is greater than the number of data sources in the .grid file (%.f)', max(sources), nSource);
-    end
-    index = sources;
-        
-% Anything else throw error
+% Check indices are valid. Throw error for anything else
+elseif isnumeric(sources) || islogical(sources)
+    index = dash.checkIndices(sources, 's', nSource, 'the number of data sources in the .grid file');
 else
     error('The first input may be ''all'', a list of file names, or a set of linear indices.');
 end
@@ -94,9 +89,7 @@ end
 % Preallocate source structure
 nSource = numel(index);
 sourceFields = {"file","variable","dimensions","size","metadata","fillValue","validRange","linearTransformation"};
-pre = repmat( {[]}, [1, numel(sourceFields)*2]);
-pre(1:2:end) = sourceFields;
-sourceInfo = repmat(struct(pre{:}), [nSource, 1]);
+[sourceInfo, inputs] = dash.preallocateStructs(sourceFields, [nSource, 1]);
 
 % Source information
 sources = obj.buildSources(index);
@@ -105,16 +98,16 @@ for s = 1:numel(sources)
     sourceDims = [sources{s}.mergedDims, dims(singleton)];
     sourceSize = [sources{s}.mergedSize, ones(1,(numel(singleton)))];
     for d = 1:nDim
-        limit = obj.dimLimit(d,1,index(s)) : obj.dimLimit(d,2,index(s));
+        k = find(strcmp(dims(d), obj.dims));
+        limit = obj.dimLimit(k,1,index(s)) : obj.dimLimit(k,2,index(s));
         sourceMeta.(dims(d)) = obj.meta.(dims(d))(limit,:);
     end
     
     % Source output structure
     if nargout~=0
-        input = pre;
-        input(2:2:end) = {sources{s}.file, sources{s}.var, sourceDims, sourceSize, ...
+        inputs(2:2:end) = {sources{s}.file, sources{s}.var, sourceDims, sourceSize, ...
             sourceMeta, sources{s}.fill, sources{s}.range, sources{s}.convert};
-        sourceInfo(s) = struct(input{:});
+        sourceInfo(s) = struct(inputs{:});
         
     % Print source to console
     else
@@ -127,7 +120,7 @@ for s = 1:numel(sources)
             fprintf('The valid range is %s to %s.\n', num2str(sources{s}.range(1)), num2str(sources{s}.range(2)));
         end
         if ~isequal(sources{s}.convert, [1 0])
-            fprintf('The data will be linearly transformed via: Y = %sX * %s\n', num2str(sources{s}.convert(1)), num2str(sources{s}.convert(2)) );
+            fprintf('The data will be linearly transformed via: Y = %s * X + %s\n', num2str(sources{s}.convert(1)), num2str(sources{s}.convert(2)) );
         end
         dimStr = sprintf('%s x ', sourceDims);
         fprintf('%s is (%s\b\b\b).\n', sources{s}.var, dimStr);

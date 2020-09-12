@@ -10,7 +10,8 @@ function[] = updateMetadataField( obj, dim, meta )
 % meta: The new metadata field
 
 d = strcmp(dim, obj.dims);
-[obj.meta.(dim), obj.size(d)] = gridfile.processMetadata(meta);
+obj.meta.(dim) = meta;
+obj.size(d) = size(meta, 1);
 obj.isdefined(d) = true;
 obj.save;
 

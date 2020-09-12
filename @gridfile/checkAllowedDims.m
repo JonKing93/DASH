@@ -19,30 +19,18 @@ if ~exist('requireDefined','var') || isempty(requireDefined)
 end
 dims = string(dims);
 
-% Check that the dims are all allowed names
-gridDims = obj.dims;
+% Get the list of allowed dimensions and its name for error messages.
+[~,name,ext] = fileparts(obj.file);
+filename = strcat(name, ext);
 if requireDefined
-    gridDims = gridDims(obj.isdefined);
+    allowed = obj.dims(obj.isdefined);
+    allowedName = sprintf('dimension with defined metadata in .grid file %s', filename);
+else
+    allowed = obj.dims;
+    allowedName = sprintf('dimension recognized by .grid file %s', filename);
 end
-allowed = ismember(dims, gridDims);
 
-% Build an error message if not.
-if any(~allowed)
-    bad = find(~allowed,1);
-    
-    % Single input dim, use the name. Array input, include the list element
-    id = sprintf('%s', dims);
-    if numel(dims)>1
-        id = sprintf('Element %.f in dims (%s)', bad, dims(bad));
-    end
-    
-    % Specify whether dim must be recognized or defined
-    require = ["recognized by", "Recognized dimensions"];
-    if requireDefined
-        require = ["with defined metadata in", "Dimensions with define metadata"];
-    end
-    
-    error('%s is not a dimension %s .grid file %s. %s are %s.', id, require(1), obj.file, require(2), dash.errorStringList(gridDims)); 
-end
+% Check the dimensions are allowed
+dash.checkStrsInList(dims, allowed, 'dims', allowedName);
 
 end

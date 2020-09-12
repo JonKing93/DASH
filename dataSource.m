@@ -57,9 +57,9 @@ classdef (Abstract) dataSource
             %    additive constant (b).
             
             % Error check strings, vectors
-            dash.assertStrFlag(file, "file");
-            dash.assertStrFlag(var, "var");
-            dash.assertStrList(dims, "dims");
+            file = dash.assertStrFlag(file, "file");
+            var = dash.assertStrFlag(var, "var");
+            dims = dash.assertStrList(dims, "dims");
             file = dash.checkFileExists(file);
             
             % Error check the post-processing values
@@ -80,7 +80,7 @@ classdef (Abstract) dataSource
             % Save properties
             obj.file = file;
             obj.var = var;
-            obj.unmergedDims = string(dims);        
+            obj.unmergedDims = dims;        
             obj.fill = fill;
             obj.range = range;
             obj.convert = convert;
