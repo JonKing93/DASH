@@ -193,9 +193,6 @@ add
         dash.assertStrFlag
         dash.checkFileExists
         gridfile
-        svv.resetMeans
-            svv.checkDimensions
-                dash.checkStrsInList
         svv.design
             svv.checkDimensions
                 dash.checkStrsInList
@@ -324,3 +321,5 @@ copy
 variableNames
     dash.collectField
     dash.checkIndices
+stateVector
+    notifyConsole

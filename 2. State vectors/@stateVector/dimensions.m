@@ -32,7 +32,7 @@ function[dims] = dimensions(obj, varNames, type)
 
 % Default, error check variable names
 if ~exist('varNames','var') || isempty(varNames)
-    v = 1:numel(obj.variables(v));
+    v = 1:numel(obj.variables);
 else
     v = obj.checkVariables(varNames);
 end

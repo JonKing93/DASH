@@ -28,6 +28,8 @@ end
 obj.checkVariableNames(secondVector.variableNames, [], [], sprintf('append %s to', title2));
 
 % Notify user of autocoupling
+names1 = obj.variableNames;
+names2 = secondVector.variableNames;
 couple1 = names1(obj.auto_Couple);
 couple2 = names2(secondVector.auto_Couple);
 notifyAutocoupling(obj, couple1, couple2);

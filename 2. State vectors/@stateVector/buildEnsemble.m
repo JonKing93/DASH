@@ -54,7 +54,7 @@ sources = cell(nGrids, 1);
 svLimit = zeros(nVars+1, 2);
 
 % Check that each variable has both state and ensemble dimensions
-for v = 1:nVar    
+for v = 1:nVars   
     if ~any(obj.variables(v).isState)
         badDimensionsError(obj.variables(v).name, true);
     elseif ~any(~obj.variables(v).isState)

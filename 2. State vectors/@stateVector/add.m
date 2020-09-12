@@ -49,11 +49,12 @@ varName = string(varName);
 
 % Check the name is a valid variable name and not a duplicate
 obj.checkVariableNames(varName, [], 'varName', 'add a new variable to');
+vars = obj.variableNames;
+vars(end+1) = varName;
 
 % Create the new variable (error checks file).
 newVar = stateVectorVariable(varName, file);
 obj.variables = [obj.variables; newVar];
-vars(end+1) = varName;
 
 % Update variable coupling and overlap
 obj.overlap(end+1, 1) = overlap;

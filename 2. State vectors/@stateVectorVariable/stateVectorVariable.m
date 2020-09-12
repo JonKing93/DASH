@@ -86,7 +86,12 @@ classdef stateVectorVariable
             obj.seqMetadata = cell(1, nDims);
             
             obj.takeMean = false(1, nDims);
-            obj = obj.resetMeans;
+            obj.meanSize = NaN(1, nDims);
+            obj.omitnan = false(1, nDims);
+            obj.mean_Indices = cell(1, nDims);
+            
+            obj.hasWeights = false(1, nDims);
+            obj.weightCell = cell(1, nDims);
             
             obj.hasMetadata = false(1, nDims);
             obj.metadata = cell(1, nDims);

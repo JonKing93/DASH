@@ -86,11 +86,11 @@ for k = 1:nDims
         obj.seqIndices{d(k)} = [];
         obj.seqMetadata{d(k)} = [];
         
-        obj.hasMetadata(d) = false;
-        obj.metadata{d} = [];
-        obj.convert(d) = false;
-        obj.convertFunction{d} = [];
-        obj.convertArgs{d} = [];
+        obj.hasMetadata(d(k)) = false;
+        obj.metadata{d(k)} = [];
+        obj.convert(d(k)) = false;
+        obj.convertFunction{d(k)} = [];
+        obj.convertArgs{d(k)} = [];
         
         % Update mean properties
         obj.mean_Indices{d(k)} = [];

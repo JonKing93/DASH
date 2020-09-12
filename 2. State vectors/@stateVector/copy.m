@@ -55,7 +55,7 @@ function[obj] = copy(obj, templateName, varNames, varargin)
 % Error check template, template index, parse inputs
 t = obj.checkVariables(templateName);
 [copySequences, copyMeans, copyWeights, copyDesigns, copyMetadata] = dash.parseInputs( varargin, ...
-    ["sequence","mean","weightedMean","design"], {true, true, true, true, true}, 2 );
+    ["sequence","mean","weightedMean","design","metadata"], {true, true, true, true, true}, 2 );
 
 % Error check
 dash.assertScalarLogical(copySequences, 'copySequences');
@@ -86,7 +86,7 @@ end
 
 % Weighted means
 if copyWeights
-    w = bar.hasWeights;
+    w = var.hasWeights;
     obj = obj.weightedMean(varNames, var.dims(w), var.weightCell(w));
 end
 

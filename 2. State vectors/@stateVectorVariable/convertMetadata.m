@@ -48,8 +48,9 @@ if ~isa(convertFunction, 'function_handle') || ~isscalar(convertFunction)
 end
 if ~exist('functionArgs','var') || isempty(functionArgs)
     functionArgs = {};
+else
+    dash.assertVectorTypeN(functionArgs, 'cell', [], 'functionArgs');
 end
-dash.assertVectorTypeN(functionArgs, 'cell', [], 'functionArgs');
 
 % Update
 obj.convert(d) = true;

@@ -20,9 +20,11 @@ function[varargout] = parseInputs( inArgs, flags, defaults, nPrev )
 % values: The parsed values. A cell vector. Has one element for each flag.
 
 % Error check the inputs
-dash.assertVectorTypeN(inArgs, 'cell', [], 'inArgs');
+if ~isempty(inArgs)
+    dash.assertVectorTypeN(inArgs, 'cell', [], 'inArgs');
+end
 dash.assertStrList(flags, "flags");
-dash.assertVectorTypeN(inArgs, 'cell', [], 'defaults');
+dash.assertVectorTypeN(defaults, 'cell', [], 'defaults');
 
 flags = string(flags);
 nFlags = numel(flags);

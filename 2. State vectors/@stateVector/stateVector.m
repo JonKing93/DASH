@@ -94,7 +94,7 @@ classdef stateVector
             
             % Save name. Set console output
             obj = obj.rename(name);
-            obj = obj.displayConsoleOutput(verbose);
+            obj = obj.notifyConsole(verbose);
             
             % Initialize
             obj.overlap = false(0,1);
