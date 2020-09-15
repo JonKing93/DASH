@@ -14,10 +14,11 @@ classdef dash
         [s, inputs] = preallocateStructs(fields, siz);
         values = collectField(s, field);
         
-        % File paths
+        % Files
         path = checkFileExists(file);  
         path = unixStylePath(path);
         path = relativePath(toFile, fromFolder);
+        filename = setupNewFile(filename, ext, overwrite);
         
         % Strings and string lists
         tf = isstrflag( input );        

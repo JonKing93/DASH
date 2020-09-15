@@ -48,21 +48,8 @@ end
 dash.assertScalarLogical(overwrite, 'overwrite');
 meta = gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
 
-% Ensure the file name has a .grid extension
-filename = char( filename );
-[path, ~, ext] = fileparts( filename );
-if ~strcmpi(ext, '.grid')
-    filename = [filename, '.grid'];
-end
-
-% Get the full name for the file. If not overwriting, ensure that the file
-% does not already exist.
-if isempty(path)
-    filename = fullfile(pwd, filename);
-end
-if ~overwrite && exist(filename,'file')
-    error('The file %s already exists.', filename );
-end
+% Set file extension. Optionally check overwriting. Get full path
+filename = dash.setupNewFile(filename, '.grid', overwrite);
 
 % Get all internal metadata names.
 dims = dash.dimensionNames;
