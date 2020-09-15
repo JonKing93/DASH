@@ -1,13 +1,25 @@
-function[X] = buildEnsemble(obj, nEns, random)
+function[X] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress)
 %% Builds a state vector ensemble.
 % 
-% X = obj.buildEnsemble(nEns)
+% [X, meta] = obj.buildEnsemble(nEns)
 % Builds a state vector ensemble with a specified member of ensemble
-% members.
+% members. Returns the state vector ensemble and associated metadata.
 %
-% X = obj.buildEnsemble(nEns, random)
-% Sepcfiy whether to select ensemble members at random, or sequentially.
+% [...] = obj.buildEnsemble(nEns, random)
+% Specify whether to select ensemble members at random, or sequentially.
 % Default is random selection.
+%
+% obj.buildEnsemble(nEns, random, filename)
+% Saves the state vector ensemble to a .ens file. Uses a ".ens" extension
+% if the file name does not already have one.
+%
+% obj.buildEnsemble(nEns, random, filename, overwrite)
+% Specify whether to overwrite existing .ens files. Default is to not
+% overwrite existing files.
+%
+% obj.buildEnsemble(nEns, random, filename, overwrite, showprogress)
+% Specify whether to display a progress bar. Default is to show a progress
+% bar.
 %
 % ----- Inputs -----
 %
@@ -16,24 +28,60 @@ function[X] = buildEnsemble(obj, nEns, random)
 % random: Scalar logical. If true (default), selects ensemble members at
 %    random. If false, selects ensemble members sequentially.
 %
+% file: The name of a .ens file. A string. Use only a file name to write to
+%    the current directory. Use a full path to write to a specific
+%    location. Use an empty array to not write to file.
+%
+% overwrite: A scalar logical indicating whether to overwrite existing .ens
+%    files (true) or not overwrite files (false -- default).
+%
+% showprogress: A scalar logical indicating whether to display a progress
+%    bar (true -- default), or not (false).
+%
 % ----- Outputs -----
 %
 % X: The state vector ensemble. A numeric matrix. (nState x nEns)
+%
+% meta: An ensembleMetadata object for the ensemble.
 
 %% Input error checks
 
-% Default
+% Defaults
 if ~exist('random','var') || isempty(random)
     random = true;
 end
+if ~exist('file','var') || isempty(file)
+    file = [];
+end
+if ~exist('overwrite','var') || isempty(overwrite)
+    overwrite = false;
+end
+if ~exist('showprogress','var') || isempty(showprogress)
+    showprogress = true;
+end
 
 % Error check
-dash.assertScalarLogical(random);
-if ~isscalar(nEns) || ~isnumeric(nEns)
-    error('nEns must be a numeric scalar.');
+if ~isscalar(nEns)
+    error('nEns must be a scalar.');
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
+dash.assertScalarLogical(random, 'random');
+hasFile = false;
+if ~isempty(file)
+    file = dash.assertStrFlag(file, 'file');
+    hasFile = true;
+end
+dash.assertScalarLogical(overwrite, 'overwrite');
+dash.assertScalarLogical(showprogress, 'showprogress');
 
+% If writing to file, set extension. Check overlap and initialize matfile
+if hasFile
+    filename = dash.setupNewFile(filename, '.ens', overwrite);
+    if isfile(filename)
+        delete(filename);
+    end
+    m = matfile(filename);
+end
 
 %% All variables: check dimensions, gridfiles, index limits, trim
 % vf: Variable index associated with file
@@ -81,10 +129,15 @@ for v = 1:nVars
     obj.variables(v) = obj.variables(v).trim;
 end
 
-% Finish the state vector limits and preallocate the ensemble
+% Finish the state vector limits and preallocate the ensemble. If writing
+% to file, use the largest array that fits in memory
 svLimit(1,:) = [];
 nState = svLimit(end, 2);
-X = NaN(nState, nEns);
+if hasFile
+    m.X(nState, nEns) = NaN;
+else
+    X = NaN(nState, nEns);
+end
 
 
 %% Coupled variables: match metadata, select ensemble members, remove overlap, build ensembles
@@ -179,7 +232,7 @@ for s = 1:nSets
     for k = 1:numel(v)
         varIndices = svLimit(v(k),1) : svLimit(v(k),2);
         X(varIndices, :) = obj.variables(v(k)).buildEnsemble( ...
-            subMembers, dims, grids{f(v(k))}, sources{f(v(k))} );
+            subMembers, dims, grids{f(v(k))}, sources{f(v(k))}, showprogress );
     end
 end
 

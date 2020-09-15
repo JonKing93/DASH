@@ -1,7 +1,7 @@
-function[X] = buildEnsemble(obj, subMembers, dims, grid, sources)
+function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, showprogress)
 %% Builds an ensemble for the stateVectorVariable
 %
-% X = obj.buildEnsemble(subMembers, dims, sources)
+% X = obj.buildEnsemble(subMembers, dims, sources, showprogress)
 %
 % ----- Inputs -----
 %
@@ -14,6 +14,9 @@ function[X] = buildEnsemble(obj, subMembers, dims, grid, sources)
 %
 % sources: An array for data sources being called in a gridfile repeated
 %    load. See gridfile.review
+%
+% showprogress: Scalar logical that indicates whether to display a progress
+%    bar.
 %
 % ----- Outputs -----
 %
@@ -71,6 +74,13 @@ end
 nEns = size(subMembers, 1);
 X = NaN( prod(obj.stateSize), nEns );
 
+% Initialize progress bar
+if showprogress
+    waitname = sprintf('Building "%s":', obj.name);
+    waitpercent = ' 0%';
+    f = waitbar(0, strcat(waitname, waitpercent));
+end
+
 % Get load indices for each ensemble member
 for m = 1:nEns
     for k = 1:numel(d)
@@ -104,6 +114,15 @@ for m = 1:nEns
     
     % Add the vector to the ensemble
     X(:,m) = Xm(:);
+    
+    % Optionally display progress bar
+    if showprogress
+        waitpercent = sprintf(' %.f%%', m/nEns*100);
+        waitbar(m/nEns, f, strcat(waitname, waitpercent));
+    end
+end
+if showprogress
+    delete(f);
 end
 
 end
