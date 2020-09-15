@@ -1,7 +1,7 @@
-function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, showprogress)
+function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress)
 %% Builds an ensemble for the stateVectorVariable
 %
-% X = obj.buildEnsemble(subMembers, dims, sources, showprogress)
+% X = obj.buildEnsemble(subMembers, dims, grid, sources, ens, svIndices, showprogress)
 %
 % ----- Inputs -----
 %
@@ -12,8 +12,14 @@ function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, showprogress)
 % dims: The names of ensemble dimensions in the order that appear in the
 %    columns of subMembers. A string vector or cellstring vector.
 %
+% grid: Gridfile object to load the data
+%
 % sources: An array for data sources being called in a gridfile repeated
 %    load. See gridfile.review
+%
+% ens: Matfile object if writing to file
+%
+% svRows: Rows of the variable in the complete state vector if writing to file
 %
 % showprogress: Scalar logical that indicates whether to display a progress
 %    bar.
@@ -70,14 +76,36 @@ end
 
 %% Load individual ensemble members
 
-% Create the gridfile and preallocate the ensemble
+% Test that a single ensemble member can fit in memory before processing.
+% Determine if writing to file or returning output
+preSize = obj.stateSize;
+preSize(~obj.isState) = preSize(~obj.isState) .* obj.meanSize(~obj.isState);
+[~, tooBig] = preallocateEnsemble( prod(preSize), 1);
+if tooBig
+    tooBigError(obj);
+end
+writeFile = ~isempty(ens);
+
+% Preallocate as much of the ensemble as fits in memory. Use as many
+% ensemble members (chunk size) as possible (within an order of magnitude)
+% to limit the number of matfile write operations.
+nState = prod(obj.stateSize);
 nEns = size(subMembers, 1);
-X = NaN( prod(obj.stateSize), nEns );
+tooBig = true;
+nChunk = nEns*10;
+while tooBig
+    if nChunk == 1   % This should never happen
+        tooBigError(obj);
+    end
+    nChunk = ceil(nChunk/10);
+    [X, tooBig] = preallocateEnsemble(nState, nChunk);
+end
 
 % Initialize progress bar
 if showprogress
     waitname = sprintf('Building "%s":', obj.name);
     waitpercent = ' 0%';
+    step = ceil(nEns/100);
     f = waitbar(0, strcat(waitname, waitpercent));
 end
 
@@ -112,17 +140,52 @@ for m = 1:nEns
         end
     end
     
-    % Add the vector to the ensemble
-    X(:,m) = Xm(:);
+    % Add the vector to the ensemble chunk
+    k = mod(m, nChunk);
+    k(k==0) = nChunk;
+    X(:,k) = Xm(:);
+    
+    % If saving, write complete chunks to file
+    if writeFile && (k==nChunk || m==nEns)
+        cols = m-k+1:m;
+        ens.X(svRows, cols) = X(:,1:k);
+    end
     
     % Optionally display progress bar
-    if showprogress
+    if showprogress && mod(m,step)==0
         waitpercent = sprintf(' %.f%%', m/nEns*100);
         waitbar(m/nEns, f, strcat(waitname, waitpercent));
     end
 end
 if showprogress
     delete(f);
+end
+
+% Write all ensemble members to file if possible
+if writeFile && writeAll
+    ens.X(svIndices,:) = X;
+end
+
+end
+
+% Error messages
+function[] = tooBigError(obj)
+error(['The "%s" variable has so many state elements that even a single ',...
+    'ensemble member cannot fit in memory. Consider reducing the size of ',...
+    '"%s".'], obj.name, obj.name);
+end
+function[X, tooBig] = preallocateEnsemble(nState, nEns)
+%% Attempts to preallocate an ensemble. Returns the ensemble and a scalar
+% logical indicating whether the ensemble fits in memory.
+%
+% [X, tooBig] = preallocateEnsemble(nState, nEns)
+
+tooBig = false;
+try
+    X = NaN(nState, nEns);
+catch
+    X = [];
+    tooBig = true;
 end
 
 end

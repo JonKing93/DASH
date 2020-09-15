@@ -50,8 +50,8 @@ function[X] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress
 if ~exist('random','var') || isempty(random)
     random = true;
 end
-if ~exist('file','var') || isempty(file)
-    file = [];
+if ~exist('filename','var') || isempty(filename)
+    filename = [];
 end
 if ~exist('overwrite','var') || isempty(overwrite)
     overwrite = false;
@@ -66,21 +66,21 @@ if ~isscalar(nEns)
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
 dash.assertScalarLogical(random, 'random');
-hasFile = false;
-if ~isempty(file)
-    file = dash.assertStrFlag(file, 'file');
-    hasFile = true;
+writeFile = false;
+if ~isempty(filename)
+    filename = dash.assertStrFlag(filename, 'filename');
+    writeFile = true;
 end
 dash.assertScalarLogical(overwrite, 'overwrite');
 dash.assertScalarLogical(showprogress, 'showprogress');
 
 % If writing to file, set extension. Check overlap and initialize matfile
-if hasFile
+if writeFile
     filename = dash.setupNewFile(filename, '.ens', overwrite);
     if isfile(filename)
         delete(filename);
     end
-    m = matfile(filename);
+    ens = matfile(filename);
 end
 
 %% All variables: check dimensions, gridfiles, index limits, trim
@@ -129,14 +129,17 @@ for v = 1:nVars
     obj.variables(v) = obj.variables(v).trim;
 end
 
-% Finish the state vector limits and preallocate the ensemble. If writing
-% to file, use the largest array that fits in memory
+% Finish the state vector limits and preallocate the ensemble.
 svLimit(1,:) = [];
 nState = svLimit(end, 2);
-if hasFile
-    m.X(nState, nEns) = NaN;
+if writeFile
+    ens.X(nState, nEns) = NaN;
 else
-    X = NaN(nState, nEns);
+    try
+        X = NaN(nState, nEns);
+    catch
+        ensembleTooBigError();
+    end
 end
 
 
