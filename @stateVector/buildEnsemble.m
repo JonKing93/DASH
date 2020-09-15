@@ -81,6 +81,7 @@ if writeFile
         delete(filename);
     end
     ens = matfile(filename);
+    ens.valid = false;
 end
 
 %% All variables: check dimensions, gridfiles, index limits, trim
@@ -138,10 +139,9 @@ else
     try
         X = NaN(nState, nEns);
     catch
-        ensembleTooBigError();
+        outputTooBigError();
     end
 end
-
 
 %% Coupled variables: match metadata, select ensemble members, remove overlap, build ensembles
 % s: The index for a set of coupled variables
@@ -231,11 +231,33 @@ for s = 1:nSets
     obj.subMembers{s} = subMembers;
     obj.unused{s} = unused;
     
-    % Build the ensemble for each variable
+    % Build the ensemble for each variable. Either return as output or
+    % write to file
     for k = 1:numel(v)
-        varIndices = svLimit(v(k),1) : svLimit(v(k),2);
-        X(varIndices, :) = obj.variables(v(k)).buildEnsemble( ...
-            subMembers, dims, grids{f(v(k))}, sources{f(v(k))}, showprogress );
+        varRows = svLimit(v(k),1) : svLimit(v(k),2);
+        if writeFile
+            obj.variables(v(k)).buildEnsemble( subMembers, dims, ...
+                grids{f(v(k))}, sources{f(v(k))}, ens, varRows, showprogress );
+        else
+            X(varRows,:) = obj.variables(v(k)).buildEnsemble( subMembers, ...
+                dims, grids{f(v(k))}, sources{f(v(k))}, [], [], showprogress );
+        end
+    end
+end
+
+% Ensemble metadata
+meta = ensembleMetadata(design);
+if writeFile
+    ens.meta = meta;
+end
+
+% Return output array from file build if requested
+if writeFile && nargout>0
+    try
+        X = ens.X;
+        ens.valid = true;
+    catch
+        loadTooBigError(filename);
     end
 end
 
@@ -291,4 +313,15 @@ else
 end
 error(['Cannot find %.f %s ensemble members for %s. Consider using fewer ', ...
     'ensemble members %s.'], nEns, str1, str2, str3);
+end
+function[] = outputTooBigError()
+error(['The state vector ensemble is too large to fit in active memory, so ',...
+    'cannot be provided directly as output. Consider saving the ensemble ',...
+    'to a .ens file instead.']);
+end
+function[] = loadTooBigError(filename)
+warning(['The state vector ensemble was successfully written to file "%s". ', ...
+    'However, the ensemble is too large to fit in active memory, so cannot ',...
+    'be provided directly as output. Use the "ensemble" class to interact ',...
+    'with the state vector ensemble instead.'], filename);
 end

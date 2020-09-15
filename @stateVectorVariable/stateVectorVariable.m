@@ -141,7 +141,7 @@ classdef stateVectorVariable
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
         
-        X = buildEnsemble(obj, subMembers, dims, grid, sources, showprogress);
+        X = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress);
     end
 end
         

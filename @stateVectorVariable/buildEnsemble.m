@@ -17,9 +17,10 @@ function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, s
 % sources: An array for data sources being called in a gridfile repeated
 %    load. See gridfile.review
 %
-% ens: Matfile object if writing to file
+% ens: Matfile object if writing to file. Empty if returning output array.
 %
-% svRows: Rows of the variable in the complete state vector if writing to file
+% svRows: Rows of the variable in the complete state vector if writing to 
+%    file. Empty if returning output array.
 %
 % showprogress: Scalar logical that indicates whether to display a progress
 %    bar.
@@ -94,7 +95,7 @@ nEns = size(subMembers, 1);
 tooBig = true;
 nChunk = nEns*10;
 while tooBig
-    if nChunk == 1   % This should never happen
+    if nChunk == 1   % This should never happen because we tested preSize
         tooBigError(obj);
     end
     nChunk = ceil(nChunk/10);
@@ -168,7 +169,7 @@ end
 
 end
 
-% Error messages
+% Error message, helper function
 function[] = tooBigError(obj)
 error(['The "%s" variable has so many state elements that even a single ',...
     'ensemble member cannot fit in memory. Consider reducing the size of ',...
