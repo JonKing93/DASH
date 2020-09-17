@@ -51,7 +51,7 @@ if ~exist('random','var') || isempty(random)
     random = true;
 end
 if ~exist('filename','var') || isempty(filename)
-    filename = [];
+    filename = string([]);
 end
 if ~exist('overwrite','var') || isempty(overwrite)
     overwrite = false;
@@ -60,34 +60,21 @@ if ~exist('showprogress','var') || isempty(showprogress)
     showprogress = true;
 end
 
-% Error check
+% Basic error check
 if ~isscalar(nEns)
     error('nEns must be a scalar.');
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
 dash.assertScalarLogical(random, 'random');
-writeFile = false;
-if ~isempty(filename)
-    filename = dash.assertStrFlag(filename, 'filename');
-    writeFile = true;
-end
 dash.assertScalarLogical(overwrite, 'overwrite');
 dash.assertScalarLogical(showprogress, 'showprogress');
+nVars = numel(obj.variables);
 
-% If writing to file, set extension. Check overlap and initialize matfile
-if writeFile
-    filename = dash.setupNewFile(filename, '.ens', overwrite);
-    if isfile(filename)
-        delete(filename);
-    end
-    ens = matfile(filename);
-    ens.valid = false;
-end
 
-%% All variables: check dimensions, gridfiles, index limits, trim
-% vf: Variable index associated with file
+%% Check and setup variables: state/ensemble dimensions, gridfiles, trim
+% v: Index of variable in the state vector
 % f: File index associated with variable
-% v: Index of variable in the state vector.
+% vf: Variable index associated with file
 
 % Get the .grid files associated with each variable.
 files = dash.collectField(obj.variables, 'file');
@@ -97,24 +84,11 @@ files = string(files);
 % of each variable in the state vector
 [files, vf, f] = unique(files);
 nGrids = numel(files);
-nVars = numel(obj.variables);
 grids = cell(nGrids, 1);
 sources = cell(nGrids, 1);
-svLimit = zeros(nVars+1, 2);
 
-% Check that each variable has both state and ensemble dimensions
-for v = 1:nVars   
-    if ~any(obj.variables(v).isState)
-        badDimensionsError(obj.variables(v).name, true);
-    elseif ~any(~obj.variables(v).isState)
-        badDimensionsError(obj.variables(v).name, false);
-    end
-    
-    % Get the state vector index limits
-    svLimit(v+1, 1) = svLimit(v,2)+1;
-    svLimit(v+1, 2) = svLimit(v,2) + prod(obj.variables(v).stateSize);
-    
-    % Check that all gridfiles are valid. Pre-build the data sources
+% Check that all gridfiles are valid. Pre-build data sources
+for v = 1:nVars
     if ismember(v, vf)
         try
             grids{f(v)} = gridfile(obj.variables(v).file);
@@ -125,28 +99,22 @@ for v = 1:nVars
     end
     obj.variables(v).checkGrid(grids{f(v)});
 
+    % Check that each variable has both state and ensemble dimensions
+    if ~any(obj.variables(v).isState)
+        badDimensionsError(obj.variables(v).name, true);
+    elseif ~any(~obj.variables(v).isState)
+        badDimensionsError(obj.variables(v).name, false);
+    end
     
     % Trim reference indices to only allow complete means and sequences.
     obj.variables(v) = obj.variables(v).trim;
 end
 
-% Finish the state vector limits and preallocate the ensemble.
-svLimit(1,:) = [];
-nState = svLimit(end, 2);
-if writeFile
-    ens.X(nState, nEns) = NaN;
-else
-    try
-        X = NaN(nState, nEns);
-    catch
-        outputTooBigError();
-    end
-end
 
-%% Coupled variables: match metadata, select ensemble members, remove overlap, build ensembles
+%% Coupled variables: Match metadata, select ensemble members, remove overlap
 % s: The index for a set of coupled variables
 % v: The indices of variables in a set
-% dims: ensemble dimensions
+% dims: Ensemble dimensions for a set
 % d: Iterator for dims
 % k: Iterator for v
 
@@ -162,7 +130,7 @@ for s = 1:nSets
     v = find(sets(s,:));
     var1 = obj.variables(v(1));
     dims = var1.dims(~var1.isState);
-    
+
     % Find metadata that is in all of the variables in the set.
     for d = 1:numel(dims)
         meta = var1.dimMetadata(grids{f(v(1))}, dims(d));
@@ -170,7 +138,7 @@ for s = 1:nSets
             varMeta = obj.variables(v(k)).dimMetadata( grids{f(v(k))}, dims(d) );
             try
                 meta = intersect(meta, varMeta, 'rows', 'stable');
-                
+
             % Informative errors if there is no overlap or different formats
             catch
                 incompatibleFormatsError(obj, v(1), v(k), dims(d));
@@ -179,32 +147,32 @@ for s = 1:nSets
                 noMatchingMetadataError(obj.variableNames(v), dims(d));
             end
         end
-        
+
         % Update the reference indices in each variable to match the metadata
         for k = 1:numel(v)
             obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids{f(v(k))}, dims(d));
         end
     end
-    
+
     % ***Note: At this point, the reference indices in the coupled
     % variables are in the same order. The first reference index in each
     % variable points to the same metadata-1. The second reference index in
     % each points to the same metadata-2, etc.
-    
+
     % Initialize a set of subscripted ensemble members
     subMembers = NaN(nEns, numel(dims));
     unused = (1:prod(obj.variables(v(1)).ensSize))';
     nNeeded = nEns;
     subIndexCell = cell(1, numel(dims));
     siz = var1.ensSize(~var1.isState);
-    
+
     % Select ensemble members and optionally remove overlapping members
     % until the ensemble is complete.
     while nNeeded > 0
         if nNeeded > numel(unused)
             notEnoughMembersError(obj.variableNames(v), obj.overlap(v));
         end
-        
+
         % Select members randomly or in an ordered manner. Remove values
         % from the unused members when selected
         if random
@@ -216,7 +184,7 @@ for s = 1:nSets
         % Get the subscript indices of ensemble members
         [subIndexCell{:}] = ind2sub(siz, members);
         subMembers(nEns-nNeeded+1:nEns, :) = cell2mat(subIndexCell);
-        
+
         % Optionally remove ensemble members with overlapping data. Update
         % the number of ensemble members needed
         for k = 1:numel(v)
@@ -226,36 +194,84 @@ for s = 1:nSets
         end
         nNeeded = nEns - size(subMembers, 1);
     end
-    
-    % Record the selected and unused ensemble members
+
+    % Record the ensemble members, ensemble dimensions, and unused members
     obj.subMembers{s} = subMembers;
+    obj.dims{s} = dims;
     obj.unused{s} = unused;
+end
+
+
+%% Build the ensemble
+% v: Variable index in the state vector
+% s: Set index associated with a variable
+
+% Note if writing to file. Get full path, set extension, check overwriting
+writeFile = false;
+if ~isempty(filename)
+    filename = dash.assertStrFlag(filename, 'filename');
+    filename = dash.setupNewFile(filename, '.ens', overwrite);
+    writeFile = true;
     
-    % Build the ensemble for each variable. Either return as output or
-    % write to file
-    for k = 1:numel(v)
-        varRows = svLimit(v(k),1) : svLimit(v(k),2);
-        if writeFile
-            obj.variables(v(k)).buildEnsemble( subMembers, dims, ...
-                grids{f(v(k))}, sources{f(v(k))}, ens, varRows, showprogress );
-        else
-            X(varRows,:) = obj.variables(v(k)).buildEnsemble( subMembers, ...
-                dims, grids{f(v(k))}, sources{f(v(k))}, [], [], showprogress );
+    % Initialize the new matfile
+    if isfile(filename)
+        delete(filename);
+    end
+    ens = matfile(filename);
+    ens.valid = false;
+end
+
+% Catch any failed .ens files
+try
+
+    % Get the variable limits and preallocate the ensemble
+    varLimit = obj.variableLimits;
+    nState = varLimit(end, 2);
+    if writeFile
+        ens.X(nState, nEns) = NaN;
+    else
+        try
+            X = NaN(nState, nEns);
+        catch
+            outputTooBigError();
         end
     end
+
+    % Get the state vector rows and coupling set for each variable. Collect the
+    % inputs for svv.buildEnsemble
+    for v = 1:nVars
+        rows = varLimit(v,1):varLimit(v,2);
+        s = find( sets(:,v) );
+
+        % Build the ensemble for the variable. Get array or save to file
+        inputs = {obj.subMembers{s}, obj.dims{s}, grids(f(v)), sources(f(v)), [], [], showProgress};
+        if writeFile
+            inputs(5:6) = {ens, rows};
+            obj.variables(v).buildEnsemble( inputs{:} );
+        else
+            X(rows,:) = obj.variables(v).buildEnsemble( inputs{:} );
+        end
+    end
+
+    % Ensemble metadata
+    meta = ensembleMetadata(design);
+    if writeFile
+        ens.meta = meta;
+        ens.valid = true;
+    end
+
+% Delete any failed ensembles before throwing errors
+catch ME
+    if writeFile && isfile(filename)
+        delete(filename);
+    end
+    rethrow(ME);
 end
 
-% Ensemble metadata
-meta = ensembleMetadata(design);
-if writeFile
-    ens.meta = meta;
-end
-
-% Return output array from file build if requested
+% If requested, return output array when saving to file
 if writeFile && nargout>0
     try
         X = ens.X;
-        ens.valid = true;
     catch
         loadTooBigError(filename);
     end
