@@ -173,6 +173,7 @@ buildEnsemble
     svv.removeOverlap
         svv.checkDimensions
             dash.checkStrsInList
+    variableLimits
     svv.buildEnsemble
         svv.checkDimensions
             dash.checkStrsInList
