@@ -50,7 +50,9 @@ classdef stateVector
         auto_Couple; % Whether to automatically couple a variable to new variables
         
         subMembers; % Subscripted ensemble members for each set of coupled variables
+        dims; % The order of dimensions of the subscripted ensemble members
         unused; % Unselected ensemble members for each set of coupled variables
+        
     end
     
     properties (Hidden, Constant)
@@ -101,11 +103,15 @@ classdef stateVector
             obj.auto_Couple = false(0,1);
             obj.coupled = false(0,0);
             obj.variables = [];
+            obj.subMembers = cell(0,1);
+            obj.dims = cell(0,1);
+            obj.unused = cell(0,1);
         end
     end
     
     % Object utilities
     methods
+        limits = variableLimits(obj);
         [v, varNames] = checkVariables(obj, varNames);
         checkVariableNames(obj, newNames, v, inputName, methodName);
         str = errorTitle(obj);
