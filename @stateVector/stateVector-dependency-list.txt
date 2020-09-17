@@ -152,7 +152,8 @@ buildEnsemble
     dash.assertScalarLogical
     dash.assertPositiveIntegers
     dash.collectField
-    gridfile
+    svv.gridfile
+        gridfile
     gridfile.review
     svv.checkGrid
     svv.trim

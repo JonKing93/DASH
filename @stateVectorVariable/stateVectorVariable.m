@@ -110,6 +110,7 @@ classdef stateVectorVariable
     methods
         [d, dims] = checkDimensions(obj, dims, allowMultiple);
         assertAddIndices(obj, indices, d, name);
+        grid = gridfile(obj);
         checkGrid(obj, grid);
         obj = trim(obj);
         meta = dimMetadata(obj, grid, dim);

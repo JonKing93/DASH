@@ -90,11 +90,7 @@ sources = cell(nGrids, 1);
 % Check that all gridfiles are valid. Pre-build data sources
 for v = 1:nVars
     if ismember(v, vf)
-        try
-            grids{f(v)} = gridfile(obj.variables(v).file);
-        catch ME
-            badGridfileError(obj.variables(v), ME);
-        end        
+        grids{f(v)} = obj.variables(v).gridfile;
         sources{f(v)} = grids{f(v)}.review;
     end
     obj.variables(v).checkGrid(grids{f(v)});
@@ -287,12 +283,6 @@ if noState
 end
 error(['Variable "%s" has no %s dimensions. See "stateVector.design" to ',...
     'specify %s dimensions.'], name, type, type);
-end
-function[] = badGridfileError(var, ME)
-message = sprintf('Could not build the gridfile object for variable %s.', var.name);
-cause = MException('DASH:stateVector:invalidGridfile', message);
-ME = addCause(ME, cause);
-rethrow(ME);
 end
 function[] = incompatibleFormatsError(obj, v1, v, dim)
 error(['Coupled variables "%s" and "%s" use different metadata formats for ', ...
