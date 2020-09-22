@@ -240,7 +240,7 @@ try
         s = find( sets(:,v) );
 
         % Build the ensemble for the variable. Get array or save to file
-        inputs = {obj.subMembers{s}, obj.dims{s}, grids(f(v)), sources(f(v)), [], [], showProgress};
+        inputs = {obj.subMembers{s}, obj.dims{s}, grids{f(v)}, sources{f(v)}, [], [], showprogress};
         if writeFile
             inputs(5:6) = {ens, rows};
             obj.variables(v).buildEnsemble( inputs{:} );
@@ -249,12 +249,13 @@ try
         end
     end
 
-    % Ensemble metadata
-    meta = ensembleMetadata(design);
-    if writeFile
-        ens.meta = meta;
-        ens.valid = true;
-    end
+    warning('disabled ensemble metadata');
+%     % Ensemble metadata
+%     meta = ensembleMetadata(design);
+%     if writeFile
+%         ens.meta = meta;
+%         ens.valid = true;
+%     end
 
 % Delete any failed ensembles before throwing errors
 catch ME
