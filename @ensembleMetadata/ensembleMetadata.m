@@ -51,6 +51,7 @@ classdef ensembleMetadata
             nVars = numel(obj.variableNames);
             obj.dims = cell(nVars, 1);
             obj.stateSize = cell(nVars, 1);
+            obj.metadata = struct();
 
             % Get the coupling index for each variable
             sets = unique(sv.coupled, 'rows');
@@ -65,7 +66,6 @@ classdef ensembleMetadata
                 % Dimensions and sizes. Initialize metadata
                 obj.dims{v} = var.dims;
                 obj.stateSize{v} = var.stateSize;
-                obj.metadata = struct();
                 
                 % Get metadata for each ensemble and defined dimension
                 for d = 1:numel(var.dims)
