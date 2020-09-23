@@ -30,57 +30,59 @@ obj.vectorName = sv.name;
 obj.variableNames = sv.variableNames;
 obj.varLimit = sv.variableLimits;
 
-% Get the sets of coupled variables
-sets = unique(obj.coupled, 'rows');
+% Preallocate dimensions
+nVars = numel(obj.variableNames);
+obj.dims = cell(nVars, 1);
+obj.stateSize = cell(nVars, 1);
 
-% Get the gridfile
-for v = 1:numel(obj.variableNames)
+% Get the coupling index for each variable
+sets = unique(obj.coupled, 'rows');
+for v = 1:nVars
+    s = find(sets(:,v));
+    
+    % Get the gridfile
     var = obj.variables(v);
     grid = var.gridfile;
     var.checkGrid(grid);
     
-    % Get metadata for state dimensions
-    d = find( grid.isdefined & var.isState );
-    stateMeta = struct();
+    % Dimensions and sizes. Initialize metadata
+    obj.dims{v} = var.dims;
+    obj.stateSize{v} = var.stateSize;
+    obj.metadata = struct();
+    
+    % State dimension metadata
+    d = find(grid.isdefined & var.isState);
     for k = 1:numel(d)
         dim = var.dims(d(k));
-        stateMeta.(dim) = var.dimMetadata(grid, dim);
+        state = var.dimMetadata(grid, dim);
+        ensemble = [];
         
-        % Propagate metadata for means along the third dimension
+        % Propagate mean metadata along the third dimension
         if var.takeMean(d(k))
-            stateMeta.(dim) = permute(stateMeta.(dim), [3 2 1]);
+            state = permute(state, [3 2 1]);
         end
     end
     
-    % Get indices for the ensemble dimensions and coupling set
-    d = find(~var.isState);
-    s = find(sets(:,v));
-    
-    % Intialize the metadata across the ensemble
-    dims = var.dims(d);
-    nSeq = var.stateSize(d);
-    ensMeta = struct('dims', dims, 'nSeq', nSeq);
-    
-    % Get the reference indices used for each ensemble member
+    % Ensemble dimensions setup
+    d = var.checkDimensions(obj.dims{s});
     for k = 1:numel(d)
         dim = var.dims(d(k));
+        
+        % Reference indices and ensemble metadata
+        members = sv.subMembers{s}(:, k);
+        ref = var.indices{d(k)}(members);
+        ensemble = grid.meta.(dim)(ref, :);
+        
+        % Sequences are state metadata
+        state = var.seqMetadata{d(k)};
+    end
     
-    
-    
-    
+    % Build the dimension metadata structure
+    obj.metadata.(var.name).(dim).state = state;
+    obj.metadata.(var.name).(dim).ensemble = ensemble;
+end
 
-    % Get the metadata at the reference indices for each ensemble member
-    for k = 1:numel(d)
-        dim = var.dims(d(k));        
-        meta = var.dimMetadata(grid, dim);
-        [~, col] = ismember(dim, obj.dims{s});
-        ensMeta.(dim) = meta(obj.subMembers{s}(:,col), :);
-        
-        % 
-        
-        
-        
-    
+end
     
     
     
