@@ -17,7 +17,11 @@ function[obj] = matchIndices(obj, meta, grid, dim)
 
 % Get the variable's metadata. Find the metadata intersect
 varMeta = obj.dimMetadata(grid, dim);
-[~, keep] = intersect(varMeta, meta, 'rows', 'stable');
+if isScalarNaN(meta) && isScalarNaN(varMeta)
+    keep = 1;
+else
+    [~, keep] = intersect(varMeta, meta, 'rows', 'stable');
+end
 
 % Update the reference indices. Update metadata and size
 d = obj.checkDimensions(dim);
@@ -27,4 +31,12 @@ if obj.hasMetadata(d)
 end
 obj.ensSize(d) = numel(obj.indices{d});
 
+end
+
+% Helper function
+function[tf] = isScalarNaN(value)
+tf = false;
+if isnumeric(value) && isscalar(value) && isnan(value)
+    tf = true;
+end
 end
