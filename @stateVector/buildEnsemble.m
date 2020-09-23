@@ -220,7 +220,6 @@ if ~isempty(filename)
         delete(filename);
     end
     ens = matfile(filename);
-    ens.valid = false;
 end
 
 % Catch any failed .ens files
@@ -259,7 +258,7 @@ try
     meta = ensembleMetadata(obj);
     if writeFile
         ens.meta = meta;
-        ens.valid = true;
+        ens.stateVector = obj;
     end
 
 % Delete any failed ensembles before throwing errors

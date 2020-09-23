@@ -1,7 +1,7 @@
 classdef ensembleMetadata
     % Manages metadata for an ensemble
     
-    properties
+    properties (SetAccess = private)
         ensembleName; % Name of the ensemble
         vectorName; % Name of the state vector template
         
@@ -10,7 +10,9 @@ classdef ensembleMetadata
         dims; % The dimensions for each variable
         stateSize; % The length of each dimension for each variable
         
-        metadata; % Metadata for each dimension of each variable
+        hasMembers; % Whether associated with ensemble members
+        metadata; % Metadata for each dimension of each variable. Organized
+                  % as a structure metadata.(variable).(dimension).(state or ensemble)
     end
     
     % Constructor
@@ -31,12 +33,15 @@ classdef ensembleMetadata
             %
             % sv: A stateVector object
 
-            % !!!!!!!!!!!!!!!!!!!!!!!!
-            % Currently only building for state vector
-
-            % Error check
+            % Error check.
             if ~isa(sv, 'stateVector') || ~isscalar(sv)
                 error('sv must be a scalar stateVector object.');
+            end
+            
+            % Check if associated with ensemble members
+            obj.hasMembers = false;
+            if ~isempty(sv.subMembers)
+                obj.hasMembers = true;
             end
 
             % Get names
@@ -47,9 +52,11 @@ classdef ensembleMetadata
             obj.variableNames = sv.variableNames;
             obj.varLimit = sv.variableLimits;
 
-            % Preallocate dimensions
+            % Preallocate
             nVars = numel(obj.variableNames);
-            obj.dims = cell(nVars, 1);
+            if obj.hasMembers
+                obj.dims = cell(nVars, 1);
+            end
             obj.stateSize = cell(nVars, 1);
             obj.metadata = struct();
 
@@ -71,6 +78,8 @@ classdef ensembleMetadata
                 for d = 1:numel(var.dims)
                     if grid.isdefined(d) || ~var.isState(d)
                         dim = var.dims(d);
+                        state = [];
+                        ensemble = [];
                     
                         % State dimensions
                         if var.isState(d)
@@ -78,16 +87,19 @@ classdef ensembleMetadata
                             if var.takeMean(d)
                                 state = permute(state, [3 2 1]);
                             end
-                            ensemble = [];
                         end
                     
-                        % Ensemble dimensions
+                        % Sequences
                         if ~var.isState(d)
+                            state = var.seqMetadata{d};
+                        end
+                        
+                        % Ensemble metadata
+                        if ~var.isState(d) && obj.hasMembers
                             k = strcmp(dim, sv.dims{s});
                             members = sv.subMembers{s}(:, k);
                             ref = var.indices{d}(members);
                             ensemble = grid.meta.(dim)(ref, :);
-                            state = var.seqMetadata{d};
                         end
                         
                         % Build the metadata structure
