@@ -131,7 +131,7 @@ classdef stateVector
         dims = dimensions(obj, varNames, type);
         [vectorInfo, varInfo] = info(obj, vars);
         obj = renameVariables(obj, varNames, newNames);        
-        X = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
+        [X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
     end
     
     % User methods

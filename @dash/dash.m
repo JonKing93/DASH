@@ -9,6 +9,7 @@ classdef dash
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
         X = permuteToOrder(X, order, nDims);
+        tf = bothNaN(A, B);
         
         % Structures
         [s, inputs] = preallocateStructs(fields, siz);

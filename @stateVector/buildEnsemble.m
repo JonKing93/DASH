@@ -1,4 +1,4 @@
-function[X] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress)
 %% Builds a state vector ensemble.
 % 
 % [X, meta] = obj.buildEnsemble(nEns)
@@ -132,15 +132,21 @@ for s = 1:nSets
         meta = var1.dimMetadata(grids{f(v(1))}, dims(d));
         for k = 2:numel(v)
             varMeta = obj.variables(v(k)).dimMetadata( grids{f(v(k))}, dims(d) );
-            try
-                meta = intersect(meta, varMeta, 'rows', 'stable');
+            
+            % Get the metadata intersect
+            if dash.bothNaN(meta, varMeta)
+                meta = NaN;
+            else
+                try
+                    meta = intersect(meta, varMeta, 'rows', 'stable');
 
-            % Informative errors if there is no overlap or different formats
-            catch
-                incompatibleFormatsError(obj, v(1), v(k), dims(d));
-            end
-            if isempty(meta)
-                noMatchingMetadataError(obj.variableNames(v), dims(d));
+                % Informative errors if there is no overlap or different formats
+                catch
+                    incompatibleFormatsError(obj, v(1), v(k), dims(d));
+                end
+                if isempty(meta)
+                    noMatchingMetadataError(obj.variableNames(v), dims(d));
+                end
             end
         end
 
