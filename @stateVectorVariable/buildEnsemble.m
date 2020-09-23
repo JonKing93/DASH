@@ -162,11 +162,6 @@ if showprogress
     delete(f);
 end
 
-% Write all ensemble members to file if possible
-if writeFile && writeAll
-    ens.X(svIndices,:) = X;
-end
-
 end
 
 % Error message, helper function
