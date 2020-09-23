@@ -166,7 +166,7 @@ for s = 1:nSets
     % until the ensemble is complete.
     while nNeeded > 0
         if nNeeded > numel(unused)
-            notEnoughMembersError(obj.variableNames(v), obj.overlap(v));
+            notEnoughMembersError(obj.variableNames(v), obj.overlap(v), nEns);
         end
 
         % Select members randomly or in an ordered manner. Remove values
@@ -249,13 +249,12 @@ try
         end
     end
 
-    warning('disabled ensemble metadata');
-%     % Ensemble metadata
-%     meta = ensembleMetadata(design);
-%     if writeFile
-%         ens.meta = meta;
-%         ens.valid = true;
-%     end
+    % Ensemble metadata
+    meta = ensembleMetadata(obj);
+    if writeFile
+        ens.meta = meta;
+        ens.valid = true;
+    end
 
 % Delete any failed ensembles before throwing errors
 catch ME
@@ -296,7 +295,7 @@ error(['Cannot couple variables %s because they have no common metadata ', ...
     'either the "stateVector.specifyMetadata" or "stateVector.convertMetadata" ',...
     'method.'], dash.messageList(varNames), dim);
 end
-function[] = notEnoughMembersError(varNames, overlap)
+function[] = notEnoughMembersError(varNames, overlap, nEns)
 if numel(varNames) == 1
     str1 = "non-overlapping";
     str3 = 'or allowing overlap';
