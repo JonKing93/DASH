@@ -27,7 +27,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta)
 
 If the file name includes a complete file path (for example "C:\Users\filepath\myfile.nc"), then the matching file is added to the .grid file. If you do not include a path (for example, "myfile.nc") or use a partial path (\filepath\myfile.nc), then the method will search the Matlab active path for a file with the matching name.
 
-The following is an example of a typical workflow:
+The following is an example of how to add one data source:
 ```matlab
 type = 'nc';
 filename = 'my-data-file.nc';
@@ -36,6 +36,32 @@ dimensionOrder = ["lon","lat","time"];
 sourceMeta = gridfile.defineMetadata("lon", lonMeta, "lat", latMeta, "time", timeMeta);
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
+
+In practice, we often want to add multiple data source files to a .grid file, so let's use a more realistic example. Say I run a climate model three times. The output for each run is split into two parts: time period A covers the first 1000 time steps, and time period B covers the following 250 time steps. The data is saved as variable 'T' and organized as longitude by latitude by time. Adding these files to a .grid file might look like:
+```matlab
+files = ["run1-A.nc", "run1-B.nc", "run2-A.nc", "run2-B.nc", run3-A.nc", run30B.nc'];
+lat = ncread(files(1), 'lat');
+lon = ncread(files(2), 'lon');
+dimOrder = ["lon","lat","time"];
+variable = "T";
+
+% Add each file using a for loop
+for f = 1:numel(files)
+
+    % Get the run and time metadata
+    run = ceil(f/2);
+    if rem(f,2) == 1   
+        time = time(1:1000);  % Time period A
+    else
+        time = time(1001:1250);  % Time period B
+    end
+
+    % Define metadata for the data source. Add to .grid file
+    meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
+    grid.add('nc', files(f), variable, dimOrder, meta);
+end
+```
+
 
 <br>
 
