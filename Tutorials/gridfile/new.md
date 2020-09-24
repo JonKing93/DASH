@@ -38,10 +38,10 @@ meta = gridfile.defineMetadata("lat", lat, "lon", lon, "time", time);
 <br>
 **Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.
 
-For a realistic example, let's say I have files "myfile-run1.nc" and "myfile-run2.nc" which store data from two runs of a climate model. Each file has longitude, latitude and time metadata stored within (saved under the names "longitude", "latitude", and "time"), and I find the latitude and longitude values useful. The time metadata is for January 850 to December 2005 with a monthly time step but stored as days since 850-1-1, which I do not find useful. Instead, I would like to use a datetime metadata format. In this case, the metadata definition would be:
+For a realistic example, let's say I have files "mydata-run1.nc" and "mydata-run2.nc" which store data from two runs of a climate model. Each file has longitude, latitude and time metadata stored within (saved under the names "longitude", "latitude", and "time"), and I find the latitude and longitude values useful. The time metadata is for January 850 to December 2005 with a monthly time step but stored as days since 850-1-1, which I do not find useful. Instead, I would like to use a datetime metadata format. In this case, the metadata definition would be:
 ```matlab
-lat = ncread('myfile-run1.nc', 'lat');
-lon = ncread('myfile-run2.nc', 'lon');
+lat = ncread('mydata-run1.nc', 'lat');
+lon = ncread('mydata-run2.nc', 'lon');
 run = [1;2];
 time = ( datetime(850,1,15):calmonths(1):datetime(2005,12,15) )';
 meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
