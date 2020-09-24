@@ -35,6 +35,7 @@ time = (850:2005)';
 meta = gridfile.defineMetadata("lat", lat, "lon", lon, "time", time);
 ```
 
+<br>
 **Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.
 
 For a realistic example, let's say I have files "myfile-run1.nc" and "myfile-run2.nc" which store data from two runs of a climate model. Each file has longitude, latitude and time metadata stored within (saved under the names "longitude", "latitude", and "time"), and I find the latitude and longitude values useful. The time metadata is for January 850 to December 2005 with a monthly time step but stored as days since 850-1-1, which I do not find useful. Instead, I would like to use a datetime metadata format. In this case, the metadata definition would be:
