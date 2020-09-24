@@ -78,7 +78,16 @@ You can optionally have the .grid file convert the units of data values loaded f
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert)
 ```
-Here the convert input is a two element vector. The first element specifies the multiplicative constant (a), and the second element specifies the additive constant (b).
+Here the convert input is a two element vector. The first element specifies the multiplicative constant (a), and the second element specifies the additive constant (b). So, if I want data stored in units of Kelvin converted to units of Celsius, I would do:
+```matlab
+convert = [1, -273.15];
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert);
+```
+Note that the first element of convert is 1 because it is the multiplicative constant and we do not need multiplication to convert from Kelvin to Celsius. By contrast, if I wanted to convert data stored in Fahrenheit to Celsius, I could do
+```matlab
+convert = [5/9, -32*(5/9)];
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert);
+```
 
 <br>
 
@@ -87,11 +96,22 @@ You can have the .grid file convert data matching a fill value to NaN using the 
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'fill', fillValue);
 ```
+
+For example, if a data source file uses -9999 as a fill value, I would do
+```matlab
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'fill', -9999);
+```
+to convert -9999 to NaN when data is loaded.
+
 You can also have the .grid file convert data outside of a valid range to NaN using the optional 'validRange' flag:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'validRange', validRange);
 ```
-Here validRange is a two element vector. The first element is the lower bound of the range and the second element is the upper bound.
+Here validRange is a two element vector. The first element is the lower bound of the range and the second element is the upper bound. For example, if I know my data should be positive, but no larger than 100, I could do
+```matlab
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'validRange', [0 100]);
+```
+to convert any values smaller than 0 or larger than 100 to NaN when data is loaded.
 
 <br>
 
