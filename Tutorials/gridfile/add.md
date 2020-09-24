@@ -33,7 +33,7 @@ type = 'nc';
 filename = 'my-data-file.nc';
 variable = 'tas';
 dimensionOrder = ["lon","lat","time"];
-sourceMeta = gridfile.DefineMetadata("lon", lonMeta, "lat", latMeta, "time", timeMeta);
+sourceMeta = gridfile.defineMetadata("lon", lonMeta, "lat", latMeta, "time", timeMeta);
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
