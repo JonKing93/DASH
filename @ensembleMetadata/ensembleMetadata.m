@@ -69,43 +69,41 @@ classdef ensembleMetadata
                 var = sv.variables(v);
                 grid = var.gridfile;
                 var.checkGrid(grid);
-
-                % Dimensions and sizes. Initialize metadata
-                obj.dims{v} = var.dims;
-                obj.stateSize{v} = var.stateSize;
                 
-                % Get metadata for each ensemble and defined dimension
-                for d = 1:numel(var.dims)
-                    if grid.isdefined(d) || ~var.isState(d)
-                        dim = var.dims(d);
-                        state = [];
-                        ensemble = [];
+                % Get all user dimensions
+                d = find(grid.isdefined | ~var.isState);
+                obj.dims{v} = var.dims(d);
+                obj.stateSize{v} = var.stateSize(d);
+                
+                % Get metadata for each dimension
+                for k = 1:numel(d)
+                    dim = var.dims(d(k));
+                    state = [];
+                    ensemble = [];
                     
-                        % State dimensions
-                        if var.isState(d)
-                            state = var.dimMetadata(grid, dim);
-                            if var.takeMean(d)
-                                state = permute(state, [3 2 1]);
-                            end
+                    % State dimensions
+                    if var.isState(d(k))
+                        state = var.dimMetadata(grid, dim);
+                        if var.takeMean(d(k))
+                            state = permute(state, [3 2 1]);
                         end
                     
-                        % Sequences
-                        if ~var.isState(d)
-                            state = var.seqMetadata{d};
-                        end
-                        
-                        % Ensemble metadata
-                        if ~var.isState(d) && obj.hasMembers
-                            k = strcmp(dim, sv.dims{s});
-                            members = sv.subMembers{s}(:, k);
-                            ref = var.indices{d}(members);
-                            ensemble = grid.meta.(dim)(ref, :);
-                        end
-                        
-                        % Build the metadata structure
-                        obj.metadata.(var.name).(dim).state = state;
-                        obj.metadata.(var.name).(dim).ensemble = ensemble;
+                    % Sequences
+                    else
+                        state = var.seqMetadata{d(k)};
                     end
+                        
+                    % Ensemble metadata
+                    if ~var.isState(d(k)) && obj.hasMembers
+                        col = strcmp(dim, sv.dims{s});
+                        members = sv.subMembers{s}(:, col);
+                        ref = var.indices{d(k)}(members);
+                        ensemble = grid.meta.(dim)(ref, :);
+                    end
+                        
+                    % Buile the metadata structure
+                    obj.metadata.(var.name).state.(dim) = state;
+                    obj.metadata.(var.name).ensemble.(dim) = ensemble;
                 end
             end
         end
@@ -113,7 +111,7 @@ classdef ensembleMetadata
     
     % User methods
     methods
-        regrid;
+        [V, meta] = regrid(obj, X, varName);
     end
     
 end
