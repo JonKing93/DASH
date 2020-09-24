@@ -24,9 +24,9 @@ Here, the syntax is to provide the name of a dimension and then its metadata, th
 
 You DO NOT need to provide metadata for all these dimensions; only the dimensions appearing in your dataset need metadata. Also, you may provide the dimensions in any order, regardless of the dimension order of your dataset. (If you would like to use different dimension names, you can [rename dimensions](change-dimension-names). If your dataset has more dimensions that the 7 defaults, you can [add new dimensions](add-dimension-names)).
 
-Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. In general, it's best to use metadata values that are meaningful to you, as this will allow you to reuse the .grid file many times in the future. You DO NOT need to use metadata values found in data source files.
+Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. In general, it's best to use metadata values that are meaningful to you, as this will allow you to reuse the .grid file many times in the future. You do not need to use the same metadata values as those stored in the data source files.
 
-The following is an example of a typical metadata definition.
+The following is an example of a generic metadata definition.
 
 ```matlab
 lat = (-90:90)';
@@ -34,6 +34,25 @@ lon = (0:360)';
 time = (850:2005)';
 meta = gridfile.defineMetadata("lat", lat, "lon", lon, "time", time);
 ```
+
+**Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.
+
+For a realistic example, let's say I have files "myfile-run1.nc" and "myfile-run2.nc" which store data from two runs of a climate model. Each file has longitude, latitude and time metadata stored within (saved under the names "longitude", "latitude", and "time"), and I find the latitude and longitude values useful. The time metadata is for January 850 to December 2005 with a monthly time step but stored as days since 850-1-1, which I do not find useful. Instead, I would like to use a datetime metadata format. In this case, the metadata definition would be:
+```matlab
+lat = ncread('myfile-run1.nc', 'lat');
+lon = ncread('myfile-run2.nc', 'lon');
+run = [1;2];
+time = ( datetime(850,1,15):calmonths(1):datetime(2005,12,15) )';
+meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
+```
+
+
+
+and time metadata stored within, and I find the latitude and longitude units useful. The files store data from January 850 to December 2005 with a monthly time step, but I want to use
+
+
+
+In practice, it is important for .grid file metadata to use the same spacing as the data source
 
 <br>
 
