@@ -39,7 +39,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 
 In practice, we often want to add multiple data source files to a .grid file, so let's use a more realistic example. Say I run a climate model three times. The output for each run is split into two parts: time period A covers the first 1000 time steps, and time period B covers the following 250 time steps. The data is saved as variable 'T' and organized as longitude by latitude by time. Adding these files to a .grid file might look like:
 ```matlab
-files = ["run1-A.nc", "run1-B.nc", "run2-A.nc", "run2-B.nc", run3-A.nc", run30B.nc'];
+files = ["run1-A.nc", "run1-B.nc", "run2-A.nc", "run2-B.nc", "run3-A.nc", "run30B.nc"];
 lat = ncread(files(1), 'lat');
 lon = ncread(files(2), 'lon');
 dimOrder = ["lon","lat","time"];
