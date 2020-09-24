@@ -109,7 +109,7 @@ Here the convert input is a two element vector. The first element specifies the 
 convert = [1, -273.15];
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert);
 ```
-Note that the first element of convert is 1 because it is the multiplicative constant and we do not need multiplication to convert from Kelvin to Celsius. By contrast, if I wanted to convert data stored in Fahrenheit to Celsius, I could do
+Note that the first element of convert is 1 because it is the multiplicative constant and we do not need multiplication to convert from Kelvin to Celsius. By contrast, if I wanted to convert data stored in Fahrenheit to Celsius, I could do:
 ```matlab
 convert = [5/9, -32*(5/9)];
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert);
