@@ -46,14 +46,6 @@ time = ( datetime(850,1,15):calmonths(1):datetime(2005,12,15) )';
 meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
 ```
 
-
-
-and time metadata stored within, and I find the latitude and longitude units useful. The files store data from January 850 to December 2005 with a monthly time step, but I want to use
-
-
-
-In practice, it is important for .grid file metadata to use the same spacing as the data source
-
 <br>
 
 ### Create File
