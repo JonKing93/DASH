@@ -43,8 +43,8 @@ For a realistic example, let's say I have files "mydata-run1.nc" and "mydata-run
 lat = ncread('mydata-run1.nc', 'latitude');
 lon = ncread('mydata-run2.nc', 'longitude');
 run = [1;2];
-time = ( datetime(850,1,15):calmonths(1):datetime(2005,12,15) )';
-meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
+time = datetime(850,1,15) : calmonths(1) : datetime(2005,12,15);
+meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time', 'run', run);
 ```
 
 <br>
