@@ -48,7 +48,7 @@ variable = "T";
 % Add each file using a for loop
 for f = 1:numel(files)
 
-    % Get the run and time metadata
+    % Get the run and time metadata for the file
     run = ceil(f/2);
     if rem(f,2) == 1   
         time = time(1:1000);  % Time period A
