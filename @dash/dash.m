@@ -8,7 +8,7 @@ classdef dash
         names = dimensionNames;
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
-        X = permuteToOrder(X, order, nDims);
+        [X, order] = permuteDimensions(X, index, iscomplete, nDims);
         tf = bothNaN(A, B);
         
         % Structures

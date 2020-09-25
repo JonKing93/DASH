@@ -102,29 +102,27 @@ for s = 1:numel(useSource)
     
     % Load the data from the data source. Match .grid dimension order
     Xsource = source.read( sourceIndices );
-    [~, order] = ismember(source.mergedDims, obj.dims);
-    X(outputIndices{:}) = dash.permuteToOrder(Xsource, order, nDims);
+    [~, index] = ismember(source.mergedDims, obj.dims);
+    X(outputIndices{:}) = dash.permuteDimensions(Xsource, index, false, nDims);
 end
 
 % Permute to match the requested dimension order
-dimOrder = 1:nDims;
-dimOrder = [dimOrder(inputOrder), dimOrder(~ismember(dimOrder,inputOrder))];
-X = permute(X, dimOrder);
-dims = obj.dims(dimOrder);
+[X, order] = dash.permuteDimensions(X, inputOrder, true, nDims);
+dims = obj.dims(order);
 
 % Determine which dimensions to keep and which to remove. Keep dimensions
 % that are defined or in the user input
 inputDims = 1:numel(inputOrder);
-isdefined = find(obj.isdefined(dimOrder));
-notdefined = find(~obj.isdefined(dimOrder));
+isdefined = find(obj.isdefined(order));
+notdefined = find(~obj.isdefined(order));
 keep = [inputDims, isdefined(~ismember(isdefined, inputDims))];
 remove = notdefined(~ismember(notdefined, inputDims));
 
 % Arrange the metadata fields to match the dimension order
 if isfield(meta, obj.attributesName)
-    dimOrder(end+1) = max(dimOrder)+1;
+    order(end+1) = max(order)+1;
 end
-meta = orderfields(meta, dimOrder);
+meta = orderfields(meta, order);
 
 % Remove any dimensions from the data and the metadata
 X = permute(X, [keep, remove]);

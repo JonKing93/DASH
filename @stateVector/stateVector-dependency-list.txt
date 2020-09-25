@@ -59,7 +59,7 @@ weightedMean
         svv.checkDimensions
             dash.checkStrsInList
         dash.assertRealDefined
-        dash.permuteToOrder
+        dash.permuteDimensions
         svv.parseInputCell
             dash.assertVectorTypeN
         dash.assertVectorTypeN
@@ -307,7 +307,7 @@ copy
         svv.checkDimensions
             dash.checkStrsInList
         dash.assertRealDefined
-        dash.permuteToOrder
+        dash.permuteDimensions
         svv.parseInputCell
             dash.assertVectorTypeN
         dash.assertVectorTypeN

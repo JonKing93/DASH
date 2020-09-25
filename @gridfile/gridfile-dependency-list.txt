@@ -209,4 +209,4 @@ load
             dash.equallySpacedIndices
             ncSource.load
             matSource.load
-        dash.permuteToOrder
+        dash.permuteDimensions
