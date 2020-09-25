@@ -3,7 +3,7 @@ function[input, wasCell] = parseInputCell(input, nDims, name)
 % Returns the input as a cell. Throws a custom error message if cell
 % vectors are incorrect.
 %
-% input = stateVectorVariable.parseInputCells(input, nDims, name)
+% input = dash.parseInputCells(input, nDims, name)
 %
 % ----- Inputs -----
 %

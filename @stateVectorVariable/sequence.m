@@ -45,8 +45,8 @@ end
 nDims = numel(d);
 
 % Parse indices and metadata. Error check cell vectors
-[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
-metadata = obj.parseInputCell(metadata, nDims, 'metadataCell');
+[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
+metadata = dash.parseInputCell(metadata, nDims, 'metadataCell');
 
 % Error check indices for each dimension
 name = 'indices';

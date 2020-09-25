@@ -2,7 +2,7 @@ function[input] = parseLogicalString(input, nDims, logicalName, stringName, allo
 %% Parses inputs that can either be a logical or string. Returns the input
 % as a logical. Throws custom error messages.
 %
-% input = stateVectorVariable.parseLogicalString( ...
+% input = dash.parseLogicalString( ...
 %             input, nDims, logicalName, stringName, allowedStrings, lastTrue)
 %
 % ----- Inputs -----
@@ -20,6 +20,8 @@ function[input] = parseLogicalString(input, nDims, logicalName, stringName, allo
 %
 % lastTrue: The index of the last string in allowedStrings equivalent to a
 %    logical true.
+%
+% name: An name for the combined string/logical variables.
 %
 % ----- Outputs -----
 %

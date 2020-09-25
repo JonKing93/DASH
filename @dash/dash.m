@@ -6,10 +6,14 @@ classdef dash
         
         % Misc
         names = dimensionNames;
-        varargout = parseInputs(inArgs, flags, defaults, nPrev);
         convertToV7_3(filename);
         [X, order] = permuteDimensions(X, index, iscomplete, nDims);
         tf = bothNaN(A, B);
+        
+        % Input parsing
+        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+        [input, wasCell] = parseInputCell(input, nDims, name);
+        input = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name);
         
         % Structures
         [s, inputs] = preallocateStructs(fields, siz);

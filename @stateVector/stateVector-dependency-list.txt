@@ -8,10 +8,10 @@ design
     svv.design
         svv.checkDimensions
             dash.checkStrsInList
-        svv.parseLogicalString
+        dash.parseLogicalString
             dash.assertVectorTypeN
             dash.checkStrsInList
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         dash.checkIndices
     dash.messageList
@@ -27,7 +27,7 @@ sequence
     svv.sequence
         svv.checkDimensions
             dash.checkStrsInList
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         svv.assertAddIndices
             dash.assertVectorTypeN
@@ -41,9 +41,9 @@ mean
     svv.mean
         svv.checkDimensions
             dash.checkStrsInList        
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
-        svv.parseLogicalString
+        dash.parseLogicalString
             dash.assertVectorTypeN
             dash.checkStrsInList
         svv.assertAddIndices
@@ -60,7 +60,7 @@ weightedMean
             dash.checkStrsInList
         dash.assertRealDefined
         dash.permuteDimensions
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         dash.assertVectorTypeN
         dash.assertRealDefined
@@ -198,10 +198,10 @@ add
         svv.design
             svv.checkDimensions
                 dash.checkStrsInList
-            svv.parseLogicalString
+            dash.parseLogicalString
                 dash.assertVectorTypeN
                 dash.checkStrsInList
-            svv.parseInputCell
+            dash.parseInputCell
                 dash.assertVectorTypeN
             dash.checkIndices
     couple
@@ -280,25 +280,25 @@ copy
     svv.design
         svv.checkDimensions
             dash.checkStrsInList
-        svv.parseLogicalString
+        dash.parseLogicalString
             dash.assertVectorTypeN
             dash.checkStrsInList
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         dash.checkIndices
     svv.sequence
         svv.checkDimensions
             dash.checkStrsInList
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         svv.assertAddIndices
             dash.assertVectorTypeN
     svv.mean
         svv.checkDimensions
             dash.checkStrsInList        
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
-        svv.parseLogicalString
+        dash.parseLogicalString
             dash.assertVectorTypeN
             dash.checkStrsInList
         svv.assertAddIndices
@@ -308,7 +308,7 @@ copy
             dash.checkStrsInList
         dash.assertRealDefined
         dash.permuteDimensions
-        svv.parseInputCell
+        dash.parseInputCell
             dash.assertVectorTypeN
         dash.assertVectorTypeN
         dash.assertRealDefined
