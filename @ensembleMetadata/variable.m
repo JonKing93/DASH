@@ -1,4 +1,4 @@
-function[meta] = variable(obj, varName, dims, type)
+function[meta] = variable(obj, varName, dims, type, indices)
 %% Returns metadata down the state vector or across the ensemble for a
 % variable in a state vector ensemble.
 %
@@ -18,6 +18,10 @@ function[meta] = variable(obj, varName, dims, type)
 % [...] = obj.lookup(varName, dim/dims, returnState)
 % Specify whether to return metadata down the state vector or acrosss the
 % ensemble for listed dimensions.
+%
+% [...] = obj.lookup(varName, dim, type/returnState, indices)
+% [...] = obj.lookup(varName, dims, type/returnState, indexCell)
+% Return the metadata for specific elements of a variable.
 %
 % ----- Inputs -----
 %
@@ -39,6 +43,18 @@ function[meta] = variable(obj, varName, dims, type)
 %    logical to use the same metadata direction for all listed dimensions. 
 %    Use a logical vector to specify different directions listed in dims.
 %
+% indices: The elements across the ensemble or along the variable's state
+%    vector at which to return metadata for a dimension. Either a set of
+%    linear indices, or a logical vector. If a logical vector, must have
+%    one element per element of the variable in the state vector when
+%    returning metadata down the state vector and one element per ensemble
+%    member when returning metadata across the ensemble.
+%
+% indexCell: A cell vector. Each element must contain the indices for the
+%    corresponding dimension listed in dims. If an element is an empty
+%    array, returns metadata at all elements down the state vector or
+%    across the ensemble, as appropriate.
+%
 % ----- Outputs -----
 %
 % meta: The metadata for a single dimension. A matrix. If the metadata is
@@ -51,19 +67,31 @@ function[meta] = variable(obj, varName, dims, type)
 varName = dash.assertStrFlag(varName, 'varName');
 v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 
-% Defaults and error check for dims and type. Parse direction options
+% Defaults and error check for dims. Get dimension indices and type.
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v});
 end
 dims = dash.assertStrList(dims);
+nDims = numel(dims);
 d = dash.checkStrsInList(dims, obj.dims{v}, 'dims', sprintf('dimension of variable "%s"', varName));
+
+% Default for type. Parse metadata direction.
 if ~exist('type','var') || isempty(type)
     type = obj.isState{v}(d);
 end
-returnState = obj.parseDirection(type, numel(dims));
+returnState = obj.parseDirection(type, nDims);
+
+% Default and parse indices
+if ~exist('indices','var') || isempty(indices)
+    indices = cell(1, nDims);
+end
+[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
+name = 'indices';
+if wasCell
+    name = 'indexCell';
+end
 
 % Initialize output structure
-nDims = numel(dims);
 if nDims > 1
     meta = struct();
 end
@@ -75,20 +103,29 @@ if any(obj.isState{v}(d))
     subDimension = cell2mat(subDimension);
 end 
 
-% Preallocate metadata structure. Determine which direction to use
+% Determine which metadata direction to use for each dimension
 for k = 1:nDims
-    type = 'state';
-    if ~returnState(k)
-        type = 'ensemble';
-    end
-    
-    % Get the metadata for the dimension
-    dim = dims(k);
-    dimMeta = obj.metadata.(varName).(type).(dim);
-    
-    % Propagate state vector metadata over all state dimensions
     if returnState(k)
-        rows = subDimension(:, d(k));
+        nEls = obj.nEls(v);
+        lengthName = sprintf('the number of elements of variable "%s" in the state vector', varName);
+    else
+        nEls = obj.nEns;
+        lengthName = 'the number of ensemble members';
+    end
+
+    % Error check indices. Use all if unspecified
+    if isempty(indices{k})
+        indices{k} = 1:nEls;
+    end
+    indices{k} = dash.checkIndices(indices{k}, name, nEls, lengthName);
+    
+    % Metadata for ensemble and state dimensions. Need to propagate state
+    % metadata over all state dimensions.
+    if ~returnState(k)
+        dimMeta = obj.metadata.(varName).ensemble.(dims(k))(indices{k},:);
+    else
+        dimMeta = obj.metadata.(varName).state.(dims(k));
+        rows = subDimension(indices{k}, d(k));
         dimMeta = dimMeta(rows, :);
     end
     

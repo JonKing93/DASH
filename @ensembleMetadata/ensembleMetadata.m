@@ -13,7 +13,7 @@ classdef ensembleMetadata
         stateSize; % The length of each dimension for each variable
         isState; % Whether the dimensions are state or ensemble
         
-        hasMembers; % Whether associated with ensemble members
+        nEns; % The number of ensemble members.
         metadata; % Metadata for each dimension of each variable. Organized
                   % as a structure metadata.(variable).(dimension).(state or ensemble)
     end
@@ -47,15 +47,13 @@ classdef ensembleMetadata
                 error('sv must be a scalar stateVector object.');
             end
             
-            % Check if associated with ensemble members
-            obj.hasMembers = false;
-            if ~isempty(sv.subMembers)
-                obj.hasMembers = true;
-            end
-
-            % Get names
+            % Get names and size
             obj.ensembleName = [];
             obj.vectorName = sv.name;
+            obj.nEns = 0;
+            if ~isempty(sv.subMembers)
+                obj.nEns = size(sv.subMembers{1}, 1);
+            end
 
             % Variable indexing
             obj.variableNames = sv.variableNames;
@@ -104,7 +102,7 @@ classdef ensembleMetadata
                     end
                         
                     % Ensemble metadata
-                    if ~var.isState(d(k)) && obj.hasMembers
+                    if ~var.isState(d(k)) && obj.nEns>0
                         col = strcmp(dim, sv.dims{s});
                         members = sv.subMembers{s}(:, col);
                         ref = var.indices{d(k)}(members);
@@ -128,9 +126,8 @@ classdef ensembleMetadata
     methods
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
 
-        meta = variable(obj, varName, dims, type); % Returns metadata for a variable
+        meta = variable(obj, varName, dims, type, indices); % Returns metadata for a variable
         rows = findVariableRows(obj, varName, indices);
-
 
         meta = dimension(obj); % Returns metadata for a dimension
         meta = rows(obj); % Returns metadata at particular rows
