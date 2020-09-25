@@ -111,7 +111,7 @@ classdef ensembleMetadata
     
     % User methods
     methods
-        [V, meta] = regrid(obj, X, varName, varargin);
+        [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
     end
     
 end
