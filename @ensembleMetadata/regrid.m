@@ -33,12 +33,13 @@ dimOrder = string(dimOrder);
 % Get user dimensions and dimension order default
 userDims = dimOrder;
 dims = obj.dims{v};
+nDims = numel(dims);
 if isempty(dimOrder)
     dimOrder = dims;
 end
 
 % Error check
-order = dash.checkStrsInList(dimOrder, dims, 'dimOrder', sprintf('dimension of variable "%s"', varName) );
+index = dash.checkStrsInList(dimOrder, dims, 'dimOrder', sprintf('dimension of variable "%s"', varName) );
 assert( numel(dimOrder)==numel(unique(dimOrder)), 'dimOrder cannot contain duplicate names');
 dash.assertPositiveIntegers(d, 'd');
 assert(isscalar(d), 'd must be a scalar');
@@ -63,18 +64,25 @@ gridSize = obj.stateSize{v};
 % Optionally remove singleton dimensions
 if ~keepSingletons
     remove = find( gridSize==1 & ~ismember(dims, userDims) );
-    gridSize(single) = [];
+    gridSize(remove) = [];
     meta = rmfield(meta, dims(remove));
-    order = order - sum(remove<order(:), 2)';
+    index(remove) = [];
+    index = index - sum(remove<index(:), 2)';
+    nDims = nDims - numel(remove);
 end
     
 % Reshape vector to grid
 newSize = [siz(1:d-1), gridSize, siz(d+1:end)];
 V = reshape(V, newSize);
 
-% Permute to requested dimension order
-[V, order] = dash.permuteDimensions(V, order, true, numel(dims(~remove)));
+% Permute to requested dimension order.
+gridIndex = 1:nDims;
+gridIndex = [index, gridIndex(~ismember(gridIndex, index))];
+order = [1:d-1, d-1+gridIndex, nDims-1+(d+1:numel(siz))];
+V = permute(V, order);
+
+% Permute metadata fields
+order = order(d:d+nDims-1)-d+1;
 meta = orderfields(meta, order);
 
 end
-
