@@ -11,7 +11,7 @@ function[input, wasCell] = parseInputCell(input, nDims, name)
 %
 % nDims: The number of input dimensions.
 %
-% name: The name of the input. A string.
+% name: The name of the input cell. A string.
 %
 % ----- Outputs -----
 %

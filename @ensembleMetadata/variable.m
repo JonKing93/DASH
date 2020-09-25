@@ -5,7 +5,7 @@ function[meta] = variable(obj, varName, dims, type, indices)
 % metaStruct = obj.lookup(varName)
 % Returns the metadata for the non-singleton dimensions of a variable in a
 % state vector ensemble. Returns the metadata down the state vector for
-% state dimensions, and the metadata across the ensemble for ensemble
+% state dimensions and the metadata across the ensemble for ensemble
 % dimensions.
 %
 % metaStruct = obj.lookup(varName, dims)
@@ -133,7 +133,7 @@ for k = 1:nDims
     if nDims==1
         meta = dimMeta;
     else
-        meta.(dim) = dimMeta;
+        meta.(dims(k)) = dimMeta;
     end
 end
 
