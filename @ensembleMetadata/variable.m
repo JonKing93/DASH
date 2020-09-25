@@ -70,9 +70,8 @@ end
 
 % Propagate state dimensions over all other state dimensions
 if any(obj.isState{v}(d))
-    nEls = obj.varLimit(v,2) - obj.varLimit(v,1) + 1;
     subDimension = cell(1, numel(obj.dims{v}));
-    [subDimension{:}] = ind2sub( obj.stateSize{v}, (1:nEls)' );
+    [subDimension{:}] = ind2sub( obj.stateSize{v}, (1:obj.nEls(v))' );
     subDimension = cell2mat(subDimension);
 end 
 

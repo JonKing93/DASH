@@ -7,6 +7,8 @@ classdef ensembleMetadata
         
         variableNames; % Names of each metadata
         varLimit; % The limit of each variable down the state vector
+        nEls;
+        
         dims; % The dimensions for each variable
         stateSize; % The length of each dimension for each variable
         isState; % Whether the dimensions are state or ensemble
@@ -61,8 +63,9 @@ classdef ensembleMetadata
 
             % Preallocate
             nVars = numel(obj.variableNames);
-            obj.dims = cell(nVars, 1);
             obj.stateSize = cell(nVars, 1);
+            obj.nEls = NaN(nVars, 1);
+            obj.dims = cell(nVars, 1);
             obj.isState = cell(nVars, 1);
             obj.metadata = struct();
 
@@ -80,6 +83,7 @@ classdef ensembleMetadata
                 d = find(grid.isdefined | ~var.isState);
                 obj.dims{v} = var.dims(d);
                 obj.stateSize{v} = var.stateSize(d);
+                obj.nEls(v) = prod(var.stateSize(d));
                 obj.isState{v} = var.isState(d);
                 
                 % Get metadata for each dimension
@@ -123,7 +127,11 @@ classdef ensembleMetadata
     % User methods
     methods
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
+
         meta = variable(obj, varName, dims, type); % Returns metadata for a variable
+        rows = findVariableRows(obj, varName, indices);
+
+
         meta = dimension(obj); % Returns metadata for a dimension
         meta = rows(obj); % Returns metadata at particular rows
         meta = cols(obj); % Returns metadata at particular columns
