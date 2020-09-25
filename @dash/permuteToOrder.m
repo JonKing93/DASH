@@ -7,9 +7,9 @@ function[X] = permuteToOrder(X, order, nDims)
 %
 % X: An array
 %
-% order: Specifies the order of the current dimensions in the final
-%    permuted array. First element is the desired location of the current
-%    first dimension, etc.
+% order: Specifies the position of the requested dimensions in the current
+%    order. First element is the current dimension of the first requested
+%    dimension, etc.
 %
 % nDims: The number of dimensions in the final array
 %
