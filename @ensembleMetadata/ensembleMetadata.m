@@ -9,10 +9,17 @@ classdef ensembleMetadata
         varLimit; % The limit of each variable down the state vector
         dims; % The dimensions for each variable
         stateSize; % The length of each dimension for each variable
+        isState; % Whether the dimensions are state or ensemble
         
         hasMembers; % Whether associated with ensemble members
         metadata; % Metadata for each dimension of each variable. Organized
                   % as a structure metadata.(variable).(dimension).(state or ensemble)
+    end
+    
+    properties (Hidden)
+        directionFlags = ["state", "s", "down", "d", "rows", "r", ...
+            "ensemble", "ens", "e", "across", "a", "columns", "cols", "c"];
+        nStateFlags = 6;
     end
     
     % Constructor
@@ -54,10 +61,9 @@ classdef ensembleMetadata
 
             % Preallocate
             nVars = numel(obj.variableNames);
-            if obj.hasMembers
-                obj.dims = cell(nVars, 1);
-            end
+            obj.dims = cell(nVars, 1);
             obj.stateSize = cell(nVars, 1);
+            obj.isState = cell(nVars, 1);
             obj.metadata = struct();
 
             % Get the coupling index for each variable
@@ -74,11 +80,11 @@ classdef ensembleMetadata
                 d = find(grid.isdefined | ~var.isState);
                 obj.dims{v} = var.dims(d);
                 obj.stateSize{v} = var.stateSize(d);
+                obj.isState{v} = var.isState(d);
                 
                 % Get metadata for each dimension
                 for k = 1:numel(d)
                     dim = var.dims(d(k));
-                    state = [];
                     ensemble = [];
                     
                     % State dimensions
@@ -109,9 +115,19 @@ classdef ensembleMetadata
         end
     end
     
+    % Static utilities
+    methods (Static)
+        returnState = parseDirection(type, nDims);
+    end
+    
     % User methods
     methods
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
+        meta = variable(obj, varName, dims, type); % Returns metadata for a variable
+        meta = dimension(obj); % Returns metadata for a dimension
+        meta = rows(obj); % Returns metadata at particular rows
+        meta = cols(obj); % Returns metadata at particular columns
+        meta = coordinates(obj); % Retrieves lat-lon, or coord metadata as appropriate
     end
     
 end
