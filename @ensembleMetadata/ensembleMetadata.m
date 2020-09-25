@@ -16,7 +16,7 @@ classdef ensembleMetadata
                   % as a structure metadata.(variable).(dimension).(state or ensemble)
     end
     
-    properties (Hidden)
+    properties (Hidden, Constant)
         directionFlags = ["state", "s", "down", "d", "rows", "r", ...
             "ensemble", "ens", "e", "across", "a", "columns", "cols", "c"];
         nStateFlags = 6;

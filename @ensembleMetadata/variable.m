@@ -51,21 +51,30 @@ function[meta] = variable(obj, varName, dims, type)
 varName = dash.assertStrFlag(varName, 'varName');
 v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 
-% Defaults for dims and type. Parse direction options
+% Defaults and error check for dims and type. Parse direction options
 if ~exist('dims','var') || isempty(dims)
-    dims = obj.dims{v}(obj.stateSize{v}>1);
+    dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v});
 end
+dims = dash.assertStrList(dims);
 d = dash.checkStrsInList(dims, obj.dims{v}, 'dims', sprintf('dimension of variable "%s"', varName));
 if ~exist('type','var') || isempty(type)
     type = obj.isState{v}(d);
 end
 returnState = obj.parseDirection(type, numel(dims));
 
-% Preallocate metadata struction
-nDims = numel(d);
+% Initialize output structure
+nDims = numel(dims);
 if nDims > 1
-    meta = dash.preallocateStructs(dims, [1 1]);
+    meta = struct();
 end
+
+% Propagate state dimensions over all other state dimensions
+if any(obj.isState{v}(d))
+    nEls = obj.varLimit(v,2) - obj.varLimit(v,1) + 1;
+    subDimension = cell(1, numel(obj.dims{v}));
+    [subDimension{:}] = ind2sub( obj.stateSize{v}, (1:nEls)' );
+    subDimension = cell2mat(subDimension);
+end 
 
 % Preallocate metadata structure. Determine which direction to use
 for k = 1:nDims
@@ -74,8 +83,17 @@ for k = 1:nDims
         type = 'ensemble';
     end
     
-    % Get the metadata. Return as structure or array
+    % Get the metadata for the dimension
+    dim = dims(k);
     dimMeta = obj.metadata.(varName).(type).(dim);
+    
+    % Propagate state vector metadata over all state dimensions
+    if returnState(k)
+        rows = subDimension(:, d(k));
+        dimMeta = dimMeta(rows, :);
+    end
+    
+    % Return as array or structure
     if nDims==1
         meta = dimMeta;
     else

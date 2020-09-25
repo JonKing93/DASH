@@ -13,8 +13,14 @@ function[returnState] = parseDirection(type, nDims)
 %
 % returnState: Logical direction options.
 
+% Parse
 returnState = dash.parseLogicalString(type, nDims, 'returnState', 'type', ...
     ensembleMetadata.directionFlags, ensembleMetadata.nStateFlags, ...
     'Metadata direction options');
+
+% Convert scalar to vector
+if isscalar(returnState)
+    returnState = repmat(returnState, [nDims, 1]);
+end
 
 end
