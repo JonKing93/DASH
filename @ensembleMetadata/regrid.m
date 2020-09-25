@@ -61,14 +61,18 @@ meta = obj.metadata.(varName).state;
 siz = size(V);
 gridSize = obj.stateSize{v};
 
-% Optionally remove singleton dimensions
+% Remove singleton dimensions
 if ~keepSingletons
     remove = find( gridSize==1 & ~ismember(dims, userDims) );
     gridSize(remove) = [];
     meta = rmfield(meta, dims(remove));
-    index(remove) = [];
-    index = index - sum(remove<index(:), 2)';
     nDims = nDims - numel(remove);
+    
+    % Update permutation order for removed singletons
+    if isempty(userDims)
+        index(remove) = [];
+    end
+    index = index - sum(remove<index(:), 2)';
 end
     
 % Reshape vector to grid
