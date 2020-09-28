@@ -36,7 +36,13 @@ for v = 1:2:nargin-1
     if ismember( varargin{v}, userDims )
         error('Dimension name "%s" is specified multiple times.', varargin{v});
     end
-    userDims((v+1)/2) = string(varargin{v});
+
+    % Require valid variable names and save
+    name = string(varargin{v});
+    if ~isvarname(name)
+        error('Dimension name "%s" is not a valid MATLAB variable name. Valid names must start with a letter and contain only letters, numbers, and underscores.', name);
+    end
+    userDims((v+1)/2) = name;
 end
 
 % Error check the input metadata values
