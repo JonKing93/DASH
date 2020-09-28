@@ -1,7 +1,11 @@
 function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress)
 %% Builds an ensemble for the stateVectorVariable
 %
-% X = obj.buildEnsemble(subMembers, dims, grid, sources, ens, svIndices, showprogress)
+% X = obj.buildEnsemble(subMembers, dims, grid, sources, [], [], showprogress)
+% Builds an ensemble and returns the array directly as output.
+%
+% hasnan = obj.buildEnsemble(subMembers, dims, grid, sources, ens, svRows, showprogress)
+% Builds an ensemble and saves it to a .ens file.
 %
 % ----- Inputs -----
 %
@@ -28,6 +32,8 @@ function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, s
 % ----- Outputs -----
 %
 % X: The ensemble for the variable. A numeric matrix. (nState x nEns)
+%
+% hasnan: A logical row vector indicating which ensemble members contain NaN
 
 %% Means
 
@@ -102,6 +108,11 @@ while tooBig
     [X, tooBig] = preallocateEnsemble(nState, nChunk);
 end
 
+% Track NaN members
+if writeFile
+    hasnan = false(1, nEns);
+end
+
 % Initialize progress bar
 if showprogress
     waitname = sprintf('Building "%s":', obj.name);
@@ -146,10 +157,11 @@ for m = 1:nEns
     k(k==0) = nChunk;
     X(:,k) = Xm(:);
     
-    % If saving, write complete chunks to file
+    % If saving, write complete chunks to file. Record NaN members
     if writeFile && (k==nChunk || m==nEns)
         cols = m-k+1:m;
         ens.X(svRows, cols) = X(:,1:k);
+        hasnan(cols) = any(isnan(X(:,1:k)), 1);
     end
     
     % Optionally display progress bar
@@ -160,6 +172,11 @@ for m = 1:nEns
 end
 if showprogress
     delete(f);
+end
+
+% If writing to file, return the hasnan info
+if writeFile
+    X = hasnan;
 end
 
 end

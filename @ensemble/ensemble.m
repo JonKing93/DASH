@@ -2,15 +2,16 @@ classdef ensemble
     
     
     properties
-        file;
+        file; % The .ens file associated with the 
         members; % Which ensemble members to load
         variables; % Which variables to load
     end
     
-    
     methods
-        add(obj, nAdd);
-        load(obj, members, rows);
+        load(obj);
+        loadGrids(obj);
+        loadMembers(obj, members);
+        loadVariables(obj, variables);
     end
     
 end

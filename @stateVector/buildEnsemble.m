@@ -236,6 +236,7 @@ try
     nState = varLimit(end, 2);
     if writeFile
         ens.X(nState, nEns) = NaN;
+        ens.hasnan = false(nVars, nEns);
     else
         try
             X = NaN(nState, nEns);
@@ -254,7 +255,8 @@ try
         inputs = {obj.subMembers{s}, obj.dims{s}, grids{f(v)}, sources{f(v)}, [], [], showprogress};
         if writeFile
             inputs(5:6) = {ens, rows};
-            obj.variables(v).buildEnsemble( inputs{:} );
+            hasnan = obj.variables(v).buildEnsemble( inputs{:} );
+            ens.hasnan(v, :) = hasnan;
         else
             X(rows,:) = obj.variables(v).buildEnsemble( inputs{:} );
         end
