@@ -50,6 +50,7 @@ classdef ensembleMetadata
             % Get names and size
             obj.ensembleName = [];
             obj.vectorName = sv.name;
+
             obj.nEns = 0;
             if ~isempty(sv.subMembers)
                 obj.nEns = size(sv.subMembers{1}, 1);
@@ -125,14 +126,9 @@ classdef ensembleMetadata
     % User methods
     methods
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
-
         meta = variable(obj, varName, dims, type, indices); % Returns metadata for a variable
-        rows = findVariableRows(obj, varName, indices);
-
-        meta = dimension(obj); % Returns metadata for a dimension
-        meta = rows(obj); % Returns metadata at particular rows
-        meta = cols(obj); % Returns metadata at particular columns
-        meta = coordinates(obj); % Retrieves lat-lon, or coord metadata as appropriate
+        meta = dimension(obj, dim, alwaysStruct); % Returns metadata for a dimension down the entire state vector
+        rows = findRows(varName, varRows);
     end
     
 end
