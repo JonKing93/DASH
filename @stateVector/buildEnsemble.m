@@ -1,9 +1,11 @@
 function[X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress)
 %% Builds a state vector ensemble.
 % 
-% [X, meta] = obj.buildEnsemble(nEns)
+% [X, meta, obj] = obj.buildEnsemble(nEns)
 % Builds a state vector ensemble with a specified member of ensemble
-% members. Returns the state vector ensemble and associated metadata.
+% members. Returns the state vector ensemble and associated metadata. Also
+% returns a stateVector object that can be used to build additional state
+% vectors for the ensemble later.
 %
 % [...] = obj.buildEnsemble(nEns, random)
 % Specify whether to select ensemble members at random, or sequentially.
@@ -23,7 +25,7 @@ function[X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, s
 %
 % ----- Inputs -----
 %
-% nEns: The number of ensemble members
+% nEns: The number of ensemble members. A positive integer.
 %
 % random: Scalar logical. If true (default), selects ensemble members at
 %    random. If false, selects ensemble members sequentially.
@@ -43,6 +45,9 @@ function[X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, s
 % X: The state vector ensemble. A numeric matrix. (nState x nEns)
 %
 % meta: An ensembleMetadata object for the ensemble.
+%
+% obj: A stateVector object associated with the ensemble. Can be used to
+%    generate additional ensemble members later.
 
 %% Input error checks
 
@@ -163,10 +168,15 @@ for s = 1:nSets
 
     % Initialize a set of subscripted ensemble members
     subMembers = NaN(nEns, numel(dims));
-    unused = (1:prod(obj.variables(v(1)).ensSize))';
     nNeeded = nEns;
     subIndexCell = cell(1, numel(dims));
     siz = var1.ensSize(~var1.isState);
+    
+    % Get the set of all ensemble members. Order randomly or sequentially
+    unused = (1:prod(obj.variables(v(1)).ensSize))';
+    if random
+        unused = unused( randperm(numel(unused)) );
+    end
 
     % Select ensemble members and optionally remove overlapping members
     % until the ensemble is complete.
@@ -175,11 +185,7 @@ for s = 1:nSets
             notEnoughMembersError(obj.variableNames(v), obj.overlap(v), nEns);
         end
 
-        % Select members randomly or in an ordered manner. Remove values
-        % from the unused members when selected
-        if random
-            unused = unused( randperm(numel(unused)) );
-        end
+        % Select members. Remove values from the unused members when selected
         members = unused(1:nNeeded);
         unused(1:nNeeded) = [];
 

@@ -52,7 +52,6 @@ classdef stateVector
         subMembers; % Subscripted ensemble members for each set of coupled variables
         dims; % The order of dimensions of the subscripted ensemble members
         unused; % Unselected ensemble members for each set of coupled variables
-        
     end
     
     properties (Hidden, Constant)
