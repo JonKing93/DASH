@@ -13,7 +13,7 @@ function[obj] = remove(obj, varNames)
 % obj: The updated ensembleMetadata object
 
 % Error check
-v = dash.checkStrsInList(varNames, 'varNames', obj.variableNames, 'variable in the state vector');
+v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
 
 % Remove from arrays
 obj.variableNames(v) = [];

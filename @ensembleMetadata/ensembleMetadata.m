@@ -129,8 +129,10 @@ classdef ensembleMetadata
         meta = variable(obj, varName, dims, type, indices);
         meta = dimension(obj, dim, alwaysStruct);
         rows = findRows(varName, varRows);
+        
         obj = remove(obj, varNames);
         obj = append(obj, meta2);
+        obj = extract(obj, varNames);
     end
     
 end
