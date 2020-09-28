@@ -126,9 +126,11 @@ classdef ensembleMetadata
     % User methods
     methods
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
-        meta = variable(obj, varName, dims, type, indices); % Returns metadata for a variable
-        meta = dimension(obj, dim, alwaysStruct); % Returns metadata for a dimension down the entire state vector
+        meta = variable(obj, varName, dims, type, indices);
+        meta = dimension(obj, dim, alwaysStruct);
         rows = findRows(varName, varRows);
+        obj = remove(obj, varNames);
+        obj = append(obj, meta2);
     end
     
 end
