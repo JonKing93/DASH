@@ -46,6 +46,7 @@ for s = 1:size(sets,1)
     % Select ensemble members and optionally remove overlapping members
     % until the ensemble is complete.
     nNeeded = nEns;
+    unused = obj.unused{s};
     while nNeeded > 0
         if nNeeded > numel(unused)
             notEnoughMembersError(obj.variableNames(v), obj.overlap(v), nEns);
@@ -69,9 +70,9 @@ for s = 1:size(sets,1)
         nNeeded = nEns - size(subMembers, 1);
     end
 
-    % Record the subscripted ensemble members and unused members
+    % Update the subscripted ensemble members and unused members
     obj.subMembers{s} = [obj.subMembers{s}; subMembers];
-    obj.unused{s} = [obj.unused{s}; unused];
+    obj.unused{s} = unused;
 end
 
 % Note if writing to file

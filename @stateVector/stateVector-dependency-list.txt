@@ -148,19 +148,22 @@ renameVariables
             dash.checkIndices
         errorTitle
     svv.rename
-buildEnsemble
+build
     dash.assertScalarLogical
-    dash.assertPositiveIntegers
-    dash.collectField
-    svv.gridfile
-        gridfile
-    gridfile.review
-    svv.checkGrid
+    dash.assertPostiveIntegers
+    prebuildSources
+        dash.collectField
+        svv.gridfile
+        gridfile.review
+        svv.checkGrid
     svv.trim
     svv.dimMetadata
         checkDimensions
             dash.checkStrsInList
-        gridfile.checkMetadataField
+        gridfile.checkMetadataField    
+    variableNames
+        dash.collectField
+        dash.checkIndices
     dash.messageList
     svv.matchIndices
         svv.dimMetadata
@@ -168,17 +171,40 @@ buildEnsemble
                 dash.checkStrsInList
         svv.checkDimensions
             dash.checkStrsInList
-    variableNames
+    dash.assertStrFlag
+    dash.setupNewFile
+    buildEnsemble
+        variableNames
+            dash.collectField
+            dash.checkIndices
+        svv.removeOverlap
+            svv.checkDimensions
+                dash.checkStrsInList
+        svv.buildEnsemble
+            svv.checkDimensions
+                dash.checkStrsInList
+            gridfile.repeatedLoad
+        ensembleMetadata
+addMembers
+    dash.assertPositiveIntegers
+    dash.assertScalarLogical
+    prebuildSources
         dash.collectField
-        dash.checkIndices
-    svv.removeOverlap
-        svv.checkDimensions
-            dash.checkStrsInList
-    variableLimits
-    svv.buildEnsemble
-        svv.checkDimensions
-            dash.checkStrsInList
-        gridfile.repeatedLoad
+        svv.gridfile
+        gridfile.review
+        svv.checkGrid
+    buildEnsemble
+        variableNames
+            dash.collectField
+            dash.checkIndices
+        svv.removeOverlap
+            svv.checkDimensions
+                dash.checkStrsInList
+        svv.buildEnsemble
+            svv.checkDimensions
+                dash.checkStrsInList
+            gridfile.repeatedLoad
+        ensembleMetadata
 rename
     dash.assertStrFlag
 notifyConsole

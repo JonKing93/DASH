@@ -116,6 +116,7 @@ classdef stateVector
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);        
         [grids, sources, f] = prebuildSources(obj);
+        [X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
     end
     
     % User interface methods with stateVectorVariable
@@ -131,10 +132,6 @@ classdef stateVector
         dims = dimensions(obj, varNames, type);
         [vectorInfo, varInfo] = info(obj, vars);
         obj = renameVariables(obj, varNames, newNames);
-        
-        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
-        [X, meta, obj] = addMembers(obj, nAdd, showprogress);
-        [X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
     end
     
     % User methods
@@ -151,6 +148,8 @@ classdef stateVector
         obj = extract(obj, varNames);
         obj = copy(obj, templateName, varNames, varargin);
         varNames = variableNames(obj, v);
+        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
+        [X, meta, obj] = addMembers(obj, nAdd, showprogress);
     end
      
 end
