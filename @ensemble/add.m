@@ -30,6 +30,7 @@ dash.assertScalarLogical(showprogress, 'showprogress');
 % Get the matfile, check it is valid
 warning('Need error checking for file.');
 ens = matfile(obj.file,'Writable',true);
+nPrevious = size(ens, 'X', 2);
 
 % Record previous settings in case the operation fails
 sv = ens.stateVector;
@@ -43,12 +44,13 @@ try
     sv.buildEnsemble(nAdd, grids, sources, f, ens, showprogress);
     
 % Remove failed portions of the file if the write operation fails
-catch
+catch ME
     nCols = size(ens, 'X', 2); %#ok<GTARG>
     ens.X(:,nPrevious+1:nCols) = [];
     ens.hasnan(:,nPrevious+1:nCols) = [];
     ens.meta = meta;
     ens.stateVector = sv;
+    rethrow(ME);
 end
     
 end

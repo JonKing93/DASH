@@ -113,7 +113,7 @@ for v = 1:nVars
     % Build the ensemble for the variable. Get array or save to file
     if writeFile
         inputs(5:6) = {ens, rows};
-        ens.hasnan(v,:) = obj.variables(v).buildEnsemble( inputs{:} );
+        ens.hasnan(v,nCols+(1:nEns)) = obj.variables(v).buildEnsemble( inputs{:} );
     else
         X(rows,:) = obj.variables(v).buildEnsemble( inputs{:} ); %#ok<AGROW>
     end
