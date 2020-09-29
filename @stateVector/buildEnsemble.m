@@ -107,7 +107,8 @@ end
 for v = 1:nVars
     rows = varLimit(v,1):varLimit(v,2);
     s = find( sets(:,v) );
-    inputs = {obj.subMembers{s}, obj.dims{s}, grids{f(v)}, sources{f(v)}, [], [], showprogress};
+    inputs = {obj.subMembers{s}(end-nEns+1:end, :), obj.dims{s}, grids{f(v)},...
+        sources{f(v)}, [], [], showprogress};
 
     % Build the ensemble for the variable. Get array or save to file
     if writeFile

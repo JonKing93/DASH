@@ -112,7 +112,7 @@ end
 % If writing to file, determine columns and track NaN members
 if writeFile
     nCols = size(ens, 'X', 2); %#ok<GTARG>
-    lastPrevious = nCols - nNew;
+    lastPrevious = nCols - nEns;
     hasnan = false(1, nEns);
 end
 

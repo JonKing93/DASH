@@ -43,7 +43,7 @@ dash.assertScalarLogical(showprogress, 'showprogress');
 % Pre-build the gridfiles and data sources. Check for validity.
 [grids, sources, f] = obj.prebuildSources;
 
-% Build the ensemble
-[X, meta, obj] = buildEnsemble(nEns, grids, sources, f, [], showprogress);
+% Build the new portion of the ensemble
+[X, meta, obj] = obj.buildEnsemble(nAdd, grids, sources, f, [], showprogress);
 
 end

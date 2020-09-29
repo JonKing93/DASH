@@ -107,7 +107,7 @@ classdef gridfile < handle
         % and returns an associated gridfile object.
         %
         % obj = gridfile( fullname )
-        % Returns a gridfile obejct for a .grid file with the specified
+        % Returns a gridfile object for a .grid file with the specified
         % full file name (including path).
         %
         % ----- Inputs -----

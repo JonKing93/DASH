@@ -119,7 +119,7 @@ classdef stateVector
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);        
         [grids, sources, f] = prebuildSources(obj);
-        [X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
+        [X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress);
     end
     
     % User interface methods with stateVectorVariable

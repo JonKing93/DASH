@@ -144,10 +144,11 @@ for s = 1:nSets
     end
     
     % Initialize the unused ensemble members
-    obj.unused = (1:prod(obj.variables(v(1)).ensSize))';
+    unused = (1:prod(obj.variables(v(1)).ensSize))';
     if random
-        obj.unused = obj.unused( randperm(numel(obj.unused)) );
+        unused = unused( randperm(numel(unused)) );
     end
+    obj.unused{s} = unused;
 end
 
 % If writing to file: get path, set extension, check overwriting
