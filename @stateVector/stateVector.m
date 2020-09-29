@@ -114,7 +114,8 @@ classdef stateVector
         [v, varNames] = checkVariables(obj, varNames);
         checkVariableNames(obj, newNames, v, inputName, methodName);
         str = errorTitle(obj);
-        obj = updateCoupledVariables(obj, t, v);
+        obj = updateCoupledVariables(obj, t, v);        
+        [grids, sources, f] = prebuildSources(obj);
     end
     
     % User interface methods with stateVectorVariable
@@ -129,7 +130,10 @@ classdef stateVector
         obj = resetMetadata(obj, varNames, dims);
         dims = dimensions(obj, varNames, type);
         [vectorInfo, varInfo] = info(obj, vars);
-        obj = renameVariables(obj, varNames, newNames);        
+        obj = renameVariables(obj, varNames, newNames);
+        
+        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
+        [X, meta, obj] = addMembers(obj, nAdd, showprogress);
         [X, meta, obj] = buildEnsemble(obj, nEns, random, filename, overwrite, showprogress);
     end
     

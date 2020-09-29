@@ -1,11 +1,12 @@
-function[X] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress)
+function[out] = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress)
 %% Builds an ensemble for the stateVectorVariable
 %
 % X = obj.buildEnsemble(subMembers, dims, grid, sources, [], [], showprogress)
 % Builds an ensemble and returns the array directly as output.
 %
 % hasnan = obj.buildEnsemble(subMembers, dims, grid, sources, ens, svRows, showprogress)
-% Builds an ensemble and saves it to a .ens file.
+% Builds an ensemble and saves it to a .ens file. Returns an array
+% indicating if any ensemble members contain NaN.
 %
 % ----- Inputs -----
 %
@@ -108,8 +109,10 @@ while tooBig
     [X, tooBig] = preallocateEnsemble(nState, nChunk);
 end
 
-% Track NaN members
+% If writing to file, determine columns and track NaN members
 if writeFile
+    nCols = size(ens, 'X', 2); %#ok<GTARG>
+    lastPrevious = nCols - nNew;
     hasnan = false(1, nEns);
 end
 
@@ -160,7 +163,7 @@ for m = 1:nEns
     % If saving, write complete chunks to file. Record NaN members
     if writeFile && (k==nChunk || m==nEns)
         cols = m-k+1:m;
-        ens.X(svRows, cols) = X(:,1:k);
+        ens.X(svRows, lastPrevious+cols) = X(:,1:k);
         hasnan(cols) = any(isnan(X(:,1:k)), 1);
     end
     
@@ -174,9 +177,11 @@ if showprogress
     delete(f);
 end
 
-% If writing to file, return the hasnan info
+% Set the output
 if writeFile
-    X = hasnan;
+    out = hasnan;
+else
+    out = X;
 end
 
 end
