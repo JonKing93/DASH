@@ -52,6 +52,7 @@ classdef stateVector
         subMembers; % Subscripted ensemble members for each set of coupled variables
         dims; % The order of dimensions of the subscripted ensemble members
         unused; % Unselected ensemble members for each set of coupled variables
+        editable; % Indicates whether the state vector can be edited
     end
     
     properties (Hidden, Constant)
@@ -105,6 +106,7 @@ classdef stateVector
             obj.subMembers = cell(0,1);
             obj.dims = cell(0,1);
             obj.unused = cell(0,1);
+            obj.editable = true;
         end
     end
     
@@ -112,6 +114,7 @@ classdef stateVector
     methods
         limits = variableLimits(obj);
         [v, varNames] = checkVariables(obj, varNames);
+        assertEditable(obj);
         checkVariableNames(obj, newNames, v, inputName, methodName);
         str = errorTitle(obj);
         obj = updateCoupledVariables(obj, t, v);        

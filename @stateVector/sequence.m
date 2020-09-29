@@ -41,7 +41,8 @@ function[obj] = sequence(obj, varNames, dims, indices, metadata)
 %
 % obj: The updated stateVector object.
 
-% Error check, variable index
+% Error check, variable index, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Update each variable

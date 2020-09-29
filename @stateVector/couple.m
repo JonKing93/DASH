@@ -21,6 +21,7 @@ function[obj] = couple(obj, varNames)
 % t: Template variable (first user variable)
 
 % Error check. Get the indices of user variables and template variable.
+obj.assertEditable;
 uv = obj.checkVariables(varNames);
 t = uv(1);
 

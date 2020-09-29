@@ -14,6 +14,7 @@ function[obj] = append(obj, secondVector)
 % obj: A stateVector object for the concatenated state vectors.
 
 % Error check
+obj.assertEditable;
 if ~isa(secondVector, 'stateVector')
     error('secondVector must be a stateVector object');
 elseif ~isscalar(secondVector)

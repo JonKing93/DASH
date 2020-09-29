@@ -44,7 +44,8 @@ if ~exist('functionArgs','var')
     functionArgs = [];
 end
 
-% Error check variables, get indices
+% Error check variables, get indices, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Update each variable

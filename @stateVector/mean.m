@@ -64,8 +64,9 @@ if ~exist('omitnan','var')
     omitnan = [];
 end
 
-% Error check. Variable indices
+% Error check. Variable indices, editable
 v = obj.checkVariables(varNames);
+obj.assertEditable;
 
 % Update variables
 for k = 1:numel(v)

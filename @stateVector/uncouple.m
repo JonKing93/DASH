@@ -12,7 +12,8 @@ function[obj] = uncouple(obj, varNames)
 %
 % obj: The updated stateVector object
 
-% Error check, variable index
+% Error check, variable index, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Uncouple the variables, but keep each variable coupled with itself.

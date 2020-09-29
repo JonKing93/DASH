@@ -1,7 +1,53 @@
 function[X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress)
 %% Builds a state vector ensemble.
 %
+% [X, meta, obj] = obj.build(nEns)
+% Builds a state vector ensemble with a specified member of ensemble
+% members. Returns the state vector ensemble and associated metadata. Also
+% returns a stateVector object that can be used to build additional state
+% vectors for the ensemble later.
+%
+% [...] = obj.build(nEns, random)
+% Specify whether to select ensemble members at random, or sequentially.
+% Default is random selection.
+%
+% obj.build(nEns, random, filename)
+% Saves the state vector ensemble to a .ens file. Uses a ".ens" extension
+% if the file name does not already have one.
+%
+% obj.build(nEns, random, filename, overwrite)
+% Specify whether to overwrite existing .ens files. Default is to not
+% overwrite existing files.
+%
+% obj.buildEnsemble(nEns, random, filename, overwrite, showprogress)
+% Specify whether to display a progress bar. Default is to show a progress
+% bar.
+%
+% ----- Inputs -----
+%
+% nEns: The number of ensemble members. A positive integer.
+%
+% random: Scalar logical. If true (default), selects ensemble members at
+%    random. If false, selects ensemble members sequentially.
+%
+% file: The name of a .ens file. A string. Use only a file name to write to
+%    the current directory. Use a full path to write to a specific
+%    location. Use an empty array to not write to file.
+%
+% overwrite: A scalar logical indicating whether to overwrite existing .ens
+%    files (true) or not overwrite files (false -- default).
+%
+% showprogress: A scalar logical indicating whether to display a progress
+%    bar (true -- default), or not (false).
 % 
+% ----- Outputs -----
+%
+% X: The state vector ensemble. A numeric matrix. (nState x nEns)
+%
+% meta: An ensembleMetadata object for the ensemble.
+%
+% obj: A stateVector object associated with the ensemble. Can be used to
+%    generate additional ensemble members later.
 
 % Defaults
 if ~exist('random','var') || isempty(random)
@@ -15,6 +61,13 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 if ~exist('showprogress','var') || isempty(showprogress)
     showprogress = true;
+end
+
+% Redirect user if already associated with ensemble.
+if ~obj.editable
+    error(['This stateVector object is already associated with a state ',...
+        'vector ensemble. To add more state vectors to the ensemble, use ',...
+        '"stateVector.addMembers" instead.']);
 end
 
 % Error check
@@ -116,6 +169,7 @@ end
 % Build the ensemble
 try
     [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress);
+    obj.editable = false;
     
 % Deleted any failed .ens files before throwing errors
 catch ME

@@ -41,7 +41,8 @@ if ~exist('overlap','var') || isempty(overlap)
     overlap = false;
 end
 
-% Error check, use string internally
+% Error check, use string internally, editable
+obj.assertEditable;
 dash.assertScalarLogical(overlap, 'overlap');
 dash.assertScalarLogical(autoCouple, 'autoCouple');
 dash.assertStrFlag(varName, 'varName');

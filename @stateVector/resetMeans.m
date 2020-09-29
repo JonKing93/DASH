@@ -22,7 +22,8 @@ function[obj] = resetMeans(obj, varNames, dims)
 %
 % obj: The updated stateVector object.
 
-% Default and error check variables. Get indices
+% Default and error check variables. Get indices. Check editable
+obj.assertEditable;
 if ~exist('varNames','var') || isempty(varNames)
     v = 1:numel(obj.variables);
 else

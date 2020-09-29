@@ -19,7 +19,8 @@ function[obj] = allowOverlap(obj, varNames, overlap)
 %
 % obj: The updated stateVector object
 
-% Error check, variable indices
+% Error check, variable indices, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Error check overlap
