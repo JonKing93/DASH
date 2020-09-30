@@ -73,6 +73,8 @@ end
 % Error check
 if ~isscalar(nEns)
     error('nEns must be a scalar.');
+elseif numel(obj.variables)==0
+    error('There are no variables in %s.', obj.errorTitle);
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
 dash.assertScalarLogical(random, 'random');

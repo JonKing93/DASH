@@ -34,36 +34,28 @@ classdef ensemble
             %
             % obj: An ensemble object for the specified .ens file.
             
-            % Check the input is a file name
-            file = dash.assertStrFlag(filename, "filename");
-            obj.file = dash.checkFileExists(file);
+            % Error check
+            obj.file = dash.assertStrFlag(filename, "filename");
             
-            % Load the data from the .ens file
-            try
-                m = matfile(obj.file);
-            catch
-                error('Could not load ensemble data from "%s". It may not be a .ens file. If it is a .ens file, it may have become corrupted.', obj.file);
-            end
-            
-            % Ensure all fields are present
-            required = ["X","hasnan","meta","stateVector"];
-            varNames = who(m);
-            if any(~ismember(required, varNames))
-                bad = find(~ismember(required, varNames),1);
-                error('File "%s" does not contain the "%s" field.', obj.file, required(bad));
-            end
+            % Build and check the matfile for the .ens file
+            ens = obj.buildMatfile;
             
             % Update properties
-            obj.hasnan = m.hasnan;
-            obj.meta = m.meta;
-            obj.stateVector = m.stateVector;
+            obj.hasnan = ens.hasnan;
+            obj.meta = ens.meta;
+            obj.stateVector = ens.stateVector;
             
             % Load everything by default
             obj.members = (1:obj.meta.nEns)';
             obj.v = (1:numel(obj.meta.variableNames))';
         end
     end
-            
+        
+    % Object utilities
+    methods
+        ens = buildMatfile(obj);
+    end
+    
     % User methods
     methods
         add(obj, nAdd, showprogress)
@@ -71,9 +63,7 @@ classdef ensemble
         loadGrids(obj);
         obj = loadMembers(obj, members);
         obj = loadVariables(obj, variables);
-        
         variableNames(obj);
         info(obj);
     end
-    
 end
