@@ -17,7 +17,7 @@ function[s] = loadMatfileFields(file, matFields, extName)
 % s: A structure with the loaded fields
 
 % Check the file exists
-if ~infile(file)
+if ~isfile(file)
     error('The file "%s" no longert exists. It may have been deleted or moved to a new location.', file);
 end
 
