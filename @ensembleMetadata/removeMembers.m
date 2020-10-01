@@ -19,11 +19,12 @@ members = dash.checkIndices(members, 'members', obj.nEns, 'the number of ensembl
 % Get the ensemble dimensions for each variable
 vars = obj.variableNames;
 for v = 1:numel(vars)
-    dims = string(fields(obj.metadata.(vars(v)).ensemble));
+    meta = obj.metadata.(vars(v)).ensemble;
+    dims = string(fields(meta));
 
     % Remove the ensemble members from each dimension
     for d = 1:numel(dims)
-        if ~isempty(obj.metadata.(vars(v)).ensemble.(dims(d)))
+        if ~isempty(meta.dims(d))
             obj.metadata.(vars(v)).ensemble.(dims(d))(members,:) = [];
         end
     end
