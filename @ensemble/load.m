@@ -1,36 +1,48 @@
-function[] = load(obj)
+function[X, meta] = load(obj)
+%% Loads data from a .ens file. If specific variables and/or ensemble
+% members were requested, then only loads those variables and ensemble
+% members.
+%
+% [X, meta] = obj.load
+%
+% ----- Outputs -----
+%
+% X: The loaded state vector ensemble. A numeric matrix. (nState x nEns)
+%
+% meta: An ensemble metadata object for the loaded ensemble.
 
-% Update the object in case changes were made to the file
-obj = obj.update;
+% Update. Get matfile.
+[obj, ens] = obj.updateViaMatfile;
 
+% Default variables and ensemble members
+members = obj.members;
+variables = obj.variables;
+if isempty(members)
+    members = 1:obj.meta.nEns;
+end
+if isempty(variables)
+    variables = obj.meta.variableNames;
+end
+
+% Check the members and variables are still consistent with the ensemble.
+% Get variable indices
+[ismem, v] = ismember(variables, obj.meta.variableNames);
+if any(~ismem)
+    missingVariableError(variables, obj.meta.variableNames, obj.file);
+elseif max(members)>obj.meta.nEns
+    notEnoughMembersError(max(members), obj.meta.nEns, obj.file);
+end
 
 % Get blocks of contiguous variables to load
-skips = find(diff(obj.v)~=1)';
-nVars = numel(obj.v);
+skips = find(diff(v)~=1)';
+nVars = numel(v);
 blocks = [1, skips+1; skips, nVars]';
 nBlocks = numel(skips)+1;
 
 % Get the limits of loaded variables in the state vector
-nEls = obj.meta.nEls(obj.v);
+nEls = obj.meta.nEls(v);
 varEnd = cumsum(nEls)';
 varLimit = [1, varEnd(1:end-1)+1; varEnd]';
-
-% Build the matfile object. Check that the .ens file still matches the
-% current ensemble object
-ens = obj.buildMatfile;
-ensMeta = ens.meta;
-if max(obj.members)>ensMeta.nEns
-    error('It appears that file "%s" has been changed. It no longer contains %.f ensemble members and instead only has %.f.', obj.file, max(obj.members), ensMeta.nEns);
-elseif 
-
-
-
-
-
-
-
-fields = ["hasnan", "meta", "stateVector"];
-warning('Build matfile error checking.');
 
 % Preallocate the ensemble
 nState = varLimit(end);
@@ -60,5 +72,25 @@ for k = 1:nBlocks
         X(rows,m) = ens.X(loadRows, obj.members(m));
     end
 end
+
+% Build the metadata for the loaded variables and ensemble members
+meta = obj.meta.extract(variables);
+meta = meta.useMembers(members);
     
+end
+
+% Long error messages
+function[] = notEnoughMembersError(maxRequested, nEns, file)
+error(['You previously requested to load ensemble member %.f. However, ',...
+    'the data in file "%s" appears to have changed and now only has %.f ',...
+    'ensemble members. You may want to use the "loadMembers" command again.'], ...
+    maxRequested, file, nEns);
+end
+function[] = missingVariableError(requested, vars, file)
+bad = find(~ismember(requested, vars), 1);
+error(['You previously requested to load data for variable "%s". However, ',...
+    'the data in file "%s" appears to have changed and no longer contains ',...
+    'this variable. Currently, the variables in the file are: %s. You may ',...
+    'want to use the "loadVariables" command again.'], ...
+    requested(bad), file, dash.messageList(vars));
 end
