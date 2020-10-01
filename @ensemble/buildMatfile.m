@@ -14,7 +14,8 @@ dash.checkFileExists(obj.file);
 try
     ens = matfile(obj.file);
 catch
-    error('Could not load ensemble data from "%s". It may not be a .ens file. If it is a .ens file, it may have become corrupted.', obj.file);
+    error(['Could not load ensemble data from "%s". It may not be a .ens file. ',...
+        'If it is a .ens file, it may have become corrupted.'], obj.file);
 end
 
 % Ensure all fields are present

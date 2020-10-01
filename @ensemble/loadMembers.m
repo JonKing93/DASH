@@ -15,8 +15,9 @@ function[obj] = loadMembers(obj, members)
 %
 % obj: The updated ensemble object
 
-% Error check the ensemble members. Save
+% Update. Error check the ensemble members. Save
+obj = obj.update;
 members = dash.checkIndices(members, 'members', obj.meta.nEns, 'the number of ensemble members');
-obj.members = unique(members(:));
+obj.members = members(:);
 
 end

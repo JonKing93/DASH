@@ -97,7 +97,7 @@ if ~writeFile
     
 % Or preallocate space in the .ens file
 else
-    nCols = size(ens, 'X', 2); %#ok<GTARG>
+    [~, nCols] = size(ens, 'X');
     ens.X(nState, nCols+nEns) = NaN;
     ens.hasnan(nVars, nCols+nEns) = false;
 end

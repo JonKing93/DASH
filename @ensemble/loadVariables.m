@@ -14,8 +14,9 @@ function[obj] = loadVariables(obj, varNames)
 %
 % obj: The updated ensemble object.
 
-% Save the variable indices
-v = obj.meta.checkVariables(varNames);
-obj.v = unique(v(:));
+% Check variables. Update. Save
+obj = obj.update;
+obj.meta.checkVariables(varNames);
+obj.variables = unique(varNames(:));
 
 end

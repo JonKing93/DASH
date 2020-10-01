@@ -27,29 +27,27 @@ end
 dash.assertPositiveIntegers(nAdd, 'nAdd');
 dash.assertScalarLogical(showprogress, 'showprogress');
 
-% Get the matfile, check it is valid
-warning('Need error checking for file.');
-ens = matfile(obj.file,'Writable',true);
-nPrevious = size(ens, 'X', 2);
-
-% Record previous settings in case the operation fails
-sv = ens.stateVector;
-meta = ens.meta;
+% Build the matfile, update matfile properties. 
+ens = obj.buildMatfile;
+obj.hasnan = ens.hasnan;
+obj.meta = ens.meta;
+obj.stateVector = ens.stateVector;
 
 % Pre-build the gridfiles and data sources. Check for validity
-[grids, sources, f] = sv.prebuildSources;
+[grids, sources, f] = obj.stateVector.prebuildSources;
 
 % Add to the ensemble
+[~, nPrevious] = size(ens, 'X');
 try
-    sv.buildEnsemble(nAdd, grids, sources, f, ens, showprogress);
+    obj.stateVector.buildEnsemble(nAdd, grids, sources, f, ens, showprogress);
     
 % Remove failed portions of the file if the write operation fails
 catch ME
-    nCols = size(ens, 'X', 2); %#ok<GTARG>
+    [~, nCols] = size(ens, 'X');
     ens.X(:,nPrevious+1:nCols) = [];
     ens.hasnan(:,nPrevious+1:nCols) = [];
-    ens.meta = meta;
-    ens.stateVector = sv;
+    ens.meta = obj.meta;
+    ens.stateVector = obj.sv;
     rethrow(ME);
 end
     

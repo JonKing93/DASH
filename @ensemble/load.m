@@ -1,5 +1,9 @@
 function[] = load(obj)
 
+% Update the object in case changes were made to the file
+obj = obj.update;
+
+
 % Get blocks of contiguous variables to load
 skips = find(diff(obj.v)~=1)';
 nVars = numel(obj.v);
@@ -14,6 +18,17 @@ varLimit = [1, varEnd(1:end-1)+1; varEnd]';
 % Build the matfile object. Check that the .ens file still matches the
 % current ensemble object
 ens = obj.buildMatfile;
+ensMeta = ens.meta;
+if max(obj.members)>ensMeta.nEns
+    error('It appears that file "%s" has been changed. It no longer contains %.f ensemble members and instead only has %.f.', obj.file, max(obj.members), ensMeta.nEns);
+elseif 
+
+
+
+
+
+
+
 fields = ["hasnan", "meta", "stateVector"];
 warning('Build matfile error checking.');
 

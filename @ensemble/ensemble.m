@@ -8,7 +8,7 @@ classdef ensemble
         stateVector;
         
         members; % Which ensemble members to load
-        v; % The indices of the variables to load.
+        variables; % The names of the variables to load
     end
     
     % Constructor
@@ -34,26 +34,20 @@ classdef ensemble
             %
             % obj: An ensemble object for the specified .ens file.
             
-            % Error check
+            % Error check file name. Get matfile properties
             obj.file = dash.assertStrFlag(filename, "filename");
+            obj = obj.update;
             
-            % Build and check the matfile for the .ens file
-            ens = obj.buildMatfile;
-            
-            % Update properties
-            obj.hasnan = ens.hasnan;
-            obj.meta = ens.meta;
-            obj.stateVector = ens.stateVector;
-            
-            % Load everything by default
-            obj.members = (1:obj.meta.nEns)';
-            obj.v = (1:numel(obj.meta.variableNames))';
+            % Members and variables are unspecified.
+            obj.members = [];
+            obj.variables = [];
         end
     end
         
     % Object utilities
     methods
         ens = buildMatfile(obj);
+        obj = update(obj);
     end
     
     % User methods
