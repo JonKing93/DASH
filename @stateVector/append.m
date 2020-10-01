@@ -15,11 +15,7 @@ function[obj] = append(obj, secondVector)
 
 % Error check
 obj.assertEditable;
-if ~isa(secondVector, 'stateVector')
-    error('secondVector must be a stateVector object');
-elseif ~isscalar(secondVector)
-    error('secondVector must be a scalar stateVector object.');
-end
+dash.assertScalarType(secondVector, 'secondVector', 'stateVector', 'stateVector object');
 
 % Check there are no naming conflicts
 title2 = secondVector.errorTitle;

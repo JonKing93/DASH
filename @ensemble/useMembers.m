@@ -1,4 +1,4 @@
-function[obj] = loadMembers(obj, members)
+function[obj] = useMembers(obj, members)
 %% Specify to load specific ensemble members
 %
 % obj = obj.loadMembers(members)

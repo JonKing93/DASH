@@ -167,7 +167,7 @@ renameVariables
         errorTitle
     svv.rename
 build
-    dash.assertScalarLogical
+    dash.assertScalarType
     dash.assertPostiveIntegers
     prebuildSources
         dash.collectField
@@ -205,7 +205,7 @@ build
         ensembleMetadata
 addMembers
     dash.assertPositiveIntegers
-    dash.assertScalarLogical
+    dash.assertScalarType
     prebuildSources
         dash.collectField
         svv.gridfile
@@ -228,11 +228,11 @@ rename
         errorTitle
     dash.assertStrFlag
 notifyConsole
-    dash.assertScalarLogical
+    dash.assertScalarType
 add
     assertEditable
         errorTitle
-    dash.assertScalarLogical
+    dash.assertScalarType
     dash.assertStrFlag
     checkVariableNames
         variableNames
@@ -340,7 +340,7 @@ copy
             dash.collectField
             dash.checkIndices
     dash.parseInputs
-    dash.assertScalarLogical
+    dash.assertScalarType
     svv.design
         svv.checkDimensions
             dash.checkStrsInList

@@ -43,8 +43,8 @@ end
 
 % Error check, use string internally, editable
 obj.assertEditable;
-dash.assertScalarLogical(overlap, 'overlap');
-dash.assertScalarLogical(autoCouple, 'autoCouple');
+dash.assertScalarType(overlap, 'overlap', 'logical', 'logical');
+dash.assertScalarType(autoCouple, 'autoCouple', 'logical', 'logical');
 dash.assertStrFlag(varName, 'varName');
 varName = string(varName);
 

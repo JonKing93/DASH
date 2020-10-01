@@ -38,7 +38,7 @@ if ~isscalar(nAdd)
     error('nAdd must be a scalar.');
 end
 dash.assertPositiveIntegers(nAdd, 'nAdd');
-dash.assertScalarLogical(showprogress, 'showprogress');
+dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
 
 % Pre-build the gridfiles and data sources. Check for validity.
 [grids, sources, f] = obj.prebuildSources;

@@ -35,7 +35,7 @@ classdef dash
         str = messageList(list);
         
         % Input assertions
-        assertScalarLogical(input, name);
+        assertScalarType(input, name, type, typeName);
         assertRealDefined(input, name, allowNaN, allowInf, allowComplex);
         assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);

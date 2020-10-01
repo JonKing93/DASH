@@ -1,4 +1,4 @@
-function[obj] = loadVariables(obj, varNames)
+function[obj] = useVariables(obj, varNames)
 %% Specify which variables to load
 %
 % obj = obj.loadVariables(varNames)

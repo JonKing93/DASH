@@ -1,6 +1,6 @@
 function[obj] = append(obj, meta2)
-%% Appends the metadata for a second state vector ensemble to the end of
-% the current ensemble metadata.
+%% Appends a the metadata for the variables of a second state vector
+% ensemble to the current ensemble metadata. (down the state vector)
 %
 % obj = obj.append(meta2)
 %
@@ -14,11 +14,7 @@ function[obj] = append(obj, meta2)
 % obj: The updated ensembleMetadata object
 
 % Error check
-if ~isa(meta2, 'ensembleMetadata')
-    error('meta2 must be an ensembleMetadata object.');
-elseif ~isscalar(meta2)
-    error('meta2 must be a scalar ensembleMetadata object.');
-end
+dash.assertScalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
 
 % Check for naming conflicts and same ensemble size
 [ismem, k] = ismember(obj.variableNames, meta2.variableNames);

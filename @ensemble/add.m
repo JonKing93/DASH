@@ -27,14 +27,10 @@ end
 dash.assertPositiveIntegers(nAdd, 'nAdd');
 dash.assertScalarLogical(showprogress, 'showprogress');
 
-% Build the matfile, update matfile properties. 
-ens = obj.buildMatfile;
-obj.hasnan = ens.hasnan;
-obj.meta = ens.meta;
-obj.stateVector = ens.stateVector;
-
-% Pre-build the gridfiles and data sources. Check for validity
-[grids, sources, f] = obj.stateVector.prebuildSources;
+% Build the matfile, update matfile properties. Pre-build gridfiles and
+% data sources
+[obj, ens] = obj.updateViaMatfile;
+[grids, sources, f] = obj.stateVector.preBuildSources;
 
 % Add to the ensemble
 [~, nPrevious] = size(ens, 'X');

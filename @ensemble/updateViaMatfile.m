@@ -1,11 +1,13 @@
-function[ens] = buildMatfile(obj)
-%% Builds and checks a matfile object for a .ens file
+function[obj, ens] = updateViaMatfile(obj)
+%% Updates an ensemble object using a matfile object and returns the matfile.
 %
-% ens = obj.buildMatfile
+% [obj, ens] = obj.updateViaMatfile
 %
 % ----- Outputs -----
 %
-% ens: The matfile for the .ens file.
+% obj: The updated ensemble object
+% 
+% ens: The matfile object associated with the ensemble object's .ens file.
 
 % Check the file exists
 dash.checkFileExists(obj.file);
@@ -25,5 +27,10 @@ if any(~ismember(required, varNames))
     bad = find(~ismember(required, varNames),1);
     error('File "%s" does not contain the "%s" field.', obj.file, required(bad));
 end
+
+% Update matfile properties
+obj.hasnan = ens.hasnan;
+obj.meta = ens.meta;
+obj.stateVector = ens.stateVector;
 
 end

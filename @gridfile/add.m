@@ -74,7 +74,7 @@ obj.update;
 % Parse and error check the optional inputs (fill, range, convert, absolute)
 [fill, range, convert, absolute] = dash.parseInputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
                                       {NaN, [-Inf, Inf], [1 0], false}, 5 );
-dash.assertScalarLogical(absolute, 'absolute');
+dash.assertScalarType(absolute, 'absolute', 'logical', 'logical');
 dash.assertVectorTypeN(fill, 'numeric', 1, 'fill');
 dash.assertVectorTypeN(convert, 'numeric', 2, 'convert');
 dash.assertRealDefined(convert, 'convert');

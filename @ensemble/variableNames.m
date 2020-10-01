@@ -7,6 +7,7 @@ function[varNames] = variableNames(obj)
 %
 % varNames: The names of the variables in the .ens file. A string vector.
 
+obj = obj.update;
 varNames = obj.meta.variableNames;
 
 end

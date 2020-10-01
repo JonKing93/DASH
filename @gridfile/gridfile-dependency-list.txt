@@ -6,7 +6,7 @@ defineMetadata
 new
     dash.assertStrFlag
         dash.isstrflag
-    dash.assertScalarLogical
+    dash.assertScalarType
     checkMetadataStructure
         checkMetadataField
             hasDupicateRows
@@ -18,7 +18,7 @@ new
         dash.checkFileExists
         update
 metadata
-    dash.assertScalarLogical
+    dash.assertScalarType
 gridfile
     dash.assertStrFlag
         dash.isstrflag
@@ -33,7 +33,7 @@ add
         dash.assertStrFlag
         dash.checkStrsinList
             dash.messageList
-    dash.assertScalarLogical
+    dash.assertScalarType
     dash.assertVectorTypeN
     dash.assertRealDefined
     dataSource.new

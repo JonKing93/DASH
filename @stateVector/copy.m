@@ -59,11 +59,11 @@ t = obj.checkVariables(templateName);
     ["sequence","mean","weightedMean","design","metadata"], {true, true, true, true, true}, 2 );
 
 % Error check
-dash.assertScalarLogical(copySequences, 'copySequences');
-dash.assertScalarLogical(copyMeans, 'copyMeans');
-dash.assertScalarLogical(copyWeights, 'copyWeights');
-dash.assertScalarLogical(copyDesigns, 'copyDesigns');
-dash.assertScalarLogical(copyMetadata, 'copyMetadata');
+dash.assertScalarType(copySequences, 'copySequences', 'logical', 'logical');
+dash.assertScalarType(copyMeans, 'copyMeans', 'logical', 'logical');
+dash.assertScalarType(copyWeights, 'copyWeights', 'logical', 'logical');
+dash.assertScalarType(copyDesigns, 'copyDesigns', 'logical', 'logical');
+dash.assertScalarType(copyMetadata, 'copyMetadata', 'logical', 'logical');
 
 % Get the template variable
 var = obj.variables(t);

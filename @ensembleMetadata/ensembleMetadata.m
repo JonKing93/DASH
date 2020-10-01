@@ -7,7 +7,7 @@ classdef ensembleMetadata
         
         variableNames; % Names of each metadata
         varLimit; % The limit of each variable down the state vector
-        nEls;
+        nEls; % The number of elements down the state vector for each variable
         
         dims; % The dimensions for each variable
         stateSize; % The length of each dimension for each variable
@@ -133,6 +133,10 @@ classdef ensembleMetadata
         obj = remove(obj, varNames);
         obj = append(obj, meta2);
         obj = extract(obj, varNames);
+        
+        obj = removeMembers(obj, members)
+        obj = appendMembers(obj, meta2);
+        obj = useMembers(obj, members);
     end
     
 end

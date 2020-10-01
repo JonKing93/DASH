@@ -77,9 +77,9 @@ elseif numel(obj.variables)==0
     error('There are no variables in %s.', obj.errorTitle);
 end
 dash.assertPositiveIntegers(nEns, 'nEns');
-dash.assertScalarLogical(random, 'random');
-dash.assertScalarLogical(overwrite, 'overwrite');
-dash.assertScalarLogical(showprogress, 'showprogress');
+dash.assertScalarType(random, 'random', 'logical', 'logical');
+dash.assertScalarType(overwrite, 'overwrite', 'logical', 'logical');
+dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
 
 % Check that each variable has both state and ensemble dimensions
 nVars = numel(obj.variables);

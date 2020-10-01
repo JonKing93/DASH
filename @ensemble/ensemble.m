@@ -1,11 +1,11 @@
 classdef ensemble
     
-    properties
+    properties (SetAccess = private)
         file; % The .ens file associated with the object
         
-        hasnan;
-        meta;
-        stateVector;
+        hasnan; % Whether a variable has NaN in an ensemble member
+        meta; % Ensemble metadata object for the saved state vector ensemble
+        stateVector; % The stateVector object used to build the ensemble
         
         members; % Which ensemble members to load
         variables; % The names of the variables to load
@@ -46,7 +46,7 @@ classdef ensemble
         
     % Object utilities
     methods
-        ens = buildMatfile(obj);
+        [obj, ens] = updateViaMatfile(obj);
         obj = update(obj);
     end
     
@@ -55,8 +55,8 @@ classdef ensemble
         add(obj, nAdd, showprogress)
         load(obj);
         loadGrids(obj);
-        obj = loadMembers(obj, members);
-        obj = loadVariables(obj, variables);
+        obj = useMembers(obj, members);
+        obj = useVariables(obj, variables);
         variableNames(obj);
         info(obj);
     end
