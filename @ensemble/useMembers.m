@@ -1,7 +1,9 @@
 function[obj] = useMembers(obj, members)
-%% Specify to load specific ensemble members
+%% Specify specific ensemble members to load from a .ens file. By default, 
+% all ensemble members are loaded, so this is best used to only load a
+% subset of the ensemble members.
 %
-% obj = obj.loadMembers(members)
+% obj = obj.useMembers(members)
 % Specifies which ensemble members should be loaded in subsequent calls to
 % ensemble.load.
 %
@@ -9,7 +11,7 @@ function[obj] = useMembers(obj, members)
 %
 % members: A vector of indices indicating which ensemble members to load.
 %    Either a vector of linear indices or a logical vector with one element
-%    per ensemble member.
+%    per ensemble member. Use [] to load all ensemble members (the default).
 %
 % ----- Outputs -----
 %
