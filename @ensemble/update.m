@@ -7,7 +7,13 @@ function[obj] = update(obj)
 %
 % obj: The updated ensemble object
 
+% Load the matfile fields
 fields = ["hasnan","meta","stateVector"];
-obj = dash.updateMatfileClass(obj, obj.file, fields, fields, 'ensemble', '.ens');
+s = dash.loadMatfileFields(obj.file, fields, '.ens');
+
+% Fill in the fields
+for f = 1:numel(fields)
+    obj.(fields(f)) = s.(fields(f));
+end
 
 end

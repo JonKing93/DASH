@@ -4,10 +4,17 @@ function[] = update(obj)
 %
 % obj.update;
 
-updateProperties = ["dims","size","isdefined","meta","source","fieldLength",...
-                    "maxLength","dimLimit","absolutePath"];
-gridFields = ["dims","gridSize","isdefined","metadata","source","fieldLength",...
+
+% Load the fields
+fields = ["dims","gridSize","isdefined","metadata","source","fieldLength",...
               "maxLength","dimLimit","absolutePath"];
-dash.updateMatfileClass(obj, obj.file, updateProperties, gridFields, 'gridfile', '.grid');
+s = dash.loadMatfileFields(obj.file, fields, '.grid');
+
+% Update properties
+props = ["dims","size","isdefined","meta","source","fieldLength",...
+                    "maxLength","dimLimit","absolutePath"];
+for p = 1:numel(props)
+    obj.(props(p)) = s.(fields(p));
+end
 
 end

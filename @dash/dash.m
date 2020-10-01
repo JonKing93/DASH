@@ -9,7 +9,7 @@ classdef dash
         convertToV7_3(filename);
         [X, order] = permuteDimensions(X, index, iscomplete, nDims);
         tf = bothNaN(A, B);
-        obj = updateMatfileClass(obj, file, objProps, matFields, objName, extName);
+        s = loadMatfileFields(file, fields, extName);
         
         % Input parsing
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
