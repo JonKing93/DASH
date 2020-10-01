@@ -17,7 +17,7 @@ function[s] = loadMatfileFields(file, matFields, extName)
 % s: A structure with the loaded fields
 
 % Check the file exists
-if ~isfile(file)
+if ~infile(file)
     error('The file "%s" no longert exists. It may have been deleted or moved to a new location.', file);
 end
 
@@ -33,10 +33,10 @@ end
 
 % Check each field is in the file
 loadedFields = fields(s);
-for p = 1:numel(objProps)
-    if ~ismember(matFields{p}, loadedFields)
-        error('File "%s" does not contain the "%s" field.', file, matFields{p});
-    end
+infile = ismember(matFields, loadedFields);
+if any(~infile)
+    bad = find(~infile,1);
+    error('File "%s" does not contain the "%s" field.', file, matFields{bad});
 end
 
 end
