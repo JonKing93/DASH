@@ -11,16 +11,13 @@ function[s] = info(obj)
 %
 % s: A structure whose fields contain information on an ensemble object.
 
-% Update
+% Update.
 obj.update;
 
-% Get the information about the file data
-nState = obj.meta.varLimit(end);
-nEns = obj.meta.nEns;
-
-% Get info about the loaded data
+% Get info about the file data and loaded data
+[nState, nEns] = obj.meta.size;
 [members, v] = obj.loadSettings;
-nStateLoad = sum(obj.meta.nEls(v));
+nStateLoad = sum(obj.meta.size(v));
 nEnsLoad = numel(members);
 
 % Print to console if no outputs

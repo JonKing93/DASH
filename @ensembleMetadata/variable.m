@@ -122,7 +122,10 @@ for k = 1:nDims
     % Metadata for ensemble and state dimensions. Need to propagate state
     % metadata over all state dimensions.
     if ~returnState(k)
-        dimMeta = obj.metadata.(varName).ensemble.(dims(k))(indices{k},:);
+        dimMeta = obj.metadata.(varName).ensemble.(dims(k));
+        if ~isempty(dimMeta)
+            dimMeta = dimMeta(indices{k},:);
+        end
     else
         dimMeta = obj.metadata.(varName).state.(dims(k));
         rows = subDimension(indices{k}, d(k));

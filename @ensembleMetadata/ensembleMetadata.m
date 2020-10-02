@@ -125,10 +125,12 @@ classdef ensembleMetadata
     
     % User methods
     methods
+        % variableNames -- Just a direct call to the field
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
         meta = variable(obj, varName, dims, type, indices);
         meta = dimension(obj, dim, alwaysStruct);
         rows = findRows(varName, varRows);
+        [nState, nEns] = size(obj, vars);
         
         obj = remove(obj, varNames);
         obj = append(obj, meta2);

@@ -61,7 +61,7 @@ elseif dash.isstrlist(sources)
 elseif isnumeric(sources) || islogical(sources)
     index = dash.checkIndices(sources, 's', nSource, 'the number of data sources in the .grid file');
 else
-    error('The first input may be ''all'', a list of file names, or a set of linear indices.');
+    error('The first input may be ''all'', a list of file names, or a set of indices.');
 end
 
 % Update the object in case the file changed

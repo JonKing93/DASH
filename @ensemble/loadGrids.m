@@ -27,11 +27,11 @@ function[s] = loadGrids(obj)
 s = struct();
 
 % Regrid each variable
-for v = 1:numel(meta.nEls)
-    var = meta.variableNames(v);
-    [Xv, gridMeta] = meta.regrid(X, var);
-    members = obj.meta.metadata.(var).ensemble;
-    s.(var) = struct('data', Xv, 'gridMetadata', gridMeta, 'members', members);
+vars = meta.variableNames;
+for v = 1:numel(vars)
+    [Xv, gridMeta] = meta.regrid(X, vars(v));
+    members = obj.meta.variable(vars(v), [], false);    
+    s.(vars(v)) = struct('data', Xv, 'gridMetadata', gridMeta, 'members', members);
 end
     
 end

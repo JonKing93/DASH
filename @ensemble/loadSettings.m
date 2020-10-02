@@ -22,12 +22,18 @@ if isempty(variables)
     variables = obj.meta.variableNames;
 end
 
-% Check the options are still consistent with the ensemble. Get variable indices
-[ismem, v] = ismember(variables, obj.meta.variableNames);
-if any(~ismem)
-    missingVariableError(variables, obj.meta.variableNames, obj.file);
-elseif max(members)>obj.meta.nEns
-    notEnoughMembersError(max(members), obj.meta.nEns, obj.file);
+% Check the variables are still consistent with the .ens file
+filevars = obj.meta.variableNames;
+[infile, v] = ismember(variables, filevars);
+if any(~infile)
+    bad = find(~infile, 1);
+    missingVariableError(variables(bad), filevars, obj.file);
+end
+
+% Check the ensemble members are still consistent
+[~, nEns] = obj.meta.size;
+if max(members) > nEns
+    notEnoughMembersError(max(members), nEns, obj.file);
 end
 
 end
