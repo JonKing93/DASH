@@ -24,7 +24,7 @@ for v = 1:numel(vars)
     
     % Use the ensemble members in each dimension
     for d = 1:numel(dims)
-        if ~isempty(meta.dims(d))
+        if ~isempty(meta.(dims(d)))
             obj.metadata.(vars(v)).ensemble.(dims(d)) = meta.(dims(d))(members,:);
         end
     end

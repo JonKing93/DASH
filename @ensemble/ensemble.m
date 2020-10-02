@@ -35,7 +35,8 @@ classdef ensemble
             % obj: An ensemble object for the specified .ens file.
             
             % Error check file name. Get matfile properties
-            obj.file = dash.assertStrFlag(filename, "filename");
+            filename = dash.assertStrFlag(filename, "filename");
+            obj.file = dash.checkFileExists(filename);
             obj = obj.update;
             
             % Members and variables are unspecified.
@@ -53,11 +54,11 @@ classdef ensemble
     % User methods
     methods
         add(obj, nAdd, showprogress)
-        load(obj);
+        [X, meta] = load(obj);
         loadGrids(obj);
         obj = useMembers(obj, members);
         obj = useVariables(obj, variables);
-        variableNames(obj);
+        varNames = variableNames(obj);
         info(obj);
     end
 end

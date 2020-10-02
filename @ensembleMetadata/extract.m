@@ -16,7 +16,7 @@ function[obj] = extract(obj, varNames)
 v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
 
 % Get the variables to remove
-allVars = 1:numel(obj.variables);
+allVars = 1:numel(obj.variableNames);
 remove = allVars(~ismember(allVars, v));
 
 % Update

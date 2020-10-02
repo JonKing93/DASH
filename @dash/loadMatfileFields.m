@@ -18,7 +18,7 @@ function[s] = loadMatfileFields(file, matFields, extName)
 
 % Check the file exists
 if ~isfile(file)
-    error('The file "%s" no longert exists. It may have been deleted or moved to a new location.', file);
+    error('The file "%s" no longer exists. It may have been deleted or moved to a new location.', file);
 end
 
 % Load the data in the matfile. (Use load instead of indexing to avoid
