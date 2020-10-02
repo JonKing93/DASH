@@ -1,10 +1,10 @@
-function[] = add(obj, nAdd, showprogress)
+function[obj] = add(obj, nAdd, showprogress)
 %% Add additional state vectors to an ensemble saved in a .ens file.
 %
-% obj.add(nAdd)
+% obj = obj.add(nAdd)
 % Adds a specified number of state vectors to the ensemble.
 %
-% obj.add(nAdd, showprogress)
+% obj = obj.add(nAdd, showprogress)
 % Specify whether to display a progress bar. Default is to show progress.
 %
 % ----- Inputs -----
@@ -14,6 +14,10 @@ function[] = add(obj, nAdd, showprogress)
 %
 % showprogress: A scalar logical indicating whether to display a progress
 %    bar (true -- default), or not (false).
+%
+% ----- Outputs -----
+%
+% obj: The updated ensemble object.
 
 % Default
 if ~exist('showprogress','var') || isempty(showprogress)
@@ -29,8 +33,9 @@ dash.assertScalarLogical(showprogress, 'showprogress');
 
 % Build the matfile, update matfile properties. Pre-build gridfiles and
 % data sources
-[obj, ens] = obj.updateViaMatfile;
-[grids, sources, f] = obj.stateVector.preBuildSources;
+ens = obj.buildMatfile;
+obj = obj.update(ens);
+[grids, sources, f] = obj.stateVector.prebuildSources;
 
 % Add to the ensemble
 [~, nPrevious] = size(ens, 'X');
@@ -46,5 +51,8 @@ catch ME
     ens.stateVector = obj.sv;
     rethrow(ME);
 end
+
+% If everything was successful, update to include the new data
+obj = obj.update(ens);
     
 end

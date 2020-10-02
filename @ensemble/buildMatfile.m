@@ -1,11 +1,9 @@
-function[obj, ens] = updateViaMatfile(obj)
+function[ens] = buildMatfile(obj)
 %% Updates an ensemble object using a matfile object and returns the matfile.
 %
-% [obj, ens] = obj.updateViaMatfile
+% ens = obj.buildMatfile
 %
 % ----- Outputs -----
-%
-% obj: The updated ensemble object
 % 
 % ens: The matfile object associated with the ensemble object's .ens file.
 
@@ -27,10 +25,5 @@ if any(~ismember(required, varNames))
     bad = find(~ismember(required, varNames),1);
     error('File "%s" does not contain the "%s" field.', obj.file, required(bad));
 end
-
-% Update matfile properties
-obj.hasnan = ens.hasnan;
-obj.meta = ens.meta;
-obj.stateVector = ens.stateVector;
 
 end

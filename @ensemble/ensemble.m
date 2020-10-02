@@ -47,8 +47,9 @@ classdef ensemble
         
     % Object utilities
     methods
-        [obj, ens] = updateViaMatfile(obj);
-        obj = update(obj);
+        ens = buildMatfile(obj);
+        obj = update(obj, ens);
+        [members, v] = loadSettings(obj);
     end
     
     % User methods
@@ -59,6 +60,6 @@ classdef ensemble
         obj = useMembers(obj, members);
         obj = useVariables(obj, variables);
         varNames = variableNames(obj);
-        info(obj);
+        s = info(obj);
     end
 end

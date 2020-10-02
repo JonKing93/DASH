@@ -1,19 +1,25 @@
-function[obj] = update(obj)
+function[obj] = update(obj, ens)
 %% Updates an ensemble object to match the associated .ens file.
 %
-% obj = obj.update;
+% obj = obj.update
+% Loads data from the .ens file and updates the fields.
+%
+% obj = obj.update(ens)
+% Uses a matfile object for the .ens file to update fields
 %
 % ----- Outputs -----
 %
 % obj: The updated ensemble object
 
-% Load the matfile fields
+% If no matfile object is provided, load data into a structure
 fields = ["hasnan","meta","stateVector"];
-s = dash.loadMatfileFields(obj.file, fields, '.ens');
+if ~exist('ens','var') || isempty(ens)
+    ens = dash.loadMatfileFields(obj.file, fields, '.ens');
+end
 
 % Fill in the fields
 for f = 1:numel(fields)
-    obj.(fields(f)) = s.(fields(f));
+    obj.(fields(f)) = ens.(fields(f));
 end
 
 end
