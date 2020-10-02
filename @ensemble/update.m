@@ -19,7 +19,8 @@ end
 
 % Fill in the fields
 for f = 1:numel(fields)
-    obj.(fields(f)) = ens.(fields(f));
+    name = char(fields(f));
+    obj.(name) = ens.(name);
 end
 
 end

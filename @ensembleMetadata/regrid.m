@@ -67,6 +67,7 @@ dims = obj.dims{v};
 nDims = numel(dims);
 if isempty(dimOrder)
     dimOrder = dims;
+    userDims = strings(0,1);
 end
 
 % Error check
@@ -75,7 +76,7 @@ index = dash.checkStrsInList(dimOrder, dims, 'dimOrder', sprintf('dimension of v
 assert( numel(dimOrder)==numel(unique(dimOrder)), 'dimOrder cannot contain duplicate names' );
 assert(isscalar(d), 'd must be a scalar');
 dash.assertPositiveIntegers(d, 'd');
-dash.assertScalarLogical(keepSingletons, 'single');
+dash.assertScalarType(keepSingletons, 'single', 'logical', 'logical');
 
 % Check the array size matches the ensemble metadata
 nState = obj.varLimit(end);

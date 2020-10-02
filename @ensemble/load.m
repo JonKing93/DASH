@@ -58,7 +58,8 @@ for k = 1:nBlocks
 end
 
 % Build the metadata for the loaded variables and ensemble members
-meta = obj.meta.extract(variables);
+vars = obj.meta.variableNames(v);
+meta = obj.meta.extract(vars);
 meta = meta.useMembers(members);
     
 end
