@@ -39,7 +39,7 @@ if nargout==0
 % Otherwise, return a structure
 else
     s = struct('file', obj.file, 'sizeInFile', [nState, nEns], ...
-        'loadVariables', variables, 'loadMembers', members, 'sizeOnLoad', [nStateLoad, nEnsLoad]);
+        'loadVariables', obj.variables, 'loadMembers', members, 'sizeOnLoad', [nStateLoad, nEnsLoad]);
 end
 
 end
