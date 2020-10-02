@@ -16,6 +16,9 @@ ens = obj.buildMatfile;
 obj = obj.update(ens);
 [members, v] = obj.loadSettings;
 
+% v: Variable index
+% blocks: Which segments of v to use per operation
+
 % Get blocks of contiguous variables to load
 skips = find(diff(v)~=1)';
 nVars = numel(v);
@@ -39,8 +42,10 @@ loadCols = dash.equallySpacedIndices(members);
 keep = ismember(loadCols, members);
 
 % Get the rows for each block of contiguous variables
+vars = obj.meta.variableNames(v);
 for k = 1:nBlocks
-    loadRows = fileMeta.varLimit(blocks(k,1),1) : fileMeta.varLimit(blocks(k,2),2) ;
+    limitVars = vars(blocks(k,:));    
+    loadRows = fileMeta.findRows(limitVars(1),1) : fileMeta.findRows(limitVars(2), nEls(blocks(k,2)));    
     rows = varLimit(blocks(k,1),1) : varLimit(blocks(k,2),2);
     
     % Attempt to load all at once

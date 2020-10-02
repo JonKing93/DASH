@@ -45,7 +45,7 @@ if ~isequal(indices, [])
 
     % Other types are not allowed
     else
-        error('%s must either be logical or numeric.');
+        error('%s must either be logical or numeric.', name);
     end
 end
 

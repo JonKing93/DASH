@@ -129,7 +129,7 @@ classdef ensembleMetadata
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
         meta = variable(obj, varName, dims, type, indices);
         meta = dimension(obj, dim, alwaysStruct);
-        rows = findRows(varName, varRows);
+        rows = findRows(obj, varName, varRows);
         [nState, nEns] = size(obj, vars);
         
         obj = remove(obj, varNames);
