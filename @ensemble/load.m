@@ -52,7 +52,7 @@ for k = 1:nBlocks
     try
         Xload = ens.X(loadRows, loadCols);
         X(rows,:) = Xload(:, keep);
-        continue
+        continue;
     catch
     end
     

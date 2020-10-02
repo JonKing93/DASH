@@ -37,14 +37,9 @@ if ~exist('vars','var') || isempty(vars)
 end
 
 % Otherwise, parse the inputs
-if dash.isstrlist(vars)
-    v = obj.stateVector.checkVariables(vars);
-elseif isnumeric(vars) || islogical(vars)
-    nVars = numel(obj.variableNames);
-    v = dash.checkIndices(vars, 'v', nVars, 'the number of variables in the state vector');
-else
-    error('The first input must either be a list of variable names, or a set of indices.');
-end
+listName = 'variable in the state vector';
+lengthName = 'the number of variables in the state vector';
+v = dash.parseListIndices(vars,'varNames','v',obj.variableNames,listName, lengthName, 1, 'variable names');
 
 % Get nEls
 nState = obj.nEls(v);

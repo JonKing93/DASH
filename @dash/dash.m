@@ -15,6 +15,7 @@ classdef dash
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
         [input, wasCell] = parseInputCell(input, nDims, name);
         input = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name);
+        index = parseListIndices(input, strName, indexName, list, listName, lengthName, inputNumber, eltNames);
         
         % Structures
         [s, inputs] = preallocateStructs(fields, siz);
