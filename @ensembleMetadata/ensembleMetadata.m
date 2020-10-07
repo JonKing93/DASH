@@ -129,9 +129,9 @@ classdef ensembleMetadata
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
         meta = variable(obj, varName, dims, type, indices);
         meta = dimension(obj, dim, alwaysStruct);
-        [lat, lon] = coordinates(obj, dim, verbose);
+        [latlon] = coordinates(obj, dim, verbose);
         rows = findRows(obj, varName, varRows);
-        [nState, nEns] = size(obj, vars);
+        [nState, nEns] = sizes(obj, vars);
         
         obj = remove(obj, varNames);
         obj = append(obj, meta2);

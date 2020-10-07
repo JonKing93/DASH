@@ -1,4 +1,4 @@
-function[nState, nEns] = size(obj, vars)
+function[nState, nEns] = sizes(obj, vars)
 %% Returns the size of a state vector ensemble, or variables in the state
 % vector ensemble.
 %
