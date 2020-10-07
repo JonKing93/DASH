@@ -1,4 +1,4 @@
-function[meta] = dimension(obj, dim, rows, alwaysStruct)
+function[meta] = dimension(obj, dim, alwaysStruct)
 %% Returns the metadata for a dimension down the entire state vector.
 %
 % meta = obj.dimension(dim)
