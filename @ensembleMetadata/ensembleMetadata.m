@@ -32,12 +32,6 @@ classdef ensembleMetadata
             % obj = ensembleMetadata(sv)
             % Creates an ensembleMetadata object for a state vector.
             %
-            % obj = ensembleMetadata(ensfile)
-            % Returns the ensembleMetadata object for an ensemble saved in a .ens file.
-            %
-            % obj = ensembleMetadata(ens)
-            % Returns the ensembleMetadata object for an ensemble.
-            %
             % ----- Inputs -----
             %
             % sv: A stateVector object
