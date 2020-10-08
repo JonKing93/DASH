@@ -48,4 +48,4 @@ ensMeta.dimension("lat", true)
 ```
 will always return lat metadata as a structure, and never as a matrix.
 
-[Previous](meta-object)---[Next](coordinates)
+[Previous](sizes)---[Next](coordinates)

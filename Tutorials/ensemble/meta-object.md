@@ -5,7 +5,7 @@ title: ensembleMetadata
 
 # The ensembleMetadata class
 
-Once you have generated a stateVector ensemble, it's often useful to retrieve the metadata down the state vector or across the ensemble. Metadata down the state vector can be used for a variety of tasks, such as selecting the inputs for proxy system models or designing a covariance localization scheme. Metadata across the ensemble can be used to select subsets of ensemble members for use in different assimilations. For example, you may want to systematically assimilate different ensemble members for a study using an evolving prior. The ensembleMetadata class is designed to facilitate these tasks.
+Once you have generated a stateVector ensemble, it's often useful to retrieve various types of metadata about it. Useful summary information can include the variables in the ensemble and their size. You may also want to retrieve metadata down the state vector or across the ensemble. Metadata down the state vector can be used for a variety of tasks, such as selecting the inputs for proxy system models or designing a covariance localization scheme. Metadata across the ensemble can be used to select subsets of ensemble members for use in different assimilations. For example, you may want to systematically assimilate different ensemble members for a study using an evolving prior. The ensembleMetadata class is designed to facilitate all of these tasks.
 
 # ensembleMetadata objects
 
@@ -39,4 +39,4 @@ ensMeta = ensembleMetadata(sv);
  ```
  syntax is recommended when retrieving metadata for an ensemble generated exclusively via "stateVector.build".
 
- [Previous](welcome)---[Next](dimension)
+ [Previous](welcome)---[Next](sizes)
