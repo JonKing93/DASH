@@ -5,7 +5,12 @@ title: Welcome!
 
 # Welcome to the stateVector tutorial!
 
-This tutorial provides a guides on designing a state vector and building a state vector ensemble using the stateVector class. If you'd like to work through the tutorial offline, or in the MATLAB console, you can download it <a href="stateVector-tutorial.zip" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
+This tutorial provides a guide to
+
+1. Designing a state vector, and
+2.  building a state vector ensemble
+
+using the stateVector class. If you'd like to work through the tutorial offline, or in the MATLAB console, you can download it <a href="stateVector-tutorial.zip" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
 
 If you're already familiar with stateVector and just want a refresher, or if you're in a hurry, you may be interested in the stateVector [quickstart](quickstart).
 
@@ -19,7 +24,7 @@ stateVector is based around the gridfile module. If you're not familiar with gri
 <br>
 #### Help from the Matlab console
 
-This tutorial covers most statevector commands. However, you can also use
+This tutorial covers most stateVector commands. However, you can also use
 ```matlab
 help stateVector
 ```
