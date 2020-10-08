@@ -26,6 +26,10 @@ function[meta] = loadedMetadata(obj, varNames, members)
 % members: A vector of indices indicating which ensemble members to use.
 %    Either a vector of linear indices or a logical vector with one element
 %    per ensemble member.
+%
+% ----- Outputs -----
+%
+% meta: The ensembleMetadata object for the specified set of loaded data.
 
 % Defaults for variables
 vars = obj.meta.variableNames;
@@ -53,4 +57,3 @@ meta = obj.meta.extract( vars(v) );
 meta = meta.useMembers(m);
 
 end
-
