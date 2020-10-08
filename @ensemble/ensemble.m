@@ -56,6 +56,7 @@ classdef ensemble
     methods
         add(obj, nAdd, showprogress)
         [X, meta] = load(obj);
+        meta = loadedMetadata(obj, varNames, members);
         s = loadGrids(obj);
         obj = useMembers(obj, members);
         obj = useVariables(obj, variables);
