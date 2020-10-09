@@ -1,0 +1,112 @@
+checkMetadataField
+    hasDuplicateRows
+checkMetadataStructure
+    dash.messageList
+    checkMetadataField
+hasDuplicateRows
+convertSourceToPrimitives
+    commaDelimitedDims
+padPrimitives
+collectPrimitives
+collectFullPaths
+    collectPrimitives
+sourceFilepath
+    dash.relativePath
+    dash.unixStylePath
+checkAllowedDims
+    dash.checkStrsInList
+update
+    dash.loadMatfileFields
+save
+    update
+updateMetadataField
+findFileSources
+    collectPrimitives
+buildSources
+    collectFullPaths
+    buildSourcesForFiles
+buildSourcesForFiles
+    collectPrimitives
+    dataSource.new
+checkSourcesMatchGrid
+    collectPrimitives
+review
+    buildSources
+    collectFullPaths
+    checkSourcesMatchGrid
+repeatedLoad
+    buildSources
+    dataSource.read
+    dash.permuteDimensions
+defineMetadata
+    dash.assertStrFlag
+    checkMetadataField
+new
+    dash.assertStrFlag
+    dash.assertScalarType
+    checkMetadataStructure
+    dash.setupNewFile
+    dash.dimensionNames
+    gridfile
+add
+    update
+    dash.parseInputs
+    dash.assertScalarType
+    dash.assertVectorTypeN
+    dash.assertRealDefined
+    dataSource.new
+    checkAllowedDims
+    checkMetadataStructure
+    convertSourceToPrimitives
+    sourceFilepath
+    padPrimitives
+    save
+remove
+    update
+    dash.checkStrsInList
+renameSources
+    update
+    collectFullPaths
+    findFileSources
+    dash.assertStrList
+    dash.checkFileExists
+    buildSourcesForFiles
+    checkSourcesMatchGrid
+    sourceFilepath
+    padPrimitives
+    save
+rewriteMetadata
+    update
+    dash.assertStrFlag
+    checkAllowedDims
+    checkMetadataField
+    updateMetadataField
+expand
+    update
+    dash.assertStrFlag
+    checkAllowedDims
+    checkMetadataField
+    hasDuplicateRows
+    updateMetadataField
+info
+    dash.isstrlist
+    findFileSources
+    dash.checkIndices
+    update
+    dash.preallocateStructs
+    buildSources
+metadata
+    update
+    dash.assertScalarType
+load
+    update
+    dash.assertStrList
+    checkAllowedDims
+    dash.assertVectorTypeN
+    dash.assertPositiveIntegers
+    dash.checkIndices
+    repeatedLoad
+gridfile
+    dash.assertStrFlag
+    dash.checkFileExists
+    update

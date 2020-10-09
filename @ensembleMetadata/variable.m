@@ -69,7 +69,7 @@ v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the
 
 % Defaults and error check for dims. Get dimension indices and type.
 if ~exist('dims','var') || isempty(dims)
-    dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v});
+    dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v} | obj.meanSize{v}>1);
 end
 dims = dash.assertStrList(dims);
 nDims = numel(dims);
@@ -129,7 +129,7 @@ for k = 1:nDims
     else
         dimMeta = obj.metadata.(varName).state.(dims(k));
         rows = subDimension(indices{k}, d(k));
-        dimMeta = dimMeta(rows, :);
+        dimMeta = dimMeta(rows,:,:);
     end
     
     % Return as array or structure

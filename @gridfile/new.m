@@ -46,13 +46,13 @@ if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 end
 dash.assertScalarType(overwrite, 'overwrite', 'logical', 'logical');
-meta = gridfile.checkMetadataStructure( meta, dash.dimensionNames, "recognized dimension names" );
+dims = dash.dimensionNames;
+meta = gridfile.checkMetadataStructure( meta, dims, "recognized dimension names" );
 
 % Set file extension. Optionally check overwriting. Get full path
 filename = dash.setupNewFile(filename, '.grid', overwrite);
 
 % Get all internal metadata names.
-dims = dash.dimensionNames;
 atts = gridfile.attributesName;
 nDim = numel(dims);
 

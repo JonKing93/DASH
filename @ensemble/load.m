@@ -26,7 +26,7 @@ blocks = [1, skips+1; skips, nVars]';
 nBlocks = numel(skips)+1;
 
 % Get the limits of loaded variables in the state vector
-nEls = obj.meta.size(v);
+nEls = obj.meta.sizes(v);
 varEnd = cumsum(nEls)';
 varLimit = [1, varEnd(1:end-1)+1; varEnd]';
 fileMeta = ens.meta;

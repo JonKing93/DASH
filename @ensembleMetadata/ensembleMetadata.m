@@ -12,6 +12,7 @@ classdef ensembleMetadata
         dims; % The dimensions for each variable
         stateSize; % The length of each dimension for each variable
         isState; % Whether the dimensions are state or ensemble
+        meanSize; % The size of any means
         
         nEns; % The number of ensemble members.
         metadata; % Metadata for each dimension of each variable. Organized
@@ -60,6 +61,7 @@ classdef ensembleMetadata
             obj.nEls = NaN(nVars, 1);
             obj.dims = cell(nVars, 1);
             obj.isState = cell(nVars, 1);
+            obj.meanSize = cell(nVars, 1);
             obj.metadata = struct();
 
             % Get the coupling index for each variable
@@ -78,6 +80,7 @@ classdef ensembleMetadata
                 obj.stateSize{v} = var.stateSize(d);
                 obj.nEls(v) = prod(var.stateSize(d));
                 obj.isState{v} = var.isState(d);
+                obj.meanSize{v} = var.meanSize(d);
                 
                 % Get metadata for each dimension
                 for k = 1:numel(d)

@@ -31,7 +31,7 @@ if any(~infile)
 end
 
 % Check the ensemble members are still consistent
-[~, nEns] = obj.meta.size;
+[~, nEns] = obj.meta.sizes;
 if max(members) > nEns
     notEnoughMembersError(max(members), nEns, obj.file);
 end

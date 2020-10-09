@@ -37,7 +37,7 @@ end
 
 % Error check
 dim = dash.assertStrFlag(dim, 'dim');
-dash.assertScalarLogical(alwaysStruct);
+dash.assertScalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
 
 % Record whether a variable has the dimension
 nVars = numel(obj.variableNames);

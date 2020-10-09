@@ -1,0 +1,44 @@
+dimensionNames
+convertToV7_3
+    assertStrFlag
+    checkFileExists
+permuteDimensions
+bothNaN
+loadMatfileFields
+parseInputs
+    assertVectorTypeN
+    assertStrList
+    assertStrFlag
+    checkStrsInList
+parseInputCell
+    assertVectorTypeN
+parseLogicalString
+    assertVectorTypeN
+    checkStrsInList
+parseListIndices
+    checkStrsInList
+    checkIndices
+preallocateStructs
+collectField
+checkFileExists
+unixStylePath
+relativePath
+setupNewFile
+isstrflag
+isstrlist
+assertStrFlag
+    isstrflag
+assertStrList
+    isstrlist
+checkStrsInList
+    assertStrList
+    messageList
+messageList
+assertScalarType
+assertRealDefined
+assertVectorTypeN
+assertPositiveIntegers
+    assertRealDefined
+checkIndices
+    assertPositiveIntegers
+equallySpacedIndices

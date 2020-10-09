@@ -1,0 +1,13 @@
+dataSource
+    dash.assertStrFlag
+    dash.assertStrList
+    dash.checkFileExists
+checkVariable
+read
+    dash.equallySpacedIndices
+    matSource.load
+    ncSource.load
+new
+    dash.isstrflag
+    ncSource.ncSource
+    matSource.matSource

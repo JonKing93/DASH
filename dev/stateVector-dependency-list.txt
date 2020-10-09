@@ -1,0 +1,158 @@
+stateVector
+    rename
+    notifyConsole
+variableLimits
+checkVariables
+    dash.checkStrsInList
+    errorTitle
+    variableNames
+assertEditable
+    errorTitle
+errorTitle
+updateCoupledVariables
+    stateVectorVariable.design
+    dash.messageList
+prebuildSources
+    dash.collectField
+    stateVectorVariable.gridfile
+    gridfile.review
+    stateVectorVariable.checkGrid
+buildEnsemble
+    variableNames
+    stateVectorVariable.removeOverlap
+    variableLimits
+    stateVectorVariable.buildEnsemble
+    ensembleMetadata.ensembleMetadata
+    dash.messageList
+design
+    assertEditable
+    checkVariables
+    stateVectorVariable.design
+    updateCoupledVariables
+    variableNames
+    dash.messageList
+sequence
+    assertEditable
+    checkVariables
+    stateVectorVariable.sequence
+mean
+    assertEditable
+    checkVariables
+    stateVectorVariable.mean
+weightedMean
+    assertEditable
+    checkVariables
+    stateVectorVariable.weightedMean
+resetMeans
+    assertEditable
+    checkVariables
+    stateVectorVariable.resetMeans
+specifyMetadata
+    assertEditable
+    checkVariables
+    stateVectorVariable.specifyMetadata
+convertMetadata
+    assertEditable
+    checkVariables
+    stateVectorVariable.convertMetadata
+resetMetadata
+    assertEditable
+    checkVariables
+    stateVectorVariable.resetMetadata
+dimensions
+    dash.messageList
+    stateVectorVariable.dimensions
+info
+    dash.isstrlist
+    checkVariables
+    dash.checkIndices
+    errorTitle
+    variableNames
+    dash.preallocateStructs
+    dash.messageList
+    stateVectorVariable.info
+renameVariables
+    assertEditable
+    checkVariables
+    dash.assertStrList
+    dash.assertVectorTypeN
+    checkVariableNames
+    stateVectorVariable.rename
+rename
+    assertEditable
+    dash.assertStrFlag
+notifyConsole
+    dash.assertScalarType
+add
+    assertEditable
+    dash.assertScalarType
+    dash.assertStrFlasg
+    checkVariableNames
+    variableNames
+    stateVectorVariable.stateVectorVariable
+    couple
+remove
+    assertEditable
+    checkVariables
+couple
+    assertEditable
+    checkVariables
+    updateCoupledVariables
+    variableNames
+    dash.messageList
+uncouple
+    assertEditable
+    checkVariables
+autoCouple
+    assertEditable
+    checkVariables
+    dash.assertVectorTypeN
+allowOverlap
+    assertEditable
+    checkVariables
+    dash.assertVectorTypeN
+append
+    assertEditable
+    assertScalarType
+    errorTitle
+    checkVariableNames
+    variableNames
+    couple
+    dash.messageList
+extract
+    dash.checkStrsInList
+    variableNames
+    remove
+copy
+    assertEditable
+    checkVariables
+    dash.parseInputs
+    dash.assertScalarType
+    design
+    sequence
+    mean
+    weightedMean
+    specifyMetadata
+    convertMetadata
+variableNames
+    dash.checkIndices
+    dash.collectField
+build
+    dash.assertPositiveIntegers
+    dash.assertScalarType
+    stateVectorVariable.trim
+    prebuildSources
+    stateVectorVariable.dimMetadata
+    dash.bothNaN
+    variableNames
+    stateVectorVariable.matchIndices
+    dash.assertStrFlag
+    dash.setupNewFile
+    buildEnsemble
+    dash.messageList
+addMembers
+    dash.assertPositiveIntegers
+    dash.assertScalarType
+    prebuildSources
+    buildEnsemble
+    

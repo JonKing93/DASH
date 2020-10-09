@@ -25,6 +25,7 @@ end
 dash.assertScalarType(includeUndefined, 'includeUndefined', 'logical', 'logical');
 
 % Extract the metadata
+obj.update;
 meta = obj.meta;
 
 % Optionally remove undefined dimensions
