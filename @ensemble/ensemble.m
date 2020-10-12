@@ -1,4 +1,17 @@
 classdef ensemble
+    %% Manages a state vector ensemble saved in a .ens file.
+    %
+    % ensemble Methods:
+    %   load - Loads a state vector ensemble from a .ens file
+    %   loadGrids - Load gridded climate variables instead of state vectors
+    %   useMembers - Specify which ensemble members to load.
+    %   useVariables - Specify which state vector variables to load.
+    %   loadedMetadata - Return an ensembleMetadata object for the data that
+    %                    will be loaded.
+    %   add - Add more members to the ensemble.
+    %   variableNames - List the variables in the state vector ensemble
+    %   info - Return a summary of the data saved in the .ens file and the
+    %          data that will be loaded.
     
     properties (SetAccess = private)
         file; % The .ens file associated with the object

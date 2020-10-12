@@ -1,5 +1,29 @@
 classdef ensembleMetadata
     % Manages metadata for an ensemble
+    %
+    % ensembleMetadata Methods:
+    %   ensembleMetadata - Creates a new ensembleMetadata object
+    %   sizes - Size of variables in a state vector ensemble.
+    %   variableNames - Returns the names of the variables in a state vector
+    %   variable - Metadata for a variable in a state vector ensemble
+    %   dimension - Metadata for a dimension down a state vector
+    %   coordinates - Lat-Lon coordinates down a state vector.
+    %   regrid - Reshapes a state vector into gridded variables.
+    %   findRows - Finds elements of a variable in a state vector
+    %
+    % *** Advanced ***
+    % ensembleMetadata Methods:
+    %   append - Update metadata after appending state vectors.
+    %   remove - Updates metadata after removing variables from a state vector
+    %   extract - Updates metadata after restricting a state vector to
+    %             specific variables
+    %   removeMembers - Update metadata after removing ensemble members
+    %   useMembers - Update metadata after restricting an ensemble to
+    %                specific members
+    %   appendMembers - Update metadata after appending ensembles.
+
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
     
     properties (SetAccess = private)
         ensembleName; % Name of the ensemble
@@ -16,7 +40,7 @@ classdef ensembleMetadata
         
         nEns; % The number of ensemble members.
         metadata; % Metadata for each dimension of each variable. Organized
-                  % as a structure metadata.(variable).(dimension).(state or ensemble)
+                  % as a structure metadata.(variable).(state or ensemble).(dimension)
     end
     
     properties (Hidden, Constant)
@@ -36,6 +60,10 @@ classdef ensembleMetadata
             % ----- Inputs -----
             %
             % sv: A stateVector object
+            %
+            % ----- Outputs -----
+            %
+            % meta: The ensemble metadata object
 
             % Error check.
             if ~isa(sv, 'stateVector') || ~isscalar(sv)
