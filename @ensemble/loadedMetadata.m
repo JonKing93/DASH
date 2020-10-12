@@ -54,6 +54,6 @@ end
 
 % Build the ensembleMetadata object
 meta = obj.meta.extract( vars(v) );
-meta = meta.useMembers(m);
+meta = meta.extractMembers(m);
 
 end

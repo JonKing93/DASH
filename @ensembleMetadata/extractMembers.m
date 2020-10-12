@@ -1,7 +1,7 @@
-function[obj] = useMembers(obj, members)
+function[obj] = extractMembers(obj, members)
 %% Updates ensemble metadata to use specific ensemble members.
 %
-% obj = obj.useMembers(members)
+% obj = obj.extractMembers(members)
 %
 % ----- Inputs -----
 %

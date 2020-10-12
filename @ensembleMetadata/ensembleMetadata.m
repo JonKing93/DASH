@@ -164,7 +164,7 @@ classdef ensembleMetadata
         
         obj = removeMembers(obj, members)
         obj = appendMembers(obj, meta2);
-        obj = useMembers(obj, members);
+        obj = extractMembers(obj, members);
     end
     
 end
