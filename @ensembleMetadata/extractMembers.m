@@ -30,4 +30,7 @@ for v = 1:numel(vars)
     end
 end
 
+% Update the number of ensemble members
+obj.nEns = numel(members);
+
 end

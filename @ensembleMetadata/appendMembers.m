@@ -16,10 +16,10 @@ function[obj] = appendMembers(obj, meta2)
 % Error check
 dash.assertScalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
 
-% Check that all fields exactly match the current ensemble metadata
-fields = ["variableNames","varLimit","nEls","dims","stateSize","isState","nEns"];
-for f = 1:numel(fields)
-    if ~isequal(obj.(fields(f)), meta2.(fields(f)))
+% Check that properties exactly match the current ensemble metadata
+props = ["variableNames","varLimit","nEls","dims","stateSize","isState","meanSize"];
+for f = 1:numel(props)
+    if ~isequaln(obj.(props(f)), meta2.(props(f)))
         notMatchingError;
     end
 end
@@ -35,7 +35,7 @@ for v = 1:numel(vars)
     meta = obj.metadata.(vars(v)).ensemble;
     dims = string(fields(meta));
     for d = 1:numel(dims)
-        if ~isempty(meta.dims(d))
+        if ~isempty(meta.(dims(d)))
             try
                 obj.metadata.(vars(v)).ensemble.(dims(d)) = ...
                     cat(1, meta.(dims(d)), meta2.metadata.(vars(v)).ensemble.(dims(d)));
@@ -46,11 +46,14 @@ for v = 1:numel(vars)
     end
 end
 
+% Update the number of ensemble members
+obj.nEns = obj.nEns + meta2.nEns;
+
 end
 
 % Long error messages
 function[] = notMatchingError
-error(['The second ensembleMetadata object has different variabes and/or',...
+error(['The second ensembleMetadata object has different variables and/or ',...
     'state vector metadata than the current ensembleMetadata object.']);
 end
 function[] = cannotAppendError(var, dim)
