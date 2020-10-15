@@ -16,7 +16,8 @@ function[obj] = renameVariables(obj, varNames, newNames)
 %
 % obj: The updated stateVector object
 
-% Error check, variable names
+% Error check, variable names, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Error check the new names

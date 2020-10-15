@@ -17,7 +17,11 @@ function[obj] = matchIndices(obj, meta, grid, dim)
 
 % Get the variable's metadata. Find the metadata intersect
 varMeta = obj.dimMetadata(grid, dim);
-[~, keep] = intersect(varMeta, meta, 'rows', 'stable');
+if dash.bothNaN(meta, varMeta)
+    keep = 1;
+else
+    [~, keep] = intersect(varMeta, meta, 'rows', 'stable');
+end
 
 % Update the reference indices. Update metadata and size
 d = obj.checkDimensions(dim);

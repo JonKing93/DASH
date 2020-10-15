@@ -13,7 +13,8 @@ function[obj] = rename(obj, name)
 %
 % obj: The updated stateVector object
 
-% Error check. Change name. Use string internally.
+% Error check. Change name. Use string internally. Check editable
+obj.assertEditable;
 dash.assertStrFlag(name, 'name');
 obj.name = string(name);
 

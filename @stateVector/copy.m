@@ -52,17 +52,18 @@ function[obj] = copy(obj, templateName, varNames, varargin)
 %
 % obj: The updated stateVector object
 
-% Error check template, template index, parse inputs
+% Error check template, template index, parse inputs, editable
+obj.assertEditable;
 t = obj.checkVariables(templateName);
 [copySequences, copyMeans, copyWeights, copyDesigns, copyMetadata] = dash.parseInputs( varargin, ...
     ["sequence","mean","weightedMean","design","metadata"], {true, true, true, true, true}, 2 );
 
 % Error check
-dash.assertScalarLogical(copySequences, 'copySequences');
-dash.assertScalarLogical(copyMeans, 'copyMeans');
-dash.assertScalarLogical(copyWeights, 'copyWeights');
-dash.assertScalarLogical(copyDesigns, 'copyDesigns');
-dash.assertScalarLogical(copyMetadata, 'copyMetadata');
+dash.assertScalarType(copySequences, 'copySequences', 'logical', 'logical');
+dash.assertScalarType(copyMeans, 'copyMeans', 'logical', 'logical');
+dash.assertScalarType(copyWeights, 'copyWeights', 'logical', 'logical');
+dash.assertScalarType(copyDesigns, 'copyDesigns', 'logical', 'logical');
+dash.assertScalarType(copyMetadata, 'copyMetadata', 'logical', 'logical');
 
 % Get the template variable
 var = obj.variables(t);

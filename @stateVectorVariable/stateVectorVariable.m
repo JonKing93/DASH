@@ -110,18 +110,13 @@ classdef stateVectorVariable
     methods
         [d, dims] = checkDimensions(obj, dims, allowMultiple);
         assertAddIndices(obj, indices, d, name);
+        grid = gridfile(obj);
         checkGrid(obj, grid);
         obj = trim(obj);
         meta = dimMetadata(obj, grid, dim);
         obj = matchIndices(obj, meta, grid, dim);
         addIndex = addIndices(obj, d);
         subMembers = removeOverlap(obj, subMembers, dims);
-    end
-    
-    % Static utilities
-    methods (Static)
-        [input, wasCell] = parseInputCell(input, nDims, name);
-        input = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name);
     end
     
     % Interface methods
@@ -141,7 +136,7 @@ classdef stateVectorVariable
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
         
-        X = buildEnsemble(obj, subMembers, dims, grid, sources);
+        X = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress);
     end
 end
         

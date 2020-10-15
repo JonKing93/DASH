@@ -12,7 +12,8 @@ function[obj] = remove(obj, varNames)
 %
 % obj: The updated stateVector object
 
-% Error check, variable index
+% Error check, variable index, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Remove each variable from the array

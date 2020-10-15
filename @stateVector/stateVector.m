@@ -50,7 +50,9 @@ classdef stateVector
         auto_Couple; % Whether to automatically couple a variable to new variables
         
         subMembers; % Subscripted ensemble members for each set of coupled variables
+        dims; % The order of dimensions of the subscripted ensemble members
         unused; % Unselected ensemble members for each set of coupled variables
+        editable; % Indicates whether the state vector can be edited
     end
     
     properties (Hidden, Constant)
@@ -101,15 +103,23 @@ classdef stateVector
             obj.auto_Couple = false(0,1);
             obj.coupled = false(0,0);
             obj.variables = [];
+            obj.subMembers = cell(0,1);
+            obj.dims = cell(0,1);
+            obj.unused = cell(0,1);
+            obj.editable = true;
         end
     end
     
     % Object utilities
     methods
+        limits = variableLimits(obj);
         [v, varNames] = checkVariables(obj, varNames);
+        assertEditable(obj);
         checkVariableNames(obj, newNames, v, inputName, methodName);
         str = errorTitle(obj);
-        obj = updateCoupledVariables(obj, t, v);
+        obj = updateCoupledVariables(obj, t, v);        
+        [grids, sources, f] = prebuildSources(obj);
+        [X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress);
     end
     
     % User interface methods with stateVectorVariable
@@ -124,8 +134,7 @@ classdef stateVector
         obj = resetMetadata(obj, varNames, dims);
         dims = dimensions(obj, varNames, type);
         [vectorInfo, varInfo] = info(obj, vars);
-        obj = renameVariables(obj, varNames, newNames);        
-        X = buildEnsemble(obj, nEns, random);
+        obj = renameVariables(obj, varNames, newNames);
     end
     
     % User methods
@@ -142,6 +151,8 @@ classdef stateVector
         obj = extract(obj, varNames);
         obj = copy(obj, templateName, varNames, varargin);
         varNames = variableNames(obj, v);
+        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
+        [X, meta, obj] = addMembers(obj, nAdd, showprogress);
     end
      
 end

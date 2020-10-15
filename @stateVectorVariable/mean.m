@@ -61,13 +61,13 @@ nDims = numel(d);
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
 
 % Default, parse, error check omitnan
 if ~exist('omitnan','var') || isempty(omitnan)
     omitnan = false;
 end
-omitnan = obj.parseLogicalString(omitnan, nDims, 'omitnan', 'nanflag', ["omitnan","includenan"], 1, 'NaN options');
+omitnan = dash.parseLogicalString(omitnan, nDims, 'omitnan', 'nanflag', ["omitnan","includenan"], 1, 'NaN options');
 
 % Ensemble dimensions. Require indices
 name = 'indices';

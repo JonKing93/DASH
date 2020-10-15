@@ -51,7 +51,7 @@ function[obj] = design(obj, dims, type, indices)
 nDims = numel(d);
 
 % Parse, error check the dimension type. Save
-isState = obj.parseLogicalString(type, nDims, 'isState', 'type', ...
+isState = dash.parseLogicalString(type, nDims, 'isState', 'type', ...
                    ["state","s","ensemble","ens","e"], 2, 'The dimension type');
 obj.isState(d) = isState;
                
@@ -59,7 +59,7 @@ obj.isState(d) = isState;
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-[indices, wasCell] = obj.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
 name = 'stateIndices';
 if ~wasCell && ~isState
     name = 'ensIndices';
@@ -98,20 +98,12 @@ for k = 1:nDims
             if obj.hasWeights(d(k)) && obj.meanSize(d(k))~=obj.stateSize(d(k))
                 weightsNumberError(obj, dims(k), obj.stateSize(d(k)), obj.meanSize(d(k)));
             end
-            obj.meanSize(d) = obj.stateSize(d);
-            obj.stateSize(d) = 1;
+            obj.meanSize(d(k)) = obj.stateSize(d(k));
+            obj.stateSize(d(k)) = 1;
         end
     
     % Ensemble dimension
     else
-        obj.indices{d(k)} = indices{k}(:);
-        obj.stateSize(d(k)) = 1;
-        obj.ensSize(d(k)) = numel(indices{k});
-
-        % Check for a conflict with metadata
-        if obj.hasMetadata(d(k)) && size(obj.metadata{d(k)},1)~=obj.ensSize(d(k))
-            metadataConflictError(obj, d);
-        end
         
         % If converting from state, initialize sequence properties and
         % check for meanIndices conflict
@@ -121,6 +113,16 @@ for k = 1:nDims
             if obj.takeMean(d(k))
                 ensMeanError(obj, dims(d(k)));
             end
+        end
+        
+        % Update the indices and sizes
+        obj.indices{d(k)} = indices{k}(:);
+        obj.stateSize(d(k)) = numel(obj.seqIndices{d(k)});
+        obj.ensSize(d(k)) = numel(indices{k});
+
+        % Check for a conflict with metadata
+        if obj.hasMetadata(d(k)) && size(obj.metadata{d(k)},1)~=obj.ensSize(d(k))
+            metadataConflictError(obj, d);
         end
     end
 end

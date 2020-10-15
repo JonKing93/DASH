@@ -14,11 +14,8 @@ function[obj] = append(obj, secondVector)
 % obj: A stateVector object for the concatenated state vectors.
 
 % Error check
-if ~isa(secondVector, 'stateVector')
-    error('secondVector must be a stateVector object');
-elseif ~isscalar(secondVector)
-    error('secondVector must be a scalar stateVector object.');
-end
+obj.assertEditable;
+dash.assertScalarType(secondVector, 'secondVector', 'stateVector', 'stateVector object');
 
 % Check there are no naming conflicts
 title2 = secondVector.errorTitle;

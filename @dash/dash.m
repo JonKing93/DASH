@@ -5,19 +5,27 @@ classdef dash
     methods (Static)
         
         % Misc
-        names = dimensionNames;
-        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+        [names, lon, lat, coord, lev, time, run, var]  = dimensionNames;
         convertToV7_3(filename);
-        X = permuteToOrder(X, order, nDims);
+        [X, order] = permuteDimensions(X, index, iscomplete, nDims);
+        tf = bothNaN(A, B);
+        s = loadMatfileFields(file, fields, extName);
+        
+        % Input parsing
+        varargout = parseInputs(inArgs, flags, defaults, nPrev);
+        [input, wasCell] = parseInputCell(input, nDims, name);
+        input = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name);
+        index = parseListIndices(input, strName, indexName, list, listName, lengthName, inputNumber, eltNames);
         
         % Structures
         [s, inputs] = preallocateStructs(fields, siz);
         values = collectField(s, field);
         
-        % File paths
+        % Files
         path = checkFileExists(file);  
         path = unixStylePath(path);
         path = relativePath(toFile, fromFolder);
+        filename = setupNewFile(filename, ext, overwrite);
         
         % Strings and string lists
         tf = isstrflag( input );        
@@ -28,7 +36,7 @@ classdef dash
         str = messageList(list);
         
         % Input assertions
-        assertScalarLogical(input, name);
+        assertScalarType(input, name, type, typeName);
         assertRealDefined(input, name, allowNaN, allowInf, allowComplex);
         assertVectorTypeN(input, type, N, name);
         assertPositiveIntegers(input, allowNaN, allowInf, name);

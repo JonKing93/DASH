@@ -1,6 +1,6 @@
 function[subMembers] = removeOverlap(obj, subMembers, dims)
 %% Updates a set of subscripted ensemble members to only include members
-% non-overlapping data.
+% with non-overlapping data.
 %
 % subMembers = obj.removeOverlap(subMembers, dims)
 % Removes any ensemble members with overlapping data from a set of

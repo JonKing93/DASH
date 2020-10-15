@@ -21,7 +21,8 @@ function[obj] = specifyMetadata(obj, varNames, dim, metadata)
 %
 % obj: The updated stateVectorVariable object
 
-% Error check, variable index
+% Error check, variable index, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Update the variables

@@ -62,7 +62,7 @@ if nDims>1 && isnumeric(weights)
     end
     
     % Permute to match internal order. Break into weightCell. Save
-    weights = dash.permuteToOrder(weights, d, numel(obj.dims));
+    weights = dash.permuteDimensions(weights, d, false, numel(obj.dims));
     for k = 1:nDims
         weightVector = sum(weights, d([1:k-1,k+1:end]));
         obj.weightCell{d(k)} = weightVector(:);
@@ -70,7 +70,7 @@ if nDims>1 && isnumeric(weights)
     
 % Parse and error check weightCell
 else
-    [weights, wasCell] = obj.parseInputCell(weights, nDims, 'weightCell');
+    [weights, wasCell] = dash.parseInputCell(weights, nDims, 'weightCell');
     name = 'weights';
 
     % If weights is empty, this is an unweighted mean

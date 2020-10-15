@@ -38,7 +38,8 @@ function[obj] = weightedMean(obj, varNames, dims, weights)
 %
 % obj: The updated stateVector object
 
-% Error check, variable index
+% Error check, variable index, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Update each variable

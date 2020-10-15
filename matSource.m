@@ -61,7 +61,7 @@ classdef matSource < dataSource
         function[X] = load( obj, indices )
             %% Loads data from a .mat data source.
             %
-            % X = obj.readSource(indices)
+            % X = obj.load(indices)
             %
             % ----- Inputs -----
             %

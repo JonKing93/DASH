@@ -19,7 +19,8 @@ function[obj] = autoCouple(obj, varNames, auto)
 %
 % obj: The updated stateVector object
 
-% Error check, variable indices
+% Error check, variable indices, editable
+obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Error check auto.

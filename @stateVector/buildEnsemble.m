@@ -1,217 +1,135 @@
-function[X] = buildEnsemble(obj, nEns, random)
+function[X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress)
 %% Builds a state vector ensemble.
-% 
-% X = obj.buildEnsemble(nEns)
-% Builds a state vector ensemble with a specified member of ensemble
-% members.
 %
-% X = obj.buildEnsemble(nEns, random)
-% Sepcfiy whether to select ensemble members at random, or sequentially.
-% Default is random selection.
+% [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, [], showprogress)
+% Builds a state vector ensemble and returns it as an array.
+%
+% [~, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress)
+% Builds a state vector ensemble and writes it to a .ens file.
 %
 % ----- Inputs -----
 %
-% nEns: The number of ensemble members
+% nEns: The number of ensemble members to build.
 %
-% random: Scalar logical. If true (default), selects ensemble members at
-%    random. If false, selects ensemble members sequentially.
+% grids: The set of unique gridfile objects needed to build the ensemble.
 %
+% sources: Pre-built data sources for each gridfile
+%
+% f: An index mapping each variable in the state vector to one of the sets
+%    of gridfiles and data sources
+%
+% ens: A matfile object for a .ens file.
+%
+% showprogress: Scalar logical indicating whether to display progress bar
+%    (true -- default), or not (false).
+% 
 % ----- Outputs -----
 %
-% X: The state vector ensemble. A numeric matrix. (nState x nEns)
+% X: The state vector ensemble. A numeric matrix (nState x nEns)
+%
+% meta: An ensembleMetadata object for the ensemble.
+%
+% obj: A stateVector object associated with the ensemble.
 
-%% Input error checks
-
-% Default
-if ~exist('random','var') || isempty(random)
-    random = true;
-end
-
-% Error check
-dash.assertScalarLogical(random);
-if ~isscalar(nEns) || ~isnumeric(nEns)
-    error('nEns must be a numeric scalar.');
-end
-dash.assertPositiveIntegers(nEns, 'nEns');
-
-
-%% All variables: check dimensions, gridfiles, index limits, trim
-% vf: Variable index associated with file
-% f: File index associated with variable
-% v: Index of variable in the state vector.
-
-% Get the .grid files associated with each variable.
-files = dash.collectField(obj.variables, 'file');
-files = string(files);
-
-% Find the unique gridfiles. Preallocate data sources, grids, and the limits
-% of each variable in the state vector
-[files, vf, f] = unique(files);
-nGrids = numel(files);
-nVars = numel(obj.variables);
-grids = cell(nGrids, 1);
-sources = cell(nGrids, 1);
-svLimit = zeros(nVars+1, 2);
-
-% Check that each variable has both state and ensemble dimensions
-for v = 1:nVars   
-    if ~any(obj.variables(v).isState)
-        badDimensionsError(obj.variables(v).name, true);
-    elseif ~any(~obj.variables(v).isState)
-        badDimensionsError(obj.variables(v).name, false);
-    end
-    
-    % Get the state vector index limits
-    svLimit(v+1, 1) = svLimit(v,2)+1;
-    svLimit(v+1, 2) = svLimit(v,2) + prod(obj.variables(v).stateSize);
-    
-    % Check that all gridfiles are valid. Pre-build the data sources
-    if ismember(v, vf)
-        try
-            grids{f(v)} = gridfile(obj.variables(v).file);
-        catch ME
-            badGridfileError(obj.variables(v), ME);
-        end        
-        sources{f(v)} = grids{f(v)}.review;
-    end
-    obj.variables(v).checkGrid(grids{f(v)});
-
-    
-    % Trim reference indices to only allow complete means and sequences.
-    obj.variables(v) = obj.variables(v).trim;
-end
-
-% Finish the state vector limits and preallocate the ensemble
-svLimit(1,:) = [];
-nState = svLimit(end, 2);
-X = NaN(nState, nEns);
-
-
-%% Coupled variables: match metadata, select ensemble members, remove overlap, build ensembles
-% s: The index for a set of coupled variables
-% v: The indices of variables in a set
-% dims: ensemble dimensions
-% d: Iterator for dims
-% k: Iterator for v
-
-% Get the sets of coupled variables. Initialize selected and unused
-% ensemble members.
+% Cycle through the sets of coupled variables to select ensemble members.
 sets = unique(obj.coupled, 'rows');
-nSets = size(sets, 1);
-obj.subMembers = cell(nSets, 1);
-obj.unused = cell(nSets, 1);
-
-% Get the ensemble dimensions associated with each set of coupled variables
-for s = 1:nSets
+for s = 1:size(sets,1)
     v = find(sets(s,:));
     var1 = obj.variables(v(1));
-    dims = var1.dims(~var1.isState);
-    
-    % Find metadata that is in all of the variables in the set.
-    for d = 1:numel(dims)
-        meta = var1.dimMetadata(grids{f(v(1))}, dims(d));
-        for k = 2:numel(v)
-            varMeta = obj.variables(v(k)).dimMetadata( grids{f(v(k))}, dims(d) );
-            try
-                meta = intersect(meta, varMeta, 'rows', 'stable');
-                
-            % Informative errors if there is no overlap or different formats
-            catch
-                incompatibleFormatsError(obj, v(1), v(k), dims(d));
-            end
-            if isempty(meta)
-                noMatchingMetadataError(obj.variableNames(v), dims(d));
-            end
-        end
-        
-        % Update the reference indices in each variable to match the metadata
-        for k = 1:numel(v)
-            obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids{f(v(k))}, dims(d));
-        end
-    end
-    
-    % ***Note: At this point, the reference indices in the coupled
-    % variables are in the same order. The first reference index in each
-    % variable points to the same metadata-1. The second reference index in
-    % each points to the same metadata-2, etc.
-    
+
     % Initialize a set of subscripted ensemble members
-    subMembers = NaN(nEns, numel(dims));
-    unused = (1:prod(obj.variables(v(1)).ensSize))';
-    nNeeded = nEns;
-    subIndexCell = cell(1, numel(dims));
+    nDims = numel(obj.dims{s});
+    subMembers = NaN(nEns, nDims);
+    subIndexCell = cell(1, nDims);
     siz = var1.ensSize(~var1.isState);
     
     % Select ensemble members and optionally remove overlapping members
     % until the ensemble is complete.
+    nNeeded = nEns;
+    unused = obj.unused{s};
     while nNeeded > 0
         if nNeeded > numel(unused)
-            notEnoughMembersError(obj.variableNames(v), obj.overlap(v));
+            notEnoughMembersError(obj.variableNames(v), obj.overlap(v), nEns);
         end
-        
-        % Select members randomly or in an ordered manner. Remove values
-        % from the unused members when selected
-        if random
-            unused = unused( randperm(numel(unused)) );
-        end
+
+        % Select members. Remove values from the unused members when selected
         members = unused(1:nNeeded);
-        unused(1:nNeeded) = [];
+        unused(1:nNeeded,:) = [];
 
         % Get the subscript indices of ensemble members
         [subIndexCell{:}] = ind2sub(siz, members);
         subMembers(nEns-nNeeded+1:nEns, :) = cell2mat(subIndexCell);
-        
+
         % Optionally remove ensemble members with overlapping data. Update
         % the number of ensemble members needed
         for k = 1:numel(v)
             if ~obj.overlap(v(k))
-                subMembers = obj.variables(v(k)).removeOverlap(subMembers, dims);
+                subMembers = obj.variables(v(k)).removeOverlap(subMembers, obj.dims{s});
             end
         end
         nNeeded = nEns - size(subMembers, 1);
     end
-    
-    % Record the selected and unused ensemble members
-    obj.subMembers{s} = subMembers;
+
+    % Update the subscripted ensemble members and unused members
+    obj.subMembers{s} = [obj.subMembers{s}; subMembers];
     obj.unused{s} = unused;
-    
-    % Build the ensemble for each variable
-    for k = 1:numel(v)
-        varIndices = svLimit(v(k),1) : svLimit(v(k),2);
-        X(varIndices, :) = obj.variables(v(k)).buildEnsemble( ...
-            subMembers, dims, grids{f(v(k))}, sources{f(v(k))} );
+end
+
+% Note if writing to file
+writeFile = false;
+if ~isempty(ens)
+    writeFile = true;
+end
+
+% Get sizes
+nVars = numel(obj.variables);
+varLimit = obj.variableLimits;
+nState = varLimit(end, 2);
+
+% Preallocate output array.
+X = [];
+if ~writeFile
+    try
+        X = NaN(nState, nEns);
+    catch
+        outputTooBigError();
     end
+    
+% Or preallocate space in the .ens file
+else
+    [~, nCols] = size(ens, 'X');
+    ens.X(nState, nCols+nEns) = NaN;
+    ens.hasnan(nVars, nCols+nEns) = false;
+end
+
+% Get the state vector rows and coupling set for each variable. Collect the
+% inputs for svv.buildEnsemble
+for v = 1:nVars
+    rows = varLimit(v,1):varLimit(v,2);
+    s = find( sets(:,v) );
+    inputs = {obj.subMembers{s}(end-nEns+1:end, :), obj.dims{s}, grids{f(v)},...
+        sources{f(v)}, [], [], showprogress};
+
+    % Build the ensemble for the variable. Get array or save to file
+    if writeFile
+        inputs(5:6) = {ens, rows};
+        ens.hasnan(v,nCols+(1:nEns)) = obj.variables(v).buildEnsemble( inputs{:} );
+    else
+        X(rows,:) = obj.variables(v).buildEnsemble( inputs{:} ); %#ok<AGROW>
+    end
+end
+
+% Ensemble metadata
+meta = ensembleMetadata(obj);
+if writeFile
+    ens.metadata = meta;
+    ens.stateVector = obj;
 end
 
 end
 
 % Long error messages
-function[] = badDimensionsError(name, noState)
-type = "ensemble";
-if noState
-    type = "state";
-end
-error(['Variable "%s" has no %s dimensions. See "stateVector.design" to ',...
-    'specify %s dimensions.'], name, type, type);
-end
-function[] = badGridfileError(var, ME)
-message = sprintf('Could not build the gridfile object for variable %s.', var.name);
-cause = MException('DASH:stateVector:invalidGridfile', message);
-ME = addCause(ME, cause);
-rethrow(ME);
-end
-function[] = incompatibleFormatsError(obj, v1, v, dim)
-error(['Coupled variables "%s" and "%s" use different metadata formats for ', ...
-    'the "%s" dimension.'], obj.variables(v1).name, obj.variables(v).name, dim);
-end
-function[] = noMatchingMetadataError(varNames, dim)
-error(['Cannot couple variables %s because they have no common metadata ', ...
-    'along the "%s" dimension. This can occur when metadata for different ',...
-    'variables are in different formats. If this is the case, consider using ',...
-    'either the "stateVector.specifyMetadata" or "stateVector.convertMetadata" ',...
-    'method.'], dash.messageList(varNames), dim);
-end
-function[] = notEnoughMembersError(varNames, overlap)
+function[] = notEnoughMembersError(varNames, overlap, nEns)
 if numel(varNames) == 1
     str1 = "non-overlapping";
     str3 = 'or allowing overlap';
@@ -235,4 +153,9 @@ else
 end
 error(['Cannot find %.f %s ensemble members for %s. Consider using fewer ', ...
     'ensemble members %s.'], nEns, str1, str2, str3);
+end
+function[] = outputTooBigError()
+error(['The state vector ensemble is too large to fit in active memory, so ',...
+    'cannot be provided directly as output. Consider saving the ensemble ',...
+    'to a .ens file instead.']);
 end
