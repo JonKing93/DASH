@@ -54,7 +54,7 @@ for s = 1:size(sets,1)
 
         % Select members. Remove values from the unused members when selected
         members = unused(1:nNeeded);
-        unused(1:nNeeded) = [];
+        unused(1:nNeeded,:) = [];
 
         % Get the subscript indices of ensemble members
         [subIndexCell{:}] = ind2sub(siz, members);
@@ -122,7 +122,7 @@ end
 % Ensemble metadata
 meta = ensembleMetadata(obj);
 if writeFile
-    ens.meta = meta;
+    ens.metadata = meta;
     ens.stateVector = obj;
 end
 

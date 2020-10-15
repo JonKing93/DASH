@@ -15,9 +15,9 @@ function[s] = info(obj)
 obj.update;
 
 % Get info about the file data and loaded data
-[nState, nEns] = obj.meta.size;
+[nState, nEns] = obj.metadata.sizes;
 [members, v] = obj.loadSettings;
-nStateLoad = sum(obj.meta.size(v));
+nStateLoad = sum(obj.metadata.sizes(v));
 nEnsLoad = numel(members);
 
 % Print to console if no outputs
@@ -26,7 +26,7 @@ if nargout==0
     fprintf('This ensemble object manages data in file "%s".\n', obj.file);
     fprintf('The data in the file has a state vector length of %.f and %.f ensemble members.\n', nState, nEns);
     
-    if isequal(v(:), (1:numel(obj.meta.variableNames))')
+    if isequal(v(:), (1:numel(obj.metadata.variableNames))')
         fprintf('This ensemble object will load data for all variables.\n');
     else
         fprintf('This object will load data for variables: %s.\n', dash.messageList(obj.variables));
@@ -36,7 +36,7 @@ if nargout==0
 % Otherwise, return a structure
 else
     s = struct('file', obj.file, 'sizeInFile', [nState, nEns], ...
-        'loadVariables', obj.variables, 'loadMembers', members, 'sizeOnLoad', [nStateLoad, nEnsLoad]);
+        'loadVariables', obj.metadata.variableNames(v), 'loadMembers', members, 'sizeOnLoad', [nStateLoad, nEnsLoad]);
 end
 
 end

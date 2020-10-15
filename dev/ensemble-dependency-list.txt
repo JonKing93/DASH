@@ -36,3 +36,9 @@ useVariables
     stateVector.checkVariables
 variableNames
     update
+info
+    update
+    ensembleMetadata.sizes
+    loadSettings
+    ensembleMetadata.variableNames
+    dash.messageList

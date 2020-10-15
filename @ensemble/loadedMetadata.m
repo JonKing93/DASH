@@ -32,7 +32,7 @@ function[meta] = loadedMetadata(obj, varNames, members)
 % meta: The ensembleMetadata object for the specified set of loaded data.
 
 % Defaults for variables
-vars = obj.meta.variableNames;
+vars = obj.metadata.variableNames;
 if nargin==1
     [m, v] = obj.loadSettings;
 elseif isempty(varNames)
@@ -45,7 +45,7 @@ else
 end
 
 % Defaults for members
-[~, nEns] = obj.meta.sizes;
+[~, nEns] = obj.metadata.sizes;
 if nargin==2 || (nargin==3 && isempty(members))
     m = 1:nEns;
 elseif nargin==3
@@ -53,7 +53,7 @@ elseif nargin==3
 end
 
 % Build the ensembleMetadata object
-meta = obj.meta.extract( vars(v) );
+meta = obj.metadata.extract( vars(v) );
 meta = meta.extractMembers(m);
 
 end

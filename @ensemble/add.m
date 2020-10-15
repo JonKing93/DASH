@@ -29,11 +29,11 @@ if ~isscalar(nAdd)
     error('nAdd must be a scalar.');
 end
 dash.assertPositiveIntegers(nAdd, 'nAdd');
-dash.assertScalarLogical(showprogress, 'showprogress');
+dash.assertScalarType(showprogress, 'showprogress','logical','logical');
 
 % Build the matfile, update matfile properties. Pre-build gridfiles and
 % data sources
-ens = obj.buildMatfile;
+ens = obj.buildMatfile(true);
 obj = obj.update(ens);
 [grids, sources, f] = obj.stateVector.prebuildSources;
 
@@ -47,7 +47,7 @@ catch ME
     [~, nCols] = size(ens, 'X');
     ens.X(:,nPrevious+1:nCols) = [];
     ens.hasnan(:,nPrevious+1:nCols) = [];
-    ens.meta = obj.meta;
+    ens.meta = obj.metadata;
     ens.stateVector = obj.sv;
     rethrow(ME);
 end

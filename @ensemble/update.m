@@ -12,7 +12,7 @@ function[obj] = update(obj, ens)
 % obj: The updated ensemble object
 
 % If no matfile object is provided, load data into a structure
-fields = ["hasnan","meta","stateVector"];
+fields = ["hasnan","metadata","stateVector"];
 if ~exist('ens','var') || isempty(ens)
     ens = dash.loadMatfileFields(obj.file, fields, '.ens');
 end

@@ -26,10 +26,10 @@ blocks = [1, skips+1; skips, nVars]';
 nBlocks = numel(skips)+1;
 
 % Get the limits of loaded variables in the state vector
-nEls = obj.meta.sizes(v);
+nEls = obj.metadata.sizes(v);
 varEnd = cumsum(nEls)';
 varLimit = [1, varEnd(1:end-1)+1; varEnd]';
-fileMeta = ens.meta;
+fileMeta = ens.metadata;
 
 % Preallocate the ensemble
 nState = varLimit(end);
@@ -42,7 +42,7 @@ loadCols = dash.equallySpacedIndices(members);
 keep = ismember(loadCols, members);
 
 % Get the rows for each block of contiguous variables
-vars = obj.meta.variableNames(v);
+vars = obj.metadata.variableNames(v);
 for k = 1:nBlocks
     limitVars = vars(blocks(k,:));    
     loadRows = fileMeta.findRows(limitVars(1),1) : fileMeta.findRows(limitVars(2), nEls(blocks(k,2)));    

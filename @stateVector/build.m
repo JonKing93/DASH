@@ -171,8 +171,8 @@ end
 
 % Build the ensemble
 try
-    [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress);
     obj.editable = false;
+    [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress);
     
 % Deleted any failed .ens files before throwing errors
 catch ME

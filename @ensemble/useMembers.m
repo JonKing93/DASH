@@ -19,7 +19,7 @@ function[obj] = useMembers(obj, members)
 
 % Update. Error check the ensemble members. Save
 obj = obj.update;
-[~, nEns] = obj.meta.sizes;
+[~, nEns] = obj.metadata.sizes;
 members = dash.checkIndices(members, 'members', nEns, 'the number of ensemble members');
 obj.members = members(:);
 

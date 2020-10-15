@@ -14,16 +14,16 @@ function[members, v] = loadSettings(obj)
 % Defaults if unspecified
 members = obj.members;
 if isempty(members)
-    members = 1:obj.meta.nEns;
+    members = 1:obj.metadata.nEns;
 end
 
 variables = obj.variables;
 if isempty(variables)
-    variables = obj.meta.variableNames;
+    variables = obj.metadata.variableNames;
 end
 
 % Check the variables are still consistent with the .ens file
-filevars = obj.meta.variableNames;
+filevars = obj.metadata.variableNames;
 [infile, v] = ismember(variables, filevars);
 if any(~infile)
     bad = find(~infile, 1);
@@ -31,7 +31,7 @@ if any(~infile)
 end
 
 % Check the ensemble members are still consistent
-[~, nEns] = obj.meta.sizes;
+[~, nEns] = obj.metadata.sizes;
 if max(members) > nEns
     notEnoughMembersError(max(members), nEns, obj.file);
 end

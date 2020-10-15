@@ -94,12 +94,17 @@ meta = obj.metadata.(varName).state;
 siz = size(V);
 gridSize = obj.stateSize{v};
 
-% Remove singleton dimensions
+% Remove singleton dimensions, but retain at least one dimension
 if ~keepSingletons
     remove = find( gridSize==1 & ~ismember(dims, userDims) );
-    gridSize(remove) = [];
+    if numel(remove) == numel(gridSize)
+        remove = remove(2:end);
+    end
+    
+    % Remove singletons
     meta = rmfield(meta, dims(remove));
     nDims = nDims - numel(remove);
+    gridSize(remove) = [];
     
     % Update permutation order for removed singletons
     if isempty(userDims)

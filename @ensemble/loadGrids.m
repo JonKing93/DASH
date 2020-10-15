@@ -30,7 +30,7 @@ s = struct();
 vars = meta.variableNames;
 for v = 1:numel(vars)
     [Xv, gridMeta] = meta.regrid(X, vars(v));
-    members = obj.meta.variable(vars(v), [], false);    
+    members = meta.variable(vars(v), [], false);    
     s.(vars(v)) = struct('data', Xv, 'gridMetadata', gridMeta, 'members', members);
 end
     
