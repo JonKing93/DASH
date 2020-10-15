@@ -28,10 +28,13 @@ if obj.nEns ~= meta2.nEns
 end
 
 % Append fields
-fields = ["variableNames","varLimit","nEls","dims","stateSize","isState"];
+fields = ["variableNames","nEls","dims","stateSize","isState","meanSize"];
 for f = 1:numel(fields)
     obj.(fields(f)) = [obj.(fields(f)); meta2.(fields(f))];
 end
+
+% Append and update variable limits
+obj.varLimit = [obj.varLimit; obj.varLimit(end)+meta2.varLimit];
 
 % Append metadata
 for v = 1:numel(meta2.variableNames)

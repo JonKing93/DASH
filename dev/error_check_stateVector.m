@@ -18,7 +18,7 @@ time = datetime(850,1,15):calmonths(1):datetime(1849,12,15);
 sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
-X = sv.buildEnsemble(15, false);
+X = sv.build(15, false);
 
 A = T(:,lat>0, 6:12:174);
 A = reshape(A, size(X));
@@ -31,7 +31,7 @@ fprintf('Reference/state indices correct\n');
 % Coupling
 sv = sv.add('T2', 'tref-lme.grid');
 sv = sv.copy('T', 'T2');
-X = sv.buildEnsemble(15);
+X = sv.build(15);
 
 half = size(A,1);
 if ~isequal( X(1:half,:), X(half+1:end,:))
@@ -41,7 +41,7 @@ fprintf('Coupled variables\n');
 
 % Uncoupling
 sv = sv.uncouple(["T","T2"]);
-X = sv.buildEnsemble(15);
+X = sv.build(15);
 if isequal(X(1:half,:), X(half+1:end,:))
     error('bad');
 end
@@ -52,7 +52,7 @@ sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.sequence('T','time', [0 1 2], ["June";"July";"August"]);
-X = sv.buildEnsemble(15, false);
+X = sv.build(15, false);
 
 A = T(:, lat>0, ismember(month(time), [6 7 8]));
 A = A(:,:,1:15*3);
@@ -68,7 +68,7 @@ sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.sequence('T', 'time', [0 12 24], [1;2;3]);
-X = sv.buildEnsemble(15, false);
+X = sv.build(15, false);
 
 A = T(:,lat>0, 6:12:534);
 A = reshape(A, size(X));
@@ -83,7 +83,7 @@ sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.sequence('T', 'time', [0 12 24], [1;2;3]);
 sv = sv.allowOverlap('T', true);
-X = sv.buildEnsemble(15, false);
+X = sv.build(15, false);
 
 A = NaN(size(X));
 for k = 1:15
@@ -102,7 +102,7 @@ sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.mean('T',["lat","lon","time"], {[],[],[0 1 2]});
-X = sv.buildEnsemble(15, false);
+X = sv.build(15, false);
 
 A = T(:, lat>0, ismember(month(time), [6 7 8]));
 A = A(:,:,1:15*3);
@@ -119,7 +119,7 @@ sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.sequence('T',"time", [0 12 24], ["June","July","August"]);
 sv = sv.mean('T',["lat","lon","time"], {[],[],[0 1 2]});
-X = sv.buildEnsemble(15,false);
+X = sv.build(15,false);
 
 A = T(:,lat>0, ismember(month(time), [6 7 8]));
 A = A(:,:,1:45*3);
@@ -138,7 +138,7 @@ sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
 sv = sv.weightedMean('T', ["lat", "lon"], {cosd(lat(lat>0)), []});
-X = sv.buildEnsemble(15);
+X = sv.build(15);
 
 A = T(:,lat>0, 6:12:174);
 w = cosd(lat(lat>0))';
@@ -154,7 +154,7 @@ fprintf('Took weighted mean using cell\n');
 % Weighted mean with array
 w = repmat(w, [144, 1]);
 sv = sv.weightedMean('T', ["lon","lat"], w);
-X = sv.buildEnsemble(15);
+X = sv.build(15);
 
 if isequal(round(A,12), round(X,12))
     error('bad');

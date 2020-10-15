@@ -22,6 +22,7 @@ obj.nEls(v) = [];
 obj.dims(v) = [];
 obj.stateSize(v) = [];
 obj.isState(v) = [];
+obj.meanSize(v) = [];
 obj.metadata = rmfield(obj.metadata, varNames);
 
 % Update variable limits

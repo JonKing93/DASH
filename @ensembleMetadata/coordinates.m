@@ -42,14 +42,14 @@ if ~exist('verbose','var') || isempty(verbose)
 else
     dash.assertScalarType(verbose, 'verbose', 'logical', 'logical');
 end
+notified = false;
 
-% Get the dimension names and variables. Preallocate the coordinates
+% Get the dimension names and variables. Preallocate the coordinates.
 [~, lonName, latName, coordName] = dash.dimensionNames;
 latlon = NaN(obj.varLimit(end), 2);
 
 % Get state metadata for the variable
 for v = 1:numel(obj.nEls)
-    nEls = obj.nEls(v);
     var = obj.variableNames(v);
     meta = obj.metadata.(var).state;
     
@@ -57,7 +57,7 @@ for v = 1:numel(obj.nEls)
     hasdim = false(1, 3); % lat, lon, coord
     dims = [lonName, latName, coordName];
     for d = 1:3
-        if ismember(dims(d), obj.dims{v}) && size(meta.(dims(d)),1) == nEls
+        if ismember(dims(d), obj.dims{v}) && (~isscalar(meta.(dims(d))) || ~isnan(meta.(dims(d))))
             hasdim(d) = true;
         end
     end
@@ -68,6 +68,7 @@ for v = 1:numel(obj.nEls)
         hasdata = false;
         if verbose
             bothMetadataTypesWarning(var, dims(find(hasdim,1)), coordName);
+            notified = true;
         end
     
     % Notify if there is lat, but not lon, or vice versa
@@ -75,6 +76,7 @@ for v = 1:numel(obj.nEls)
         hasdata = false;
         if verbose
             missingHalfWarning(var, dims(find(hasdim,1)), dims(find(~hasdim,1)));
+            notified = true;
         end
         
     % Notify if there is no metadata
@@ -82,23 +84,24 @@ for v = 1:numel(obj.nEls)
         hasdata = false;
         if verbose
             missingAllWarning(var, dims);
+            notified = true;
         end
     end
     
     % Get lat-lon metadata. Check formatting and spatial means.
     if hasdata && ~hasdim(3)
-        latMeta = obj.variable(var, dims(1), true);
-        hasdata = checkMetadata(latMeta, 1, var, dims(1), verbose);
+        latMeta = obj.variable(var, dims(2), true);
+        [hasdata, notified] = checkMetadata(latMeta, 1, var, dims(2), verbose, notified);
         if hasdata
-            lonMeta = obj.variable(var, dims(2), true);
-            hasdata = checkMetadata(lonMeta, 1, var, dims(1), verbose);
+            lonMeta = obj.variable(var, dims(1), true);
+            [hasdata, notified] = checkMetadata(lonMeta, 1, var, dims(1), verbose, notified);
+            varCoords = [latMeta, lonMeta];
         end
-        varCoords = [latMeta, lonMeta];
         
     % Otherwise, get coordinate metadata. Check format and spatial mean
     elseif hasdata
         coordMeta = obj.variable(var, dims(3), true);
-        hasdata = checkMetadata(coordMeta, 2, var, dims(3), verbose);
+        [hasdata, notified] = checkMetadata(coordMeta, 2, var, dims(3), verbose, notified);
         
         % Attempt to determine which column is lat and which is lon
         if hasdata
@@ -108,6 +111,7 @@ for v = 1:numel(obj.nEls)
             if all(over90) || all(~over90)
                 if verbose
                     notifyDefaultColumn(var, dims(3));
+                    notified = true;
                 end
                 
             % Otherwise, set columns and notify
@@ -117,6 +121,7 @@ for v = 1:numel(obj.nEls)
                 varCoords = coordMeta(:, [latcol, loncol]);
                 if verbose
                     notifySelectedColumn(var, dims(3), latcol, loncol);
+                    notified = true;
                 end
             end
         end
@@ -129,26 +134,34 @@ for v = 1:numel(obj.nEls)
     end    
 end
 
+% Format the console after messages
+if notified
+    fprintf('\n');
+end
+
 end
 
 % Helper function to support DRY code
-function[hasdata] = checkMetadata(meta, nCols, var, dim, verbose)
+function[hasdata, notified] = checkMetadata(meta, nCols, var, dim, verbose, notified)
            
 % Check numeric with correct columns
+hasdata = true;
 if ~isnumeric(meta) || size(meta,2)~=nCols
     hasdata = false;
     if verbose
-        fprintf(['\nThe metadata for the "%s" dimension of variable "%s" ',...
-            'is not a numeric matrix with %.f column(s). Using NaN ',...
-            'coordinates for "%s".\n'], dim, var, nCols, var);
+        fprintf(['\nUsing NaN coordinates for "%s" because the metadata for ',...
+            'the "%s" dimension is not a numeric marix with %.f column(s).'],...
+            var, dim, nCols);
+        notified = true;
     end
     
 % Check for spatial mean
 elseif size(meta,3)~=1
     hasdata = false;
     if verbose
-        fprintf(['\nVariable "%s" takes a spatial mean over the "%s" ',...
-            'dimension. Using NaN coordinates for "%s".\n'], var, dim, var);
+        fprintf(['\nUsing NaN coordinates for "%s" because it takes a spatial ',...
+            'mean over the "%s" dimension.'], var, dim);
+        notified = true;
     end
 end
 
@@ -156,22 +169,21 @@ end
 
 % Long warnings
 function[] = bothMetadataTypesWarning(var, dim1, dim2)
-fprintf(['\nThe "%s" variable has metadata for both the "%s" and "%s" ',...
-    'dimensions. Using NaN coordinates for "%s".\n'], var, dim1, dim2, var);
+fprintf(['\nUsing NaN coordinates for "%s" because it has metadata for both ',...
+    'the "%s" and "%s" dimensions.'], var, dim1, dim2);
 end
 function[] = missingHalfWarning(var, dim1, dim2)
-fprintf(['\nThe "%s" variable has metadata for the "%s" dimension, but not ',...
-    'the "%s" dimension. Using NaN coordinates for "%s".\n'], var, dim1, dim2, var);
+fprintf(['\nUsing NaN coordinates for "%s" because it has metadata for the ',...
+    '"%s" dimension, but not the "%s" dimension.'], var, dim1, dim2);
 end
 function[] = missingAllWarning(var, dims)
-fprintf(['\nThe "%s" variable does not have metadata for any of the "%s", ',...
-    '"%s", or "%s" dimensions. Using NaN coordinates for "%s".\n'], ...
-    var, dims(1), dims(2), dims(3) );
+fprintf(['\nUsing NaN coordinates for "%s" because it does not have metadata ',...
+    'for any of the "%s", "%s", or "%s" dimensions.'], var, dims(1), dims(2), dims(3));
 end
 function[] = notifyDefaultColumn(var, dim)
 fprintf('\nCould not determine which column of the "%s" metadata for ',...
     'variable "%s" is for latitude, and which column is for longitude.',...
-    'Using the first column as latitude coordinates.\n', dim, var);
+    'Using the first column as latitude coordinates.', dim, var);
 end
 function[] = notifySelectedColumn(var, dim, latcol, loncol)
 fprintf(['\nFor the "%s" metadata of variable "%s": Using column %.f for ',...

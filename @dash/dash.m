@@ -5,7 +5,7 @@ classdef dash
     methods (Static)
         
         % Misc
-        names = dimensionNames;
+        [names, lon, lat, coord, lev, time, run, var]  = dimensionNames;
         convertToV7_3(filename);
         [X, order] = permuteDimensions(X, index, iscomplete, nDims);
         tf = bothNaN(A, B);

@@ -46,7 +46,8 @@ hasdim = false(nVars, 1);
 % Note if each variable has the dimension. Get state metadata if so
 metaCell = cell(nVars,1);
 for v = 1:nVars
-    if ismember(dim, obj.dims{v})
+    [ismem, d] = ismember(dim, obj.dims{v});
+    if ismem && (obj.isState{v}(d) || obj.stateSize{v}(d)>1)
         metaCell{v} = obj.variable(obj.variableNames(v), dim, 'state');
         hasdim(v) = true;
 
@@ -93,7 +94,7 @@ try
         end
 
         % Construct the complete metadata array
-        meta = cat(1, metaCell{hasdim});
+        meta = cat(1, metaCell{:});
     end
 
 % If the concatenations were unsuccessful (or not desired), return as a structure

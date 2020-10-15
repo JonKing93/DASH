@@ -33,7 +33,7 @@ v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the
 % Parse secondary inputs
 if ~exist('varRows','var') || isempty(varRows) || isequal(varRows, 'all')
     varRows = 1:obj.nEls(v);
-elseif isequal('varRows','end')
+elseif isequal(varRows,'end') || isequal(varRows, "end")
     varRows = obj.nEls(v);
 else
     name = sprintf('the number of state vector elements for variable "%s"', varName);
