@@ -1,7 +1,7 @@
 % This does an error check of the ensembleMetadata class
 grid = gridfile('tref-lme.grid');
 grid2 = gridfile('psl-lme.grid');
-els = [4 19 28 37, 85, 200];
+els = [4 19 28 37, 85];
 
 sv = stateVector('test');
 sv = sv.add('T','tref-lme.grid');
@@ -123,14 +123,17 @@ if ~isequaln(time.P, NaN(numel(long2),1))
 end
 fprintf('Collected empty dimension\n');
 
+long1 = repmat(long1(:), [3 1]);
+latg1 = repmat(latg1(:), [3 1]);
+
 time = em.dimension('time');
-if any(~strcmp(time(numel(long1)*3+1:end), ""))
+if any(~strcmp(time(numel(long1)+1:end), ""))
     error('bad');
 end
 fprintf('Infilled strings\n');
 
 coord = em.dimension('coord');
-if ~isequaln( coord(1:numel(long1)*3+1,:), NaN(numel(long1)*3+1,2))
+if ~isequaln( coord(1:numel(long1)+1,:), NaN(numel(long1)+1,2))
     error('bad');
 end
 fprintf('Infilled columns\n');
