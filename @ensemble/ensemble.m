@@ -62,9 +62,10 @@ classdef ensemble
             obj.members = [];
             obj.variables = [];
 
-            % Name
+            % Update name (error checking via ensembleMetadata)
             if exist('name','var')
-                obj.name = dash.assertStrFlag(name,'name');
+                obj.metadata = obj.metadata.rename(name);
+                obj.name = name;
             end
         end
     end
