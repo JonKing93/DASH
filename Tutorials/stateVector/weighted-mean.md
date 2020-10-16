@@ -56,4 +56,4 @@ weights should be a 144 x 96 matrix.
 
 Whenever you use the ["resetMeans" method](mean#optional-reset-mean-options), all weights are deleted for the specified dimensions.
 
-[Previous](mean)---[Next](build-ensemble)
+[Previous](mean)---[Next](build)
