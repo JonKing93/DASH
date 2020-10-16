@@ -17,7 +17,7 @@ Here, varNames is a string vector.
 
 #### Ensemble Metadata
 
-You can use the "metadata" command to return an ensembleMetadata object for the ensemble stored in a .ens file:
+You can use the "metadata" command to return an [ensembleMetadata](../ensembleMetadata/welcome) object for the ensemble stored in a .ens file:
 ```matlab
 meta = ens.metadata;
 ```
@@ -62,4 +62,4 @@ s = ens.info;
 ```
 to return the summary as a structure.
 
-[Previous](subset)---[Next]()
+[Previous](subset)---[Next](add)
