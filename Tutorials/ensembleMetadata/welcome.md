@@ -7,7 +7,7 @@ title: Welcome!
 
 This tutorial provides a guide for working efficiently with state vector ensembles using the "ensemble" and "ensembleMetadata" classes. If you'd like to work through the tutorial offline, or in the MATLAB console, you can download it <a href="ensemble-tutorial.zip" download>here</a> or from the [tutorials branch](https://github.com/JonKing93/DASH/tree/Tutorials) on Github.
 
-If you're already familiar with the ensemble and ensembleMetadata classes and just want a refresher, or if you're in a urry, you may be interested in the ensemble [quickstart](quickstart).
+If you're already familiar with the ensemble and ensembleMetadata classes and just want a refresher, or if you're in a hurry, you may be interested in the ensemble [quickstart](quickstart).
 
 <br>
 ### Prerequisites
