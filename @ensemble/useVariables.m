@@ -18,8 +18,13 @@ function[obj] = useVariables(obj, varNames)
 
 % Check variables. Update. Save
 obj = obj.update;
-obj.stateVector.checkVariables(varNames);
-varNames = string(varNames);
-obj.variables = unique(varNames(:));
+if ~exist('varNames','var') || isempty(varNames)
+    varNames = [];
+else
+    obj.stateVector.checkVariables(varNames);
+    varNames = string(varNames);
+    varNames = unique(varNames(:));
+end
+obj.variables = varNames;
 
 end
