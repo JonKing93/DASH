@@ -14,7 +14,7 @@ The two outputs are the state vector ensemble matrix (X), and an ensembleMetadat
 # Load gridded climate variables
 
 You can also use the "loadGrids" command to load gridded climate variables instead of state vectors.
-```
+```matlab
 s = ens.loadGrids
 ```
 Here, "s" is a structure that contains gridded climate variables and metadata. The fields of "s" will be the names of the loaded climate variables. The field for each variable is also a structure; each contains three fields:
