@@ -261,8 +261,8 @@ classdef (Abstract) dataSource
             %    additive constant (b).
             
             % Check the type is allowed
-            if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat"])
-                error('type must be either the string "nc" or "mat".');
+            if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat","opendap"])
+                error('type must be one of the strings "nc", "mat", or "opendap".');
             end
             
             % Set defaults for optional values
@@ -279,10 +279,13 @@ classdef (Abstract) dataSource
             % Create the subclass dataSource object. This will error check
             % file, var, and dims and get the size of the raw unmerged data
             % in the source.
+            inputs = {file, var, dims, fill, range, convert};
             if strcmp(type,'nc')
-                source = ncSource(file, var, dims, fill, range, convert);
+                source = ncSource(inputs{:});
             elseif strcmp(type, 'mat')
-                source = matSource(file, var, dims, fill, range, convert);
+                source = matSource(inputs{:});
+            elseif strcmp(type, 'opendap')
+                source = opendapSource(inputs{:});
             end
             
             % Check that the subclass constructor set all fields for which
