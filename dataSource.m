@@ -102,7 +102,7 @@ classdef (Abstract) dataSource
                 error('File %s does not contain a %s variable.', obj.file, obj.var);
             end    
         end  
-        function[X] = read( obj, mergedIndices )
+        function[X, obj] = read( obj, mergedIndices )
         %% Reads values from a data source.
         %
         % X = obj.read( mergedIndices )
@@ -156,7 +156,7 @@ classdef (Abstract) dataSource
             end
 
             % Load the values from the data source
-            X = obj.load( loadIndices );
+            [X, obj] = obj.load( loadIndices );
 
             % Track which dimensions become singletons via merging
             remove = NaN(1, nUnmerged-nMerged);
@@ -320,7 +320,7 @@ classdef (Abstract) dataSource
     
     % Subclasses must load values from data source files
     methods (Abstract)
-        X = load(obj, indices);
+        [X, obj] = load(obj, indices);
     end
     
 end

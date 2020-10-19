@@ -42,7 +42,7 @@ classdef ncSource < dataSource
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
         end        
-        function[X] = load(obj, indices)
+        function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF data source.
             %
             % X = obj.load(indices)
@@ -62,7 +62,7 @@ classdef ncSource < dataSource
             start = NaN(1, obj.nDims);
             count = NaN(1, obj.nDims);
             stride = ones(1, obj.nDims);
-            
+
             % Convert indices to start, count, stride syntax
             for d = 1:numel(indices)
                 start(d) = indices{d}(1);
