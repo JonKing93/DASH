@@ -236,6 +236,7 @@ classdef (Abstract) dataSource
             % type: The type of data source. A string. 
             %    "nc": Use when the data source is a NetCDF file.
             %    "mat": Use when the data source is a .mat file.
+            %    "opendap": Use when the data source is an OPeNDAP NetCDF
             %
             % file: The name of the data source file. A string. If only the file name is
             %    specified, the file must be on the active path. Use the full file name

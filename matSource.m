@@ -53,12 +53,12 @@ classdef matSource < dataSource
             try
                 obj.m.(obj.var)(firstIndex{:});
             catch
-                warning('File %s is not a version 7.3 .mat file. Version 7.3 is STRONGLY recommended for use with dash. Consider saving .mat files with the ''-v7.3'' flag or use dash.convertToV7_3 to convert existing .mat files to a v7.3 format. For more details, see the Matlab documention on "save" and "MAT-File versions".', obj.file);
+                warning('File %s is not a version 7.3 .mat file. Version 7.3 is STRONGLY recommended for use with DASH. Consider saving .mat files with the ''-v7.3'' flag or use dash.convertToV7_3 to convert existing .mat files to a v7.3 format. For more details, see the Matlab documention on "save" and "MAT-File versions".', obj.file);
             end
             warning( warn.state, obj.warnID );  
             
         end        
-        function[X] = load( obj, indices )
+        function[X, obj] = load( obj, indices )
             %% Loads data from a .mat data source.
             %
             % X = obj.load(indices)
