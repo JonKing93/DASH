@@ -1,17 +1,35 @@
 function[] = staticEnsrf(M, D, R, Y, Q, returnMean, returnDevs)
 %% Implements an ensemble square root Kalman Filter for time steps with a
 % static prior.
+%
+% ----- Inputs -----
+%
+% M: A model ensemble. (nState x nEns)
+%
+% D: Observations. (nSite x nTime)
+%
+% R: Observation uncertainties. (nSite x nTime)
+%
+% Y: Model estimates of observations. (nSite x nEns)
+%
+% Q: Calculations that require ensemble deviations
+%
+% returnMean: Scalar logical. Whether to return the updated ensemble mean.
+%
+% returnDevs: Scalar logical. Whether to return the updated ensemble deviations.
 
-% Preallocate
+% Sizes
 [nObs, nTime] = size(D);
 [nState, nEns] = size(M);
 
-calibRatio = NaN(nObs, nTime);
+% Preallocate
+out = struct();
+out.calibRatio = NaN(nObs, nTime);
 if returnMean
-    Amean = NaN(nState, 1, nTime);
+    out.Amean = NaN(nState, 1, nTime);
 end
 if returnDevs
-    Adev = NaN(nState, nEns, nTime);
+    out.Adev = NaN(nState, nEns, nTime);
 end
 
 % Decompose the ensembles
@@ -19,7 +37,7 @@ end
 [Ymean, Ydev] = decompose(Y);
 
 % Get the covariance estimates
-[Knum, Ycov] = ensrfCovariance( Mdev, Ydev, args );
+[Knum, Ycov] = covarianceEstimate;
 
 % Get the sets of time steps with the same Kalman Gain. (Those with the
 % same observation sites and R values)
@@ -38,10 +56,10 @@ for k = 1:numel(iA)
     
     % Save output
     out.calibRatio(:,t) = calibRatio;
-    if calculateMean
+    if returnMean
         out.Amean(:,1,t) = permute(Amean, [1 3 2]);
     end
-    if calculateDevs
+    if returnDevs
         out.Adev(:,:,t) = Adev;
     end
     
