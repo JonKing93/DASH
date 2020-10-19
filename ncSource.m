@@ -3,6 +3,9 @@ classdef ncSource < dataSource
     
     properties
         nDims; % The number of defined dimensions for the variable in the netCDF
+        X; % The loaded dataset
+        attemptFullLoad; % Whether to try to load the complete dataset
+        saved; % Whether the complete dataset is saved
     end
     
     methods
@@ -41,6 +44,10 @@ classdef ncSource < dataSource
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
+            
+            % Track status of loading the entire dataset
+            obj.attemptFullLoad = true;
+            obj.saved = false;
         end        
         function[X] = load(obj, indices)
             %% Loads data from a netCDF data source.
@@ -58,22 +65,38 @@ classdef ncSource < dataSource
             %
             % X: The data located at the requested indices.
             
-            % Preallocate
-            start = NaN(1, obj.nDims);
-            count = NaN(1, obj.nDims);
-            stride = ones(1, obj.nDims);
-            
-            % Convert indices to start, count, stride syntax
-            for d = 1:numel(indices)
-                start(d) = indices{d}(1);
-                count(d) = numel(indices{d});
-                if numel(indices{d})>1
-                    stride(d) = indices{d}(2) - indices{d}(1);
+            % Attempt to load the entire dataset
+            if obj.attemptFullLoad
+                try
+                    obj.X = ncread(obj.file, obj.var);
+                    obj.saved = true;
+                catch
                 end
+                obj.attemptFullLoad = false;
             end
             
-            % Load the data
-            X = ncread( obj.file, obj.var, start, count, stride ); 
+            % If the dataset is saved, load values directly
+            if obj.saved
+                X = obj.X(indices{:});
+                
+            % Otherwise, using ncread. Preallocate start/count/stride syntax
+            else
+                start = NaN(1, obj.nDims);
+                count = NaN(1, obj.nDims);
+                stride = ones(1, obj.nDims);
+
+                % Convert indices to start, count, stride syntax
+                for d = 1:numel(indices)
+                    start(d) = indices{d}(1);
+                    count(d) = numel(indices{d});
+                    if numel(indices{d})>1
+                        stride(d) = indices{d}(2) - indices{d}(1);
+                    end
+                end
+            
+                % Load the data
+                X = ncread( obj.file, obj.var, start, count, stride ); 
+            end
         end
     end
     
