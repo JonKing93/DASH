@@ -49,7 +49,7 @@ classdef ncSource < dataSource
             obj.attemptFullLoad = true;
             obj.saved = false;
         end        
-        function[X] = load(obj, indices)
+        function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF data source.
             %
             % X = obj.load(indices)

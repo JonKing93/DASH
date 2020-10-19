@@ -101,7 +101,7 @@ for s = 1:numel(useSource)
     end
     
     % Load the data from the data source. Match .grid dimension order
-    Xsource = source.read( sourceIndices );
+    [Xsource, sources{useSource(s)}] = source.read( sourceIndices );
     [~, index] = ismember(source.mergedDims, obj.dims);
     X(outputIndices{:}) = dash.permuteDimensions(Xsource, index, false, nDims);
 end
