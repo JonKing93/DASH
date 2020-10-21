@@ -11,7 +11,7 @@ function[Amean] = updateMean( Mmean, K, D, Ymean )
 % K: The Kalman Gain (nState x nSite)
 %
 % D: The observations in the time steps (nSite x nTime)
-%
+% 
 % Ymean: The mean of the Y estimates in each time step. (nSite x nTime)
 %
 % ----- Outputs -----
