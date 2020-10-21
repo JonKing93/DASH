@@ -1,48 +1,72 @@
-function[] = evolvingOfflineEnsrf(M, D, R, Y, Q, returnMean, returnDevs)
-%% Implements an ensemble square root Kalman filter for time steps with an
-% evolving offline prior.
+function[] = evolvingOfflineEnsrf(M, D, R, Y, whichPrior)
+% Evolving offline EnSRF with a single set of covariance settings
 
 % Sizes
-[nObs, nTime] = size(D);
-[nState, nEns] = size(M);
+[nState, nEns, nPrior] = size(M);
+[nSite, nTime] = size(D);
 
 % Preallocate
-out = struct();
-out.calibRatio = NaN(nObs, nTime);
-if returnMean
-    out.Amean = NaN(nState, 1, nTime);
-end
-if returnDevs
-    out.Adev = NaN(nState, nEns, nTime);
-end
+Amean = NaN(nState, 1, nTime);
+Adev = NaN(nState, nEns, nTime);
+calibRatio = NaN(nSite, nTime);
 
-% Determine if changing the prior will change the covariance estimates
+% Check if priors affect the covariance estimates
 updateCovariance = checkCovariance;
 
-% If priors do not affect covariance, estimate once and update
-if ~updateCovariance    
-    [Knum, Ycov] = covarianceEstimate;
-    [Am, Ad, cr] = ensrfConstantCovariance(M, Y, D, R, whichprior, Knum, Ycov);
-    
-    % Save
-    out.Amean = Am;
-    out.Adev = Ad;
-    out.calibRatio = cr;
-    
-% If priors affect covariance, re-estimate for each prior
+% Get the time steps associated with each covariance estimate
+if updateCovariance
+    whichCov = whichPrior;
+    nCov = nPrior;
 else
-    for p = 1:nPrior
-        [Knum, Ycov] = covarianceEstimate( M(:,:,p) );
+    whichCov = ones(1, nTime);
+    nCov = 1;
+end
+
+% Decompose ensembles.
+[Mmean, Mdev] = decompose(M, 2);
+[Ymean, Ydev] = decompose(Y, 2);
+sites = ~isnan(D);
+
+% Get the time step and priors associated with each covariance estimate
+for c = 1:nCov
+    times = find(whichCov==c);
+    p1 = whichPrior(times(1));
     
-        % Get the associated time steps and update
-        t = find(whichprior==p);
-        wp = ones(1, numel(t));
-        [Am, Ad, cr] = ensrfConstantCovariance(M(:,:,p), Y(:,:,p), D(:,t), R(:,t), wp, Knum, Ycov);
+    % Estimate the covariance
+    [Knum, Ycov] = estimateCovariance(Mdev(:,:,p1), Ydev(:,:,p1));
+    
+    % Find the time steps that have the same observation sites and R values
+    % (these will use the same Kalman Gain)
+    gains = [sites(:,times); R(:,times)]';
+    [gains, ~, whichGain] = unique(gains, 'rows');
+    
+    % Get the sites, time steps, and priors associated with each gain
+    for g = 1:numel(gains)
+        t = times(whichGain==g);
+        t1 = t(1);
+        s = sites(:, t1);
         
-        % Save
-        out.Amean(:,:,t) = Am;
-        out.Adev(:,:,t) = Ad;
-        out.calibRatio(:,t) = cr;
+        % Calculate the Kalman Gain and adjusted gain
+        Kdenom = kalmanDenominator(Ycov(s,s), R(s,t1));
+        K = kalmanGain(Knum(:,s), Kdenom);
+        Ka = kalmanAdjusted(Knum(:,s), Kdenom, R(s,t1));
+        
+        % Cycle through each prior with updates that use this gain. Get the
+        % time steps that will be updated.
+        [priors, ~, updatePrior] = unique( whichPrior(t) );
+        for k = 1:numel(priors)
+            p = priors(k);
+            tu = t(updatePrior==k);
+            
+            % Update
+            Am = updateMean( Mmean(:,:,p), K, D(s,tu), Ymean(s,:,p) );
+            Amean(:,:,tu) = permute(Am, [1 3 2]);
+            Adev(:,:,tu) = updateDeviations(Mdev(:,:,p), Ka, Ydev(s,:,p));
+            
+            % Calculations
+            calibRatio(s,tu) = (D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
+            Q.calculate;
+        end
     end
 end
 
