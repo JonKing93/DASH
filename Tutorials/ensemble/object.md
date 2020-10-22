@@ -5,7 +5,7 @@ title: Ensemble Objects
 
 # Ensemble Objects
 
-The ".ens" files use a specialized format, so we don't want to interact with them directly. Instead, we'll create an ensemble object to interact with a particular file. Create an ensemble object using the "ensemble" command. For example:
+The ".ens" files use a specialized format, so we don't want to manipulate them directly. Instead, we'll create an ensemble object to interact with a particular file. Create an ensemble object using the "ensemble" command. For example:
 ```matlab
 ens = ensemble('myEnsemble.ens');
 ```
@@ -32,6 +32,6 @@ You can also use the "rename" command to change the name of an ensemble object a
 ```matlab
 ens = ens.rename(newName)
 ```
-where "newName" is a string.
+Here "newName" is a string.
 
 [Previous](save)---[Next](load)

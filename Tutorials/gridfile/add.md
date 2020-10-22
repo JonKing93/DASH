@@ -141,11 +141,11 @@ to convert any values smaller than 0 or larger than 100 to NaN when data is load
 
 <br>
 
-# Optional: Save Absolute File Paths
+### Optional: Save Absolute File Paths
 
-When you add a data source file to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection by default. However, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolute' flag and select true as the option:
+When you add a data source file to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection by default. However, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolutePath' flag and select true as the option:
 ```matlab
-grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'absolute', true)
+grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'absolutePath', true)
 ```
 
 

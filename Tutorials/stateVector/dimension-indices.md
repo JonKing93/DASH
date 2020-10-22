@@ -36,7 +36,7 @@ From here, you can easily obtain state and reference indices. For example:
 NH_indices = meta.lat > 0;
 
 % January of every year
-Jan_indices = year(meta.time) == 1;
+Jan_indices = month(meta.time) == 1;
 
 % Ensemble members 2-5
 Run_indices = ismember(meta.run, [2:5]);

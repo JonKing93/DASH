@@ -29,7 +29,7 @@ Similarly, if I do:
 ens = ens.useVariables(["T", "P"]);
 s = ens.loadGrids;
 ```
-then s will only contain gridded "T" and "P" variables. There will not be a "Tmean" field.
+then "s" will only contain gridded "T" and "P" variables. There will not be a "Tmean" field.
 
 ### Specify Ensemble Members
 
