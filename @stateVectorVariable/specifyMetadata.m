@@ -18,7 +18,7 @@ function[obj] = specifyMetadata(obj, dim, metadata)
 % obj: The updated stateVectorVariable object
 
 % Error check, dimension index. Cannot conflict with metadata conversion
-d = obj.checkDimensions(dim, false);
+[d, dim] = obj.checkDimensions(dim, false);
 if any(obj.convert(d))
     previousMetadataError(obj, d);
 end
