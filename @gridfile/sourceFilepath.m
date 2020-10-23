@@ -16,7 +16,7 @@ function[path] = sourceFilepath(obj, path, absolute)
 % path: The file path for the .grid file.
 
 if ~absolute
-    path = dash.relativePath( path, obj.file );
+    path = dash.relativePath( path, fileparts(obj.file) );
 end
 path = dash.unixStylePath(path);
 

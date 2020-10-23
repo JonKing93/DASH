@@ -18,8 +18,11 @@ function[paths] = collectFullPaths(obj, s)
 % Get the file names
 paths = obj.collectPrimitives("file", s);
 
+% Get the .grid file folders
+gridPath = fileparts(obj.file);
+gridFolders = split(gridPath, filesep);
+
 % Append the .grid file path to relative paths
-gridFolders = split(obj.file, filesep);
 for f = 1:numel(paths)
     file = char(paths(f));
     if file(1)=='.'
