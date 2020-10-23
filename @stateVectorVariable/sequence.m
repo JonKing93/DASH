@@ -26,8 +26,7 @@ function[obj] = sequence(obj, dims, indices, metadata)
 %    one dimension listed in dims. Must be in the same dimension order as
 %    dims.
 %
-% metadata: Metadata for the sequence. Either a vector with one element per
-%    sequence index or an array with one row per sequence index.
+% metadata: Metadata for the sequence. An array with one row per sequence index.
 %
 % metadataCell: A cell vector. Each element contains the metadata for one
 %    dimension listed in dims. Must be in the same dimension order as dims
