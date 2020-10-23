@@ -1,11 +1,14 @@
 function[] = add( obj, type, file, var, dims, meta, varargin )
 % Adds a data source to a .grid file.
 %
-% obj.add( type, file, var, dims, meta )
-% Add a data source. Notes the type of data source (NetCDF vs .mat), the
-% name of the file, the name of the data variable in the file, the order of
-% the dimensions for the variable, and the metadata associated with each
-% dimension.
+% obj.add('nc', file, var, dims, meta)
+% Adds a NetCDF data source.
+%
+% obj.add('mat', file, var, dims, meta)
+% Adds a .mat data source.
+%
+% obj.add('opendap', url, var, dims, meta)
+% Adds an OPeNDAP data source.
 %
 % obj.add( ..., 'fill', fill )
 % Specifies a fill value for the data source. When data is loaded from the
@@ -37,6 +40,8 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %    or part of the file path is specified, the file must be on the active
 %    path. Use the full file path to add a file off the active path. All
 %    file names must include the file extension.
+%
+% url: An OPeNDAP url. A string.
 %
 % var: The name of the variable in the source file.
 %

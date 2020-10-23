@@ -1,47 +1,66 @@
-classdef ncSource < dataSource
-    %% Implements a data source object that can read values from a netCDF file.
+classdef (Abstract) ncSource < hdfSource
+    %% Used to read data from source based on a NetCDF format. Includes 
+    % local NetCDF files and OPeNDAP requests.
     
     properties
-        nDims; % The number of defined dimensions for the variable in the netCDF
+        nDims; % The number of dimensions recorded in the NetCDF
     end
     
     methods
-        function obj = ncSource(file, var, dims, fill, range, convert)
+        function obj = ncSource(source, var)
             %% Creates a new ncSource object.
             %
-            % obj = ncSource(file, var, dims, fill, range, convert)
+            % obj = ncSource(source, var)
             %
             % ----- Inputs -----
             %
-            % See the documentation in dataSource.new
+            % source: A filename or opendap url. A string.
+            %
+            % var: The name of the variable in the source. A string
             %
             % ----- Outputs -----
             %
-            % obj: A new ncSource object
-            
-            % First call the data source constructor for initial error
-            % checking and to save the input args
-            obj@dataSource(file, var, dims, fill, range, convert);
+            % obj: The new ncSource object.
+          
+            % Superclass constructor. Check source and var are strings
+            obj@hdfSource(source, var);
             
             % Check the file is actually a NetCDF
             try
-                info = ncinfo( obj.file );
+                info = ncinfo(obj.source);
             catch
-                error('The file %s is not a valid NetCDF file.', obj.file );
+                error('The data source "%s" is not a valid NetCDF file.', obj.source);
             end
             
-            % Check that the variable is in the file
-            nVars = numel(info.Variables);
-            fileVariables = cell(nVars,1);
-            [fileVariables{:}] = deal( info.Variables.Name );
-            obj.checkVariable( fileVariables );
+            % Check the variable is in the file. Get the list of variables.
+            fileVariables = obj.checkVariableInSource(info);
             
             % Get the data type and size of the array
             [~,v] = ismember(obj.var, fileVariables);
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
-        end        
+        end
+        function[fileVariables] = checkVariableInSource(obj, info)
+            %% Check the variable is in the NetCDF source. Returns the list
+            % of variables in the NetCDF.
+            %
+            % fileVariables = obj.checkVariableInSource(info)
+            %
+            % ----- Inputs -----
+            %
+            % info: The structure provided via ncinfo
+            %
+            % ----- Outputs -----
+            %
+            % fileVariables: A list of variables in the NetCDF. A string
+            %    vector or cellstring vector.
+            
+            nVars = numel(info.Variables);
+            fileVariables = cell(nVars,1);
+            [fileVariables{:}] = deal( info.Variables.Name );
+            obj.checkVariable(fileVariables);
+        end
         function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF data source.
             %
@@ -62,7 +81,7 @@ classdef ncSource < dataSource
             start = NaN(1, obj.nDims);
             count = NaN(1, obj.nDims);
             stride = ones(1, obj.nDims);
-
+            
             % Convert indices to start, count, stride syntax
             for d = 1:numel(indices)
                 start(d) = indices{d}(1);
@@ -73,7 +92,7 @@ classdef ncSource < dataSource
             end
             
             % Load the data
-            X = ncread( obj.file, obj.var, start, count, stride ); 
+            X = ncread( obj.source, obj.var, start, count, stride ); 
         end
     end
     

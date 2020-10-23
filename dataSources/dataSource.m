@@ -5,8 +5,6 @@ classdef (Abstract) dataSource
     % example, netCDF and .mat files).
     
     properties
-        file;  % The file name
-        var;   % The name of the variable in the file
         dataType;  % The type of data in the file.
         unmergedDims;  % The order of the dimensions in the file
         unmergedSize; % The size of the original data in the file
@@ -22,23 +20,15 @@ classdef (Abstract) dataSource
         subclassResponsibilities = ["dataType", "unmergedSize"];
     end
     
-    % Constructor and object methods.
     methods
-        function[obj] = dataSource(file, var, dims, fill, range, convert)
+        function[obj] = dataSource(dims, fill, range, convert)
             %% Class constructor for a dataSource object. dataSource is an 
             % abstract class, so this provides constructor operations necessary
             % for any data source.
             %
-            % obj = dataSource(file, var, dims, fill, range, convert)
+            % obj = dataSource(dims, fill, range, convert)
             %
             % ----- Inputs -----
-            %
-            % file: The name of the data source file. A string. If only the file name is
-            %    specified, the file must be on the active path. Use the full file name
-            %    (including path) to add a file off the active path. All file names
-            %    must include the file extension.
-            %
-            % var: The name of the variable in the source file.
             %
             % dims: The order of the dimensions of the variable in the source file. A
             %    string or cellstring vector.
@@ -56,11 +46,8 @@ classdef (Abstract) dataSource
             %    multiplicative constant (a). The second element specifieds the
             %    additive constant (b).
             
-            % Error check strings, vectors
-            file = dash.assertStrFlag(file, "file");
-            var = dash.assertStrFlag(var, "var");
+            % Error check strings, vectors.
             dims = dash.assertStrList(dims, "dims");
-            file = dash.checkFileExists(file);
             
             % Error check the post-processing values
             if ~isnumeric(fill) || ~isscalar(fill)
@@ -78,30 +65,12 @@ classdef (Abstract) dataSource
             end
             
             % Save properties
-            obj.file = file;
-            obj.var = var;
             obj.unmergedDims = dims;        
             obj.fill = fill;
             obj.range = range;
             obj.convert = convert;
                         
         end        
-        function[] = checkVariable( obj, fileVariables )
-            %% Returns an error message when a data source file does not contain
-            % the specified data source variable.
-            %
-            % obj.checkVariable(fileVariables);
-            %
-            % ----- Inputs -----
-            %
-            % fileVariables: A list a variables in the data source file. A
-            %    string vector or cellstring vector.
-            
-            infile = ismember(obj.var, fileVariables);
-            if ~infile
-                error('File %s does not contain a %s variable.', obj.file, obj.var);
-            end    
-        end  
         function[X, obj] = read( obj, mergedIndices )
         %% Reads values from a data source.
         %
@@ -138,8 +107,9 @@ classdef (Abstract) dataSource
                 [unmergedIndices{isdim}] = ind2sub(siz, mergedIndices{d});
             end
 
-            % Currently, all data source (.mat and netCDF) can only load equally spaced
+            % Currently, all data source (.mat and netCDF based) can only load equally spaced
             % values. Get equally spaced indices to load from each source.
+            % (This may eventually be merged into hdfSource).
             for d = 1:nUnmerged
                 uniqueIndices = unique(sort(unmergedIndices{d}));
                 loadIndices{d} = dash.equallySpacedIndices(uniqueIndices);
@@ -261,10 +231,8 @@ classdef (Abstract) dataSource
             %    multiplicative constant (a). The second element specifieds the
             %    additive constant (b).
             
-            % Check the type is allowed
-            if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat","opendap"])
-                error('type must be one of the strings "nc", "mat", or "opendap".');
-            end
+            % Error check type
+            type = dash.assertStrFlag(type, 'type');
             
             % Set defaults for optional values
             if ~exist('fill','var') || isempty(fill)
@@ -277,16 +245,17 @@ classdef (Abstract) dataSource
                 convert = [1 0];
             end
             
-            % Create the subclass dataSource object. This will error check
-            % file, var, and dims and get the size of the raw unmerged data
-            % in the source.
+            % Create the concrete dataSource object. This will error check
+            % and get the size of the raw unmerged data in the source.
             inputs = {file, var, dims, fill, range, convert};
-            if strcmp(type,'nc')
+            if strcmpi(type,'nc')
                 source = ncSource(inputs{:});
-            elseif strcmp(type, 'mat')
+            elseif strcmpi(type, 'mat')
                 source = matSource(inputs{:});
-            elseif strcmp(type, 'opendap')
+            elseif strcmpi(type, 'opendap')
                 source = opendapSource(inputs{:});
+            else
+                error('type must be one of the strings "nc", "mat", or "opendap".');
             end
             
             % Check that the subclass constructor set all fields for which

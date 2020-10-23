@@ -1,5 +1,6 @@
-classdef opendapSource < ncSource
-    %% Implements a data source that reads data from OPeNDAP NetCDFs
+classdef opendapSource < dataSource & ncSource
+    %% Reads data accessed via an OPeNDAP url. Attempts to load and save 
+    % the entire variable when using repeated loads to increase speed.
     
     properties
         X; % The loaded and saved dataset
@@ -8,28 +9,34 @@ classdef opendapSource < ncSource
     end
     
     methods
-        function obj = opendapSource(file, var, dims, fill, range, convert)
-            %% Creates a new opendapSource object
+        function obj = opendapSource(url, var, dims, fill, range, convert)
+            %% Creates a new opendapSource. Checks the url links to a valid
+            % netcdf file that contains the specified variable.
             %
-            % obj = opendapSource(file, var, dims, fill, range, convert)
+            % obj = opendapSource(url, var, dims, fill, range, convert)
             %
             % ----- Inputs -----
             %
-            % See the documentation in dataSource.new
+            % url: The OPeNDAP url. A string.
+            %
+            % var: The name of the variable in the OPeNDAP NetCDF. A string
+            %
+            % dims, fill, range, convert: See the documentation in dataSource
             %
             % ----- Outputs -----
             %
-            % obj: A new opendapSource object
+            % obj: The new opendapSource object
             
-            % Use the ncSource constructor
-            obj@ncSource(file, var, dims, fill, range, convert);
+            % Superclass constructors
+            obj@dataSource(dims, fill, range, convert);
+            obj@ncSource(url, var);
             
             % Track status of loading the entire dataset
             obj.attemptFullLoad = true;
             obj.saved = false;
-        end          
+        end
         function[X, obj] = load(obj, indices)
-            %% Loads data from an OPeNDAP data source
+            %% Load data from an OPeNDAP data source.
             %
             % X = obj.load(indices)
             %
@@ -44,7 +51,7 @@ classdef opendapSource < ncSource
             %
             % X: The data located at the requested indices.
             
-            % Attempt to load the entire dataset
+            % Attempt to load the entire dataset once
             if obj.attemptFullLoad
                 try
                     obj.X = ncread(obj.file, obj.var);
@@ -54,14 +61,13 @@ classdef opendapSource < ncSource
                 obj.attemptFullLoad = false;
             end
             
-            % If the dataset is saved, load values directly
+            % If saved, load directly. Otherwise, use ncread
             if obj.saved
                 X = obj.X(indices{:});
-                
-            % Otherwise, use the usual ncread approach
             else
                 [X, obj] = load@ncSource(obj, indices);
             end
-        end 
+        end
     end
-end   
+    
+end

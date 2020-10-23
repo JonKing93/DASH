@@ -1,5 +1,5 @@
-classdef matSource < dataSource
-    %% Implements a data source object that can read values from .mat files.
+classdef matSource < dataSource & fileSource & hdfSource
+    %% Reads data from a .mat file.
     
     properties
         m; % A matfile object
@@ -11,35 +11,40 @@ classdef matSource < dataSource
     
     methods
         function obj = matSource(file, var, dims, fill, range, convert)
-            %% Creates a new matSource object.
+            %% Creates a new matSource object. Checks the matfile is valid
+            % and contains the required variable
             %
             % obj = matSource(file, var, dims, fill, range, convert)
             %
             % ----- Inputs -----
             %
-            % See the documentation in dataSource.new
+            % file: The name of the .mat file. A string.
+            %
+            % var: The name of the variable in the .mat file. A string.
+            %
+            % dims, fill, range, convert: See the documentation in dataSource
             %
             % ----- Outputs -----
             %
-            % obj: A new matSource object.
+            % obj: The new matSource object
             
-            % First call the data source constructor for initial error
-            % checking and to save the input args
-            obj@dataSource(file, var, dims, fill, range, convert);
+            % Superclass constructors
+            obj@fileSource(file);
+            obj@hdfSource(file, var);
+            obj@dataSource(dims, fill, range, convert);
             
-            % Matfile access is via chars
+            % Use chars to access matfile variables
             obj.var = char(obj.var);
             
-            % Check that the file is a matfile
+            % Check the file is a matfile
             try
-                obj.m = matfile(file);
+                obj.m = matfile(obj.file);
             catch
                 error('The file %s is not a valid .mat file.', file);
             end
             
             % Check the variable is in the file
-            fileVariables = string(who(obj.m));
-            obj.checkVariable( fileVariables );
+            obj.checkVariableInSource;
             
             % Get the data type and size of the array
             info = whos(obj.m, obj.var);
@@ -53,11 +58,22 @@ classdef matSource < dataSource
             try
                 obj.m.(obj.var)(firstIndex{:});
             catch
-                warning('File %s is not a version 7.3 .mat file. Version 7.3 is STRONGLY recommended for use with DASH. Consider saving .mat files with the ''-v7.3'' flag or use dash.convertToV7_3 to convert existing .mat files to a v7.3 format. For more details, see the Matlab documention on "save" and "MAT-File versions".', obj.file);
+                warning(['File %s is not a version 7.3 .mat file. Version 7.3 ',...
+                    'is STRONGLY recommended for use with DASH. Consider saving .mat files ',...
+                    'with the ''-v7.3'' flag or use dash.convertToV7_3 to convert existing .mat ',...
+                    'files to a v7.3 format. For more details, see the Matlab documention on "save" ',...
+                    'and "MAT-File versions".'], obj.file);
             end
-            warning( warn.state, obj.warnID );  
-            
-        end        
+            warning( warn.state, obj.warnID );
+        end
+        function[] = checkVariableInSource(obj)
+            %% Checks the variable is in the .mat file
+            %
+            % obj.checkVariableInSource
+
+            fileVariables = string(who(obj.m));
+            obj.checkVariable(fileVariables);
+        end 
         function[X, obj] = load( obj, indices )
             %% Loads data from a .mat data source.
             %
@@ -74,9 +90,11 @@ classdef matSource < dataSource
             %
             % X: The data located at the requested indices.
             
-            % Disable the partial load warning and load
+            % Disable the partial load warning
             warn = warning('query', obj.warnID);
             warning('off', obj.warnID);
+            
+            % Load the data
             X = obj.m.(obj.var)(indices{:});
             
             % Restore the original warning state
