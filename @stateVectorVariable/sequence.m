@@ -56,14 +56,9 @@ for k = 1:nDims
     end
     obj.assertAddIndices(indices{k}, d(k), name);
     
-    % Error check metadata
-    errorStrs = ['array', 'row'];
-    if isvector(metadata{k})
-        errorStrs = ['vector', 'element'];
-        metadata{k} = metadata{k}(:);
-    end
+    % Metadata rows
     if size(metadata{k},1)~=numel(indices{k})
-        metadataSizeError( obj, dims(k), errorStrs, numel(indices{k}), size(metadata{k},1) );
+        metadataSizeError( obj, dims(k), numel(indices{k}), size(metadata{k},1) );
     end
 
     % Update
@@ -81,8 +76,8 @@ error(['Only ensemble dimensions can have sequence indices, but %s ', ...
     'ensemble dimension, see "stateVector.design".'], obj.dims(bad), ...
     obj.name, obj.dims(bad));
 end
-function[] = metadataSizeError(obj, dim, strs, nIndex, nRows)
-error(['When metadata is a %s, it must have one %s per sequence index (%.f), ',...
-    'but the metadata for dimension %s in variable %s currently has %.f %ss.'], ...
-    strs(1), strs(2), nIndex, dim, obj.name, nRows, strs(2));
+function[] = metadataSizeError(obj, dim, nIndex, nRows)
+error(['Sequence metadata must have one row per sequence index (%.f), ',...
+    'but the metadata for dimension "%s" in variable "%s" currently has %.f rows.'], ...
+    nIndex, dim, obj.name, nRows);
 end
