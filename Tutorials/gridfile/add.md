@@ -45,7 +45,7 @@ lon = ncread(files(2), 'lon');
 dimOrder = ["lon","lat","time"];
 variable = "T";
 
-% Add each file using a for loop
+% Add each file using a loop
 for f = 1:numel(files)
 
     % Get the run and time metadata for the file
@@ -84,7 +84,7 @@ Let's say I have a matrix of data representing measurements at various field sit
 ```matlab
 coord = [latitude, longitude];
 sourceMeta = gridfile.defineMetadata('coord', coord, 'time', time);
-dimensionOrder = ["coord", time"];
+dimensionOrder = ["coord", "time"];
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
