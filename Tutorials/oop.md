@@ -62,4 +62,4 @@ If you still aren't sure how this works, check out the tutorials, which provide 
 
 If you are interested in learning more about OOP in Matlab, check out the [documentation for object-oriented design](https://www.mathworks.com/help/matlab/object-oriented-design-with-matlab.html?s_tid=CRUX_lftnav).
 
-[All tutorials](welcome).
+[All tutorials](welcome)
