@@ -56,7 +56,7 @@ for k = 1:nDims
     obj.assertAddIndices(indices{k}, d(k), name);
     
     % Check metadata is allowed type. Convert cellstring to string
-    metadata = gridfile.checkMetadataField(metadata, dims(k));
+    metadata{k} = gridfile.checkMetadataField(metadata{k}, dims(k));
     
     % Metadata rows
     if size(metadata{k},1)~=numel(indices{k})
