@@ -37,10 +37,17 @@ myAverage = mean( myStructure.numbers );
 ```
 
 Now suppose I have an object named "myObject" that has a "numbers" property and an "average" method. Then I could do
-```
+```matlab
 myAverage = myObject.average;
 ```
-to take an average of the numbers saved in myObject. Note that I didn't need to provide the numbers as an input because the "average" method is saved together with the "numbers" property in myObject.
+to take an average of the numbers saved in myObject. I didn't need to provide the numbers as an input because the "average" method is saved together with the "numbers" property in myObject.
+
+It's important to note that methods can still take additional input arguments. For example, I might do
+```matlab
+myAverage = myObject.average('includenan')
+```
+to specify how to treat NaN values when taking an average of numbers stored in myObject. However, the number of inputs is often smaller than the number of inputs required for a function because the method is already associated with some inputs via the object's properties.
+
 
 ### Practical Implications
 
@@ -55,6 +62,7 @@ might be used to run a kalman filter, or
 stateVector.build
 ```
 might be used to build a state vector ensemble.
+
 
 ### More help
 
