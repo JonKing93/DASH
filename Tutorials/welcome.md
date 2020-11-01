@@ -7,9 +7,24 @@ title: Tutorials
 
 Here you can find quickstarts and guides for working with the components of DASH.
 
+### Object oriented programming
+
+DASH is written in an object-oriented style. If you are unfamiliar with object oriented programming (also known as OOP), check out the [introduction to OOP](oop).
+
+### State vector ensembles
+
+DASH includes several modules to help design and build state vector ensembles.
+
 * To organize and catalogue climate data, check out the [gridfile tutorial](gridfile\welcome)
 * To design a state vector, see the [stateVector tutorial](stateVector\welcome)
 * To save and load state vector ensembles from file, see the [ensemble tutorial](ensemble\welcome)
-* To find specific data elements and ensemble members in state vector ensembles, see the [ensembleMetadata tutorial](ensembleMetadata\welcome)
+* To find metadata for elements of a state vector ensemble, see the [ensembleMetadata tutorial](ensembleMetadata\welcome).
 
-Tutorials for working with PSMs, and Kalman Filters are in the works...
+### Data Assimilation
+
+DASH also includes many modules for implementing data assimilation.
+
+* To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm\welcome).
+* To implement a Kalman Filter, see the [kalmanFilter tutorial](kalman\welcome).
+* To test optimal sensor placement, see the [optimalSensor tutorial](sensor\welcome).
+* To implement a particle Filter, see the [particleFileter tutorial](particle\welcome).
