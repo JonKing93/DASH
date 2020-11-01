@@ -23,7 +23,7 @@ classdef (Abstract) ncSource < hdfSource
             % obj: The new ncSource object.
           
             % Superclass constructor. Check source and var are strings
-            obj@hdfSource(source, var);
+            obj = obj@hdfSource(source, var);
             
             % Check the file is actually a NetCDF
             try

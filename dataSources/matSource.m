@@ -29,9 +29,9 @@ classdef matSource < dataSource & fileSource & hdfSource
             % obj: The new matSource object
             
             % Superclass constructors
-            obj@fileSource(file);
-            obj@hdfSource(file, var);
-            obj@dataSource(dims, fill, range, convert);
+            obj = obj@fileSource(file);
+            obj = obj@hdfSource(file, var);
+            obj = obj@dataSource(dims, fill, range, convert);
             
             % Use chars to access matfile variables
             obj.var = char(obj.var);

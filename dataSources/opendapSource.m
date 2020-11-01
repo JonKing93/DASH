@@ -28,8 +28,8 @@ classdef opendapSource < dataSource & ncSource
             % obj: The new opendapSource object
             
             % Superclass constructors
-            obj@dataSource(dims, fill, range, convert);
-            obj@ncSource(url, var);
+            obj = obj@dataSource(dims, fill, range, convert);
+            obj = obj@ncSource(url, var);
             
             % Track status of loading the entire dataset
             obj.attemptFullLoad = true;

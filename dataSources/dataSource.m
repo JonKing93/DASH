@@ -249,7 +249,7 @@ classdef (Abstract) dataSource
             % and get the size of the raw unmerged data in the source.
             inputs = {file, var, dims, fill, range, convert};
             if strcmpi(type,'nc')
-                source = ncSource(inputs{:});
+                source = ncfileSource(inputs{:});
             elseif strcmpi(type, 'mat')
                 source = matSource(inputs{:});
             elseif strcmpi(type, 'opendap')

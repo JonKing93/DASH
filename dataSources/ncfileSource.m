@@ -17,9 +17,9 @@ classdef ncfileSource < dataSource & fileSource & ncSource
             % dims, fill, range, convert: See the documentation in dataSource
             
             % Superclass constructors
-            obj@fileSource(file);
-            obj@dataSource(dims, fill, range, convert);
-            obj@ncSource(file, var); 
+            obj = obj@dataSource(dims, fill, range, convert);
+            obj = obj@fileSource(file);
+            obj = obj@ncSource(file, var); 
         end
         function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF file.
