@@ -10,7 +10,7 @@ In order to add a data source file to a .grid file, we will need to define the m
 ```matlab
 sourceMeta = gridfile.defineMetadata(sourceDim1, sourceMeta1, sourceDim2, sourceMeta2, ..., sourceDimN, sourceMetaN)
 ```
-as before, the order in which you provide dimensions does not matter. However, the metadata format for each dimension should have the same format as the metadata in the .grid file. For example, if the .grid file uses decimal year time metadata, then you should define time metadata for the source files using a decimal year format.
+As before, the order in which you provide dimensions does not matter. However, the metadata format for each dimension should have the same format as the metadata in the .grid file. For example, if the .grid file uses decimal year time metadata, then you should define time metadata for the source files using a decimal year format.
 
 <br>
 
@@ -72,21 +72,44 @@ By default, .grid files save the relative path between the .grid file and data s
 <br>
 
 ### Non-Regular Grids (Tripolar, Irregular Locations)
-Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular grids. For example, tripolar grids are common in climate models and apply a unique latitude and longitude coordinate to each grid cell. Similarly, data from irregularly spaced locations (such as field sites, or instrumental recording stations) usually have a unique latitude and longitude coordinate. You can use the "coord" dimension to organize non-regular spatial data. When defining "coord" metadata, one possibility is to use a two column matrix where the first column denotes the latitude coordinate, and the second column denotes the longitude coordinate.
+Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular grids. For example, tripolar grids are common in climate models and apply a unique latitude and longitude coordinate to each grid cell. Similarly, data from irregularly spaced locations (such as field sites, or instrumental recording stations) usually have a unique latitude and longitude coordinate.
 
-Often, non-regular data will still be saved with a latitude and a longitude dimension. For example, say we have tripolar climate model output. This output is saved as (longitude x latitude x time). Longitude metadata for this output (lon) is given as an (nLon x nLat) matrix. The latitude metadata for the output (lat) is also an (nLon x nLat) matrix. To define metadata for this data source, we can do:
+You can use the "coord" (i.e. coordinate) dimension to organize metadata for non-regular spatial grids. This provides an alternative to the "lat" and "lon" dimensions, which require regular latitude and longitude points. One common format for "coord" metadata is a two column matrix where one column holds latitude metadata and one column holds longitude data. This way, each row of the "coord" metadata indicates a unique latitude-longitude point. However, the metadata format is ultimately up to you; use any format you find useful.
+
+Let's look at a few examples to illustrate how to use the "coord" dimension:
+
+##### Example 1: Field sites
+Let's say I have a matrix of data representing measurements at various field sites. The matrix is (site x time): each row has the measurements from one field site and each column has the measurement at a particular point in time. The field sites are not on a regular grid, but each site is associated with a unique latitude-longitude coordinate. Consequently, we can use the "coord" dimension to organize the spatial metadata for each site (the rows of the data matrix). For example, say the latitudes of the sites are a column vector named "latitude", and the longitudes are a column vector named "longitude". There is also a vector of time metadata named "time". Then you could do:
+
 ```matlab
-coord = [lat(:), lon(:)];
-sourceMeta = gridfile.defineMetadata('coord', coord, .., ..);
+coord = [latitude, longitude];
+sourceMeta = gridfile.defineMetadata('coord', coord, 'time', time);
+dimensionOrder = ["coord", time"];
+grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
-Since we have combined the latitude and longitude metadata into a single "coordinate" metadata, we will need to merge the latitude and longitude dimensions into a "coordinate" dimension when we add the data source file to the .grid file. To do this, we can use:
+
+##### Example 2: Tripolar data
+
+Let's say I have tripolar climate model. Although tripolar grids do not use regular latitude or longitude points, tripolar model output often still has an explicit longitude and latitude dimension. In this example, let's say my tripolar data is (longitude x latitude x time). Longitude metadata (lon) is an (nLon x nLat) matrix. The latitude metadata (lat) is also an (nLon x nLat) matrix. Note that the latitude and longitude metadata are matrices rather than vectors because the tripolar grid is not regular and each spatial point is associated with a unique latitude-longitude coordinate.
+
+Since each spatial point is associated with a unique latitude-longitude coordinate, we will want to use the "coord" dimension to organize spatial metadata. As in example 1, we want each row of the "coord" metadata to define a unique latitude-longitude coordinate, so we would do:
 ```matlab
+coord = [latitude(:), longitude(:)];
+```
+
+However, there is a difference from Example 1 when adding this tripolar data source into the .grid file. In example 1, the "coord" dimension clearly corresponded to the data dimension for the field sites. However, in example 2, the "coord" dimension corresponds to two data dimensions (the longitude and the latitude dimension). Consequently, we will need to merge the data source's latitude and longitude dimensions. We can do this by using "coord" for both dimensions in the data source. For example:
+```matlab
+dimensionOrder = ["coord", "coord", "time"];
+```
+would merge the first two data dimensions (latitude and longitude) into a single coordinate dimension. The third dimension will remain the time dimension. Putting it all together, you can use the following framework to add a tripolar data source:
+```matlab
+coord = [latitude(:), longitude(:)];
+sourceMeta = gridfile.defineMetadata('coord', coord, 'time', time);
 dimensionOrder = ["coord", "coord", "time"];
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
-This combines the first two dimensions (lon and lat) of the variable in the data source into a single "coord" dimension. Note that this feature is not limited to the "lat", "lon", and "coord" dimensions. In general, any number of dimensions in a data source file can be merged into a single dimension by specifying the same dimension name multiple times in the dimension order.
 
-**Important:** Merged dimensions should have the same _relative_ dimension order in data source files. So, if longitude comes before latitude in a data source's dimension order, it should come before latitude in other data sources. For example, if I am merging lon and lat, then:
+**Note:** Merged dimensions should have the same _relative_ dimension order in data source files. So, if longitude comes before latitude in a data source's dimension order, it should come before latitude in other data sources. For example, if I am merging lon and lat, then:
 * Data Source 1: Lon x Lat x Time, and
 * Data Source 2: Lon x Time x Lev x Lat
 
