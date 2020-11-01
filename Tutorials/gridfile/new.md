@@ -47,6 +47,9 @@ meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run)
 Note that I read values from an actual data file in order to define .grid file metadata for this example. It is worth noting that this is common in workflows. A .grid file lets you specify whatever metadata you find most convenient for a data set, so if you find the metadata saved in a data file useful, you will want to use it to define the .grid file.
 
 <br>
+**Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.
+
+<br>
 ### Create File
 
 Now that the metadata is defined, we can create a new .grid file. Here the syntax is:

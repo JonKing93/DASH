@@ -109,6 +109,7 @@ dimensionOrder = ["coord", "coord", "time"];
 grid.add(type, filename, variable, dimensionOrder, sourceMeta);
 ```
 
+<br>
 **Note:** Merged dimensions should have the same _relative_ dimension order in data source files. So, if longitude comes before latitude in a data source's dimension order, it should come before latitude in other data sources. For example, if I am merging lon and lat, then:
 * Data Source 1: Lon x Lat x Time, and
 * Data Source 2: Lon x Time x Lev x Lat
