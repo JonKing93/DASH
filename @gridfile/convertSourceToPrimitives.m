@@ -18,7 +18,7 @@ function[s] = convertSourceToPrimitives( source )
 s = struct();
 
 % Convert strings to chars
-s.file = char(source.file);
+s.source = char(source.source);
 s.var = char(source.var);
 s.dataType = char(source.dataType);
 
@@ -37,6 +37,8 @@ if isa(source, 'ncSource')
     s.type = 'nc';
 elseif isa(source, 'matSource')
     s.type = 'mat';
+elseif isa(source, 'opendapSource')
+    s.type = 'opendap';
 end
 
 % Post-processing fields

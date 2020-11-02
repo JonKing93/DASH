@@ -71,7 +71,8 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 %
 % absolute: A scalar logical indicating whether to save data source file
 %    names as an absolute path (true), or as a path relative to the .grid
-%    file (false). Default is false.
+%    file (false). Default is false. Files located on a different drive or
+%    via an OPeNDAP url will use an absolute path.
 
 % Update the gridfile object in case the file was changed.
 obj.update;
@@ -136,13 +137,13 @@ for d = 1:numel(metaDims)
     % The source metadata must exactly match a sequence of .grid metadata
     [inGrid, order] = ismember(value, obj.meta.(metaDims(d)), 'rows');
     if any(~inGrid)
-        error('The %s metadata in row %.f of data source %s does not match any %s metadata in .grid file %s.', metaDims(d), find(~inGrid,1), source.file, metaDims(d), obj.file);
+        error('The %s metadata in row %.f of data source %s does not match any %s metadata in .grid file %s.', metaDims(d), find(~inGrid,1), source.source, metaDims(d), obj.file);
     elseif nRows>1 && issorted(order, 'strictdescend')
-        error('The %s metadata for data source %s is in the opposite order of the %s metadata in .grid file %s.', metaDims(d), source.file, metaDims(d), obj.file );
+        error('The %s metadata for data source %s is in the opposite order of the %s metadata in .grid file %s.', metaDims(d), source.source, metaDims(d), obj.file );
     elseif ~issorted(order, 'strictascend')
-        error('The %s metadata for data source %s is in a different order than the %s metadata in .grid file %s.', metaDims(d), source.file, metaDims(d), obj.file );
+        error('The %s metadata for data source %s is in a different order than the %s metadata in .grid file %s.', metaDims(d), source.source, metaDims(d), obj.file );
     elseif nRows>1 && ~isequal(unique(diff(order)), 1)
-        error('The %s metadata for data source %s skips elements that are in the %s metadata for .grid file %s.', metaDims(d), source.file, metaDims(d), obj.file );
+        error('The %s metadata for data source %s skips elements that are in the %s metadata for .grid file %s.', metaDims(d), source.source, metaDims(d), obj.file );
     end
     
     % Record the limits of the source data dimensions in the .grid file
@@ -156,13 +157,13 @@ lower = all(dimLimit<obj.dimLimit(:,1,:), 2);
 higher = all(dimLimit>obj.dimLimit(:,2,:), 2);
 overlap = all(~(lower|higher), 1);
 if any(overlap)
-    error('The data in new source file %s overlaps data in file %s, which is already in .grid file %s.', source.file, obj.source.file(find(overlap,1),:), obj.file);
+    error('The data in new source %s overlaps data source %s, which is already in .grid file %s.', source.source, obj.source.source(find(overlap,1),:), obj.file);
 end
 
 % Convert the dataSource object into a structure of primitives and
 % implement the desired filepath style
 source = gridfile.convertSourceToPrimitives(source);
-source.file = obj.sourceFilepath(source.file, absolute);
+source.source = obj.sourceFilepath(source.source, absolute);
 
 % Preallocate the length of each of the primitive fields
 sourceFields = fields(obj.source);

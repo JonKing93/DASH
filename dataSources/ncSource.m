@@ -11,9 +11,9 @@ classdef ncSource < dataSource
             
             % Constructor and error checking
             obj@dataSource(source, sourceName, dims, fill, range, convert);
-            obj.setVariable(var);
+            obj = obj.setVariable(var);
             if strcmp(sourceName, 'file')
-                obj.checkFile;
+                obj = obj.checkFile;
             end
             
             % Check the source is actually a NetCDF

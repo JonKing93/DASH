@@ -30,8 +30,8 @@ classdef matSource < dataSource
             
             % Constructor and error checks
             obj@dataSource(file, 'file', dims, fill, range, convert);
-            obj.checkFile;
-            obj.setVariable(var);
+            obj = obj.checkFile;
+            obj = obj.setVariable(var);
             
             % Use chars to access matfile variables
             obj.var = char(obj.var);

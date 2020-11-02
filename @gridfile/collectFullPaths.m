@@ -16,7 +16,7 @@ function[paths] = collectFullPaths(obj, s)
 % paths: A string vector of absolute file paths.
 
 % Get the file names
-paths = obj.collectPrimitives("file", s);
+paths = obj.collectPrimitives("source", s);
 
 % Get the .grid file folders
 gridPath = fileparts(obj.file);
