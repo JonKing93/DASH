@@ -1,5 +1,5 @@
-classdef matSource < dataSource & fileSource & hdfSource
-    %% Reads data from a .mat file.
+classdef matSource < dataSource
+    %% Reads data from a .mat file data source
     
     properties
         m; % A matfile object
@@ -28,10 +28,10 @@ classdef matSource < dataSource & fileSource & hdfSource
             %
             % obj: The new matSource object
             
-            % Superclass constructors
-            obj = obj@fileSource(file);
-            obj = obj@hdfSource(file, var);
-            obj = obj@dataSource(dims, fill, range, convert);
+            % Constructor and error checks
+            obj@dataSource(file, 'file', dims, fill, range, convert);
+            obj.checkFile;
+            obj.setVariable(var);
             
             % Use chars to access matfile variables
             obj.var = char(obj.var);
@@ -44,7 +44,8 @@ classdef matSource < dataSource & fileSource & hdfSource
             end
             
             % Check the variable is in the file
-            obj.checkVariableInSource;
+            fileVariables = string(who(obj.m));
+            obj.checkVariableInSource(fileVariables);
             
             % Get the data type and size of the array
             info = whos(obj.m, obj.var);
@@ -53,7 +54,7 @@ classdef matSource < dataSource & fileSource & hdfSource
             
             % Warn the user if this is not v7.3
             warn = warning('query', obj.warnID);
-            warning('error', obj.warnID); %#ok<CTPCT>
+            warning('error', obj.warnID);
             firstIndex = repmat({1}, [1, numel(obj.unmergedSize)]);
             try
                 obj.m.(obj.var)(firstIndex{:});
@@ -66,14 +67,6 @@ classdef matSource < dataSource & fileSource & hdfSource
             end
             warning( warn.state, obj.warnID );
         end
-        function[] = checkVariableInSource(obj)
-            %% Checks the variable is in the .mat file
-            %
-            % obj.checkVariableInSource
-
-            fileVariables = string(who(obj.m));
-            obj.checkVariable(fileVariables);
-        end 
         function[X, obj] = load( obj, indices )
             %% Loads data from a .mat data source.
             %

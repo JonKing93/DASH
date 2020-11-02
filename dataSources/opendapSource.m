@@ -1,4 +1,4 @@
-classdef opendapSource < dataSource & ncSource
+classdef opendapSource < ncSource
     %% Reads data accessed via an OPeNDAP url. Attempts to load and save 
     % the entire variable when using repeated loads to increase speed.
     
@@ -28,8 +28,7 @@ classdef opendapSource < dataSource & ncSource
             % obj: The new opendapSource object
             
             % Superclass constructors
-            obj = obj@dataSource(dims, fill, range, convert);
-            obj = obj@ncSource(url, var);
+            obj@ncSource(url, false, var, dims, fill, range, convert);
             
             % Track status of loading the entire dataset
             obj.attemptFullLoad = true;

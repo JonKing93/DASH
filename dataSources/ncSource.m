@@ -1,4 +1,4 @@
-classdef (Abstract) ncSource < hdfSource
+classdef ncSource < dataSource
     %% Used to read data from source based on a NetCDF format. Includes 
     % local NetCDF files and OPeNDAP requests.
     
@@ -7,25 +7,16 @@ classdef (Abstract) ncSource < hdfSource
     end
     
     methods
-        function obj = ncSource(source, var)
-            %% Creates a new ncSource object.
-            %
-            % obj = ncSource(source, var)
-            %
-            % ----- Inputs -----
-            %
-            % source: A filename or opendap url. A string.
-            %
-            % var: The name of the variable in the source. A string
-            %
-            % ----- Outputs -----
-            %
-            % obj: The new ncSource object.
-          
-            % Superclass constructor. Check source and var are strings
-            obj = obj@hdfSource(source, var);
+        function obj = ncSource(source, sourceName, var, dims, fill, range, convert)
             
-            % Check the file is actually a NetCDF
+            % Constructor and error checking
+            obj@dataSource(source, sourceName, dims, fill, range, convert);
+            obj.setVariable(var);
+            if strcmp(sourceName, 'file')
+                obj.checkFile;
+            end
+            
+            % Check the source is actually a NetCDF
             try
                 info = ncinfo(obj.source);
             catch
@@ -33,33 +24,16 @@ classdef (Abstract) ncSource < hdfSource
             end
             
             % Check the variable is in the file. Get the list of variables.
-            fileVariables = obj.checkVariableInSource(info);
+            nVars = numel(info.Variables);
+            fileVariables = cell(nVars,1);
+            [fileVariables{:}] = deal( info.Variables.Name );
+            obj.checkVariableInSource(fileVariables);
             
             % Get the data type and size of the array
             [~,v] = ismember(obj.var, fileVariables);
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
-        end
-        function[fileVariables] = checkVariableInSource(obj, info)
-            %% Check the variable is in the NetCDF source. Returns the list
-            % of variables in the NetCDF.
-            %
-            % fileVariables = obj.checkVariableInSource(info)
-            %
-            % ----- Inputs -----
-            %
-            % info: The structure provided via ncinfo
-            %
-            % ----- Outputs -----
-            %
-            % fileVariables: A list of variables in the NetCDF. A string
-            %    vector or cellstring vector.
-            
-            nVars = numel(info.Variables);
-            fileVariables = cell(nVars,1);
-            [fileVariables{:}] = deal( info.Variables.Name );
-            obj.checkVariable(fileVariables);
         end
         function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF data source.
