@@ -22,7 +22,7 @@ DASH includes several modules to help design and build state vector ensembles.
 
 ### Data Assimilation
 
-DASH also includes many modules for implementing data assimilation.
+DASH also includes modules for implementing data assimilation.
 
 * To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm\welcome).
 * To implement a Kalman Filter, see the [kalmanFilter tutorial](kalman\welcome).
