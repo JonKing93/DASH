@@ -1,4 +1,4 @@
-classdef ncfileSource < dataSource & fileSource & ncSource
+classdef ncfileSource < ncSource
     %% Reads data from a NetCDF file. (But not from OPeNDAP sources)
     
     methods
@@ -16,10 +16,8 @@ classdef ncfileSource < dataSource & fileSource & ncSource
             %
             % dims, fill, range, convert: See the documentation in dataSource
             
-            % Superclass constructors
-            obj = obj@dataSource(dims, fill, range, convert);
-            obj = obj@fileSource(file);
-            obj = obj@ncSource(file, var); 
+            % Superclass constructor
+            obj@ncSource(file, 'file', var, dims, fill, range, convert);
         end
         function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF file.
