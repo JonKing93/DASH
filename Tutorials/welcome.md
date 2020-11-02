@@ -27,4 +27,4 @@ DASH also includes many modules for implementing data assimilation.
 * To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm\welcome).
 * To implement a Kalman Filter, see the [kalmanFilter tutorial](kalman\welcome).
 * To test optimal sensor placement, see the [optimalSensor tutorial](sensor\welcome).
-* To implement a particle Filter, see the [particleFileter tutorial](particle\welcome).
+* To implement a particle Filter, see the [particleFilter tutorial](particle\welcome).

@@ -17,17 +17,22 @@ As before, the order in which you provide dimensions does not matter. However, t
 ### Add Source File
 To add data source files to the .grid file's collection, use
 ```matlab
-grid.add(type, filename, variable, dimensionOrder, sourceMeta)
+grid.add(type, source, variable, dimensionOrder, sourceMeta)
 ```
-* type specifies the type of data source -- <span style="color:#cc00cc">"nc"</span> for NetCDF files, or <span style="color:#cc00cc">"mat"</span> for Matlab .mat files.
-* filename is the name of data source file.
+Here, type specifies the type of data source. The options for type are:
+* <span style="color:#cc00cc">"nc"</span>: For NetCDF files.
+* <span style="color:#cc00cc">"mat"</span>: For Matlab .mat files, and
+* <span style="color:#cc00cc">"opendap"</span>: For data accessed via an OPeNDAP url.
+
+The remaining inputs are as follows:
+* source is either the name of the data source file or the OPeNDAP url.
 * variable is the name of the variable as it is saved in the data source file.
 * dimensionOrder is the order of the dimensions of the variable in the data source file.
-* sourceMeta is the data source file metadata defined above.
+* sourceMeta is the data source metadata defined above.
 
 If the file name includes a complete file path (for example "C:\Users\filepath\myfile.nc"), then the matching file is added to the .grid file. If you do not include a path (for example, "myfile.nc") or use a partial path (\filepath\myfile.nc), then the method will search the Matlab active path for a file with the matching name.
 
-The following is an example of how to add one data source:
+The following is an example of how to add one data source for a surface temperature (tas) variable:
 ```matlab
 type = 'nc';
 filename = 'my-data-file.nc';
