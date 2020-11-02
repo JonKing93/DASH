@@ -53,7 +53,7 @@ classdef opendapSource < ncSource
             % Attempt to load the entire dataset once
             if obj.attemptFullLoad
                 try
-                    obj.X = ncread(obj.file, obj.var);
+                    obj.X = ncread(obj.source, obj.var);
                     obj.saved = true;
                 catch
                 end

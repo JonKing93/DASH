@@ -38,9 +38,9 @@ classdef matSource < dataSource
             
             % Check the file is a matfile
             try
-                obj.m = matfile(obj.file);
+                obj.m = matfile(obj.source);
             catch
-                error('The file %s is not a valid .mat file.', file);
+                error('The file %s is not a valid .mat file.', obj.source);
             end
             
             % Check the variable is in the file
@@ -63,7 +63,7 @@ classdef matSource < dataSource
                     'is STRONGLY recommended for use with DASH. Consider saving .mat files ',...
                     'with the ''-v7.3'' flag or use dash.convertToV7_3 to convert existing .mat ',...
                     'files to a v7.3 format. For more details, see the Matlab documention on "save" ',...
-                    'and "MAT-File versions".'], obj.file);
+                    'and "MAT-File versions".'], obj.source);
             end
             warning( warn.state, obj.warnID );
         end
