@@ -14,18 +14,18 @@ To take a weighted mean, use the "weightedMean" method and provide in order
 
 Weights should be a numeric vector. If weights are for a state dimension, they should have one element per [state index](dimension-indices#state-and-reference-indices). If weights are for an ensemble dimension, they should have one element per [mean index](dimension-indices#mean-indices). For example
 ```matlab
-sv = sv.design('T', 'lat', 'state', 49:96)
-weights = cosd( lat(49:96) );
+sv = sv.design('T', 'lat', 'state')
+weights = cosd( lat );
 sv = sv.weightedMean('T', 'lat', weights)
 ```
-could be used to provide weights for a mean over state dimension "lat". Likewise
+could be used to provide weights for a mean over a latitude state dimension. Likewise
 ```matlab
-sv = sv.design('T', 'time', 'ensemble', 1:12:12000)
+sv = sv.design('T', 'time', 'ensemble')
 sv = sv.mean('T', 'time', 0:5)
 weights = [1 2 3 3 2 1];
 sv = sv.weightedMean('T', 'time', weights);
 ```
-could be used to provide weights for a mean over ensemble dimension "time".
+could be used to take a weighted time-mean.
 
 <br>
 ### Provide weights for multiple dimensions using a cell
@@ -47,7 +47,7 @@ sv = sv.weightedMean(variables, ["lat", "lon"], weights)
 ```
 weights should be a 96 x 144 matrix. By contrast, to do
 ```matlab
-sv = sv.weightedMean(variables, ["lon", "lat", weights])
+sv = sv.weightedMean(variables, ["lon", "lat"], weights)
 ```
 weights should be a 144 x 96 matrix.
 
