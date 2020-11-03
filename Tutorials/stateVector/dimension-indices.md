@@ -30,7 +30,7 @@ to get dimension indices for latitude.
 
 As we will see later in the tutorial, you can set the indices for a dimension using the [design method](design).
 
-# Example workflow
+# Typical workflow
 You can use gridfile metadata to easily obtain dimension indices. As detailed in the gridfile tutorial, you can obtain a .grid file's metadata via:
 ```matlab
 grid = gridfile('myfile.grid');
