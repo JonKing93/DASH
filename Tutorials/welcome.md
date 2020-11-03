@@ -7,7 +7,7 @@ title: Tutorials
 
 Here you can find quickstarts and guides for working with the components of DASH.
 
-### Object oriented programming
+### Object oriented style
 
 DASH is written in an object-oriented style. If you are unfamiliar with object oriented programming (also known as OOP), check out the [introduction to OOP](oop).
 
