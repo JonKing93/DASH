@@ -89,11 +89,17 @@ either of these approaches would specify 'lat' and 'lon' as state dimensions, an
 
 If you would like to specify state or reference indices for multiple dimensions, then the fourth argument should be a cell vector with one element per listed dimension. Each element should hold the indices for the corresponding dimension. Use an empty array to use the default of all indices for a dimension. For example:
 ```matlab
+% Get dimension indices
+nh = lat>0;
+preindustrial = time<1850;
+
+% Use the design method
 dims = ["lat","lon","time","run"];
-indices = {49:96, [], 1:12:12000, []}
+type = ["state","state","ensemble","ensemble"];
+indices = {nh, [], preindustrial, []}
 sv = sv.design('myVariable', dims, type, indices);
 ```
-would use elements 49 to 96 along the latitude dimension, all elements along the longitude dimension, every 12th element along the time dimension, and every element along the run dimension.
+would use latitude and longitude as state dimension and select Northern Hemisphere points at all longitudes. Likewise, it would set time and run as ensemble dimensions and select ensemble members from preindustrial years in any run.
 
 <br>
 ### Coupled variable notification
