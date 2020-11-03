@@ -105,13 +105,13 @@ for s = 1:numel(sources)
     
     % Source output structure
     if nargout~=0
-        inputs(2:2:end) = {sources{s}.file, sources{s}.var, sourceDims, sourceSize, ...
+        inputs(2:2:end) = {sources{s}.source, sources{s}.var, sourceDims, sourceSize, ...
             sourceMeta, sources{s}.fill, sources{s}.range, sources{s}.convert};
         sourceInfo(s) = struct(inputs{:});
         
     % Print source to console
     else
-        [~, name, ext] = fileparts(sources{s}.file);
+        [~, name, ext] = fileparts(sources{s}.source);
         fprintf('The variable %s in file %s is a data source.\n', sources{s}.var, strcat(name, ext));
         if ~isnan(sources{s}.fill)
             fprintf('The fill value is %s.\n', num2str(sources{s}.fill));

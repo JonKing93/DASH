@@ -1,12 +1,12 @@
 classdef (Abstract) dataSource
-    %% Implements an object that can extract information from a data source
-    % file. dataSource is an abstract class. Concrete subclasses
-    % implement functionality for different types of data files. (For
-    % example, netCDF and .mat files).
+    %% Implements an object that can extract information from a data source.
+    % dataSource is an abstract class. Concrete subclasses
+    % implement functionality for different types of data sourcess. (For
+    % example, netCDF and .mat files and opendap files).
     
     properties
-        file;  % The file name
-        var;   % The name of the variable in the file
+        source; % The data source. A filename or opendap url
+        var; % (For hdf data sources) The name of the variable.
         dataType;  % The type of data in the file.
         unmergedDims;  % The order of the dimensions in the file
         unmergedSize; % The size of the original data in the file
@@ -22,23 +22,16 @@ classdef (Abstract) dataSource
         subclassResponsibilities = ["dataType", "unmergedSize"];
     end
     
-    % Constructor and object methods.
+    % Constructor methods and error checking
     methods
-        function[obj] = dataSource(file, var, dims, fill, range, convert)
+        function[obj] = dataSource(source, sourceName, dims, fill, range, convert)
             %% Class constructor for a dataSource object. dataSource is an 
             % abstract class, so this provides constructor operations necessary
             % for any data source.
             %
-            % obj = dataSource(file, var, dims, fill, range, convert)
+            % obj = dataSource(dims, fill, range, convert)
             %
             % ----- Inputs -----
-            %
-            % file: The name of the data source file. A string. If only the file name is
-            %    specified, the file must be on the active path. Use the full file name
-            %    (including path) to add a file off the active path. All file names
-            %    must include the file extension.
-            %
-            % var: The name of the variable in the source file.
             %
             % dims: The order of the dimensions of the variable in the source file. A
             %    string or cellstring vector.
@@ -56,11 +49,9 @@ classdef (Abstract) dataSource
             %    multiplicative constant (a). The second element specifieds the
             %    additive constant (b).
             
-            % Error check strings, vectors
-            file = dash.assertStrFlag(file, "file");
-            var = dash.assertStrFlag(var, "var");
+            % Error check strings, vectors.
+            source = dash.assertStrFlag(source, sourceName);
             dims = dash.assertStrList(dims, "dims");
-            file = dash.checkFileExists(file);
             
             % Error check the post-processing values
             if ~isnumeric(fill) || ~isscalar(fill)
@@ -78,151 +69,30 @@ classdef (Abstract) dataSource
             end
             
             % Save properties
-            obj.file = file;
-            obj.var = var;
+            obj.source = source;
             obj.unmergedDims = dims;        
             obj.fill = fill;
             obj.range = range;
             obj.convert = convert;
                         
-        end        
-        function[] = checkVariable( obj, fileVariables )
-            %% Returns an error message when a data source file does not contain
-            % the specified data source variable.
-            %
-            % obj.checkVariable(fileVariables);
-            %
-            % ----- Inputs -----
-            %
-            % fileVariables: A list a variables in the data source file. A
-            %    string vector or cellstring vector.
-            
-            infile = ismember(obj.var, fileVariables);
-            if ~infile
-                error('File %s does not contain a %s variable.', obj.file, obj.var);
-            end    
-        end  
-        function[X] = read( obj, mergedIndices )
-        %% Reads values from a data source.
-        %
-        % X = obj.read( mergedIndices )
-        %
-        % ----- Inputs -----
-        %
-        % mergedIndices: A cell array. Each element contains the indices to read 
-        %    for one dimension. Dimensions must be in the same order as the merged
-        %    dimensions. Indices should be linear indices along the dimension.
-        %
-        % ----- Outputs -----
-        %
-        % X: The values read from the data source file. Dimensions are in
-        %    the order of the merged dimensions.
-        
-            % Preallocate
-            nMerged = numel(obj.mergedDims);
-            nUnmerged = numel(obj.unmergedDims);
-
-            unmergedIndices = cell(nUnmerged, 1);    % The requested indices in the unmerged dimensions
-            loadIndices = cell(nUnmerged, 1);        % The indices loaded from the source file
-            loadSize = NaN(nUnmerged, 1);            % The size of the loaded data grid
-            dataIndices = cell(nUnmerged, 1);        % The location of the requested data in the loaded data grid
-
-            keepElements = cell(nMerged, 1);         % Which data elements to retain after the dimensions
-                                                     % of the loaded data grid are merged.
-
-            % Get unmerged indices by converting linear indices for merged dimensions
-            % to subscript indices for unmerged dimensions.
-            for d = 1:nMerged
-                isdim = find( strcmp(obj.unmergedDims, obj.mergedDims(d)) );
-                siz = obj.unmergedSize(isdim);
-                [unmergedIndices{isdim}] = ind2sub(siz, mergedIndices{d});
-            end
-
-            % Currently, all data source (.mat and netCDF) can only load equally spaced
-            % values. Get equally spaced indices to load from each source.
-            for d = 1:nUnmerged
-                uniqueIndices = unique(sort(unmergedIndices{d}));
-                loadIndices{d} = dash.equallySpacedIndices(uniqueIndices);
-                loadSize(d) = numel(loadIndices{d});
-
-                % Determine the location of requested data elements in the loaded data
-                % grid.
-                start = loadIndices{d}(1);
-                stride = 1;
-                if numel(loadIndices{d})>1
-                    stride = loadIndices{d}(2) - loadIndices{d}(1);
-                end
-                dataIndices{d} = ((unmergedIndices{d}-start) / stride) + 1;
-            end
-
-            % Load the values from the data source
-            X = obj.load( loadIndices );
-
-            % Track which dimensions become singletons via merging
-            remove = NaN(1, nUnmerged-nMerged);
-            
-            % Permute dimensions being merged to the front
-            for d = 1:nMerged
-                order = 1:nUnmerged;
-                isdim = strcmp(obj.unmergedDims, obj.mergedDims(d));
-                order = [order(isdim), order(~isdim)];
-                isdim = find(isdim);
-                X = permute(X, order);
-
-                % Reshape dimensions being merged into a single dimension. Use
-                % singletons for secondary merged dimensions to preserve dimension order
-                siz = size(X);
-                nDim = numel(isdim);
-                siz(end+1:nDim) = 1;
-                
-                newSize = [prod(siz(1:nDim)), ones(1,nDim-1), siz(nDim+1:end)];
-                X = reshape(X, newSize);
-
-                % Unpermute and note if any dimensions should be removed
-                [~, reorder] = sort(order);
-                X = permute( X, reorder );
-                
-                k = find(isnan(remove), 1, 'first');
-                remove(k:k+nDim-2) = isdim(2:end);
-
-                % Convert data indices for unmerged dimensions to linear indices for
-                % the merged dimension
-                siz = loadSize(isdim);
-                if numel(isdim) > 1
-                    keepElements{d} = sub2ind(siz, dataIndices{isdim});
-                else
-                    keepElements{d} = dataIndices{isdim};
-                end
-            end
-
-            % Remove singletons resulting from the merge. 
-            dimOrder = 1:nUnmerged;
-            order = [dimOrder(~ismember(dimOrder,remove)), remove];
-            X = permute(X, order);
-            
-            % Remove any unrequested data elements that were loaded to
-            % fulfill equal spacing requirements
-            X = X(keepElements{:});
-            
-            % Convert fill value to NaN
-            if ~isnan(obj.fill)
-                X(X==obj.fill) = NaN;
-            end
-            
-            % Convert values outside the valid range to NaN
-            if ~isequal(obj.range, [-Inf Inf])
-                valid = (X>=obj.range(1)) & (X<=obj.range(2));
-                X(~valid) = NaN;
-            end
-            
-            % Apply linear transformation
-            if ~isequal(obj.convert, [1 0])
-                X = obj.convert(1)*X + obj.convert(2);
+        end    
+        function[obj] = checkFile(obj)
+            %% Checks the data source is a file that exists
+            obj.source = dash.checkFileExists(obj.source);
+        end
+        function[obj] = setVariable(obj, var)
+            %% For hdf data sources, sets the variable name
+            obj.var = dash.assertStrFlag(var, 'var');
+        end
+        function[] = checkVariableInSource(obj, sourceVariables)
+            %% Checks that a variable is in a data source
+            if ~ismember(obj.var, sourceVariables)
+                error('The data source "%s" does not have a %s variable', obj.source, obj.var);
             end
         end
     end
     
-    % Create new dataSource subclass
+    % Static method used to select concrete dataSource subclasses
     methods (Static)
         function[source] = new(type, file, var, dims, fill, range, convert)
             %% Creates a new dataSource object. dataSource is an abstract
@@ -236,6 +106,7 @@ classdef (Abstract) dataSource
             % type: The type of data source. A string. 
             %    "nc": Use when the data source is a NetCDF file.
             %    "mat": Use when the data source is a .mat file.
+            %    "opendap": Use when the data source is an OPeNDAP NetCDF
             %
             % file: The name of the data source file. A string. If only the file name is
             %    specified, the file must be on the active path. Use the full file name
@@ -260,10 +131,8 @@ classdef (Abstract) dataSource
             %    multiplicative constant (a). The second element specifieds the
             %    additive constant (b).
             
-            % Check the type is allowed
-            if ~dash.isstrflag(type) || ~ismember(type, ["nc","mat"])
-                error('type must be either the string "nc" or "mat".');
-            end
+            % Error check type
+            type = dash.assertStrFlag(type, 'type');
             
             % Set defaults for optional values
             if ~exist('fill','var') || isempty(fill)
@@ -276,13 +145,16 @@ classdef (Abstract) dataSource
                 convert = [1 0];
             end
             
-            % Create the subclass dataSource object. This will error check
-            % file, var, and dims and get the size of the raw unmerged data
-            % in the source.
-            if strcmp(type,'nc')
-                source = ncSource(file, var, dims, fill, range, convert);
-            elseif strcmp(type, 'mat')
+            % Create the concrete dataSource object. This will error check
+            % and get the size of the raw unmerged data in the source.
+            if strcmpi(type,'nc')
+                source = ncSource(file, 'file', var, dims, fill, range, convert);
+            elseif strcmpi(type, 'mat')
                 source = matSource(file, var, dims, fill, range, convert);
+            elseif strcmpi(type, 'opendap')
+                source = opendapSource(file, var, dims, fill, range, convert);
+            else
+                error('type must be one of the strings "nc", "mat", or "opendap".');
             end
             
             % Check that the subclass constructor set all fields for which
@@ -317,10 +189,133 @@ classdef (Abstract) dataSource
             end
         end
     end
-    
-    % Subclasses must load values from data source files
+          
+    % Interface used to read data from a dataSource
+    methods
+        function[X, obj] = read( obj, mergedIndices )
+            %% Reads values from a data source.
+            %
+            % X = obj.read( mergedIndices )
+            %
+            % ----- Inputs -----
+            %
+            % mergedIndices: A cell array. Each element contains the indices to read 
+            %    for one dimension. Dimensions must be in the same order as the merged
+            %    dimensions. Indices should be linear indices along the dimension.
+            %
+            % ----- Outputs -----
+            %
+            % X: The values read from the data source file. Dimensions are in
+            %    the order of the merged dimensions.
+
+            % Preallocate
+            nMerged = numel(obj.mergedDims);
+            nUnmerged = numel(obj.unmergedDims);
+
+            unmergedIndices = cell(nUnmerged, 1);    % The requested indices in the unmerged dimensions
+            loadIndices = cell(nUnmerged, 1);        % The indices loaded from the source file
+            loadSize = NaN(nUnmerged, 1);            % The size of the loaded data grid
+            dataIndices = cell(nUnmerged, 1);        % The location of the requested data in the loaded data grid
+
+            keepElements = cell(nMerged, 1);         % Which data elements to retain after the dimensions
+                                                     % of the loaded data grid are merged.
+
+            % Get unmerged indices by converting linear indices for merged dimensions
+            % to subscript indices for unmerged dimensions.
+            for d = 1:nMerged
+                isdim = find( strcmp(obj.unmergedDims, obj.mergedDims(d)) );
+                siz = obj.unmergedSize(isdim);
+                [unmergedIndices{isdim}] = ind2sub(siz, mergedIndices{d});
+            end
+
+            % Currently, all data source (.mat and netCDF based) can only load equally spaced
+            % values. Get equally spaced indices to load from each source.
+            % (This may eventually be merged into hdfSource).
+            for d = 1:nUnmerged
+                uniqueIndices = unique(sort(unmergedIndices{d}));
+                loadIndices{d} = dash.equallySpacedIndices(uniqueIndices);
+                loadSize(d) = numel(loadIndices{d});
+
+                % Determine the location of requested data elements in the loaded data
+                % grid.
+                start = loadIndices{d}(1);
+                stride = 1;
+                if numel(loadIndices{d})>1
+                    stride = loadIndices{d}(2) - loadIndices{d}(1);
+                end
+                dataIndices{d} = ((unmergedIndices{d}-start) / stride) + 1;
+            end
+
+            % Load the values from the data source
+            [X, obj] = obj.load( loadIndices );
+
+            % Track which dimensions become singletons via merging
+            remove = NaN(1, nUnmerged-nMerged);
+
+            % Permute dimensions being merged to the front
+            for d = 1:nMerged
+                order = 1:nUnmerged;
+                isdim = strcmp(obj.unmergedDims, obj.mergedDims(d));
+                order = [order(isdim), order(~isdim)];
+                isdim = find(isdim);
+                X = permute(X, order);
+
+                % Reshape dimensions being merged into a single dimension. Use
+                % singletons for secondary merged dimensions to preserve dimension order
+                siz = size(X);
+                nDim = numel(isdim);
+                siz(end+1:nDim) = 1;
+
+                newSize = [prod(siz(1:nDim)), ones(1,nDim-1), siz(nDim+1:end)];
+                X = reshape(X, newSize);
+
+                % Unpermute and note if any dimensions should be removed
+                [~, reorder] = sort(order);
+                X = permute( X, reorder );
+
+                k = find(isnan(remove), 1, 'first');
+                remove(k:k+nDim-2) = isdim(2:end);
+
+                % Convert data indices for unmerged dimensions to linear indices for
+                % the merged dimension
+                siz = loadSize(isdim);
+                if numel(isdim) > 1
+                    keepElements{d} = sub2ind(siz, dataIndices{isdim});
+                else
+                    keepElements{d} = dataIndices{isdim};
+                end
+            end
+
+            % Remove singletons resulting from the merge. 
+            dimOrder = 1:nUnmerged;
+            order = [dimOrder(~ismember(dimOrder,remove)), remove];
+            X = permute(X, order);
+
+            % Remove any unrequested data elements that were loaded to
+            % fulfill equal spacing requirements
+            X = X(keepElements{:});
+
+            % Convert fill value to NaN
+            if ~isnan(obj.fill)
+                X(X==obj.fill) = NaN;
+            end
+
+            % Convert values outside the valid range to NaN
+            if ~isequal(obj.range, [-Inf Inf])
+                valid = (X>=obj.range(1)) & (X<=obj.range(2));
+                X(~valid) = NaN;
+            end
+
+            % Apply linear transformation
+            if ~isequal(obj.convert, [1 0])
+                X = obj.convert(1)*X + obj.convert(2);
+            end
+        end
+    end
+
+    % Concrete subclasses must be able to load data from requested indices
     methods (Abstract)
-        X = load(obj, indices);
+        [X, obj] = load(obj, indices);
     end
     
 end

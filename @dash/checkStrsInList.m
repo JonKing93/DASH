@@ -27,9 +27,9 @@ if any(~inList)
     % Informative error message
     badName = name;
     if numel(input)>1
-        badName = sprintf('Element %.f in %s (%s)', bad, name, input(bad));
+        badName = sprintf('Element %.f in %s', bad, name);
     end
-    error('%s is not a %s. Allowed values are %s.', badName, listName, dash.messageList(list));
+    error('%s (%s) is not a %s. Allowed values are %s.', badName, input(bad), listName, dash.messageList(list));
 end
 
 end

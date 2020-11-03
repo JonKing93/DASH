@@ -1,48 +1,41 @@
 classdef ncSource < dataSource
-    %% Implements a data source object that can read values from a netCDF file.
+    %% Used to read data from source based on a NetCDF format. Includes 
+    % local NetCDF files and OPeNDAP requests.
     
     properties
-        nDims; % The number of defined dimensions for the variable in the netCDF
+        nDims; % The number of dimensions recorded in the NetCDF
     end
     
     methods
-        function obj = ncSource(file, var, dims, fill, range, convert)
-            %% Creates a new ncSource object.
-            %
-            % obj = ncSource(file, var, dims, fill, range, convert)
-            %
-            % ----- Inputs -----
-            %
-            % See the documentation in dataSource.new
-            %
-            % ----- Outputs -----
-            %
-            % obj: A new ncSource object
+        function obj = ncSource(source, sourceName, var, dims, fill, range, convert)
             
-            % First call the data source constructor for initial error
-            % checking and to save the input args
-            obj@dataSource(file, var, dims, fill, range, convert);
-            
-            % Check the file is actually a NetCDF
-            try
-                info = ncinfo( obj.file );
-            catch
-                error('The file %s is not a valid NetCDF file.', obj.file );
+            % Constructor and error checking
+            obj@dataSource(source, sourceName, dims, fill, range, convert);
+            obj = obj.setVariable(var);
+            if strcmp(sourceName, 'file')
+                obj = obj.checkFile;
             end
             
-            % Check that the variable is in the file
+            % Check the source is actually a NetCDF
+            try
+                info = ncinfo(obj.source);
+            catch
+                error('The data source "%s" is not a valid NetCDF file.', obj.source);
+            end
+            
+            % Check the variable is in the file. Get the list of variables.
             nVars = numel(info.Variables);
             fileVariables = cell(nVars,1);
             [fileVariables{:}] = deal( info.Variables.Name );
-            obj.checkVariable( fileVariables );
+            obj.checkVariableInSource(fileVariables);
             
             % Get the data type and size of the array
             [~,v] = ismember(obj.var, fileVariables);
             obj.dataType = info.Variables(v).Datatype;
             obj.unmergedSize = info.Variables(v).Size;
             obj.nDims = numel(info.Variables(v).Dimensions);
-        end        
-        function[X] = load(obj, indices)
+        end
+        function[X, obj] = load(obj, indices)
             %% Loads data from a netCDF data source.
             %
             % X = obj.load(indices)
@@ -73,7 +66,7 @@ classdef ncSource < dataSource
             end
             
             % Load the data
-            X = ncread( obj.file, obj.var, start, count, stride ); 
+            X = ncread( obj.source, obj.var, start, count, stride ); 
         end
     end
     

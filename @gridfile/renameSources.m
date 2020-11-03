@@ -113,20 +113,20 @@ end
 % Convert the new file names to primitives. Update primitive array size
 newname = char(newname);
 newMax = size(newname, 2);
-f = strcmp('file', fields(obj.source));
+f = strcmp('source', fields(obj.source));
 
 if obj.maxLength(f) < newMax
     obj.maxLength(f) = newMax;
-    obj.source.file = gridfile.padPrimitives(obj.source.file, newMax);
+    obj.source.source = gridfile.padPrimitives(obj.source.source, newMax);
 else
     newname = gridfile.padPrimitives(newname, obj.maxLength(f));
 end
 
 % Rename the sources. Save to .grid file
-[~, k] = ismember('file', fields(obj.source));
+[~, k] = ismember('source', fields(obj.source));
 for f = 1:nFile
     s = find(fileSources(:,f));
-    obj.source.file(s,:) = newname(f,:);
+    obj.source.source(s,:) = newname(f,:);
     obj.fieldLength(s,k) = newLength(f);
     obj.absolutePath(s) = absolutePath(f);
 end

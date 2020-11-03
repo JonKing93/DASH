@@ -13,7 +13,7 @@ function[matchesFile] = findFileSources(obj, file)
 % matchesFile: A logical vector indicating which sources have the file name (nSource x 1).
 
 % Get the file names for the sources
-sourceFile = obj.collectPrimitives("file");
+sourceFile = obj.collectPrimitives("source");
 nSource = numel(sourceFile);
 
 % Remove paths

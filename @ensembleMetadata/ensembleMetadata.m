@@ -26,7 +26,7 @@ classdef ensembleMetadata
     % Jonathan King, University of Arizona, 2019-2020
     
     properties (SetAccess = private)
-        ensembleName; % Name of the ensemble
+        name; % Name of the ensemble
         vectorName; % Name of the state vector template
         
         variableNames; % Names of each metadata
@@ -51,19 +51,24 @@ classdef ensembleMetadata
     
     % Constructor
     methods
-        function obj = ensembleMetadata(sv)
-            %% Returns an ensembleMetadata object for a stateVector, ensemble, or .ens file.
+        function obj = ensembleMetadata(sv, name)
+            %% Returns an ensembleMetadata object for a stateVector.
             %
             % obj = ensembleMetadata(sv)
             % Creates an ensembleMetadata object for a state vector.
+            %
+            % obj = ensembleMetadata(sv, name)
+            % Optionally gives an identifying name for the ensemble.
             %
             % ----- Inputs -----
             %
             % sv: A stateVector object
             %
+            % name: An identifying name for the ensemble. A string
+            %
             % ----- Outputs -----
             %
-            % meta: The ensemble metadata object
+            % obj: The ensemble metadata object
 
             % Error check.
             if ~isa(sv, 'stateVector') || ~isscalar(sv)
@@ -71,7 +76,11 @@ classdef ensembleMetadata
             end
             
             % Get names and size
-            obj.ensembleName = [];
+            if exist('name','var')
+                obj.name = dash.assertStrFlag(name, 'name');
+            else
+                obj.name = [];
+            end
             obj.vectorName = sv.name;
 
             obj.nEns = 0;
@@ -151,6 +160,8 @@ classdef ensembleMetadata
     % User methods
     methods
         % variableNames -- Just a direct call to the field
+        obj = rename(obj, newName);
+
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
         meta = variable(obj, varName, dims, type, indices);
         meta = dimension(obj, dim, alwaysStruct);
@@ -166,5 +177,5 @@ classdef ensembleMetadata
         obj = appendMembers(obj, meta2);
         obj = extractMembers(obj, members);
     end
-    
+
 end
