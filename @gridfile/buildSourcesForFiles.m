@@ -38,7 +38,7 @@ for s = 1:nSource
     % Provide extra error information if the data source file is missing
     catch ME
         if strcmp(ME.identifier, "DASH:missingFile")
-            error('Cannot find data source file "%s". It may have been moved, renamed, or deleted. If the file was moved or renamed, see "gridfile.renameSources" to update the data source file path.', filenames(s));
+            error('Cannot find data source "%s". It may have been moved, renamed, or deleted. If the file was moved or renamed, see "gridfile.renameSources" to update the data source file path.', filenames(s));
         end
         rethrow(ME);
     end

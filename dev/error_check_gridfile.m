@@ -386,7 +386,7 @@ grid.renameSources;
 fprintf('Renamed sources\n');
 
 % Check file path
-folders = split(grid.source.file(1,:),'/');
+folders = split(grid.source.source(1,:),'/');
 if ~strcmp(newfile, fullfile(folders{:}) )
     error('bad');
 end
