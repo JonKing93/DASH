@@ -3,9 +3,13 @@ layout: simple_layout
 title: Design Dimensions
 ---
 
-# Select ensemble and state dimensions
+# Design Method
 
-Use the "design" method to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions). To do this, provide the name of the variable, the name of the dimension, and indicate the type of the dimension. To specify a state dimension, you can use any of:
+The "design" method can be used to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions), and to specify dimension indices. By default, stateVector treats each dimension as a state dimension and sets the dimension indices to every element along the dimension. Consequently, you do not need to apply the design method to dimensions with these characteristics.
+
+# Set ensemble and state dimensions
+
+You can use the design method to set variable dimensions as state or ensemble dimensions. To do this, provide the name of the variable, the name of the dimension, and indicate the type of the dimension. To specify a state dimension, you can use any of:
 ```matlab
 sv = sv.design('myVariable', 'dimensionName', 'state')
 sv = sv.design('myVariable', 'dimensionName', 's')
@@ -20,16 +24,30 @@ sv = sv.design('myVariable', 'dimensionName', 'e')
 sv = sv.design('myVariable', 'dimensionName', false)
 ```
 
-Note that when a variable is first added to a state vector, all dimensions are set as state dimensions. Thus, you only need to specify a dimension as a state dimension when you want to provide state indices.
-
 <br>
 ### Specify state or reference indices
 
-By default, state vector uses every index along a .grid file dimension as [state or reference indices](dimension-indices#state-and-reference-indices). However, you can use the fourth input to specify a different set of indices: this may either be a vector of linear indices, or a logical vector the length of the dimension in the .grid file. The following line:
+You can use the fourth input to specify dimension indices indices: this may either be a vector of linear indices, or a logical vector the length of the dimension in the .grid file. The following syntax:
 ```matlab
 sv = sv.design('myVariable', 'dimensionName', type, indices)
 ```
 specifies state or reference indices for a dimension. Note that "type" can be any of the inputs used to indicate a state or ensemble dimension.
+
+##### Example 1
+Let's say I want to only want to include Northern Hemisphere points for a 'T' variable. Then I could do:
+```matlab
+nh = lat > 0;
+sv = sv.design('T', 'lat', 'state', nh);
+```
+to set the state indices.
+
+##### Example 2
+Let's say I only want to select ensemble members from preindustrial years before 1850. Then I could do:
+```matlab
+preindustrial = time < 1850;
+sv = sv.design('T', 'lat', 'ensemble', preindustrial);
+```
+to set the reference indices.
 
 <br>
 ### Design multiple dimensions and/or variables at once
