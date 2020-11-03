@@ -6,7 +6,8 @@ title: Dimension Indices
 # Dimension Indices
 As mentioned, the stateVector class builds state vectors from data catalogued in .grid files. However, we  will not always need to use *all* of a .grid file's data in a state vector ensemble; often, a small subset of the data is sufficient. As such, we will need a way to select subsets of .grid file data. In stateVector, we will do this by selecting specific elements along the dimensions of the .grid file's N-dimensional array.
 
-For example, say I have a .grid file that organizes a 4D array that is lat x lon x time x run and that the "lat" metadata is given by:
+##### Example 1
+Say I have a .grid file that organizes a 4D array that is lat x lon x time x run and that the "lat" metadata is given by:
 ```matlab
 lat = -90:90;
 ```
@@ -16,6 +17,7 @@ nh = lat > 0;
 ```
 to get dimension indices for latitude.
 
+##### Example 2
 As a second example, say that the "time" metadata is for the years:
 ```matlab
 time = 850:200;
