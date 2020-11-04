@@ -31,8 +31,8 @@ classdef kalmanFilter
     
     % User basic inputs
     methods
-        prior;
-        observations;
+        kf = prior(kf, M, whichPrior);
+        kf = observations(kf, D, R);
         estimates;
     end
     
