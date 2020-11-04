@@ -7,16 +7,17 @@ title: "New .grid File"
 
 ### Define Metadata
 
-We'll start by defining the metadata for the .grid file. This metadata specifies the metadata for each dimension in the .grid file, and is used to organize the N-dimensional array. To define metadata, use:
+We'll start by defining the metadata for the .grid file. This metadata specifies the metadata for each dimension in the .grid file, and is used to organize the N-dimensional array. To do this, we will use the "defineMetadata" method, a general method that builds metadata structures. Here, we will use defineMetadata to build a metadata structure for a .grid file, but we will return to it later in the tutorial to define the scope of individual data source files.
 
+The syntax for using the defineMetadata method is:
 ```matlab
 meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ..., dimensionN, metadataN);
 ```
 
-Here, the syntax is to provide the name of a dimension and then its metadata, then repeat for all dimensions in the dataset. Hence, dimension1, dimension2, ..., dimensionN are a set of dimension names. By default, gridfile allows the following dimension names:
+Here, the style is to provide the name of a dimension and then its metadata, then repeat for all dimensions in the dataset. Hence, dimension1, dimension2, ..., dimensionN are a set of dimension names. By default, gridfile allows the following dimension names:
 * <span style="color:#cc00cc">"lon"</span> -- for the longitude / x dimension
 * <span style="color:#cc00cc">"lat"</span> -- for the latitude / y dimension
-* <span style="color:#cc00cc">"coord"</span> -- for non-regular spatial grids
+* <span style="color:#cc00cc">"coord"</span> -- for non-regular spatial coordinates
 * <span style="color:#cc00cc">"lev"</span> -- the level / height / z dimension
 * <span style="color:#cc00cc">"time"</span> -- the time dimension
 * <span style="color:#cc00cc">"run"</span> -- for individual members of an ensemble
@@ -47,7 +48,13 @@ meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run)
 Note that I read values from an actual data file in order to define .grid file metadata for this example. It is worth noting that this is common in workflows. A .grid file lets you specify whatever metadata you find most convenient for a data set, so if you find the metadata saved in a data file useful, you will want to use it to define the .grid file.
 
 <br>
-**Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.
+**Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.  
+
+##### Example 1
+Say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution.
+
+##### Example 2
+Say you have output that extends over 1000 years at monthly resolution. Then you should define your time metadata so that it extends over those same 1000 years at monthly resolution.
 
 <br>
 ### Create File
