@@ -47,6 +47,7 @@ classdef kalmanFilter
     % User output options
     methods
         percentiles;
+        returnMean;
         returnVariance;
         returnDeviations;
     end

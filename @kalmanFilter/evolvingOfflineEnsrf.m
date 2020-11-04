@@ -1,5 +1,31 @@
 function[] = evolvingOfflineEnsrf(M, D, R, Y, whichPrior)
-% Evolving offline EnSRF with a single set of covariance settings
+% Implements an offline ensemble square-root Kalman Filter. Can use a
+% static or evolving prior.
+%
+% output = offlineEnsrf(M, D, R, Y)
+% Implements offline EnSRF for a static prior.
+%
+% output = offlineEnsrf(M, D, R, Y, whichPrior)
+% Implements offline EnSRF for an evolving prior.
+%
+% ----- Inputs -----
+%
+% M: The model priors. A numeric array. If a static prior (nState x nEns). 
+%    If an evolving prior (nState x nEns x nPrior).
+%
+% D: The observations. (nSite x nTime)
+%
+% R: Observation uncertainties. (nSite x nTime)
+%
+% Y: Observation model estimates. (nSite x nEns x nPrior)
+%
+% whichPrior: A vector of integers that indicates which prior to use in
+%    each time step. Each element is the index of the prior in the third
+%    dimension of M for a particular time step. (nTime x 1)
+%
+% ----- Outputs -----
+%
+% output: A structure containing output fields for the assimilation
 
 % Sizes
 [nState, nEns, ~] = size(M);
@@ -10,7 +36,7 @@ Amean = NaN(nState, 1, nTime);
 Adev = NaN(nState, nEns, nTime);
 calibRatio = NaN(nSite, nTime);
 
-% Decompose ensembles. Mark observation sites.
+% Decompose ensembles. Note observation sites.
 [Mmean, Mdev] = decompose(M, 2);
 [Ymean, Ydev] = decompose(Y, 2);
 sites = ~isnan(D);
