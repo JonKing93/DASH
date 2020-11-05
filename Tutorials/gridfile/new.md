@@ -7,7 +7,17 @@ title: "New .grid File"
 
 ### Define Metadata
 
-We'll start by defining the metadata for the .grid file. This metadata specifies the metadata for each dimension in the .grid file, and is used to organize the N-dimensional array. To do this, we will use the "defineMetadata" method, a general method that builds metadata structures. Here, we will use defineMetadata to build a metadata structure for a .grid file, but we will return to it later in the tutorial to define the scope of individual data source files.
+Before creating a new .grid file, let's first recall that each .grid file manages an N-dimensional array:
+
+<img src="\DASH\assets\images\gridfile\grid-empty.svg" alt="An Empty N-dimensional array." style="width:80%;display:block">
+
+In order to create a .grid file, we will first need to define the scope of that array by defining metadata along each of the .grid file's dimensions. Using the previous illustrations as an example:
+
+<img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
+
+this is the step where we would specify that the data organized by the .grid file spans latitudes from -90 to 90 in steps of 30 degrees, longitudes from 0 to 270 in steps of 60 degrees, and years 1 through 3 with an annual time step.
+
+To define metadata for a .grid file, we will use the "defineMetadata" method. This is a general method that builds a metadata structure that can be used to describe the scope of a file. Here, we will use defineMetadata to build a metadata structure that describes the scope of the entire .grid file. But we will also return to this method later in the tutorial to define the scope of individual data source files.
 
 The syntax for using the defineMetadata method is:
 ```matlab
@@ -48,7 +58,7 @@ meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run)
 Note that I read values from an actual data file in order to define .grid file metadata for this example. It is worth noting that this is common in workflows. A .grid file lets you specify whatever metadata you find most convenient for a data set, so if you find the metadata saved in a data file useful, you will want to use it to define the .grid file.
 
 <br>
-**Important:** Although you can use whatever metadata format you prefer, the *spacing* of .grid file metadata should follow that of the data source files.  
+**Important:** Although you can use whatever metadata format you prefer, the .grid file metadata should still describe the data in the data source files and use the same spacing.  
 
 ##### Example 1
 Say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution.
@@ -71,10 +81,14 @@ where filename is the name of the .grid file. Note that gridfile adds a .grid ex
 gridfile.new('myfile', meta)
 ```
 
-will create a file named "myfile.grid".
+will create a file named "myfile.grid". This file will manage data in an N-dimensional array. Since this is a new .grid file, the N-dimensional array is currently empty:
+
+<img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
+
+because no data source files have been linked to the .grid file. In the next sections of the tutorial, we will see how add data source files so that the N-dimensional array is filled with data.
+
 
 <br>
-
 ### Optional: Include Non-Dimensional Metadata
 
 You can optionally add non-dimensional metadata to a .grid file as well. For this, use the syntax
