@@ -10,9 +10,7 @@ title: "Add Data Sources"
   * [Example 1](#example-1)
   * [Example 2](#example-2)
 * [Data source filepaths](#data-source-filepaths)
-* [Non-regular spatial coordinates](#non-regular-spatial-coordinates-tripolar-irregular-locations)
-  * [Example 1: Field sites](#example-1-field-sites)
-  * [Example 2: Tripolar data](#example-2-tripolar-data)
+* [Merging Dimensions (for tripolar grids)](#merging-dimensions-tripolar-grids)
 * [Optional: Convert Units](#optional-convert-units)
 * [Optional: Fill value and valid range](#optional-fill-value-and-valid-range)
 * [Optional: Absolute file paths](#optional-save-absolute-file-paths)
@@ -115,42 +113,46 @@ By default, .grid files save the relative path between the .grid file and data s
 
 <br>
 
-### Non-Regular Spatial Coordinates (Tripolar, Irregular Locations)
-Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular grids. For example, tripolar grids are common in climate models and apply a unique latitude and longitude coordinate to each grid cell. Similarly, data from irregularly spaced locations (such as field sites, or instrumental recording stations) usually have a unique latitude and longitude coordinate.
+### Merging Dimensions (Tripolar grids)
 
-You can use the "coord" (i.e. coordinate) dimension to organize metadata for non-regular spatial grids. This provides an alternative to the "lat" and "lon" dimensions, which require regular latitude and longitude points. One common format for "coord" metadata is a two column matrix where one column holds latitude metadata and one column holds longitude data. This way, each row of the "coord" metadata indicates a unique latitude-longitude point. However, the metadata format is ultimately up to you; use any format you find useful.
+Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular spatial grids. We previously saw [how to use the "coord" dimension](new#example-4-tripolar-data) to define metadata for datasets with non-regular spatial coordinates. However, some non-regular datasets may still be saved with explicit latitude and longitude dimensions. This is most common for tripolar model output: tripolar data is often saved as (longitude x latitude x time) even though each tripolar spatial point has a unique latitude-longitude coordinate. Spatial metadata for such data is typically provided as a latitude *matrix* of size (nLon x nLat) and a longitude *matrix* also of size (nLon x nLat). The spatial coordinate for each spatial point can then be found by querying the appropriate element in each of the latitude and longitude matrices.
 
-Let's look at a few examples to illustrate how to use the "coord" dimension:
-
-##### Example 1: Field sites
-Let's say I have a matrix of data representing measurements at various field sites. The matrix is (site x time): each row has the measurements from one field site and each column has the measurement at a particular point in time. The field sites are not on a regular grid, but each site is associated with a unique latitude-longitude coordinate. Consequently, we can use the "coord" dimension to organize the spatial metadata for each site (the rows of the data matrix). For example, say the latitudes of the sites are a column vector named "latitude", and the longitudes are a column vector named "longitude". There is also a vector of time metadata named "time". Then you could do:
-
+Since each spatial point is associated with a non-regular latitude and longitude coordinate, we should use the "coord" dimension to organize the spatial metadata. As we saw previously, we could use something like:
 ```matlab
-coord = [latitude, longitude];
-sourceMeta = gridfile.defineMetadata('coord', coord, 'time', time);
-dimensionOrder = ["coord", "time"];
-grid.add(type, filename, variable, dimensionOrder, sourceMeta);
+file = 'my-tripolar-data.nc';
+lat = ncread(file, 'lat');
+lon = ncread(file, 'lon');
+coord = [lat(:), lon(:)];
+time = (1:1000)';  % A random time format...
+
+meta = gridfile.defineMetadata('coord', coord, 'time', time)
+```
+to specify metadata for a tripolar grid. However, this presents a challenge when adding data source files. The "add" command requires you to specify the order of the dimensions in the data source, but the (longitude x latitude x time) data has no explicit "coordinate" dimension. The solution is to merge the longitude and latitude dimensions into a single "coordinate" dimension by adjusting the 'dimensionOrder' input. Initially, the dimension order for the tripolar data source appears to be:
+```matlab
+dimensionOrder = ["lon", "lat", "time"];
 ```
 
-##### Example 2: Tripolar data
-
-Let's say I have tripolar climate model. Although tripolar grids do not use regular latitude or longitude points, tripolar model output often still has an explicit longitude and latitude dimension. In this example, let's say my tripolar data is (longitude x latitude x time). Longitude metadata (lon) is an (nLon x nLat) matrix. The latitude metadata (lat) is also an (nLon x nLat) matrix. Note that the latitude and longitude metadata are matrices rather than vectors because the tripolar grid is not regular and each spatial point is associated with a unique latitude-longitude coordinate.
-
-Since each spatial point is associated with a unique latitude-longitude coordinate, we will want to use the "coord" dimension to organize spatial metadata. As in example 1, we want each row of the "coord" metadata to define a unique latitude-longitude coordinate, so we would do:
-```matlab
-coord = [latitude(:), longitude(:)];
-```
-
-However, there is a difference from Example 1 when adding this tripolar data source into the .grid file. In example 1, the "coord" dimension clearly corresponded to the data dimension for the field sites. However, in example 2, the "coord" dimension corresponds to two data dimensions (the longitude and the latitude dimension). Consequently, we will need to merge the data source's latitude and longitude dimensions. We can do this by using "coord" for both dimensions in the data source. For example:
+To merge data source dimensions into a single .grid file dimension, replace the names of the merged data source dimensions with the desired grid file dimension. In this example, I want to merge the "lon" and "lat" data dimensions into a single "coord" dimension, so I would do:
 ```matlab
 dimensionOrder = ["coord", "coord", "time"];
 ```
-would merge the first two data dimensions (latitude and longitude) into a single coordinate dimension. The third dimension will remain the time dimension. Putting it all together, you can use the following framework to add a tripolar data source:
+
+The full call to gridfile.add might look something like:
 ```matlab
-coord = [latitude(:), longitude(:)];
+% Get the source file metadata
+file = 'my-tripolar-data.nc';
+lat = ncread(file, 'lat');
+lon = ncread(file, 'lon');
+coord = [lat(:), lon(:)];
+time = (1:1000)';  % A random time format...
 sourceMeta = gridfile.defineMetadata('coord', coord, 'time', time);
+
+% Add the data source file to the .grid file
+type = 'nc';
 dimensionOrder = ["coord", "coord", "time"];
-grid.add(type, filename, variable, dimensionOrder, sourceMeta);
+variable = 'slp';  % Name of the tripolar variable in 'my-tripolar-data.nc'
+grid = gridfile('my-grid.grid');
+grid.add(type, file, variable, dimensionOrder, sourceMeta)
 ```
 
 <br>
