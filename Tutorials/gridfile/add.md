@@ -9,7 +9,7 @@ title: "Add Data Sources"
 * [Add source files](#add-source-files)
   * [Example 1](#example-1)
   * [Example 2](#example-2)
-* [Data source filepaths](#data-source-filepaths)
+* [Data source filepaths](#data-source-file-paths)
 * [Merging Dimensions (for tripolar grids)](#merging-dimensions-tripolar-grids)
 * [Optional: Convert Units](#optional-convert-units)
 * [Optional: Fill value and valid range](#optional-fill-value-and-valid-range)
