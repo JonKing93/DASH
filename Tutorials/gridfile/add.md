@@ -59,6 +59,9 @@ The remaining inputs are as follows:
 
 If the file name includes a complete file path (for example "C:\Users\filepath\myfile.nc"), then the matching file is added to the .grid file. If you do not include a path (for example, "myfile.nc") or use a partial path (\filepath\myfile.nc), then the method will search the Matlab active path for a file with the matching name.
 
+**Note**: When you use the "add" command, you are providing the .grid file with the information it needs to read and organize the data in a file. The file name / opendap url let the .grid file know how to find the data (it's saved as variable X in file Y). The dimension order and source metadata tell the .grid file where that data fits in the N-dimensional grid. This lets the .grid file automate future interactions with the organized data. Although you may sometimes read metadata from a data source file, you will ***never*** need to touch the data directly; the data wrangling is all automated by the .grid file.
+
+
 #### Example 1
 
 The following is an example of how to add one data source to a .grid file (named "my-grid.grid") that organizes a surface temperature variable. The data source file holds monthly data from 1850 to 2000 CE, and the .grid file uses a datetime format for the "time" dimension. The temperature variable is saved under the name "tas" in the data source file.
