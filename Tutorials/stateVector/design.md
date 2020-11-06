@@ -5,7 +5,7 @@ title: Design Dimensions
 
 # Design Method
 
-The "design" method can be used to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions), and to specify dimension indices. By default, stateVector treats each dimension as a state dimension and sets the dimension indices to every element along the dimension. Consequently, you do not need to apply the design method to dimensions with these characteristics.
+The "design" method can be used to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions), and to specify [dimension indices](dimension-indices). By default, stateVector treats each dimension as a state dimension and sets the dimension indices to every element along the dimension. Consequently, you do not need to apply the design method to state dimensions that use every element.
 
 # Set ensemble and state dimensions
 
@@ -36,6 +36,9 @@ specifies state or reference indices for a dimension. Note that "type" can be an
 ##### Example 1
 Let's say I want to only want to include Northern Hemisphere points for a 'T' variable. Then I could do:
 ```matlab
+grid = gridfile('temperature.grid');
+meta = grid.metadata;
+
 nh = lat > 0;
 sv = sv.design('T', 'lat', 'state', nh);
 ```
@@ -44,30 +47,36 @@ to set the state indices.
 ##### Example 2
 Let's say I only want to select ensemble members from preindustrial years before 1850. Then I could do:
 ```matlab
-preindustrial = time < 1850;
+grid = gridfile('temperature.grid');
+meta = grid.metadata;
+
+preindustrial = meta.time < 1850;
 sv = sv.design('T', 'lat', 'ensemble', preindustrial);
 ```
 to set the reference indices.
 
 <br>
-### Design multiple dimensions and/or variables at once
+### Design multiple variables at once
 
 You can design multiple variables at the same time by providing a string vector of variable names as the first input. For example
 ```matlab
 vars = ["T","P","Tmean"];
-sv = sv.design(vars, "time", "ensemble", indices);
+preindustrial = meta.time < 1850;
+sv = sv.design(vars, "time", "ensemble", preindustrial);
 ```
-will use the time dimension as an ensemble dimension and specify reference indices for the each of the "T", "P", and "Tmean" variables.
+will use the time dimension as an ensemble dimension and specify preindustrial reference indices for each of the "T", "P", and "Tmean" variables.
 
-You can also design multiple dimensions at the same time by providing a string vector of dimension names as the second argument. When this is the case, using 'state', 's', or true as the third argument will set all listed dimensions as state dimensions. Likewise, using 'ensemble', 'ens', 'e', or false as the third argument will set all listed dimensions as ensemble dimensions.
+### Design multiple dimensions at once
+
+You can also design multiple dimensions at the same time by providing a string vector of dimension names as the second argument. When this is the case, using 'state', 's', or true as the third argument will set all listed dimensions as state dimensions. Likewise, using 'ensemble', 'ens', 'e', or false as the third argument will set all listed dimensions as ensemble dimensions. For example:
 ```matlab
-dims = ["lat","lon","time","run"];
+% Set multiple dimensions as state dimensions
+dims = ["lat", "lon"];
+sv = sv.design('T', dims, 'state');
 
-% Set all dimensions as state dimensions
-sv = sv.design('myVariable', dims, 'state')
-
-% Set all dimensions as ensemble dimensions
-sv = sv.design('myVariable', dims, false)
+% Set multiple dimensions as ensemble dimensions
+dims = ["time", "run"];
+sv = sv.design('T', dims, false)
 ```
 
 If you would like to use different settings for different dimensions, use a string or logical vector with one element per dimension listed in dims. For example:
@@ -90,14 +99,14 @@ either of these approaches would specify 'lat' and 'lon' as state dimensions, an
 If you would like to specify state or reference indices for multiple dimensions, then the fourth argument should be a cell vector with one element per listed dimension. Each element should hold the indices for the corresponding dimension. Use an empty array to use the default of all indices for a dimension. For example:
 ```matlab
 % Get dimension indices
-nh = lat>0;
-preindustrial = time<1850;
+nh = meta.lat>0;
+preindustrial = meta.time<1850;
 
 % Use the design method
 dims = ["lat","lon","time","run"];
 type = ["state","state","ensemble","ensemble"];
 indices = {nh, [], preindustrial, []}
-sv = sv.design('myVariable', dims, type, indices);
+sv = sv.design('T', dims, type, indices);
 ```
 would use latitude and longitude as state dimension and select Northern Hemisphere points at all longitudes. Likewise, it would set time and run as ensemble dimensions and select ensemble members from preindustrial years in any run.
 

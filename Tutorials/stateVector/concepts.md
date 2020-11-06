@@ -16,16 +16,11 @@ A fundamental concept in ensemble data assimilation is the state vector. In brie
 <img src="\DASH\assets\images\stateVector\state-vector.svg" alt="An example state vector." style="width:80%;display:block">
 Figure 1: An example state vector.
 
-Within the DASH framework, different variables are defined as either
-1. Describing a different climate variable, or
-2. Having different spatial or temporal resolution.
-
-For example, a gridded monthly temperature field and gridded monthly precipitation field are different variables because they describe different climate parameters. Monthly precipitation and annual precipitation would be different variables because they have different temporal resolution, and gridded temperatures and global mean temperatures are different variables because they have different spatial resolution. In my example state vector, there are 3 variables:
+In my example state vector, there are 3 variables:
 1. T - Gridded monthly temperature
 2. Tmean - Annual, global mean temperature
 3. P - Gridded monthly precipitation
 
-Although T and Tmean both describe temperature, they are considered different variables because they have different spatial and temporal resolution.
 
 # Ensembles
 

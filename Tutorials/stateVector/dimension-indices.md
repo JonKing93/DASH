@@ -20,7 +20,7 @@ to get dimension indices for latitude.
 ##### Example 2
 As a second example, say that the "time" metadata is for the years:
 ```matlab
-time = 850:200;
+time = 850:2000;
 ```
 If I only want to use preindustrial years before 1850 in an ensemble, then I will want to use elements 1 through 1000 along the "time" dimension. I could use something like:
 ```matlab
