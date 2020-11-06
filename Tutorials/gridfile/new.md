@@ -5,8 +5,6 @@ title: "New .grid File"
 
 # Create a new .grid file
 
-### Define Metadata
-
 Before creating a new .grid file, let's first recall that each .grid file manages an N-dimensional array:
 
 <img src="\DASH\assets\images\gridfile\grid-empty.svg" alt="An Empty N-dimensional array." style="width:80%;display:block">
@@ -17,14 +15,16 @@ In order to create a .grid file, we will first need to define the scope of that 
 
 this is the step where we would specify that the data organized by the .grid file spans latitudes from -90 to 90 in steps of 30 degrees, longitudes from 0 to 270 in steps of 60 degrees, and years 1 through 3 with an annual time step.
 
-To define metadata for a .grid file, we will use the "defineMetadata" method. This is a general method that builds a metadata structure that can be used to describe the scope of a file. Here, we will use defineMetadata to build a metadata structure that describes the scope of the entire .grid file. But we will also return to this method later in the tutorial to define the scope of individual data source files.
+## Define Metadata
 
-The syntax for using the defineMetadata method is:
+To define metadata for a .grid file, we will use the ["defineMetadata" command](define).
+
+Recall that the syntax for using the defineMetadata method is:
 ```matlab
 meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ..., dimensionN, metadataN);
 ```
 
-Here, the style is to provide the name of a dimension and then its metadata, then repeat for all dimensions in the dataset. Hence, dimension1, dimension2, ..., dimensionN are a set of dimension names. By default, gridfile allows the following dimension names:
+Dimension names are:
 * <span style="color:#cc00cc">"lon"</span> -- for the longitude / x dimension
 * <span style="color:#cc00cc">"lat"</span> -- for the latitude / y dimension
 * <span style="color:#cc00cc">"coord"</span> -- for non-regular spatial coordinates
@@ -33,18 +33,12 @@ Here, the style is to provide the name of a dimension and then its metadata, the
 * <span style="color:#cc00cc">"run"</span> -- for individual members of an ensemble
 * <span style="color:#cc00cc">"var"</span> -- for different variables on the same spatial/temporal grid
 
-You DO NOT need to provide metadata for all these dimensions; only the dimensions appearing in your dataset need metadata. Also, you may provide the dimensions in any order, regardless of the dimension order of your dataset. (If you would like to use different dimension names, you can [rename dimensions](change-dimension-names). If your dataset has more dimensions that the 7 defaults, you can [add new dimensions](add-dimension-names)).
+You only need to use dimensions that are relevant for your dataset and you can provide them in any order. Metadata for each dimension must have one row per element along the dimension and each row must be unique. The metadata can use a numeric, logical, string, char, cellstring, or datetime format.
 
-Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. In general, it's best to use metadata values that are meaningful to you, as this will allow you to reuse the .grid file many times in the future. You do not need to use the same metadata values as those stored in the data source files.
+Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. Use any metadata format that is useful to you.
 
-The following is an example of a generic metadata definition.
 
-```matlab
-lat = (-90:90)';
-lon = (0:360)';
-time = (850:2005)';
-meta = gridfile.defineMetadata("lat", lat, "lon", lon, "time", time);
-```
+#### Example 1
 
 For a realistic example, let's say I have files "mydata-run1.nc" and "mydata-run2.nc" which store data from two runs of a climate model. Each file has longitude, latitude and time metadata stored within (saved under the names "longitude", "latitude", and "time"), and I find the latitude and longitude values useful. The time metadata is for January 850 to December 2005 with a monthly time step but stored as days since 850-1-1, which I do not find useful. Instead, I would like to use a datetime metadata format. In this case, the metadata definition would be:
 ```matlab
@@ -54,17 +48,55 @@ run = [1;2];
 time = (datetime(850,1,15) : calmonths(1) : datetime(2005,12,15))';
 meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
 ```
+The metadata structure "meta" defines the scope of an N-dimensional array. If the array is (lon x lat x time x run), it would have a size of (nLon longitudes x nLat latitudes x 13872 time steps x 2 runs).
 
 Note that I read values from an actual data file in order to define .grid file metadata for this example. It is worth noting that this is common in workflows. A .grid file lets you specify whatever metadata you find most convenient for a data set, so if you find the metadata saved in a data file useful, you will want to use it to define the .grid file.
 
+#### Example 2
+
+Let's use output from CMIP5 for a second example. Say I have output from CCSM4 for the last millennium experiment. It extends from January 850 to December 2005 with a monthly time step. There are three ensemble members, each differing in their initial conditions: these use the "r1i1p1", "r1i2p1", and "r1i3p1" designations. I have output for both surface temperature (the "tas" variable) and precipitation (the "pr" variable). I do not find the "tas" and "pr" abbreviations useful and want to refer to them using the name "Temperature" and "Precipitation". Both variables use the same spatial grid. Then I could use the following metadata definition:
+
+```matlab
+outputFile1 = "tas_Amon_CCSM4_past1000_r1i1p1_085001-185012.nc"
+lat = ncread(outputFile1, 'lat');
+lon = ncread(outputFile2, 'lon');
+time = (datetime(850,1,15) : calmonths(1) : datetime(2005,12,15))';
+run = ["r1i1p1";"r1i2p1";"r1i3p1"];
+var = ["Temperature";"Precipitation"];
+meta = gridfile.defineMetadata('var', var, 'run', run, 'lon', lon, 'lat', lat, 'time', time);
+```
+This would define the scope an N-dimensional array to hold this dataset. If the array is (lon x lat x time x run x var), then the size would be (nLon longitudes x nLat latitudes x 13872 time steps x 3 runs x 2 variables).
+
+
+#### Example 3
+
+Let's say I have data from 54 irregularly-spaced field sites. I have the latitude and longitude coordinate for each field site saved in the two vectors 'lat' and 'lon'. The field data has annual measurements from 1850 CE to 1995 CE. Then the metadata definition could be:
+```matlab
+time = 1850:1995;
+lat; % A vector of latitude coordinates
+lon; % A vector of longitude coordinates
+coord = [lat, lon];
+meta = gridfile.defineMetadata('coord', coord, 'time', time);
+```
+If this N-dimensional array is (coord x time), then its size would be (54 sites x 146 years).
+
+
+#### Example 4
+
+Let's use the setup in Example 3, but say that I also have elevation for each field site saved in a vector named 'elevation'. The elevation is part of the unique spatial coordinate for each field site, so you would include it as part of the "coord" dimension:
+```matlab
+time = 1850:1995;
+lat; % A vector of latitude coordinates
+lon; % A vector of longitude coordinates
+elevation; % A vector of elevations
+coord = [elevation, lon, lat];
+meta = gridfile.defineMetadata('coord', coord, 'time', time);
+```
+If this N-dimensional array is (coord x time), then its size will once again be (54 sites x 146 years).
+
+
 <br>
-**Important:** Although you can use whatever metadata format you prefer, the .grid file metadata should still describe the data in the data source files and use the same spacing.  
-
-##### Example 1
-Say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution.
-
-##### Example 2
-Say you have output that extends over 1000 years at monthly resolution. Then you should define your time metadata so that it extends over those same 1000 years at monthly resolution.
+**Important:** Although you can use whatever metadata format you prefer, the .grid file metadata should still describe the data in the data source files and use the same spacing. For example, say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution. Similarly, if you have output that extends over 1000 years at monthly resolution, then you should define your time metadata so that it extends over those same 1000 years at monthly resolution.
 
 <br>
 ### Create File

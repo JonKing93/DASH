@@ -13,7 +13,13 @@ For a second example, note that variable names are a form of metadata. Climate d
 
 ### Define metadata
 
-To define metadata for a dataset, we will use the "defineMetadata" command. This is a general method that builds a metadata structure that describes the scope of a data set. We will use this command at two different points in the tutorial. First to describe the scope of a .grid file's N-dimensional array, and second to define the scope of the data saved in a particular file.
+To define metadata for a dataset, we will use the "defineMetadata" command. This is a general method that builds a metadata structure that describes the scope of a data set. We will use this command at two different points in the tutorial. First to describe the scope of a .grid file's N-dimensional array,
+
+<img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
+
+ and later to define the scope of the data saved in each data source file.
+
+ <img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
 
 The syntax for using the defineMetadata method is:
 ```matlab
@@ -46,6 +52,6 @@ meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ...
 
 metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. In general, it's best to use metadata values that are meaningful to you, as this will allow you to reuse the .grid file many times in the future.
 
-If this feels a bit abstract, don't worry. In the next section, we'll see some concrete examples of how this method works.
+If this feels a bit abstract, don't worry. In the next section, we'll see some concrete examples of how this all works and use it to help create a new .grid file.
 
 [Previous](overview)---[Next](new)
