@@ -138,4 +138,4 @@ By default, gridfile.new will not overwrite an existing .grid file. However, if 
 gridfile.new(filename, meta, attributes, true);
 ```
 
-[Previous](overview)---[Next](object)
+[Previous](define)---[Next](object)

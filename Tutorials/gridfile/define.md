@@ -54,4 +54,4 @@ metadata1, metadata2, ..., metadataN are the metadata fields along each specifie
 
 If this feels a bit abstract, don't worry. In the next section, we'll see some concrete examples of how this all works and use it to help create a new .grid file.
 
-[Previous](overview)---[Next](new)
+[Previous](overview)---[Next](define)
