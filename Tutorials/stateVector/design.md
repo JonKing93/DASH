@@ -110,6 +110,8 @@ sv = sv.design('T', dims, type, indices);
 ```
 would use latitude and longitude as state dimension and select Northern Hemisphere points at all longitudes. Likewise, it would set time and run as ensemble dimensions and select ensemble members from preindustrial years in any run.
 
+It's worth noting that we don't actually need to specify the options for the "lon" dimension in this example. Remember that the default setting for all dimensions is a state dimension with all elements selected. Since that's what we use here, we don't actually need to provide it to the "design" method. However, I've left it here to help clarify the example.
+
 <br>
 ### Coupled variable notification
 
