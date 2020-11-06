@@ -96,7 +96,7 @@ If this N-dimensional array is (coord x time), then its size will once again be 
 **Important:** Although you can use whatever metadata format you prefer, the .grid file metadata should still describe the data in the data source files and use the same spacing. For example, say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution. Similarly, if you have output that extends over 1000 years at monthly resolution, then you should define your time metadata so that it extends over those same 1000 years at monthly resolution.
 
 <br>
-### Create File
+## Create File
 
 Now that the metadata is defined, we can create a new .grid file. Here the syntax is:
 
