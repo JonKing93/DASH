@@ -85,7 +85,7 @@ will create a file named "myfile.grid". This file will manage data in an N-dimen
 
 <img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
 
-because no data source files have been linked to the .grid file. In the next sections of the tutorial, we will see how add data source files so that the N-dimensional array is filled with data.
+because no data source files have been linked to the .grid file. In the next few sections of the tutorial, we will see how add data source files so that the N-dimensional array is filled with data.
 
 
 <br>
