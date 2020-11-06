@@ -57,7 +57,7 @@ Let's use output from CMIP5 for a second example. Say I have output from CCSM4 f
 ```matlab
 outputFile1 = "tas_Amon_CCSM4_past1000_r1i1p1_085001-185012.nc"
 lat = ncread(outputFile1, 'lat');
-lon = ncread(outputFile2, 'lon');
+lon = ncread(outputFile1, 'lon');
 time = (datetime(850,1,15) : calmonths(1) : datetime(2005,12,15))';
 run = ["r1i1p1";"r1i2p1";"r1i3p1"];
 var = ["Temperature";"Precipitation"];
@@ -68,12 +68,12 @@ This would define the scope an N-dimensional array to hold this dataset. If the 
 
 #### Example 3
 
-Let's say I have data from 54 irregularly-spaced field sites. I have the latitude and longitude coordinate for each field site saved in the two vectors 'lat' and 'lon'. The field data has annual measurements from 1850 CE to 1995 CE. Then the metadata definition could be:
+Let's say I have data from 54 irregularly-spaced field sites saved in the file 'field-data.mat'. In addition to the field data, the file also has the latitude and longitude coordinate for each field site saved in the two vectors 'lat' and 'lon'. The field data has annual measurements from 1850 CE to 1995 CE. Then the metadata definition could be:
 ```matlab
+file = 'field-data.mat';
+coordinates = load(file, 'lat', 'lon');
 time = 1850:1995;
-lat; % A vector of latitude coordinates
-lon; % A vector of longitude coordinates
-coord = [lat, lon];
+coord = [coordinates.lat, coordinates.lon];
 meta = gridfile.defineMetadata('coord', coord, 'time', time);
 ```
 If this N-dimensional array is (coord x time), then its size would be (54 sites x 146 years).
@@ -83,11 +83,10 @@ If this N-dimensional array is (coord x time), then its size would be (54 sites 
 
 Let's use the setup in Example 3, but say that I also have elevation for each field site saved in a vector named 'elevation'. The elevation is part of the unique spatial coordinate for each field site, so you would include it as part of the "coord" dimension:
 ```matlab
+file = 'field-data.mat';
+coordinates = load(file, 'lat', 'lon', 'elevation');
 time = 1850:1995;
-lat; % A vector of latitude coordinates
-lon; % A vector of longitude coordinates
-elevation; % A vector of elevations
-coord = [elevation, lon, lat];
+coord = [coordinates.lat, coordinates.lon, coordinates.elevation];
 meta = gridfile.defineMetadata('coord', coord, 'time', time);
 ```
 If this N-dimensional array is (coord x time), then its size will once again be (54 sites x 146 years).
