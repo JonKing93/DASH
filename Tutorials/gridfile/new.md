@@ -5,6 +5,15 @@ title: "New .grid File"
 
 # Create a new .grid file
 
+* [Define Metadata](#define-metadata)
+  * [Example 1](#example-1)
+  * [Example 2](#example-2)
+  * [Example 3](#example-3)
+  * [Example 4](#example-4)
+* [Create File](#create-file)
+* [Optional: Include Non-Dimensional Attributes](#optional-include-non-dimensional-attributes)
+* [Optional: Overwrite Existing Files](#optional-overwrite-existing-files)
+
 Before creating a new .grid file, let's first recall that each .grid file manages an N-dimensional array:
 
 <img src="\DASH\assets\images\gridfile\grid-empty.svg" alt="An Empty N-dimensional array." style="width:80%;display:block">
@@ -118,7 +127,7 @@ because no data source files have been linked to the .grid file. In the next few
 
 
 <br>
-### Optional: Include Non-Dimensional Metadata
+### Optional: Include Non-Dimensional Attributes
 
 You can optionally add non-dimensional metadata to a .grid file as well. For this, use the syntax
 ```matlab

@@ -5,6 +5,10 @@ layout: simple_layout
 
 # Custom Metadata
 
+* [Define Metadata](#define-metadata)
+  * [Dimension Names](#dimension-names)
+  * [Dimension Metadata](#metadata-for-a-dimension)
+
 One powerful feature of gridfile is the ability to organize a dataset using custom metadata. Climate data is often provided with metadata, such as spatial coordinates and time steps. However, you may find that the format of this metadata is not always useful and instead convert the metadata to some other format.
 
 For example, many climate models provide time metadata as "Days since X", where X is a particular date. I do not find this a useful format and inevitably convert the time metadata to a datetime (or date vector or decimal year) format. By using gridfile, I can define the time metadata for a dataset using my preferred format and then use that preferred format to manipulate and subset the data for data assimilation.
