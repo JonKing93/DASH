@@ -35,8 +35,6 @@ Dimension names are:
 
 You only need to use dimensions that are relevant for your dataset and you can provide them in any order. Metadata for each dimension must have one row per element along the dimension and each row must be unique. The metadata can use a numeric, logical, string, char, cellstring, or datetime format.
 
-Next, metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. Use any metadata format that is useful to you.
-
 
 #### Example 1
 
