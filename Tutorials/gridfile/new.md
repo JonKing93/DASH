@@ -61,7 +61,7 @@ Note that I read values from an actual data file in order to define .grid file m
 
 #### Example 2: Multiple variables
 
-Let's use output from CMIP5 for a second example. Say I have output from CCSM4 for the last millennium experiment. It extends from January 850 to December 2005 with a monthly time step. There are three ensemble members, each differing in their initial conditions: these use the "r1i1p1", "r1i2p1", and "r1i3p1" designations. I have output for both surface temperature (the "tas" variable) and precipitation (the "pr" variable). I do not find the "tas" and "pr" abbreviations useful and want to refer to them using the name "Temperature" and "Precipitation". Both variables use the same spatial grid. Then I could use the following metadata definition:
+Let's use output from CMIP5 for a second example. Say I have output from CCSM4 for the last millennium experiment. It extends from January 850 to December 2005 with a monthly time step. There are three ensemble members, each differing in their initial conditions: these use the "r1i1p1", "r1i2p1", and "r1i3p1" designations. I have output for both surface temperature (the "tas" variable) and precipitation (the "pr" variable). I do not find the "tas" and "pr" abbreviations useful and want to refer to them using the names "Temperature" and "Precipitation". Both variables use the same spatial grid. Then I could use the following metadata definition:
 
 ```matlab
 outputFile1 = "tas_Amon_CCSM4_past1000_r1i1p1_085001-185012.nc"
