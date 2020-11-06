@@ -5,6 +5,18 @@ title: "Add Data Sources"
 
 # Add data sources to a .grid file
 
+* [Define source file metadata](#define-source-file-metadata)
+* [Add source files](#add-source-files)
+  * [Example 1](#example-1)
+  * [Example 2](#example-2)
+* [Data source filepaths](#data-source-filepaths)
+* [Non-regular spatial coordinates](#non-regular-spatial-coordinates-tripolar-irregular-locations)
+  * [Example 1: Field sites](#example-1-field-sites)
+  * [Example 2: Tripolar data](#example-2-tripolar-data)
+* [Optional: Convert Units](#optional-convert-units)
+* [Optional: Fill value and valid range](#optional-fill-value-and-valid-range)
+* [Optional: Absolute file paths](#optional-save-absolute-file-paths)
+
 So, we've have created a .grid file and defined the scope of its N-dimensional array. Returning to the illustrations, we have something like this:
 
 <img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
@@ -103,7 +115,7 @@ By default, .grid files save the relative path between the .grid file and data s
 
 <br>
 
-### Non-Regular Grids (Tripolar, Irregular Locations)
+### Non-Regular Spatial Coordinates (Tripolar, Irregular Locations)
 Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular grids. For example, tripolar grids are common in climate models and apply a unique latitude and longitude coordinate to each grid cell. Similarly, data from irregularly spaced locations (such as field sites, or instrumental recording stations) usually have a unique latitude and longitude coordinate.
 
 You can use the "coord" (i.e. coordinate) dimension to organize metadata for non-regular spatial grids. This provides an alternative to the "lat" and "lon" dimensions, which require regular latitude and longitude points. One common format for "coord" metadata is a two column matrix where one column holds latitude metadata and one column holds longitude data. This way, each row of the "coord" metadata indicates a unique latitude-longitude point. However, the metadata format is ultimately up to you; use any format you find useful.
@@ -173,7 +185,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', conver
 
 <br>
 
-### Optional: Fill Values and Valid Range
+### Optional: Fill Value and Valid Range
 You can have the .grid file convert data matching a fill value to NaN using the optional 'fill' flag:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'fill', fillValue);
