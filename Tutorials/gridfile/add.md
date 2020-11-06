@@ -5,11 +5,28 @@ title: "Add Data Sources"
 
 # Add data sources to a .grid file
 
+So, we've have created a .grid file and defined the scope of its N-dimensional array. Returning to the illustrations, we have something like this:
+
+<img src="\DASH\assets\images\gridfile\grid-metadata.svg" alt="An N-dimensional array with metadata." style="width:80%;display:block">
+
+At this point, that N-dimensional array is empty; it is not organizing any data. We want to start adding data source files to the grid so that the N-dimensional array is populated with data:
+
+<img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
+
+
 ### Define Source File Metadata
-In order to add a data source file to a .grid file, we will need to define the metadata for the data source. This way, the .grid file can locate the data source within the N-dimensional array. We've already seen how to use "gridfile.defineMetadata" to define metadata for an array, and we will use it again here:
+In order to add a data source file to a .grid file, we first need to define the scope of the data in the data source file. This way, the .grid file can locate the values in the data source within the N-dimensional array. Returning to the illustrations:
+
+<img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
+
+this is the step where we indicate that the data in a file covers spatial coordinates A-B, is for time steps C-D, is from run E, holds data for variable F, etc.
+
+We will return to the ["defineMetadata" command](define) to define the scope of the data in each data source file.
+
 ```matlab
-sourceMeta = gridfile.defineMetadata(sourceDim1, sourceMeta1, sourceDim2, sourceMeta2, ..., sourceDimN, sourceMetaN)
+sourceMeta = gridfile.defineMetadata(sourceDim1, sourceMeta1, sourceDim2, sourceMeta2, ... sourceDimN, sourceMetaN)
 ```
+
 As before, the order in which you provide dimensions does not matter. However, the metadata format for each dimension should have the same format as the metadata in the .grid file. For example, if the .grid file uses decimal year time metadata, then you should define time metadata for the source files using a decimal year format.
 
 <br>
@@ -25,28 +42,38 @@ Here, type specifies the type of data source. The options for type are:
 * <span style="color:#cc00cc">"opendap"</span>: For data accessed via an OPeNDAP url.
 
 The remaining inputs are as follows:
-* source is either the name of the data source file or the OPeNDAP url.
-* variable is the name of the variable as it is saved in the data source file.
-* dimensionOrder is the order of the dimensions of the variable in the data source file.
+* source is either the name of the data source file or the OPeNDAP url. It is a string.
+* variable is the name of the variable as it is saved ***in the data source file***. This is also a string.
+* dimensionOrder is the order of the dimensions of the variable ***in the data source file***.
 * sourceMeta is the data source metadata defined above.
 
 If the file name includes a complete file path (for example "C:\Users\filepath\myfile.nc"), then the matching file is added to the .grid file. If you do not include a path (for example, "myfile.nc") or use a partial path (\filepath\myfile.nc), then the method will search the Matlab active path for a file with the matching name.
 
-The following is an example of how to add one data source for a surface temperature (tas) variable:
+#### Example 1
+
+The following is an example of how to add one data source to a .grid file (named "my-grid.grid") that organizes a surface temperature variable. The data source file holds monthly data from 1850 to 2000 CE, and the .grid file uses a datetime format for the "time" dimension. The temperature variable is saved under the name "tas" in the data source file.
 ```matlab
+% Define metadata
+file = 'my-data-file.nc';
+lat = ncread(sourceFile, 'lat');
+lon = ncread(sourceFile, 'lon');
+time = (datetime(1850,1,15) : calmonths(1) : datetime(2000,12,15))';
+sourceMeta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time);
+
+% Add the data source to the .grid file
 type = 'nc';
-filename = 'my-data-file.nc';
-variable = 'tas';
-dimensionOrder = ["lon","lat","time"];
-sourceMeta = gridfile.defineMetadata("lon", lonMeta, "lat", latMeta, "time", timeMeta);
-grid.add(type, filename, variable, dimensionOrder, sourceMeta);
+variable = 'tas';  % The name of the variable in the source file
+dimensionOrder = ["lon", "lat", "time"];  % The order of the dimensions in the source file
+grid = gridfile('my-grid.grid');
+grid.add(type, filename, variable, dimensionOrder, sourceMeta)
 ```
 
+#### Example 2
 In practice, we often want to add multiple data source files to a .grid file, so let's use a more realistic example. Say I run a climate model three times. The output for each run is split into two parts: time period A covers the first 1000 time steps, and time period B covers the following 250 time steps. The data is saved as variable 'T' and organized as longitude by latitude by time. Adding these files to a .grid file might look like:
 ```matlab
 files = ["run1-A.nc", "run1-B.nc", "run2-A.nc", "run2-B.nc", "run3-A.nc", "run30B.nc"];
 lat = ncread(files(1), 'lat');
-lon = ncread(files(2), 'lon');
+lon = ncread(files(1), 'lon');
 dimOrder = ["lon","lat","time"];
 variable = "T";
 
@@ -56,14 +83,14 @@ for f = 1:numel(files)
     % Get the run and time metadata for the file
     run = ceil(f/2);
     if rem(f,2) == 1   
-        time = time(1:1000);  % Time period A
+        time = (1:1000)';  % Time period A
     else
-        time = time(1001:1250);  % Time period B
+        time = (1001:1250)';  % Time period B
     end
 
     % Define metadata for the data source. Add to .grid file
-    meta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
-    grid.add('nc', files(f), variable, dimOrder, meta);
+    sourceMeta = gridfile.defineMetadata('lat', lat, 'lon', lon, 'time', time, 'run', run);
+    grid.add('nc', files(f), variable, dimOrder, sourceMeta);
 end
 ```
 
