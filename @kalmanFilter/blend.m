@@ -1,4 +1,4 @@
-function[kf] = blend(C, Ycov, weights, whichCov)
+function[kf] = blend(kf, C, Ycov, weights, whichCov)
 %% Blends ensemble covariance with a climatological covariance.
 %
 % kf = kf.blend(C, Ycov)
@@ -52,93 +52,54 @@ function[kf] = blend(C, Ycov, weights, whichCov)
 %
 % kf: The updated kalmanFilter object
 
-% Only allow blending after the prior and observations are set
-if isempty(kf.M)
-    error(['You must specify a prior (using the "prior" command) before setting ',...
-        'covariance blending options. If you would instead like to directly set the covariance, ',...
-        'directly, see the "setCovariance" command.']);
-elseif isempty(kf.D)
-    error(['You must specify the observations/proxies (using the "observations" ',...
-        'command before setting covariance blending options. ']);
+% Cannot blend if the covariance was already set
+if ~isempty(kf.C) && kf.setC
+    setCovarianceError;
 end
 
-% Error check the covariance
-[nState, nSite, nCov] = kf.checkInput(C, 'C');
-if nSite ~= kf.nSite
-    error('C must have one column per observation/proxy site (%.f), but instead has %.f columns', kf.nSite, nSite);
-elseif nState ~= kf.nState
-    error('C must have one row per state vector element (%.f), but instead has %.f rows', kf.nState, nState);
-end
+% Only provide blending after the prior and observations are set
+kf.assertEditableCovariance('covariance blending options');
 
-% Error check the Y covariance
-[nSite, nSite2, nCov2] = kf.checkInput(Ycov, 'Ycov');
-if nSite ~= kf.nSite
-    error('Ycov must have one row per observation/proxy site (%.f), but instead has %.f rows', kf.nSite, nSite);
-elseif nSite~=nSite2
-    error('Ycov must have the same number of rows as columns. Instead, it has %.f rows and %.f columns.' nSite, nSite2);
-elseif nCov ~= nCov2
-    error(['Ycov must specify the same number of climatological covariance as ',...
-        'C (%.f). Instead, Ycov has %.f elements along the third dimension.'], nCov, nCov2);
+% Error check the covariance options. Get sizes
+if ~exist('whichCov', 'var') || isempty(whichCov)
+    whichCov = [];
 end
+[whichCov, nCov] = kf.checkCovariance(C, Ycov, whichCov);
 
 % Default and error check weights
-if ~exist('weights','var') || isempty(weight)
+if ~exist('weights','var') || isempty(weights)
     weights = ones(nCov, 1);
 end
 [nRows, nCols] = kf.checkInput(weights, 'weights', false, true);
-assert(~any(weights(:)<=0), 'All weights must be positive');
-assert(nCols<3, 'weights cannot have more than 2 columns');
+assert( all(weights>=0,'all'), 'weights cannot be negative');
+assert( nCols<3, 'weights cannot have more than 2 columns');
 
-% Input name (from column size) and default ensemble weights
-weightName = 'weights';
-if nCols==1
-    weightName = 'b';
+% Propagate/default weights
+if nCols == 1
     weights = cat(2, weights, ones(size(weights)));
 end
-
-% Propagate weights over all covariances.
 if nRows==1
     weights = repmat(weights, [nCov, 1]);
 elseif nRows~=nCov
-    error(['%s must have either 1 row, or 1 row per covariance (%.f). ',...
-        'Instead, %s has %.f rows.'], weightName, nCov, weightName, nRows);
+    weightsRowsError(nCov, nRows);
 end
 
-% Note if this is an evolving blend
-isevolving = false;
-if nCov > 1
-    isevolving = true;
-end
-
-% If evolving, get the covariance to blend in each time step
-isvar = exist('whichCov','var') && ~isempty(whichCov);
-if isevolving
-    if ~isvar && nCov==kf.nTime
-        whichCov = 1:kf.nTime;
-    elseif ~isvar
-        error(['The number of climatological covariances (%.f) does not match ',...
-            'the number of time steps (%.f), so you must use the fourth input (whichCov)', ...
-            'to specify which climatological covariance to blend in each ',...
-            'time step.'], nCov, kf.nTime);
-    end
-    
-    % Error check whichCov
-    dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, 'whichCov');
-    dash.checkIndices(whichCov, 'whichCov', nCov, 'the number of climatological covariances');
-    
-% If not evolving, cannot select time steps
-else
-    if isvar
-        error(['You only specified one climatological covariance, so you cannot ',...
-            'use the fourth input (whichCov) to specify time steps.']);
-    end
-    whichCov = [];
-end
-
-% Save values
+% Save
 kf.C = C;
+kf.setC = false;
 kf.Ycov = Ycov;
-kf.weights = weights;
 kf.whichCov = whichCov;
+kf.weights = weights;
 
+end
+
+% Long error messages
+function[] = setCovarianceError
+error(['You cannot blend the covariance because you already set the ',...
+    'covariance directly using the "setCovariance" command. See the ',...
+    '"resetCovariance" command if you want to reset covariance options.']);
+end
+function[] = weightsRowsError(nCov, nRows)
+error(['weights must either have 1 row, or %.f rows (one per covariance). ',...
+    'Instead, weights has %.f rows.'], nCov, nRows);
 end

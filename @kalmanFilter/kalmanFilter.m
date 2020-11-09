@@ -11,8 +11,9 @@ classdef kalmanFilter
         Y; % Estimates
         
         % Covariance settings
-        C; % Covariance matrix for blending
-        Ycov; % Y covariance for blending
+        C; % Covariance matrix
+        Ycov; % Y covariance matrix
+        setC; % Whether C is set (true), or for blending (false)
         weights; % How much to weight the covariance from the prior and the blended covariance
         whichCov; % Which covariance to blend in each time step
         inflateFactor; % Inflation factor
@@ -37,6 +38,20 @@ classdef kalmanFilter
     methods
         function[kf] = kalmanFilter(name)
             %% Creates a new kalmanFilter object
+            %
+            % kf = kalmanFilter;
+            % Creates a new kalman filter
+            %
+            % kf = kalmanFilter(name)
+            % Optionally gives the kalman filter an identifying name.
+            %
+            % ----- Inputs -----
+            %
+            % name: An optional name for the Kalman filter. A string.
+            %
+            % ----- Outputs -----
+            %
+            % kf: The new kalman filter object
             
             % Default
             if ~exist('name','var') || isempty(name)
@@ -47,12 +62,7 @@ classdef kalmanFilter
             kf.name = dash.assertStrFlag(name, 'name');
         end
     end                
-    
-    % Static utilities
-    methods
-        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
-    end
-    
+        
     % User basic inputs
     methods
         kf = prior(kf, M, whichPrior);
@@ -62,8 +72,8 @@ classdef kalmanFilter
     
     % User covariance methods
     methods
-        setCovariance;
-        blend;
+        kf = setCovariance(kf, C, Ycov, whichCov);
+        kf = blend(kf, C, Ycov, weights, whichCov);
         kf = inflate(kf, inflateFactor);
         localize;
     end
@@ -74,5 +84,15 @@ classdef kalmanFilter
         returnMean;
         returnVariance;
         returnDeviations;
+    end
+    
+    % Utilities
+    methods
+        checkSize(kf, siz, type, dim, inputName);
+        assertEditableCovariance(kf, type);
+        [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov);
+    end    
+    methods (Static)
+        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
     end
 end

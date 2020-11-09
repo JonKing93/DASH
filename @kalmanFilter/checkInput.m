@@ -1,5 +1,7 @@
 function[nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix)
-%% Error checks M, D, R, and Y and returns sizes
+%% Error checks an input as numeric, real, defined, and not empty.
+% Optionally checks for a matrix and optionally allows NaN. Returns input
+% size.
 %
 % [nDim1, nDim2, nDim3] = kalmanFilter.errorCheckInput(X, name, allowNaN, requireMatrix)
 %

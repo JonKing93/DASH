@@ -12,10 +12,9 @@ function[kf] = inflate(kf, inflateFactor)
 % kf: The updated kalman filter object
 
 % Error check
-assert( isnumeric(inflateFactor), 'inflateFactor must be numeric');
-dash.assertRealDefined(inflateFactor, 'inflateFactor');
+kf.checkInput(inflateFactor, 'inflateFactor');
 assert( isscalar(inflateFactor), 'inflateFactor must be scalar');
-assert(inflateFactor>=1, 'inflateFactor cannot be smaller than 1.');
+assert( inflateFactor>=1, 'inflateFactor cannot be smaller than 1.');
 
 % Save
 kf.inflateFactor = inflateFactor;
