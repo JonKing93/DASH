@@ -28,10 +28,7 @@ function[kf] = prior(kf, M, whichPrior)
 % kf: The updated kalmanFilter object
 
 % Error check M and get the size
-assert(isnumeric(M), 'M must be numeric.');
-dash.assertRealDefined(M, 'M');
-assert(~isempty(M), 'M cannot be empty.');
-[nState, nEns, nPrior] = size(M);
+[nState, nEns, nPrior] = kf.checkInput(M, 'M', false);
 
 % Check there are no size conflicts
 if ~isempty(kf.Y) && nEns~=kf.nEns
@@ -39,7 +36,7 @@ if ~isempty(kf.Y) && nEns~=kf.nEns
         'but M has %.f ensemble members (columns).'], kf.nEns, nEns);
 elseif ~isempty(kf.Y) && nPrior~=kf.nPrior
     error(['You previously specified observation estimates for %.f priors, ',...
-        'but M includes %.f priors (elements along dimension 3).'], kf.nPrior, nPrior);
+        'but M includes %.f priors (the length of dimension 3).'], kf.nPrior, nPrior);
 end
 
 % Note if this is an evolving prior

@@ -20,11 +20,10 @@ function[kf] = observations(kf, D, R)
 %
 % kf: The updated kalmanFilter object
 
-% Error check D and get size
-assert(isnumeric(D) & ismatrix(D), 'D must be a numeric matrix.');
-dash.assertRealDefined(D, 'D', true);
-assert(~isempty(D), 'D cannot be empty.');
-[nSite, nTime] = size(D);
+% Error check D and R. Get sizes from D
+[nSite, nTime] = kf.checkInput(D, 'D', true);
+kf.checkInput(R, 'R', true);
+assert( ~any(R(:)<=0), 'R can only include positive values.')
 
 % Check that the number of sites doesn't conflict with the estimates. Also
 % check the number of time steps doesn't conflict with an evolving prior.
@@ -35,12 +34,6 @@ elseif ~isempty(kf.whichPrior) && nTime~=kf.nTime
     error(['You previously specified an evolving prior for %.f time steps, ',...
         'but D only has %.f time steps (columns).'], kf.nTime, nTime);
 end
-
-% Error check R.
-assert(isnumeric(R) & ismatrix(R), 'R must be a numeric matrix.');
-dash.assertRealDefined(R, 'R', true);
-assert(~isempty(R), 'R cannot be empty');
-assert( ~any(R(:)<=0), 'R can only include positive values.')
 
 % Propagate R over D
 [nSite, nTime] = size(D);

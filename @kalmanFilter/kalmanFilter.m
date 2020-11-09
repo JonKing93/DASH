@@ -29,18 +29,23 @@ classdef kalmanFilter
         nTime;
     end
     
+    % Static utilities
+    methods
+        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN);
+    end
+    
     % User basic inputs
     methods
         kf = prior(kf, M, whichPrior);
         kf = observations(kf, D, R);
-        estimates;
+        kf = estimates(kf, Y);
     end
     
     % User covariance methods
     methods
         setCovariance;
         blend;
-        inflate;
+        kf = inflate(kf, inflateFactor);
         localize;
     end
     
