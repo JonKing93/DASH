@@ -28,7 +28,7 @@ function[kf] = prior(kf, M, whichPrior)
 % kf: The updated kalmanFilter object
 
 % Error check M and get the size
-[nState, nEns, nPrior] = kf.checkInput(M, 'M', false);
+[nState, nEns, nPrior] = kf.checkInput(M, 'M');
 
 % Check there are no size conflicts
 if ~isempty(kf.Y) && nEns~=kf.nEns
@@ -49,7 +49,7 @@ end
 notvar = ~exist('whichPrior','var') || isempty(whichPrior);
 if isevolving
     if notvar && (nPrior==kf.nTime || isempty(kf.nTime))
-        whichPrior = 1:nPrior;
+        whichPrior = 1:kf.nTime;
         kf.nTime = nPrior;
     elseif notvar
         error(['The number of priors (%.f) does not match the number of time ',...

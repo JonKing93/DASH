@@ -1,7 +1,7 @@
-function[nDim1, nDim2, nDim3] = checkInput(X, name, isDR)
+function[nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix)
 %% Error checks M, D, R, and Y and returns sizes
 %
-% [nDim1, nDim2, nDim3] = kalmanFilter.errorCheckInput(X, name, isDR)
+% [nDim1, nDim2, nDim3] = kalmanFilter.errorCheckInput(X, name, allowNaN, requireMatrix)
 %
 % ----- Inputs -----
 %
@@ -9,23 +9,21 @@ function[nDim1, nDim2, nDim3] = checkInput(X, name, isDR)
 %
 % name: The name of the input being checked. A string
 %
-% isDR: Scalar logical that indicates whether the input is D or R.
+% allowNaN: Scalar logical indicating whether to allow NaN values
+%
+% requireMatrix: Scalar logical indicating whether to require the input to
+%    be a matrix.
 %
 % ----- Outputs -----
 %
 % nDim1, nDim2, nDim3: The size of dimensions 1, 2 and 3 for the input.
 
 % Defaults
-if ~exist('isDR','var') || isempty(isDR)
-    isDR = false;
+if ~exist('allowNaN','var') || isempty(allowNaN)
+    allowNaN = false;
 end
-
-% Extra checks for D and R
-allowNaN = false;
-requireMatrix = false;
-if isDR
-    allowNaN = true;
-    requireMatrix = true;
+if ~exist('requireMatrix','var') || isempty(requireMatrix)
+    requireMatrix = false;
 end
 
 % Numeric

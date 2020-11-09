@@ -21,8 +21,8 @@ function[kf] = observations(kf, D, R)
 % kf: The updated kalmanFilter object
 
 % Error check D and R. Get sizes from D
-[nSite, nTime] = kf.checkInput(D, 'D', true);
-kf.checkInput(R, 'R', true);
+[nSite, nTime] = kf.checkInput(D, 'D', true, true);
+kf.checkInput(R, 'R', true, true);
 assert( ~any(R(:)<=0), 'R can only include positive values.')
 
 % Check that the number of sites doesn't conflict with the estimates. Also

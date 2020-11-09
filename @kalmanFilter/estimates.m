@@ -13,7 +13,7 @@ function[kf] = estimates(kf, Y)
 % kf: The updated kalmanFilter object
 
 % Error check Y and get the size
-[nSite, nEns, nPrior] = kf.checkInput(Y, 'Y', false);
+[nSite, nEns, nPrior] = kf.checkInput(Y, 'Y');
 
 % Check there are no size conflicts
 if ~isempty(kf.M) && nPrior~=kf.nPrior

@@ -1,6 +1,9 @@
 classdef kalmanFilter
     
     properties
+        % ID
+        name;
+        
         % Basic inputs
         X; % Priors
         D; % Observations
@@ -11,6 +14,7 @@ classdef kalmanFilter
         C; % Covariance matrix for blending
         Ycov; % Y covariance for blending
         weights; % How much to weight the covariance from the prior and the blended covariance
+        whichCov; % Which covariance to blend in each time step
         inflateFactor; % Inflation factor
         w; % Localization weights
         yloc; % Y Localization weights
@@ -29,9 +33,24 @@ classdef kalmanFilter
         nTime;
     end
     
+    % Constructor
+    methods
+        function[kf] = kalmanFilter(name)
+            %% Creates a new kalmanFilter object
+            
+            % Default
+            if ~exist('name','var') || isempty(name)
+                name = "";
+            end
+            
+            % Check name and save
+            kf.name = dash.assertStrFlag(name, 'name');
+        end
+    end                
+    
     % Static utilities
     methods
-        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN);
+        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
     end
     
     % User basic inputs
