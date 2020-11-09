@@ -19,6 +19,7 @@ classdef kalmanFilter
         inflateFactor; % Inflation factor
         w; % Localization weights
         yloc; % Y Localization weights
+        whichLoc;
         
         % Output options
         file; % Save file
@@ -75,7 +76,7 @@ classdef kalmanFilter
         kf = setCovariance(kf, C, Ycov, whichCov);
         kf = blend(kf, C, Ycov, weights, whichCov);
         kf = inflate(kf, inflateFactor);
-        localize;
+        kf = localize(kf, w, yloc, whichLoc);
     end
     
     % User output options
@@ -90,7 +91,7 @@ classdef kalmanFilter
     methods
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
-        [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov);
+        [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
     end    
     methods (Static)
         [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
