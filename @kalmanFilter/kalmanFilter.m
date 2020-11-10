@@ -1,31 +1,15 @@
 classdef kalmanFilter
     
+    % Essentials
     properties
         % ID
         name;
         
         % Basic inputs
-        X; % Priors
+        M; % Priors
         D; % Observations
         R; % Observation uncertainties
         Y; % Estimates
-        
-        % Covariance settings
-        C; % Covariance matrix
-        Ycov; % Y covariance matrix
-        setC; % Whether C is set (true), or for blending (false)
-        weights; % How much to weight the covariance from the prior and the blended covariance
-        whichCov; % Which covariance to blend in each time step
-        inflateFactor; % Inflation factor
-        w; % Localization weights
-        yloc; % Y Localization weights
-        whichLoc;
-        
-        % Output options
-        file; % Save file
-        overwrite; % Overwrite permission
-        Q; % Calculators that require deviations
-        returnDevs; % Whether to return deviations
         
         % Sizes
         nState;
@@ -34,7 +18,41 @@ classdef kalmanFilter
         nSite;
         nTime;
     end
+        
+
+        
+
     
+    % Covariance modification
+    properties        
+        % Inflation
+        inflateFactor; % Inflation factor
+        
+        % Localization
+        w; % State vector localization weights
+        yloc; % Y Localization weights
+        whichLoc; % Which localization to use in each time step
+        
+        % Blending
+        C; % State vector-proxy covariance matrix
+        Ycov; % Y covariance matrix
+        whichCov; % Which covariance to use in each time step
+        setC; % true is C was set directly, false if blending
+        weights; % Blending weights
+        end       
+    
+    % Output options
+    properties
+        return_mean; % Whether to return the posterior mean
+        
+        
+        
+        file; % Save file
+        overwrite; % Overwrite permission
+        Q; % Calculators that require deviations
+        returnDevs; % Whether to return deviations
+    end
+        
     % Constructor
     methods
         function[kf] = kalmanFilter(name)
