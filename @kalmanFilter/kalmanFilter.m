@@ -35,14 +35,14 @@ classdef kalmanFilter
         whichCov; % Which covariance to use in each time step
         setC; % true is C was set directly, false if blending
         weights; % Blending weights
-        end       
+    end       
     
     % Output options
     properties
         return_mean; % Whether to return the posterior mean
         return_devs; % Whether to return the posterior deviations
-        Q; % Posterior calculations
-        Qname; % The output name of each posterior calculation
+        Q = cell(0,1); % Posterior calculations
+        Qname = strings(0,1); % The output name of each posterior calculation
         
         
         file; % Save file
@@ -68,18 +68,17 @@ classdef kalmanFilter
             %
             % kf: The new kalman filter object
             
-            % Default
+            % Default name
             if ~exist('name','var') || isempty(name)
                 name = "";
             end
-            
-            % Check name and save
-            kf.name = dash.assertStrFlag(name, 'name');
+            kf = kf.rename(name);
         end
     end                
         
     % User basic inputs
     methods
+        kf = rename(kf, newName);
         kf = prior(kf, M, whichPrior);
         kf = observations(kf, D, R);
         kf = estimates(kf, Y);
