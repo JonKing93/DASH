@@ -97,8 +97,8 @@ classdef kalmanFilter
     methods
         kf = returnMean(kf, tf);
         kf = returnDeviations(kf, tf);
-        percentiles;
-        returnVariance;
+        kf = percentiles(kf, percs);
+        kf = returnVariance(kf, tf);
     end
     
     % Utilities
