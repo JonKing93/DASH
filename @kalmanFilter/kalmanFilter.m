@@ -18,12 +18,8 @@ classdef kalmanFilter
         nSite;
         nTime;
     end
-        
-
-        
-
-    
-    % Covariance modification
+              
+    % Covariance adjustments
     properties        
         % Inflation
         inflateFactor; % Inflation factor
@@ -44,13 +40,13 @@ classdef kalmanFilter
     % Output options
     properties
         return_mean; % Whether to return the posterior mean
-        
+        return_devs; % Whether to return the posterior deviations
+        Q; % Posterior calculations
+        Qname; % The output name of each posterior calculation
         
         
         file; % Save file
         overwrite; % Overwrite permission
-        Q; % Calculators that require deviations
-        returnDevs; % Whether to return deviations
     end
         
     % Constructor
@@ -99,10 +95,10 @@ classdef kalmanFilter
     
     % User output options
     methods
+        kf = returnMean(kf, tf);
+        kf = returnDeviations(kf, tf);
         percentiles;
-        returnMean;
         returnVariance;
-        returnDeviations;
     end
     
     % Utilities

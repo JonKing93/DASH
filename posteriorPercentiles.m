@@ -1,18 +1,28 @@
 classdef posteriorPercentiles < posteriorCalculation
     %% Calculates percentiles of a posterior ensemble.
     
+    properties (Constant)
+        outputName = "Aperc";
+        timeDim = 3;
+    end
+    
     properties
         percentiles;
     end
     
     methods
         function[obj] = posteriorPercentiles(percentiles)
-            warning('Error check percentiles');
-            obj.outputName = 'Aperc';
-        end
-        
-        function[Aperc] = calculate(obj, Adev, ~)
-            Aperc = prctile(Adev, obj.percentiles, 2);
+            
+            % Error check
+            assert(isvector(percentiles), 'percentiles must be a vector');
+            assert(isnumeric(percentiles), 'percentiles must be numeric');
+            assert( all(percentiles>=0 & percentiles<=100), 'percentiles must be between 0 and 100');
+            
+            % Save
+            obj.percentiles = percentiles;
+        end      
+        function[Aperc] = calculate(obj, Adev, Amean)
+            Aperc = prctile(Adev, obj.percentiles, 2) + permute(Amean, [1 3 2]);
         end
     end
     
