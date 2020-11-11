@@ -22,7 +22,7 @@ dash.assertScalarType(tf, 'tf', 'logical', 'logical');
 % If returning variance and it doesn't exist, add to the calculation array
 if tf && ~hasvariance
     kf.Q{end+1,1} = posteriorVariance;
-    kf.Qname(end+1) = posteriorVariance.outputName;
+    kf.Qname(end+1,1) = posteriorVariance.outputName;
     
 % If removing variance and it exists, delete from the calculation array
 elseif ~tf && hasvariance

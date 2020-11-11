@@ -4,7 +4,7 @@ classdef (Abstract) dataSource
     % implement functionality for different types of data sourcess. (For
     % example, netCDF and .mat files and opendap files).
     
-    properties
+    properties (SetAccess = private)
         source; % The data source. A filename or opendap url
         var; % (For hdf data sources) The name of the variable.
         dataType;  % The type of data in the file.

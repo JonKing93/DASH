@@ -21,8 +21,8 @@ end
 % If the user provided percentiles, add or replace in the calculations array
 isvar = exist('percs','var') && ~isempty(percs);
 if isvar
-    kf.Q{k} = posteriorPercentiles(percs);
-    kf.Qname(k) = posteriorPercentiles.outputName;
+    kf.Q{k,1} = posteriorPercentiles(percs);
+    kf.Qname(k,1) = posteriorPercentiles.outputName;
     
 % If the percentiles are empty, and percs were previously specified, then
 % delete from the calculations array

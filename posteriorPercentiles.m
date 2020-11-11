@@ -6,7 +6,7 @@ classdef posteriorPercentiles < posteriorCalculation
         timeDim = 3;
     end
     
-    properties
+    properties (SetAccess = private)
         percentiles;
     end
     

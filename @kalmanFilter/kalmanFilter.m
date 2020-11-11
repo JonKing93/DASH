@@ -1,12 +1,14 @@
 classdef kalmanFilter
     
-    % Essentials
-    properties
+    properties (SetAccess = private)
+        %% Essentials
+        
         % ID
         name;
         
         % Basic inputs
         M; % Priors
+        whichPrior; % Which prior to use in each time step
         D; % Observations
         R; % Observation uncertainties
         Y; % Estimates
@@ -17,10 +19,9 @@ classdef kalmanFilter
         nPrior;
         nSite;
         nTime;
-    end
-              
-    % Covariance adjustments
-    properties        
+    
+        %% Covariance adjustments
+        
         % Inflation
         inflateFactor; % Inflation factor
         
@@ -35,16 +36,18 @@ classdef kalmanFilter
         whichCov; % Which covariance to use in each time step
         setC; % true is C was set directly, false if blending
         weights; % Blending weights
-    end       
-    
-    % Output options
-    properties
+        
+        %% Output options
+        
+        % Basic returns
         return_mean; % Whether to return the posterior mean
         return_devs; % Whether to return the posterior deviations
+        
+        % Posterior calculations
         Q = cell(0,1); % Posterior calculations
         Qname = strings(0,1); % The output name of each posterior calculation
         
-        
+        % Saving to file
         file; % Save file
         overwrite; % Overwrite permission
     end
@@ -73,6 +76,11 @@ classdef kalmanFilter
                 name = "";
             end
             kf = kf.rename(name);
+            
+            % Return mean and variance by default
+            kf.return_mean = true;
+            kf.return_devs = false;
+            kf = kf.returnVariance(true);
         end
     end                
         
