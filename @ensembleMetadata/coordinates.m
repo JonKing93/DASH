@@ -7,7 +7,10 @@ function[latlon] = coordinates(obj, verbose)
 % latlon = obj.coordinates
 % Returns a lat-lon coordinate for each element of a state vector.
 %
-% latlon = obj.coordinates(verbose)
+% latlon = obj.coordinates(varName)
+% Returns the lat-lon coordinates for a particular variable.
+%
+% latlon = obj.coordinates(varName, verbose)
 % Specify whether or not to print notifications to the console. Default is
 % to display notifications.
 %
@@ -36,21 +39,27 @@ function[latlon] = coordinates(obj, verbose)
 %    coordinate metadata, or unrecognized coordinate format will be
 %    returned as NaN.
 
-% Default and error check
+% Default and error check for notifications
 if ~exist('verbose','var') || isempty(verbose)
     verbose = true;
-else
-    dash.assertScalarType(verbose, 'verbose', 'logical', 'logical');
 end
+dash.assertScalarType(verbose, 'verbose', 'logical', 'logical');
 notified = false;
 
-% Get the dimension names and variables. Preallocate the coordinates.
+% Get the dimension names and variable(s). Preallocate the coordinates
 [~, lonName, latName, coordName] = dash.dimensionNames;
-latlon = NaN(obj.varLimit(end), 2);
+if ~exist('varName','var') || isempty(varName)
+    v = 1:obj.nEls;
+    latlon = NaN(obj.varLimit(end), 2);
+else
+    dash.assertStrFlag(varName, 'varName');
+    v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+    latlon = NaN(obj.nEls(v), 2);
+end
 
 % Get state metadata for the variable
-for v = 1:numel(obj.nEls)
-    var = obj.variableNames(v);
+for k = 1:numel(v)
+    var = obj.variableNames(v(k));
     meta = obj.metadata.(var).state;
     
     % Check whether the metadata is stored as "lat" and "lon", or "coord"
@@ -128,10 +137,12 @@ for v = 1:numel(obj.nEls)
     end
     
     % If everything was successful, add the coordinates to the output
-    if hasdata
+    if hasdata && numel(v)==1
+        latlon = varCoords;
+    elseif hasdata
         rows = obj.varLimit(v,1):obj.varLimit(v,2);
         latlon(rows,:) = varCoords;
-    end    
+    end
 end
 
 % Format the console after messages
