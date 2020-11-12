@@ -21,7 +21,7 @@ if isempty(kf.whichLoc)
 end
 
 % Disregard prior and localization when the covariance is set directly
-if kf.setC
+if kf.setCov
     kf.whichPrior = zeros(kf.nTime, 1);
     kf.whichLoc = zeros(kf.nTime, 1);
 end

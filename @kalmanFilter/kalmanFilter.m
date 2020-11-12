@@ -124,6 +124,7 @@ classdef kalmanFilter
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
+        settings = covarianceSettings(kf);
     end    
     methods (Static)
         [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);

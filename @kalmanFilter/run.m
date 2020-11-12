@@ -3,18 +3,21 @@ function[out] = run(kf)
 
 % Check that all essential inputs are provided
 assert(~isempty(kf.M), 'You cannot run the Kalman filter because you have not provided a prior. (See the "prior" method)');
-assert(~isempty(kf.D), 'You cannot run the Kalman filter because you have not provided obervations. (See the "observations" method)');
+assert(~isempty(kf.D), 'You cannot run the Kalman filter because you have not provided observations. (See the "observations" method)');
 assert(~isempty(kf.Y), 'You cannot run the Kalman filter because you have not provide model estimates of the proxies/observations. (See the "estimates" method).');
+if isempty(kf.whichPrior)
+    kf.whichPrior = ones(kf.nTime, 1);
+end
 
 % Determine whether to update the deviations
 updateDevs = false;
-if kf.return_devs || ~issempty(kf.Q)
+if kf.return_devs || ~isempty(kf.Q)
     updateDevs = true;
 end
 
 % Preallocate
 out = struct();
-out.Amean = NaN(kf.nState, 1, kf.nTime);
+out.Amean = NaN(kf.nState, kf.nTime);
 if kf.return_devs
     out.Adev = NaN(kf.nState, kf.nEns, kf.nTime);
 end
@@ -48,9 +51,10 @@ for c = 1:nCov
     % values. (These will have the same Kalman Gain)
     gains = [sites(:,times); kf.R(:,times)]';
     [gains, ~, whichGain] = unique(gains, 'rows');
+    nGains = size(gains,1);
     
     % Get the sites, time steps, and priors associated with each gain
-    for g = 1:numel(gains)
+    for g = 1:nGains
         t = times(whichGain==g);
         s = sites(:, t(1));
         
