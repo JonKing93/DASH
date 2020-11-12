@@ -90,6 +90,7 @@ classdef kalmanFilter
         kf = prior(kf, M, whichPrior);
         kf = observations(kf, D, R);
         kf = estimates(kf, Y);
+        out = run(kf);
     end
     
     % User covariance methods
@@ -117,4 +118,5 @@ classdef kalmanFilter
     methods (Static)
         [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
     end
+    
 end
