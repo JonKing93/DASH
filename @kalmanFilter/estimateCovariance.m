@@ -2,8 +2,12 @@ function[Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev)
 %% Estimates the covariance of the proxy sites with 1. The state vector and 
 % 2. the other proxy sites in a particular time step.
 
-% Require a prior. (Can't set a covariance until specifying a prior). Get its index
+% Require a prior and estimates.
 assert(~isempty(kf.M), 'You must specify a prior before you can estimate covariance');
+if ~kf.setCov
+    assert(~isempty(kf.Y), 'You must specify Y estimates before you can estimate covariance')
+end
+
 if kf.nTime==0 || isempty(kf.whichPrior)
     p = 1;
 else

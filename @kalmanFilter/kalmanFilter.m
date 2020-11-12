@@ -103,7 +103,7 @@ classdef kalmanFilter
         kf = inflate(kf, inflateFactor);
         kf = localize(kf, w, yloc, whichLoc);
         kf = resetCovariance(kf);
-        kf = estimateCovariance(kf, t, Mdev, Ydev);
+        [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end
     
     % User output options
