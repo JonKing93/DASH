@@ -102,6 +102,8 @@ classdef kalmanFilter
         kf = blend(kf, C, Ycov, weights, whichCov);
         kf = inflate(kf, inflateFactor);
         kf = localize(kf, w, yloc, whichLoc);
+        kf = resetCovariance(kf);
+        kf = estimateCovariance(kf, t, Mdev, Ydev);
     end
     
     % User output options
@@ -110,6 +112,11 @@ classdef kalmanFilter
         kf = returnDeviations(kf, tf);
         kf = percentiles(kf, percs);
         kf = returnVariance(kf, tf);
+    end
+    
+    % Static Ensrf analysis methods
+    methods (Static)
+        [Mmean, Mdev] = decompose(M, dim);
     end
     
     % Utilities
