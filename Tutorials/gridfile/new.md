@@ -100,7 +100,7 @@ time = (1900:2000)';
 var = ["SST"; "SSS"];
 meta = gridfile.defineMetadata('coord', coord, 'time', time, 'var', var);
 ```
-If this N-dimensional array is (coord x time x var), then its size will be ( (nLon*nLat) spatial points x 1001 time steps x 2 variables).
+If this N-dimensional array is (coord x time x var), then its size will be (nLon*nLat spatial points x 1001 time steps x 2 variables).
 
 <br>
 **Important:** Although you can use whatever metadata format you prefer, the .grid file metadata should still describe the data in the data source files and use the same spacing. For example, say you have climate model output with 180 latitude points spaced at 1 degree resolution. Then you should define latitude metadata that has 180 points at 1 degree resolution. Similarly, if you have output that extends over 1000 years at monthly resolution, then you should define your time metadata so that it extends over those same 1000 years at monthly resolution.
