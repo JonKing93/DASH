@@ -23,13 +23,13 @@ end
 out.calibRatio = NaN(kf.nSite, kf.nTime);
 for q = 1:numel(kf.Q)
     name = kf.Q{q}.outputName;
-    siz = kf.Q{q}.size;
+    siz = kf.Q{q}.outputSize(kf.nState, kf.nTime, kf.nEns);
     out.(name) = NaN(siz);
 end
 
 % Decompose ensembles and note observations sites
 [Mmean, Mdev] = kf.decompose(kf.M, 2);
-[Ymean, Ydev] = decompose(kf.Y, 2);
+[Ymean, Ydev] = kf.decompose(kf.Y, 2);
 sites = ~isnan(kf.D);
 
 % Find the number of unique covariance estimates. Get the time steps
@@ -65,7 +65,7 @@ for c = 1:nCov
         
         % Cycle through each prior that has updates using this gain. Get
         % the time steps that will be updated for each prior.
-        [priors, ~, updatePrior] = unique( whichPrior(t) );
+        [priors, ~, updatePrior] = unique( kf.whichPrior(t) );
         for pk = 1:numel(priors)
             p = priors(pk);
             tu = t(updatePrior==pk);
@@ -91,6 +91,3 @@ for c = 1:nCov
 end
 
 end
-            
-        
-    

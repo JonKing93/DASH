@@ -6,7 +6,7 @@ classdef posteriorVariance < posteriorCalculation
         timeDim = 2;
     end
     
-    methods        
+    methods
         function[Avar] = calculate(~, Adev, Amean)
             
             % Sizes
@@ -17,6 +17,9 @@ classdef posteriorVariance < posteriorCalculation
             Avar = sum(Adev.^2, 2) ./ (nEns-1);
             Avar = repmat(Avar, [1 nTime]);
         end
+        function[siz] = outputSize(~, nState, nTime, ~)
+            siz = [nState, nTime];
+        end 
     end
     
 end

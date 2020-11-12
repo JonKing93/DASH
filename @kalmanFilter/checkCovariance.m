@@ -60,7 +60,7 @@ elseif ~isvar
 end
 dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, names(4));
 dash.checkIndices(whichCov, 'whichCov', nCov, sprintf('the number of %ss',type) );
-whichCov = whichCov(:)';
+whichCov = whichCov(:);
 
 end
 

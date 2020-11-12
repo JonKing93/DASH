@@ -4,11 +4,12 @@ classdef (Abstract) posteriorCalculation
     
     properties (Abstract, Constant)
         outputName; % The name of the calculated value in the output structure
-        timeDim; % The time dimension in the output quantity 
+        timeDim; % The time dimension in the output quantity
     end
     
     methods (Abstract)
         value = calculate(obj, Adev, Amean);
+        siz = outputSize(obj, nState, nTime, nEns);
     end
     
 end

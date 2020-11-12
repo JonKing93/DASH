@@ -14,28 +14,31 @@ classdef kalmanFilter
         Y; % Estimates
         
         % Sizes
-        nState;
-        nEns;
-        nPrior;
-        nSite;
-        nTime;
+        nState = 0;
+        nEns = 0;
+        nPrior = 0;
+        nSite = 0;
+        nTime = 0;
     
         %% Covariance adjustments
         
         % Inflation
+        inflateCov = false; % True or false toggle
         inflateFactor; % Inflation factor
         
         % Localization
-        w; % State vector localization weights
+        localizeCov = false; % Logical toggle
+        wloc; % State vector localization weights
         yloc; % Y Localization weights
         whichLoc; % Which localization to use in each time step
         
         % Blending
+        setCov = false; % Toggle for setting C directly
+        blendCov = false; % Toggle for blending C
         C; % State vector-proxy covariance matrix
         Ycov; % Y covariance matrix
         whichCov; % Which covariance to use in each time step
-        setC; % true is C was set directly, false if blending
-        weights; % Blending weights
+        blendWeights; % Blending weights
         
         %% Output options
         

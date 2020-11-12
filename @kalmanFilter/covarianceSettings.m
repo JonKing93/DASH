@@ -11,22 +11,22 @@ function[settings] = covarianceSettings(kf)
 
 % Defaults
 if isempty(kf.whichPrior)
-    kf.whichPrior = zeros(1, kf.nTime);
+    kf.whichPrior = zeros(kf.nTime, 1);
 end
 if isempty(kf.whichCov)
-    kf.whichCov = zeros(1, kf.nTime);
+    kf.whichCov = zeros(kf.nTime, 1);
 end
 if isempty(kf.whichLoc)
-    kf.whichLoc = zeros(1, kf.nTime);
+    kf.whichLoc = zeros(kf.nTime, 1);
 end
 
-% Remove prior and localization when the covariance is set directly
+% Disregard prior and localization when the covariance is set directly
 if kf.setC
-    kf.whichPrior = zeros(1, kf.nTime);
-    kf.whichLoc = zeros(1, kf.nTime);
+    kf.whichPrior = zeros(kf.nTime, 1);
+    kf.whichLoc = zeros(kf.nTime, 1);
 end
 
 % Create the settings matrix
-settings = [kf.whichPrior', kf.whichCov', kf.whichLoc'];
+settings = [kf.whichPrior, kf.whichLoc, kf.whichCov];
 
 end 

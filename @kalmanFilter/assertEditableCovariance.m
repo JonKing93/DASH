@@ -9,7 +9,6 @@ function[] = assertEditableCovariance(kf, type)
 % type: A string listing the type of covariance modification being made.
 %    Use for error messages.
 
-
 % Require a prior
 if isempty(kf.M)
     error(['You must specify a prior (using the "prior" command) before ',...

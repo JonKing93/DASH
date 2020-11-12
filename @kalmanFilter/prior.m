@@ -21,7 +21,7 @@ function[kf] = prior(kf, M, whichPrior)
 %
 % whichPrior: A vector with one element per time step. Each element
 %    is the index of the prior to use for that time step. The indices refer
-%    to the index along the third dimension of M.
+%    to the index along the third dimension of M. (nTime x 1)
 %
 % ----- Outputs -----
 %
@@ -48,7 +48,7 @@ end
 % If evolving, get the prior to use in each time step
 notvar = ~exist('whichPrior','var') || isempty(whichPrior);
 if isevolving
-    if notvar && (nPrior==kf.nTime || isempty(kf.nTime))
+    if notvar && (nPrior==kf.nTime || kf.nTime==0)
         whichPrior = 1:kf.nTime;
         kf.nTime = nPrior;
     elseif notvar
@@ -58,7 +58,8 @@ if isevolving
     end
     
     % Error check whichPrior
-    dash.assertVectorTypeN(whichPrior, 'numeric', kf.nTime, 'whichPrior');
+    assert(isnumeric(whichPrior) && isvector(whichPrior), 'whichPrior must be a numeric vector');
+    assert(numel(whichPrior)==kf.nTime, sprintf('You previously specified observations for %.f time steps, so whichPrior must have %.f elements', kf.nTime, kf.nTime));    
     dash.checkIndices(whichPrior, 'whichPrior', nPrior, 'the number of priors');
 
 % If a static prior, cannot select time steps
@@ -72,7 +73,7 @@ end
 
 % Set values
 kf.M = M;
-kf.whichPrior = whichPrior;
+kf.whichPrior = whichPrior(:);
 kf.nState = nState;
 kf.nEns = nEns;
 kf.nPrior = nPrior;

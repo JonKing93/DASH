@@ -14,9 +14,10 @@ function[kf] = inflate(kf, inflateFactor)
 % Error check
 kf.checkInput(inflateFactor, 'inflateFactor');
 assert( isscalar(inflateFactor), 'inflateFactor must be scalar');
-assert( inflateFactor>=1, 'inflateFactor cannot be smaller than 1.');
+assert( inflateFactor>1, 'inflateFactor must be larger than 1');
 
 % Save
 kf.inflateFactor = inflateFactor;
+kf.inflateCov = true;
 
 end

@@ -30,8 +30,8 @@ function[kf] = setCovariance(kf, C, Ycov, whichCov)
 % kf: The updated kalmanFilter object
 
 % Cannot set covariance if blending
-if ~isempty(kf.C) && ~kf.setC
-    error('Cannot set the covariance directly after specifying blending options');
+if kf.blendCov
+    error('Cannot set the covariance directly after specifying blending options. If needed, you can reset the covariance options using the "resetCovariance" command.');
 end
 
 % Only set covariance after the prior and observations are set
@@ -45,7 +45,7 @@ whichCov = kf.checkCovariance(C, Ycov, whichCov);
 
 % Save the values
 kf.C = C;
-kf.setC = true;
+kf.setCov = true;
 kf.Ycov = Ycov;
 kf.whichCov = whichCov;
 

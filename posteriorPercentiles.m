@@ -24,6 +24,8 @@ classdef posteriorPercentiles < posteriorCalculation
         function[Aperc] = calculate(obj, Adev, Amean)
             Aperc = prctile(Adev, obj.percentiles, 2) + permute(Amean, [1 3 2]);
         end
+        function[siz] = outputSize(obj, nState, nTime, ~)
+            siz = [nState, numel(obj.percentiles), nTime];
+        end
     end
-    
 end 

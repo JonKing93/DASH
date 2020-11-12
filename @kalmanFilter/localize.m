@@ -1,4 +1,4 @@
-function[kf] = localize(kf, w, yloc, whichLoc)
+function[kf] = localize(kf, wloc, yloc, whichLoc)
 %% Specifies localization weights for a Kalman Filter
 %
 % kf = kf.localize(w, yloc)
@@ -9,7 +9,7 @@ function[kf] = localize(kf, w, yloc, whichLoc)
 %
 % ----- Inputs -----
 %
-% w: State vector localization weights. A numeric matrix with the weights
+% wloc: State vector localization weights. A numeric matrix with the weights
 %    localization weights for the covariance of the state vector with the
 %    proxy/observation sites. (nState x nSite).
 %
@@ -34,13 +34,14 @@ function[kf] = localize(kf, w, yloc, whichLoc)
 kf.assertEditableCovariance('covariance localization options');
 
 % Error check the covariance localization inputs
-whichLoc = kf.checkCovariance(w, yloc, whichLoc, true);
-assert( all(w>=0,'all'), 'w cannot have negative elements.');
+whichLoc = kf.checkCovariance(wloc, yloc, whichLoc, true);
+assert( all(wloc>=0,'all'), 'w cannot have negative elements.');
 assert( all(yloc>=0,'all'), 'yloc cannot have negative elements.');
 
 % Save the values
-kf.w = w;
+kf.wloc = wloc;
 kf.yloc = yloc;
 kf.whichLoc = whichLoc;
+kf.localizeCov = true;
 
 end

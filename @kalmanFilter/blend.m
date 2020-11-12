@@ -2,19 +2,18 @@ function[kf] = blend(kf, C, Ycov, weights, whichCov)
 %% Blends ensemble covariance with a climatological covariance.
 %
 % kf = kf.blend(C, Ycov)
-% Blends a climatological covariance with the ensemble covariance. Gives
-% equal weight to the two covariances.
+% Blends a climatological covariance with the ensemble covariance using a
+% weighting of 50% climatological covarinace and 50% ensemble covariance.
 %
-% kf = kf.blend(C, Ycov, b)
+% kf = kf.blend(C, Ycov, a)
 % Specify the weight for the climatological covariance. Weights the
-% ensemble covariance by 1 and the climatological covariance by b.
+% ensemble covariance by 0.5 and the climatological covariance by b.
 %
 % kf = kf.blend(C, Ycov, weights)
 % Specify weights for both covariances.
 %
 % kf = kf.blend(C, Ycov, weights, whichCov)
-% Specify different climatological covariances to blend in different time
-% steps.
+% Specify different blending options in different time steps.
 %
 % ----- Inputs -----
 %
@@ -30,8 +29,8 @@ function[kf] = blend(kf, C, Ycov, weights, whichCov)
 %    If blending different covariances in different time steps, then an
 %    array (nSite x nSite x nCov)
 %
-% b: A weight for the climatological covariance. The weight for the
-%    ensemble covariance is set to 1. Use a scalar to use the same weight
+% a: A weight for the climatological covariance. The weight for the
+%    ensemble covariance is set to 0.5. Use a scalar to use the same weight
 %    for all specified climatological covariances. Use a column vector with
 %    one element per climatological covariance (nCov) to specify different
 %    weights for different covariances. All weights must be positive.
@@ -53,7 +52,7 @@ function[kf] = blend(kf, C, Ycov, weights, whichCov)
 % kf: The updated kalmanFilter object
 
 % Cannot blend if the covariance was already set
-if ~isempty(kf.C) && kf.setC
+if kf.setCov
     setCovarianceError;
 end
 
@@ -68,15 +67,15 @@ end
 
 % Default and error check weights
 if ~exist('weights','var') || isempty(weights)
-    weights = ones(nCov, 1);
+    weights = 0.5 * ones(nCov, 1);
 end
 [nRows, nCols] = kf.checkInput(weights, 'weights', false, true);
 assert( all(weights>0,'all'), 'blending weights must be positive');
-assert( nCols<3, 'weights cannot have more than 2 columns');
+assert( nCols<3, 'blending weights cannot have more than 2 columns');
 
 % Propagate/default weights
 if nCols == 1
-    weights = cat(2, weights, ones(size(weights)));
+    weights = cat(2, weights, 0.5*ones(size(weights)));
 end
 if nRows==1
     weights = repmat(weights, [nCov, 1]);
@@ -86,10 +85,10 @@ end
 
 % Save
 kf.C = C;
-kf.setC = false;
+kf.blendCov = true;
 kf.Ycov = Ycov;
 kf.whichCov = whichCov;
-kf.weights = weights;
+kf.blendWeights = weights;
 
 end
 
