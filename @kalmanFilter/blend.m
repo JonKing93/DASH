@@ -71,7 +71,7 @@ if ~exist('weights','var') || isempty(weights)
     weights = ones(nCov, 1);
 end
 [nRows, nCols] = kf.checkInput(weights, 'weights', false, true);
-assert( all(weights>=0,'all'), 'weights cannot be negative');
+assert( all(weights>0,'all'), 'blending weights must be positive');
 assert( nCols<3, 'weights cannot have more than 2 columns');
 
 % Propagate/default weights
