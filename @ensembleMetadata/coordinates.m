@@ -1,4 +1,4 @@
-function[latlon] = coordinates(obj, verbose)
+function[latlon] = coordinates(obj, varName, verbose)
 %% Returns lat-lon coordinate metadata down the state vector. Reads metadata
 % from the "lat", "lon", and "coord" dimensions as appropriate. Returns NaN
 % coordinates for any state vector elements that use a spatial mean or
@@ -27,6 +27,9 @@ function[latlon] = coordinates(obj, verbose)
 %
 % ----- Inputs -----
 %
+% varName: The name of a variable in a state vector ensemble. A string. Use
+%    an empty array to return coordinates for all variables.
+%
 % verbose: A scalar logical indicating whether to print notification
 %    messages to the console (true -- default) or not (false).
 %
@@ -49,7 +52,7 @@ notified = false;
 % Get the dimension names and variable(s). Preallocate the coordinates
 [~, lonName, latName, coordName] = dash.dimensionNames;
 if ~exist('varName','var') || isempty(varName)
-    v = 1:obj.nEls;
+    v = 1:numel(obj.nEls);
     latlon = NaN(obj.varLimit(end), 2);
 else
     dash.assertStrFlag(varName, 'varName');
@@ -66,7 +69,7 @@ for k = 1:numel(v)
     hasdim = false(1, 3); % lat, lon, coord
     dims = [lonName, latName, coordName];
     for d = 1:3
-        if ismember(dims(d), obj.dims{v}) && (~isscalar(meta.(dims(d))) || ~isnan(meta.(dims(d))))
+        if ismember(dims(d), obj.dims{v(k)}) && (~isscalar(meta.(dims(d))) || ~isnan(meta.(dims(d))))
             hasdim(d) = true;
         end
     end
@@ -140,7 +143,7 @@ for k = 1:numel(v)
     if hasdata && numel(v)==1
         latlon = varCoords;
     elseif hasdata
-        rows = obj.varLimit(v,1):obj.varLimit(v,2);
+        rows = obj.varLimit(v(k),1):obj.varLimit(v(k),2);
         latlon(rows,:) = varCoords;
     end
 end

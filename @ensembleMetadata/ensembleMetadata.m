@@ -163,9 +163,14 @@ classdef ensembleMetadata
         obj = rename(obj, newName);
 
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
-        meta = variable(obj, varName, dims, type, indices);
+        
+        meta = variable(obj, varName, dims, type, indices, alwaysStruct);
         meta = dimension(obj, dim, alwaysStruct);
-        [latlon] = coordinates(obj, dim, verbose);
+        meta = row(obj, varName, dims, alwaysStruct);
+        meta = column(obj, varNames, dims, alwaysStruct);
+        
+        [latlon] = coordinates(obj, varName, verbose);
+        rows = closestLatLon(obj, latlon, varName, verbose);
         rows = findRows(obj, varName, varRows);
         [nState, nEns] = sizes(obj, vars);
         
