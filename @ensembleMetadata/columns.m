@@ -1,30 +1,31 @@
-function[meta] = column(col, varNames, dims, alwaysStruct)
+function[meta] = columns(obj, cols, varNames, dims, alwaysStruct)
 %% Returns the metadata at a particular column across the ensemble.
 %
-% metaStruct = obj.column( col )
-% Returns a structure with the metadata at the specified ensemble member
+% metaStruct = obj.columns( cols )
+% Returns a structure with the metadata at the specified ensemble members
 % for each variable and dimension in the state vector ensemble.
 %
-% metaStruct = obj.column( col, varNames )
+% metaStruct = obj.columns( cols, varNames )
 % Returns metadata for the specified variables for all dimensions.
 %
-% metaStruct = obj.column( col, varNames, dimNames )
+% metaStruct = obj.columns( cols, varNames, dimNames )
 % Returns metadata for the specified variables and dimensions.
 %
-% metaStruct = obj.column( col, varNames, dimCell )
+% metaStruct = obj.columns( cols, varNames, dimCell )
 % Specify different dimensions for different variables.
 %
-% meta = obj.column( col, varName, dimName )
+% meta = obj.columns( cols, varName, dimName )
 % Return metadata for a single variable and single dimension directly as an
 % array.
 %
-% metaStruct = obj.column( col, varName, dimName, alwaysStruct )
+% metaStruct = obj.columns( cols, varName, dimName, alwaysStruct )
 % Specify to always return output as a structure.
 %
 % ----- Inputs -----
 %
-% col: A scalar integer indicating one of the columns (ensemble members) in
-%    the state vector ensemble.
+% cols: The indices of the columns (ensemble members) for which to return
+%    metadata. Either a vector of linear indices, or a logical vector. If a
+%    logical vector, must have one element per ensemble member.
 %
 % varNames: A list of variables in the state vector ensemble. A string
 %    vector or cellstring vector.
@@ -44,6 +45,11 @@ function[meta] = column(col, varNames, dims, alwaysStruct)
 %    variables and dimensions.
 %
 % meta: An array with metadata for the specified variable and dimension.
+%    Has one row per specified ensemble member.
+
+% Error check the columns
+dash.assertVectorTypeN(cols, 'numeric', [], 'cols');
+cols = dash.checkIndices(cols, 'cols', obj.nEns, 'the number of ensemble members');
 
 % Default variable names. Error check. Indices
 if ~exist('varNames','var') || isempty(varNames)
@@ -57,7 +63,7 @@ nVars = numel(v);
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims(v);
 elseif ~iscell(dims)
-    dash.assertStrList(dims, 'dims');
+    dims = dash.assertStrList(dims, 'dims');
     dims = repmat({dims}, [nVars,1]);
 else
     for d = 1:numel(dims)
@@ -77,8 +83,8 @@ meta = struct();
 
 % Get the metadata for each variable
 for k = 1:nVars
-    var = varNames(v(k));
-    indices = repmat({col}, [1, numel(dims{k})]);
+    var = varNames(k);
+    indices = repmat({cols}, [1, numel(dims{k})]);
     meta.(var) = obj.variable(var, dims{k}, 'ensemble', indices, true);
 end
 
