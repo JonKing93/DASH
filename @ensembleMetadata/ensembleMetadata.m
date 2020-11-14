@@ -166,7 +166,7 @@ classdef ensembleMetadata
         
         meta = variable(obj, varName, dims, type, indices, alwaysStruct);
         meta = dimension(obj, dim, alwaysStruct);
-        meta = row(obj, varName, dims, alwaysStruct);
+        meta = rows(obj, rows, dims, fullStruct);
         meta = columns(obj, cols, varNames, dims, alwaysStruct);
         
         [latlon] = coordinates(obj, varName, verbose);
