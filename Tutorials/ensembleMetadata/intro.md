@@ -27,7 +27,3 @@ In some cases, you may want to use different subsets of a state vector ensemble 
 In the next few sections, we will see how to implement these tasks.
 
 [Previous](welcome)---[Next](meta-object)
-
-
-
- To do so, you will need to sort and select different ensemble members
