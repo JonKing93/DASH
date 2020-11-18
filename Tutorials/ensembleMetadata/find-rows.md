@@ -21,7 +21,7 @@ will return
 ```matlab
 rows = 1:1000
 ```
-
+<br>
 #### Tmean
 By contrast:
 ```matlab
@@ -31,7 +31,7 @@ will return
 ```matlab
 rows = 1001
 ```
-
+<br>
 #### P
 Finally,
 ```matlab
