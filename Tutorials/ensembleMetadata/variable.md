@@ -117,7 +117,7 @@ Here, indexCell is a cell vector with one element per listed dimension. Each cel
 ```matlab
 dims = ["time", "run", "lat"];
 direction = ["state", "ensemble", "state"];
-indices = { [8 20 22], [1 5 17], []};
+indices = {[8 20 22], [1 5 17], []};
 ```
 would return "time" metadata at rows 8, 20 and 22; "run" metadata for ensemble members 1, 5, and 17; and "lat" metadata for all 1000 rows of the "T" variable.
 
