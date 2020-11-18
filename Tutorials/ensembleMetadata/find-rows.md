@@ -19,6 +19,7 @@ will return
 rows = 1:1000
 ```
 
+<br>
 By contrast:
 ```matlab
 rows = ensMeta.findRows('Tmean')
@@ -26,8 +27,10 @@ rows = ensMeta.findRows('Tmean')
 will return
 ```matlab
 rows = 1001
-```, and
+```
 
+<br>
+and
 ```matlab
 rows = ensMeta.findRows('P')
 ```
@@ -54,6 +57,7 @@ rows = [1004 1006]
 ```
 because the "P" variable starts at row 1002 of the state vector.
 
+<br>
 By contrast:
 ```matlab
 rows = ensMeta.findRows("T", [3 5]);
@@ -64,6 +68,7 @@ rows = [3 5]
 ``
 because the third and fifth elements of the "T" variable are the third and fifth elements of the state vector.
 
+<br>
 The line:
 ```matlab
 rows = ensMeta.findRows("Tmean", [3 5])
