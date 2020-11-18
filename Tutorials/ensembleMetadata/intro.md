@@ -18,7 +18,7 @@ When using a state vector ensemble to estimate climate system covariance, you ma
 
 #### Example 2: Proxy System Models
 
-A common task in paleoclimate data assimilation is applying a proxy system model (PSM) to a state vector ensemble in order to generate proxy estimates for the ensemble. When doing so, you want to ensure that the PSM receives the correct climate variables as inputs. PSMs are typically for a specific proxy site, so you will often want find the climate points closest to the proxy site to use as PSM inputs. Finally, some proxy sites have a known seasonality, so you may want to use time steps from a particular season as the inputs to a PSM. You can use the ensembleMetadata module to find state vector elements that correspond to specific variables, spatial coordinates, and time steps.
+A common task in paleoclimate data assimilation is applying a proxy system model (PSM) to a state vector ensemble in order to generate proxy estimates. When doing so, you want to ensure that the PSM receives the correct climate variables as inputs. PSMs are typically for a specific proxy site, so you will often want find the climate points closest to the proxy site to use as PSM inputs. Finally, some proxy sites have a known seasonality, so you may want to use time steps from a specific season as the inputs to a PSM. You can use the ensembleMetadata module to find state vector elements that correspond to specific variables, spatial coordinates, and time steps.
 
 #### Example 3: Evolving Priors
 

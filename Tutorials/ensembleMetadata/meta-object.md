@@ -7,19 +7,19 @@ title: ensembleMetadata
 
 In the DASH framework, metadata for a state vector ensemble is stored in an ensembleMetadata object. You can then use these objects to retrieve various types of metadata. There are several ways to obtain an ensembleMetadata object. Throughout this tutorial, I will use "ensMeta" to refer to an ensemble metadata object. However, feel free to use a different name in your own code.
 
-### *Before* building an ensemble
+#### Before building an ensemble
 If you would like to examine the metadata for a state vector *before* building an ensemble, you can also call "ensembleMetadata" directly on a stateVector object.
 ```matlab
 ensMeta = ensembleMetadata(sv);
 ```
 
-### stateVector.build
+#### stateVector.build
 When you use the "stateVector.build" method, an ensembleMetadata object for the newly built ensemble is provided as the second output:
 ```matlab
 [~, ensMeta] = sv.build(100);
 ```
 
-### stateVector.add
+#### stateVector.add
 When you use the "stateVector.add" method, an ensembleMetadata object for the full ensemble is provided as the second output. For example:
 ```matlab
 [X, ~, sv] = sv.build(100);
@@ -27,14 +27,14 @@ When you use the "stateVector.add" method, an ensembleMetadata object for the fu
 ```
 will return the ensembleMetadata object for the 105 member ensemble.
 
-### Saved ensemble
+#### Saved ensemble
 If you have a state vector ensemble saved in a .ens file, you can obtain an ensembleMetadata object for the saved ensemble by creating an ensemble object and using the "metadata" command.
 ```matlab
 ens = ensemble('my-ensemble.ens');
 ensMeta = ens.metadata;
 ```
 
-### Loaded ensemble
+#### Loaded ensemble
 If you are only loading a subset of a state vector ensemble from a .ens file, you can get the ensembleMetadata object for the loaded subset using the "loadedMetadata" command. For example:
 ```matlab
 ens = ensemble('my-ensemble.ens');
