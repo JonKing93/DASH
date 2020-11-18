@@ -50,6 +50,7 @@ Some ensembleMetadata methods return metadata for a particular variable, rather 
 stateVectorRows = ensMeta.findRows(varName, variableRows);
 ```
 
+#### P
 Continuing the example, let's say I want to apply a PSM to my state vector. I determine that I need the third and fifth elements of the "P" variable to run the PSM. I could do:
 ```matlab
 rows = ensMeta.findRows("P", [3 5]);
@@ -61,6 +62,7 @@ rows = [1004 1006]
 because the "P" variable starts at row 1002 of the state vector.
 
 <br>
+#### T
 By contrast:
 ```matlab
 rows = ensMeta.findRows("T", [3 5]);
@@ -68,10 +70,11 @@ rows = ensMeta.findRows("T", [3 5]);
 would return
 ```matlab
 rows = [3 5]
-``
+```
 because the third and fifth elements of the "T" variable are the third and fifth elements of the state vector.
 
 <br>
+#### Tmean
 The line:
 ```matlab
 rows = ensMeta.findRows("Tmean", [3 5])
