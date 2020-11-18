@@ -10,7 +10,7 @@ In previous tutorials, we saw how to use the gridfile, stateVector, and ensemble
 2. To estimate climate system covariance, and
 3. As inputs to proxy system models to generate proxy estimates.
 
-For each of these cases, it is often useful to extract metadata for elements down the state vector and across the ensemble. You can use the ensembleMetadata class to facilitate extracting such metadata. Several examples are provided to illustrate common use cases.
+In each of these cases, it is useful to extract the metadata of elements down the state vector or across the ensemble. You can use the ensembleMetadata class to facilitate extracting such metadata. Several examples are provided to illustrate common use cases.
 
 #### Example 1: Covariance Localization
 
