@@ -49,7 +49,7 @@ Some ensembleMetadata methods return metadata for a particular variable, rather 
 ```matlab
 stateVectorRows = ensMeta.findRows(varName, variableRows);
 ```
-
+<br>
 #### P
 Continuing the example, let's say I want to apply a PSM to my state vector. I determine that I need the third and fifth elements of the "P" variable to run the PSM. I could do:
 ```matlab
