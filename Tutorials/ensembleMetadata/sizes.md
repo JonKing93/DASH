@@ -23,7 +23,7 @@ You can use the "sizes" command to return the size of the full state vector ense
 ```matlab
 [nState, nEns] = ensMeta.sizes;
 ```
-where nState is the number of elements down the state vector, and nEns is the number of ensemble members across the ensemble. Continuing the example, say the "T" variable has 1000 elements, the "Tmean" variable has 1 element, and the "P" variable has 1000 elements. Let's also say there are 75 ensemble members in my ensemble. In this case, `nState = 2001` and `nEns = 75`.
+where nState is the number of elements down the state vector, and nEns is the number of ensemble members across the ensemble. Continuing the example, say the "T" variable has 1000 elements, the "Tmean" variable has 1 element, and the "P" variable has 1000 elements. Let's also say there are 75 ensemble members in my ensemble. In this case, nState will equal 2001 and nEns will equal 75.
 
 ### Variable Sizes
 You can also use the "sizes" command to return the size of a particular variable. Here, the syntax is:
@@ -34,7 +34,7 @@ where varName is the name of a particular variable, and nState is the number of 
 ```matlab
 [nState, nEns] = ensMeta.sizes("P");
 ```
-then nState will equal 1000, because the "P" variable has 1000 elements. The value of nEns will still be 75.
+then nState will equal 1000, because the "P" variable has 1000 state vector elements. The value of nEns will still be 75.
 
 You can also return the sizes of multiple variables at once by providing a string vector of variable names as the input to the "sizes" command.
 ```matlab
