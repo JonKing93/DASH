@@ -1,9 +1,9 @@
 ---
 layout: simple_layout
-title: Summary Information
+title: Variables and Sizes
 ---
 
-# Summary Information
+# Variables and Sizes
 
 You can use an ensembleMetadata object to return summary information about the variables in a state vector ensemble, and their sizes. This can be useful when preallocating memory, and also as a basic check that variables are the correct sizze.
 
@@ -51,4 +51,4 @@ nState = [1000; 1; 1000];
 ```
 The value of nEns will still be 75.
 
-[Previous](meta-object)---[Next](variable)
+[Previous](meta-object)---[Next](find-rows)
