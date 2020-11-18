@@ -5,32 +5,50 @@ title: Summary Information
 
 # Summary Information
 
-One of the simplest uses of an ensembleMetadata object is to return summary information about the size and variables in an ensemble.
+You can use an ensembleMetadata object to return summary information about the variables in a state vector ensemble, and their sizes. This can be useful when preallocating memory, and also as a basic check that variables are the correct sizze.
 
 ### Variable Names
-You can return a list of variables in the ensemble using the "variableNames" command.
+You can return a list of the variables in a state vector ensemble using the "variableNames" command.
 ```matlab
 varNames = ensMeta.variableNames
 ```
-Here varNames will be a string vector listing each of the variables in the ensemble in the order that they occur down the state vector.
 
-### Sizes
-You can also use an ensembleMetadata object to return the size of the ensemble, or the size of specific variables using the "sizes" command. To return the size of the entire ensemble, use:
+Here, varNames is a string vector listing the variables in the ensemble in the order that they occur down the state vector. For example, say I have a state vector with a "T" variable, a "Tmean" variable, and a "P" variable. Then the output of the "variableNames" command will be:
 ```matlab
-[nState, nEns] = obj.sizes
+varNames = ["T"; "Tmean"; "P"];
 ```
-Here nState and nEns are scalar integers. nState reports the number of elements in the state vector, which is the number of rows in the ensemble. nEns reports the number of ensemble members, which is the number of columns.
 
-You can also use the "sizes" method to return the size of specific variables in the state vector, using the syntax:
+### Ensemble Size
+You can use the "sizes" command to return the size of the full state vector ensemble. Here, the syntax is:
 ```matlab
-[nState, nEns] = obj.sizes( varNames )
+[nState, nEns] = ensMeta.sizes;
 ```
-Here varNames is a string vector containing names of certain variables in the state vector (in no particular order). nState is a vector of integers with one element per listed variable; each element corresponds to the number of state vector elements for the corresponding variable. nEns remains a scalar integer.
+where nState is the number of elements down the state vector, and nEns is the number of ensemble members across the ensemble. Continuing the example, say the "T" variable has 1000 elements, the "Tmean" variable has 1 element, and the "P" variable has 1000 elements. Let's also say there are 75 ensemble members in my ensemble. In this case, nState will equal 2001 and nEns will equal 75.
 
-For example, if I have a state vector consisting of the variables "T", "Tmean", and "P" in order, and use:
+### Variable Sizes
+You can also use the "sizes" command to return the size of a particular variable. Here, the syntax is:
 ```matlab
-[nState, nEns] = obj.sizes("P", "T");
+[nState, nEns] = ensMeta.sizes( varName )
 ```
-then nState will have two elements. The first element will list the number of state vector elements (rows) for the "P" variable, and the second element will list the number of state vector elements for the "T" variable.
+where varName is the name of a particular variable, and nState is the number of state vector elements for that variable. Continuing the example, if I do:
+```matlab
+[nState, nEns] = ensMeta.sizes("P");
+```
+then nState will equal 1000, because the "P" variable has 1000 elements. The value of nEns will still be 75.
+
+You can also return the sizes of multiple variables at once by providing a string vector of variable names as the input to the "sizes" command.
+```matlab
+[nState, nEns] = ensMeta.sizes( varNames );
+```
+In this case, nState will be a vector with one element per listed variable. Each element indicates the number of state vector elements for that variable. Continuing the example, if I do:
+```matlab
+varNames = ["T", "Tmean", "P"]
+[nState, nEns] = ensMeta.sizes( varNames );
+```
+then the output nState will be:
+```matlab
+nState = [1000; 1; 1000];
+```
+The value of nEns will still be 75.
 
 [Previous](meta-object)---[Next](variable)
