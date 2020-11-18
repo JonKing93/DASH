@@ -51,7 +51,7 @@ stateVectorRows = ensMeta.findRows(varName, variableRows);
 ```
 <br>
 #### P
-Continuing the example, let's say I want to apply a PSM to my state vector. I determine that I need the third and fifth elements of the "P" variable to run the PSM. I could do:
+Continuing the example, let's say I want to apply a PSM to my state vector. I determine that I need the third and fifth rows of the "P" variable to run the PSM. I could do:
 ```matlab
 rows = ensMeta.findRows("P", [3 5]);
 ```
@@ -71,7 +71,7 @@ would return
 ```matlab
 rows = [3 5]
 ```
-because the third and fifth elements of the "T" variable are the third and fifth elements of the state vector.
+because the third and fifth rows of the "T" variable are the third and fifth rows of the state vector.
 
 <br>
 #### Tmean
@@ -79,6 +79,6 @@ The line:
 ```matlab
 rows = ensMeta.findRows("Tmean", [3 5])
 ```
-would return an error because the "Tmean" variable only has a single element.
+would return an error because the "Tmean" variable only has a single row.
 
 [Previous](sizes)---[Next](variable)

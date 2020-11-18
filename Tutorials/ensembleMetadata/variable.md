@@ -4,98 +4,133 @@ title: Variable Metadata
 ---
 
 # Variable Metadata
-You can use the "variable" method to retrieve metadata for the dimensions of a particular variable in a state vector ensemble.
-```matlab
-metaStruct = ensMeta.variable( varName )
-```
-Here varName is the name of a particular variable in the state vector. metaStruct is a structure whose fields are the dimensions for the variable. For state dimensions, the contents of the field will be a metadata matrix with one row per state vector element for the variable. For ensemble dimensions, the contents of the field will be a metadata matrix with one row per ensemble member.
 
-For example, say I have a state vector ensemble with variables "T", "Tmean", and "P" and 100 ensemble members. Let's say the state vector for "P" has 3000 elements. The ensemble dimensions are "time" and "run", and the state dimensions are "lat" and "lon". Then for:
+The "variable" command is one of the most versatile methods for working with ensemble metadata. As the name suggests, this command returns the metadata for a variable in the state vector. In the most basic use of the command, provide the name of a variable as the only input:
 ```matlab
-metaStruct = ensMeta.variable("P")
-```
-metaStruct will contain fields "lat", "lon", "time", and "run". The contents of the "lat" and "lon" fields will be matrices with 3000 rows. The contents of the "time" and "run" fields will be matrices with 100 rows.
-
-### State Dimension Means
-If you take a mean over a state dimension, then the metadata for the mean will be propagated along the third dimension. Consider the "Tmean" variable from the previous example. Let's say I took a mean over its "lat" and "lon" dimensions, which have 50 and 100 elements respectively. The "Tmean" variable has a single state vector element (that of the global mean). If I do:
-```matlab
-metaStruct = ensMeta.variable("Tmean");
-```
-then the contents of the "lat" field in metaStruct will be a (1 x nLatCols x 50) array. One row for the single state vector element, however many columns are used in its metadata format, and 50 elements used in the mean. Similarly, the contents of the "lon" field would be a (1 x nLonCols x 100) array.
-
-### Specify dimensions
-You can specify which dimensions to retrieve metadata for using the second input.
-```matlab
-metaStruct = ensMeta.variable(varName, dims)
-```
-Here, dims is a string vector listing the dimensions of interest. Using my previous example:
-```matlab
-metaStruct = ensMeta.variable("P", ["lat","time"])
-```
-metaStruct will only contain two fields: "lat" and "time".
-
-If you only provide a single dimension, then the "variable" command will return the metadata directly.
-```matlab
-meta = ensMeta.variable(varName, dim);
+meta = ensMeta.variable( varName )
 ```
 
-Using the previous example:
+In this case, "meta" is a structure whose fields are the different dimensions of the variable. By default, the "variable" method will return metadata down the state vector for [state dimensions](..\stateVector\concepts#state-and-ensemble-dimensions), and metadata across the ensemble for [ensemble dimensions](..\stateVector\concepts#state-and-ensemble-dimensions).
+
+For example, consider a state vector ensemble that has 75 ensemble members, and a "T" variable with 1000 state vector elements. Let's say that "time" and "run" are ensemble dimensions, and that the spatial "lat" and "lon" dimensions are state dimensions. In this case:
 ```matlab
-lat = ensMeta.variable("P", "lat");
+meta = ensMeta.variable(varName)
 ```
-would return a matrix with 3000 rows directly. Similarly,
+meta will be a structure with a "lat", "lon", "time", and "run" field. The contents of the "lat" and "lon" fields will each have 1000 rows, each corresponding to a state vector element for the variable. The "time" and "run" fields will each have 75 rows, each corresponding to an ensemble member.
+
+### Return metadata for specific dimensions
+
+You can use the second input to specify which dimensions should have their metadata returned.
 ```matlab
-time = ensMeta.variable("P", "time");
+meta = ensMeta.variable(varName, dims)
 ```
-would return a matrix with 100 rows directly.
 
-### Specify metadata direction
-
-You can use the third input to specify whether to return metadata from down the state vector or across the ensemble for any particular dimension, via:
+If you list a single dimension, then the method will return the metadata directly as an array, rather than as a structure. Continuing the example, in the following line:
 ```matlab
-metaStruct = ensMeta.variable(varName, dims, direction)
+timeMeta = ensMeta.variable("T", 'time')
 ```
- This is most commonly used for an ensemble dimension with a sequence. In this case, the dimension has (sequence) metadata down the state vector, but the "variable" command returns the metadata across the ensemble by default.
-
-To specify metadata down the state vector, direction may be any of: "state", "s", "down", "d", "rows", "r", or true. To specify metadata across the ensemble, direction may be any of: "ensemble", "ens", "e", "across", "a", columns", "c", or false. If direction is a string scalar or logical scalar, then the same direction will be used for all dimensions. If you want to specify different directions for different dimensions, you can use a string vector or logical vector with one element per listed dimension.
-
-Using my previous example, let's say that the "time" dimension uses a 3 element sequence with sequence metadata:
+timeMeta will be an array with 75 rows. Similarly, in the line:
 ```matlab
-seqMeta = ["May"; "June"; "July"];
+latMeta = ensMeta.variable('T', 'lat')
 ```
-In this case,
+latMeta will be an array with 1000 rows. (If this complicates your code, you can use the [fifth inputINSERT LINK]() to always return a structure).
+
+If you list multiple dimensions, then the method will return a metadata structure. For example:
 ```matlab
-meta = ensMeta.variable("P", "time", "state");
+dims = ["time", "lat", "lon"];
+meta = ensMeta.variable("T", dims)
 ```
-will return a string vector with 3000 elements. Each element will either be "May", "June", or "July".
+in this case, "meta" will be a structure with a "time", "lat", and "lon" field.
 
-If you request metadata across the ensemble for a state dimension, the "variable" command will return an empty array. If you request metadata down the state vector for an ensemble dimension without a sequence, the method will return a NaN vector with one element per state vector element for the variable.
+# Down the state vector vs. across the ensemble
 
-### Metadata at specific indices
+By default, the "variable" method will return metadata down the state vector for [state dimensions](..\stateVector\concepts#state-and-ensemble-dimensions) and across the ensemble for [ensemble dimensions](..\stateVector\concepts#state-and-ensemble-dimensions). However, you can use the third input to select the metadata direction for each variable. This is most commonly used when an ensemble dimension has a sequence and you want the metadata for the sequence down the state vector. Continuing the example, say the "time" dimension for the "T" variable has a sequence of four months (May, June, July, and August). The "time" dimension is an ensemble dimension, but it also has metadata down the state vector indicating the month for each element of "T". If I have a proxy system model that requires May temperatures to run, then I will want to extract the "time" metadata down the state vector.
 
-You can use the fourth input to specify specific indices at which to return metadata for a dimension.
+To specify metadata direction, use the following syntax:
+```matlab
+meta = ensMeta.variable(varName, dims, direction);
+```
+where "direction" is a string or logical that indicates whether to return metadata down the state vector or across the ensemble.
+
+To return metadata down the state vector, you can use any of the following options:
+```matlab
+meta = ensMeta.variable(varName, dims, 'state')
+meta = ensMeta.variable(varName, dims, 's')
+meta = ensMeta.variable(varName, dims, 'down')
+meta = ensMeta.variable(varName, dims, 'd')
+meta = ensMeta.variable(varName, dims, 'rows')
+meta = ensMeta.variable(varName, dims, 'r')
+meta = ensMeta.variable(varName, dims, true)
+```
+
+To return metadata across the ensemble, you can use any of the following options:
+```matlab
+meta = ensMeta.variable(varName, dims, 'ensemble')
+meta = ensMeta.variable(varName, dims, 'ens')
+meta = ensMeta.variable(varName, dims, 'e')
+meta = ensMeta.variable(varName, dims, 'across')
+meta = ensMeta.variable(varName, dims, 'a')
+meta = ensMeta.variable(varName, dims, 'columns')
+meta = ensMeta.variable(varName, dims, 'c')
+meta = ensMeta.variable(varName, dims, false)
+```
+
+To specify different directions for different dimensions, you can use a string or logical vector with one element per listed dimension. For example:
+```matlab
+dims = ["time", "run", "lat", "lon"];
+
+% Using a string vector
+direction = ["state", "ensemble", "state", "state"];
+meta = ensMeta.variable('T', dims, direction)
+
+% Using a logical vector
+direction = [true, false, true, true];
+meta = ensMeta.variable('T', dims, direction);
+```
+would return metadata down the state vector for the "time", "lat", and "lon" dimensions, and metadata across the ensemble for the "run" dimension.
+
+### Query specific rows or columns
+
+You can use the fourth input to query the metadata at specific columns across the ensemble, or at specific rows for the variable down the state vector.
 ```matlab
 meta = ensMeta.variable(varName, dim, direction, indices);
 ```
-Here, indices may either be:
-1. A vector of linear indices, or
-2. A logical vector with either one element per state vector element, or one element per ensemble members, as appropriate.
+Here indices is a vector of linear indices for specific columns or rows in the variable. Alternatively, indices can be a logical vector with one element per ensemble member or state vector element, as appropriate.
 
-For example,
+For example, if I wanted to return time metadata for ensemble members 1, 5, and 17, I could do:
 ```matlab
-lat = ensMeta.variable("P", "lat", "state", [1 6 100 7]);
+meta = ensMeta.variable('T', 'time', 'ensemble', [1 5 17]);
 ```
-would return a matrix with 4 rows. The first row would be the latitude metadata for the first element of the "P" variable down the state vector, the second element for the sixth element of "P" down the state vector, and next the 100th and then 7th elements down the state vector.
 
-To specify indices for multiple dimensions, group the indices in a cell.
+Similarly, if I wanted to return latitude metadata for rows 8, 20, and 22, then I could do:
 ```matlab
-metaStruct = ensMeta.variable(varName, dims, direction, indexCell);
+meta = ensMeta.variable('T', 'lat', 'state', [8 20 22]);
 ```
-The order of indices must match the order in which dimensions are listed in dims. Note that you can use an empty array to return all metadata for a dimension. For example:
-```matlab
-indexCell = {[1 3 8], [3 4 5 6], []};
-metaStruct = ensMeta.variable("P", ["lat","lon","time"], [], indexCell);
-```
-will return latitude metadata for the first, third, and eighth elements down the state vector; longitude metadata for the third through sixth elements down the state vector; and all time metadata across the ensemble.
 
-[Previous](sizes)---[Next](dimension)
+It's important to note that rows are queried relative to a specific variable, and **not** relative to the full state vector. The previous line would query the metadata at rows 8, 20, and 22 of the "T" variable, which are not necessarily rows 8, 20, and 22 of the full state vector.
+
+If you want to query multiple dimensions at once, the syntax becomes:
+```matlab
+meta = ensMeta.variable(varName, dims, direction, indexCell)
+```
+Here, indexCell is a cell vector with one element per listed dimension. Each cell element contains the queried indices for each listed dimension. Use an empty array to return metadata at all points along a dimension. For example:
+```matlab
+dims = ["time", "run", "lat"];
+direction = ["state", "ensemble", "state"];
+indices = { [8 20 22], [1 5 17], []};
+```
+would return "time" metadata at rows 8, 20 and 22; "run" metadata for ensemble members 1, 5, and 17; and "lat" metadata for all 1000 rows of the "T" variable.
+
+### Always return a structure
+
+When scripting, it can be useful to always return outputs in a common form. Consequently, you may want to require the "variable" command to output a structure even when returning metadata for a single dimension. You can do this using the fifth input:
+```matlab
+meta = ensMeta.variable(varName, dims, direction, indices, alwaysStruct)
+```
+Here, alwaysStruct is a logical indicating whether the output should always be a structure. Set it to true to prevent metadata for a single dimension from being returned directly as an array. For example, in the following line:
+```matlab
+meta = ensMeta.variable('T', 'time', 'ensemble', [], true)
+```
+"meta" will be a structure with a single field ("time"), rather than an array.
+
+[Previous](find-rows)---[Next](dimension)
