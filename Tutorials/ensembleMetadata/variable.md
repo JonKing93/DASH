@@ -33,7 +33,7 @@ timeMeta will be an array with 75 rows. Similarly, in the line:
 ```matlab
 latMeta = ensMeta.variable('T', 'lat')
 ```
-latMeta will be an array with 1000 rows. (If this complicates your code, you can use the [fifth inputINSERT LINK]() to always return a structure).
+latMeta will be an array with 1000 rows. (If this complicates your code, you can use the [fifth input](#always-return-a-structure) to always return a structure).
 
 If you list multiple dimensions, then the method will return a metadata structure. For example:
 ```matlab
