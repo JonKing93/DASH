@@ -43,9 +43,10 @@ rows = 1002:2001
 ```
 because those are the state vector rows corresponding to each variable.
 
+<br>
 # Rows *within* a variable
 
-Some ensembleMetadata methods return metadata for a particular variable, rather than the entire state vector. You can use this metadata to find specific rows within that variable, but will usually need to re-locate the variable's elements within the full state vector. You can provide rows *within* a variable as the second input of the "findRows" command to determine their location in the full state vector.
+Some ensembleMetadata methods return metadata for a particular variable, rather than the entire state vector. You can use this metadata to find specific rows within that variable, but will usually need to locate the variable's rows within the full state vector. If you provide rows within a variable as the second input, the "findRows" command will return their location in the full state vector.
 ```matlab
 stateVectorRows = ensMeta.findRows(varName, variableRows);
 ```
