@@ -12,7 +12,7 @@ rows = ensMeta.findRows(varName)
 
 To illustrate, let's return to example state vector ensemble that consists in order of: a "T" variable with 1000 state vector elements, a "Tmean" variable with 1 element, and a "P" variable with 1000 elements.
 
-###### T
+#### T
 In this example, the line:
 ```matlab
 rows = ensMeta.findRows('T')
@@ -22,7 +22,7 @@ will return
 rows = 1:1000
 ```
 
-###### Tmean
+#### Tmean
 By contrast:
 ```matlab
 rows = ensMeta.findRows('Tmean')
@@ -32,7 +32,7 @@ will return
 rows = 1001
 ```
 
-###### P
+#### P
 Finally,
 ```matlab
 rows = ensMeta.findRows('P')
