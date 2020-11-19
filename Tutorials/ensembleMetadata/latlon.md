@@ -56,4 +56,4 @@ meta = ensMeta.latlon([], false)
 ```
 would return coordinates for all variables without displaying console notifications.
 
-[Previous](dimension)---[Next](closestLatLon)
+[Previous](dimension)---[Next](closest)
