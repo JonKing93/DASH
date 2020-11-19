@@ -14,7 +14,7 @@ In this case, "meta" is a structure whose fields are the different dimensions of
 
 For example, consider a state vector ensemble that has 75 ensemble members, and a "T" variable with 1000 state vector elements. Let's say that "time" and "run" are ensemble dimensions, and that the spatial "lat" and "lon" dimensions are state dimensions. In this case:
 ```matlab
-meta = ensMeta.variable(varName)
+meta = ensMeta.variable("T")
 ```
 meta will be a structure with a "lat", "lon", "time", and "run" field. The contents of the "lat" and "lon" fields will each have 1000 rows, each corresponding to a state vector element for the variable. The "time" and "run" fields will each have 75 rows, each corresponding to an ensemble member.
 
