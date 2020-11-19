@@ -54,6 +54,6 @@ Here, "verbose" is a logical indicating whether to display console notifications
 ```matlab
 meta = ensMeta.latlon([], false)
 ```
-would return coordinates for all variables without displaying console notifications.
+would return coordinates for the entire state vector without displaying console notifications.
 
 [Previous](dimension)---[Next](closest)

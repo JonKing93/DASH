@@ -9,23 +9,23 @@ Sometimes, you may want to obtain the metadata for a particular row of a state v
 ```matlab
 meta = ensMeta.rows( rows );
 ```
-Here, "rows" is either a vector of linear indices, or a logical vector with one element per state vector row. The output "meta" will hold the metadata at the specified rows. The form of "meta" will differ depending on whether you specify rows from a single state vector variable or across multiple state vector variables. If the rows are from a single variable, then "meta" will be a structure. The first field of "meta" is named "stateVectorVariable" and lists the name of the variable covered by the rows. The remaining fields are the dimensions of the variable. The contents of each field are the metadata for the dimension at the specified rows. For example, say I have a state vector that includes a "T" variable with 1000 state vector elements, a "Tmean" variable with 1 element, and a "P" variable with 1000 elements. Each of the variables has a "lat", "lon", and "time" dimension. Let's say I query the metadata at rows 1 through 5 using the line:
+Here, "rows" is either a vector of linear indices, or a logical vector with one element per state vector row. The output "meta" will hold the metadata at the specified rows. The form of "meta" will differ depending on whether you specify rows from a single state vector variable or across multiple state vector variables. If the rows are from a single variable, then "meta" will be a structure. The first field of "meta" is named "stateVectorVariable" and lists the name of the variable covered by the rows. The remaining fields are the dimensions of the variable. The contents of each field are the metadata for the dimension at the specified rows. For example, say I have a state vector that includes a "T" variable with 1000 state vector elements, a "Tmean" variable with 1 element, and a "P" variable with 1000 elements. Each of the variables has a "lat", "lon", and "time" dimension. Let's say I query the metadata at rows 1 through 5 using:
 ```matlab
 rows = 1:5;
 meta = ensMeta.rows(rows);
 ```
 All 5 queried rows are from the "T" variable, so the output "meta" will be a structure with a "stateVectorVariable" field that holds the string "T", a "lat" field with latitude metadata at rows 1 through 5, a "lon" field with longitude metadata at the 5 rows, and a "time" field with time metadata at the 5 rows.
 
-If the queried rows span multiple variables, then "meta" will be a structure whose fields are the names of the variables spanned by the rows. The field for each variable is also a structure. Each variable's substructure will have a field named "rows" that indicates which of the queried rows are in the variable. Each substructure will also have a field for each dimension of the variable. Continuing the previous example, let's say I query rows 1 through 5 and 1002 through 1012 using the line:
+If the queried rows span multiple variables, then "meta" will be a structure whose fields are the names of the variables spanned by the rows. The field for each variable is also a structure. Each variable's substructure will have a field named "rows" that indicates which of the queried rows are in the variable. Each substructure will also have a field for each dimension of the variable. Continuing the previous example, let's say I query rows 1 through 5 and 1002 through 1012 using:
 ```matlab
 rows = [1:5, 1002:1012];
 meta = ensMeta.rows(rows);
 ```
-The first five queried rows are from the "T" variable, while the last 11 rows are from the "P" variable. In this case "meta" will be a structure with two fields named "T" and "P", each of which holds a structure. The "T" structure has a field named "rows" with contents
+The first five queried rows are from the "T" variable, while the last 11 rows are from the "P" variable. In this case "meta" will be a structure with two fields named "T" and "P", each of which holds a structure. The "T" structure has a field named "rows" with contents:
 ```matlab
 meta.T.rows = [1; 2; 3; 4; 5];
 ```
-It also has a "lat", "lon", and "time" field
+It also has a "lat", "lon", and "time" field:
 ```matlab
 meta.T.lat
 meta.T.lon
@@ -96,7 +96,7 @@ Here, fullStruct is a logical that indicates that output should always use the n
 rows = 1:5;
 meta = ensMeta.rows(rows, 'lat', true);
 ```
-will return "meta" as a structure with a "T" field rather than as an array of latitude metadata.
+will return "meta" as a structure with a "T" field rather than as an array of latitude metadata. Note that the "fullStruct" argument cannot be used when setting the second input to 0. In this case, the method will always return a string vector of variable names.
 
 <br>
 Alright, that's the tutorial. You can find more examples of how to use ensembleMetadata objects in the PSM and kalmanFilter tutorials. If you are interested in concatenating ensembles, removing ensemble members or variables, or exercising greater control over metadata queries, check out the [ensembleMetadata advanced topics](advanced).
