@@ -53,4 +53,26 @@ ens = ens.useMembers([1 5 17]);
 ```
 to load both the subset of the ensemble, and the metadata for the subset, with one command.
 
+# Name the metadata
+When you create an ensembleMetadata object from a stateVector, you can optionally give the metadata an identifying name using the second input:
+```matlab
+ensMeta = ensembleMetadata(sv, name);
+```
+
+For example, I could do:
+```matlab
+ensMeta = ensembleMetadata(sv, 'My demo ensemble')
+```
+The name of ensembleMetadata can be accessed using the "name" command. Continuing the example:
+```matlab
+ensMeta.name
+```
+would return "My demo ensemble".
+
+You can rename the ensembleMetadata at any point using the "rename" command and providing a new name as the only input. For example
+```matlab
+ensMeta.rename('A new name');
+```
+will change the name of the metadata to "A new name".
+
  [Previous](intro)---[Next](sizes)

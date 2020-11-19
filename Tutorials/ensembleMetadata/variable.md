@@ -133,4 +133,7 @@ meta = ensMeta.variable('T', 'time', 'ensemble', [], true)
 ```
 "meta" will be a structure with a single field ("time"), rather than an array.
 
-[Previous](find-rows)---[Next](workflow)
+<br>
+The "variable" and "findRows" methods are sufficient to find metadata at any point in a state vector ensemble. However, some metadata tasks recur much more frequently than others. In the next few sections, we will see how to use the ensembleMetadata class to facilitate the use of covariance localization and proxy system models.
+
+[Previous](find-rows)---[Next](latlon)
