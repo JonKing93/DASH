@@ -133,4 +133,4 @@ meta = ensMeta.variable('T', 'time', 'ensemble', [], true)
 ```
 "meta" will be a structure with a single field ("time"), rather than an array.
 
-[Previous](find-rows)---[Next](dimension)
+[Previous](find-rows)---[Next](workflow)

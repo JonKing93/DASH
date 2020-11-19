@@ -82,4 +82,4 @@ rows = ensMeta.findRows("Tmean", [3 5])
 ```
 would return an error because the "Tmean" variable only has a single row.
 
-[Previous](sizes)---[Next](variable)
+[Previous](regrid)---[Next](variable)
