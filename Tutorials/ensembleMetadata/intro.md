@@ -36,6 +36,6 @@ In this tutorial, we will review some of the most commonly used features of ense
 5. Rows associated with climate variable points closest to a proxy sites, and
 6. Sanity checks for metadata.
 
-These topics highlight the most common uses of ensembleMetadata, but the class implements other features as well. In particular, if you are interested in concatenating ensembles, removing variables or ensemble members, or exercises more fine control over metadata queries, check out the [Advanced Topics page](advanced).
+These topics highlight the most common uses of ensembleMetadata, but the class implements other features as well. In particular, if you are interested in concatenating ensembles, removing variables or ensemble members, or exercising greater control over metadata queries, check out the [Advanced Topics page](advanced).
 
 [Previous](welcome)---[Next](meta-object)

@@ -93,4 +93,7 @@ rows = ensMeta.closestLatLon(coordinate, "P", false);
 ```
 will not display console notifications.
 
+<br>
+As seen in some of the examples, finding the inputs for PSMs can sometimes involve using several ensembleMetadata commands in conjunction. In the next section, we will examine a command that can help sanity check PSM inputs and ensure that commands have been combined correctly.
+
 [Previous](latlon)---[Next](rows)
