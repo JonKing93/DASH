@@ -31,7 +31,7 @@ In some cases, you may want to use different subsets of a state vector ensemble 
 In this tutorial, we will review some of the most commonly used features of ensembleMetadata. Specifically, we will examine how to return:
 1. The names of variables in the state vector and their sizes,
 2. Regridded state vector variables,
-3. Metadata at any point in a state vector ensemble, and
+3. Metadata at any point in a state vector ensemble,
 4. Latitude-Longitude coordinates down the state vector to implement covariance localization,
 5. Rows associated with climate variable points closest to a proxy sites, and
 6. Sanity checks for metadata.
