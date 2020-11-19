@@ -5,7 +5,7 @@ title: Variables and Sizes
 
 # Variables and Sizes
 
-You can use an ensembleMetadata object to return summary information about the variables in a state vector ensemble, and their sizes. This can be useful when preallocating memory, and also as a basic check that variables are the correct sizze.
+You can use an ensembleMetadata object to return summary information about the variables in a state vector ensemble, and their sizes. This can be useful when preallocating memory, and also as a basic check that variables are the correct size.
 
 ### Variable Names
 You can return a list of the variables in a state vector ensemble using the "variableNames" command.

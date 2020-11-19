@@ -26,6 +26,7 @@ When you use the "stateVector.add" method, an ensembleMetadata object for the fu
 [X(:,101:105), ensMeta] = sv.add(5);
 ```
 will return the ensembleMetadata object for the 105 member ensemble.
+
 <br>
 ### Saved ensemble
 If you have a state vector ensemble saved in a .ens file, you can obtain an ensembleMetadata object for the saved ensemble by creating an ensemble object and using the "metadata" command.
