@@ -12,13 +12,13 @@ If you would like to examine the metadata for a state vector *before* building a
 ```matlab
 ensMeta = ensembleMetadata(sv);
 ```
-
+<br>
 ### stateVector.build
 When you use the "stateVector.build" method, an ensembleMetadata object for the newly built ensemble is provided as the second output:
 ```matlab
 [~, ensMeta] = sv.build(100);
 ```
-
+<br>
 ### stateVector.add
 When you use the "stateVector.add" method, an ensembleMetadata object for the full ensemble is provided as the second output. For example:
 ```matlab
@@ -26,14 +26,14 @@ When you use the "stateVector.add" method, an ensembleMetadata object for the fu
 [X(:,101:105), ensMeta] = sv.add(5);
 ```
 will return the ensembleMetadata object for the 105 member ensemble.
-
+<br>
 ### Saved ensemble
 If you have a state vector ensemble saved in a .ens file, you can obtain an ensembleMetadata object for the saved ensemble by creating an ensemble object and using the "metadata" command.
 ```matlab
 ens = ensemble('my-ensemble.ens');
 ensMeta = ens.metadata;
 ```
-
+<br>
 ### Loaded ensemble
 If you are only loading a subset of a state vector ensemble from a .ens file, you can get the ensembleMetadata object for the loaded subset using the "loadedMetadata" command. For example:
 ```matlab
@@ -52,7 +52,7 @@ ens = ens.useMembers([1 5 17]);
 [X, ensMeta] = ens.load;
 ```
 to load both the subset of the ensemble, and the metadata for the subset, with one command.
-
+<br>
 # Name the metadata
 When you create an ensembleMetadata object from a stateVector, you can optionally give the metadata an identifying name using the second input:
 ```matlab
