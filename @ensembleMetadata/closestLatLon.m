@@ -42,7 +42,7 @@ dash.assertRealDefined(latlon, 'latlon');
 assert(abs(latlon(1))<=90, 'latitude coordinates must be between -90 and 90.');
 
 % Get the state vector lat-lon coordinates and get the distance to each
-svLatLon = obj.coordinates(varName, verbose);
+svLatLon = obj.latlon(varName, verbose);
 dist = dash.haversine(svLatLon, latlon);
 
 % Find the state vector rows associated with the minimum distances
