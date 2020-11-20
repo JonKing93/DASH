@@ -4,7 +4,7 @@ title: Remove variables
 ---
 
 # Remove metadata for specific variables
-Sometimes, you might manipulate a state vector ensemble to remove some of the variables. wWhen you do so, you may want to update the ensembleMetadata object to reflect the reduced ensemble. You can use the "remove" method to remove the metadata for the deleted variables. Here the syntax is:
+Sometimes, you might manipulate a state vector ensemble to remove some of the variables. When you do so, you may want to update the ensembleMetadata object to reflect the reduced ensemble. You can use the "remove" method to remove the metadata for the deleted variables. Here the syntax is:
 ```matlab
 ensMeta2 = ensMeta.remove(varNames)
 ```
