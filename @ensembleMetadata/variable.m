@@ -1,4 +1,4 @@
-function[meta] = variable(obj, varName, dims, type, indices)
+function[meta] = variable(obj, varName, dims, type, indices, alwaysStruct)
 %% Returns metadata down the state vector or across the ensemble for a
 % variable in a state vector ensemble.
 %
@@ -22,6 +22,9 @@ function[meta] = variable(obj, varName, dims, type, indices)
 % [...] = obj.lookup(varName, dim, type/returnState, indices)
 % [...] = obj.lookup(varName, dims, type/returnState, indexCell)
 % Return the metadata for specific elements of a variable.
+%
+% [...] = obj.lookup(varName, dim, type/returnState, indices, alwaysStruct)
+% Specify if metadata should always be returned as a structure.
 %
 % ----- Inputs -----
 %
@@ -54,6 +57,9 @@ function[meta] = variable(obj, varName, dims, type, indices)
 %    corresponding dimension listed in dims. If an element is an empty
 %    array, returns metadata at all elements down the state vector or
 %    across the ensemble, as appropriate.
+%
+% alwaysStruct: A scalar logical that indicates if metadata should always
+%    be returned as a structure (true) or not (false -- default)
 %
 % ----- Outputs -----
 %
@@ -91,8 +97,14 @@ if wasCell
     name = 'indexCell';
 end
 
+% Default and error check for alwaysStruct
+if ~exist('alwaysStruct','var') || isempty(alwaysStruct)
+    alwaysStruct = false;
+end
+dash.assertScalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
+
 % Initialize output structure
-if nDims > 1
+if nDims>1 || alwaysStruct
     meta = struct();
 end
 
@@ -133,7 +145,7 @@ for k = 1:nDims
     end
     
     % Return as array or structure
-    if nDims==1
+    if nDims==1 && ~alwaysStruct
         meta = dimMeta;
     else
         meta.(dims(k)) = dimMeta;

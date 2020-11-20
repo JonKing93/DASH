@@ -1,8 +1,17 @@
-function[obj] = add(obj, varName, file, autoCouple, overlap)
+function[obj] = add(obj, varNames, files, autoCouple, overlap)
 %% Adds a variable to a stateVector.
 %
 % obj = obj.add(varName, file)
-% Adds a variable to the state vector from a .grid file.
+% Adds a variable to the state vector and specifies the .grid file that
+% holds the data for the variable.
+%
+% obj = obj.add(varNames, file)
+% Adds multiple variables to the state vector whose data are all stored in
+% the same .grid file.
+%
+% obj = obj.add(varNames, files)
+% Adds multiple variables to the state vector and specifies the associated
+% .grid files.
 %
 % obj = obj.add(varName, file, autoCouple)
 % Specify whether the variable should be automatically coupled to other
@@ -41,28 +50,43 @@ if ~exist('overlap','var') || isempty(overlap)
     overlap = false;
 end
 
-% Error check, use string internally, editable
+% Ensure the vector is still editable
 obj.assertEditable;
-dash.assertScalarType(overlap, 'overlap', 'logical', 'logical');
-dash.assertScalarType(autoCouple, 'autoCouple', 'logical', 'logical');
-dash.assertStrFlag(varName, 'varName');
-varName = string(varName);
 
-% Check the name is a valid variable name and not a duplicate
-obj.checkVariableNames(varName, [], 'varName', 'add a new variable to');
-vars = obj.variableNames;
-vars(end+1) = varName;
+% Error check the variable names. Get the number of new variables
+varNames = dash.assertStrList(varNames, 'varNames');
+obj.checkVariableNames(varNames, [], 'varNames', 'add new variables to');
+nNew = numel(varNames);
 
-% Create the new variable (error checks file).
-newVar = stateVectorVariable(varName, file);
-obj.variables = [obj.variables; newVar];
+% Error check the other inputs.
+files = dash.assertStrList(files, 'files');
+dash.assertVectorTypeN(autoCouple, 'logical', [], 'autoCouple');
+dash.assertVectorTypeN(overlap, 'logical', [], 'overlap');
 
-% Update variable coupling and overlap
-obj.overlap(end+1, 1) = overlap;
-obj.auto_Couple(end+1, 1) = autoCouple;
-obj.coupled(end+1, end+1) = true;
-if autoCouple
-    obj = obj.couple( vars(obj.auto_Couple) );
+% Check sizes and propagate scalar inputs
+fields = {files, autoCouple, overlap};
+fieldNames = {'files','autoCouple','overlap'};
+for f = 1:numel(fields)
+    nEls = numel(fields{f});
+    if ~isscalar(fields{f}) && nEls~=nNew
+        error('%s may either have 1 element or %.f elements (1 per new variable).', fieldNames{f}, nNew);
+    end
+    fields{f} = repmat(fields{f}(:), [nNew-nEls+1, 1]);
+end
+[files, autoCouple, overlap] = fields{:};
+
+% Create each new variable (also error checks the .grid files)
+for v = 1:nNew
+    newVar = stateVectorVariable(varNames(v), files(v));
+    obj.variables = [obj.variables; newVar];
+    obj.coupled(end+1, end+1) = true;
+end
+
+% Update auto coupling and overlap
+obj.overlap(end+(1:nNew), 1) = overlap;
+obj.auto_Couple(end+(1:nNew), 1) = autoCouple;
+if any(autoCouple)
+    obj = obj.couple( obj.variableNames(obj.auto_Couple) );
 end
 
 end

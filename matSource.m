@@ -1,7 +1,7 @@
 classdef matSource < dataSource
     %% Reads data from a .mat file data source
     
-    properties
+    properties (SetAccess = private)
         m; % A matfile object
     end
     properties (Constant, Hidden)

@@ -75,7 +75,7 @@ else
 
     % If weights is empty, this is an unweighted mean
     for k = 1:nDims
-        if isempty(obj.weightCell{d(k)})
+        if isempty(weights{k})
             obj.hasWeights(d(k)) = false;
             
         % Otherwise, error check weights and update

@@ -4,6 +4,9 @@ classdef dash
     
     methods (Static)
         
+        % Analysis
+        dist = haversine(latlon1, latlon2);
+        
         % Misc
         [names, lon, lat, coord, lev, time, run, var]  = dimensionNames;
         convertToV7_3(filename);
