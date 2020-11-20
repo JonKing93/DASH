@@ -36,4 +36,4 @@ meta = ensMeta.dimension("lat", true)
 ```
 will always return the metadata for the latitude dimension as a structure.
 
-[Previous](workflow)---[Next](latlon)
+[Advanced Topics](advanced)]

@@ -29,7 +29,7 @@ will create a structure with a "numbers" field and a "message" field. Each field
 myStructure.numbers
 ```
 
-In an OOP style, variables are organized in an "object". An object is very similar to a structure; it also has saved variables (known as properties) that can be accessed via dot indexing. A key difference is that an object can also include some functions for those variables (known as methods). These methods are also accessed via dot indexing.
+In an OOP style, variables are organized in an "object". An object is very similar to a structure; it also has saved variables (known as properties) that can be accessed via dot indexing. A key difference from structures is that an object can also include functions for those variables (known as methods). These methods are also accessed via dot indexing.
 
 For example, let's say we want to take the average of the numbers stored in "myStructure". Then we would give the "numbers" field as an input to the "mean" function:
 ```matlab
