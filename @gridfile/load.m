@@ -67,11 +67,18 @@ function[X, meta] = load(obj, dims, start, count, stride)
 % Update the object in case the file changed
 obj.update;
 
-% Defaults for unset variables
+% Defaults and error check the dimensions
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims(obj.isdefined);
 end
+dims = dash.assertStrList(dims, "dims");
+obj.checkAllowedDims(dims, false);
+if numel(dims) < numel(unique(dims))
+    error('dims contains duplicate names.');
+end
 nInputDims = numel(dims);
+
+% Defaults for start count stride
 if ~exist('start','var') || isempty(start)
     start = ones(1, nInputDims);
 end
@@ -90,13 +97,6 @@ if iscell(start)
     if nargin>3
         error('There can only be two input arguments (dims and indices) when specifying indices.');
     end
-end
-
-% Error check the dimensions
-dims = dash.assertStrList(dims, "dims");
-obj.checkAllowedDims(dims, false);
-if numel(dims) < numel(unique(dims))
-    error('dims contains duplicate names.');
 end
 
 % Map dims to the internal grid dimensions
