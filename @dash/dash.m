@@ -4,7 +4,8 @@ classdef dash
     
     methods (Static)
         
-        % Analysis
+        % Analysis calculations
+        weights = gaspariCohn2D(dist, R, scale);
         dist = haversine(latlon1, latlon2);
         
         % Misc
