@@ -74,7 +74,7 @@ for c = 1:nCov
             p = priors(pk);
             tu = t(updatePrior==pk);
             
-            % Update
+            % Update.
             Amean = Mmean(:,:,p) + K * (kf.D(s,tu) - Ymean(s,:,p));
             if updateDevs
                 Adev = Mdev(:,:,p) - Ka * Ydev(s,:,p);
@@ -89,6 +89,14 @@ for c = 1:nCov
                 indices = repmat({':'}, [1 td]);
                 indices(td) = {tu};
                 out.(name)(indices{:}) = kf.Q{q}.calculate(Adev, Amean);
+            end
+            
+            % Save the mean and/or deviations as requested
+            if kf.return_mean
+                out.Amean(:,tu) = Amean;
+            end
+            if kf.return_devs
+                out.Adev(:, :, tu) = Adev;
             end
         end
     end
