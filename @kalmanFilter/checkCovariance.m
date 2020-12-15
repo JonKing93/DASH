@@ -59,7 +59,7 @@ elseif ~isvar
     missingWhichError(nCov, kf.nTime, names(4), names(3));
 end
 dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, names(4));
-dash.checkIndices(whichCov, 'whichCov', nCov, sprintf('the number of %ss',type) );
+dash.checkIndices(whichCov, names(2), nCov, sprintf('the number of %ss',names(3)) );
 whichCov = whichCov(:);
 
 end
