@@ -33,6 +33,11 @@ function[kf] = localize(kf, wloc, yloc, whichLoc)
 % Only allow localization after setting the prior and observations
 kf.assertEditableCovariance('covariance localization options');
 
+% Default for whichLoc
+if ~exist('whichLoc','var')
+    whichLoc = [];
+end
+
 % Error check the covariance localization inputs
 whichLoc = kf.checkCovariance(wloc, yloc, whichLoc, true);
 assert( all(wloc>=0,'all'), 'w cannot have negative elements.');
