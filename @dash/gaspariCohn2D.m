@@ -36,7 +36,7 @@ end
 
 % Error check
 dash.assertScalarType(R, 'R', 'numeric', 'numeric');
-dash.assertRealDefined(R, 'R');
+dash.assertRealDefined(R, 'R', false, true);
 assert(R>0, 'R must be positive');
 
 dash.assertScalarType(scale, 'scale', 'numeric', 'numeric');

@@ -48,8 +48,8 @@ assert(size(ensCoords,2)==2, 'ensCoords must have 2 columns');
 assert(size(siteCoords,2)==2, 'siteCoords must have 2 columns');
 
 % Get the distances
-wdist = dash.haversine(stateCoord, siteCoords);
-ydist = dash.haversine(siteCoord);
+wdist = dash.haversine(ensCoords, siteCoords);
+ydist = dash.haversine(siteCoords);
 
 % Apply the Gaspari-Cohn polynomial
 wloc = dash.gaspariCohn2D(wdist, R, scale);
