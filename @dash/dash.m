@@ -1,12 +1,15 @@
 classdef dash
     %% Contains various utility functions
     
-    
     methods (Static)
         
-        % Analysis calculations
-        weights = gaspariCohn2D(dist, R, scale);
+        % Math formulas
         dist = haversine(latlon1, latlon2);
+        Y = gaspariCohn2D(X, R, scale);
+        
+        % Localization                
+        [wloc, yloc] = localizationWeights(type, varargin);
+        [wloc, yloc] = gc2dLocalization(ensCoords, siteCoords, R, scale);
         
         % Misc
         [names, lon, lat, coord, lev, time, run, var]  = dimensionNames;

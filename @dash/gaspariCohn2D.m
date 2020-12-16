@@ -1,14 +1,31 @@
-function[weights] = gaspariCohn2D(dist, R, scale)
-%% Uses Gaspari-Cohn 5th order polynomial in 2 dimensions to determine
-% localization weights
+function[Y] = gaspariCohn2D(X, R, scale)
+%% Applies a Gaspari-Cohn 5th order polynomial in 2 dimensions for a
+% specified cutoff radius and length scale.
+%
+% weights = gaspariCohn2D(dist, R)
+% Determines localization weights based on a cutoff radius. Uses a length
+% scale of 0.5
 %
 % weights = gaspariCohn2D(dist, R, scale)
+% Sets the length scale for the Gaspari-Cohn polynomial.
+%
+% weights = gaspariCohn2D(dist, R, 'optimal')
+% Uses a length scale of sqrt(10/3) based on Lorenc (2003).
 %
 % ----- Inputs -----
 %
-% dist: A vector of distances in kilometers
+% X: An numeric array. Cannot contain negative values.
 %
-% R: 
+% R: The cutoff radius. A positive scalar. Should use the same units as X.
+%
+% scale: A scalar on the interval (0 0.5]. Used to determine the cutoff
+%    radius. If unspecified, scale is set to 0.5 and the localization
+%    radius is equal to R. If less than 0.5, the cutoff radius will be
+%    smaller than R.
+%
+% ----- Outputs -----
+%
+% weights: A vector of localization weights
 
 % Set defaults
 if ~exist('scale','var') || isempty(scale)
@@ -26,30 +43,30 @@ dash.assertScalarType(scale, 'scale', 'numeric', 'numeric');
 dash.assertRealDefined(scale, 'scale');
 assert(scale>=0&scale<=0.5, 'scale must be on the interval [0 0.5]');
 
-dash.assertVectorTypeN(dist, 'numeric', [], 'dist');
-dash.assertRealDefined(dist, 'dist', true, true);
-assert(~any(dist<0), 'dist cannot have negative elements');
+assert(isnumeric(X), 'dist must be numeric');
+dash.assertRealDefined(X, 'dist', true, true);
+assert(~any(X(:)<0), 'dist cannot have negative elements');
 
 % Get the length scale and localization radius
 c = scale * R;
 Rloc = 2*c; % Note that Rloc <= R, they are not strictly equal
 
 % Get points inside/outside the radius.
-outRloc = (dist > Rloc);
-inScale = (dist <= c);
-outScale = (dist > c) & (dist <= Rloc);
+outRloc = (X > Rloc);
+inScale = (X <= c);
+outScale = (X > c) & (X <= Rloc);
 
 % Preallocate weights
-weights = ones( size(dist) );
+Y = ones( size(X) );
 
 % Apply the polynomial to the distances
-x = dist / c;
-weights(inScale) = polyval([-.25,.5,.625,-5/3,0,1], x(inScale));
-weights(outScale) = polyval([1/12,-.5,.625,5/3,-5,4], x(outScale)) - 2./(3*x(outScale));
-weights(outRloc) = 0;
+x = X / c;
+Y(inScale) = polyval([-.25,.5,.625,-5/3,0,1], x(inScale));
+Y(outScale) = polyval([1/12,-.5,.625,5/3,-5,4], x(outScale)) - 2./(3*x(outScale));
+Y(outRloc) = 0;
 
 % Weights should never be negative. Remove near-zero negative weights
 % resulting from round-off errors.
-weights( weights<0 ) = 0;
+Y( Y<0 ) = 0;
 
 end

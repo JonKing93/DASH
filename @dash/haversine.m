@@ -18,8 +18,8 @@ function[dist] = haversine( latlon1, latlon2 )
 %
 % dist: The distance between the coordinates. 
 %
-%    If you provided a single input, dist is a symmetric matrix with each
-%    rows and columns corresponding to the coordinates listed in latlon.
+%    If you provided a single input, dist is a symmetric matrix. The Nth 
+%    row/column corresponds to the Nth row of latlon.
 %
 %    If you provided two inputs, the rows of dist correspond to latlon1 and
 %    the columns correspond to latlon2.
