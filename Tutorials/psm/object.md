@@ -1,0 +1,66 @@
+---
+layout: simple_layout
+title: PSM Overview
+---
+
+# PSM Overview
+The PSM class is most commonly used to estimate proxy observations for a model ensemble. There are two key steps in this process:
+1. Designing PSMs for individual proxy sites, and
+2. Using the PSM.estimate command to estimate values for all the different proxy sites.
+
+### PSM objects
+You can design PSMs for different proxy sites using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models. The PSMs in DASH include:
+* linear relationships
+* ...in the works...
+* VS-Lite
+* BAYMAG / BAYSPAR / BAYSPLINE, and
+* interfaces with PRySM
+
+PSM objects allow you to use these different types of PSMs, and different site settings, in a modular and automated manner.
+
+The exact command required to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax
+```matlab
+myPSM = psmName(rows, otherInput1, otherInput2, ..., otherInputN)
+```
+
+* Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear realtionship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
+
+* The "rows" argument indicates which state vector elements are required to run a PSM. This way, each PSM object knows what data to use to run its site-specific PSM. The ensembleMetadata class is often useful for determining these rows. We will briefly examine some common workflow here, but will return to a more comprehensive review of "rows" workflow later in this tutorial.
+
+* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail later in the tutorials for specific PSMs.
+
+* myPSM is the output PSM object
+
+
+#### Example 1
+Let's say I want to create a linear, temperature PSM for a site at [60N, 120E]. In my state vector ensemble, the temperature variable is named "Temperature". Then I could do:
+```matlab
+rows = ensMeta.closestLatLon([60 120], "Temperature");
+```
+to find the state vector element for the temperature variable that is closest to the site.
+
+In addition to state vector rows, linear PSMs require a slope and an intercept to run. Let's say I have a slope of 0.5, and an intercept of 0. Then I can create a PSM object for the site using:
+```matlab
+rows = ensMeta.closestLatLon([60 120], "Temperature");
+slope = 0.5;
+intercept = 0;
+myPSM = linearPSM(rows, slope, intercept);
+```
+
+#### Example 2
+Let's say I want to apply VS-Lite to a site at [32N, 110W]. VS-Lite requires monthly temperature and precipitation variables to run; let's say these are named "T_monthly" and "P_monthly" in my state vector ensemble. VS-Lite also requires the latitude of the proxy site (32 N), temperature thresholds (let's say 0C and 40C for my site), and soil moisture thresholds (let's say 0 and 1). Then creating a PSM object for the site will look like:
+```matlab
+Trows = ensMeta.closestLatLon([32 -110], "T_monthly");
+Prows = ensMeta.closestLatLon([32 -110], "P_monthly");
+rows = [Trows; Prows];
+
+latitude = 32;
+T_thresholds = [0 40];
+P_thresholds = [0 1];
+
+myPSM = vslitePSM(rows, latitude, T_thresholds, P_thresholds);
+```
+
+We have now seen some basic examples of how to create PSM objects. In the next section we will see how to use these objects to automatically estimate proxy observations from a state vector ensemble.
+
+[Previous](welcome)---[Next](estimate)
