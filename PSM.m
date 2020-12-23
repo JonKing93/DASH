@@ -8,7 +8,7 @@ classdef (Abstract) PSM
     
     methods
         % Constructor
-        function[obj] = PSM(estimatesR, name)
+        function[obj] = PSM(name, estimatesR)
             
             % Note if PSM can estimate R
             if ~exist('estimatesR', 'var') || isempty(estimatesR)
@@ -25,7 +25,7 @@ classdef (Abstract) PSM
         
         % Rename
         function[obj] = rename(obj, name)
-            obj.name = dash.asssertStrFlag(name, 'name');
+            obj.name = dash.assertStrFlag(name, 'name');
         end
         
         % Return name for error messages
@@ -64,7 +64,7 @@ classdef (Abstract) PSM
             end
             
             % Save
-            obj.rows = rows;
+            obj.rows = rows(:);
         end
             
         % Allow R to be estimated
@@ -154,6 +154,6 @@ classdef (Abstract) PSM
     
     % Run individual PSMs
     methods (Abstract)
-        Y = run(X, F);
+        Y = run(obj, X);
     end
 end                 
