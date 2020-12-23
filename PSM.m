@@ -1,4 +1,4 @@
-classdef (Abstract) PSm
+classdef (Abstract) PSM
     
     properties (SetAccess = private)
         name;
