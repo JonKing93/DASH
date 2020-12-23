@@ -112,6 +112,7 @@ classdef kalmanFilter
         kf = returnDeviations(kf, tf);
         kf = percentiles(kf, percs);
         kf = returnVariance(kf, tf);
+        kf = posteriorWeightedMean(kf, weights);
     end
     
     % Static Ensrf analysis methods
