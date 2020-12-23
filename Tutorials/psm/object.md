@@ -25,15 +25,15 @@ myPSM = psmName(rows, otherInput1, otherInput2, ..., otherInputN)
 
 * Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear realtionship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
 
-* The "rows" argument indicates which state vector elements are required to run a PSM. This way, each PSM object knows what data to use to run its site-specific PSM. The ensembleMetadata class is often useful for determining these rows. We will briefly examine some common workflow here, but will return to a more comprehensive review of "rows" workflow later in this tutorial.
+* The "rows" argument indicates which state vector elements are required to run a PSM. This way, each PSM object knows what data to use to run its site-specific PSM. The ensembleMetadata class is often useful for determining these rows.
 
-* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail later in the tutorials for specific PSMs.
+* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail later in the tutorial.
 
-* myPSM is the output PSM object
+* myPSM is the newly created PSM object.
 
 
 #### Example 1
-Let's say I want to create a linear, temperature PSM for a site at [60N, 120E]. In my state vector ensemble, the temperature variable is named "Temperature". Then I could do:
+Let's say I want to use the "linearPSM" class to create a linear, temperature PSM for a site at [60N, 120E]. In my state vector ensemble, the temperature variable is named "Temperature". Then I could do:
 ```matlab
 rows = ensMeta.closestLatLon([60 120], "Temperature");
 ```
@@ -48,7 +48,7 @@ myPSM = linearPSM(rows, slope, intercept);
 ```
 
 #### Example 2
-Let's say I want to apply VS-Lite to a site at [32N, 110W]. VS-Lite requires monthly temperature and precipitation variables to run; let's say these are named "T_monthly" and "P_monthly" in my state vector ensemble. VS-Lite also requires the latitude of the proxy site (32 N), temperature thresholds (let's say 0C and 40C for my site), and soil moisture thresholds (let's say 0 and 1). Then creating a PSM object for the site will look like:
+Let's say I want to use the "vslitePSM" class to apply VS-Lite to a site at [32N, 110W]. VS-Lite requires monthly temperature and precipitation variables to run; let's say these are named "T_monthly" and "P_monthly" in my state vector ensemble. VS-Lite also requires the latitude of the proxy site (32 N), temperature thresholds (let's say 0C and 40C for my site), and soil moisture thresholds (let's say 0 and 1). Then creating a PSM object for the site will look like:
 ```matlab
 Trows = ensMeta.closestLatLon([32 -110], "T_monthly");
 Prows = ensMeta.closestLatLon([32 -110], "P_monthly");
@@ -61,6 +61,6 @@ P_thresholds = [0 1];
 myPSM = vslitePSM(rows, latitude, T_thresholds, P_thresholds);
 ```
 
-We have now seen some basic examples of how to create PSM objects. In the next section we will see how to use these objects to automatically estimate proxy observations from a state vector ensemble.
+We have now seen some examples of how to create PSM objects. In the next section we will see how to use these objects to automatically estimate proxy observations from a state vector ensemble.
 
 [Previous](welcome)---[Next](estimate)

@@ -5,7 +5,7 @@ title: Estimate Proxies
 
 # Estimate Proxies
 
-One of the benefits of PSM objects is that they all share a common interface. This interface allows you to estimate proxies for *any* PSM using the same command: "PSM.estimate". To call this command, use the following syntax:
+One of the benefits of PSM objects is that they all share a common interface. This interface allows you to estimate proxies for *any* PSM using the command "PSM.estimate". To call this command, use the following syntax:
 ```matlab
 Y = PSM.estimate(X, psmObject)
 ```
@@ -45,7 +45,7 @@ Continuing the example:
 ```
 R will be a vector with two elements. The first element will hold the R estimate for the proxy site using the linear PSM, and the second element will hold the R estimate for the proxy site using the VS-Lite PSM.
 
-It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN. Continuing the example, linear PSMs do not have the ability to estimate R vaues, so the first element of R will be NaN.
+It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN. 
 
 
 ### Estimate proxies for very large ensembles
