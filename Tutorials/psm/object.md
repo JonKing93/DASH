@@ -20,7 +20,7 @@ PSM objects allow you to use these different types of PSMs, and different site s
 
 The exact command required to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax
 ```matlab
-myPSM = psmName(rows, otherInput1, otherInput2, ..., otherInputN)
+myPSM = psmName(rows, otherInput1, otherInput2, .., otherInputN)
 ```
 
 * Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear realtionship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
