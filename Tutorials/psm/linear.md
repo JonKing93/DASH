@@ -7,7 +7,7 @@ title: Linear PSMs
 
 You can use the "linearPSM" class to create PSMs that implement a linear relationship of the form:
 
-\\[ Y = a_1X_1 + a_2X_2 + ... + a_nX_n + b ]\\
+katex.render(" Y = a_1 + X")
 
 
 
