@@ -10,7 +10,7 @@ title: Linear PSMs
 You can use the "linearPSM" class to create PSMs that implement a linear relationship of the form:
 
 $$
-Y = a_1X_1 + a_2X_2 + ... + a_nX_n
+Y = a_1X_1 + a_2X_2 + ... + a_nX_n + b
 $$
 
 
@@ -20,7 +20,7 @@ You can create a linearPSM object using the following syntax:
 psmObject = linearPSM(rows, slopes, intercept)
 ```
 
-Here, "rows" is the usual vector of state vector rows required to run the PSM. The first listed row points to the values for X_1, the second row is X_2, and the Nth row is X_n. The "slopes" input is a numeric vector that lists the coefficients a_1, a_2, ..., a_n. Finally, "intercept" is the constant "b" in the linear relationship.
+Here, "rows" is the usual vector of state vector rows required to run the PSM. The first listed row points to the values for $$X_1$$, the second row is $$X_2$$, and the Nth row is $$X_n$$. The "slopes" input is a numeric vector that lists the coefficients $$a_1, a_2, ..., a_n$$. Finally, "intercept" is the constant "b" in the linear relationship.
 
 For example, let's say I want a PSM that implements a linear relationship of temperature ("T") and precipitation ("P") for a proxy site at [60N, 120E]. The coefficient for the temperature variable is 0.5, and the coefficient for the precipitation variable is 2. The relationship has an intercept of 17. Then I could do:
 ```matlab
