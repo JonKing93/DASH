@@ -61,5 +61,7 @@ slope = 1/12;
 myPSM = linearPSM(rows, slope);
 ```
 
+This is currently the only PSM provided with DASH. However, more PSMs are in the works.
 
-[Previous](estimate)---[Next](in-progress)
+
+[Previous](estimate)---[All Tutorials](..\welcome)

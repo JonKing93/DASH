@@ -18,18 +18,18 @@ You can design PSMs for different proxy sites using PSM objects. Each PSM object
 
 PSM objects allow you to use these different types of PSMs, and different site settings, in a modular and automated manner.
 
-The exact command required to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax
+The exact command used to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax:
 ```matlab
-myPSM = psmName(rows, otherInput1, otherInput2, .., otherInputN)
+psmObject = psmName(rows, otherInput1, otherInput2, .., otherInputN)
 ```
 
-* Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear realtionship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
+* Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear relationship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
 
-* The "rows" argument indicates which state vector elements are required to run a PSM. This way, each PSM object knows what data to use to run its site-specific PSM. The ensembleMetadata class is often useful for determining these rows.
+* The "rows" argument indicates which state vector elements are required to run a PSM. This way, the PSM for each proxy site knows what data to use to run. The ![ensembleMetadata class](..\ensembleMetadata\welcome) is useful for determining the rows; in particular, the ![ensembleMetadata.closestLatLon command](..\ensembleMetadata\closest).
 
-* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail later in the tutorial.
+* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail for specific PSMs later in the tutorial.
 
-* myPSM is the newly created PSM object.
+* psmObject is the new PSM object for a specific proxy site.
 
 
 #### Example 1
@@ -39,7 +39,7 @@ rows = ensMeta.closestLatLon([60 120], "Temperature");
 ```
 to find the state vector element for the temperature variable that is closest to the site.
 
-In addition to state vector rows, linear PSMs require a slope and an intercept to run. Let's say I have a slope of 0.5, and an intercept of 0. Then I can create a PSM object for the site using:
+In addition to state vector rows, linear PSMs require a slope and an intercept to run. Let's say I want to use a slope of 0.5, and an intercept of 0. Then I can create a PSM object for the site using:
 ```matlab
 rows = ensMeta.closestLatLon([60 120], "Temperature");
 slope = 0.5;
