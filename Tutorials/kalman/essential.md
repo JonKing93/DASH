@@ -26,24 +26,37 @@ Column Vector | Number of Proxy Sites x 1 | Each value is used as the uncertaint
 Row Vector | 1 x Number of Time Steps | Each value is used as the uncertainty for all proxy observations in the corresponding time step
 Matrix | Number of Proxy Sites x Number of Time Steps | Specifies a unique uncertainty for each observation
 
+The output "kf" is a Kalman Filter object updated with the observations and uncertainties.
 
 
+### Prior
 
+You can specify the prior ensemble using the "prior" command. Here the syntax is:
+```matlab
+kf = kf.prior(X);
+```
 
+where X is a state vector ensemble. Each row is a state vector element, and each column is an ensemble member. For example:
+```matlab
+ens = ensemble('my-ensemble.ens');
+X = ens.load;
 
+kf = kalmanFilter;
+kf = kf.prior(X);
+```
 
-If R is a scalar, then it is used as the uncertainty for each proxy in each time step. R can also be a column vector with one element per proxy site; in this case, each element is used as the uncertainty for the corresponding proxy site in all time steps. Alternatively, R can be a row vector with one element per time step; here, each value is used as the uncertainty for all proxies in the corresponding time step. Finally, R can be
+If a state vector ensemble is too large to fit in active memory, you can alternatively provide the ensemble object directly. For example:
+```matlab
+ens = ensemble('my-ensemble.ens');
+kf = kf.prior(ens);
+```
 
+You can also use the "prior" command to specify an evolving prior, which we will examine later in this tutorial.
 
+### Proxy Estimates
 
-
-
-
-
-, and may be a scalar, vector or matrix. If R is a scalar, then it is used as the uncertainty for all proxies in all time s
-* scalar: The same uncertainty is used for all proxies in all time steps
-* column vector: Each p
-
-
-
-: if R is a scalar, the Kalman Filter will use the same uncertainty for all proxies in all time steps
+You must also provide proxy estimates in order to run a Kalman Filter. Do this using the "estimates" command. Here the syntax is:
+```matlab
+kf = kf.estimates(Ye)
+```
+where Ye is matrix of proxy estimates. Each row holds the estimates for a specific proxy site, and each column has the values for one ensemble member. The proxy sites should be in the same order as for the observations (Y), and the ensemble members should use the same order as the prior (M)

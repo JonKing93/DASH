@@ -7,18 +7,18 @@ title: Estimate Proxies
 
 One of the benefits of PSM objects is that they all share a common interface. This interface allows you to estimate proxies for *any* PSM using the command "PSM.estimate". To call this command, use the following syntax:
 ```matlab
-Y = PSM.estimate(X, psmObject)
+Ye = PSM.estimate(X, psmObject)
 ```
-Here, X is a state vector ensemble, psmObject is a specific PSM object, and Y is the proxy system estimates. For example, let's say I have a state vector ensemble with 1000 ensemble members and I want to estimate proxy observations using the linear PSM from the previous example. Then I could do
+Here, X is a state vector ensemble, psmObject is a specific PSM object, and Ye is the proxy system estimates. For example, let's say I have a state vector ensemble with 1000 ensemble members and I want to estimate proxy observations using the linear PSM from the previous example. Then I could do
 ```matlab
 ens = ensemble('my-ensemble.ens');
 X = ens.load;
 
 myPSM = linearPSM(rows, slope, intercept);
-Y = PSM.estimate(X, myPSM);
+Ye = PSM.estimate(X, myPSM);
 ```
 
-Here, Y would be a row vector with 1000 elements. Each element is the proxy estimate for the corresponding ensemble member.
+Here, Ye would be a row vector with 1000 elements. Each element is the proxy estimate for the corresponding ensemble member.
 
 ### Multiple proxy sites
 
@@ -31,20 +31,20 @@ myPSMs{2} = vslitePSM(rows2, latitude, T_threshold, P_threshold);
 ens = ensemble('my-ensemble.ens');
 X = ens.load;
 
-Y = PSM.estimate(X, myPSMs);
+Ye = PSM.estimate(X, myPSMs);
 ```
-Here, Y will have a size of (2 x 1000). The first row will hold the estimates for the proxy site using the linear PSM, and the second row will hold the estimates for proxy site using the VS-Lite PSM.
+Here, Ye will have a size of (2 x 1000). The first row will hold the estimates for the proxy site using the linear PSM, and the second row will hold the estimates for proxy site using the VS-Lite PSM.
 
 ### Estimate proxy uncertainty (R)
 
 Some PSMs can estimate the proxy measurement uncertainty for a site. (In the Kalman Filter tutorial, we refer to this as R). Use the second output to obtain any estimated R values:
 ```matlab
-[Y, R] = PSM.estimate(X, psmObjects);
+[Ye, R] = PSM.estimate(X, psmObjects);
 ```
 
 Continuing the example:
 ```matlab
-[Y, R] = PSM.estimate(X, myPSMs);
+[Ye, R] = PSM.estimate(X, myPSMs);
 ```
 R will be a vector with two elements. The first element will hold the R estimate for the proxy site using the linear PSM, and the second element will hold the R estimate for the proxy site using the VS-Lite PSM.
 
@@ -60,7 +60,7 @@ ens = ensemble('my-very-large-ensemble.ens');
 rows = ens.metadata.closestLatLon([60 120], "Temperature");
 
 myPSM = linearPSM(rows, slope, intercept);
-Y = PSM.estimate(ens, myPSM);
+Ye = PSM.estimate(ens, myPSM);
 ```
 
 We have now seen how to estimate proxy values using PSM objects. In the next sections of this tutorial, we will focus on specific PSMs and the input arguments required to create them.
