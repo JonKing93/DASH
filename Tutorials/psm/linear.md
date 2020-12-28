@@ -13,6 +13,10 @@ You can use the "linearPSM" class to create PSMs that implement a linear relatio
 
 $$ Test formula $$
 
+$$
+Another test
+$$
+
 
 ### Create a linear PSM
 You can create a linearPSM object using the following syntax:
