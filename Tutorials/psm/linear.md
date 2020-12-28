@@ -9,7 +9,7 @@ You can use the "linearPSM" class to create PSMs that implement a linear relatio
 
 <img src="\DASH\assets\images\psm\linear.svg" alt="Y = a1 X1 + a2 X2 + ... + an Xn" style="width:80%;display:block">
 
-Y = a<sub>1</sub>
+$$ Test formula $$
 
 
 ### Create a linear PSM
