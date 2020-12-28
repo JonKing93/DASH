@@ -33,6 +33,15 @@ intercept = 17;
 myPSM = linearPSM(rows, slopes, intercept)
 ```
 
+Note that the slopes must be provided in the same order as state vector rows. So if I changed the "rows" input to:
+```matlab
+rows = [Prow, Trow];
+```
+then I would also need to change the slopes to:
+```matlab
+slopes = [2, 0.5];
+```
+
 ### Use the same slope for all variables
 
 You can use the same slope (a_1, a_2, ..., a_n) for all variables X_1, X_2, ..., X_n by using a scalar for the "slopes" input. For example, let's say I want a PSM that calculates an annual mean over a monthly temperature variable ("T_monthly") for a proxy site at [60W, 120E]. Each monthly variable will have the same coefficient of (1/12), so I could do:
@@ -43,18 +52,13 @@ intercept = 0;
 myPSM = linearPSM(rows, slope, intercept);
 ```
 
-### Optional: Name the PSM
+### Default intercept of 0
 
-Naming a PSM can be useful for tracking which PSMs correspond to which sites. These names are also provided in any error messages, which can be useful for debugging. To name a PSM, provide a string as the fourth input. For example:
+If you do not provide an intercept, then it will default to zero. Continuing the previous example of a monthly temperature mean, I could equivalently use:
 ```matlab
-siteName = "My Site 1";
-myPSM = linearPSM(rows, slope, intercept);
+slope = 1/12;
+myPSM = linearPSM(rows, slope);
 ```
 
-will identify my PSM as "My Site 1". You can access the name of a PSM using the "name" command. For example:
-```matlab
-myPSM.name
-```
-will return "My Site 1".
 
 [Previous](estimate)---[Next](in-progress)
