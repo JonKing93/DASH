@@ -61,6 +61,38 @@ P_thresholds = [0 1];
 myPSM = vslitePSM(rows, latitude, T_thresholds, P_thresholds);
 ```
 
+### Name a PSM
+
+You can use an optional, final argument to provide a name for a PSM. Here, the syntax is:
+```matlab
+psmObject = psmName(rows, input1, input2, .., inputN, name);
+```
+where "name" is a string scalar. Building off the previous examples, I could do
+
+```matlab
+rows = ensMeta.closestLatLon([60 120], "Temperature");
+slope = 0.5;
+intercept = 0;
+name = 'My linear PSM';
+myPSM = linearPSM(rows, slope, intercept, name);
+```
+
+to add a name to the linear PSM, or
+```matlab
+name = 'My VS-Lite PSM'
+myPSM = vslitePSM(rows, latitude, T_thresholds, P_thresholds, name);
+```
+
+to name the VS-Lite PSM. You can access the name of a PSM using the "name" command. For example:
+```matlab
+myPSM.name
+```
+will return the name of the PSM. If you would like to change the name of a PSM, use the "rename" command and provide the new name as input. For example:
+```matlab
+newName = 'A new name for my PSM';
+myPSM.rename(newName);
+```
+
 We have now seen some examples of how to create PSM objects. In the next section we will see how to use these objects to automatically estimate proxy observations from a state vector ensemble.
 
 [Previous](welcome)---[Next](estimate)

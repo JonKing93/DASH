@@ -26,6 +26,7 @@ myPSMs = cell(2,1);
 myPSMs{1} = linearPSM(rows1, slope, intercept);
 myPSMs{2} = vslitePSM(rows2, latitude, T_threshold, P_threshold);
 
+ens = ensemble('my-ensemble.ens');
 X = ens.load;
 
 Y = PSM.estimate(X, myPSMs);
@@ -45,7 +46,7 @@ Continuing the example:
 ```
 R will be a vector with two elements. The first element will hold the R estimate for the proxy site using the linear PSM, and the second element will hold the R estimate for the proxy site using the VS-Lite PSM.
 
-It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN. 
+It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN.
 
 
 ### Estimate proxies for very large ensembles
