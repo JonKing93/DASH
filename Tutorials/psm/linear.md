@@ -9,12 +9,8 @@ title: Linear PSMs
 
 You can use the "linearPSM" class to create PSMs that implement a linear relationship of the form:
 
-<img src="\DASH\assets\images\psm\linear.svg" alt="Y = a1 X1 + a2 X2 + ... + an Xn" style="width:80%;display:block">
-
-$$ Test formula $$
-
 $$
-Another test
+Y = a_1X_1 + a_2X_2 + ... + a_nX_n
 $$
 
 
