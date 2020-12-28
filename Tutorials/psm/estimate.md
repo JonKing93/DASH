@@ -9,7 +9,7 @@ One of the benefits of PSM objects is that they all share a common interface. Th
 ```matlab
 Y = PSM.estimate(X, psmObject)
 ```
-Here, X is a state vector ensemble, psmObject is a specific PSM object, and "Y" is the proxy system estimates. For example, let's say I have a state vector ensemble with 1000 ensemble members and I want to estimate proxy observations using the linear PSM from the previous example. Then I could do
+Here, X is a state vector ensemble, psmObject is a specific PSM object, and Y is the proxy system estimates. For example, let's say I have a state vector ensemble with 1000 ensemble members and I want to estimate proxy observations using the linear PSM from the previous example. Then I could do
 ```matlab
 ens = ensemble('my-ensemble.ens');
 X = ens.load;
