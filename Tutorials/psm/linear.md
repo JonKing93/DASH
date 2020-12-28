@@ -9,6 +9,8 @@ You can use the "linearPSM" class to create PSMs that implement a linear relatio
 
 <img src="\DASH\assets\images\psm\linear.svg" alt="Y = a1 X1 + a2 X2 + ... + an Xn" style="width:80%;display:block">
 
+<span>Y = a<sub>1</sub>X<sub>1</sub> + a<sub>2</sub>X<sub>2</sub> + ... + a<sub>n</sub>X<sub>n</sub></span>
+
 
 ### Create a linear PSM
 You can create a linearPSM object using the following syntax:
