@@ -78,30 +78,39 @@ classdef (Abstract) PSM
     methods (Static)                
         function[Y, R] = estimate(X, F)
             
-            % Error check the ensemble
-            assert(isnumeric(X), 'X must be numeric');
+            % Parse and error check the ensemble. Get size
+            if isa(X, 'ensemble')
+                isens = true;
+                assert(isscalar(X), 'ens must be a scalar ensemble object');
+                [nState, nEns] = X.metadata.sizes;
+                nPriors = 1;
+                m = matfile(X.file);
+            else
+                assert(isnumeric(X), 'X must be numeric');
+                assert(ndims(X)<=3, 'X cannot have more than 3 dimensions');
+                isens = false;
+                [nState, nEns, nPriors] = size(X);
+            end
+            
+            % Error check the ensemble, get sizes
             dash.assertRealDefined(X, 'X');
-            assert(ndims(X)<=3, 'X cannot have more than 3 dimensions');
             
-            % Get ensemble sizes
-            [nState, nEns, nPriors] = size(X);
-            
-            % Error check the PSMs
-            dash.assertVectorTypeN(F, 'cell', [], 'F');
+            % Parse the PSM vector
             nSite = numel(F);
+            [F, wasCell] = dash.parseInputCell(F, nSite, 'F');
+            name = "F";
+            
+            % Error check the individual PSMs
             for s = 1:nSite
-                name = sprintf('Element %.f of F', s);
+                if wasCell
+                    name = sprintf('Element %.f of F', s);
+                end
                 dash.assertScalarType(F{s}, name, 'PSM', 'PSM');
                 
                 % Check the rows of the PSM do not exceed the number of rows
                 if max(F{s}.rows) > nState
-                    error('X has %.f rows, but %s uses rows that are larger (%.f)', ...
+                    error('The ensemble has %.f rows, but %s uses rows that are larger (%.f)', ...
                         nState, F{s}.messageName(s), max(F{s}.rows));
-                end
-                
-                % Check the PSM can return R if requested
-                if nargout>1 && ~F{s}.estimatesR
-                    error('%s cannot estimate R', F{s}.messageName(s));
                 end
             end
             
@@ -111,13 +120,32 @@ classdef (Abstract) PSM
                 R = NaN(nSite, nEns, nPriors);
             end
             
-            % Get the values needed to run each PSM for each prior
+            % Get the values needed to run each PSM
             for s = 1:nSite
-                Xpsm = X(F{s}.rows,:,:);
+                if ~isens
+                    Xpsm = X(F{s}.rows,:,:);
+                
+                % If using an ensemble object, first attempt to read all rows at once
+                else
+                    try
+                        rows = dash.equallySpacedIndices(F{s}.rows);
+                        Xpsm = m.X(rows,:);
+                        [~, keep] = ismember(F{s}.rows, rows);
+                        Xpsm = Xpsm(keep,:);
+                        
+                    % If unsuccessful, load values iteratively
+                    catch
+                        nRows = numel(F{s}.rows);
+                        Xpsm = NaN(nRows, nEns);
+                        for r = 1:nRows
+                            Xpsm(r,:) = m.X(F{s}.rows(r),:);
+                        end
+                    end
+                end
+                
+                % Get the values for each prior and run the PSM
                 for p = 1:nPriors
                     Xrun = Xpsm(:,:,p);
-                    
-                    % Run the PSM
                     if nargout>1
                         [Yrun, Rrun] = F{s}.run(Xrun);
                     else
@@ -126,7 +154,7 @@ classdef (Abstract) PSM
                     
                     % Error check the R output
                     if nargout>1
-                        name = sprintf('R values for %s for prior %.f', F{s}.messageName, p);
+                        name = sprintf('R values for %s for prior %.f', F{s}.messageName(s), p);
                         dash.assertVectorTypeN(Rrun, 'numeric', nEns, name);
                         if ~isrow(Rrun)
                             error('%s must be a row vector', name);
@@ -135,7 +163,7 @@ classdef (Abstract) PSM
                     end
                     
                     % Error check the Y output
-                    name = sprintf('Y values for %s for prior %.f', F{s}.messageName, p);
+                    name = sprintf('Y values for %s for prior %.f', F{s}.messageName(s), p);
                     dash.assertVectorTypeN(Yrun, 'numeric', nEns, name);
                     if ~isrow(Yrun)
                         error('%s must be a row vector', name);
