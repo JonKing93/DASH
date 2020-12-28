@@ -1,4 +1,1 @@
 highlighter: rouge
-markdown: kramdown
-kramdown:
-    math_engine: katex
