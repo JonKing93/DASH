@@ -45,7 +45,7 @@ slopes = [2, 0.5];
 
 ### Use the same slope for all variables
 
-You can use the same slope (a_1, a_2, ..., a_n) for all variables X_1, X_2, ..., X_n by using a scalar for the "slopes" input. For example, let's say I want a PSM that calculates an annual mean over a monthly temperature variable ("T_monthly") for a proxy site at [60W, 120E]. Each monthly variable will have the same coefficient of (1/12), so I could do:
+You can use the same slope for all variables $$X_1, X_2, ..., X_n$$ by using a scalar for the "slopes" input. For example, let's say I want a PSM that calculates an annual mean over a monthly temperature variable ("T_monthly") for a proxy site at [60W, 120E]. Each monthly variable will have the same coefficient of (1/12), so I could do:
 ```matlab
 rows = ensMeta.closestLatLon([60 120], "T_monthly");
 slope = 1/12;
