@@ -32,7 +32,7 @@ classdef (Abstract) PSM
         function[name] = messageName(obj, n)
             
             % Get some settings
-            hasNumber = exist(n, 'var');
+            hasNumber = exist('n', 'var');
             hasName = ~strcmp(obj.name, "");
             
             % Create the message string

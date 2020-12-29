@@ -1,0 +1,19 @@
+estimate
+    ensembleMetadata.sizes
+    dash.assertRealDefined
+    dash.parseInputCell
+    dash.assertScalarType
+    messageName
+    dash.equallySpacedIndices
+    runPSM
+    dash.assertVectorTypeN
+PSM
+    canEstimateR
+    rename
+rename
+    dash.assertStrFlag
+messageName
+useRows
+    dash.assertPositiveIntegers
+canEstimateR
+    dash.assertScalarType
