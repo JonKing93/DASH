@@ -33,11 +33,3 @@ If a PSM is unable to estimate R, then this syntax will cause an error.
 As we have seen, the inputs required to create a PSM object and to use the "run" command will vary with the specific PSM being used. In the remainder of the tutorial, we will focus on specific PSMs and the details of their inputs.
 
 [Previous](estimate)---[Next](linear)
-
-
-
-
-
-
-
-The inputs required to run a PSM will vary with the specific PSM being run, and these are examined in detail in the tutorial pages for specific PSMs.

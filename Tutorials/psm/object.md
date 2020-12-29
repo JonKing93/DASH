@@ -25,7 +25,7 @@ psmObject = psmName(rows, otherInput1, otherInput2, .., otherInputN)
 
 * Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear relationship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
 
-* The "rows" argument indicates which state vector elements are required to run a PSM. This way, the PSM for each proxy site knows what data to use to run. The ![ensembleMetadata class](..\ensembleMetadata\welcome) is useful for determining the rows; in particular, the ![ensembleMetadata.closestLatLon command](..\ensembleMetadata\closest).
+* The "rows" argument indicates which state vector elements are required to run a PSM. This way, the PSM for each proxy site knows what data to use to run. The [ensembleMetadata class](..\ensembleMetadata\welcome) is useful for determining the rows; in particular, the [ensembleMetadata.closestLatLon command](..\ensembleMetadata\closest).
 
 * otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail for specific PSMs later in the tutorial.
 

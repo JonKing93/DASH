@@ -17,7 +17,7 @@ using the kalmanFilter class.
 
 DASH requires MATLAB 2018B or higher. If you are using an earlier version, you will need to [upgrade](https://www.mathworks.com/help/install/ug/upgrade-matlab-release.html) your release.
 
-You do not need any of the other DASH modules to use the kalmanFilter class. However, the ![PSM](..\psm\welcome), ![stateVector](..\stateVector\welcome), ![ensemble](..\ensemble\welcome), and ![ensembleMetadata](..\ensembleMetadata\welcome) modules may all prove useful in facilitating Kalman Filter analyses.
+You do not need any of the other DASH modules to use the kalmanFilter class. However, the [PSM](..\psm\welcome), [stateVector](..\stateVector\welcome), [ensemble](..\ensemble\welcome), and [ensembleMetadata](..\ensembleMetadata\welcome) modules may all prove useful in facilitating Kalman Filter analyses.
 
 <br>
 #### Help from the Matlab console
@@ -36,3 +36,5 @@ doc kalmanFilter
 doc kalmanFilter.commandName
 ```
 to show help in the Matlab documentation browser.
+
+[Next](object)
