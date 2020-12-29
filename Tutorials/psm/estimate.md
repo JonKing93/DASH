@@ -37,7 +37,7 @@ Here, Ye will have a size of (2 x 1000). The first row will hold the estimates f
 
 ### Estimate proxy uncertainty (R)
 
-Some PSMs can estimate the proxy measurement uncertainty for a site. (In the Kalman Filter tutorial, we refer to this as R). Use the second output to obtain any estimated R values:
+Some PSMs can estimate the proxy measurement uncertainty for a site. (In the ![Kalman Filter tutorial](..\kalmanFilter\welcome), we refer to this as R). Use the second output to obtain any estimated R values:
 ```matlab
 [Ye, R] = PSM.estimate(X, psmObjects);
 ```

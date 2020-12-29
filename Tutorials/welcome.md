@@ -25,6 +25,6 @@ DASH includes several modules to help design and build state vector ensembles.
 DASH also includes modules for implementing data assimilation.
 
 * To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm\welcome).
-* To implement a Kalman Filter, see the [kalmanFilter tutorial](kalman\welcome).
+* To implement a Kalman Filter, see the [kalmanFilter tutorial](kalmanFilter\welcome).
 * To test optimal sensor placement, see the [optimalSensor tutorial](sensor\welcome).
 * To implement a particle Filter, see the [particleFilter tutorial](particle\welcome).
