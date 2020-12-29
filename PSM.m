@@ -147,9 +147,9 @@ classdef (Abstract) PSM
                 for p = 1:nPriors
                     Xrun = Xpsm(:,:,p);
                     if nargout>1
-                        [Yrun, Rrun] = F{s}.run(Xrun);
+                        [Yrun, Rrun] = F{s}.runPSM(Xrun);
                     else
-                        Yrun = F{s}.run(Xrun);
+                        Yrun = F{s}.runPSM(Xrun);
                     end
                     
                     % Error check the R output
@@ -159,7 +159,6 @@ classdef (Abstract) PSM
                         if ~isrow(Rrun)
                             error('%s must be a row vector', name);
                         end
-                        dash.assertRealDefined(Rrun, name);
                     end
                     
                     % Error check the Y output
@@ -168,7 +167,6 @@ classdef (Abstract) PSM
                     if ~isrow(Yrun)
                         error('%s must be a row vector', name);
                     end
-                    dash.assertRealDefined(Yrun, name); 
                     
                     % Save
                     Y(s,:,p) = Yrun;
@@ -180,8 +178,13 @@ classdef (Abstract) PSM
         end
     end
     
-    % Run individual PSMs
+    % Run individual PSM objects
     methods (Abstract)
-        Y = run(obj, X);
+        [Y, R] = runPSM(obj, X);
+    end
+    
+    % Run PSMs directly
+    methods (Abstract, Static)
+        [Y, R] = run(varargin);
     end
 end                 
