@@ -63,6 +63,6 @@ myPSM = linearPSM(rows, slope, intercept);
 Ye = PSM.estimate(ens, myPSM);
 ```
 
-We have now seen how to estimate proxy values using PSM objects. In the next sections of this tutorial, we will focus on specific PSMs and the input arguments required to create them.
+So far, we have seen how to estimate proxy values given a state vector ensemble. However, in some cases you may want estimate proxy values without needing to create an entire ensemble. We will examine this syntax in the next section.
 
-[Previous](object)---[Next](linear)
+[Previous](object)---[Next](run)

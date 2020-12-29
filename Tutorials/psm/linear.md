@@ -58,10 +58,20 @@ myPSM = linearPSM(rows, slope, intercept);
 If you do not provide an intercept, then it will default to zero. Continuing the previous example of a monthly temperature mean, I could equivalently use:
 ```matlab
 slope = 1/12;
-myPSM = linearPSM(rows, slope);
+myPSM = linearPSM(rows, slopes);
 ```
+
+### linearPSM.run
+
+To use the "run" command, use the following syntax:
+```matlab
+Ye = linearPSM.run(Xpsm, slopes, intercept);
+```
+
+Here, Xpsm is a matrix with the $$X$$ variables for the PSM. Each row holds the values for a particular $$X_1, X_2, ..., X_n$$. The slopes and intercept inputs are the same as for PSM creation. Once again, the order of the slopes should match the order of rows in Xpsm.
+
 
 This is currently the only PSM provided with DASH. However, more PSMs are in the works.
 
 
-[Previous](estimate)---[All Tutorials](..\welcome)
+[Previous](run)---[All Tutorials](..\welcome)
