@@ -31,7 +31,7 @@ kf = kf.variance(false);
 ```
 which will remove the "Avar" field from the output structure.
 
-Note that this will only speed up processing if you do not enable other output fields that require ensemble deviations (such as ensemble [percentiles](#posterior-percentiles), [deviations](#posterior-deviations), or ![deviations for a mean INSERT LINK()),
+Note that this will only speed up processing if you do not enable other output fields that require ensemble deviations (such as ensemble [percentiles](#posterior-percentiles) or [deviations](#posterior-deviations)). You can use [this table](output-workflow#output-summary) to review which updates are required by the various outputs.
 
 ### Posterior percentiles
 
