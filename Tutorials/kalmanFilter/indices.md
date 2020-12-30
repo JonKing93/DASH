@@ -12,7 +12,7 @@ You can return the posterior of an index using the "index" command. Here, the mo
 kf = kf.index(name, ..)
 ```
 
-Here "name" is a string with the name of the index. The name can only include numbers, letters, and underscores. This will cause the output structure to include a field named "index_<name>" which will hold the posterior for the reconstructed index. For example, if I do
+Here "name" is a string with the name of the index. The name can only include numbers, letters, and underscores. This will cause the output structure to include a field named "index_&lt;name>" which will hold the posterior for the reconstructed index. For example, if I do
 ```matlab
 name = 'nino34'
 kf = kf.index(name, ..);
