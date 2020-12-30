@@ -28,4 +28,4 @@ Posterior Index | index | index_name | Ensemble members x Time | Mean and Deviat
 
 We have now seen all the various output options for a Kalman Filter analysis. In the next sections, we will shift focus and examine how to design evolving priors, and how to adjust model covariance estimates.
 
-[Previous](index)---[Next](evolve)
+[Previous](indices)---[Next](evolve)
