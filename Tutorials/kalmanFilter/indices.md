@@ -87,7 +87,7 @@ Sometimes, you may only want to calculate an index over specific state vector ro
 ```matlab
 kf = kf.index(name, weights, rows);
 ```
-Here, "rows" is a vector of indices that indicate which state vector rows to use when calculating the index; it may either be a logical vector the length of the state vector, or a vector of linear indices. The [ensembleMetadata.rows command](..\ensembleMetadata\rows) is often useful for finding rows that correspond to a particular variable. If using the "rows" input, then "weights" must have one element per specified row.
+Here, "rows" is a vector of indices that indicate which state vector rows to use when calculating the index; it may either be a logical vector the length of the state vector, or a vector of linear indices. The [ensembleMetadata.findRows command](..\ensembleMetadata\find-rows) is often useful for finding rows that correspond to a particular variable. If using the "rows" input, then "weights" must have one element per specified row.
 
 Building off the previous example, say I change my state vector so that it now includes a temperature variable (named "Temp"), and a precipitation variable (named "Precip"). However, I still want to calculate a global temperature index. I could do:
 ```matlab
