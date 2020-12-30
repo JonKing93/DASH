@@ -64,7 +64,13 @@ This specifies that the Kalman Filter should cyclically alternate over the four 
 
 ### Specify estimates for evolving priors
 
-When you provide multiple priors to a kalmanFilter object, you must also specify proxy estimates for each prior. You can use the "PSM.estimate" command with the normal syntax to estimate proxy values for multiple priors. Building off the previous example, say you have a vector of PSM objects (myPSMs). Then you could do:
+When you provide multiple priors to a kalmanFilter object, you must also specify proxy estimates for each prior. You can use the "estimates" command with the normal syntax to estimate proxy values for multiple priors:
+```matlab
+kf = kf.estimates(Ye)
+```
+However, Ye must have three dimensions (State Vector x Ensemble Members x Priors) and the estimates for the different priors should be organized down the third dimension.
+
+The "PSM.estimate" command can facilitate determining estimates for multiple priors. Building off the previous example, say you have a vector of PSM objects (named myPSMs). Then you could do:
 ```matlab
 X = cat(3, spring.load, summer.load, autumn.load, winter.load);
 Ye = PSM.estimate(X, myPSMs);
