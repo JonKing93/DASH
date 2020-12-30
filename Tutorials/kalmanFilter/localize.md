@@ -14,7 +14,7 @@ Covariance localization reduces covariance as grid points become more distant fr
 The most commonly used localization scheme is a Gaspari-Cohn polynomial applied over two dimensions, and the tutorial will focus on implementing this scheme.
 
 ### 1. Obtain spatial coordinates
-This Gaspari-Cohn polynomial considers distances based on the latitude and longitude of assimilated grid points and proxy sites. You can acquire latitude-longitude coordinates for a state vector using the [ensembleMetadata.latlon command](..\ensembleMetadata\latlon). For example:
+The Gaspari-Cohn polynomial considers distances based on the latitude and longitude of assimilated grid points and proxy sites. You can acquire latitude-longitude coordinates for a state vector using the [ensembleMetadata.latlon command](..\ensembleMetadata\latlon). For example:
 ```matlab
 ens = ensemble('my-ensemble.ens');
 coords = ens.metadata.latlon;
