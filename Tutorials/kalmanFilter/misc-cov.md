@@ -5,7 +5,7 @@ title: Misc Covariance
 
 # Additional Covariance options
 
-Although covariance localization and blending are among the most common covariance adjustments in paleoclimate applications, DASH supports additional methods, including covariance inflation and directly specifying a covariance matrix. This page details these methods as well as several other useful command for covariance workflows.
+Although covariance localization and blending are among the most common covariance adjustments in paleoclimate applications, DASH supports additional methods, including covariance inflation and directly specifying a covariance matrix. This page details these methods as well as several other useful commands for covariance workflows.
 
 ### Covariance inflation
 
