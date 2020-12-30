@@ -47,7 +47,7 @@ kf = kf.prior(X, whichPrior)
 This indicates that the Kalman Filter should use the first prior in X for the first 1000 time steps, and the second prior in X for the last 150 time steps.
 
 ##### Example 2: Cyclic Seasonal Priors
-Alternatively, you might want to use cyclical evolving priors for different seasons or months. For example, say you have seasonal observations (spring, summer, autumn, winter) over 250 years for a total of 1000 assimilated time steps. You have a different prior for each season: one for spring, summer autumn, and winter and want to change the prior cyclically with the season. Then you could do:
+Alternatively, you might want to use cyclical evolving priors for different seasons or months. For example, say you have seasonal observations (spring, summer, autumn, winter) over 250 years for a total of 1000 assimilated time steps. You have a different prior for each season: one for spring, summer, autumn, and winter and want to change the prior cyclically with the season. Then you could do:
 ```matlab
 spring = ensemble('spring-prior.ens');
 summer = ensemble('summer-prior.ens');
