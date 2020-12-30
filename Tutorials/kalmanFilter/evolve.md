@@ -70,7 +70,7 @@ kf = kf.estimates(Ye)
 ```
 However, Ye must have three dimensions (State Vector x Ensemble Members x Priors) and the estimates for the different priors should be organized down the third dimension.
 
-The "PSM.estimate" command can facilitate determining estimates for multiple priors. Building off the previous example, say you have a vector of PSM objects (named myPSMs). Then you could do:
+The "PSM.estimate" command can facilitate estimates for multiple priors using the normal syntax. Building off the previous example, say you have a vector of PSM objects (named myPSMs). Then you could do:
 ```matlab
 X = cat(3, spring.load, summer.load, autumn.load, winter.load);
 Ye = PSM.estimate(X, myPSMs);
@@ -78,4 +78,4 @@ kf = kf.estimates(Ye);
 ```
 Here, Ye will have three dimensions (Proxies x Ensemble Members x Priors), and the length of the third dimension will be 4 (one element for each seasonal prior).
 
-[Previous](index)---[Next]()
+[Previous](index)---[Next](covariance)

@@ -21,17 +21,19 @@ By default, the output structure contains three fields
 
 3. calibRatio: This field holds the calibration ratio for each proxy observation in each updated time step. It is a matrix with dimensions (Proxy sites x Updated time steps).
 
-### Disable variance
+### Increase speed by disabling variance
 
 DASH uses an ensemble square root Kalman Filter, which updates the ensemble mean separately from the ensemble deviations. Updating deviations is typically the most computationally expensive task in a Kalman Filter analysis, so DASH only updates the deviations when they are necessary to calculate output quantities.
 
-If you have an analysis that only requires the updated ensemble mean, you can significantly speed up calculations by disabling the ensemble variance output (which requires the updated deviations). You can do this using the "variance" command and setting the input to false
+If you only require the updated ensemble mean (for example, in an exploratory analysis or in sensitivity testing), you can significantly speed up calculations by disabling the ensemble variance output (which requires the updated deviations). You can do this using the "variance" command and setting the input to false
 ```matlab
 kf = kf.variance(false);
 ```
 which will remove the "Avar" field from the output structure.
 
 Note that this will only speed up processing if you do not enable other output fields that require ensemble deviations (such as ensemble [percentiles](#posterior-percentiles) or [deviations](#posterior-deviations)). You can use [this table](output-workflow#output-summary) to review which updates are required by the various outputs.
+
+If you would like to re-enable ensemble variance, use the "variance" command again and set the input to true.
 
 ### Posterior percentiles
 
@@ -48,13 +50,13 @@ kf = kf.percentiles(percs);
 
 output = kf.run;
 ```
-Then the output structure will contain a field named "Aperc" that holds a 3 dimensional array. The first column of Aperc will hold the 1st percentile of the updated ensemble, the second column will hold the 99th percentiles of the updated ensemble, etc.
+Then the output structure will contain a field named "Aperc" that holds a 3 dimensional array. The first column of Aperc will hold the 1st percentile of the updated ensemble, the second column will hold the 99th percentile of the updated ensemble, etc.
 
 If you previously specified percentiles, but no longer want to compute them, you can disable them by calling the "percentiles" command with an empty array. For example:
 ```matlab
 kf = kf.percentiles([]);
 ```
-will disable percentiles for an analysis.
+will remove any percentiles from an analysis.
 
 
 ### Posterior deviations
@@ -68,11 +70,14 @@ This will cause the output structure to include a field "Adev", which will hold 
 
 It is worth noting that the posterior deviations are often very large and can quickly exceed the memory available to a computer. Consequently, trying to return the full set of deviations can result in Out-of-Memory errors for many analyses.
 
+If you have enabled deviations, but no longer want to return them, you can disable them by calling the "deviations" command again and setting the input to false.
+
 ### Disable the ensemble mean
 
 You can remove the ensemble mean from the output by using the "mean" command and setting the input to false.
 ```matlab
 kf = kf.mean(false);
 ```
+If you would like to re-enable the ensemble mean, call the "mean" command again and set the input to true.
 
-[Previous](essential)---[Next](index)
+[Previous](essential)---[Next](indices)

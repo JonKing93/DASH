@@ -5,11 +5,15 @@ title: Output Workflow
 
 # Regridding Output
 
-It is often useful to reshape output state vector to spatial regrids. Recall that [ensembleMetadata.regrid](..\ensembleMetadata\regrid) can help facilitate this. For example, say I have a state vector that includes a temperature variable (named "T") and that I want to plot the updated temperature field from an assimilation. I could use:
+It is often useful to reshape output state vector to spatial regrids. Recall that [ensembleMetadata.regrid](..\ensembleMetadata\regrid) can help facilitate this. For example, say I have a state vector that includes a temperature variable (named "T") and that I want to map the updated temperature field from an assimilation. I could use:
 ```matlab
 [T_updated, meta] = ensMeta.regrid(output.Amean, 'T');
 ```
-to convert the updated ensemble mean into a gridded field with associated metadata.
+to convert the updated ensemble mean into a gridded field with associated metadata. Similarly:
+```matlab
+[T_percentiles, meta] = ensMeta.regrid(output.Aperc, 'T');
+```
+could be used to convert the percentiles of the posterior ensemble to a gridded field with metadata.
 
 
 # Output Summary

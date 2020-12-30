@@ -86,20 +86,22 @@ You can also use different localization weights in different assimilated time st
 ```matlab
 kf = kf.localize(wloc, yloc, whichLoc);
 ```
- In this case, wloc and yloc will have 3 dimensions, and the different sets of localization weights are organized along the third dimension. The input "whichLoc" is a vector with a length matching the number of assimilated time steps; each element indicates which set of localization weights to use for a given time step, and each value is the index of the appropriate set of localization weights along the third dimension of wloc and yloc.
+In this case, wloc and yloc will have 3 dimensions, and the different sets of localization weights are organized along the third dimension. The input "whichLoc" is a vector with a length matching the number of assimilated time steps; each element indicates which set of localization weights to use for a given time step, and each value is the index of the appropriate set of localization weights along the third dimension of wloc and yloc.
 
- For example, let's say I have proxy observations in 1150 time steps. I want to use a localization radius of 30,000 km for the first 1000 time steps, and then a radius of 20,000 km for the last 150 time steps. Then I could do:
- ```matlab
- % Get the sets of localization weights
- [wloc1, yloc1] = dash.localizationWeights("gc2d", coords, proxyCoords, 30000);
- [wloc2, yloc2] = dash.localizationWeights("gc2d", coords, proxyCoords, 20000);
+For example, let's say I have proxy observations in 1150 time steps. I want to use a localization radius of 30,000 km for the first 1000 time steps, and then a radius of 20,000 km for the last 150 time steps. Then I could do:
+```matlab
+% Get the sets of localization weights
+[wloc1, yloc1] = dash.localizationWeights("gc2d", coords, proxyCoords, 30000);
+[wloc2, yloc2] = dash.localizationWeights("gc2d", coords, proxyCoords, 20000);
 
- % Organize the sets of weights along the third dimension
- wloc = cat(3, wloc1, wloc2);
- yloc = cat(3, yloc1, yloc2);
+% Organize the sets of weights along the third dimension
+wloc = cat(3, wloc1, wloc2);
+yloc = cat(3, yloc1, yloc2);
 
- % Use the first set of weights for the first 1000 time steps
- % Then use the second set of weights for the last 150 time steps
- whichLoc = [ones(1000,1); 2*ones(150,1)];
- kf = kf.localize(wloc, yloc, whichLoc);
- ```
+% Use the first set of weights for the first 1000 time steps
+% Then use the second set of weights for the last 150 time steps
+whichLoc = [ones(1000,1); 2*ones(150,1)];
+kf = kf.localize(wloc, yloc, whichLoc);
+```
+
+[Previous](covariance)---[Next](blend)
