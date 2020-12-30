@@ -1,3 +1,8 @@
+---
+layout: simple_layout
+title: Localization
+---
+
 # Covariance Localization
 
 Covariance localization reduces covariance as grid points become more distant from the proxy sites. This allows nearby proxy sites to most strongly influence updated grid points, and helps reduce covariance biases at distant points. The basic workflow for localization is to:
