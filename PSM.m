@@ -1,4 +1,9 @@
 classdef (Abstract) PSM
+    %% Implements a common interface for all PSMs
+    %
+    % PSM Methods:
+    %   estimate - Estimate proxy values from a state vector ensemble
+    %   rename - Renames a PSM
     
     properties (SetAccess = private)
         name;
@@ -9,6 +14,28 @@ classdef (Abstract) PSM
     methods
         % Constructor
         function[obj] = PSM(name, estimatesR)
+            %% PSM constructor. Records a name and whether the PSM can estimate R
+            %
+            % obj = PSM
+            % Does not specify a name. Does not estimate R.
+            %
+            % obj = PSM(name)
+            % Creates a PSM with a particular name. Does not estimate R.
+            %
+            % obj = PSM(name, estimatesR)
+            % Creates a PSM with a name and specifies whether the PSM can
+            % estimate R.
+            %
+            % ----- Inputs -----
+            %
+            % name: A name for the PSM. A string.
+            %
+            % estimatesR: A scalar logical indicating whether the PSM can
+            %    estimate R (true), or not (false -- defalt)
+            %
+            % ----- Outputs -----
+            %
+            % obj: The new PSM object
             
             % Note if PSM can estimate R
             if ~exist('estimatesR', 'var') || isempty(estimatesR)
@@ -25,11 +52,38 @@ classdef (Abstract) PSM
         
         % Rename
         function[obj] = rename(obj, name)
+            %% Renames a PSM
+            %
+            % obj = obj.rename(newName)
+            %
+            % ----- Inputs -----
+            %
+            % newName: A new name for the PSM. A string
+            %
+            % ----- Outputs -----
+            %
+            % obj: The renamed PSM
+            
             obj.name = dash.assertStrFlag(name, 'name');
         end
         
         % Return name for error messages
         function[name] = messageName(obj, n)
+            %% Returns an identifying name for the PSM for use in messages
+            %
+            % name = obj.messageName
+            % Returns a name for the PSM.
+            %
+            % name = obj.messageName(n)
+            % Returns a name for the PSM and identifies its position in a list
+            %
+            % ----- Inputs -----
+            %
+            % n: A list index. A scalar, positive integer
+            %
+            % ----- Outputs -----
+            %
+            % name: A string identifying the PSM
             
             % Get some settings
             hasNumber = exist('n', 'var');
@@ -49,6 +103,17 @@ classdef (Abstract) PSM
                 
         % Set the rows
         function[obj] = useRows(obj, rows)
+            %% Specifies the state vector rows used by a PSM
+            %
+            % obj = obj.useRows(rows)
+            %
+            % ----- Inputs -----
+            %
+            % rows: The rows used by the PSM. A vector of positive integers.
+            %
+            % ----- Outputs -----
+            %
+            % obj: The updated PSM object
             
             % Error check
             assert(isvector(rows), 'rows must be a vector');
@@ -69,6 +134,19 @@ classdef (Abstract) PSM
             
         % Allow R to be estimated
         function[obj] = canEstimateR(obj, tf)
+            %% Specifies whether a PSM can estimate R
+            %
+            % obj = obj.canEstimateR(tf)
+            %
+            % ----- Inputs -----
+            %
+            % tf: A scalar logical indicating if the PSM can estimate R
+            %    (true) or not (false)
+            %
+            % ----- Outputs -----
+            %
+            % obj: The updated PSM object
+            
             dash.assertScalarType(tf, 'tf', 'logical', 'logical');
             obj.estimatesR = tf;
         end
@@ -76,7 +154,31 @@ classdef (Abstract) PSM
     
     % Estimate Y values for a set of PSMs
     methods (Static)                
-        function[Y, R] = estimate(X, F)
+        function[Ye, R] = estimate(X, F)
+            %% Estimates proxies values from a state vector ensemble
+            %
+            % Ye = PSM.estimate(X, psms)
+            % Estimates proxies values for a state vector ensemble given a
+            % set of PSMs.
+            %
+            % [Ye, R] = PSM.estimates(X, psms)
+            % Also estimates proxy uncertainties (R).
+            %
+            % ----- Inputs -----
+            %
+            % X: A state vector ensemble. A numeric array with the
+            %    following dimensions (State vector x ensemble members x priors)
+            %
+            % psms: A set of PSMs. Either a scalar PSM object or a cell
+            %    vector whose elements are PSM objects.
+            %
+            % ----- Outputs -----
+            %
+            % Ye: Proxy estimates. A numeric array with the dimensions
+            %    (Proxy sites x ensemble members x priors)
+            %
+            % R: Proxy uncertainty estimates. A numeric array with
+            %    dimensions (proxy sites x ensemble members x priors)
             
             % Parse and error check the ensemble. Get size
             if isa(X, 'ensemble')
@@ -115,7 +217,7 @@ classdef (Abstract) PSM
             end
             
             % Preallocate
-            Y = NaN(nSite, nEns, nPriors);
+            Ye = NaN(nSite, nEns, nPriors);
             if nargout>1
                 R = NaN(nSite, nEns, nPriors);
             end
@@ -169,7 +271,7 @@ classdef (Abstract) PSM
                     end
                     
                     % Save
-                    Y(s,:,p) = Yrun;
+                    Ye(s,:,p) = Yrun;
                     if nargout>1
                         R(s,:,p) = Rrun;
                     end

@@ -83,7 +83,7 @@ classdef kalmanFilter
             % Return mean and variance by default
             kf.return_mean = true;
             kf.return_devs = false;
-            kf = kf.returnVariance(true);
+            kf = kf.variance(true);
         end
     end                
         
@@ -108,11 +108,11 @@ classdef kalmanFilter
     
     % User output options
     methods
-        kf = returnMean(kf, tf);
-        kf = returnDeviations(kf, tf);
+        kf = mean(kf, tf);
+        kf = deviations(kf, tf);
         kf = percentiles(kf, percs);
-        kf = returnVariance(kf, tf);
-        kf = posteriorWeightedMean(kf, weights);
+        kf = variance(kf, tf);
+        kf = index(kf, name, weights, rows);
     end
     
     % Static Ensrf analysis methods

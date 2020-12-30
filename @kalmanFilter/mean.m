@@ -1,8 +1,8 @@
-function[kf] = returnMean(kf, tf)
+function[kf] = mean(kf, tf)
 %% Specify whether to return the posterior mean after running a Kalman
 % Filter. By default, a Kalman Filter returns the mean.
 %
-% kf = kf.returnMean(tf)
+% kf = kf.mean(tf)
 %
 % ----- Inputs -----
 %

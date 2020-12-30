@@ -1,8 +1,8 @@
-function[kf] = returnVariance(kf, tf)
+function[kf] = variance(kf, tf)
 %% Specify whether to return the variance of a posterior ensemble. Default
 % is to return the variance.
 %
-% kf = kf.returnVariance(tf)
+% kf = kf.variance(tf)
 %
 % ----- Input -----
 %

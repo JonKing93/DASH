@@ -25,7 +25,3 @@ classdef posteriorWeightedMean < posteriorCalculation
         end
     end 
 end
-        
-            
-            
-        

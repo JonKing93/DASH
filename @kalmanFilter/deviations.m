@@ -1,8 +1,8 @@
-function[kf] = returnDeviations(kf, tf)
+function[kf] = deviations(kf, tf)
 %% Specify whether to return the posterior deviations after running a Kalman
 % Filter. By default, a Kalman Filter does not return deviations.
 %
-% kf = kf.returnDeviations(tf)
+% kf = kf.deviations(tf)
 %
 % ----- Inputs -----
 %
