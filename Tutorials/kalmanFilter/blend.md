@@ -40,6 +40,7 @@ Note that blending is applied *after* any localization is applied to the covaria
 ### Specify blending weights
 
 The Kalman filter will blend the covariance of the prior and the static ensemble as a linear combination:
+
 $$C_{final} = aC_{static} + bC_{prior}$$
 
 By default, DASH sets the coefficients $$a$$ and $$b$$ equal to 1/2, so that the final covariance is an equal mix of the two blended covariances. However, you can use the third input to the "blend" to specify custom coefficients:
