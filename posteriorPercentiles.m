@@ -1,7 +1,7 @@
 classdef posteriorPercentiles < posteriorCalculation
     %% Calculates percentiles of a posterior ensemble.
     
-    properties (Constant)
+    properties (SetAccess = immutable)
         outputName = "Aperc";
         timeDim = 3;
     end

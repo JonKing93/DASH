@@ -1,7 +1,7 @@
 classdef posteriorVariance < posteriorCalculation
     %% Calculates the variance of a posterior ensemble.
     
-    properties (Constant)
+    properties (SetAccess = immutable)
         outputName = "Avar";
         timeDim = 2;
     end
