@@ -1,10 +1,10 @@
 function[kf] = localize(kf, wloc, yloc, whichLoc)
 %% Specifies localization weights for a Kalman Filter
 %
-% kf = kf.localize(w, yloc)
+% kf = kf.localize(wloc, yloc)
 % Sets the localization weights.
 %
-% kf = kf.localize(w, yloc, whichLoc)
+% kf = kf.localize(wloc, yloc, whichLoc)
 % Use different localization weights in different time steps.
 %
 % ----- Inputs -----
@@ -40,7 +40,7 @@ end
 
 % Error check the covariance localization inputs
 whichLoc = kf.checkCovariance(wloc, yloc, whichLoc, true);
-assert( all(wloc>=0,'all'), 'w cannot have negative elements.');
+assert( all(wloc>=0,'all'), 'wloc cannot have negative elements.');
 assert( all(yloc>=0,'all'), 'yloc cannot have negative elements.');
 
 % Save the values

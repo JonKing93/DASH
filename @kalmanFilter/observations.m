@@ -29,10 +29,13 @@ assert( ~any(R(:)<=0), 'R can only include positive values.')
 % check the number of time steps doesn't conflict with an evolving prior.
 if ~isempty(kf.Y) && nSite~=kf.nSite
     error(['You previously specified observation estimates for %.f sites, ',...
-        'but D only has %.f sites (rows).'], kf.nSite, nSite);
+        'but D has %.f sites (rows).'], kf.nSite, nSite);
 elseif ~isempty(kf.whichPrior) && nTime~=kf.nTime
     error(['You previously specified an evolving prior for %.f time steps, ',...
-        'but D only has %.f time steps (columns).'], kf.nTime, nTime);
+        'but D has %.f time steps (columns).'], kf.nTime, nTime);
+elseif (~isempty(kf.whichLoc)||~isempty(kf.whichCov)||~isempty(kf.whichFactor)) && nTime~=kf.nTime
+    error(['You previously specified covariance options for %.f time steps, ',...
+        'but D has %.f time steps'], kf.nTime, nTime);
 end
 
 % Propagate R over D

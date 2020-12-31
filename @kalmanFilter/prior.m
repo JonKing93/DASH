@@ -33,10 +33,10 @@ function[kf] = prior(kf, M, whichPrior)
 % Check there are no size conflicts
 if ~isempty(kf.wloc) && nState~=kf.nState
     error(['You previously specified localization weights for %.f state vector ',...
-        'elements, but M only has %.f state vector elements (rows).'], kf.nState, nState);
+        'elements, but M has %.f state vector elements (rows).'], kf.nState, nState);
 elseif ~isempty(kf.C) && nState~=kf.nState
     error(['You previously specified a covariance estimate for %.f state vector ',...
-        'elements, but M only has %.f state vector elements (rows).'], kf.nState, nState);
+        'elements, but M has %.f state vector elements (rows).'], kf.nState, nState);
 elseif ~isempty(kf.Qname) && any(contains(kf.Qname, "index")) && nState~=kf.nState
     error(['You previously specified a posterior index, so you cannot change ',...
         'the number of state vector elements. M must have %.f state vector ',...
@@ -63,7 +63,7 @@ if nPrior==1
 % Otherwise, there is an evolving prior. Require whichPrior unless the
 % number of priors exactly matches time steps (or time is undefined)
 else
-    if ~isvar && (nPrior==kf.nTime || kf.nTime=0)
+    if ~isvar && (nPrior==kf.nTime || kf.nTime==0)
         kf.nTime = nPrior;
         whichPrior = 1:kf.nTime;    
     elseif ~isvar

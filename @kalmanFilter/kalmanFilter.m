@@ -47,6 +47,7 @@ classdef kalmanFilter
         % Inflation
         inflateCov = false; % True or false toggle
         inflateFactor; % Inflation factor
+        whichFactor; % Which factor to use in each time step
         
         % Localization
         localizeCov = false; % Logical toggle
