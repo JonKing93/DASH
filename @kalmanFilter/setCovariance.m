@@ -29,12 +29,10 @@ function[kf] = setCovariance(kf, C, Ycov, whichCov)
 %
 % kf: The updated kalmanFilter object
 
-% Cannot set covariance if blending
+% Cannot set covariance if blending or if prior/observations are unset
 if kf.blendCov
     error('Cannot set the covariance directly after specifying blending options. If needed, you can reset the covariance options using the "resetCovariance" command.');
 end
-
-% Only set covariance after the prior and observations are set
 kf.assertEditableCovariance('the covariance');
 
 % Error check the covariance inputs

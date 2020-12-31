@@ -1,7 +1,12 @@
 function[whichArg, nCov] = checkCovariance(kf, C, Ycov, whichArg, locInputs)
 %% Error checks state vector covariance, Y covariance, and whichCov inputs
+% Alternatively, wloc, yloc, and whichLoc
 % 
 % [whichCov, nCov] = kf.checkCovariance(C, Ycov, whichCov)
+% Error checks covariances for blending or directly setting covariance.
+% 
+% [whichLoc, nLoc] = kf.checkCovariance(wloc, yloc, whichLoc, true)
+% Error checks covariances for localization.
 %
 % ----- Inputs -----
 %

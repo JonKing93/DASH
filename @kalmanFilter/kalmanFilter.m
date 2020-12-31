@@ -130,15 +130,12 @@ classdef kalmanFilter
     
     % User covariance methods
     methods
-        kf = localize(kf, w, yloc, whichLoc);
+        kf = kf.inflate(kf, factor, whichFactor);
+        kf = localize(kf, wloc, yloc, whichLoc);
         kf = blend(kf, C, Ycov, weights, whichCov);
-        kf = inflate(kf, inflateFactor);
         kf = setCovariance(kf, C, Ycov, whichCov);
         kf = resetCovariance(kf);
         kf = covarianceEstimate(t);
-        
-        
-        [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end
     
     % Static Ensrf analysis methods
@@ -152,7 +149,8 @@ classdef kalmanFilter
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
-        settings = covarianceSettings(kf);
+        kf = finalize(kf);
+        [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end    
     methods (Static)
         [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);

@@ -1,24 +1,7 @@
 function[out] = run(kf)
 
-
-% Check that all essential inputs are provided
-assert(~isempty(kf.M), 'You cannot run the Kalman filter because you have not provided a prior. (See the "prior" method)');
-assert(~isempty(kf.D), 'You cannot run the Kalman filter because you have not provided observations. (See the "observations" method)');
-assert(~isempty(kf.Y), 'You cannot run the Kalman filter because you have not provide model estimates of the proxies/observations. (See the "estimates" method).');
-
-% Set defaults for whichArgs
-if isempty(kf.whichPrior)
-    kf.whichPrior = ones(kf.nTime, 1);
-end
-if isempty(kf.whichCov)
-    kf.whichCov = ones(kf.nTime, 1);
-end
-if isempty(kf.whichLoc)
-    kf.whichLoc = ones(kf.nTime, 1);
-end
-if isempty(kf.whichFactor)
-    kf.whichFactor = ones(kf.nTime, 1);
-end
+% Check for essential inputs and finalize whichArgs
+kf = kf.finalize('run a Kalman Filter');
 
 % Determine whether to update the deviations
 updateDevs = false;
@@ -46,9 +29,12 @@ end
 [Ymean, Ydev] = kf.decompose(kf.Y, 2);
 sites = ~isnan(kf.D);
 
-% Find the number of unique covariance estimates. Get the time steps
-% associated with each.
-covSettings = kf.covarianceSettings;
+% Get the covariance settings for each time step. Find the unique
+% covariances and the time steps associated with each
+covSettings = [kf.whichPrior, kf.whichFactor, kf.whichLoc, kf.whichCov];
+if kf.setCov
+    covSettings(:, 1:3) = 0;
+end
 [covSettings, ~, whichCov] = unique(covSettings, 'rows');
 nCov = size(covSettings, 1);
 

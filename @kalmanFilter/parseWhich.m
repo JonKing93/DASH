@@ -1,5 +1,21 @@
 function[whichArg] = parseWhich(kf, whichArg, name, nIndex, indexName)
 %% Parses which* inputs for evolving settings
+%
+% whichArg = kf.parseWhich(whichArg, name, nIndex, indexName)
+%
+% ----- Inputs -----
+%
+% whichArg: The which* input
+%
+% name: The name of the which* input in the calling function
+%
+% nIndex: The indices that can be referenced by whichArg
+%
+% indexName: The name of the quantity being indexed
+%
+% ----- Outputs -----
+%
+% whichArg: The which* input adjusted for any default settings
 
 % If there is a single setting, cannot use whichArg
 empty = isempty(whichArg);

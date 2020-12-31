@@ -1,44 +1,40 @@
 function[Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev)
-%% Estimates the covariance of the proxy sites with 1. The state vector and 
-% 2. the other proxy sites in a particular time step.
+%% Returns the covariance estimate in a time step given the deviations of
+% the prior and Y estimates
+%
+% [Knum, Ycov] = kf.estimateCovariance(t, Mdev, Ydev)
+%
+% ----- Inputs -----
+%
+% t: The index of a single time step.
+%
+% Mdev: The deviations of the prior
+%
+% Ydev: The deviations for the Y estimates
+%
+% ----- Outputs -----
+%
+% Knum: The Kalman numerator / covariance estimate between the state vector
+%    and proxy sites
+%
+% Ycov: Covariances between proxy sites and one another
 
-% Require a prior and estimates.
-assert(~isempty(kf.M), 'You must specify a prior before you can estimate covariance');
-if ~kf.setCov
-    assert(~isempty(kf.Y), 'You must specify Y estimates before you can estimate covariance')
-end
-
-if kf.nTime==0 || isempty(kf.whichPrior)
-    p = 1;
-else
-    assert(isnumeric(t) && isscalar(t), 't must be a numeric scalar');
-    assert(ismember(t, 1:kf.nTime), sprintf('t must be the index of a time step. It must be an integer on the interval [1, %.f]', kf.nTime));
-    p = kf.whichPrior(t);
-end
-
-% User-specified covariance
+% If the covariance is set directly then load covariance directly
 if kf.setCov
-    Knum = kf.C(:, :, kf.whichCov(t));
-    Ycov = kf.Ycov(:, :, kf.whichCov(t));
+    Knum = kf.C(:,:, kf.whichCov(t));
+    Ycov = kf.Ycov(:,:, kf.whichCov(t));
     
-% Otherwise, using the prior. Get deviations if not provided
+% Otherwise, estimate covariance from the deviations
 else
-    if ~exist('Mdev','var') || isempty(Mdev)
-        [~, Mdev] = kf.decompose(kf.M(:,:,p), 2);
-    end
-    if ~exist('Ydev','var') || isempty(Ydev)
-        [~, Ydev] = kf.decompose(kf.Y(:,:,p), 2);
-    end
-    
-    % Estimate covariance from the prior
-    unbias = 1 / (kf.nEns - 1);
+    unbias = 1/(kf.nEns-1);
     Knum = unbias .* (Mdev * Ydev');
-    Ycov = unbias .* (Ydev * Ydev');
+    Ycov = unbias .* (Ydev * Ydev)';
     
     % Inflate
     if kf.inflateCov
-        Knum = kf.inflateFactor .* Knum;
-        Ycov = kf.inflateFactor .* Ycov;
+        factor = kf.inflateFactor(kf.whichFactor(t));
+        Knum = factor .* Knum;
+        Ycov = factor .* Ycov;
     end
     
     % Localize
@@ -47,15 +43,15 @@ else
         Knum = kf.wloc(:,:,loc) .* Knum;
         Ycov = kf.yloc(:,:,loc) .* Ycov;
     end
-        
+    
     % Blend
     if kf.blendCov
-        c = kf.whichCov(t);
-        w = kf.weights(c,:);
-
-        Knum = (w(1).*kf.C(:,:,c)) + (w(2).*Knum);
-        Ycov = (w(1).*kf.Ycov(:,:,c)) + (w(2).*Ycov);
-    end
+        cov = kf.whichCov(t);
+        w = kf.blendWeights(cov,:);
+        
+        Knum = (w(1) .* kf.C(:,:,cov)) + (w(2) .* Knum);
+        Ycov = (w(1) .* kf.Ycov(:,:,cov)) + (w(2) .* Ycov);
+    end    
 end
 
 end
