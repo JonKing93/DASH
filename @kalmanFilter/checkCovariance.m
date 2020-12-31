@@ -1,4 +1,4 @@
-function[whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs)
+function[whichArg, nCov] = checkCovariance(kf, C, Ycov, whichArg, locInputs)
 %% Error checks state vector covariance, Y covariance, and whichCov inputs
 % 
 % [whichCov, nCov] = kf.checkCovariance(C, Ycov, whichCov)
@@ -49,30 +49,8 @@ for c = 1:nCov
     end
 end
 
-% Check if whichCov exists
-isvar = exist('whichCov','var') && ~isempty(whichCov);
-
-% If there is a single option, whichCov is not allowed
-if nCov==1
-    if isvar
-        error(['%s has one element along the third dimension, so you cannot ',...
-            'use the %s input'], names(1), names(4));
-    end
-    whichCov = [];
-    
-% Otherwise, default and error check whichCov
-else
-    if ~isvar && nCov==kf.nTime
-        whichCov = 1:kf.nTime;
-    elseif ~isvar
-        missingWhichError(nCov, kf.nTime, names(4), names(3));
-    end
-    
-    % Error check whichPrior
-    dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, names(4));
-    dash.checkIndices(whichCov, names(2), nCov, sprintf('the number of %ss',names(3)) );
-    whichCov = whichCov(:);
-end
+% Parse whichCov or whichLoc
+whichArg = kf.parseWhich(whichArg, names(4), nCov, names(3));
 
 end
 
@@ -83,9 +61,4 @@ error(['%s must have %.f elements along dimension 3 (one per %s), but it has ',.
 end
 function[] = notSymmetricError(type, c)
 error('Y %s %.f is not a symmetric matrix.', type, c);
-end
-function[] = missingWhichError(nCov, nTime, name, type)
-error(['The number of %ss (%.f) does not match the number of time steps ',...
-    '(%.f), so you must use the "%s" input to specify which %s ',...
-    'to use in each time step.'], type, nCov, nTime, name, type );
 end

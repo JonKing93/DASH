@@ -1,4 +1,4 @@
-function[kf] = inflate(kf, inflateFactor, whichFactor)
+function[kf] = inflate(kf, factor, whichFactor)
 %% Specify an inflation factor.
 %
 % kf = kf.inflate( factor )
@@ -21,34 +21,16 @@ function[kf] = inflate(kf, inflateFactor, whichFactor)
 % Only provide inflation after the prior and observations are set
 kf.assertEditableCovariance('covariance inflation options');
 
-% Default for whichFactor
-if ~exist('whichFactor','var') || isempty(whichFactor)
-    whichFactor = [];
-end
-
 % Error check the inflation factors
 dash.assertVectorTypeN(factor, 'numeric', [], 'factor');
 dash.assertRealDefined(factor, 'factor');
 assert(all(factor>=1), 'inflation factors cannot be smaller than 1.');
 
-% If there is a single factor, cannot use whichFactor
-nFactor = numel(factor);
-if nFactor==1 && ~isempty(whichFactor)
-    error(['You have provided a single inflation factor, so you cannot use ',...
-        'the second input (whichFactor) to specify time steps.']);
-
-% Otherwise, default and error check whichFactor
-elseif nFactor>1
-    if isempty(whichFactor) && nFactor==kf.nTime
-        whichFactor = 1:kf.nTime;
-    elseif isempty(whichFactor)
-        error(['The number of inflation factors (%.f) does not match the number ',...
-            'of time steps (%.f), so you must use the second input (whichFactor) ',...
-            'to specify which factor to use in each time step.'], nFactor, kf.nTime);
-    end
-    dash.assertVectorTypeN(whichFactor, 'numeric', kf.nTime, 'whichFactor');
-    dash.checkIndices(whichFactor, 'whichFactor', nFactor, 'the number of inflation factors');
+% Default and error check whichFactor
+if ~exist('whichFactor','var') || isempty(whichFactor)
+    whichFactor = [];
 end
+whichFactor = kf.parseWhich(whichFactor, 'whichFactor', numel(factor), 'inflation factor');
 
 % Save
 kf.inflateFactor = factor;

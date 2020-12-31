@@ -49,39 +49,20 @@ elseif ~isempty(kf.Y) && nPrior~=kf.nPrior
         '%.f priors (elements along dimension 3).'], kf.nPrior, nPrior);
 end
 
-% Check if whichPrior exists
-isvar = exist('whichPrior','var') && ~isempty(whichPrior);
-
-% If there is a single prior, whichPrior is not allowed
-if nPrior==1
-    if isvar
-        error(['You have provided a static prior, so you cannot use the second ',...
-            'input (whichPrior) to specify time steps.']);
-    end
+% Default and error check whichPrior
+if ~exist('whichPrior','var') || isempty(whichPrior)
     whichPrior = [];
-    
-% Otherwise, there is an evolving prior. Require whichPrior unless the
-% number of priors exactly matches time steps (or time is undefined)
-else
-    if ~isvar && (nPrior==kf.nTime || kf.nTime==0)
-        kf.nTime = nPrior;
-        whichPrior = 1:kf.nTime;    
-    elseif ~isvar
-        error(['The number of priors (%.f) does not match the number of time ',...
-            'steps (%.f), so you must use the second input (whichPrior) to ',...
-            'specify which prior to use in each time step.'], nPrior, kf.nTime);
-    end
-
-    % Error check whichPrior
-    dash.assertVectorTypeN(whichPrior, 'numeric', kf.nTime, 'whichPrior');
-    dash.checkIndices(whichPrior, 'whichPrior', nPrior, 'the number of priors');
 end
+whichPrior = kf.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');
 
 % Set values
 kf.M = M;
-kf.whichPrior = whichPrior(:);
+kf.whichPrior = whichPrior;
 kf.nState = nState;
 kf.nEns = nEns;
 kf.nPrior = nPrior;
+if ~isempty(whichPrior)
+    kf.nTime = numel(whichPrior);
+end
 
 end

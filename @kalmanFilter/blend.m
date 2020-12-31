@@ -41,12 +41,11 @@ function[kf] = blend(kf, C, Ycov, weights, whichCov)
 %
 % kf: The updated kalmanFilter object
 
-% Cannot blend if the covariance was already set
+% Cannot blend if the covariance was already set, or if the prior or
+% observations are missing
 if kf.setCov
     setCovarianceError;
 end
-
-% Only provide blending after the prior and observations are set
 kf.assertEditableCovariance('covariance blending options');
 
 % Error check the covariance options. Get sizes

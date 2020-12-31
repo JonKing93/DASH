@@ -148,6 +148,7 @@ classdef kalmanFilter
     
     % Utilities
     methods
+        whichArg = parseWhich(kf, whichArg, name, nIndex, indexName);
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);

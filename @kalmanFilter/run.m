@@ -5,8 +5,19 @@ function[out] = run(kf)
 assert(~isempty(kf.M), 'You cannot run the Kalman filter because you have not provided a prior. (See the "prior" method)');
 assert(~isempty(kf.D), 'You cannot run the Kalman filter because you have not provided observations. (See the "observations" method)');
 assert(~isempty(kf.Y), 'You cannot run the Kalman filter because you have not provide model estimates of the proxies/observations. (See the "estimates" method).');
+
+% Set defaults for whichArgs
 if isempty(kf.whichPrior)
     kf.whichPrior = ones(kf.nTime, 1);
+end
+if isempty(kf.whichCov)
+    kf.whichCov = ones(kf.nTime, 1);
+end
+if isempty(kf.whichLoc)
+    kf.whichLoc = ones(kf.nTime, 1);
+end
+if isempty(kf.whichFactor)
+    kf.whichFactor = ones(kf.nTime, 1);
 end
 
 % Determine whether to update the deviations
