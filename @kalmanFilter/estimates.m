@@ -15,16 +15,16 @@ function[kf] = estimates(kf, Y)
 % Error check Y and get the size
 [nSite, nEns, nPrior] = kf.checkInput(Y, 'Y');
 
-% Check there are no size conflicts
-if ~isempty(kf.M) && nPrior~=kf.nPrior
-    error(['You previously specified %.f prior(s), but Y includes estimates ',...
-        'for %.f priors (the length of dimension 3)'], kf.nPrior, nPrior);
+% Check for size conflicts
+if ~isempty(kf.D) && nSite~=kf.nSite
+    error(['You previously specified observations at %.f sites, but Y includes ',...
+        'estimates for %.f sites (rows)'], kf.nSite, nSite);
 elseif ~isempty(kf.M) && nEns~=kf.nEns
     error(['You previously specified priors with %.f ensemble members, but Y ',...
-        'includes estimates for %.f ensemble members.'], kf.nEns, nEns);
-elseif ~isempty(kf.D) && nSite~=kf.nSite
-    error(['You previously specified observations at %.f sites, but Y includes ',...
-        'estimates for %.f sites'], kf.nSite, nSite);
+        'includes estimates for %.f ensemble members (columns).'], kf.nEns, nEns);
+elseif ~isempty(kf.M) && nPrior~=kf.nPrior
+    error(['You previously specified %.f prior(s), but Y includes estimates ',...
+        'for %.f prior(s) (the length of dimension 3)'], kf.nPrior, nPrior);
 end
 
 % Set values

@@ -1,8 +1,30 @@
 classdef kalmanFilter
+    %% Implements a Kalman Filter analysis using an ensemble square root Kalman Filter
+    %
+    % kalmanFilter Methods:
+    %   kalmanFilter - Creates a new kalmanFilter object
+    %   
+    %   observations - Sets the proxy observations and uncertainties
+    %   prior - Sets the prior ensemble
+    %   estimates - Sets the proxy estimates
+    %
+    %   variance - Enable or disable posterior ensemble variance as output
+    %   percentiles - Return posterior ensemble percentiles as output
+    %   deviations - Return posterior ensemble percentiles as output
+    %   index - Returns the posterior for an index as output
+    %   mean - Enable or disable the ensemble mean as output
+    %
+    %   localize - Implement covariance localization
+    %   blend - Implement covariance blending
+    %   inflate - Apply covariance inflation
+    %   setCovariance - Specify covariance estimates directly
+    %   resetCovariance - Restore covariance options to defaults
+    %   covarianceEstimate - Return the covariance estimate for a given assimilated time step
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
     
     properties (SetAccess = private)
-        %% Essentials
-        
         % ID
         name;
         
@@ -96,16 +118,6 @@ classdef kalmanFilter
         out = run(kf);
     end
     
-    % User covariance methods
-    methods
-        kf = setCovariance(kf, C, Ycov, whichCov);
-        kf = blend(kf, C, Ycov, weights, whichCov);
-        kf = inflate(kf, inflateFactor);
-        kf = localize(kf, w, yloc, whichLoc);
-        kf = resetCovariance(kf);
-        [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
-    end
-    
     % User output options
     methods
         kf = mean(kf, tf);
@@ -113,6 +125,19 @@ classdef kalmanFilter
         kf = percentiles(kf, percs);
         kf = variance(kf, tf);
         kf = index(kf, name, weights, rows);
+    end
+    
+    % User covariance methods
+    methods
+        kf = localize(kf, w, yloc, whichLoc);
+        kf = blend(kf, C, Ycov, weights, whichCov);
+        kf = inflate(kf, inflateFactor);
+        kf = setCovariance(kf, C, Ycov, whichCov);
+        kf = resetCovariance(kf);
+        kf = covarianceEstimate(t);
+        
+        
+        [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end
     
     % Static Ensrf analysis methods
