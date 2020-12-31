@@ -5,6 +5,7 @@ classdef dash
         
         % Maths
         [Xmean, Xdev] = decompose(X, dim);
+        [C, Ycov] = estimateCovariance(X, Y);
         dist = haversine(latlon1, latlon2);
         Y = gaspariCohn2D(X, R, scale);
         

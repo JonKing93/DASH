@@ -1,10 +1,10 @@
-function[kf] = prior(kf, M, whichPrior)
+function[kf] = prior(kf, X, whichPrior)
 %% Specify the prior(s) for a Kalman Filter
 %
-% kf = kf.prior(M)
+% kf = kf.prior(X)
 % Specify a static or evolving offline prior to use in each time step.
 %
-% kf = kf.prior(M, whichPrior)
+% kf = kf.prior(X, whichPrior)
 % Specifies evolving offline priors and indicates which prior to use in
 % each time step.
 %
@@ -28,24 +28,24 @@ function[kf] = prior(kf, M, whichPrior)
 % kf: The updated kalmanFilter object
 
 % Error check M and get the size
-[nState, nEns, nPrior] = kf.checkInput(M, 'M');
+[nState, nEns, nPrior] = kf.checkInput(X, 'X');
 
 % Check there are no size conflicts
 if ~isempty(kf.wloc) && nState~=kf.nState
     error(['You previously specified localization weights for %.f state vector ',...
-        'elements, but M has %.f state vector elements (rows).'], kf.nState, nState);
+        'elements, but X has %.f state vector elements (rows).'], kf.nState, nState);
 elseif ~isempty(kf.C) && nState~=kf.nState
     error(['You previously specified a covariance estimate for %.f state vector ',...
-        'elements, but M has %.f state vector elements (rows).'], kf.nState, nState);
+        'elements, but X has %.f state vector elements (rows).'], kf.nState, nState);
 elseif ~isempty(kf.Qname) && any(contains(kf.Qname, "index")) && nState~=kf.nState
     error(['You previously specified a posterior index, so you cannot change ',...
-        'the number of state vector elements. M must have %.f state vector ',...
+        'the number of state vector elements. X must have %.f state vector ',...
         'elements (rows), but instead has %.f.'], kf.nState, nState);
 elseif ~isempty(kf.Y) && nEns~=kf.nEns
     error(['You previously specified Y estimates with %.f ensemble members, ',...
-        'but M has %.f ensemble members (columns).'], kf.nEns, nEns);
+        'but X has %.f ensemble members (columns).'], kf.nEns, nEns);
 elseif ~isempty(kf.Y) && nPrior~=kf.nPrior
-    error(['You previously specified Y estimates for %.f priors, but M has ',...
+    error(['You previously specified Y estimates for %.f priors, but X has ',...
         '%.f priors (elements along dimension 3).'], kf.nPrior, nPrior);
 end
 
@@ -56,7 +56,7 @@ end
 whichPrior = kf.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');
 
 % Set values
-kf.M = M;
+kf.M = X;
 kf.whichPrior = whichPrior;
 kf.nState = nState;
 kf.nEns = nEns;

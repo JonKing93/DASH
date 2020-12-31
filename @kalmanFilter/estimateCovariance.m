@@ -28,7 +28,7 @@ if kf.setCov
 else
     unbias = 1/(kf.nEns-1);
     Knum = unbias .* (Mdev * Ydev');
-    Ycov = unbias .* (Ydev * Ydev)';
+    Ycov = unbias .* (Ydev * Ydev');
     
     % Inflate
     if kf.inflateCov
