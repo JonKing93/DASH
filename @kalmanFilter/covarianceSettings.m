@@ -6,17 +6,15 @@ function[settings] = covarianceSettings(kf)
 %
 % ----- Outputs -----
 %
-% settings: First column is which prior, second column is which covariance,
-% third column is which localization.
+% settings: Each column indicates one of the covariance settings. In order:
+%    prior, inflation factor, localization, blending/direct covariance
 
-% Disregard prior and localization when the covariance is set directly
+% Collect the settings
+settings = [kf.whichPrior, kf.whichFactor, kf.whichLoc, kf.whichCov];
+
+% If the covariance is set directly, ignore prior, localization, and inflation
 if kf.setCov
-    kf.whichPrior = zeros(kf.nTime, 1);
-    kf.whichLoc = zeros(kf.nTime, 1);
-    kf.whichFactor = zeros(kf.nTime, 1);
+    settings(:, 1:3) = 0;
 end
-
-% Create the settings matrix
-settings = [kf.whichPrior, kf.whichLoc, kf.whichCov, kf.whichFactor];
 
 end 
