@@ -26,7 +26,7 @@ if ~exist('locInputs','var') || isempty(locInputs)
 end
 names = ["C", "Ycov", "covariance", "whichCov"];
 if locInputs
-    names = ["w", "yloc", "localization", "whichLoc"];
+    names = ["wloc", "yloc", "localization", "whichLoc"];
 end
 
 % Error check the state vector covariance
@@ -49,18 +49,30 @@ for c = 1:nCov
     end
 end
 
-% Defaults and error check for whichCov
-isvar = exist('whichCov', 'var') && ~isempty(whichCov);
-if ~isvar && nCov==1
-    whichCov = ones(1, kf.nTime);
-elseif ~isvar && nCov==kf.nTime
-    whichCov = 1:kf.nTime;
-elseif ~isvar
-    missingWhichError(nCov, kf.nTime, names(4), names(3));
+% Check if whichCov exists
+isvar = exist('whichCov','var') && ~isempty(whichCov);
+
+% If there is a single option, whichCov is not allowed
+if nCov==1
+    if isvar
+        error(['%s has one element along the third dimension, so you cannot ',...
+            'use the %s input'], names(1), names(4));
+    end
+    whichCov = [];
+    
+% Otherwise, default and error check whichCov
+else
+    if ~isvar && nCov==kf.nTime
+        whichCov = 1:kf.nTime;
+    elseif ~isvar
+        missingWhichError(nCov, kf.nTime, names(4), names(3));
+    end
+    
+    % Error check whichPrior
+    dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, names(4));
+    dash.checkIndices(whichCov, names(2), nCov, sprintf('the number of %ss',names(3)) );
+    whichCov = whichCov(:);
 end
-dash.assertVectorTypeN(whichCov, 'numeric', kf.nTime, names(4));
-dash.checkIndices(whichCov, names(2), nCov, sprintf('the number of %ss',names(3)) );
-whichCov = whichCov(:);
 
 end
 
