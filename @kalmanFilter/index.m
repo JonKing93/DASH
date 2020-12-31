@@ -10,6 +10,9 @@ function[kf] = index(kf, name, weights, rows)
 % kf = kf.index(name, weights, rows)
 % Calculates a weighted mean over specific state vector rows.
 %
+% kf = kf.index(name, 'delete')
+% Removes an index from the output.
+%
 % ----- Inputs -----
 %
 % name: The name of the index. A string. May only contain numbers, letters,
@@ -36,7 +39,6 @@ end
 name = dash.assertStrFlag(name, "name");
 outputName = strcat('index_', name);
 assert(isvarname(outputName), 'name can only contain numbers, letters, and underscores');
-assert(~ismember(outputName, kf.Qname), sprintf('You already specified an index named %s', name));
 
 % Defaults
 if ~exist('weights','var') || isempty(weights)
@@ -46,12 +48,22 @@ if ~exist('rows','var') || isempty(rows)
     rows = 1:kf.nState;
 end
 
-% Error check
-rows = dash.checkIndices(rows, 'rows', kf.nState, 'number of state vector elements');
-dash.assertVectorTypeN(weights, 'numeric', numel(rows), 'weights');
+% Delete the index if requested
+if dash.isstrflag(weights) && strcmpi(weights, 'delete')
+    delete = strcmp(outputName, kf.Qname);
+    assert(any(delete), sprintf('There is no index named %s', name));
+    kf.Q(delete,1) = [];
+    kf.Qname(delete,1) = [];
+    
+% Otherwise, error check the inputs
+else
+    dash.assertVectorTypeN(weights, 'numeric', numel(rows), 'weights');
+    assert(~ismember(outputName, kf.Qname), sprintf('You already specified an index named %s', name));
+    rows = dash.checkIndices(rows, 'rows', kf.nState, 'number of state vector elements');
 
-% Add to the calculations array
-k = numel(kf.Q)+1;
-kf.Q{k,1} = posteriorIndex(outputName, weights, rows);
+    % Add to the calculations array
+    k = numel(kf.Q)+1;
+    kf.Q{k,1} = posteriorIndex(outputName, weights, rows);
+end
 
 end
