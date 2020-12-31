@@ -1,11 +1,17 @@
 classdef dash
     %% Contains various utility functions
     
-    
     methods (Static)
         
-        % Analysis
+        % Maths
+        [Xmean, Xdev] = decompose(X, dim);
+        [C, Ycov] = estimateCovariance(X, Y);
         dist = haversine(latlon1, latlon2);
+        Y = gaspariCohn2D(X, R, scale);
+        
+        % Localization                
+        [wloc, yloc] = localizationWeights(type, varargin);
+        [wloc, yloc] = gc2dLocalization(ensCoords, siteCoords, R, scale);
         
         % Misc
         [names, lon, lat, coord, lev, time, run, var]  = dimensionNames;
