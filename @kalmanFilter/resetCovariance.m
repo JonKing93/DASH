@@ -10,10 +10,13 @@ function[kf] = resetCovariance(kf)
 
 kf.inflateCov = false;
 kf.inflateFactor = [];
+kf.whichFactor = [];
+
 kf.localizeCov = false;
 kf.wloc = [];
 kf.yloc = [];
 kf.whichLoc = [];
+
 kf.setCov = false;
 kf.blendCov = false;
 kf.C = [];
