@@ -1,3 +1,20 @@
+decompose
+estimateCovariance
+    kalmanFilter.checkInput
+    decompose
+haversine
+gaspariCohn2D
+    isstrflag
+    assertScalarType
+    assertRealDefined
+localizationWeights
+    assertStrFlag
+    messageList
+    gc2dLocalization
+gc2dLocalization
+    assertRealDefined
+    haversine
+    gaspariCohn2D
 dimensionNames
 convertToV7_3
     assertStrFlag

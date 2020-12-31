@@ -1,4 +1,11 @@
 function[out] = run(kf)
+%% Runs a Kalman Filter using an ensemble square root implementation
+%
+% output = kf.run
+%
+% ----- Outputs -----
+%
+% output: A structure containing output calculations
 
 % Check for essential inputs and finalize whichArgs
 kf = kf.finalize('run a Kalman Filter');

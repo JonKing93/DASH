@@ -14,6 +14,7 @@ function[kf] = mean(kf, tf)
 % kf: The updated kalmanFilter object
 
 % Error check and save
-kf.return_mean = dash.assertScalarType(tf, 'tf', 'logical','logical');
+dash.assertScalarType(tf, 'tf', 'logical','logical');
+kf.return_mean = tf;
 
 end

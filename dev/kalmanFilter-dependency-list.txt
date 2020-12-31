@@ -1,0 +1,69 @@
+kalmanFilter
+    variance
+    rename
+rename
+prior
+    checkInput
+    parseWhich
+observations
+    checkInput
+estimates
+    checkInput
+run
+    finalize
+    posteriorCalculation.outputSize
+    dash.decompose
+    estimateCovariance
+    posteriorCalculation.calculate
+mean
+    dash.assertScalarType
+variance
+    dash.assertScalarType
+    posteriorVariance
+deviations
+    dash.assertScalarType
+percentiles
+    posteriorPercentiles
+index
+    dash.assertStrFlag
+    dash.isstrflag
+    dash.assertVectorTypeN
+    dash.checkIndices
+    posteriorIndex
+inflate
+    assertEditableCovariance
+    dash.assertVectorTypeN
+    dash.assertRealDefined
+    parseWhich
+localize
+    assertEditableCovariance
+    checkCovariance
+blend
+    assertEditableCovariance
+    checkCovariance
+    checkInput
+setCovariance
+    assertEditableCovariance
+    checkCovariance
+resetCovariance
+covarianceEstimate
+    finalize
+    dash.assertScalarType
+    dash.checkIndices
+    dash.decompose
+    estimateCovariance
+parseWhich
+    dash.assertVectorTypeN
+    dash.checkindices
+checkSize
+assertEditableCovariance
+checkCovariance
+    checkSize
+    checkInput
+    parseWhich
+finalize
+estimateCovariance
+checkInput
+    dash.assertRealDefined
+
+    
