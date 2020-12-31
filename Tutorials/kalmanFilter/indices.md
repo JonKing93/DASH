@@ -99,4 +99,20 @@ kf = kf.index('globalT', weights, rows);
 ```
 This will calculate a latitude-weighted mean over the temperature variable and return it in the output structure as the field "index_globalT".
 
+### Remove an index from output
+
+If you previously specified an index, you can later remove it from the output by calling the "index" command and using the string `'delete'` as the second input:
+```matlab
+kf = kf.index(name, 'delete');
+```
+
+For example, if I add a global temperature index:
+```matlab
+kf = kf.index('globalT', weights, rows);
+```
+and later decide I don't want to calculate it, I can remove it with:
+```matlab
+kf = kf.index('globalT', 'delete');
+```
+
 [Previous](output)---[Next](output-workflow)
