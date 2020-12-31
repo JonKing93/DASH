@@ -29,8 +29,8 @@ if kf.setCov
 else
     M = kf.M(:,:, kf.whichPrior(t));
     Y = kf.Y(:,:, kf.whichPrior(t));
-    [~, Mdev] = kf.decompose(M);
-    [~, Ydev] = kf.decompose(Y);
+    [~, Mdev] = dash.decompose(M, 2);
+    [~, Ydev] = dash.decompose(Y, 2);
     
     % Then estimate the covariance
     [C, Ycov] = kf.estimateCovariance(t, Mdev, Ydev);

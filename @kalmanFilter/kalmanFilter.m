@@ -138,11 +138,6 @@ classdef kalmanFilter
         kf = covarianceEstimate(t);
     end
     
-    % Static Ensrf analysis methods
-    methods (Static)
-        [Mmean, Mdev] = decompose(M, dim);
-    end
-    
     % Utilities
     methods
         whichArg = parseWhich(kf, whichArg, name, nIndex, indexName);

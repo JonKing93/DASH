@@ -25,8 +25,8 @@ for q = 1:numel(kf.Q)
 end
 
 % Decompose ensembles and note observations sites
-[Mmean, Mdev] = kf.decompose(kf.M, 2);
-[Ymean, Ydev] = kf.decompose(kf.Y, 2);
+[Mmean, Mdev] = dash.decompose(kf.M, 2);
+[Ymean, Ydev] = dash.decompose(kf.Y, 2);
 sites = ~isnan(kf.D);
 
 % Get the covariance settings for each time step. Find the unique

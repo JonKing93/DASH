@@ -3,7 +3,8 @@ classdef dash
     
     methods (Static)
         
-        % Math formulas
+        % Maths
+        [Xmean, Xdev] = decompose(X, dim);
         dist = haversine(latlon1, latlon2);
         Y = gaspariCohn2D(X, R, scale);
         
