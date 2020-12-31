@@ -2,7 +2,6 @@ classdef posteriorVariance < posteriorCalculation
     %% Calculates the variance of a posterior ensemble.
     
     properties (SetAccess = immutable)
-        outputName = "Avar";
         timeDim = 2;
     end
     
@@ -20,6 +19,11 @@ classdef posteriorVariance < posteriorCalculation
         function[siz] = outputSize(~, nState, nTime, ~)
             siz = [nState, nTime];
         end 
+    end
+    methods (Static)
+        function[name] = outputName
+            name = "Avar";
+        end
     end
     
 end

@@ -27,8 +27,8 @@ if isvar
 % If the percentiles are empty, and percs were previously specified, then
 % delete from the calculations array
 elseif ~isvar && haspercentiles
-    kf.Q(k) = [];
-    kf.Qname(k) = [];
+    kf.Q(k,:) = [];
+    kf.Qname(k,:) = [];
 end
 
 end

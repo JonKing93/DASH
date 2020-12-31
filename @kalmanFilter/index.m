@@ -52,8 +52,8 @@ end
 if dash.isstrflag(weights) && strcmpi(weights, 'delete')
     delete = strcmp(outputName, kf.Qname);
     assert(any(delete), sprintf('There is no index named %s', name));
-    kf.Q(delete,1) = [];
-    kf.Qname(delete,1) = [];
+    kf.Q(delete,:) = [];
+    kf.Qname(delete,:) = [];
     
 % Otherwise, error check the inputs
 else
@@ -64,6 +64,7 @@ else
     % Add to the calculations array
     k = numel(kf.Q)+1;
     kf.Q{k,1} = posteriorIndex(outputName, weights, rows);
+    kf.Qname(k,1) = outputName;
 end
 
 end

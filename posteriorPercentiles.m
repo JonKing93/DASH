@@ -2,7 +2,6 @@ classdef posteriorPercentiles < posteriorCalculation
     %% Calculates percentiles of a posterior ensemble.
     
     properties (SetAccess = immutable)
-        outputName = "Aperc";
         timeDim = 3;
     end
     
@@ -26,6 +25,11 @@ classdef posteriorPercentiles < posteriorCalculation
         end
         function[siz] = outputSize(obj, nState, nTime, ~)
             siz = [nState, numel(obj.percentiles), nTime];
+        end
+    end
+    methods (Static)
+        function[name] = outputName
+            name = "Aperc";
         end
     end
 end 

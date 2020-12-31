@@ -130,12 +130,12 @@ classdef kalmanFilter
     
     % User covariance methods
     methods
-        kf = kf.inflate(kf, factor, whichFactor);
+        kf = inflate(kf, factor, whichFactor);
         kf = localize(kf, wloc, yloc, whichLoc);
         kf = blend(kf, C, Ycov, weights, whichCov);
         kf = setCovariance(kf, C, Ycov, whichCov);
         kf = resetCovariance(kf);
-        kf = covarianceEstimate(t);
+        [C, Ycov] = covarianceEstimate(kf, t);
     end
     
     % Utilities
@@ -144,7 +144,7 @@ classdef kalmanFilter
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
-        kf = finalize(kf);
+        kf = finalize(kf, actionName);
         [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end    
     methods (Static)

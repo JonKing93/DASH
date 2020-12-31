@@ -26,8 +26,8 @@ if tf && ~hasvariance
     
 % If removing variance and it exists, delete from the calculation array
 elseif ~tf && hasvariance
-    kf.Q(k) = [];
-    kf.Qname(k) = [];
+    kf.Q(k,:) = [];
+    kf.Qname(k,:) = [];
 end
 
 end

@@ -1,7 +1,7 @@
 classdef posteriorIndex < posteriorCalculation
     
     properties (SetAccess = immutable)
-        outputName;
+        name;
         timeDim = 2;
     end
     
@@ -16,7 +16,7 @@ classdef posteriorIndex < posteriorCalculation
             siz = [nEns, nTime];
         end
         function[obj] = posteriorIndex(name, weights, rows)
-            obj.name = string(strcat('index_', name));
+            obj.name = name;
             obj.weights = weights;
             obj.denom = sum(weights,1);
             obj.rows = rows;
@@ -28,6 +28,9 @@ classdef posteriorIndex < posteriorCalculation
             devsum = sum(obj.weights .* Adev, 1) ./ obj.denom;
             meansum = sum(obj.weights .* Amean, 1) ./ obj.denom;
             index = devsum' + meansum;
+        end
+        function[name] = outputName(obj)
+            name = obj.name;
         end
     end 
 end
