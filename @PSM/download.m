@@ -19,27 +19,21 @@ function[] = download(psmName, path)
 % path: Indicates the folder where the PSM code should be downloaded. A
 %    string.
 
-% Default path
-userPath = true;
+% Default and error check the path
 if ~exist('path','var') || isempty(path)
     path = pwd;
     userPath = false;
+else
+    userPath = true;
+    path = dash.assertStrFlag(path);
 end
 
-% Error check
-psmName = dash.assertStrFlag(psmName);
-path = dash.assertStrFlag(path);
-
-% Check the psm is recognized. Get its index
-info = PSM.downloadCodes;
-p = strcmpi(psmName, info(:,1));
-if ~any(p)
-    error('Unrecognized PSM name. Allowed options are %s.', dash.messageList(info(:,1)));
-end
+% Get the Github repository for the PSM
+[repo, commit] = PSM.githubLocation(psmName);
 
 % Get the final download path. Ensure the folder is empty if it exists
 if ~userPath
-    [~, defaultFolder] = fileparts(info(p,2));
+    [~, defaultFolder] = fileparts(repo);
     path = fullfile(path, defaultFolder);
 end
 if isfolder(path)
@@ -50,17 +44,17 @@ if isfolder(path)
 end
 
 % Clone the repository
-clone = sprintf("git clone %s %s -nq", info(p,2), path);
+clone = sprintf("git clone %s %s", repo, path);
 status = system(clone);
 if status~=0
-    gitFailureError(info(p,2), info(p,3));
+    gitFailureError(repo, commit);
 end
 
 % Checkout the commit
 home = pwd;
 try
     cd(path);
-    checkout = sprintf( "git checkout %s -q", info(p,3) );
+    checkout = sprintf( "git checkout %s -q", commit );
     status = system(checkout);
     assert(status==0);
     
@@ -68,7 +62,7 @@ try
 catch
     cd(home);
     rmdir(path, 's');
-    gitFailureError(info(p,2), info(p,3));    
+    gitFailureError(repo, commit);    
 end
 
 % Add PSM code to path and return to working directory

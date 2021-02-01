@@ -10,12 +10,6 @@ classdef (Abstract) PSM
         rows;
         estimatesR;
     end
-    properties (Constant, Hidden)
-        downloadCodes = [
-            "bayspar", "https://github.com/jesstierney/BAYSPAR";
-            "bayspline", "https://github.com/jesstierney/BAYSPLINE";
-            "baymag", "https://github.com/jesstierney/BAYMAG"];
-    end
     
     methods
         % Constructor
@@ -162,8 +156,11 @@ classdef (Abstract) PSM
         % Estimate Y values for a set of PSMs
         [Ye, R] = estimate(X, F)
         
-        % Download code for a PSM
+        % Download the code for a PSM
         download(psmName, path);
+        
+        % Get the repository and commit information for a PSM
+        [repo, commit] = githubLocation(psmName);
     end
     
     % Run individual PSM objects
