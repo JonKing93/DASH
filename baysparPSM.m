@@ -1,5 +1,5 @@
 classdef baysparPSM < PSM
-    % Implements the BAYSPAR TEX86 forward model.
+    % Implements the BAYSPAR TEX86 PSM.
     % Requires the Curve Fitting Toolbox
     %
     
