@@ -103,7 +103,7 @@ classdef baymagPSM < PSM
             % R: Proxy uncertainties estimated from the posterior
             
             % Run the forward model, convert to row
-            mgca = baymag_forward(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
+            mgca = baymag_forward_ln(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
             Y = mean(mgca, 2)';
             R = var(mgca, [], 2)';
         end
@@ -123,7 +123,7 @@ classdef baymagPSM < PSM
             end
             
             % Run the PSM
-            mgca = baymag_forward(age, t, omega, salinity, pH, clean, species, options{:});
+            mgca = baymag_forward_ln(age, t, omega, salinity, pH, clean, species, options{:});
             Y = mean(mgca, 2);
             R = var(mgca, [], 2);
             
