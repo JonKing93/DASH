@@ -89,7 +89,7 @@ classdef baysplinePSM < PSM
             % Run the PSM. Get the posterior mean and estimate R
             uk = UK_forward(ssts);
             Y = mean(uk, 2);
-            R = var(ui, [], 2);
+            R = var(uk, [], 2);
             
             % Shape to the sst vector
             if isrow(ssts)
