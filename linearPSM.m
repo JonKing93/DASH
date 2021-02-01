@@ -50,7 +50,6 @@ classdef linearPSM < PSM
             % ----- Outputs -----
             %
             % obj: The new linearPSM object
-            % integers.
             
             % Set name, estimatesR, and rows
             if ~exist('name','var')
