@@ -1,9 +1,0 @@
-[submodule "4. PSMs/Specific Forward Models/MgCa/BAYMAG"]
-	path = 4. PSMs/Specific Forward Models/MgCa/BAYMAG
-	url = https://github.com/jesstierney/BAYMAG
-[submodule "4. PSMs/Specific Forward Models/UK 37/BAYSPLINE"]
-	path = 4. PSMs/Specific Forward Models/UK 37/BAYSPLINE
-	url = git@github.com:jesstierney/BAYSPLINE
-[submodule "PSMs/Submodules"]
-	path = PSMs/Submodules
-	url = https://github.com/jesstierney/BAYMAG
