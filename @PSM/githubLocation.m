@@ -17,7 +17,8 @@ function[repo, commit] = githubLocation(psmName)
 info = [
     "bayspar", "https://github.com/jesstierney/BAYSPAR", "13446fb098445d9a8899d9f9a4ea9d81cd916ac9";
     "bayspline", "https://github.com/jesstierney/BAYSPLINE", "1e6f9673bcc55b483422c6d6e1b1f63148636094";
-    "baymag", "https://github.com/jesstierney/BAYMAG", "358de1545d47cbde328fa543c66ab50a20680b00"
+    "baymag", "https://github.com/jesstierney/BAYMAG", "358de1545d47cbde328fa543c66ab50a20680b00";
+    "vslite", "https://github.com/suztolwinskiward/VSLite", "f86cc33ee0eb9a2b9818994542d3c4179e618631"
 ];
 
 % Error check the psm name
