@@ -28,8 +28,8 @@ assert(isnumeric(lons)&&isvector(lons), 'lons must be a numeric vector');
 dash.assertRealDefined(coords, 'coords');
 dash.assertRealDefined(lats, 'lats');
 dash.assertRealDefined(lons, 'lons');
-assert(abs(lats)<=90, 'The elements of "lats" must be between -90 and 90');
-assert(abs(coords(:,1))<=90, 'The latitude points in the first column of "coords" must be between -90 and 90');
+assert(all(abs(lats)<=90), 'The elements of "lats" must be between -90 and 90');
+assert(all(abs(coords(:,1))<=90), 'The latitude points in the first column of "coords" must be between -90 and 90');
 
 % Propagate the lats and lons into all points
 nLat = numel(lats);

@@ -14,7 +14,7 @@ try
     
 % Supplement error messages
 catch ME
-    message = sprintf('Could not build the gridfile object for variable %s.', var.name);
+    message = sprintf('Could not build the gridfile object for variable %s.', obj.name);
     cause = MException('DASH:stateVector:invalidGridfile', message);
     ME = addCause(ME, cause);
     rethrow(ME); 
