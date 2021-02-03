@@ -8,6 +8,7 @@ classdef dash
         [C, Ycov] = estimateCovariance(X, Y);
         dist = haversine(latlon1, latlon2);
         Y = gaspariCohn2D(X, R, scale);
+        closest = closestLatLon(coords, lats, lons);
         
         % Localization                
         [wloc, yloc] = localizationWeights(type, varargin);
