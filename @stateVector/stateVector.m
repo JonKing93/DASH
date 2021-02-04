@@ -120,6 +120,8 @@ classdef stateVector
         obj = updateCoupledVariables(obj, t, v);        
         [grids, sources, f] = prebuildSources(obj);
         [X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress);
+        
+        X = loadEnsemble(obj, nEns, grids, sets, showprogress);
     end
     
     % User interface methods with stateVectorVariable

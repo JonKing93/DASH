@@ -12,12 +12,13 @@ catch
     outputTooBigError();
 end
 
-% Build the ensemble for each variable.
+% Load the ensemble for each variable.
 for v = 1:nVars
     rows = varLimit(v,1):varLimit(v,2);
     s = sets(:,v);
     subMembers = obj.subMembers{s}(end-nEns+1:end,:);
-    X(rows,:) = obj.variables.loadEnsemble(subMembers, grids.grid(v), grids.source(v), showprogress);
+    subOrder = obj.dims{s};
+    X(rows,:) = obj.variables(v).loadEnsemble(subMembers, subOrder, grids.grid(v), grids.source(v), showprogress);
 end
 
 end
