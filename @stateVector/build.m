@@ -95,7 +95,7 @@ for v = 1:nVars
 end
 
 % Pre-build gridfiles and data sources. Check that gridfiles are valid.
-[grids, sources, f] = obj.prebuildSources;
+grids = obj.prebuildSources;
 
 % Get the sets of coupled variables. Initialize selected and unused
 % ensemble members.
@@ -113,9 +113,9 @@ for s = 1:nSets
     
     % Find metadata that is in all of the variables in the set.
     for d = 1:numel(dims)
-        meta = var1.dimMetadata(grids{f(v(1))}, dims(d));
+        meta = var1.dimMetadata(grids.grid(v(1)), dims(d));
         for k = 2:numel(v)
-            varMeta = obj.variables(v(k)).dimMetadata( grids{f(v(k))}, dims(d) );
+            varMeta = obj.variables(v(k)).dimMetadata( grids.grid(v(k)), dims(d) );
             
             % Get the metadata intersect
             if dash.bothNaN(meta, varMeta)
@@ -136,7 +136,7 @@ for s = 1:nSets
 
         % Update the reference indices in each variable to match the metadata
         for k = 1:numel(v)
-            obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids{f(v(k))}, dims(d));
+            obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids.grid(v(k)), dims(d));
         end
         
         % ***Note: At this point, the reference indices in the coupled
@@ -172,7 +172,7 @@ end
 % Build the ensemble
 try
     obj.editable = false;
-    [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress);
+    [X, meta, obj] = obj.buildEnsemble(nEns, grids, ens, showprogress);
     
 % Deleted any failed .ens files before throwing errors
 catch ME

@@ -1,17 +1,11 @@
-function[grids, sources, f] = prebuildSources(obj)
+function[grids] = prebuildSources(obj)
 %% Pre-builds gridfiles and data sources. Checks that all gridfiles are valid.
 %
-% [grids, sources, f] = obj.buildGrids
+% [grids] = obj.prebuildSources
 %
 % ----- Outputs -----
 %
-% grids: A cell vector of all unique gridfile objects.
-%
-% sources: A cell vector the length of grids. Each element of sources is a
-%    cell vector with pre-built dataSource objects for the grid.
-%
-% f: A vector with one element per variable in the state vector. Each
-%    element maps a variable to the corresponding unique gridfile.
+% grids: A prebuiltGrids object
 
 % Get the .grid files associated with each variable.
 files = dash.collectField(obj.variables, 'file');
@@ -37,5 +31,8 @@ for v = 1:numel(obj.variables)
     end
     obj.variables(v).checkGrid(grids{f(v)});
 end
+
+% Combine into a prebuiltGrids
+grids = prebuiltGrids(grids, sources, f);
 
 end
