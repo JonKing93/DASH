@@ -1,22 +1,17 @@
-function[X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
 %% Builds a state vector ensemble.
 %
-% [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, [], showprogress)
+% [X, meta, obj] = obj.buildEnsemble(nEns, grids, [], showprogress)
 % Builds a state vector ensemble and returns it as an array.
 %
-% [~, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress)
+% [~, meta, obj] = obj.buildEnsemble(nEns, grids, showprogress)
 % Builds a state vector ensemble and writes it to a .ens file.
 %
 % ----- Inputs -----
 %
 % nEns: The number of ensemble members to build.
 %
-% grids: The set of unique gridfile objects needed to build the ensemble.
-%
-% sources: Pre-built data sources for each gridfile
-%
-% f: An index mapping each variable in the state vector to one of the sets
-%    of gridfiles and data sources
+% grids: A prebuiltGrids object
 %
 % ens: A matfile object for a .ens file.
 %
@@ -74,6 +69,33 @@ for s = 1:size(sets,1)
     obj.subMembers{s} = [obj.subMembers{s}; subMembers];
     obj.unused{s} = unused;
 end
+
+% Either load the array directly or write to file
+if isempty(ens)
+    X = obj.loadEnsemble(nEns, grids, showprogress);
+else
+    obj.writeEnsemble(nEns, grids, ens, showprogress);
+    X = [];
+end
+
+% Get the metadata for the ensemble
+%
+%
+%
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
 
 % Note if writing to file
 writeFile = false;
@@ -153,9 +175,4 @@ else
 end
 error(['Cannot find %.f %s ensemble members for %s. Consider using fewer ', ...
     'ensemble members %s.'], nEns, str1, str2, str3);
-end
-function[] = outputTooBigError()
-error(['The state vector ensemble is too large to fit in active memory, so ',...
-    'cannot be provided directly as output. Consider saving the ensemble ',...
-    'to a .ens file instead.']);
 end
