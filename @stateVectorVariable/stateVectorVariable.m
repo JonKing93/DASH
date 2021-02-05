@@ -137,15 +137,15 @@ classdef stateVectorVariable
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
         
+        % !!!!!!!!!!!!!!!!!!!!!!!!!!!!! delete
         X = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress);
     end
     
     % New methods for rebuild
     methods
         obj = finalizeMean(obj);
-        X = loadEnsemble(obj, subMembers, dims, grid, sources, showprogress);
-        [nanflag, siz, meanDims, addIndices, indices] = loadSettings(obj, subDims);
-        [X, sources] = loadMember(obj, subMember, d, siz, indices, addIndices, grid, sources);
+        [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
+        [settings] = loadSettings(obj, subDims);
     end
 
 end
