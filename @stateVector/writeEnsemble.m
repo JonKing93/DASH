@@ -83,3 +83,5 @@ while first <= nVars
     % Move to the next set of variables
     first = last+1;
 end
+
+end
