@@ -2,14 +2,14 @@ classdef prebuiltGrids
     
     properties
         grids;
-        sources;
+        dataSources;
         f;
     end
     
     methods
         function[obj] = prebuiltGrids(grids, sources, f)
             obj.grids = grids;
-            obj.sources = sources;
+            obj.dataSources = sources;
             obj.f = f;
         end
         function[g] = grid(obj, v)
@@ -17,6 +17,9 @@ classdef prebuiltGrids
         end
         function[s] = source(obj, v)
             s = obj.sources{obj.f(v)};
+        end
+        function[obj] = sources(obj, sources, v)
+            obj.dataSources(obj.f(v)) = sources;
         end
     end
 end
