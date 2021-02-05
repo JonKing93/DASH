@@ -41,6 +41,7 @@ classdef stateVectorVariable
     properties (Hidden, Constant)
         infoFields = {'name','gridfile','stateSize','possibleMembers',...
             'dimensions','stateDimensions','ensembleDimensions','singletonDimensions'};
+        loadSettingFields = {'siz','d','meanDims','nanflag','indices','addIndices'};
     end
     
     % Constructor

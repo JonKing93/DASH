@@ -1,68 +1,85 @@
-function[] = writeEnsemble(obj, nEns, grids, sets, ens, showprogress)
+function[] = writeEnsemble(obj, nEns, g, sets, settings, ens, showprogress)
 
-% Sizes, shorten names
+% Size and shorten names. Get the new ensemble members
 varLimit = obj.variableLimits;
 nState = varLimit(end, 2);
 nVars = numel(obj.variables);
-nCols = size(ens, 'X', 2);
 
-% Preallocate space in the .ens file
-newEnd = nCols + nEns;
-ens.X(nState, newEnd) = NaN;
-ens.hasnan(nVars, newEnd) = false;
+% Preallocate the ens file
+cols = size(ens, 'X', 2) + (1:nEns);
+ens.X(nState, cols(end)) = NaN;
+ens.hasnan(nVars, cols(end)) = false;
 
-% Walk through sets of subsequent variables. Attempt to load as many into
-% memory as possible at once
-v = 1;
-while v <= nVars
+% Find sets of subsequent variables that can fit in memory at once
+first = 1;
+while first <= nVars
     last = nVars;
-    load = false;
-    while last >= v
-        
-        % Attempt to preallocate the set of variables. If possible, can
-        % load full variable ensembles directly into memory.
-        nRows = varLimit(last,2) - varLimit(v,1) + 1;
+    tooBig = true;
+    
+    % Attempt to load a set of variables. If successful, write them to the
+    % ens file all at once to minimize write operations
+    while last>=first
         try
-            X = NaN(nRows, nEns);
-            load = true;
+            [X, g] = obj.loadVariables(first, last, cols, g, sets, settings, showprogress);
+            rows = varLimit(first,1):varLimit(last,2);
+            ens.X(rows, cols) = X;
+            
+            % Move on to the next block of variables
+            tooBig = false;
             break;
-        catch
+            
+        % If it failed because of memory constraints, remove one variable
+        % and try again
+        catch ME
+            if ~strcmpi(ME.identifier, "DASH:arrayTooBig")
+                rethrow(ME);
+            end
         end
-        
         last = last-1;
     end
     
-    % If variables can be loaded into memory, preallocate
-    if load
-        loadLimit = varLimit(v:last,:) - varLimit(v,1) + 1;
-        nLoad = last-v+1;
-        X = NaN(loadLimit(end,2), nEns);
-        hasnan = false(nLoad, nEns);
+    % If no success, then the single variable ensemble is too large for memory
+    if tooBig
+        v = first;
+        rows = varLimit(v,1):varLimit(v,2);
         
-        % Load each variable into memory
-        for k = 1:nLoad
-            rows = loadLimit(k,1):loadLimit(k,2);
-            s = sets(:,v+k-1);
-            subMembers = obj.subMembers{s}(end-nEns+1:end,:);
-            subOrder = obj.dims{s};
-            [X(rows,:), hasnan(k,:)] = obj.variables(v).loadEnsemble( ...
-                subMembers, subOrder, grids.grid(v+k-1), grids.source(v+k-1), showprogress);
+        % Find a number of ensemble members that does fit in memory (a chunk)
+        % Decrease chunk size an order of magnitude for each attempt.
+        chunkSize = nEns;
+        order = 10;
+        while chunkSize>1
+            chunkSize = ceil(chunkSize/order);
+            nLoad = ceil(nEns/chunkSize);
+            
+            % Attempt to load each chunk
+            try
+                for k=1:nLoad
+                    use = chunkSize*(k-1)+(1:chunkSize);
+                    use(use>nEns) = [];
+                    members = cols(use);
+                    [X, g] = obj.loadVariables(v, v, members, g, sets, settings, showprogress);
+                    
+                    % Write to file
+                    ens.X(rows, members) = X;
+                end
+                tooBig = false;
+                break;
+                
+            % Retry if memory issues prevented load
+            catch ME
+                if ~strcmpi(ME.identifier, "DASH:arrayTooBig")
+                    rethrow(ME);
+                end
+            end
         end
         
-        % Write as many variables as possible at once to minimize write operations
-        rows = varLimit(v,1):varLimit(last,2);
-        newCols = nCols + (1:nEns);
-        ens.X(rows, newCols) = X;
-        ens.hasnan(v:last, newCols) = hasnan;
+        % Throw error if the loop exited without success (this should never
+        % happend because of the preallocation check in sv.buildEnsemble)
+        if tooBig
+            tooBigError(obj.variables(v).name);
+        end
+    end
     
-    % Otherwise, the first variable is too large to fit in memory at once.
-    % Write directly to file in chunks
-    else
-        
-        % Determine chunk size
-        
-        % Load chunks directly to memory
-        
-        % Write chunks to ens file
-        
-        
+    % Move to the next set of variables
+    first = last+1;
+end

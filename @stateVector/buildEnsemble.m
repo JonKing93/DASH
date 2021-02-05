@@ -1,4 +1,4 @@
-function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, nEns, g, ens, showprogress)
 %% Builds a state vector ensemble.
 %
 % [X, meta, obj] = obj.buildEnsemble(nEns, grids, [], showprogress)
@@ -11,7 +11,13 @@ function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
 %
 % nEns: The number of ensemble members to build.
 %
-% grids: A prebuiltGrids object
+% g: A structure containing a cell vector of unique gridfile objects, a
+%    cell vector containing the dataSource objects for each gridfile, and 
+%    an index vector that maps variables to the correpsonding gridfile
+%
+% sources: A cell vector of dataSource objects for the gridfiles
+%
+% f: An index vector that maps variables to their gridfile object
 %
 % ens: A matfile object for a .ens file.
 %
@@ -70,12 +76,31 @@ for s = 1:size(sets,1)
     obj.unused{s} = unused;
 end
 
+% Get the set index for each variable
+[sets, ~] = find(sets);
+
+% Preallocate load settings for each variable
+nVars = numel(obj.variables);
+settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields);
+
+% Finalize each variable. Get load settings
+for v = 1:nVars
+    obj.variables(v) = obj.variables(v).finalizeMean;
+    settings(v) = obj.variables(v).loadSettings(obj.dims{sets(v)});
+    
+    % Check that single ensemble members can fit in memory
+    try
+        NaN([settings(v).siz, 1]);
+    catch
+        tooBigError(obj.variables(v).name);
+    end
+end
+
 % Either load the array directly or write to file
 if isempty(ens)
-    X = obj.loadEnsemble(nEns, grids, sets, showprogress);
+    X = obj.loadEnsemble(nEns, g, sets, settings, showprogress);
 else
-%     obj.writeEnsemble(nEns, grids, sets, ens, showprogress);
-    X = [];
+    obj.writeEnsemble();
 end
 
 % Get the metadata for the ensemble
@@ -85,7 +110,12 @@ end
 
 end
 
-
+% Long error message
+function[] = tooBigError(name)
+error(['The "%s" variable has so many state elements that even a single ',...
+    'ensemble member cannot fit in memory. Consider reducing the size of ',...
+    '"%s".'], name, name);
+end
 
 
 

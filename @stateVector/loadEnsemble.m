@@ -1,24 +1,18 @@
-function[X] = loadEnsemble(obj, nEns, grids, sets, showprogress)
+function[X] = loadEnsemble(obj, nEns, g, sets, settings, showprogress)
 
-% Sizes and shorten names
-varLimit = obj.variableLimits;
-nState = varLimit(end, 2);
-nVars = numel(obj.variables);
-
-% Preallocate the output array
+% Load the variables into memory
 try
-    X = NaN(nState, nEns);
-catch
-    outputTooBigError();
-end
-
-% Load the ensemble for each variable.
-for v = 1:nVars
-    rows = varLimit(v,1):varLimit(v,2);
-    s = sets(:,v);
-    subMembers = obj.subMembers{s}(end-nEns+1:end,:);
-    subOrder = obj.dims{s};
-    X(rows,:) = obj.variables(v).loadEnsemble(subMembers, subOrder, grids.grid(v), grids.source(v), showprogress);
+    nVars = numel(obj.variables);
+    nMembers = size(obj.subMembers{1},1);
+    members = nMembers-nEns+1:nMembers;
+    X = obj.loadVariables(1, nVars, members, g, sets, settings, showprogress);
+    
+% Notify user if too large to fit in memory
+catch ME
+    if strcmpi(ME.identifier, "DASH:arrayTooBig")
+        outputTooBigError();
+    end
+    rethrow(ME);
 end
 
 end
