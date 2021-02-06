@@ -1,13 +1,4 @@
-function[X] = loadEnsemble(obj, nEns, g, sets, settings, showprogress)
-
-% Initialize progress bars
-nVars = numel(obj.variables);
-progress = cell(nVars, 1);
-step = ceil(nEns/100);
-for v = 1:nVars
-    message = sprintf('Building "%s":', obj.variables(v).name);
-    progress{v} = progressbar(showprogress, message, nEns, step);
-end
+function[X] = loadEnsemble(obj, nEns, g, sets, settings, progress)
 
 % Load the variables into memory
 try

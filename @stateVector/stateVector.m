@@ -121,7 +121,7 @@ classdef stateVector
         [grids, sources, f] = prebuildSources(obj);
         [X, meta, obj] = buildEnsemble(obj, nEns, g, ens, showprogress);
         X = loadEnsemble(obj, nEns, g, sets, settings, showprogress);
-        
+        [X, g] = loadVariables(obj, first, last, members, g, sets, settings, progress);
     end
     
     % User interface methods with stateVectorVariable

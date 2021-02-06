@@ -81,7 +81,7 @@ end
 
 % Preallocate load settings for each variable
 nVars = numel(obj.variables);
-settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields);
+settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields, [nVars, 1]);
 
 % Finalize each variable. Get load settings
 for v = 1:nVars
@@ -96,15 +96,23 @@ for v = 1:nVars
     end
 end
 
+% Initialize progress bars
+progress = cell(nVars, 1);
+step = ceil(nEns/100);
+for v = 1:nVars
+    message = sprintf('Building "%s":', obj.variables(v).name);
+    progress{v} = progressbar(showprogress, message, nEns, step);
+end
+
 % Either load the array directly or write to file
 if isempty(ens)
-    X = obj.loadEnsemble(nEns, g, sets, settings, showprogress);
+    X = obj.loadEnsemble(nEns, g, sets, settings, progress);
 else
-    obj.writeEnsemble();
+    obj.writeEnsemble(nEns, g, sets, settings, ens, progress);
 end
 
 % Get the metadata for the ensemble
-%
+meta = ensembleMetadata(obj);
 %
 %
 

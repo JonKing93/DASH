@@ -1,4 +1,4 @@
-function[grids] = prebuildSources(obj)
+function[g] = prebuildSources(obj)
 %% Pre-builds gridfiles and data sources. Checks that all gridfiles are valid.
 %
 % [grids] = obj.prebuildSources
@@ -32,7 +32,9 @@ for v = 1:numel(obj.variables)
     obj.variables(v).checkGrid(grids{f(v)});
 end
 
-% Combine into a prebuiltGrids
-grids = prebuiltGrids(grids, sources, f);
+% Combine into a structure to reduce input args later
+g = struct('f', f);
+g.grids = grids;
+g.sources = sources;
 
 end

@@ -18,7 +18,6 @@ classdef progressbar < handle
                 obj.current = 0;
                 obj.max = max;
                 obj.step = step;
-                obj.handle = waitbar(0, obj.message(0));
             end
         end
         function[msg] = message(obj, x)
@@ -27,7 +26,10 @@ classdef progressbar < handle
         function[] = update(obj)
             if obj.show
                 obj.current = obj.current+1;
-                if obj.current == obj.max
+                if isempty(obj.handle)
+                    x = obj.current / obj.max;
+                    obj.handle = waitbar(x, obj.message(x));
+                elseif obj.current == obj.max
                     obj.delete;
                 elseif mod(obj.current, obj.step)==0
                     x = obj.current / obj.max;

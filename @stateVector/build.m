@@ -113,9 +113,12 @@ for s = 1:nSets
     
     % Find metadata that is in all of the variables in the set.
     for d = 1:numel(dims)
-        meta = var1.dimMetadata(grids.grid(v(1)), dims(d));
+        g = grids.f(v(1));
+        meta = var1.dimMetadata(grids.grids{g}, dims(d));
+
         for k = 2:numel(v)
-            varMeta = obj.variables(v(k)).dimMetadata( grids.grid(v(k)), dims(d) );
+            g = grids.f(v(k));
+            varMeta = obj.variables(v(k)).dimMetadata(grids.grids{g}, dims(d) );
             
             % Get the metadata intersect
             if dash.bothNaN(meta, varMeta)
@@ -136,7 +139,8 @@ for s = 1:nSets
 
         % Update the reference indices in each variable to match the metadata
         for k = 1:numel(v)
-            obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids.grid(v(k)), dims(d));
+            g = grids.f(v(k));
+            obj.variables(v(k)) = obj.variables(v(k)).matchIndices(meta, grids.grids{g}, dims(d));
         end
         
         % ***Note: At this point, the reference indices in the coupled

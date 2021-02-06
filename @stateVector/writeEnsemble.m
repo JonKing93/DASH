@@ -1,4 +1,4 @@
-function[] = writeEnsemble(obj, nEns, g, sets, settings, ens, showprogress)
+function[] = writeEnsemble(obj, nEns, g, sets, settings, ens, progress)
 
 % Size and shorten names. Get the new ensemble members
 varLimit = obj.variableLimits;
@@ -20,7 +20,7 @@ while first <= nVars
     % ens file all at once to minimize write operations
     while last>=first
         try
-            [X, g] = obj.loadVariables(first, last, cols, g, sets, settings, showprogress);
+            [X, g] = obj.loadVariables(first, last, cols, g, sets, settings, progress);
             rows = varLimit(first,1):varLimit(last,2);
             ens.X(rows, cols) = X;
             
@@ -53,11 +53,11 @@ while first <= nVars
             
             % Attempt to load each chunk
             try
-                for k=1:nLoad
+                for k = 1:nLoad
                     use = chunkSize*(k-1)+(1:chunkSize);
                     use(use>nEns) = [];
                     members = cols(use);
-                    [X, g] = obj.loadVariables(v, v, members, g, sets, settings, showprogress);
+                    [X, g] = obj.loadVariables(v, v, members, g, sets, settings, progress);
                     
                     % Write to file
                     ens.X(rows, members) = X;
@@ -74,7 +74,7 @@ while first <= nVars
         end
         
         % Throw error if the loop exited without success (this should never
-        % happend because of the preallocation check in sv.buildEnsemble)
+        % happen because of the preallocation check in sv.buildEnsemble)
         if tooBig
             tooBigError(obj.variables(v).name);
         end
