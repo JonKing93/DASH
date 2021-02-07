@@ -156,5 +156,10 @@ classdef stateVector
         [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
         [X, meta, obj] = addMembers(obj, nAdd, showprogress);
     end
+
+    % New stuff
+    methods
+        obj = convertPrimitives(obj);
+    end
      
 end

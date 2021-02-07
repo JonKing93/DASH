@@ -25,7 +25,7 @@ classdef ensembleMetadata
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
     
-    properties (SetAccess = private)
+    properties 
         name; % Name of the ensemble
         vectorName; % Name of the state vector template
         
