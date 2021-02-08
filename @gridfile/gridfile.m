@@ -53,7 +53,6 @@ classdef gridfile < handle
         tf = hasDuplicateRows(meta);
         
         source = convertSourceToPrimitives(source);
-        dims = commaDelimitedDims(dims);
         X = padPrimitives(X, maxCol);        
     end
     

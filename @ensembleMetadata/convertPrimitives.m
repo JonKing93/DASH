@@ -13,9 +13,8 @@ end
 % Convert dims to comma strings
 dims = strings(nVars, 1);
 nDims = NaN(nVars, 1);
-warning('gridfile');
 for v = 1:nVars
-    dims(v) = gridfile.commaDelimitedDims(meta.dims{v});
+    dims(v) = dash.commaDelimitedDims(meta.dims{v});
     nDims(v) = numel(meta.dims{v});
 end
 s.dims = dims;

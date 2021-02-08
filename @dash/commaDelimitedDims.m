@@ -2,7 +2,7 @@ function[dims] = commaDelimitedDims( dims )
 %% Converts a string array of dimension names to a comma delimited
 % character row vector.
 %
-% dims = gridfile.commaDelimitedDims( dims )
+% dims = dashe.commaDelimitedDims( dims )
 %
 % ----- Inputs -----
 %

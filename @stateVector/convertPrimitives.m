@@ -9,9 +9,8 @@ nVars = numel(obj.variables);
 s.name = [obj.variables.name];
 s.file = [obj.variables.file];
 s.dims = strings(nVars, 1);
-warning('gridfile');
 for v = 1:nVars
-    s.dims(v) = gridfile.commaDelimitedDims(obj.variables(v).dims);
+    s.dims(v) = dash.commaDelimitedDims(obj.variables(v).dims);
 end
 
 % Collect vectors, store in a single vector and separate variables by

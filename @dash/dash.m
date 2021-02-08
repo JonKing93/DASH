@@ -59,6 +59,7 @@ classdef dash
     % New stuff
     methods (Static)
         limits = buildLimits(nEls);
+        dims = commaDelimitedDims(dims);
     end
     
 end
