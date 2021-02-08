@@ -1,5 +1,13 @@
 function[obj] = convertToPrimitives(obj)
-%% Converts state vector variables to a structure array
+%% Converts state vector variables to a structure array of primitives to
+% facilitate fast saving.
+%
+% obj = obj.convertToPrimitives
+%
+% ----- Outputs -----
+%
+% obj: The updated stateVector object. The variables field has been
+%    converted from a vector of svv to a structure of primitives.
 
 % Initialize structure
 s = struct;
@@ -24,6 +32,7 @@ fields = stateVectorVariable.vectorFields;
 nFields = numel(fields);
 limits = dash.buildLimits(nDims*nFields);
 
+% Collect the vectors for each variable
 vectors = NaN(limits(end), 1);
 for v = 1:nVars
     var = obj.variables(v);
@@ -35,7 +44,7 @@ end
 s.vectors = vectors;
 s.limits = limits;
 
-% Collect cells
+% Collect non-empty cells as named variables
 fields = stateVectorVariable.cellFields;
 nFields = numel(fields);
 for v = 1:nVars

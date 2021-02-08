@@ -2,6 +2,7 @@ stateVector
     rename
     notifyConsole
 variableLimits
+    dash.buildLimits
 checkVariables
     dash.checkStrsInList
     errorTitle
@@ -20,10 +21,35 @@ prebuildSources
 buildEnsemble
     variableNames
     stateVectorVariable.removeOverlap
-    variableLimits
-    stateVectorVariable.buildEnsemble
+    dash.preallocateStructs
+    stateVectorVariable.finalizeMean
+    stateVectorVariable.loadSettings
+    progressbar.progressbar
     ensembleMetadata.ensembleMetadata
+    loadEnsemble
+    writeEnsemble
+    ensembleMetadata.convertToPrimitives
+    convertToPrimitives
     dash.messageList
+loadEnsemble
+    loadVariables
+writeEnsemble
+    variableLimits
+    loadVariables
+loadVariables
+    variableLimits
+    stateVectorVariable.loadMember
+    progressbar.update
+convertToPrimitives
+    dash.commaDelimitedDims
+    stateVectorVariable.vectorFields
+    dash.buildLimits
+    stateVectorVariable.cellFields
+revertFromPrimitives
+    stateVectorVariable.cellFields
+    stateVectorVariable.vectorFields
+    stateVectorVariable.stateVectorVariable
+    stateVectorVariable.buildFromPrimitives
 design
     assertEditable
     checkVariables

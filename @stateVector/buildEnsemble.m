@@ -1,23 +1,19 @@
-function[X, meta, obj] = buildEnsemble(obj, nEns, g, ens, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
 %% Builds a state vector ensemble.
 %
 % [X, meta, obj] = obj.buildEnsemble(nEns, grids, [], showprogress)
 % Builds a state vector ensemble and returns it as an array.
 %
-% [~, meta, obj] = obj.buildEnsemble(nEns, grids, showprogress)
+% [~, meta, obj] = obj.buildEnsemble(nEns, grids, ens, showprogress)
 % Builds a state vector ensemble and writes it to a .ens file.
 %
 % ----- Inputs -----
 %
 % nEns: The number of ensemble members to build.
 %
-% g: A structure containing a cell vector of unique gridfile objects, a
+% grids: A structure containing a cell vector of unique gridfile objects, a
 %    cell vector containing the dataSource objects for each gridfile, and 
 %    an index vector that maps variables to the correpsonding gridfile
-%
-% sources: A cell vector of dataSource objects for the gridfiles
-%
-% f: An index vector that maps variables to their gridfile object
 %
 % ens: A matfile object for a .ens file.
 %
@@ -107,9 +103,9 @@ end
 % Either load the array directly or write to file
 meta = ensembleMetadata(obj);
 if isempty(ens)
-    X = obj.loadEnsemble(nEns, g, sets, settings, progress);
+    X = obj.loadEnsemble(nEns, grids, sets, settings, progress);
 else
-    obj.writeEnsemble(nEns, g, sets, settings, ens, progress);
+    obj.writeEnsemble(nEns, grids, sets, settings, ens, progress);
     X = [];
     ens.metadata = meta.convertToPrimitives;
     ens.stateVector = obj.convertToPrimitives;

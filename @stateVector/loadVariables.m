@@ -1,5 +1,31 @@
-function[X, g] = loadVariables(obj, first, last, members, grids, sets, settings, progress)
-%% Loads a set of successive variables in a state vector into memory
+function[X, grids] = loadVariables(obj, first, last, members, grids, sets, settings, progress)
+%% Loads a set of variables into memory
+%
+% [X, g] = obj.loadVariables(first, last, members, grids, sets, settings, progress)
+%
+% ----- Inputs -----
+%
+% first: The index of the first variable to load
+%
+% last: The index of the last variable to load
+%
+% members: The ensemble members (in the subMembers array) to load
+%
+% grids: A structure containing a cell vector of unique gridfile objects, a
+%    cell vector containing the dataSource objects for each gridfile, and 
+%    an index vector that maps variables to the correpsonding gridfile
+%
+% sets: A matrix indicating the sets of coupled variables. Each row is one set.
+%
+% settings: Load settings for the state vector variables. See svv.loadSettings
+%
+% progress: A set of progressbar objects for the variables
+%
+% ----- Outputs -----
+%
+% X: The loaded variables
+%
+% grids: The updated grid structure with any newly built dataSources
 
 % Get the limits of the variables within the loaded set and sizes
 varLimit = obj.variableLimits;

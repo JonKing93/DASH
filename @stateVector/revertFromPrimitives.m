@@ -1,5 +1,11 @@
 function[sv] = revertFromPrimitives(sv)
-%% Converts a stateVectorVariable primitive structure back to an object array
+%% Converts a primitive structure of stateVectorVariables back to a vector
+%
+% sv = sv.revertFromPrimitives
+%
+% ----- Outputs -----
+%
+% sv: A stateVector with an svv vector
 
 % Extract the variable structure and clear the property
 s = sv.variables;

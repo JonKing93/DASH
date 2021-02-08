@@ -1,4 +1,23 @@
 function[] = writeEnsemble(obj, nEns, grids, sets, settings, ens, progress)
+%% Builds a state vector ensemble and writes it to an .ens file.
+%
+% obj.writeEnsemble(nEns, grids, sets, settings, ens, progress)
+%
+% ----- Inputs -----
+%
+% nEns: The number of ensemble members to build
+%
+% grids: A structure containing a cell vector of unique gridfile objects, a
+%    cell vector containing the dataSource objects for each gridfile, and 
+%    an index vector that maps variables to the correpsonding gridfile
+%
+% sets: A matrix indicating the sets of coupled variables. Each row is one set.
+%
+% settings: Load settings for the state vector variables. See svv.loadSettings
+%
+% ens: The matfile object for the .ens file
+%
+% progress: A set of progressbar objects for the variables
 
 % Size and shorten names. Get the new ensemble members
 varLimit = obj.variableLimits;

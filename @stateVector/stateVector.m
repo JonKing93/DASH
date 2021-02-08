@@ -121,7 +121,10 @@ classdef stateVector
         [grids, sources, f] = prebuildSources(obj);
         [X, meta, obj] = buildEnsemble(obj, nEns, g, ens, showprogress);
         X = loadEnsemble(obj, nEns, g, sets, settings, showprogress);
+        writeEnsemble(obj, nEns, grids, sets, settings, ens, progress);
         [X, g] = loadVariables(obj, first, last, members, g, sets, settings, progress);
+        obj = convertToPrimitives(obj);
+        obj = revertFromPrimitives(obj);
     end
     
     % User interface methods with stateVectorVariable
@@ -153,14 +156,8 @@ classdef stateVector
         obj = extract(obj, varNames);
         obj = copy(obj, templateName, varNames, varargin);
         varNames = variableNames(obj, v);
-        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);
         [X, meta, obj] = addMembers(obj, nAdd, showprogress);
-    end
-
-    % New stuff
-    methods
-        obj = convertToPrimitives(obj);
-        obj = revertFromPrimitives(obj);
+        [X, meta, obj] = build(obj, nEns, random, filename, overwrite, showprogress);        
     end
      
 end
