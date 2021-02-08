@@ -1,11 +1,11 @@
-function[obj] = convertPrimitives(obj)
+function[obj] = convertToPrimitives(obj)
 %% Converts state vector variables to a structure array
 
 % Initialize structure
 s = struct;
 nVars = numel(obj.variables);
 
-% Collect strings: name, file, dims
+% Collect strings: name, file
 s.name = [obj.variables.name];
 s.file = [obj.variables.file];
 s.dims = strings(nVars, 1);
@@ -13,28 +13,30 @@ for v = 1:nVars
     s.dims(v) = dash.commaDelimitedDims(obj.variables(v).dims);
 end
 
-% Collect vectors, store in a single vector and separate variables by
-% dimension size
+% Get dimension string and number of dimensions per variable
 nDims = NaN(nVars, 1);
 for v = 1:nVars
     nDims(v) = numel(obj.variables(v).dims);
 end
-vectorFields = {'gridSize','stateSize','ensSize','isState','takeMean','meanSize',...
-                'omitnan','hasWeights','hasMetadata','convert'};
-nFields = numel(vectorFields);
+
+% Collect vectors, store in a single vector
+fields = stateVectorVariable.vectorFields;
+nFields = numel(fields);
 limits = dash.buildLimits(nDims*nFields);
+
 vectors = NaN(limits(end), 1);
 for v = 1:nVars
     var = obj.variables(v);
-    vectors(limits(v,1):limits(v,2)) = ...
-       [var.gridSize, var.stateSize, var.ensSize, var.isState, var.takeMean, ...
-        var.meanSize, var.omitnan, var.hasWeights, var.hasMetadata, var.convert];
+    for f = 1:nFields
+        index = limits(v,1) - 1 + (f-1)*nDims(v) + (1:nDims(v));
+        vectors(index) = var.(fields{f});
+    end
 end
 s.vectors = vectors;
 s.limits = limits;
 
 % Collect cells
-fields = {'seqIndices','seqMetadata','mean_Indices','weightCell','metadata','convertFunction','convertArgs'};
+fields = stateVectorVariable.cellFields;
 nFields = numel(fields);
 for v = 1:nVars
     var = obj.variables(v);

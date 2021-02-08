@@ -112,7 +112,7 @@ else
     obj.writeEnsemble(nEns, g, sets, settings, ens, progress);
     X = [];
     ens.metadata = meta.convertPrimitives;
-    ens.stateVector = obj.convertPrimitives;
+    ens.stateVector = obj.convertToPrimitives;
 end
 
 end

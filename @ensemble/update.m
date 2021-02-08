@@ -13,16 +13,14 @@ function[obj] = update(obj, ens)
 
 % If no matfile object is provided, load data into a structure
 fields = ["hasnan","metadata","stateVector"];
-props = ["has_nan", "metadata", "stateVector"];
 if ~exist('ens','var') || isempty(ens)
     ens = dash.loadMatfileFields(obj.file, fields, '.ens');
 end
 
-% Fill in the fields
-for f = 1:numel(fields)
-    name = char(fields(f));
-    propName = char(props(f));
-    obj.(propName) = ens.(name);
-end
+% Fill in the fields. Convert metadata and stateVector back from primitives
+obj.has_nan = ens.hasnan;
+obj.metadata = ensembleMetadata.buildFromPrimitives(ens.metadata);
+sv = ens.stateVector;
+obj.stateVector = sv.revertFromPrimitives;
 
 end

@@ -42,6 +42,9 @@ classdef stateVectorVariable
         infoFields = {'name','gridfile','stateSize','possibleMembers',...
             'dimensions','stateDimensions','ensembleDimensions','singletonDimensions'};
         loadSettingFields = {'siz','d','meanDims','nanflag','indices','addIndices'};
+        vectorFields = {'gridSize','stateSize','ensSize','isState','takeMean','meanSize',...
+                'omitnan','hasWeights','hasMetadata','convert'};
+        cellFields = {'seqIndices','seqMetadata','mean_Indices','weightCell','metadata','convertFunction','convertArgs'};
     end
     
     % Constructor
@@ -51,6 +54,10 @@ classdef stateVectorVariable
             % file.
             %
             % obj = stateVectorVariable(varName, file);
+            % Creates a new stateVectorVariable
+            %
+            % obj = stateVectorVariable;
+            % Creates an empty stateVectorVariable
             %
             % ----- Inputs -----
             %
@@ -62,47 +69,51 @@ classdef stateVectorVariable
             %
             % obj: The new stateVectorVariable object
             
-            % Error check
-            varName = dash.assertStrFlag(varName, 'varName');
-            file = dash.assertStrFlag(file, 'file');
-            file = dash.checkFileExists(file);
-            
-            % Name. Use string internally
-            obj.name = string(varName);
-            
-            % Get gridfile properties
-            grid = gridfile(file);
-            obj.file = grid.file;
-            obj.dims = grid.dims;
-            obj.gridSize = grid.size;
-            
-            % Initialize dimension properties
-            nDims = numel(obj.dims);
-            obj.stateSize = NaN(1, nDims);
-            obj.ensSize = NaN(1, nDims);
-            obj.isState = true(1, nDims);
-            obj.indices = cell(1, nDims);
-            
-            obj.seqIndices = cell(1, nDims);
-            obj.seqMetadata = cell(1, nDims);
-            
-            obj.takeMean = false(1, nDims);
-            obj.meanSize = NaN(1, nDims);
-            obj.omitnan = false(1, nDims);
-            obj.mean_Indices = cell(1, nDims);
-            
-            obj.hasWeights = false(1, nDims);
-            obj.weightCell = cell(1, nDims);
-            
-            obj.hasMetadata = false(1, nDims);
-            obj.metadata = cell(1, nDims);
-            obj.convert = false(1, nDims);
-            obj.convertFunction = cell(1, nDims);
-            obj.convertArgs = cell(1, nDims);
-            
-            % Initialize all dimensions as state dimensions
-            for d = 1:numel(obj.dims)
-                obj = obj.design(obj.dims(d), 'state');
+            % If no inputs, leave empty
+            if nargin~=0
+                
+                % Error check
+                varName = dash.assertStrFlag(varName, 'varName');
+                file = dash.assertStrFlag(file, 'file');
+                file = dash.checkFileExists(file);
+
+                % Name. Use string internally
+                obj.name = string(varName);
+
+                % Get gridfile properties
+                grid = gridfile(file);
+                obj.file = grid.file;
+                obj.dims = grid.dims;
+                obj.gridSize = grid.size;
+
+                % Initialize dimension properties
+                nDims = numel(obj.dims);
+                obj.stateSize = NaN(1, nDims);
+                obj.ensSize = NaN(1, nDims);
+                obj.isState = true(1, nDims);
+                obj.indices = cell(1, nDims);
+
+                obj.seqIndices = cell(1, nDims);
+                obj.seqMetadata = cell(1, nDims);
+
+                obj.takeMean = false(1, nDims);
+                obj.meanSize = NaN(1, nDims);
+                obj.omitnan = false(1, nDims);
+                obj.mean_Indices = cell(1, nDims);
+
+                obj.hasWeights = false(1, nDims);
+                obj.weightCell = cell(1, nDims);
+
+                obj.hasMetadata = false(1, nDims);
+                obj.metadata = cell(1, nDims);
+                obj.convert = false(1, nDims);
+                obj.convertFunction = cell(1, nDims);
+                obj.convertArgs = cell(1, nDims);
+
+                % Initialize all dimensions as state dimensions
+                for d = 1:numel(obj.dims)
+                    obj = obj.design(obj.dims(d), 'state');
+                end
             end
         end
     end
@@ -141,11 +152,13 @@ classdef stateVectorVariable
         X = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress);
     end
     
-    % New methods for rebuild
+    % New stuff
     methods
         obj = finalizeMean(obj);
         [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
         [settings] = loadSettings(obj, subDims);
+        
+        svv = buildFromPrimitives(svv, varName, file, dims, vectors, cellArgs, indices);
     end
 
 end

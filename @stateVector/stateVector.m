@@ -159,7 +159,8 @@ classdef stateVector
 
     % New stuff
     methods
-        obj = convertPrimitives(obj);
+        obj = convertToPrimitives(obj);
+        obj = revertFromPrimitives(obj);
     end
      
 end
