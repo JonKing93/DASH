@@ -39,7 +39,7 @@ else
         % Check that converted metadata is still valid. Convert cellstring to
         % string.
         try
-            meta = gridfile.checkMetadataField(meta);
+            meta = dash.checkMetadataField(meta, dim);
         catch ME
             failedConversionError(obj.name, dim, funcName, 2, ME);
         end

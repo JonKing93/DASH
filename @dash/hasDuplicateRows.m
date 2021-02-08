@@ -1,7 +1,7 @@
 function[tf] = hasDuplicateRows(meta)
 %% Checks if a metadata field contains duplicate rows.
 %
-% tf = gridfile.duplicateRows( meta )
+% tf = dash.hasDuplicateRows( meta )
 %
 % ----- Inputs -----
 %

@@ -1,9 +1,6 @@
-checkMetadataField
-    hasDuplicateRows
 checkMetadataStructure
     dash.messageList
-    checkMetadataField
-hasDuplicateRows
+    dash.checkMetadataField
 convertSourceToPrimitives
     dash.commaDelimitedDims
 padPrimitives
@@ -40,7 +37,7 @@ repeatedLoad
     dash.permuteDimensions
 defineMetadata
     dash.assertStrFlag
-    checkMetadataField
+    dash.checkMetadataField
 new
     dash.assertStrFlag
     dash.assertScalarType
@@ -79,14 +76,14 @@ rewriteMetadata
     update
     dash.assertStrFlag
     checkAllowedDims
-    checkMetadataField
+    dash.checkMetadataField
     updateMetadataField
 expand
     update
     dash.assertStrFlag
     checkAllowedDims
-    checkMetadataField
-    hasDuplicateRows
+    dash.checkMetadataField
+    dash.hasDuplicateRows
     updateMetadataField
 info
     dash.isstrlist

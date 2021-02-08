@@ -60,6 +60,8 @@ classdef dash
     methods (Static)
         limits = buildLimits(nEls);
         dims = commaDelimitedDims(dims);
+        meta = checkMetadataField(meta, dim);
+        tf = hasDuplicateRows(meta)
     end
     
 end

@@ -2,7 +2,7 @@ function[meta] = checkMetadataField( meta, dim )
 %% Error checks the metadata for a grid dimension. Converts cellstring to
 % string.
 % 
-% meta = gridfile.checkMetadataField(meta, dim)
+% meta = dash.checkMetadataField(meta, dim)
 %
 % ----- Input -----
 %
@@ -37,7 +37,7 @@ if iscellstr(meta) %#ok<ISCLSTR>
 end
 
 % Check there are no duplicate rows. 
-if gridfile.hasDuplicateRows(meta)
+if dash.hasDuplicateRows(meta)
     error('The %s metadata contains duplicate rows.', dim);
 end
 
