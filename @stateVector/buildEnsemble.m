@@ -11,9 +11,10 @@ function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
 %
 % nEns: The number of ensemble members to build.
 %
-% grids: A structure containing a cell vector of unique gridfile objects, a
-%    cell vector containing the dataSource objects for each gridfile, and 
-%    an index vector that maps variables to the correpsonding gridfile
+% grids: A structure containing
+%   grids: a cell vector of unique gridfile objects
+%   sources: a cell vector containing the dataSource objects for each gridfile
+%   f: an index vector that maps variables to the correpsonding gridfile
 %
 % ens: A matfile object for a .ens file.
 %
