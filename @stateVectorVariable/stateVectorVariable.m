@@ -147,17 +147,13 @@ classdef stateVectorVariable
         dims = dimensions(obj, type);
         [varInfo, dimInfo] = info(obj);
         obj = rename(obj, newName);
-        
-        % !!!!!!!!!!!!!!!!!!!!!!!!!!!!! delete
-        X = buildEnsemble(obj, subMembers, dims, grid, sources, ens, svRows, showprogress);
     end
     
-    % New stuff
+    % Build methods
     methods
         obj = finalizeMean(obj);
-        [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
         [settings] = loadSettings(obj, subDims);
-        
+        [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
         svv = buildFromPrimitives(svv, varName, file, dims, vectors, cellArgs, indices);
     end
 

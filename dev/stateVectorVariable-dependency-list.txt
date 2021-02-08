@@ -61,7 +61,11 @@ info
     dash.preallocateStructs
     dash.messageList
 rename
-buildEnsemble
+finalizeMean
+    checkDimensions
     addIndices
+loadMember
     gridfile.repeatedLoad
-    
+buildFromPrimitives
+    vectorFields
+    cellFields

@@ -1,5 +1,23 @@
 function[Xm, sources] = loadMember(obj, subMember, s, grid, sources)
 %% Loads a single ensemble member for a stateVectorVariable
+%
+% [Xm, sources] = obj.loadMember(subMember, s, grid, sources)
+%
+% ----- Inputs -----
+%
+% subMember: The subscripted ensemble dimensions for the ensemble member
+%
+% s: A loadSettings structure
+%
+% grid: A gridfile object for the variable
+%
+% sources: A vector of dataSources for the variable
+%
+% ----- Outputs -----
+%
+% Xm: The loaded ensemble member. A column vector
+%
+% sources: The dataSources updated with any newly build dataSource objects
 
 % Get the load indices for the ensemble dimensions
 for k = 1:numel(s.d)

@@ -1,5 +1,24 @@
 function[settings] = loadSettings(obj, subDims)
 %% Converts user options to values used to design a load operation
+%
+% settings = obj.loadSettings(subDims)
+%
+% ----- Inputs -----
+%
+% subDims: The names of the subscripted ensemble dimensions
+%
+% ----- Outputs -----
+%
+% settings: A structure with fields
+%   nanflag: The nanflag for each dimension
+%   siz: The size of the loaded data before taking means. Sequence and mean
+%        elements are separated
+%   meanDims: The location of the dimensions for means after sequence and
+%        mean elements have been separated
+%   d: The index of each subscripted ensemble dimension in the set of all
+%        dimensions
+%   indices: Indices for each dimension initialized for state dimensions
+%   addIndices: The addIndices for each dimension
 
 % NaN flag for each dimension
 nDims = numel(obj.dims);
