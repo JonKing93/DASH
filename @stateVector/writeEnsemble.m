@@ -27,7 +27,6 @@ nVars = numel(obj.variables);
 % Preallocate the ens file
 cols = size(ens, 'X', 2) + (1:nEns);
 ens.X(nState, cols(end)) = NaN;
-ens.hasnan(nVars, cols(end)) = false;
 
 % Find sets of subsequent variables that can fit in memory at once
 first = 1;

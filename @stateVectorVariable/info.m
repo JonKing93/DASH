@@ -35,8 +35,8 @@ if nargout~=0
     
     % Preallocate dimension structure
     nDims = numel(dims);
-    dimFields = {"name","type","stateLength","ensembleMembers","indices",...
-        "sequence","hasMean","meanIndices","weights"};
+    dimFields = {'name','type','stateLength','ensembleMembers','indices',...
+        'sequence','hasMean','meanIndices','weights'};
     [dimInfo, dimInputs] = dash.preallocateStructs(dimFields, [nDims, 1]);
 
 % Print to console
