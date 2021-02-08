@@ -47,8 +47,8 @@ catch ME
     [~, nCols] = size(ens, 'X');
     ens.X(:,nPrevious+1:nCols) = [];
     ens.hasnan(:,nPrevious+1:nCols) = [];
-    ens.meta = obj.metadata;
-    ens.stateVector = obj.sv;
+    ens.metadata = obj.metadata.convertToPrimitives;
+    ens.stateVector = obj.stateVector.convertToPrimitives;
     rethrow(ME);
 end
 

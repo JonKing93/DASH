@@ -24,9 +24,9 @@ meta.meanSize = cell(nVars, 1);
 
 for v = 1:nVars
     index = s.limits(v,1):s.limits(v,end);
-    meta.stateSize{v} = s.stateSize(index)';
-    meta.meanSize{v} = s.meanSize(index)';
-    meta.isState{v} = logical(s.isState(index)');
+    meta.stateSize{v} = s.stateSize(index);
+    meta.meanSize{v} = s.meanSize(index);
+    meta.isState{v} = logical(s.isState(index));
 end
 
 % Get data types
