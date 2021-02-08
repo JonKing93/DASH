@@ -56,5 +56,10 @@ classdef dash
         indices = equallySpacedIndices(indices);
     end
     
+    % New stuff
+    methods (Static)
+        limits = buildLimits(nEls);
+    end
+    
 end
         

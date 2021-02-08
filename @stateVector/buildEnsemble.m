@@ -110,10 +110,9 @@ if isempty(ens)
     X = obj.loadEnsemble(nEns, g, sets, settings, progress);
 else
     obj.writeEnsemble(nEns, g, sets, settings, ens, progress);
-    ens.metadata = meta;
-    obj = obj.convertPrimitives;
-    ens.stateVector = obj;
     X = [];
+    ens.metadata = meta.convertPrimitives;
+    ens.stateVector = obj.convertPrimitives;
 end
 
 end

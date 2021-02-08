@@ -23,9 +23,7 @@ end
 vectorFields = {'gridSize','stateSize','ensSize','isState','takeMean','meanSize',...
                 'omitnan','hasWeights','hasMetadata','convert'};
 nFields = numel(vectorFields);
-nEls = cumsum(nDims*nFields);
-first = [1; nEls(1:end-1)+1];
-limits = [first, nEls];
+limits = dash.buildLimits(nDims*nFields);
 vectors = NaN(limits(end), 1);
 for v = 1:nVars
     var = obj.variables(v);

@@ -182,5 +182,10 @@ classdef ensembleMetadata
         obj = appendMembers(obj, meta2);
         obj = extractMembers(obj, members);
     end
+    
+    % New stuff
+    methods
+        s = convertPrimitives(obj);
+    end
 
 end
