@@ -111,7 +111,7 @@ if isempty(ens)
 else
     obj.writeEnsemble(nEns, g, sets, settings, ens, progress);
     X = [];
-    ens.metadata = meta.convertPrimitives;
+    ens.metadata = meta.convertToPrimitives;
     ens.stateVector = obj.convertToPrimitives;
 end
 

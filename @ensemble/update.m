@@ -19,7 +19,8 @@ end
 
 % Fill in the fields. Convert metadata and stateVector back from primitives
 obj.has_nan = ens.hasnan;
-obj.metadata = ensembleMetadata.buildFromPrimitives(ens.metadata);
+meta = ensembleMetadata;
+obj.metadata = meta.buildFromPrimitives(ens.metadata);
 sv = ens.stateVector;
 obj.stateVector = sv.revertFromPrimitives;
 

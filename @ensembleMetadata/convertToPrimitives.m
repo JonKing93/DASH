@@ -1,11 +1,11 @@
-function[s] = convertPrimitives(meta)
+function[s] = convertToPrimitives(meta)
 
 
 s = struct();
 nVars = numel(meta.variableNames);
 
 % Get any directly copyable fields
-names = {'name','variableNames','varLimit','nEls','nEns'};
+names = meta.copyableFields;
 for n = 1:numel(names)
     s.(names{n}) = meta.(names{n});
 end
@@ -21,7 +21,7 @@ s.dims = dims;
 
 % Dimension vectors
 s.limits = dash.buildLimits(nDims);
-names = {'stateSize','isState','meanSize'};
+names = meta.vectorFields;
 for n = 1:numel(names)
     name = names{n};
     s.(name) = [];
@@ -58,7 +58,7 @@ for v = 1:nVars
             if ~any(strcmp(type, saveType))
                 s.(type) = [];
                 s.(whichName) = [];
-                saveType = [saveType; type];
+                saveType = [saveType; type]; %#ok<AGROW>
                 last = 0;
                 
             % Otherwise, append to existing data

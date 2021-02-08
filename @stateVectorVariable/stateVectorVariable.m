@@ -70,7 +70,7 @@ classdef stateVectorVariable
             % obj: The new stateVectorVariable object
             
             % If no inputs, leave empty
-            if nargin~=0
+            if nargin>0
                 
                 % Error check
                 varName = dash.assertStrFlag(varName, 'varName');

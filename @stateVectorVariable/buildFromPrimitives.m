@@ -18,5 +18,11 @@ end
 
 svv.indices = indices;
 
+% Convert logicals
+fields = {'isState','takeMean','omitnan','hasWeights','hasMetadata','convert'};
+for f = 1:numel(fields)
+    svv.(fields{f}) = logical(svv.(fields{f}));
+end
+
 end
 
