@@ -44,16 +44,57 @@ end
 % Get new ensemble members and loading set rows for each variable
 for k = 1:nVars
     v = first + k - 1;
+    g = grids.f(v);
     rows = varLimit(k,1):varLimit(k,2);
-    subMembers = obj.subMembers{sets(v)}(members, :);
     
-    % Load each ensemble member. Update progress bar
-    for m = 1:nEns
-        g = grids.f(v);
-        [X(rows, m), grids.sources{g}] = obj.variables(v).loadMember(...
-            subMembers(m,:), settings(v), grids.grids{g}, grids.sources{g});
-        progress{v}.update;
-    end
+    subMembers = obj.subMembers{sets(v)}(members, :);
+    X(rows,:) = obj.variables(v).loadMembers(...
+            subMembers, settings(v), grids.grids{g}, grids.sources{g}, progress{v});
 end
 
 end
+    
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     subMembers = obj.subMembers{sets(v)}(members, :);
+%     
+%     % Find the min and max index for each ensemble member.
+%     nDims = size(subMembers, 2);
+%     limits = NaN(nDims, 2);
+%     indices = settings(v).indices;
+%     for d = 1:nDims
+%         limits(d,1) = min(subMembers(:,d)) + min(settings(v).addIndices{d});
+%         limits(d,2) = max(subMembers(:,d)) + max(settings(v).addIndices{d});
+%         indices{settings(v).d(d)} = (limits(d,1):limits(d,2))';
+%     end
+%     
+%     % Attempt to load all the necessary data at once
+%     [Xm, ~, sources] = grids.grids{g}.repeatedLoad(
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     
+%     % Load each ensemble member. Update progress bar
+%     for m = 1:nEns
+%         g = grids.f(v);
+%         [X(rows, m), grids.sources{g}] = obj.variables(v).loadMember(...
+%             subMembers(m,:), settings(v), grids.grids{g}, grids.sources{g});
+%         progress{v}.update;
+%     end
+% end
+% 
+% end

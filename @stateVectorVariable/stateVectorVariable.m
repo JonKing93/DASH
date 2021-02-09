@@ -156,6 +156,11 @@ classdef stateVectorVariable
         [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
         svv = buildFromPrimitives(svv, varName, file, dims, vectors, cellArgs, indices);
     end
+    
+    % new
+    methods
+        [X, sources] = loadMembers(svv, subMembers, s, grid, sources, progress);
+    end
 
 end
         
