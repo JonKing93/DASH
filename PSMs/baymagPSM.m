@@ -1,7 +1,9 @@
 classdef baymagPSM < PSM
     % Implements the BAYMAG Mg/Ca PSM.
     % Requires the Curve Fitting Toolbox
-    %
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
         
     properties
         age;

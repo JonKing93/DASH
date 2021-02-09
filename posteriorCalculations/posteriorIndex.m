@@ -1,5 +1,8 @@
 classdef posteriorIndex < posteriorCalculation
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = immutable)
         name;
         timeDim = 2;

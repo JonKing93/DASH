@@ -1,7 +1,9 @@
 classdef baysparPSM < PSM
     % Implements the BAYSPAR TEX86 PSM.
     % Requires the Curve Fitting Toolbox
-    %
+    
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
     
     properties
         lat;

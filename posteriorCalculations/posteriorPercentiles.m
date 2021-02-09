@@ -1,6 +1,9 @@
 classdef posteriorPercentiles < posteriorCalculation
     %% Calculates percentiles of a posterior ensemble.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = immutable)
         timeDim = 3;
     end

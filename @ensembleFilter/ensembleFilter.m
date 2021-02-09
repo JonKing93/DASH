@@ -2,6 +2,9 @@ classdef (Abstract) ensembleFilter
     %% Implements common utilities for ensemble-based data assimilation
     % filters (i.e. Kalman filters and particle filters)
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         name;
         

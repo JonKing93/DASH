@@ -6,6 +6,9 @@ classdef baysplinePSM < PSM
     %   baysplinePSM - Creates a new baysplinePSM object
     %   run - Runs BAYSPLINE directly
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     methods
         % Constructor
         function[obj] = baysplinePSM(row, name)

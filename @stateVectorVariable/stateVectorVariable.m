@@ -2,6 +2,9 @@ classdef stateVectorVariable
     % This class implements a custom structure to hold design parameters
     % for a variable in a state vector.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         % Set by constructor
         name;  % The identifying name of the variable

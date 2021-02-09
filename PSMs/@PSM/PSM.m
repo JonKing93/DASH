@@ -5,6 +5,9 @@ classdef (Abstract) PSM
     %   estimate - Estimate proxy values from a state vector ensemble
     %   rename - Renames a PSM
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         name;
         rows;

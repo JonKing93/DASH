@@ -2,6 +2,9 @@ classdef ncSource < dataSource
     %% Used to read data from source based on a NetCDF format. Includes 
     % local NetCDF files and OPeNDAP requests.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = protected)
         nDims; % The number of dimensions recorded in the NetCDF
     end

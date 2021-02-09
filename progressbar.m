@@ -1,6 +1,9 @@
 classdef progressbar < handle
     % Implements a progress bar
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties
         show;
         handle;

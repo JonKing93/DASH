@@ -2,6 +2,9 @@ classdef opendapSource < ncSource
     %% Reads data accessed via an OPeNDAP url. Attempts to load and save 
     % the entire variable when using repeated loads to increase speed.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         X; % The loaded and saved dataset
         attemptFullLoad; % Whether to attempt to load the entire dataset

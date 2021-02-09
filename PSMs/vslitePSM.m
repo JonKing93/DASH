@@ -1,5 +1,8 @@
 classdef vslitePSM < PSM
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties
         phi;
         T1;
