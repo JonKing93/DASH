@@ -11,7 +11,7 @@ function[kf] = prior(kf, X, whichPrior)
 % ----- Inputs -----
 %
 % M: A static offline or evolving offline prior. A numeric array that
-%    cannot contain NaN or Inf.
+%    cannot contain Inf or complex values.
 %
 %    Static: M is a matrix (nState x nEns) and will be used as the
 %       prior in each time step.
