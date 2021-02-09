@@ -28,8 +28,8 @@ s.merge = source.merge;
 s.mergedSize = source.mergedSize;
 
 % Dimension order becomes a comma delimited char array
-s.unmergedDims = gridfile.commaDelimitedDims( source.unmergedDims );
-s.mergedDims = gridfile.commaDelimitedDims( source.mergedDims );
+s.unmergedDims = dash.commaDelimitedDims( source.unmergedDims );
+s.mergedDims = dash.commaDelimitedDims( source.mergedDims );
 
 % Record whether this is an .nc or .mat data source
 s.type = '';

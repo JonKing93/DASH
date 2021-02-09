@@ -29,7 +29,8 @@ nBlocks = numel(skips)+1;
 nEls = obj.metadata.sizes(v);
 varEnd = cumsum(nEls)';
 varLimit = [1, varEnd(1:end-1)+1; varEnd]';
-fileMeta = ens.metadata;
+fileMeta = ensembleMetadata;
+fileMeta = fileMeta.buildFromPrimitives(ens.metadata);
 
 % Preallocate the ensemble
 nState = varLimit(end);

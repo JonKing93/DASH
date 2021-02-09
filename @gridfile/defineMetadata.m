@@ -49,7 +49,7 @@ end
 for v = 2:2:nargin
     dim = varargin{v-1};
     value = varargin{v};
-    value = gridfile.checkMetadataField(value, dim);
+    value = dash.checkMetadataField(value, dim);
     
     % Warn user if metadata is a row vector. (They probably want a column)
     if isrow(value) && ~isscalar(value)

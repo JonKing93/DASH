@@ -32,7 +32,7 @@ end
 % Metadata values
 for d = 1:numel(metaFields)
     name = metaFields(d);
-    meta.(name) = gridfile.checkMetadataField( meta.(name), name );
+    meta.(name) = dash.checkMetadataField( meta.(name), name );
 end
 
 end

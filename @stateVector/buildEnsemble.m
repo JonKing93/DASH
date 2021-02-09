@@ -1,22 +1,20 @@
-function[X, meta, obj] = buildEnsemble(obj, nEns, grids, sources, f, ens, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, nEns, grids, ens, showprogress)
 %% Builds a state vector ensemble.
 %
-% [X, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, [], showprogress)
+% [X, meta, obj] = obj.buildEnsemble(nEns, grids, [], showprogress)
 % Builds a state vector ensemble and returns it as an array.
 %
-% [~, meta, obj] = obj.buildEnsemble(nEns, grids, sources, f, ens, showprogress)
+% [~, meta, obj] = obj.buildEnsemble(nEns, grids, ens, showprogress)
 % Builds a state vector ensemble and writes it to a .ens file.
 %
 % ----- Inputs -----
 %
 % nEns: The number of ensemble members to build.
 %
-% grids: The set of unique gridfile objects needed to build the ensemble.
-%
-% sources: Pre-built data sources for each gridfile
-%
-% f: An index mapping each variable in the state vector to one of the sets
-%    of gridfiles and data sources
+% grids: A structure containing
+%   grids: a cell vector of unique gridfile objects
+%   sources: a cell vector containing the dataSource objects for each gridfile
+%   f: an index vector that maps variables to the correpsonding gridfile
 %
 % ens: A matfile object for a .ens file.
 %
@@ -75,60 +73,45 @@ for s = 1:size(sets,1)
     obj.unused{s} = unused;
 end
 
-% Note if writing to file
-writeFile = false;
-if ~isempty(ens)
-    writeFile = true;
-end
+% Get the set index for each variable
+[sets, ~] = find(sets);
 
-% Get sizes
+% Preallocate load settings for each variable
 nVars = numel(obj.variables);
-varLimit = obj.variableLimits;
-nState = varLimit(end, 2);
+settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields, [nVars, 1]);
 
-% Preallocate output array.
-X = [];
-if ~writeFile
-    try
-        X = NaN(nState, nEns);
-    catch
-        outputTooBigError();
-    end
-    
-% Or preallocate space in the .ens file
-else
-    [~, nCols] = size(ens, 'X');
-    ens.X(nState, nCols+nEns) = NaN;
-    ens.hasnan(nVars, nCols+nEns) = false;
-end
-
-% Get the state vector rows and coupling set for each variable. Collect the
-% inputs for svv.buildEnsemble
+% Get load settings, and check that single ensemble members can fit in memory
 for v = 1:nVars
-    rows = varLimit(v,1):varLimit(v,2);
-    s = find( sets(:,v) );
-    inputs = {obj.subMembers{s}(end-nEns+1:end, :), obj.dims{s}, grids{f(v)},...
-        sources{f(v)}, [], [], showprogress};
-
-    % Build the ensemble for the variable. Get array or save to file
-    if writeFile
-        inputs(5:6) = {ens, rows};
-        ens.hasnan(v,nCols+(1:nEns)) = obj.variables(v).buildEnsemble( inputs{:} );
-    else
-        X(rows,:) = obj.variables(v).buildEnsemble( inputs{:} ); %#ok<AGROW>
+    settings(v) = obj.variables(v).loadSettings(obj.dims{sets(v)});    
+    try
+        NaN([settings(v).siz, 1]);
+    catch
+        tooBigError(obj.variables(v).name);
     end
 end
 
-% Ensemble metadata
+% Initialize progress bars
+progress = cell(nVars, 1);
+step = ceil(nEns/100);
+for v = 1:nVars
+    message = sprintf('Building "%s":', obj.variables(v).name);
+    progress{v} = progressbar(showprogress, message, nEns, step);
+end
+
+% Either load the array directly or write to file
 meta = ensembleMetadata(obj);
-if writeFile
-    ens.metadata = meta;
-    ens.stateVector = obj;
+if isempty(ens)
+    X = obj.loadEnsemble(nEns, grids, sets, settings, progress);
+else
+    obj.writeEnsemble(nEns, grids, sets, settings, ens, progress);
+    X = [];
+    ens.metadata = meta.convertToPrimitives;
+    ens.stateVector = obj.convertToPrimitives;
 end
 
 end
 
-% Long error messages
+% Long error message
 function[] = notEnoughMembersError(varNames, overlap, nEns)
 if numel(varNames) == 1
     str1 = "non-overlapping";
@@ -154,8 +137,8 @@ end
 error(['Cannot find %.f %s ensemble members for %s. Consider using fewer ', ...
     'ensemble members %s.'], nEns, str1, str2, str3);
 end
-function[] = outputTooBigError()
-error(['The state vector ensemble is too large to fit in active memory, so ',...
-    'cannot be provided directly as output. Consider saving the ensemble ',...
-    'to a .ens file instead.']);
+function[] = tooBigError(name)
+error(['The "%s" variable has so many state elements that even a single ',...
+    'ensemble member cannot fit in memory. Consider reducing the size of ',...
+    '"%s".'], name, name);
 end

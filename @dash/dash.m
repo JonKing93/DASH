@@ -8,6 +8,7 @@ classdef dash
         [C, Ycov] = estimateCovariance(X, Y);
         dist = haversine(latlon1, latlon2);
         Y = gaspariCohn2D(X, R, scale);
+        closest = closestLatLon(coords, lats, lons);
         
         % Localization                
         [wloc, yloc] = localizationWeights(type, varargin);
@@ -53,6 +54,14 @@ classdef dash
         % Indices
         indices = checkIndices(indices, name, dimLength, dimName);
         indices = equallySpacedIndices(indices);
+    end
+    
+    % New stuff
+    methods (Static)
+        limits = buildLimits(nEls);
+        dims = commaDelimitedDims(dims);
+        meta = checkMetadataField(meta, dim);
+        tf = hasDuplicateRows(meta)
     end
     
 end

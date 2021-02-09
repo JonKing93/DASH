@@ -17,7 +17,6 @@ classdef ensemble
         file; % The .ens file associated with the object
         name; % The name of the ensemble object
         
-        has_nan; % Whether a variable has NaN in an ensemble member
         metadata; % Ensemble metadata object for the saved state vector ensemble
         stateVector; % The stateVector object used to build the ensemble
         
@@ -87,7 +86,6 @@ classdef ensemble
         obj = useVariables(obj, variables);
         varNames = variableNames(obj);
         s = info(obj);
-        nanMembers = hasnan(obj, varNames);
         obj = rename(obj, newName);
     end
 end

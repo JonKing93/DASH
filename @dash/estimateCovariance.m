@@ -27,7 +27,7 @@ assert(nEns==nEns2, 'Y and X must have the same number of columns');
 
 % Decompose
 [~, Xdev] = dash.decompose(X, 2);
-[~, Ydev] = dash.decompsoe(Y, 2);
+[~, Ydev] = dash.decompose(Y, 2);
 
 % Estimate covariances
 unbias = 1/(nEns-1);

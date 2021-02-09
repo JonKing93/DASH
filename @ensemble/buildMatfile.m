@@ -28,7 +28,7 @@ catch
 end
 
 % Ensure all fields are present
-required = ["X","hasnan","metadata","stateVector"];
+required = ["X","metadata","stateVector"];
 varNames = who(ens);
 if any(~ismember(required, varNames))
     bad = find(~ismember(required, varNames),1);

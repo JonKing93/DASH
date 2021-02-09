@@ -24,7 +24,7 @@ obj.update;
 % Error check
 dim = dash.assertStrFlag(dim, "dim");
 obj.checkAllowedDims(dim, true);
-meta = obj.checkMetadataField(meta, dim);
+meta = dash.checkMetadataField(meta, dim);
 
 % Get the old metadata
 oldMeta = obj.meta.(dim);
@@ -47,7 +47,7 @@ catch
 end
 
 % Check that the new metadata does not duplicate rows in the old metadata
-if gridfile.hasDuplicateRows(meta)
+if dash.hasDuplicateRows(meta)
     error('The new %s metadata duplicates rows in the existing %s metadata in .grid file %s.', dim, dim, obj.file);
 end
 

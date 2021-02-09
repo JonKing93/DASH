@@ -41,9 +41,9 @@ dash.assertPositiveIntegers(nAdd, 'nAdd');
 dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
 
 % Pre-build the gridfiles and data sources. Check for validity.
-[grids, sources, f] = obj.prebuildSources;
+grids = obj.prebuildSources;
 
 % Build the new portion of the ensemble
-[X, meta, obj] = obj.buildEnsemble(nAdd, grids, sources, f, [], showprogress);
+[X, meta, obj] = obj.buildEnsemble(nAdd, grids, [], showprogress);
 
 end

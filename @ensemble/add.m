@@ -35,20 +35,19 @@ dash.assertScalarType(showprogress, 'showprogress','logical','logical');
 % data sources
 ens = obj.buildMatfile(true);
 obj = obj.update(ens);
-[grids, sources, f] = obj.stateVector.prebuildSources;
+grids = obj.stateVector.prebuildSources;
 
 % Add to the ensemble
 [~, nPrevious] = size(ens, 'X');
 try
-    obj.stateVector.buildEnsemble(nAdd, grids, sources, f, ens, showprogress);
+    obj.stateVector.buildEnsemble(nAdd, grids, ens, showprogress);
     
 % Remove failed portions of the file if the write operation fails
 catch ME
     [~, nCols] = size(ens, 'X');
     ens.X(:,nPrevious+1:nCols) = [];
-    ens.hasnan(:,nPrevious+1:nCols) = [];
-    ens.meta = obj.metadata;
-    ens.stateVector = obj.sv;
+    ens.metadata = obj.metadata.convertToPrimitives;
+    ens.stateVector = obj.stateVector.convertToPrimitives;
     rethrow(ME);
 end
 

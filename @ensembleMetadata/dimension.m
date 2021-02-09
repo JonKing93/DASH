@@ -59,7 +59,7 @@ end
 
 % Throw error if none of the variables have the dimension
 if ~any(hasdim)
-    error('None of the variables in the state vector have a "%s" dimension.', dim);
+    error('"%s" is not a state dimension for any of the variables in the state vector.', dim);
 end
 
 % Try to concatenate the metadata values in the structure.

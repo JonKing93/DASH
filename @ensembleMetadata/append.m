@@ -1,5 +1,5 @@
 function[obj] = append(obj, meta2)
-%% Appends a the metadata for the variables of a second state vector
+%% Appends metadata for the variables of a second state vector
 % ensemble to the current ensemble metadata. (down the state vector)
 %
 % obj = obj.append(meta2)

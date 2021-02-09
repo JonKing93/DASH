@@ -28,7 +28,7 @@ function[kf] = prior(kf, X, whichPrior)
 % kf: The updated kalmanFilter object
 
 % Error check M and get the size
-[nState, nEns, nPrior] = kf.checkInput(X, 'X');
+[nState, nEns, nPrior] = kf.checkInput(X, 'X', true);
 
 % Check there are no size conflicts
 if ~isempty(kf.wloc) && nState~=kf.nState

@@ -31,7 +31,7 @@ for q = 1:numel(kf.Q)
     out.(name) = NaN(siz);
 end
 
-% Decompose ensembles and note observations sites
+% Decompose ensembles and note observation sites
 [Mmean, Mdev] = dash.decompose(kf.M, 2);
 [Ymean, Ydev] = dash.decompose(kf.Y, 2);
 sites = ~isnan(kf.D);
