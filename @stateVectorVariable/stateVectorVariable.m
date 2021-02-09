@@ -153,13 +153,8 @@ classdef stateVectorVariable
     methods
         obj = finalizeMean(obj);
         [settings] = loadSettings(obj, subDims);
-        [Xm, sources] = loadMember(obj, subMember, s, grid, sources);
-        svv = buildFromPrimitives(svv, varName, file, dims, vectors, cellArgs, indices);
-    end
-    
-    % new
-    methods
         [X, sources] = loadMembers(svv, subMembers, s, grid, sources, progress);
+        svv = buildFromPrimitives(svv, varName, file, dims, vectors, cellArgs, indices);
     end
 
 end

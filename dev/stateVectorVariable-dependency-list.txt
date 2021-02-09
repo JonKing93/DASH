@@ -64,8 +64,9 @@ rename
 finalizeMean
     checkDimensions
     addIndices
-loadMember
+loadMembers
     gridfile.repeatedLoad
+    progressbar.update
 buildFromPrimitives
     vectorFields
     cellFields

@@ -38,8 +38,7 @@ writeEnsemble
     loadVariables
 loadVariables
     variableLimits
-    stateVectorVariable.loadMember
-    progressbar.update
+    stateVectorVariable.loadMembers
 convertToPrimitives
     dash.commaDelimitedDims
     stateVectorVariable.vectorFields

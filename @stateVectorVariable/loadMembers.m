@@ -1,4 +1,25 @@
 function[X, sources] = loadMembers(obj, subMembers, s, grid, sources, progress)
+%% Loads ensemble members for a stateVectorVariable
+%
+% [X, sources] = obj.loadMembers(subMembers, s, grid, sources, progress)
+%
+% ----- Inputs -----
+%
+% subMember: The subscripted ensemble dimensions for the ensemble member
+%
+% s: A loadSettings structure
+%
+% grid: A gridfile object for the variable
+%
+% sources: A vector of dataSources for the variable
+%
+% progress: A progressbar object for the variable
+%
+% ----- Outputs -----
+%
+% X: The loaded ensemble members for the variable
+%
+% sources: The dataSources updated with any newly build dataSource objects
 
 % Get the index limits for the entire set of variables
 indices = s.indices;
