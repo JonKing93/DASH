@@ -40,9 +40,6 @@ elseif ~isempty(obj.Y) && nPrior~=obj.nPrior
 end
 
 % Default and error check whichPrior
-if ~exist('whichPrior','var') || isempty(whichPrior)
-    whichPrior = [];
-end
 whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');
 
 % Set values

@@ -23,15 +23,21 @@ if nIndex==1 && ~empty
     error(['You have provided a single %s, so you cannot use the "%s" input ',...
         'to specify time steps.'], indexName, name);
     
-% Otherwise, default or require whichArg
+% Use to define time if necessary
 elseif nIndex>1
-    if empty && (nIndex==obj.nTime || obj.nTime==0)
+    if obj.nTime==0 && empty
         obj.nTime = nIndex;
+    elseif obj.nTime==0
+        obj.nTime = numel(whichArg);
+    end
+    
+    % Use a default whichArg or require user input
+    if empty && nIndex==obj.nTime
         whichArg = 1:obj.nTime;
     elseif empty
         error(['The number of %ss (%.f) does not match the number of time steps ',...
-            '(%.f), so you must use the "%s" input to specify which ',...
-            '%s to use in each time step.'], indexName, nIndex, obj.nTime, name, indexName);
+        '(%.f), so you must use the "%s" input to specify which ',...
+        '%s to use in each time step.'], indexName, nIndex, obj.nTime, name, indexName);
     end
     
     % Error check

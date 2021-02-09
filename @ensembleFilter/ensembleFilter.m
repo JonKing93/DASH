@@ -2,7 +2,7 @@ classdef (Abstract) ensembleFilter
     %% Implements common utilities for ensemble-based data assimilation
     % filters (i.e. Kalman filters and particle filters)
     
-    properties        
+    properties (SetAccess = private)
         name;
         
         % Essential inputs
@@ -20,20 +20,9 @@ classdef (Abstract) ensembleFilter
         nTime = 0;
     end
     
-    % Constructor
-    methods
-        function[obj] = ensembleFilter(name)
-            % Default name
-            if ~exist('name','var') || isempty(name)
-                name = "";
-            end
-            obj = obj.rename(name);
-        end
-    end
-    
     % Basic inputs
     methods
-        obj = rename(name);
+        obj = rename(obj, name);
         obj = prior(obj, M, whichPrior);
         obj = observations(obj, D, R);
         obj = estimates(obj, Y);

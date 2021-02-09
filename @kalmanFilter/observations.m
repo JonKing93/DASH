@@ -20,55 +20,18 @@ function[kf] = observations(kf, D, R)
 %
 % kf: The updated kalmanFilter object
 
-% Error check D and R. Get sizes from D
-[nSite, nTime] = kf.checkInput(D, 'D', true, true);
-kf.checkInput(R, 'R', true, true);
-assert( ~any(R(:)<=0), 'R can only include positive values.')
+% Record current sizes. Do standard filter setup
+nSite = kf.nSite;
+nTime = kf.nTime;
+kf = observations@ensembleFilter(kf, D, R);
 
-% Check that the number of sites doesn't conflict with the estimates. Also
-% check the number of time steps doesn't conflict with an evolving prior.
-if ~isempty(kf.Y) && nSite~=kf.nSite
-    error(['You previously specified observation estimates for %.f sites, ',...
-        'but D has %.f sites (rows).'], kf.nSite, nSite);
-elseif ~isempty(kf.whichPrior) && nTime~=kf.nTime
-    error(['You previously specified an evolving prior for %.f time steps, ',...
-        'but D has %.f time steps (columns).'], kf.nTime, nTime);
-elseif (~isempty(kf.whichLoc)||~isempty(kf.whichCov)||~isempty(kf.whichFactor)) && nTime~=kf.nTime
+% Error check kalman filter settings
+if nTime~=kf.nTime && (~isempty(kf.whichLoc)||~isempty(kf.whichCov)||~isempty(kf.whichFactor))
     error(['You previously specified covariance options for %.f time steps, ',...
-        'but D has %.f time steps'], kf.nTime, nTime);
+        'but D has %.f time steps'], nTime, kf.nTime);
+elseif nSite~=kf.nSite && (~isempty(kf.Ycov)||~isempty(kf.yloc))
+    error(['You previously specified covariance options for %.f sites, ',...
+        'but D has %.f sites'], nSite, kf.nSite);
 end
-
-% Propagate R over D
-[nSite, nTime] = size(D);
-if isscalar(R)
-    R = repmat(R, [nSite, nTime]);
-elseif isrow(R)
-    R = repmat(R, [nSite, 1]);
-elseif iscolumn(R)
-    R = repmat(R, [1 nTime]);
-end
-
-% Check sizes match
-if size(R,1)~=nSite
-    error('The number of rows in R (%.f) does not match the number of rows of D (%.f).', size(R,1), nSite);
-elseif size(R,2)~=nTime
-    error('The number of columns in R (%.f) does not match the number of columns of D (%.f)', size(R,2), nTime);
-end
-
-% Require every observation to have an uncertainty.
-missing = ~isnan(D) & isnan(R);
-if any(missing, 'all')
-    nMissing = sum(missing, 'all');
-    [row, col] = find(missing, 1);
-    error(['There are %.f observations missing an associated uncertainty. ',...
-        'The first missing uncertainty is for site (row) %.f in time step (column) %.f.'],...
-        nMissing, row, col);
-end
-
-% Set values
-kf.D = D;
-kf.R = R;
-kf.nSite = nSite;
-kf.nTime = nTime;
 
 end
