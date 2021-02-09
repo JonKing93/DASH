@@ -24,7 +24,7 @@ assert(any(strcmpi(type, ["best","bayes"])), 'The weighting scheme must either b
 
 % Error check and set up "bayes" scheme
 if strcmpi(type, "bayes")
-    assert(nargin>2, 'The "bayes" weighting scheme does not use additional input arguments');
+    assert(nargin==2, 'The "bayes" weighting scheme does not use additional input arguments');
     pf.weightType = 0;
     pf.weightArgs = [];
 
