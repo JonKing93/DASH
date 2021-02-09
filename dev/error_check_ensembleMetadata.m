@@ -90,7 +90,7 @@ end
 fprintf('Found rows in full vector.\n');
 
 % Coordinates
-latlon = em.coordinates;
+latlon = em.latlon;
 
 lat1 = grid.meta.lat(grid.meta.lat>0);
 lat2 = grid.meta.lat(grid.meta.lat>30);
