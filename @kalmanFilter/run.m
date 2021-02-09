@@ -8,7 +8,7 @@ function[out] = run(kf)
 % output: A structure containing output calculations
 
 % Check for essential inputs and finalize whichArgs
-kf = kf.finalize('run a Kalman Filter');
+kf = kf.finalize;
 
 % Determine whether to update the deviations
 updateDevs = false;

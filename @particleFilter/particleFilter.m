@@ -1,19 +1,9 @@
-classdef particleFilter
+classdef particleFilter < ensembleFilter
+    %% Implements a particle filter
     
     properties
-        name;
-        M;
-        whichPrior;
-        D;
-        R;
-        Y;
-        
-        % Sizes
-        nState = 0;
-        nEns = 0;
-        nPrior = 0;
-        nSite = 0;
-        nTime = 0;
+        weightType; % A switch for the weighting type: 1. Bayes, 2. Best N average
+        weightArgs; % Arguments used to calculate weights
     end
     
     % Constructor
@@ -24,14 +14,17 @@ classdef particleFilter
     
     % User methods
     methods
-        prior;
-        observations;
-        estimates;
-        weightScheme;
+        out = run(pf);
+        pf = weighting(pf, type, N);
     end
        
-    % Object utilities
+    % Weights utilities
     methods
-    end 
+        w = weights(pf, sse);
+    end
+    methods (Static)
+        w = bayesWeights(sse);
+        w = bestWeights(sse, N);
+    end
     
 end

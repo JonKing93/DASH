@@ -124,7 +124,7 @@ classdef kalmanFilter < ensembleFilter
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
-        kf = finalize(kf, actionName);
+        kf = finalize(kf);
         [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end    
     
