@@ -80,12 +80,9 @@ end
 nVars = numel(obj.variables);
 settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields, [nVars, 1]);
 
-% Finalize each variable. Get load settings
+% Get load settings, and check that single ensemble members can fit in memory
 for v = 1:nVars
-    obj.variables(v) = obj.variables(v).finalizeMean;
-    settings(v) = obj.variables(v).loadSettings(obj.dims{sets(v)});
-    
-    % Check that single ensemble members can fit in memory
+    settings(v) = obj.variables(v).loadSettings(obj.dims{sets(v)});    
     try
         NaN([settings(v).siz, 1]);
     catch

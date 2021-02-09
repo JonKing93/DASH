@@ -1,16 +1,16 @@
 % Does an error check of the ensemble class
 grid = gridfile('tref-lme.grid');
-grid2 = gridfile('psl-lme.grid');
+grid2 = gridfile('slp-cesm.grid');
 allels = [4 19 28 37, 85, 200];
 els = [4 19 28 37, 85];
 
 sv = stateVector('test');
 sv = sv.add('T','tref-lme.grid');
 sv = sv.add('Tmean', 'tref-lme.grid');
-sv = sv.add('P','psl-lme.grid');
+sv = sv.add('P','slp-cesm.grid');
 sv = sv.design(["T","Tmean"], ["run","time","lat"], [false, false, true], {1, allels, grid.meta.lat>0});
 sv = sv.sequence("T", "time", [0 1 2], ["May";"June";"July"]);
-sv = sv.design("P", "coord", true, grid2.meta.coord(:,2)>30);
+sv = sv.design("P", "lat", true, grid2.meta.lat>30);
 sv = sv.mean('Tmean', ["lat","lon"]);
 
 file = 'myens.ens';
@@ -18,7 +18,6 @@ file = 'myens.ens';
 
 P = ncread('b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc','PSL');
 P = P(:,grid.meta.lat>30,els(1:5));
-P = reshape(P, [size(P,1)*size(P,2), size(P,3)]);
 
 % Load
 ens = ensemble(file);
@@ -71,6 +70,7 @@ ens = ens.useMembers(useEls);
 ens = ens.useVariables(useVars);
 
 [X, em2] = ens.load;
+P = reshape(P, [prod(size(P,[1 2])), size(P,3)]);
 if ~isequal(X, P(:,useEls))
     error('bad');
 end

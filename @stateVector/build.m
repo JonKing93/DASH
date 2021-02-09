@@ -92,6 +92,9 @@ for v = 1:nVars
     
     % Trim reference indices to only allow complete means and sequences.
     obj.variables(v) = obj.variables(v).trim;
+    
+    % Finalize any default mean settings
+    obj.variables(v) = obj.variables(v).finalizeMean;
 end
 
 % Pre-build gridfiles and data sources. Check that gridfiles are valid.

@@ -117,7 +117,7 @@ fprintf('Took mean.\n');
 sv = stateVector('test');
 sv = sv.add('T', 'tref-lme.grid');
 sv = sv.design('T', ["time","run","lat"], [false, false, true], {june, run5, nh});
-sv = sv.sequence('T',"time", [0 12 24], ["June","July","August"]);
+sv = sv.sequence('T',"time", [0 12 24], ["June","July","August"]');
 sv = sv.mean('T',["lat","lon","time"], {[],[],[0 1 2]});
 X = sv.build(15,false);
 
@@ -169,7 +169,7 @@ fprintf('Displayed info\n');
 
 % Autocouple
 sv = sv.autoCouple('T',false);
-sv = sv.add('T', 'tref-lme.grid');
+sv = sv.add('T2', 'tref-lme.grid');
 if ~isequal(sv.coupled, [true false;false true])
     error('bad');
 end

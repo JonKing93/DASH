@@ -22,7 +22,6 @@ buildEnsemble
     variableNames
     stateVectorVariable.removeOverlap
     dash.preallocateStructs
-    stateVectorVariable.finalizeMean
     stateVectorVariable.loadSettings
     progressbar.progressbar
     ensembleMetadata.ensembleMetadata
@@ -166,6 +165,7 @@ build
     dash.assertPositiveIntegers
     dash.assertScalarType
     stateVectorVariable.trim
+    stateVectorVariable.finalizeMean
     prebuildSources
     stateVectorVariable.dimMetadata
     dash.bothNaN

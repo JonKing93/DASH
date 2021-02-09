@@ -34,7 +34,7 @@ for k = 1:nSub
 end
 
 % Preallocate
-nState = prod(s.siz);
+nState = prod(obj.stateSize);
 X = NaN(nState, nEns);
 
 % Attempt to load all required data at once

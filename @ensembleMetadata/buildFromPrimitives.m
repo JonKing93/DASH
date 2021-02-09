@@ -53,8 +53,9 @@ for t = 1:numel(types)
         else
             data = s.(types{t})(whichArg(r,1):whichArg(r,2));
             nCols = whichArg(r,6);
-            nRows = numel(data)/nCols;
-            data = reshape(data, [nRows, nCols]);
+            nDepth = whichArg(r,7);
+            nRows = numel(data)/(nCols*nDepth);
+            data = reshape(data, [nRows, nCols, nDepth]);
             k = 3;
         end
         
@@ -63,6 +64,14 @@ for t = 1:numel(types)
         stateName = stateType(whichArg(r, k+2));
         meta.metadata.(varName).(stateName).(dimName) = data;
     end
+end
+
+% Order the metadata fields
+for v = 1:nVars
+    varName = meta.variableNames(v);
+    dims = meta.dims{v};
+    meta.metadata.(varName).state = orderfields(meta.metadata.(varName).state, dims);
+    meta.metadata.(varName).ensemble = orderfields(meta.metadata.(varName).ensemble, dims);
 end
 
 

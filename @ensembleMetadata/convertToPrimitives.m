@@ -50,7 +50,7 @@ for v = 1:nVars
             % Collect any organizing data. Convert the metadata to a column
             % vector
             whichName = sprintf('which_%s', type);
-            nCols = size(dimMeta, 2);
+            [nCols, nDepth] = size(dimMeta, [2 3]);
             dimMeta = dimMeta(:);
             
             % Initialize the structure fields if this is the first instance
@@ -71,7 +71,7 @@ for v = 1:nVars
                 s.(whichName) = [s.(whichName); v, d, t];
             else
                 s.(type) = [s.(type); dimMeta];
-                s.(whichName) = [s.(whichName); last+1, last+numel(dimMeta), v, d, t, nCols];
+                s.(whichName) = [s.(whichName); last+1, last+numel(dimMeta), v, d, t, nCols, nDepth];
             end
         end
     end

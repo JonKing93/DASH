@@ -23,6 +23,7 @@ function[X] = loadEnsemble(obj, nEns, grids, sets, settings, progress)
 
 % Load the variables into memory
 try
+    nVars = numel(obj.variables);
     nMembers = size(obj.subMembers{1},1);
     members = nMembers-nEns+1:nMembers;
     X = obj.loadVariables(1, nVars, members, grids, sets, settings, progress);

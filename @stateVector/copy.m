@@ -73,10 +73,19 @@ if copyDesigns
     obj = obj.design(varNames, var.dims, var.isState, var.indices);
 end
 
-% Sequences
+% Sequences - only select ensemble dimensions with a sequence because of
+% NaN metadata
 if copySequences
-    ens = ~var.isState;
-    obj = obj.sequence(varNames, var.dims(ens), var.seqIndices(ens), var.seqMetadata(ens));
+    ens = find(~var.isState);
+    for k = numel(ens):-1:1
+        d = ens(k);
+        if isnan(var.seqMetadata{d})
+            ens(k) = [];
+        end
+    end
+    if ~isempty(ens)
+        obj = obj.sequence(varNames, var.dims(ens), var.seqIndices(ens), var.seqMetadata(ens));
+    end        
 end
 
 % Means
