@@ -1,20 +1,19 @@
 % This does an error check of the ensembleMetadata class
 grid = gridfile('tref-lme.grid');
-grid2 = gridfile('psl-lme.grid');
+grid2 = gridfile('slp-cesm.grid');
 els = [4 19 28 37, 85];
 
 sv = stateVector('test');
 sv = sv.add('T','tref-lme.grid');
 sv = sv.add('Tmean', 'tref-lme.grid');
-sv = sv.add('P','psl-lme.grid');
+sv = sv.add('P','slp-cesm.grid');
 sv = sv.design(["T","Tmean"], ["run","time","lat"], [false, false, true], {1, els, grid.meta.lat>0});
 sv = sv.sequence("T", "time", [0 1 2], ["May";"June";"July"]);
-sv = sv.design("P", "coord", true, grid2.meta.coord(:,2)>30);
+sv = sv.design("P", "lat", true, grid2.meta.lat>30);
 sv = sv.mean('Tmean', ["lat","lon"]);
 
 P = ncread('b.e11.BLMTRC5CN.f19_g16.002.cam.h0.PSL.085001-184912.nc','PSL');
 P = P(:,grid.meta.lat>30,els(1:5));
-P = reshape(P, [size(P,1)*size(P,2), size(P,3)]);
 
 try
     [X, em, sv2] = sv.build(5, false);
@@ -65,7 +64,7 @@ if ~isequal(meta.lon, permute(grid.meta.lon, [3 2 1]))
 end
 fprintf('Regridded metadata\n');
 
-[V, meta] = em.regrid(X, "P", ["time","coord"]);
+[V, meta] = em.regrid(X, "P", ["time","lon","lat"]);
 if ~isequal(V, permute(P, [3 1 2]))
     error('bad');
 end
