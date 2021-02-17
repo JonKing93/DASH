@@ -18,7 +18,7 @@ function[obj] = psms(obj, F, R)
 
 % Error check the ensemble and psms
 assert(~isempty(obj.M), 'You must specify a prior before you provide PSMs');
-assert(~obj.hasEstimates, 'You cannot specify PSMs because you already provided estimates');
+assert(isempty(obj.Ye), 'You cannot specify PSMs because you already provided estimates');
 nState = size(obj.M, 1);
 F = PSM.checkPSMs(F, nState);
 

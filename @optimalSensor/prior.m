@@ -19,19 +19,19 @@ dash.assertRealDefined(X, 'X', true);
 
 % Size check
 [nState, nEns] = size(X);
-if nState~=obj.nState 
+if ~isempty(obj.metricType) && nState~=obj.nState 
     error(['You previously specified a test metric for a prior with %.f ',...
         'state vector elements (rows), but this prior has %.f rows'], obj.nState, nState);
-elseif nState~=obj.nState && obj.hasPSMs
+elseif obj.hasPSMs && nState~=obj.nState
     error(['You previously specified PSMs for a prior with %.f state vector ',...
         'elements (rows), but this prior has %.f rows.'], obj.nState, nState);
-elseif nEns~=obj.nEns && obj.hasEstimates
+elseif ~isempty(obj.Ye) && nEns~=obj.nEns
     error(['You previously specified estimates for a prior with %.f ensemble ',...
         'members (columns), but this prior has %.f columns.'], obj.nEns, nEns);
 end
 
 % Save
-obj.X = X;
+obj.M = X;
 obj.nState = nState;
 obj.nEns = nEns;
 

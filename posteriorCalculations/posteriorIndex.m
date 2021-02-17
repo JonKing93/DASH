@@ -21,7 +21,7 @@ classdef posteriorIndex < posteriorCalculation
         function[obj] = posteriorIndex(name, weights, rows)
             obj.name = name;
             obj.weights = weights;
-            obj.denom = sum(weights,1);
+            obj.denom = sum(weights);
             obj.rows = rows;
         end
         function[index] = calculate(obj, Adev, Amean)

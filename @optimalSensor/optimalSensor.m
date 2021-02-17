@@ -1,18 +1,28 @@
 classdef optimalSensor
     
     properties
+        name;
         M; % The prior ensemble
         F; % PSMs
         R; % Observation uncertainty
-        J; % The skill metric
         Ye; % The current estimates
         hasPSMs = false; % Whether using PSMs
-        hasEstimates = false; % Whether using direct estimates
+        metricType;
+        metricArgs;
+        
+        % Sizes
+        nState;
+        nEns;
+        nSite;
     end
     
     % Constructor
     methods
-        function obj = optimalSensor
+        function obj = optimalSensor(name)
+            if ~exist('name','var')||isempty(name)
+                name = "";
+            end
+            obj = obj.rename(name);
         end
     end
     
@@ -20,17 +30,19 @@ classdef optimalSensor
     methods
         obj = prior(obj, M);
         obj = psms(obj, F, R);
-        obj = metric(obj, type, varargin);
         obj = estimates(obj, Ye);
+        obj = metric(obj, type, varargin);
     end
     
     % Metrics
     methods
-        obj = weightedMean(obj, weights, rows, name);
+        obj = saveMeanArgs(obj, weights, rows);
+        J = meanMetric(obj, A);
     end
     
     % Object utilities
     methods
+        obj = rename(obj, name);
     end
     
 end
