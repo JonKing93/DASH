@@ -92,14 +92,14 @@ for s = 1:nSite
     % Get the values for each prior and run the PSM
     for p = 1:nPriors
         Xrun = Xpsm(:,:,p);
-        if nargout>1
+        if nargout>1 && F{s}.estimatesR
             [Yrun, Rrun] = F{s}.runPSM(Xrun);
         else
             Yrun = F{s}.runPSM(Xrun);
         end
 
         % Error check the R output
-        if nargout>1
+        if nargout>1 && F{s}.estimatesR
             name = sprintf('R values for %s for prior %.f', F{s}.messageName(s), p);
             dash.assertVectorTypeN(Rrun, 'numeric', nEns, name);
             if ~isrow(Rrun)
@@ -116,7 +116,7 @@ for s = 1:nSite
 
         % Save
         Ye(s,:,p) = Yrun;
-        if nargout>1
+        if nargout>1 && F{s}.estimatesR
             R(s,:,p) = Rrun;
         end
     end
