@@ -18,6 +18,8 @@ function[obj] = metric(obj, type, varargin)
 %
 % obj: The updated optimal sensor object
 
+% Note: This method is a switch that directs to appropriate metric methods
+
 % Error check the type
 dash.assertStrFlag(type, 'The first input');
 allowedTypes = "mean";

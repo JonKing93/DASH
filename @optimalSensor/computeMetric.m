@@ -4,6 +4,8 @@ function[J] = computeMetric(obj, X)
 %
 % J = obj.computeMetric(X)
 
+% Note: This method is intended as a switch to specific metric methods
+
 if strcmpi(obj.metricType, "mean")
     J = obj.meanMetric(X);
 end

@@ -26,6 +26,9 @@ dash.assertVectorTypeN(R, 'numeric', nSite, 'R');
 dash.assertRealDefined(R, 'R', true);
 assert(~any(R<=0), 'R can only include positive values');
 
+% Error check the PSMs
+F = PSM.setupEstimate(obj.X, F);
+
 % Save
 obj.F = F;
 obj.R = R;
