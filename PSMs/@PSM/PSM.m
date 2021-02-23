@@ -155,16 +155,20 @@ classdef (Abstract) PSM
         end
     end
     
+    % Download PSM repositories
     methods (Static)
-        % Estimate Y values for a set of PSMs
-        [Ye, R] = estimate(X, F)
-        
-        % Download the code for a PSM
         download(psmName, path);
-        
-        % Get the repository and commit information for a PSM
         [repo, commit] = githubLocation(psmName);
     end
+
+    % Estimate proxy values
+    methods (Static)
+        [Ye, R] = estimate(X, F);
+        setupEstimate(X, F);
+        [Ye, R] = computeEstimates(X, F);
+    end
+        
+        
     
     % Run individual PSM objects
     methods (Abstract)
