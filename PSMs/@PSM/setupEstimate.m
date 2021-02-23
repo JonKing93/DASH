@@ -1,4 +1,4 @@
-function[] = setupEstimate(X, F)
+function[F] = setupEstimate(X, F)
 %% Error checks an ensemble and PSMs before estimating proxies.
 %
 % PSM.checkEstimate(X, F)
