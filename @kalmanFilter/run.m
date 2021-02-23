@@ -80,7 +80,7 @@ for c = 1:nCov
             tu = t(updatePrior==pk);
             
             % Update the mean
-            Amean = Mmean(:,:,p);
+            Amean = repmat(Mmean(:,:,p), [1 numel(tu)]);
             if any(s)
                 Amean = Amean + K * (kf.D(s,tu) - Ymean(s,:,p));
             end
@@ -98,7 +98,7 @@ for c = 1:nCov
                 out.calibRatio(s,tu) = (kf.D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
             end
             
-            % Calculated quantities
+            % Calculated indices
             for q = 1:numel(kf.Q)
                 name = kf.Q{q}.outputName;
                 td = kf.Q{q}.timeDim;
