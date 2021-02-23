@@ -59,6 +59,7 @@ for c = 1:nCov
     
     % Get the sites, time steps, and priors associated with each gain
     for g = 1:nGains
+        g
         t = times(whichGain==g);
         s = sites(:, t(1));
         
@@ -78,14 +79,26 @@ for c = 1:nCov
             p = priors(pk);
             tu = t(updatePrior==pk);
             
-            % Update.
-            Amean = Mmean(:,:,p) + K * (kf.D(s,tu) - Ymean(s,:,p));
+            % Update the mean
+            Amean = Mmean(:,:,p);
+            if any(s)
+                Amean = Amean + K * (kf.D(s,tu) - Ymean(s,:,p));
+            end
+            
+            % Deviations
             if updateDevs
-                Adev = Mdev(:,:,p) - Ka * Ydev(s,:,p);
+                Adev = Mdev(:,:,p);
+                if any(s)
+                    Adev = Adev - Ka * Ydev(s,:,p);
+                end
+            end
+            
+            % Calibration ratio
+            if any(s)
+                out.calibRatio(s,tu) = (kf.D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
             end
             
             % Calculated quantities
-            out.calibRatio(s,tu) = (kf.D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
             for q = 1:numel(kf.Q)
                 name = kf.Q{q}.outputName;
                 td = kf.Q{q}.timeDim;
