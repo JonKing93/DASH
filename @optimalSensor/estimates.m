@@ -18,7 +18,7 @@ function[obj] = estimates(obj, Ye, R)
 % obj: The updated optimalSensor object
 
 % Check the function can be called
-assert(~isempty(obj.M), 'You must specify a prior before you can provide estimates');
+assert(~isempty(obj.X), 'You must specify a prior before you can provide estimates');
 assert(~obj.hasPSMs, 'You cannot provide estimates for this optimal sensor test because you already specified a set of PSMs.');
 
 % Error check
@@ -27,7 +27,7 @@ assert(ismatrix(Ye), 'Ye must be a matrix');
 dash.assertRealDefined(Ye, 'Ye');
 [nSite, nEns] = size(Ye);
 assert(nEns==obj.nEns, sprintf(['You previously specified a prior with %.f ',...
-    'ensemble members (columns), but Ye has %.f columns'], obj.nEns, nEns);
+    'ensemble members (columns), but Ye has %.f columns'], obj.nEns, nEns));
 
 dash.assertVectorTypeN(R, 'numeric', nSite, 'R');
 dash.assertRealDefined(R, 'R');

@@ -31,7 +31,7 @@ elseif ~isempty(obj.Ye) && nEns~=obj.nEns
 end
 
 % Save
-obj.M = X;
+obj.X = X;
 obj.nState = nState;
 obj.nEns = nEns;
 

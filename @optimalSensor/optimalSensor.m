@@ -2,7 +2,7 @@ classdef optimalSensor
     
     properties
         name;
-        M; % The prior ensemble
+        X; % The prior ensemble
         F; % PSMs
         R; % Observation uncertainty
         Ye; % The current estimates
@@ -36,8 +36,9 @@ classdef optimalSensor
     
     % Metrics
     methods
-        obj = saveMeanArgs(obj, weights, rows);
+        J = computeMetric(obj, X);
         J = meanMetric(obj, A);
+        obj = saveMeanArgs(obj, weights, rows);
     end
     
     % Object utilities
