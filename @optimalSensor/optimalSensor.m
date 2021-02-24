@@ -30,7 +30,7 @@ classdef optimalSensor
     methods
         obj = prior(obj, M);
         obj = psms(obj, F, R);
-        obj = estimates(obj, Ye);
+        obj = estimates(obj, Ye, R);
         obj = metric(obj, type, varargin);
     end
     

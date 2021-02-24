@@ -1,4 +1,4 @@
-function[out] = run(obj, N)
+function[bestSites, expVar] = run(obj, N)
 %% Runs an optimal sensor test for the best N sensors.
 %
 % out = obj.run(N)
@@ -20,8 +20,8 @@ dash.assertPositiveIntegers(N, 'N', false, false);
 assert(N<=obj.nSite, sprintf('N cannot be larger than the number of sensor sites (%.f)',obj.nSite));
 
 % Preallocate. Locate R values that need to be filled by PSMs
-bestSite = NaN(obj.nSite, 1);
-expVar = NaN(obj.nSite, 1);
+bestSites = NaN(N, 1);
+expVar = NaN(N, 1);
 fill = isnan(obj.R);
 
 % Initialize
@@ -53,7 +53,8 @@ for s = 1:N
     
     % Get the variance of the deviations and the metric
     Yvar = unbias * sum(Ydev.^2, 2);
-    Jdev = obj.computeMetric(X);
+    J = obj.computeMetric(X);
+    [~, Jdev] = dash.decompose(J);
     Jvar = unbias * sum(Jdev.^2, 2);
     
     % Get the relative change in variance caused by each sensor
@@ -65,7 +66,7 @@ for s = 1:N
     
     % Record the sensor and its explained variance
     expVar(s) = skill(best);
-    bestSite(s) = sites(best);
+    bestSites(s) = sites(best);
     
     % Extract the best site from the sensor array
     Ybest = Ydev(best,:);

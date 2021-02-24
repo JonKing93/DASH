@@ -37,6 +37,5 @@ assert(~any(R<=0), 'R can only include positive values');
 obj.Ye = Ye;
 obj.R = R;
 obj.nSite = nSite;
-obj.hasEstimates = true;
 
 end
