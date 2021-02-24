@@ -27,7 +27,7 @@ fill = isnan(obj.R);
 % Initialize
 R = obj.R;
 [Xmean, Xdev] = dash.decompose(obj.X);
-use = true(obj.nSite, 1);
+sites = 1:obj.nSite;
 
 if obj.hasPSMs
     Ye = NaN(obj.nSite, obj.nEns);
@@ -38,27 +38,17 @@ end
 % Unbiased estimator for statistical calculations
 unbias = 1/(obj.nEns-1);
 
-% If not using PSMs, get the deviations for the sites being tested
+% Get the updated ensemble for each new sensor
 for s = 1:N
-    if ~obj.hasPSMs
-        Ydev = Ydev(use,:);
-        
-    % Otherwise, generate estimate deviations using the PSMs
-    else
+    X = Xmean + Xdev;
+    
+    % If running PSMs, generate the new estimate deviations
+    if obj.hasPSMs
         X = Xmean + Xdev;
-        
-        k = use & fill;
-        [Ypsm, Rpsm] = PSM.computeEstimates(X, obj.F(k));
-        checkPSMOutput(Ypsm, Rpsm);
-        Ye(k,:) = Ypsm;
-        R(k) = Rpsm;
-        
-        k = use & ~fill;
-        Ypsm = PSM.computeEstimates(X, obj.F(k));
-        checkPSMOutput(Ypsm);
-        Ye(k,:) = Ypsm;
-        
-        [~, Ydev] = dash.decompose(Ye(use,:));
+        [Ye(fill,:), R(fill)] = PSM.computeEstimates(X, obj.F(fill));
+        Ye(~fill,:) = PSM.computeEstimates(X, obj.F(~fill));
+        checkPSMOutput;
+        [~, Ydev] = dash.decompose(Ye);
     end
     
     % Get the variance of the deviations and the metric
@@ -67,11 +57,9 @@ for s = 1:N
     Jvar = unbias * sum(Jdev.^2, 2);
     
     % Get the relative change in variance caused by each sensor
-    Rs = R(use);
-    skill = (1/Jvar) * (unbias .* Ydev * Jdev') ./ (Yvar + Rs);
+    skill = (1/Jvar) * (unbias .* Ydev * Jdev') ./ (Yvar + R);
     
     % The optimal sensor maximizes the change in variance
-    sites = find(use);
     maxSkill = max(skill);
     best = find(skill==maxSkill, 1);
     
@@ -79,25 +67,32 @@ for s = 1:N
     expVar(s) = skill(best);
     bestSite(s) = sites(best);
     
-    % Get the Kalman gain for the optimal sensor
-    Ybest = Ydev(best, :);
-    Rbest = Rs(best);
+    % Extract the best site from the sensor array
+    Ybest = Ydev(best,:);
+    Rbest = R(best);
     
+    sites(best) = [];
+    Ydev(best,:) = [];
+    fill(best) = [];
+    R(best) = [];
+    if obj.hasPSMs
+        Ye(best,:) = [];
+        obj.F(best) = [];
+    end
+    
+    % Update the ensemble deviations using the best site
     Knum = unbias .* (Xdev * Ybest');
     Kdenom = unbias .* (Ybest * Ybest') + Rbest;
     K = Knum / Kdenom;
-    a = 1 / (1 + sqrt(Rbest/Kdenom));
-    
-    % Update the ensemble deviations and sensor array.
+    a = 1 / (1+sqrt(Rbest/Kdenom));
     Xdev = Xdev - a * K * Ybest;
-    use(sites(best)) = false;
     
-    % Update the estimates if not using PSMs
+    % Update the estimate deviations if not using PSMs
     if ~obj.hasPSMs
         Knum = unbias .* (Ydev * Ybest');
         K = Knum / Kdenom;
         Ydev = Ydev - a * K * Ybest;
-    end 
+    end
 end
 
 end
