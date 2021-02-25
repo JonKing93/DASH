@@ -57,16 +57,15 @@ for s = 1:N
     [~, Jdev] = dash.decompose(J);
     Jvar = unbias * sum(Jdev.^2, 2);
     
-    % Get the relative change in variance caused by each sensor
-    skill = (1/Jvar) * (unbias .* Ydev * Jdev') ./ (Yvar + R);
-    
-    % The optimal sensor maximizes the change in variance
-    maxSkill = max(skill);
-    best = find(skill==maxSkill, 1);
+    % Get the relative change in variance caused by each sensor. The
+    % optimal sensor maximizes the change in variance
+    deltaVar = (unbias * Ydev * Jdev).^2 ./ (Yvar + R);
+    maxSkill = max(deltaVar);
+    best = find(deltaVar==maxSkill, 1);
     
     % Record the sensor and its explained variance
-    expVar(s) = skill(best);
     bestSites(s) = sites(best);
+    expVar(s) = maxSkill/Jvar;
     
     % Extract the best site from the sensor array
     Ybest = Ydev(best,:);
