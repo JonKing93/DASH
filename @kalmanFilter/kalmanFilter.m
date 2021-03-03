@@ -97,7 +97,7 @@ classdef kalmanFilter < ensembleFilter
     methods
         kf = prior(kf, M, whichPrior);
         kf = observations(kf, D, R);
-        out = run(kf);
+        out = run(kf, showprogress);
     end
 
     % User output options

@@ -1,11 +1,25 @@
-function[out] = run(kf)
+function[out] = run(kf, showprogress)
 %% Runs a Kalman Filter using an ensemble square root implementation
 %
 % output = kf.run
+% Runs the Kalman Filter
+%
+% output = kf.run(showprogress)
+% Specify whether to display a progress bar for the Kalman Filter.
+%
+% ----- Inputs -----
+%
+% showprogress: A scalar logical indicating whether to display a progress
+%    bar (true), or not (false). By default, no progress bar is shown.
 %
 % ----- Outputs -----
 %
 % output: A structure containing output calculations
+
+% Default progress bar
+if ~exist('showprogress','var') || isempty(showprogress)
+    showprogress = false;
+end
 
 % Check for essential inputs and finalize whichArgs
 kf = kf.finalize;
@@ -34,7 +48,11 @@ end
 % Decompose ensembles and note observation sites
 [Mmean, Mdev] = dash.decompose(kf.M, 2);
 [Ymean, Ydev] = dash.decompose(kf.Y, 2);
+
+% Note observations sites and use placeholder R for no observation
 sites = ~isnan(kf.D);
+R = kf.R;
+R(~sites) = 0;
 
 % Get the covariance settings for each time step. Find the unique
 % covariances and the time steps associated with each
@@ -45,22 +63,24 @@ end
 [covSettings, ~, whichCov] = unique(covSettings, 'rows');
 nCov = size(covSettings, 1);
 
-% Make each covariance estimate. Get its associated time steps
+% Get all unique Kalman Gains
+gains = [sites; R; whichCov']';
+[gains, ~, whichGain] = unique(gains, 'rows');
+nGains = size(gains, 1);
+
+% Initialize progress bar
+progress = progressbar(showprogress, 'Running Kalman Filter', nGains, ceil(nGains/100));
+
+% Make each covariance estimate. Get its associated time steps, priors, and gains
 for c = 1:nCov
     times = find(whichCov==c);
     p = kf.whichPrior(times(1));
+    covGains = find(gains(:,end)==c);
     [Knum, Ycov] = kf.estimateCovariance(times(1), Mdev(:,:,p), Ydev(:,:,p));
     
-    % Find the time steps that have the same observation sites and R
-    % values. (These will have the same Kalman Gain)
-    gains = [sites(:,times); kf.R(:,times)]';
-    [gains, ~, whichGain] = unique(gains, 'rows');
-    nGains = size(gains,1);
-    
     % Get the sites, time steps, and priors associated with each gain
-    for g = 1:nGains
-        g
-        t = times(whichGain==g);
+    for g = 1:numel(covGains)
+        t = times(whichGain == covGains(g));
         s = sites(:, t(1));
         
         % Kalman Gain and adjusted Gain
@@ -116,6 +136,9 @@ for c = 1:nCov
                 out.Adev(:, :, tu) = Adev;
             end
         end
+        
+        % Update the progress bar
+        progress.update;
     end
 end
 
