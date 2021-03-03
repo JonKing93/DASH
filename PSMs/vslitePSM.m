@@ -54,7 +54,7 @@ classdef vslitePSM < PSM
         function[Y] = runPSM(obj, X)
             
             T = X(1:12, :);
-            P = X(1:12, :);
+            P = X(13:24, :);
             
             Y = obj.run(obj.phi, obj.T1, obj.T2, obj.M1, obj.M2, T, P, obj.options{:});
         end
