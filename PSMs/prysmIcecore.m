@@ -23,15 +23,12 @@ classdef prysmIcecore < PSM
     methods
         function[obj] = prysmIcecore(row, altitudeDifference, name)
             
-            % Name, R estimation
+            % Name, R estimation, rows
             if ~exist('name','var')
                 name = "";
             end
             obj@PSM(name, false);
-            
-            % Error check rows
-            obj.useRows(row);
-            assert(isscalar(row), 'row must be scalar');
+            obj.useRows(row, 1);
             
             % Error check, set model inputs
             if exist('altitudeDifference','var') || isempty(altitudeDifference)

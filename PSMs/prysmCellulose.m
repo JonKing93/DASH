@@ -36,15 +36,12 @@ classdef prysmCellulose < PSM
     methods
         function[obj] = prysmCellulose(rows, d18Os, d18Op, d18Ov, model, useIsotopes, name)
             
-            % Name, R estimation
+            % Name, R estimation, rows
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, false);
-            
-            % Error check rows
-            obj.useRows(rows);
-            assert(numel(rows)==3, 'rows must have 3 elements');
+            obj@PSM(name, false);            
+            obj.useRows(rows, 3);
             
             % Model inputs
             dash.assertScalarType(d18Os, 'd18Os', 'numeric', 'numeric');

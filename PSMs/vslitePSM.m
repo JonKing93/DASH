@@ -40,7 +40,7 @@ classdef vslitePSM < PSM
                 name = "";
             end
             obj@PSM(name, false);
-            obj = obj.useRows(rows);
+            obj = obj.useRows(rows, 24);
             
             obj.phi = phi;
             obj.T1 = T1;

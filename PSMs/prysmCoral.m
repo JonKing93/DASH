@@ -34,15 +34,12 @@ classdef prysmCoral < PSM
     methods
         function[obj] = prysmCoral(rows, useSSS, lat, lon, species, bcoeffs, name)
             
-            % Name, R estimation
+            % Name, R estimation, rows
             if ~exist('name', 'var')
                 name = "";
             end
-            obj@PSM(name, false);
-            
-            % Error check rows
-            obj.useRows(rows);
-            assert(numel(rows)==2, 'rows must have 2 elements');
+            obj@PSM(name, false);            
+            obj.useRows(rows, 2);
             
             % Model inputs
             dash.assertScalarType(useSSS, 'useSSS', 'logical', 'logical');

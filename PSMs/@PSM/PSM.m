@@ -105,7 +105,7 @@ classdef (Abstract) PSM
         end
                 
         % Set the rows
-        function[obj] = useRows(obj, rows)
+        function[obj] = useRows(obj, rows, nRows)
             %% Specifies the state vector rows used by a PSM
             %
             % obj = obj.useRows(rows)
@@ -114,6 +114,9 @@ classdef (Abstract) PSM
             %
             % rows: The rows used by the PSM. A vector of positive integers.
             %
+            % nRows: The number of rows required by the PSM. A scalar
+            %    positive integer.
+            %
             % ----- Outputs -----
             %
             % obj: The updated PSM object
@@ -121,6 +124,9 @@ classdef (Abstract) PSM
             % Error check
             assert(isvector(rows), 'rows must be a vector');
             assert(islogical(rows) || isnumeric(rows), 'rows must be numeric or logical');
+            if ~isnan(nRows)
+                assert(numel(rows)==nRows, sprintf('rows must have %.f elements', nRows));
+            end
             
             % Error check numeric indices
             if isnumeric(rows)

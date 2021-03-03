@@ -27,15 +27,12 @@ classdef prysmSpeleothem < PSM
     methods
         function[obj] = prysmSpeleothem(rows, timeStep, model, tau0, Pe, name)
             
-            % Name, R estimation
+            % Name, R estimation, rows
             if ~exist('name','var')
                 name = "";
             end
             obj@PSM(name, false);
-            
-            % Error check rows
-            obj.useRows(rows);
-            assert(numel(rows)==2, 'rows for a prysmSpeleothm must have two elements. The first for d18O, and the second for temperature');
+            obj.useRows(rows, 2);
             
             % Error check and set model inputs
             assert(isscalar(timeStep) && timeStep>0, 'timeStep must be a positive scalar');

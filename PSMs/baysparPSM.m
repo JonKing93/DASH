@@ -48,15 +48,12 @@ classdef baysparPSM < PSM
             %
             % obj: The new baysparPSM object
             
-            % Set the name and estimatesR
+            % Set the name, rows, and estimatesR
             if ~exist('name','var')
                 name = "";
             end
             obj@PSM(name, true);
-            
-            % Check and set row
-            assert(isscalar(row), 'row must be a scalar');
-            obj = obj.useRows(row);
+            obj = obj.useRows(row,1);
             
             % Error check the PSM inputs.
             if ~exist('options','var') || isempty(options)

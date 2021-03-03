@@ -31,15 +31,12 @@ classdef baysplinePSM < PSM
             %
             % obj: The new baysplinePSM object
         
-            % Set name, estimatesR
+            % Set name, estimatesR, row
             if ~exist('name','var')
                 name = "";
             end            
             obj@PSM(name, true);
-            
-            % Check and set rows
-            assert(isscalar(row), 'row must be a scalar');
-            obj = obj.useRows(row);
+            obj = obj.useRows(row, 1);
         
         end
         
