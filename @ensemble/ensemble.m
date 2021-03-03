@@ -57,9 +57,9 @@ classdef ensemble
             obj.file = dash.checkFileExists(filename);
             obj = obj.update;
             
-            % Members and variables are unspecified.
-            obj.members = [];
-            obj.variables = [];
+            % Use all members and variables by default
+            obj.members = 1:obj.metadata.nEns;
+            obj.variables = obj.metadata.variableNames;
 
             % Update name (error checking via ensembleMetadata)
             if exist('name','var')
