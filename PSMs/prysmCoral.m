@@ -76,3 +76,6 @@ classdef prysmCoral < PSM
             end
             d18O = obj.run(SST, SSS, d18O, obj.lat, obj.lon, obj.species, obj.b1, obj.b2, obj.b3, obj.b4, obj.b5);
         end
+    end
+    
+end
