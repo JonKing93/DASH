@@ -3,11 +3,14 @@ function[out] = run(pf)
 
 % Check for essential inputs. Set defaults
 pf = pf.finalize('run a particle filter');
+update = ~isempty(pf.M);
 
 % Preallocate
 out = struct();
-out.A = NaN(pf.nState, pf.nTime);
 out.weights = NaN(pf.nSite, pf.nTime);
+if update
+    out.A = NaN(pf.nState, pf.nTime);
+end
 
 % Permute for singleton expansion
 D = permute(pf.D, [1 3 2]);
@@ -18,14 +21,17 @@ for p = 1:pf.nPrior
     Y = pf.Y(:,:,p);
     t = pf.whichPrior==p;
 
-    % Get the sum of squared errors for each ensemble member
+    % Get the sum of squared errors for each ensemble member. Use to
+    % compute particle filter weights
     sse = nansum( (1./R).*(D - Y).^2, 1);
     sse = squeeze(sse);
-    
-    % Compute particle weights and update the prior
     w = pf.weights(sse);
-    out.A(:,t) = pf.M(:,:,p) * w;
     out.weights(:,t) = w;
+    
+    % Update the prior
+    if update
+        out.A(:,t) = pf.M(:,:,p) * w;
+    end
 end
 
 end
