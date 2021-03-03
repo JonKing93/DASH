@@ -106,7 +106,7 @@ classdef kalmanFilter < ensembleFilter
         kf = deviations(kf, tf);
         kf = percentiles(kf, percs);
         kf = variance(kf, tf);
-        kf = index(kf, name, weights, rows);
+        kf = index(kf, name, weights, rows, nanflag);
     end
     
     % User covariance methods

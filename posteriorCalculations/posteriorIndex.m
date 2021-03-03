@@ -10,26 +10,39 @@ classdef posteriorIndex < posteriorCalculation
     
     properties (SetAccess = private)
         weights;
-        denom;
         rows;
+        nanflag;
     end
     
     methods
         function[siz] = outputSize(~, ~, nTime, nEns)
             siz = [nEns, nTime];
         end
-        function[obj] = posteriorIndex(name, weights, rows)
+        function[obj] = posteriorIndex(name, weights, rows, nanflag)
             obj.name = name;
             obj.weights = weights;
-            obj.denom = sum(weights);
             obj.rows = rows;
+            obj.nanflag = nanflag;
         end
         function[index] = calculate(obj, Adev, Amean)
+            
+            % Extract the relevant data
             Amean = Amean(obj.rows,:);
             Adev = Adev(obj.rows,:);
             
-            devsum = sum(obj.weights .* Adev, 1) ./ obj.denom;
-            meansum = sum(obj.weights .* Amean, 1) ./ obj.denom;
+            % Exclude NaN values
+            nans = isnan(obj.weights);
+            Amean(nans,:) = NaN;
+            Adev(nans, :) = NaN;
+            
+            % Get the denominator after accounting for NaN
+            w = obj.weights;
+            w(isnan(Amean(:,1))) = NaN;
+            denom = sum(w, 'omitnan');
+            
+            % Get the index
+            devsum = sum(obj.weights.*Adev, 1, obj.nanflag) ./ denom;
+            meansum = sum(obj.weights.*Amean, 1, obj.nanflag) ./ denom;
             index = devsum' + meansum;
         end
         function[name] = outputName(obj)
