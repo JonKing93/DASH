@@ -28,10 +28,7 @@ dash.assertRealDefined(Ye, 'Ye');
 [nSite, nEns] = size(Ye);
 assert(nEns==obj.nEns, sprintf(['You previously specified a prior with %.f ',...
     'ensemble members (columns), but Ye has %.f columns'], obj.nEns, nEns));
-
-dash.assertVectorTypeN(R, 'numeric', nSite, 'R');
-dash.assertRealDefined(R, 'R');
-assert(~any(R<=0), 'R can only include positive values');
+obj.checkR(R, nSite);
 
 % Save
 obj.Ye = Ye;

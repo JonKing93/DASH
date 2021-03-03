@@ -45,6 +45,9 @@ classdef optimalSensor
     methods
         obj = rename(obj, name);
     end
-    
+    methods (Static)
+        checkR(R, nSite);
+    end
+
 end
         

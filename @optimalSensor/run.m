@@ -29,9 +29,7 @@ R = obj.R;
 [Xmean, Xdev] = dash.decompose(obj.X);
 sites = 1:obj.nSite;
 
-if obj.hasPSMs
-    Ye = NaN(obj.nSite, obj.nEns);
-else
+if ~obj.hasPSMs
     [~, Ydev] = dash.decompose(obj.Ye);
 end
 
@@ -45,8 +43,7 @@ for s = 1:N
     % If running PSMs, generate the new estimate deviations
     if obj.hasPSMs
         X = Xmean + Xdev;
-        [Ye(fill,:), R(fill)] = PSM.computeEstimates(X, obj.F(fill));
-        Ye(~fill,:) = PSM.computeEstimates(X, obj.F(~fill));
+        Ye = PSM.computeEstimates(X, obj.F);
         checkPSMOutput;
         [~, Ydev] = dash.decompose(Ye);
     end
@@ -76,7 +73,6 @@ for s = 1:N
     fill(best) = [];
     R(best) = [];
     if obj.hasPSMs
-        Ye(best,:) = [];
         obj.F(best) = [];
     end
     

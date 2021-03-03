@@ -9,8 +9,7 @@ function[obj] = psms(obj, F, R)
 %    vector whose elements are PSM objects.
 %
 % R: Observation uncertainty for each PSM. A numeric vector with one
-%    element per PSM. If an element of R is NaN, the optimal sensor will
-%    attempt to determine uncertainty using the PSM.
+%    element per PSM. Cannot include NaN, Inf, or complex values.
 %
 % ----- Outputs -----
 %
@@ -20,13 +19,9 @@ function[obj] = psms(obj, F, R)
 assert(~isempty(obj.X), 'You must specify a prior before you provide PSMs');
 assert(isempty(obj.Ye), 'You cannot specify PSMs because you already provided estimates');
 
-% Error check the uncertainties
+% Error check the uncertainties and PSMs
 nSite = numel(F);
-dash.assertVectorTypeN(R, 'numeric', nSite, 'R');
-dash.assertRealDefined(R, 'R', true);
-assert(~any(R<=0), 'R can only include positive values');
-
-% Error check the PSMs
+obj.checkR(R, nSite);
 F = PSM.setupEstimate(obj.X, F);
 
 % Save
