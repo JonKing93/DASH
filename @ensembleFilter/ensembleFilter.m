@@ -13,6 +13,7 @@ classdef (Abstract) ensembleFilter
         whichPrior;
         D;
         R;
+        Rvar; % Whether R is variance or covariance
         Y;
         
         % Sizes
