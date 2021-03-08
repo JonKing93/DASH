@@ -1,4 +1,4 @@
-function[kf] = observations(kf, D, R)
+function[kf] = observations(kf, D, R, isCovariance)
 %% Specify the observations and observation uncertainty for a Kalman Filter
 %
 % kf = kf.observations(D, R)
@@ -23,7 +23,7 @@ function[kf] = observations(kf, D, R)
 % Record current sizes. Do standard filter setup
 nSite = kf.nSite;
 nTime = kf.nTime;
-kf = observations@ensembleFilter(kf, D, R);
+kf = observations@ensembleFilter(kf, D, R, isCovariance);
 
 % Error check kalman filter settings
 if nTime~=kf.nTime && (~isempty(kf.whichLoc)||~isempty(kf.whichCov)||~isempty(kf.whichFactor))
