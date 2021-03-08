@@ -64,8 +64,11 @@ end
 nCov = size(covSettings, 1);
 
 % Get all unique Kalman Gains
-gains = [sites; R; whichCov']';
-[gains, ~, whichGain] = unique(gains, 'rows');
+if ~kf.Rcov
+    gains = [sites; R; whichCov']';
+else
+    gains = [sites; reshape(kf.R, [], kf.nTime); whichCov'];
+end
 nGains = size(gains, 1);
 
 % Initialize progress bar
@@ -83,8 +86,14 @@ for c = 1:nCov
         t = times(whichGain == covGains(g));
         s = sites(:, t(1));
         
+        % Get the R covariance. Build from variances if necessary
+        if kf.Rcov
+            Rk = kf.R(s, s, t(1));
+        else
+            Rk = diag( kf.R(s, t(1)) );
+        end
+        
         % Kalman Gain and adjusted Gain
-        Rk = diag( kf.R(s,t(1)) );
         Kdenom = Ycov(s,s) + Rk;
         K = Knum(:,s) / Kdenom;
         if updateDevs

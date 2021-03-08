@@ -13,7 +13,7 @@ classdef (Abstract) ensembleFilter
         whichPrior;
         D;
         R;
-        Rvar; % Whether R is variance or covariance
+        Rcov; % Whether R is variance or covariance
         Y;
         
         % Sizes
@@ -30,11 +30,6 @@ classdef (Abstract) ensembleFilter
         obj = prior(obj, M, whichPrior);
         obj = observations(obj, D, R);
         obj = estimates(obj, Y);
-    end
-    
-    % Interface to run
-    methods (Abstract)
-        out = run(obj);
     end
     
     % Utilities

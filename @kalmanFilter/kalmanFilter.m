@@ -96,7 +96,7 @@ classdef kalmanFilter < ensembleFilter
     % ensembleFilter methods
     methods
         kf = prior(kf, M, whichPrior);
-        kf = observations(kf, D, R);
+        kf = observations(kf, D, R, isCovariance);
         out = run(kf, showprogress);
     end
 
