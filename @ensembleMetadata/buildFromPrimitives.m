@@ -59,7 +59,8 @@ for t = 1:numel(types)
             k = 3;
         end
         
-        varName = meta.variableNames(whichArg(r,k));
+        v = whichArg(r,k);
+        varName = meta.variableNames(v);
         dimName = meta.dims{v}(whichArg(r,k+1));
         stateName = stateType(whichArg(r, k+2));
         meta.metadata.(varName).(stateName).(dimName) = data;
