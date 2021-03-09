@@ -10,13 +10,13 @@ function[obj] = prior(obj, X, whichPrior)
 %
 % ----- Inputs -----
 %
-% M: A static offline or evolving offline prior. A numeric array that
+% X: A static offline or evolving offline prior. A numeric array that
 %    cannot contain Inf or complex values.
 %
-%    Static: M is a matrix (nState x nEns) and will be used as the
+%    Static: X is a matrix (nState x nEns) and will be used as the
 %       prior in each time step.
 %
-%    Evolving: M is an array (nState x nEns x nPrior). If you do
+%    Evolving: X is an array (nState x nEns x nPrior). If you do
 %    not provide a second input, must have one prior per time step.
 %
 % whichPrior: A vector with one element per time step. Each element
@@ -27,29 +27,29 @@ function[obj] = prior(obj, X, whichPrior)
 %
 % obj: The updated ensembleFilter object
 
+% Default whichPrior
+if ~exist('whichPrior','var') || isempty(whichPrior)
+    whichPrior = [];
+end
+
 % Error check M and get the size
 [nState, nEns, nPrior] = obj.checkInput(X, 'X', true);
 
-% Check there are no size conflicts
-if ~isempty(obj.Y) && nEns~=obj.nEns
-    error(['You previously specified Y estimates with %.f ensemble members, ',...
-        'but X has %.f ensemble members (columns).'], obj.nEns, nEns);
-elseif ~isempty(obj.Y) && nPrior~=obj.nPrior
-    error(['You previously specified Y estimates for %.f priors, but X has ',...
-        '%.f priors (elements along dimension 3).'], obj.nPrior, nPrior);
-end
+% Check for size conflicts
+assert(isempty(obj.Ye) || nEns==obj.nEns, sprintf('You previously specified observation estimates for %.f ensemble members, but X has %.f ensemble members (columns)', obj.nEns, nEns);
+assert(isempty(obj.Ye) || nPrior==obj.nPrior, sprintf('You previously specified observation estimates for %.f priors, but X has %.f priors (elements along dimension 3)', obj.nPrior, nPrior);
 
-% Default and error check whichPrior
+% Parse and error check whichPrior
 whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');
 
 % Set values
-obj.M = X;
-obj.whichPrior = whichPrior;
 obj.nState = nState;
 obj.nEns = nEns;
 obj.nPrior = nPrior;
 if ~isempty(whichPrior)
     obj.nTime = numel(whichPrior);
 end
+obj.X = X;
+obj.whichPrior = whichPrior;
 
 end

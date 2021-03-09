@@ -11,10 +11,11 @@ classdef (Abstract) ensembleFilter
         % Essential inputs
         M;
         whichPrior;
-        D;
+        Y;
         R;
         Rcov; % Whether R is variance or covariance
-        Y;
+        whichRcov; % Which R covariance to use in each time step
+        Ye;
         
         % Sizes
         nState = 0;
@@ -22,14 +23,16 @@ classdef (Abstract) ensembleFilter
         nPrior = 0;
         nSite = 0;
         nTime = 0;
+        nRcov = 0;
     end
     
     % Basic inputs
     methods
         obj = rename(obj, name);
+        obj = observations(obj, Y);
+        obj = uncertainties(obj, R, isCov, whichCov);
         obj = prior(obj, M, whichPrior);
-        obj = observations(obj, D, R);
-        obj = estimates(obj, Y);
+        obj = estimates(obj, Ye);
     end
     
     % Utilities

@@ -1,4 +1,4 @@
-function[obj] = estimates(obj, Y)
+function[obj] = estimates(obj, Ye)
 %% Specify the model estimates of the observations/proxies for a filter
 %
 % obj = obj.estimates(Y)
@@ -12,26 +12,19 @@ function[obj] = estimates(obj, Y)
 %
 % obj: The updated ensembleFilter object
 
-% Error check Y and get the size
-[nSite, nEns, nPrior] = obj.checkInput(Y, 'Y');
+% Require observations and a prior
+assert(~isempty(obj.Y), 'You must provide observations before you specify observation estimates');
+assert(~isempty(obj.X), 'You must provide a prior before you specify observation estimates');
+
+% Error check and get the size
+[nSite, nEns, nPrior] = obj.checkInput(Ye, 'Ye');
 
 % Check for size conflicts
-if ~isempty(obj.D) && nSite~=obj.nSite
-    error(['You previously specified observations at %.f sites, but Y includes ',...
-        'estimates for %.f sites (rows)'], obj.nSite, nSite);
-elseif ~isempty(obj.M) && nEns~=obj.nEns
-    error(['You previously specified priors with %.f ensemble members, but Y ',...
-        'includes estimates for %.f ensemble members (columns).'], obj.nEns, nEns);
-elseif ~isempty(obj.M) && nPrior~=obj.nPrior
-    error(['You previously specified %.f prior(s), but Y includes estimates ',...
-        'for %.f prior(s) (the length of dimension 3)'], obj.nPrior, nPrior);
-end
+assert(isempty(obj.Y)||nSite==obj.nSite, sprintf('You previously specified observations for %.f sites, but Ye has %.f sites (rows)', obj.nSite, nSite));
+assert(isempty(obj.X)||nEns==obj.nEns, sprintf('You previously specified a prior with %.f ensemble members, but Ye has %.f ensemble members (columns', obj.nEns, nEns));
+assert(isempty(obj.X)||nPrior==obj.nPrior, sprintf('You previously specified %.f priors, but Ye has %.f priors', obj.nPrior, nPrior));
 
 % Set values
-obj.Y = Y;
-obj.nSite = nSite;
-obj.nEns = nEns;
-obj.nPrior = nPrior;
+obj.Ye = Ye;
 
 end
-    
