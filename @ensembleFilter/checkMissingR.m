@@ -1,4 +1,4 @@
-function[] = checkMissingR
+function[] = checkMissingR(obj)
 
 % R covariances
 if obj.Rcov
@@ -8,13 +8,14 @@ if obj.Rcov
     end
     
     % Check for missing covariance
-    for t = 1:obj.nTime
-        missing = isnan(obj.Y(:,t));
-        r = whichRcov(t);
-        
-        Rt = obj.R(~missing, ~missing, r);
-        [row, col] = find(isnan(Rt), 1);
-        assert(isempty(row), sprintf('You must specify an R covariance between sites %.f and %.f in time step %.f', row, col, t));
+    for c = 1:obj.nRcov
+        time = find(whichRcov==c);
+        [site1, site2] = find( isnan(obj.R(:,:,c)) );
+        for k = 1:numel(time)
+            t = time(k);
+            missing = find( ~isnan(obj.Y(site1,t)) & ~isnan(obj.Y(site2,t)), 1 );
+            assert(isempty(missing), sprintf('You must specify an R covariance between site %.f and site %.f in time step %.f', site1(missing), site2(missing), t));
+        end
     end
     
 % R variances

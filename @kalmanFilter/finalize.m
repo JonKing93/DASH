@@ -9,7 +9,7 @@ function[kf] = finalize(kf)
 % kf: The updated kalmanFilter object
 
 % Check essential inputs, set whichPrior
-assert(~isempty(obj.X), 'You must provide a prior before you run a Kalman Filter');
+assert(~isempty(kf.X), 'You must provide a prior before you run a Kalman Filter');
 kf = finalize@ensembleFilter(kf, 'run a Kalman Filter');
 
 % Fill in other whichArgs

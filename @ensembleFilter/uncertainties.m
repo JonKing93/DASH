@@ -24,11 +24,14 @@ end
 if ~isCov
     assert(isempty(whichCov), 'You cannot use the whichCov argument when specifying R variances');
     [nSite, nTime] = obj.checkInput(R, 'Rvar', true, true);
-    assert(~any(R(:)<=0), 'R variances must be greater than 0.');
+    nCov = 0;
     
     % Size conflicts
     assert(nSite==obj.nSite || nSite==1, sprintf('You previously specified observations for %.f sites, but Rvar has %.f sites', obj.nSite, nSite));
     assert(nTime==obj.nTime || nTime==1, sprintf('You previously specified observations for %.f time steps, but Rvar has %.f time steps', obj.nTime, nTime));
+    
+    % Error check variance
+    assert(~any(R(:)<=0), 'R variances must be greater than 0.');
     
     % Propagate
     if nSite==1
@@ -62,6 +65,7 @@ end
 obj.Rcov = isCov;
 obj.R = R;
 obj.whichRcov = whichCov;
+obj.nRcov = nCov;
 
 % Check for missing R values
 obj.checkMissingR;

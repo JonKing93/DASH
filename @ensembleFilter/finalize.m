@@ -12,12 +12,15 @@ function[obj] = finalize(obj, actionName)
 % obj: The updated ensembleFilter object
 
 % Check for essential inputs
-assert(~isempty(obj.D), sprintf('You must provide observations before you %s', actionName));
-assert(~isempty(obj.Y), sprintf('You must provide proxy estimates before you %s.', actionName));
+assert(~isempty(obj.Y), sprintf('You must provide observations before you %s', actionName));
+assert(~isempty(obj.Ye), sprintf('You must provide proxy estimates before you %s.', actionName));
 
-% Fill in empty whichPrior
+% Fill in empty whichPrior and whichRcov
 if isempty(obj.whichPrior)
     obj.whichPrior = ones(obj.nTime, 1);
+end
+if isempty(obj.whichRcov)
+    obj.whichRcov = ones(obj.nTime, 1);
 end
 
 end

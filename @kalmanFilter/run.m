@@ -64,7 +64,7 @@ if ~kf.Rcov
     kf.R(~sites) = 0;
     gains = [sites; kf.R; whichCov']';
 else
-    gains = [sites; obj.whichRcov'; whichCov']';
+    gains = [sites; kf.whichRcov'; whichCov']';
 end
 [gains, ~, whichGain] = unique(gains, 'rows');
 
@@ -81,12 +81,14 @@ for c = 1:nCov
     
     % Get the sites, time steps, and priors associated with each gain
     for g = 1:numel(covGains)
+        disp(g)
         t = times(whichGain == covGains(g));
         s = sites(:, t(1));
         
         % Get the R covariance. Build from variances if necessary
         if kf.Rcov
-            Rk = kf.R(s, s, t(1));
+            r = gains(g, end-1);
+            Rk = kf.R(s, s, r);
         else
             Rk = diag( kf.R(s, t(1)) );
         end

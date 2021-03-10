@@ -36,8 +36,8 @@ end
 [nState, nEns, nPrior] = obj.checkInput(X, 'X', true);
 
 % Check for size conflicts
-assert(isempty(obj.Ye) || nEns==obj.nEns, sprintf('You previously specified observation estimates for %.f ensemble members, but X has %.f ensemble members (columns)', obj.nEns, nEns);
-assert(isempty(obj.Ye) || nPrior==obj.nPrior, sprintf('You previously specified observation estimates for %.f priors, but X has %.f priors (elements along dimension 3)', obj.nPrior, nPrior);
+assert(isempty(obj.Ye) || nEns==obj.nEns, sprintf('You previously specified observation estimates for %.f ensemble members, but X has %.f ensemble members (columns)', obj.nEns, nEns));
+assert(isempty(obj.Ye) || nPrior==obj.nPrior, sprintf('You previously specified observation estimates for %.f priors, but X has %.f priors (elements along dimension 3)', obj.nPrior, nPrior));
 
 % Parse and error check whichPrior
 whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');

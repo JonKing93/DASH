@@ -9,7 +9,7 @@ classdef (Abstract) ensembleFilter
         name;
         
         % Essential inputs
-        M;
+        X;
         whichPrior;
         Y;
         R;
@@ -31,7 +31,7 @@ classdef (Abstract) ensembleFilter
         obj = rename(obj, name);
         obj = observations(obj, Y);
         obj = uncertainties(obj, R, isCov, whichCov);
-        obj = prior(obj, M, whichPrior);
+        obj = prior(obj, X, whichPrior);
         obj = estimates(obj, Ye);
     end
     
