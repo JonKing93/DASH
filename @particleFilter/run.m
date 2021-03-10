@@ -16,15 +16,15 @@ if pf.Rcov
 end
 
 % Permute for singleton expansion
-D = permute(pf.D, [1 3 2]);
+Y = permute(pf.Y, [1 3 2]);
 
 % Process each prior, get the associated estimates and time steps
 for p = 1:pf.nPrior
-    Y = pf.Y(:,:,p);
+    Ye = pf.Ye(:,:,p);
     t = pf.whichPrior==p;
     
     % Vectorize sum of squared errors for R variance
-    innov = D(:,:,t) - Y;
+    innov = Y(:,:,t) - Ye;
     if ~pf.Rcov
         R = permute(pf.R(:,t), [1 3 2]);
         sse = nansum( (1./R).*(innov).^2, 1);

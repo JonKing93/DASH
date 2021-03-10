@@ -10,12 +10,12 @@ function[] = assertEditableCovariance(kf, type)
 %    Use for error messages.
 
 % Require a prior
-if isempty(kf.M)
+if isempty(kf.X)
     error(['You must specify a prior (using the "prior" command) before ',...
         'setting %s.'], type);
     
 % Require observations
-elseif isempty(kf.D)
+elseif isempty(kf.Y)
     error(['You must specify the observations/proxies (using the ',...
         '"observations" command) before setting %s.'], type);
 end

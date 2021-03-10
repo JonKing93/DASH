@@ -37,9 +37,9 @@ nEns = pf.nEns;
 pf = prior@ensembleFilter(pf, X, whichPrior);
 
 % Check for size conflicts with the weighting scheme
-if nEns~=pf.nEns && pf.weightType==1 && pf.weightArgs>pf.nEns
-    error(['You previously specified a weighting scheme for the best %.f particles, ',...
-        'but the new prior only has %.f particles (ensemble members, columns)'], pf.weightArgs, pf.nEns);
-end
+assert(nEns==pf.nEns || pf.weightType~=1 || pf.weightArgs>pf.nEns, sprintf(...
+    ['You previously specified a weighting scheme for the best %.f particles, ',...
+    'but the new prior only has %.f particles (ensemble members, columns)'], ...
+    pf.weightArgs, pf.nEns));
 
 end

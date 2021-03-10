@@ -45,14 +45,9 @@ for q = 1:numel(kf.Q)
     out.(name) = NaN(siz);
 end
 
-% Decompose ensembles and note observation sites
+% Decompose ensembles
 [Mmean, Mdev] = dash.decompose(kf.M, 2);
 [Ymean, Ydev] = dash.decompose(kf.Y, 2);
-
-% Note observations sites and use placeholder R for no observation
-sites = ~isnan(kf.D);
-R = kf.R;
-R(~sites) = 0;
 
 % Get the covariance settings for each time step. Find the unique
 % covariances and the time steps associated with each
@@ -64,14 +59,17 @@ end
 nCov = size(covSettings, 1);
 
 % Get all unique Kalman Gains
+sites = ~isnan(kf.D);
 if ~kf.Rcov
-    gains = [sites; R; whichCov']';
+    kf.R(~sites) = 0;
+    gains = [sites; kf.R; whichCov']';
 else
-    gains = [sites; reshape(kf.R, [], kf.nTime); whichCov'];
+    gains = [sites; obj.whichRcov'; whichCov']';
 end
-nGains = size(gains, 1);
+[gains, ~, whichGain] = unique(gains, 'rows');
 
 % Initialize progress bar
+nGains = size(gains, 1);
 progress = progressbar(showprogress, 'Running Kalman Filter', nGains, ceil(nGains/100));
 
 % Make each covariance estimate. Get its associated time steps, priors, and gains

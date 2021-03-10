@@ -39,6 +39,7 @@ classdef (Abstract) ensembleFilter
     methods
         whichArg = parseWhich(obj, whichArg, name, nIndex, indexName);
         obj = finalize(obj, actionName);
+        checkMissingR(obj);
     end
     methods (Static)
         [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);

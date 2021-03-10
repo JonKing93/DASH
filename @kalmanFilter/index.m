@@ -38,7 +38,7 @@ function[kf] = index(kf, name, weights, rows, nanflag)
 % kf: The updated kalmanFilter object
 
 % Require a prior
-if isempty(kf.M)
+if isempty(kf.X)
     error('You must specify a prior (using the "prior" command) before creating a posterior index');
 end
 
