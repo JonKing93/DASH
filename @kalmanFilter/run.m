@@ -46,8 +46,8 @@ for q = 1:numel(kf.Q)
 end
 
 % Decompose ensembles
-[Mmean, Mdev] = dash.decompose(kf.M, 2);
-[Ymean, Ydev] = dash.decompose(kf.Y, 2);
+[Xmean, Xdev] = dash.decompose(kf.X, 2);
+[Ymean, Ydev] = dash.decompose(kf.Ye, 2);
 
 % Get the covariance settings for each time step. Find the unique
 % covariances and the time steps associated with each
@@ -59,7 +59,7 @@ end
 nCov = size(covSettings, 1);
 
 % Get all unique Kalman Gains
-sites = ~isnan(kf.D);
+sites = ~isnan(kf.Y);
 if ~kf.Rcov
     kf.R(~sites) = 0;
     gains = [sites; kf.R; whichCov']';
@@ -77,7 +77,7 @@ for c = 1:nCov
     times = find(whichCov==c);
     p = kf.whichPrior(times(1));
     covGains = find(gains(:,end)==c);
-    [Knum, Ycov] = kf.estimateCovariance(times(1), Mdev(:,:,p), Ydev(:,:,p));
+    [Knum, Ycov] = kf.estimateCovariance(times(1), Xdev(:,:,p), Ydev(:,:,p));
     
     % Get the sites, time steps, and priors associated with each gain
     for g = 1:numel(covGains)
@@ -106,23 +106,20 @@ for c = 1:nCov
             p = priors(pk);
             tu = t(updatePrior==pk);
             
-            % Update the mean
-            Amean = repmat(Mmean(:,:,p), [1 numel(tu)]);
+            % Update the mean and calibration ratio
+            Amean = repmat(Xmean(:,:,p), [1 numel(tu)]);
             if any(s)
-                Amean = Amean + K * (kf.D(s,tu) - Ymean(s,:,p));
+                innovation = kf.Y(s,tu) - Ymean(s,:,p);
+                Amean = Amean + K * innovation;
+                out.calibRatio(s,tu) = innovation.^2 ./ diag(Kdenom);
             end
             
             % Deviations
             if updateDevs
-                Adev = Mdev(:,:,p);
+                Adev = Xdev(:,:,p);
                 if any(s)
                     Adev = Adev - Ka * Ydev(s,:,p);
                 end
-            end
-            
-            % Calibration ratio
-            if any(s)
-                out.calibRatio(s,tu) = (kf.D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
             end
             
             % Calculated indices
