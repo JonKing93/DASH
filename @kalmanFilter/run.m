@@ -81,7 +81,6 @@ for c = 1:nCov
     
     % Get the sites, time steps, and priors associated with each gain
     for g = 1:numel(covGains)
-        disp(g)
         t = times(whichGain == covGains(g));
         s = sites(:, t(1));
         
