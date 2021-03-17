@@ -1,4 +1,4 @@
-function[out] = run(kf, showprogress)
+function[out] = run(kf, showprogress, complexError)
 %% Runs a Kalman Filter using an ensemble square root implementation
 %
 % output = kf.run
@@ -7,19 +7,35 @@ function[out] = run(kf, showprogress)
 % output = kf.run(showprogress)
 % Specify whether to display a progress bar for the Kalman Filter.
 %
+% output = kf.run(showprogress, complexError)
+% Specify whether to throw an error if the adjusted Kalman Gain becomes
+% complex-valued. Default is to throw an error. If disabling the error,
+% updated ensemble deviations are set to NaN is all time steps with a
+% complex-valued adjusted gain.
+%
 % ----- Inputs -----
 %
 % showprogress: A scalar logical indicating whether to display a progress
 %    bar (true), or not (false). By default, no progress bar is shown.
 %
+% complexError: A scalar logical indicating whether to throw an error when
+%    the adjusted Kalman Gain becomes complex valued (true -- Default), or
+%    whether to update using NaN deviations (false).
+%
 % ----- Outputs -----
 %
 % output: A structure containing output calculations
 
-% Default progress bar
+% Defaults and error check
 if ~exist('showprogress','var') || isempty(showprogress)
     showprogress = false;
 end
+dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
+
+if ~exist('complexError','var') || isempty(complexError)
+    complexError = true;
+end
+dash.assertScalarType(complexError, 'complexError', 'logical', 'logical');
 
 % Check for essential inputs and finalize whichArgs
 kf = kf.finalize;
@@ -70,7 +86,7 @@ end
 
 % Initialize progress bar
 nGains = size(gains, 1);
-progress = progressbar(showprogress, 'Running Kalman Filter', nGains, ceil(nGains/100));
+progress = progressbar(showprogress, 'Running Kalman Filter:', nGains, ceil(nGains/100));
 
 % Make each covariance estimate. Get its associated time steps, priors, and gains
 for c = 1:nCov
@@ -98,6 +114,12 @@ for c = 1:nCov
         if updateDevs
             Ksqrt = sqrtm(Kdenom);
             Ka = Knum(:,s) * (Ksqrt^(-1))' * (Ksqrt + sqrtm(Rk))^(-1);
+            
+            % Check the adjusted gain is not complex valued
+            realKa = isreal(Ka);
+            if ~realKa && complexError
+                error('The adjusted gain in time step %.f is complex valued. This can occur if the R covariance matrix for the time step has negative eigenvalues.');
+            end
         end
         
         % Cycle through each prior that has updates using this gain. Get
@@ -118,8 +140,10 @@ for c = 1:nCov
             % Deviations
             if updateDevs
                 Adev = Xdev(:,:,p);
-                if any(s)
+                if any(s) && realKa
                     Adev = Adev - Ka * Ydev(s,:,p);
+                elseif any(s) && ~realKa
+                    Adev(:) = NaN;
                 end
             end
             
