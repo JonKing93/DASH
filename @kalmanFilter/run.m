@@ -75,13 +75,8 @@ end
 nCov = size(covSettings, 1);
 
 % Get all unique Kalman Gains
-sites = ~isnan(kf.Y);
-if ~kf.Rcov
-    kf.R(~sites) = 0;
-    gains = [sites; kf.R; whichCov']';
-else
-    gains = [sites; kf.whichRcov'; whichCov']';
-end
+sites = ~isnan(kf.Y)';
+gains = [sites, kf.whichR, whichCov];
 [gains, ~, whichGain] = unique(gains, 'rows');
 
 % Initialize progress bar
@@ -95,18 +90,11 @@ for c = 1:nCov
     covGains = find(gains(:,end)==c);
     [Knum, Ycov] = kf.estimateCovariance(times(1), Xdev(:,:,p), Ydev(:,:,p));
     
-    % Get the sites, time steps, and priors associated with each gain
+    % Get the sites, time steps, priors, and R covariance associated with each gain
     for g = 1:numel(covGains)
         t = times(whichGain == covGains(g));
         s = sites(:, t(1));
-        
-        % Get the R covariance. Build from variances if necessary
-        if kf.Rcov
-            r = gains(g, end-1);
-            Rk = kf.R(s, s, r);
-        else
-            Rk = diag( kf.R(s, t(1)) );
-        end
+        Rk = kf.Rcovariance(t(1), s);
         
         % Kalman Gain and adjusted Gain
         Kdenom = Ycov(s,s) + Rk;

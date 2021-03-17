@@ -27,8 +27,8 @@ if ~pf.Rcov
     
 % For covariances, start by finding the unique R covariances
 else
-    sites = ~isnan(pf.Y);
-    Rcovs = [sites; pf.whichR']';
+    sites = ~isnan(pf.Y)';
+    Rcovs = [sites, pf.whichR];
     [Rcovs, ~, whichR] = unique(Rcovs, 'rows');
     
     % Invert each covariance
@@ -36,8 +36,7 @@ else
     for c = 1:nCovs
         times = find(whichR==c);
         s = sites(:, times(1));
-        r = Rcovs(c, end);
-        Rinv = pf.R(s,s,r)^-1;
+        Rinv = pf.Rcovariance(times(1), s)^-1;
         
         % Get the innovations for each time step
         for k = 1:numel(times)
