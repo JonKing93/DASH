@@ -18,7 +18,7 @@ function[obj] = observations2(obj, Y)
 
 % Check that sizes don't conflict
 assert(isempty(obj.whichPrior) || nTime==obj.nTime, sprintf('You previously specified an evolving prior for %.f time steps, but Y has %.f time steps (columns)', obj.nTime, nTime));
-assert(isempty(obj.R) || nTime==obj.nTime, sprintf('You previously specified observation uncertainties for %.f time steps, but Y has %.f time steps (columns)', obj.nTime, nTime));
+assert(isempty(obj.whichR) || nTime==obj.nTime, sprintf('You previously specified R uncertainties for %.f time steps, but Y has %.f time steps (columns)', obj.nTime, nTime));
 assert(isempty(obj.R) || nSite==obj.nSite, sprintf('You previously specified observation uncertainties for %.f sites, but Y has %.f sites (rows)', obj.nSite, nSite));
 assert(isempty(obj.Ye) || nSite==obj.nSite, sprintf('You previously specified estimates for %.f sites, but Y has %.f sites (rows)', obj.nSite, nSite));
 

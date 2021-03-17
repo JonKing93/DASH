@@ -118,7 +118,7 @@ for c = 1:nCov
             % Check the adjusted gain is not complex valued
             realKa = isreal(Ka);
             if ~realKa && complexError
-                error('The adjusted gain in time step %.f is complex valued. This can occur if the R covariance matrix for the time step has negative eigenvalues.');
+                error('The adjusted gain in time step %.f is complex valued. This can occur if the R covariance matrix for the time step has negative eigenvalues.', t(1));
             end
         end
         

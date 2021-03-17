@@ -19,8 +19,8 @@ assert(~isempty(obj.Ye), sprintf('You must provide proxy estimates before you %s
 if isempty(obj.whichPrior)
     obj.whichPrior = ones(obj.nTime, 1);
 end
-if isempty(obj.whichRcov)
-    obj.whichRcov = ones(obj.nTime, 1);
+if isempty(obj.whichR)
+    obj.whichR = ones(obj.nTime, 1);
 end
 
 end
