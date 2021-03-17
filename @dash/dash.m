@@ -20,6 +20,7 @@ classdef dash
         [X, order] = permuteDimensions(X, index, iscomplete, nDims);
         tf = bothNaN(A, B);
         s = loadMatfileFields(file, fields, extName);
+        str = version;
         
         % Input parsing
         varargout = parseInputs(inArgs, flags, defaults, nPrev);
