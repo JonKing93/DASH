@@ -7,47 +7,60 @@ update = ~isempty(pf.M);
 
 % Preallocate
 out = struct();
-out.weights = NaN(pf.nSite, pf.nTime);
+sse = NaN(pf.nEns, pf.nTime);
 if update
     out.A = NaN(pf.nState, pf.nTime);
 end
-if pf.Rcov
-    sse = NaN(pf.nEns, pf.nTime);
-end
 
-% Permute for singleton expansion
-Y = permute(pf.Y, [1 3 2]);
-
-% Process each prior, get the associated estimates and time steps
-for p = 1:pf.nPrior
-    Ye = pf.Ye(:,:,p);
-    t = pf.whichPrior==p;
-    
-    % Vectorize sum of squared errors for R variance
-    innov = Y(:,:,t) - Ye;
-    if ~pf.Rcov
-        R = permute(pf.R(:,t), [1 3 2]);
-        sse = nansum( (1./R).*(innov).^2, 1);
-        sse = squeeze(sse);
+% If using R variances, get the innovation for each prior
+if ~pf.Rcov
+    pf.Y = permute(pf.Y, [1 3 2]);
+    for p = 1:pf.nPrior
+        t = find(pf.whichPrior==p);
+        innov = pf.Y(:,:,t) - pf.Ye(:,:,p);
         
-    % Compute sum of squared errors in each time step for R covariance
-    else
-        for k = 1:numel(t)
-            time = t(k);
-            Rinv = pf.R(:,:,time)^-1;
+        % Vectorize the sum of squared errors
+        R = pf.R(:,pf.whichR(t));
+        R = permute(R, [1 3 2]);
+        sse(:,t) = squeeze( sum( (1./R).*(innov).^2, 1, 'omitnan') );
+    end
+    
+% For covariances, start by finding the unique R covariances
+else
+    sites = ~isnan(pf.Y);
+    Rcovs = [sites; pf.whichR']';
+    [Rcovs, ~, whichR] = unique(Rcovs, 'rows');
+    
+    % Invert each covariance
+    nCovs = size(Rcovs, 1);
+    for c = 1:nCovs
+        times = find(whichR==c);
+        s = sites(:, times(1));
+        r = Rcovs(c, end);
+        Rinv = pf.R(s,s,r)^-1;
+        
+        % Get the innovations for each time step
+        for k = 1:numel(times)
+            t = times(k);
+            p = pf.whichPrior(t);
+            innov = pf.Y(s,t) - pf.Ye(s,:,p);
+            
+            % Get the SSE for each ensemble member
             for m = 1:pf.nEns
-                sse(m, time) = innov(:,m,k)' * Rinv * innov(:,m,k);
+                sse(m,t) = innov(:,m)' * Rinv * innov(:,m);
             end
         end
     end
-    
-    % Compute particle filter weights
-    w = pf.weights(sse);
-    out.weights(:,t) = w;
-    
-    % Update the prior
-    if update
-        out.A(:,t) = pf.M(:,:,p) * w;
+end
+            
+% Compute the particle filter weights
+out.weights = pf.weights(sse);
+
+% Optionally update the prior
+if update
+    for p = 1:pf.nPrior
+        t = find(pf.whichPrior==p);
+        out.A(:,t) = pf.M(:,:,p) * out.weights(:, t);
     end
 end
 
