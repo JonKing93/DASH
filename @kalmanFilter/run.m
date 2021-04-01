@@ -75,8 +75,8 @@ end
 nCov = size(covSettings, 1);
 
 % Get all unique Kalman Gains
-sites = ~isnan(kf.Y)';
-gains = [sites, kf.whichR, whichCov];
+sites = ~isnan(kf.Y);
+gains = [sites', kf.whichR, whichCov];
 [gains, ~, whichGain] = unique(gains, 'rows');
 
 % Initialize progress bar

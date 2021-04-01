@@ -27,7 +27,7 @@ t = dash.checkIndices(t, 't', obj.nTime, 'number of time steps');
 if ~exist('s','var') || isempty(s)
     s = ~isnan(obj.Y(:,t));
 end
-s = dash.checkIndices(s, 's', obj.nSite, 'number of observation sites');
+s = dash.checkIndices(s, 's', obj.nSite, 'the number of observation sites');
 
 % Empty whichR
 if isempty(obj.whichR)

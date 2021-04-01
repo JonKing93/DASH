@@ -37,7 +37,7 @@ classdef (Abstract) ensembleFilter
     
     % User query
     methods
-        Rcov = Rcovariance(obj, t);
+        Rcov = Rcovariance(obj, t, s);
     end
     
     % Utilities

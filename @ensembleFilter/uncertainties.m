@@ -55,10 +55,10 @@ else
 end
 
 % Default and parse whichR
-if isCov && (~exist('whichR','var') || isempty(whichR))
+if ~exist('whichR','var') || isempty(whichR)
     whichR = [];
 end
-whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainty');
+whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties');
 
 % Error check variances
 if ~isCov
@@ -81,6 +81,7 @@ end
 obj.R = R;
 obj.whichR = whichR;
 obj.Rcov = isCov;
+obj.nR = nR;
 
 % Check for missing R values
 obj.checkMissingR;
