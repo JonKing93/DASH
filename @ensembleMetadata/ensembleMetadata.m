@@ -179,7 +179,7 @@ classdef ensembleMetadata
         meta = columns(obj, cols, varNames, dims, alwaysStruct);
         
         [latlon] = latlon(obj, varName, verbose);
-        rows = closestLatLon(obj, latlon, varName, verbose);
+        rows = closestLatLon(obj, latlon, varName, exclude, verbose);
         rows = findRows(obj, varName, varRows);
         [nState, nEns] = sizes(obj, vars);
         
