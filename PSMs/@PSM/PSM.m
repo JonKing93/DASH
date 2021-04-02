@@ -112,7 +112,12 @@ classdef (Abstract) PSM
             %
             % ----- Inputs -----
             %
-            % rows: The rows used by the PSM. A vector of positive integers.
+            % rows: The state vector rows holding the data required to run
+            %    the PSM to estimate observations. If a column vector, uses
+            %    the same rows for every ensemble member. If a matrix, each
+            %    column indicates the rows to use for the corresponding
+            %    ensemble member. Either a logical matrix or matrix of
+            %    linear indices.
             %
             % nRows: The number of rows required by the PSM. A scalar
             %    positive integer.
@@ -122,23 +127,30 @@ classdef (Abstract) PSM
             % obj: The updated PSM object
             
             % Error check
-            assert(isvector(rows), 'rows must be a vector');
+            assert(~isempty(rows), 'rows cannot be empty');
+            assert(ndims(rows)<=3, 'rows cannot have more than 3 dimensions');
             assert(islogical(rows) || isnumeric(rows), 'rows must be numeric or logical');
-            if ~isnan(nRows)
-                assert(numel(rows)==nRows, sprintf('rows must have %.f elements', nRows));
-            end
             
             % Error check numeric indices
             if isnumeric(rows)
+                dash.assertRealDefined(rows, 'rows');
                 dash.assertPositiveIntegers(rows, 'rows');
+                assert(size(rows,1)==nRows, sprintf('row(s) must have %.f element(s) along the first dimension', nRows));
                 
-            % Convert logical to numeric
+            % Error check logical indices
             else
-                rows = find(rows);
+                nRows = unique(sum(rows, 1));
+                assert(isscalar(nRows), 'Each column of rows must select the same number of state vector elements (must have the same number of "true" elements).')
+                assert(nRows~=0, 'rows is not selecting any state vector rows because it has no "true" elements');
+                
+                % Convert logical indices to linear
+                siz = size(rows, 1:3);
+                [rows, ~, ~] = ind2sub(siz, find(rows));
+                rows = reshape(rows, nRows, siz(2), siz(3));
             end
             
             % Save
-            obj.rows = rows(:);
+            obj.rows = rows;
         end
             
         % Allow R to be estimated
@@ -169,8 +181,8 @@ classdef (Abstract) PSM
 
     % Estimate proxy values
     methods (Static)
-        [Ye, R] = estimate(X, F);
-        F = setupEstimate(X, F);
+        [Ye, R] = estimate(X, F);   % User function call
+        F = setupEstimate(X, F);    % Does error checking before computing estimates
         [Ye, R] = computeEstimates(X, F);
     end
     
