@@ -12,18 +12,34 @@ if nargout>1
     R = NaN(nSite, nEns, nPrior);
 end
 
-% Get the values needed to run each PSM for each prior
+% Get the estimates for each PSM.
 for s = 1:nSite
-    Xpsm = X(F{s}.rows, :, :);
+    psm = F{s};
+    
+    % Propagate rows over ensemble members and priors
+    siz = size(psm.rows, 1:3);
+    if siz(2)==1
+        psm.rows = repmat(psm.rows, [1 nEns, 1]);
+    end
+    if siz(3)==1
+        psm.rows = repmat(psm.rows, [1 1 nPrior]);
+    end
+    
+    % Extract the data required to run the PSM
+    [~, c, p] = ind2sub(siz, 1:prod(siz));
+    index = sub2ind([nState, nEns, nPrior], psm.rows(:), c, p);
+    Xpsm = reshape( X(index), siz );
+    
+    % Run the PSM for each prior
     for p = 1:nPrior
         Xrun = Xpsm(:,:,p);
         
         % Run the PSM with R estimation
         ranPSM = false;
-        if nargout>1 && F{s}.estimatesR
+        if nargout>1 && psm.estimatesR
             Rfailed = false;
             try
-                [Yrun, Rrun] = F{s}.runPSM(Xrun);
+                [Yrun, Rrun] = psm.runPSM(Xrun);
                 ranPSM = true;           
             catch
                 Rfailed = true;
@@ -34,18 +50,18 @@ for s = 1:nSite
             
             % Notify user and reset R if failed
             if Rfailed
-               warning('Failed to estimate R values for %s for prior %.f', F{s}.messageName, p);
+               warning('Failed to estimate R values for %s for prior %.f', psm.messageName(s), p);
                Rrun = NaN(1, nEns);
             end
         end
         
         % Run the PSM without R estimation
         if ~ranPSM
-            Yrun = F{s}.runPSM(Xrun);
+            Yrun = psm.runPSM(Xrun);
         end
         
         % Error check the Y output
-        name = sprintf('Y values for %s for prior %.f', F{s}.messageName(s), p);
+        name = sprintf('Y values for %s for prior %.f', psm.messageName(s), p);
         dash.assertVectorTypeN(Yrun, 'numeric', nEns, name);
         if ~isrow(Yrun)
             error('%s must be a row vector', name);
@@ -53,7 +69,7 @@ for s = 1:nSite
         
         % Record values
         Ye(s,:,p) = Yrun;
-        if nargout>1 && F{s}.estimatesR
+        if nargout>1 && psm.estimatesR
             R(s,:,p) = Rrun;
         end
     end
