@@ -17,7 +17,7 @@ function[F] = setupEstimate(X, F)
 assert(isnumeric(X), 'X must be numeric');
 dash.assertRealDefined(X, 'X');
 assert(ndims(X)<=3, 'X cannot have more than 3 dimensions');
-[nState, nEns, nPrior] = size(X, 1:3);
+[nState, nEns, nPrior] = size(X);
 
 % Parse the PSM vector
 nSite = numel(F);
@@ -35,17 +35,17 @@ for s = 1:nSite
     % Check the PSM rows match ensemble sizes
     name = psm.messageName(s);
     maxrow = max(psm.rows, [], 'all');
-    siz = size(psm.rows, 1:3);
+    [~, nEns2, nPrior2] = size(psm.rows);
     
     if maxrow > nState
         error('The ensemble has %.f rows, but %s uses rows that are larger (%.f)', ...
             nState, psm.messageName(s), maxrow);
-    elseif siz(2)~=1 && siz(2)~=nEns
+    elseif nEns2~=1 && nEns2~=nEns
         error('The ensemble has %.f members (columns), but %s specifies rows for %.f ensemble members', ...
-            nEns, psm.messageName(s), siz(2));
-    elseif siz(3)~=1 && siz(3)~=nPrior
+            nEns, psm.messageName(s), nEns2);
+    elseif nPrior2~=1 && nPrior2~=nPrior
         error('The ensemble has %.f priors (elements along dimension 3), but %s specifies rows for %.f priors', ...
-            nPrior, psm.messageName(s), siz(3));
+            nPrior, psm.messageName(s), nPrior2);
     end
 end   
 

@@ -37,11 +37,11 @@ for s = 1:nSite
     psm = F{s};
     
     % Propagate rows over ensemble members and priors
-    siz = size(psm.rows, 1:3);
-    if siz(2)==1
+    [~, nCols, nDim3] = size(psm.rows, 1:3);
+    if nCols==1
         psm.rows = repmat(psm.rows, [1 nEns, 1]);
     end
-    if siz(3)==1
+    if nDim3==1
         psm.rows = repmat(psm.rows, [1 1 nPrior]);
     end
     
