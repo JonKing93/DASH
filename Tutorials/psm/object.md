@@ -10,8 +10,7 @@ The PSM class is most commonly used to estimate proxy observations for a model e
 
 ### PSM objects
 You can design PSMs for different proxy sites using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models. The PSMs in DASH include:
-* linear relationships
-* ...in the works...
+* multiple linear relationships
 * VS-Lite
 * BAYMAG / BAYSPAR / BAYSPLINE, and
 * interfaces with PRySM
