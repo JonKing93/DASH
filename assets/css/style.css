@@ -1,0 +1,8 @@
+@import "reset-browser-defaults.css";
+@import "rouge-github.css";
+
+/* Dark background */
+body {
+  background: #212121;
+  color:#373737;
+}
