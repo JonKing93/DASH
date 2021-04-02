@@ -24,7 +24,7 @@ classdef baysparPSM < PSM
         function[Y, R] = run(lat, lon, ssts, options)
             %% Runs the BaySPAR TEX86 forward model.
             %
-            % [tex86, R] = baysparPSM.rubn(lat, lon, ssts, options)
+            % [tex86, R] = baysparPSM.run(lat, lon, ssts, options)
             % Applies the BaySPAR PSM to a set of sea surface temperatures
             % for a proxy site.
             %

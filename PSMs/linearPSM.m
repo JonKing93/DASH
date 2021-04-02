@@ -1,11 +1,7 @@
 classdef linearPSM < PSM
-    % Implements a linear PSM of the following equation
+    % Implements a general linear PSM of the following form:
     %
     % Y = a1 X1 + a2 X2 + ... + an Xn + b
-    %
-    % linearPSM Methods:
-    %   linearPSM - Creates a new linearPSM object
-    %   run - Runs a linear PSM directly
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
@@ -104,7 +100,8 @@ classdef linearPSM < PSM
             %    Each row is a different X value.
             %
             % slopes: The slopes for each variable. A numeric vector in the
-            %    order as the listed rows.
+            %    order as the listed rows. If a scalar, uses the same slope
+            %    for all variables.
             %
             % intercept: The intercept for the linear equation. A numeric
             %    scalar.
