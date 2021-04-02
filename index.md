@@ -1,5 +1,5 @@
 ---
-layout: title
+layout: default
 ---
 
-This website is currently under construction. It is being built for Dash v4.0.0+.
+This is a test index page.
