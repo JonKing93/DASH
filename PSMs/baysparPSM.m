@@ -1,6 +1,14 @@
 classdef baysparPSM < PSM
-    % Implements the BAYSPAR TEX86 PSM.
-    % Requires the Curve Fitting Toolbox
+    % Implements the BAYSPAR PSM, a Bayesian model for TEX86 by Jess Tierney
+    %
+    % Prerequisites: Requires the Curve Fitting Toolbox
+    %
+    % Find it on Github at: https://github.com/jesstierney/BAYSPAR
+    %
+    % Or read the paper:
+    % Tierney, J.E. & Tingley, M.P. (2014) A Bayesian, spatially-varying 
+    % calibration model for the TEX86 proxy. Geochimica et Cosmochimica 
+    % Acta, 127, 83-106. https://doi.org/10.1016/j.gca.2013.11.026.
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
@@ -9,6 +17,81 @@ classdef baysparPSM < PSM
         lat;
         lon;
         options;
+    end
+    
+    methods (Static)
+        % Run directly
+        function[Y, R] = run(lat, lon, ssts, options)
+            %% Runs the BaySPAR TEX86 forward model.
+            %
+            % [tex86, R] = baysparPSM.rubn(lat, lon, ssts, options)
+            % Applies the BaySPAR PSM to a set of sea surface temperatures
+            % for a proxy site.
+            %
+            % ----- Inputs -----
+            %
+            % Please see the BayFOX documentation on the function
+            % "TEX_forward" for details on the inputs.
+            %
+            % options: A cell vector holding the "varargin" inputs for
+            %    "TEX_forward".
+            %
+            % ----- Outputs -----
+            %
+            % tex86: TEX86 estimates. A vector
+            %
+            % R: Error-variance uncertainties estimated from the posterior.
+            %    A vector.
+            
+            % Error check the SSTs
+            assert(isnumeric(ssts), 'ssts must be numeric');
+            assert(isvector(ssts), 'ssts must be a vector');
+            
+            % Default options. Error check PSM parameters
+            if ~exist('options','var') || isempty(options)
+                options = {};
+            end
+            baysparPSM.checkInputs(lat, lon, options);
+            
+            % Run the PSM
+            tex = TEX_forward(lat, lon, ssts, options{:});
+            Y = mean(tex, 2);
+            R = var(tex, [], 2);
+            
+            % Shape to the sst vector
+            if isrow(ssts)
+                Y = Y';
+                R = R';
+            end        
+        end
+        
+        % Error check the PSM inputs
+        function[lat, lon, options] = checkInputs(lat, lon, options)
+            %% Error checks the BaySPAR PSM parameters
+            %
+            % [lat, lon, options] = baysparPSM.checkInputs(lat, lon, options)
+            %
+            % ----- Inputs -----
+            %
+            % lat: Site latitude. A numeric scalar.
+            %
+            % lon: Site longitude. A numeric scalar.
+            %
+            % options: Calibration options. A cell vector with up to 3
+            %    elements.
+            
+            % Error check lat and lon
+            dash.assertScalarType(lat, 'lat', 'numeric', 'numeric');
+            dash.assertScalarType(lon, 'lon', 'numeric', 'numeric');
+            dash.assertRealDefined(lat, 'lat');
+            dash.assertRealDefined(lon, 'lon');
+            
+            % Error check calibration options
+            dash.assertVectorTypeN(options, 'cell', [], 'options');
+            if numel(options)>3
+                error('options cannot contain more than 3 elements.');
+            end
+        end
     end
     
     methods
@@ -70,7 +153,7 @@ classdef baysparPSM < PSM
             %
             % ----- Inputs -----
             %
-            % SSTs: The SSTs use to run the PSM. A numeric row vector
+            % SSTs: The SSTs use to run the PSM. A numeric row vector.
             %
             % ----- Outputs -----
             %
@@ -85,66 +168,4 @@ classdef baysparPSM < PSM
             
         end
     end
-    
-    methods (Static)
-        % Run directly
-        function[Y, R] = run(lat, lon, ssts, options)
-            
-            % Error check the SSTs
-            assert(isnumeric(ssts), 'ssts must be numeric');
-            assert(isvector(ssts), 'ssts must be a vector');
-            
-            % Default options. Error check PSM parameters
-            if ~exist('options','var') || isempty(options)
-                options = {};
-            end
-            baysparPSM.checkInputs(lat, lon, options);
-            
-            % Run the PSM
-            tex = TEX_forward(lat, lon, ssts, options{:});
-            Y = mean(tex, 2);
-            R = var(tex, [], 2);
-            
-            % Shape to the sst vector
-            if isrow(ssts)
-                Y = Y';
-                R = R';
-            end        
-        end
-            
-        % Error check the PSM inputs
-        function[lat, lon, options] = checkInputs(lat, lon, options)
-            %% Error checks the PSM parameters
-            %
-            % [lat, lon, options] = baysparPSM.checkInputs(lat, lon, options)
-            %
-            % ----- Inputs -----
-            %
-            % lat: Site latitude. A numeric scalar.
-            %
-            % lon: Site longitude. A numeric scalar.
-            %
-            % options: Calibration options. A cell vector with up to 3
-            %    elements.
-            
-            % Error check lat and lon
-            dash.assertScalarType(lat, 'lat', 'numeric', 'numeric');
-            dash.assertScalarType(lon, 'lon', 'numeric', 'numeric');
-            dash.assertRealDefined(lat, 'lat');
-            dash.assertRealDefined(lon, 'lon');
-            
-            % Error check calibration options
-            dash.assertVectorTypeN(options, 'cell', [], 'options');
-            if numel(options)>3
-                error('options cannot contain more than 3 elements.');
-            end
-        end  
-    end
-    
 end
-            
-            
-            
-            
-            
-            

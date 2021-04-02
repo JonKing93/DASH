@@ -1,6 +1,16 @@
 classdef bayfoxPSM < PSM
-    % Implements the BayFOX
+    % Implements the BayFOX PSM, a Bayesian model for d18Oc of planktic
+    % foraminifera by Jess Tierney.
+    %
+    % Find it on Github at: https://github.com/jesstierney/bayfoxm
+    %
+    % Or read the paper:
+    % Malevich, S. B., Vetter, L., & Tierney, J. E. (2019). Global Core Top
+    % Calibration of δ18O in Planktic Foraminifera to Sea Surface 
+    % Temperature. Paleoceanography and Paleoclimatology, 34(8), 1292-1315.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2020
     
     properties
         species;
@@ -8,18 +18,34 @@ classdef bayfoxPSM < PSM
     
     % Run directly
     methods (Static)
-        function[Y, R] = run(T, d18Osw, species)
+        function[Y, R] = run(t, d18Osw, species)
+            %% Runs the BayFOX planktic foraminifera forward model
+            %
+            % [d18Oc, R] = bayfoxPSM.run(SST, d18Osw, species)
+            % Applies the BayFOX PSM to a set of sea surface temperatues
+            % and d18O (seawater) values to estimate d18O of calcite.
+            %
+            % ----- Inputs -----
+            %
+            % Please see the BayFOX documentation of the function
+            % "bayfox_forward" for details on inputs.
+            %
+            % ----- Outputs -----
+            %
+            % d18Oc: Estimates of d18O of foram calcite. A vector.
+            %
+            % R: Error-variance uncertainties estimated from the posterior. A vector.
             
-            assert(isnumeric(T) && isvector(T), 'T must be a numeric vector');
+            assert(isnumeric(t) && isvector(t), 'T must be a numeric vector');
             assert(isnumeric(d18Osw) && isvector(d18Osw), 'd18Osw must be a numeric vector');
             
             % Run the PSM, collect Y and R from posterior
-            d18Oc = bayfox_forward(T, d18Osw, species);
+            d18Oc = bayfox_forward(t, d18Osw, species);
             Y = mean(d18Oc, 2);
             R = var(d18Oc, [], 2);
             
             % Shape to the SST vector
-            if isrow(T)
+            if isrow(t)
                 Y = Y';
                 R = R';
             end
@@ -29,10 +55,11 @@ classdef bayfoxPSM < PSM
     methods
         % Constructor
         function[obj] = bayfoxPSM(rows, species, name)
-            %% Creates a new BAYSPLINE PSM
+            %% Creates a new bayfoxPSM object
             %
             % obj = bayfoxPSM(rows, species)
-            % Creates a BAYSPLINE PSM for a set of SST values.
+            % Creates a BayFOX PSM for a set of SST and d18O(sea-water)
+            % values for a planktic foraminifera species.
             %
             % obj = bayfoxPSM(rows, species, name)
             % Optionally names the PSM.
@@ -40,11 +67,18 @@ classdef bayfoxPSM < PSM
             % ----- Inputs -----
             %
             % rows: The state vector rows with the SST values and the
-            %    d18Osw values needed to run the PSM. A vector of two
-            %    integers. The first element should be the row for SST, and
-            %    the second element is for d18Osw
+            %    d18Osw values needed to run the PSM. The first row should
+            %    indicate SST values, the second row should indicate
+            %    d18Osw.
             %
-            % species: A string indicating the target species.
+            % species: A string indicating the target species. Options are:
+            %    'bulloides' = G. bulloides
+            %    'incompta' = N. incompta
+            %    'pachy' = N. pachyderma
+            %    'ruber' = G. ruber
+            %    'sacculifer' = T. sacculifer
+            %    'all' = use the pooled annual (non-species specific) model
+            %    'all_sea' = use the pooled seasonal (non-species specific) model
             %
             % name: An optional name for the PSM. A string
             %
@@ -64,9 +98,9 @@ classdef bayfoxPSM < PSM
         end
         
         function[Y, R] = runPSM(obj, X)
-            % Runs a BAYFOX PSM
+            % Runs a BAYFOX PSM given data from a state vector ensemble
             %
-            % Y = obj.run(X)
+            % [Y, R] = obj.run(X)
             %
             % ----- Inputs -----
             %
