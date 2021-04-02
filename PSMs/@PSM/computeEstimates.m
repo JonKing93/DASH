@@ -1,6 +1,26 @@
 function[Ye, R] = computeEstimates(X, F)
-%% This is the low-level function that actually estimates proxy values. 
-% Does not apply error checking
+%% Computes proxy estimates for an ensemble and set of PSMs. This is a
+% low-level function and does not apply error-checking. Please see
+% "PSM.estimate" for the recommended user command.
+%
+% Ye = PSM.computeEstimates(X, F)
+% Estimate observations from the ensemble using the PSMs
+%
+% [Ye, R] = PSM.computeEstimates(X, F)
+% Also estimate error-variances from PSMs when possible
+%
+% ----- Inputs -----
+%
+% X: A model ensemble. A numeric array with up to 3 
+%    dimensions. (nState x nEns x nPrior)
+%
+% F: Cell vector of PSMs
+%
+% ----- Outputs -----
+%
+% Ye: Proxy estimates for the prior(s). (nSite x nEns x nPrior)
+%
+% R: Error-variances for the priors. (nSite x nEns x nPrior)
 
 % Sizes
 nSite = numel(F);

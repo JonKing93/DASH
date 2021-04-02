@@ -8,6 +8,10 @@ function[F] = setupEstimate(X, F)
 % X: A model ensemble
 %
 % F: Either a scalar PSM object or a cell vector of PSM objects
+%
+% ----- Outputs -----
+%
+% F: PSM inputs as a cell vector.
 
 % Error check the ensemble and get sizes
 assert(isnumeric(X), 'X must be numeric');

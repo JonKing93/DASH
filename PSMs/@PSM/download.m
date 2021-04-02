@@ -12,11 +12,12 @@ function[] = download(psmName, path)
 % ----- Inputs -----
 %
 % psmName: The name of a PSM to download. A string. Options are
-%   'bayspar': The BAYSPAR Bayesian TEX86 PSM
-%   'bayspline': The BAYSPLINE Bayesian UK37 PSM
-%   'baymag': The BAYMAG Bayesian Mg/Ca PSM
+%   'bayfox': The BayFOX Bayesian model for d18Oc of planktic foraminifera
+%   'baymag': The BayMAG Bayesian model for Mg/Ca of planktic foraminifera
+%   'bayspar': The BaySPAR Bayesian model for TEX86
+%   'bayspline': The BaySPLINE Bayesian model for UK'37
+%   'prysm': The PRySM python package of proxy system modelling tools
 %   'vslite': The Vaganov-Shaskin Lite model of tree-ring width
-%   'prysm': Sylvia Dee's collection of tools for proxy system modeling
 %
 % path: Indicates the folder where the PSM code should be downloaded. A
 %    string.
