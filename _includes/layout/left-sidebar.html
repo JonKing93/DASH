@@ -1,0 +1,27 @@
+<nav id="leftnav">
+
+  <ul>
+    <li>
+      <a href="/" class="left_section">Tutorials</a>
+    </li>
+
+    {% for tut in site.data.tutorials %}
+      <li>
+        <a href="/" class="left_lesson">{{tut.name}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <ul>
+    <li>
+      <a href="/" class="left_section">Demos</a>
+    </li>
+
+    {% for demo in site.data.demos %}
+      <li>
+        <a href="/" class="left_lesson">{{demo.name}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+</nav>

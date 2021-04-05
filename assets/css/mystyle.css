@@ -101,9 +101,53 @@ align-items: center;
 
 
 
+/* Everything below the top menu links */
+#below_top {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  background: green;
+}
+
+/* Left sidebar */
+#leftnav {
+  background: #2980b9;
+  width: 200px;
+}
+.left_section {
+  text-transform: uppercase;
+}
+#leftnav a {
+  text-decoration: none;
+  color: black;
+}
+
+
+
+
+
 
 
 /* Main content */
-#main_content {
+main {
   background: #f2f2f2;
+  height: 100%;
+}
+p {
+  padding: 10px 0 15px 0;
+}
+
+
+
+
+
+/* Footer content */
+footer {
+  color: #f2f2f2;
+  text-align: center;
+  line-height: 1.5;
+}
+footer a {
+  color: #f2f2f2;
+  text-decoration: underline;
 }
