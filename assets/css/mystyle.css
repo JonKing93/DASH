@@ -34,7 +34,7 @@ header {
   color: Silver;
   text-decoration: none;
   padding: 14px 20px;
-  border-right: 2px solid black;
+  /* border-right: 2px solid black; */
 }
 
 /* Site navigation links */
@@ -111,15 +111,67 @@ align-items: center;
 
 /* Left sidebar */
 #leftnav {
+  background: #2b3136;
+/*  background: #3990c9; */
+  display: flex;
+  flex-flow: column nowrap;
+  width: 300px;
+}
+#leftnav ul {
+  display: flex;
+  flex-flow: column nowrap;
+}
+#leftnav li {
+  display: flex;
+  flex-flow: column nowrap
+}
+
+
+#leftnav a {
+  text-decoration: none;
+  padding-top: 7px;
+  padding-right: 15px;
+  padding-bottom: 7px;
+}
+#left_title {
   background: #2980b9;
-  width: 200px;
+  color: #fffff;
+  font-size: 18px;
+  font-weight: 900;
 }
 .left_section {
   text-transform: uppercase;
+  color: #2980b9;
+  font-size: 18px;
+  font-weight: 900;
+  padding-left: 15px;
 }
-#leftnav a {
-  text-decoration: none;
+
+.left_lesson {
+  color: #ffffff;
+  font-weight: 300;
+  padding-left: 20px;
+}
+.left_lesson:hover {
+  background: #565c61;
+}
+#active_lesson {
+  background: #e6e9eb;
+  color: #404040;
+}
+
+.lesson_page {
+  background: #ccd2d8;
+  color: #404040;
+  padding-left: 35px;
+}
+.lesson_page:hover {
+  background: #d7dde3;
+}
+#active_page {
+  background: white;
   color: black;
+  font-weight: 600;
 }
 
 

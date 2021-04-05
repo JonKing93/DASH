@@ -5,11 +5,29 @@
       <a href="/" class="left_section">Tutorials</a>
     </li>
 
+
+
+
     {% for tut in site.data.tutorials %}
       <li>
         <a href="/" class="left_lesson">{{tut.name}}</a>
       </li>
     {% endfor %}
+
+    <li>
+      <a id="active_lesson" class="left_lesson" href="/">gridfile</a>
+    </li>
+    <li>
+      <a class="lesson_page" href="/">Welcome</a>
+    </li>
+    <li>
+      <a class="lesson_page" href="/">Objects</a>
+    <li>
+      <a id="active_page" class="lesson_page" href="/">Create new gridfile</a>
+    </li>
+    <li>
+      <a class="lesson_page" href="/">Load</a>
+    </li>
   </ul>
 
   <ul>
@@ -19,7 +37,7 @@
 
     {% for demo in site.data.demos %}
       <li>
-        <a href="/" class="left_lesson">{{demo.name}}</a>
+        <a href="/" class="left_section">{{demo.name}}</a>
       </li>
     {% endfor %}
   </ul>
