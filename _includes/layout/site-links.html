@@ -1,0 +1,31 @@
+{% assign tab = page.url | remove_first: "/" | split: "/" | first | split: "." | first %}
+
+<nav>
+  <ul id="sitenav">
+
+    <li>
+      <a href={{"/"|relative_url}} {% if tab==nil %}id="activetab"{% endif %}>
+        Home
+      </a>
+    </li>
+
+    <li>
+      <a href={{"/docs" | relative_url}} {% if tab=="docs" %}id="activetab"{% endif %}>
+        Docs
+      </a>
+    </li>
+
+    <li>
+      <a href={{"/showcase"|relative_url}} {% if tab=="showcase" %}id="activetab"{% endif %}>
+        Showcase
+      </a>
+    </li>
+
+    <li>
+      <a href={{"/resources"|relative_url}} {% if tab=="resources" %}id="activetab"{% endif %}>
+        Resources
+      </a>
+    </li>
+
+  </ul>
+</nav>
