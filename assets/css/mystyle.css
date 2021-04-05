@@ -3,6 +3,60 @@
 
 /* Dark background */
 body {
+  box-sizing: border-box;
   background: #212121;
-  color:#373737;
+  font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+  font-size: 100%;
+}
+
+/* Header has a black background */
+header {
+  min-height: 60px;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  background: #212121;
+}
+
+/* Top navigation links */
+#sitenav {
+min-height: 40px;
+
+display: flex;
+flex-flow: row nowrap;
+justify-content: flex-start;
+align-items: center;
+}
+#sitenav li {
+  display: flex;
+  flex-flow: row nowrap;
+}
+#sitenav li a {
+  padding: 7px 20px;
+  margin: 0px 2.5px;
+  border-radius: 10px;
+
+  font-size: 21px;
+  font-weight: 700;
+  color: Silver;
+
+  text-transform: uppercase;
+  text-decoration: none;
+}
+#sitenav li a:hover {
+  background: Silver;
+  color: #212121;
+}
+
+
+
+
+
+
+/* Main content */
+#main_content {
+  background: #f2f2f2;
 }
