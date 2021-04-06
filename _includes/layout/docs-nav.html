@@ -1,0 +1,5 @@
+{% assign tab = page.url | remove_first: "/" | split: "/" | first | split: "." | first %}
+
+{% if tab=="docs" %}
+  {% include layout/left-sidebar.html %}
+{% endif %}
