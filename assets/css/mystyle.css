@@ -223,13 +223,24 @@ footer a {
   display: flex;
   flex-flow: row nowrap;
 }
-
 #rightnav {
   background: white;
   min-width: 200px;
 }
-
-main {
+#content_wrap {
   background: silver;
   flex-grow: 1;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+/* The page's content */
+main {
+  background: white;
+  max-width: 700px;
+}
+#step_buttons {
+  background: yellow;
 }
