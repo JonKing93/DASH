@@ -3,4 +3,5 @@
 
 This is the page for docs.
 
-{{page.url}}
+{% include liquid/active-tab.html %}
+{{ tab }}

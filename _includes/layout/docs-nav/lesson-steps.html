@@ -1,0 +1,18 @@
+{% include liquid/active-step.html %}
+
+{% for step in tut.steps %}
+  {% assign title = step | split: ", " | first %}
+  {% assign address = step | split: ", " | last %}
+
+  {% assign active = false %}
+  {% if active_step == address %}
+    {% assign active = true %}
+  {% endif %}
+
+  <li>
+    <a href="/" class="lesson_step"
+      {% if active %} id="active_step" {% endif %}>
+      {{title}}
+    </a>
+  </li>
+{% endfor %}

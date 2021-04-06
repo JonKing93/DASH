@@ -117,7 +117,7 @@ align-items: center;
 /*  background: #3990c9; */
   display: flex;
   flex-flow: column nowrap;
-  width: 225px;
+  flex: 0 0 200px;
 
   position: sticky;
   align-self: flex-start;
@@ -164,6 +164,7 @@ align-items: center;
 #active_lesson {
   background: #e6e9eb;
   color: #404040;
+  font-weight: 500;
 }
 
 .lesson_step {

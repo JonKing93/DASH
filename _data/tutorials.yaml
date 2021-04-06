@@ -1,6 +1,12 @@
 - name: gridfile
-  steps: Welcome, Introduction, Overview, Create new gridfile, gridfile objects, Add data sources, Load data
-  pages: welcome, intro, overview, new, object, add, load
+  steps:
+    - Welcome, welcome
+    - Introduction, intro
+    - Overview, overview
+    - Create new gridfile, new
+    - gridfile objects, object
+    - Add data sources, add
+    - Load data, load
 
 - name: stateVector
 

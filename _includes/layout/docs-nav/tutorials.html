@@ -19,6 +19,9 @@
       </a>
     </li>
 
+    {% if active %}
+      {% include layout/docs-nav/lesson-steps.html %}
+    {% endif %}
 
   {% endfor %}
 </ul>
