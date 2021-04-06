@@ -109,6 +109,8 @@ align-items: center;
   background: green;
 }
 
+
+
 /* Left sidebar */
 #leftnav {
   background: #2b3136;
@@ -164,15 +166,15 @@ align-items: center;
   color: #404040;
 }
 
-.lesson_page {
+.lesson_step {
   background: #ccd2d8;
   color: #404040;
   padding-left: 35px;
 }
-.lesson_page:hover {
+.lesson_step:hover {
   background: #d7dde3;
 }
-#active_page {
+#active_step {
   background: white;
   color: black;
   font-weight: 600;
