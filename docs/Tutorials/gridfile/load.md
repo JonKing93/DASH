@@ -1,6 +1,4 @@
 ---
-layout: simple_layout
-title: Load
 ---
 
 # Load data from a .grid file
