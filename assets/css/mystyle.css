@@ -234,6 +234,7 @@ footer a {
 #rightnav ul {
   display: flex;
   flex-flow: column nowrap;
+  padding: 30px 40px 0px 0px;
 }
 #rightnav li {
   display: flex;
@@ -266,7 +267,7 @@ footer a {
 
 /* The page's content */
 main {
-  /*max-width: 800px;*/
+  max-width: 800px;
   padding: 40px 20px 20px 20px;
 }
 #step_buttons {
