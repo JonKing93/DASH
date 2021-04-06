@@ -2,12 +2,6 @@
 ---
 
 # Load data from a .grid file
-* [Load all data](#load-all-data)
-* [Request Specific Dimension Order](#request-specific-dimension-order)
-* [Load data subset](#load-data-subset)
-* [Specify order of loaded data values](#specify-order-of-loaded-data-values)
-* [Request dimension order without subsetting](#request-dimension-order-without-subsetting-a-dimension)
-* [Optional: Start, Count, Stride Syntax](#optional-start-count-stride-syntax)
 
 ### Load all data
 To load the entire N-Dimensional array use

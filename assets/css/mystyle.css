@@ -7,6 +7,8 @@ body {
   background: #212121;
   font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
   font-size: 100%;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
 }
 
 /* Header has a black background */
@@ -218,17 +220,43 @@ footer a {
 
 /* Content and page headings nav */
 #page_content {
-  background: red;
+  background: #f2f2f2;
 
   display: flex;
   flex-flow: row nowrap;
 }
 #rightnav {
-  background: white;
   min-width: 200px;
+  align-self: flex-start;
+  position: sticky;
+  top: 0;
 }
+#rightnav ul {
+  display: flex;
+  flex-flow: column nowrap;
+}
+#rightnav li {
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 3.5px 0px 8px 0px;
+}
+#rightnav a {
+  color: #0F79D0;
+  text-decoration: none;
+}
+#rightnav a:hover {
+  text-decoration: underline;
+}
+#on_this_page {
+  color: black;
+  border-bottom: 1px solid silver;
+  margin: 0px 0px 5px 0px;
+}
+
+
+
+
 #content_wrap {
-  background: silver;
   flex-grow: 1;
 
   display: flex;
@@ -238,9 +266,169 @@ footer a {
 
 /* The page's content */
 main {
-  background: white;
-  max-width: 700px;
+  /*max-width: 800px;*/
+  padding: 40px 20px 20px 20px;
 }
 #step_buttons {
   background: yellow;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Slate theme style */
+main h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  font-weight: 700;
+  color: #222222;
+  font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+  letter-spacing: -1px;
+}
+main h1 {  font-size: 36px; }
+main h2 {  font-size: 32px; }
+main h3 {  font-size: 24px; }
+main h4 {  font-size: 21px; }
+main h5 {  font-size: 18px; }
+main h6 {  font-size: 16px; }
+main p { margin: 10px 0 15px 0; }
+main a {
+  text-decoration: none;
+  color: #0F79D0;
+  text-shadow: none;
+
+  transition: color 0.5s ease;
+  transition: text-shadow 0.5s ease;
+  -webkit-transition: color 0.5s ease;
+  -webkit-transition: text-shadow 0.5s ease;
+  -moz-transition: color 0.5s ease;
+  -moz-transition: text-shadow 0.5s ease;
+  -o-transition: color 0.5s ease;
+  -o-transition: text-shadow 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  -ms-transition: text-shadow 0.5s ease;
+}
+main a:hover{ text-decoration: underline; }
+main a:focus{ text-decoration: underline; }
+main em, cite { font-style: italic; }
+main strong { font-weight: bold }
+main pre, code {
+  color: #222;
+  background-color: #fff;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 0.875em;
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+main pre {
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  overflow: auto;
+}
+main code {
+  padding: 3px;
+  margin: 0 3px;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+main pre code {
+  display: block;
+  box-shadow: none;
+}
+main blockquote {
+  color: #666;
+  margin-bottom: 20px;
+  padding: 0 0 0 20px;
+  border-left: 3px solid #bbb;
+}
+/*
+ul, ol, dl {
+  margin-bottom: 15px
+}
+ul {
+  list-style-position: inside;
+  list-style: disc;
+  padding-left: 20px;
+}
+ol {
+  list-style-position: inside;
+  list-style: decimal;
+  padding-left: 20px;
+}
+dl dt {
+  font-weight: bold;
+}
+dl dd {
+  padding-left: 20px;
+  font-style: italic;
+}
+dl p {
+  padding-left: 20px;
+  font-style: italic;
+}
+hr {
+  height: 1px;
+  margin-bottom: 5px;
+  border: none;
+  background: url('../images/bg_hr.png') repeat-x center;
+}
+table {
+  border: 1px solid #373737;
+  margin-bottom: 20px;
+  text-align: left;
+}
+th {
+  font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 10px;
+  background: #373737;
+  color: #fff;
+}
+td {
+  padding: 10px;
+  border: 1px solid #373737;
+}
+form {
+  background: #f2f2f2;
+  padding: 20px;
+}*/
+/* img {
+  position: relative;
+  margin: 0 auto;
+  max-width: 739px;
+  padding: 5px;
+  margin: 10px 0 10px 0;
+  border: 1px solid #ebebeb;
+
+  box-shadow: 0 0 5px #ebebeb;
+  -webkit-box-shadow: 0 0 5px #ebebeb;
+  -moz-box-shadow: 0 0 5px #ebebeb;
+  -o-box-shadow: 0 0 5px #ebebeb;
+  -ms-box-shadow: 0 0 5px #ebebeb;
+}
+p img {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+  border: none;
+}
+*/
