@@ -12,8 +12,10 @@
       {% assign active = true %}
     {% endif %}
 
+    {% assign link = "/docs/tutorials/" | append: tut.name | append: "/welcome" | relative_url %}
+
     <li>
-      <a href="/" class="left_lesson"
+      <a href={{link}} class="left_lesson"
         {% if active %} id="active_lesson" {% endif %}>
         {{tut.name}}
       </a>
