@@ -106,7 +106,6 @@ align-items: center;
   background: green;
   display: flex;
   flex-flow: row nowrap;
-  align-items: flex-start;
 }
 
 
@@ -120,6 +119,7 @@ align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
 
+  align-self: flex-start;
   position: sticky;
   top: 0;
 
@@ -192,10 +192,12 @@ align-items: center;
 
 /* Main page and footer */
 #content_and_footer {
-  background: silver;
+  background: blue;
+  align-self: stretch;
 }
-
-
+main {
+  background: white;
+}
 
 
 
@@ -208,6 +210,7 @@ align-items: center;
 
 /* Footer content */
 footer {
+  background: #212121;
   color: #f2f2f2;
   text-align: center;
   line-height: 1.5;
