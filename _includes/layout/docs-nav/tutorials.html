@@ -1,0 +1,24 @@
+{% include liquid/active-lesson.html %}
+
+<ul>
+  <li>
+    <a href="/" class="left_section">Tutorials</a>
+  </li>
+
+  {% for tut in site.data.tutorials %}
+
+    {% assign active = false %}
+    {% if lesson == {{tut.name}} %}
+      {% assign active = true %}
+    {% endif %}
+
+    <li>
+      <a href="/" class="left_lesson"
+        {% if active %} id="active_lesson" {% endif %}>
+        {{tut.name}}
+      </a>
+    </li>
+
+
+  {% endfor %}
+</ul>

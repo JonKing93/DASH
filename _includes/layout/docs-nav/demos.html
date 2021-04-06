@@ -1,0 +1,11 @@
+<ul>
+  <li>
+    <a href="/" class="left_section">Demos</a>
+  </li>
+
+  {% for demo in site.data.demos %}
+    <li>
+      <a href="/" class="left_lesson">{{demo.name}}</a>
+    </li>
+  {% endfor %}
+</ul>

@@ -1,5 +1,8 @@
-{% assign tab = page.url | remove_first: "/" | split: "/" | first | split: "." | first %}
+{% include liquid/active-tab.html %}
 
 {% if tab=="docs" %}
-  {% include layout/left-sidebar.html %}
+  <nav id="leftnav">
+    {% include layout/docs-nav/tutorials.html %}
+    {% include layout/docs-nav/demos.html %}
+  </nav>
 {% endif %}
