@@ -3,6 +3,7 @@
 {% for step in tut.steps %}
   {% assign title = step | split: ", " | first %}
   {% assign address = step | split: ", " | last %}
+  {% assign link = "/docs/Tutorials/" | append: tut.name | append:"/" | append: address | relative_url %}
 
   {% assign active = false %}
   {% if active_step == address %}
@@ -10,7 +11,7 @@
   {% endif %}
 
   <li>
-    <a href="/" class="lesson_step"
+    <a href={{link}} class="lesson_step"
       {% if active %} id="active_step" {% endif %}>
       {{title}}
     </a>
