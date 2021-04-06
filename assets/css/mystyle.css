@@ -193,29 +193,27 @@ align-items: center;
 /* Main page and footer */
 #content_and_footer {
   background: blue;
-  align-self: stretch;
+  flex-grow: 1;
+
+  display: flex;
+  flex-flow: column nowrap;
 }
-main {
-  background: white;
-}
 
-
-
-
-
-
-
-
-
-
-/* Footer content */
 footer {
+  flex-grow: 1;
+
   background: #212121;
   color: #f2f2f2;
-  text-align: center;
-  line-height: 1.5;
+  padding: 15px 0px 0px 40px;
+}
+footer p {
+  padding: 0px 0px 15px 0px;
 }
 footer a {
   color: #f2f2f2;
   text-decoration: underline;
+}
+
+main {
+  background: white;
 }
