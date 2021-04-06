@@ -1,1 +1,2 @@
-{% assign tab = page.url | remove_first: "/" | split: "/" | first | split: "." | first %}
+{% include liquid/url-array.html %}
+{% assign tab = url-array | first | split: "." | first %}
