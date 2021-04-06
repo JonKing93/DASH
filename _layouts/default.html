@@ -10,9 +10,16 @@
     {% include layout/docs-nav.html %}
 
     <div id="content_and_footer">
-      <main>
-        {{content}}
-      </main>
+
+      <div id="page_content">
+        <main>
+          {{content}}
+        </main>
+
+        <nav id="rightnav">
+          Right side nav
+        </nav>
+      </div>
 
       {% include layout/footer.html %}
     </div>

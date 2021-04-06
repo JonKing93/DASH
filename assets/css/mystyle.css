@@ -214,6 +214,22 @@ footer a {
   text-decoration: underline;
 }
 
-main {
+
+
+/* Content and page headings nav */
+#page_content {
+  background: red;
+
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+#rightnav {
   background: white;
+  min-width: 200px;
+}
+
+main {
+  background: silver;
+  flex-grow: 1;
 }
