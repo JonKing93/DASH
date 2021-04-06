@@ -6,11 +6,17 @@
 <body>
   {% include layout/header.html %}
 
-  <div id="below_top">
+  <div id="below_header">
     {% include layout/docs-nav.html %}
-    {% include layout/main-content.html %}
-  </div>
 
+    <div id="content_and_footer">
+      <main>
+        {{content}}
+      </main>
+      {% include layout/footer.html %}
+    </div>
+
+  </div>
 
 </body>
 

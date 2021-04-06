@@ -1,6 +1,4 @@
 ---
-title: Custom Metadata
-layout: simple_layout
 ---
 
 # Custom Metadata

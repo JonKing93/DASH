@@ -1,6 +1,4 @@
 ---
-layout: simple_layout
-title: "Change Names"
 ---
 
 # Change Dimension Names

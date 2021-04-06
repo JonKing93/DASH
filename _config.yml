@@ -1,2 +1,3 @@
 highlighter: rouge
 baseurl: /DASH
+exclude: [old]

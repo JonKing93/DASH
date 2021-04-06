@@ -101,27 +101,32 @@ align-items: center;
 
 
 
-/* Everything below the top menu links */
-#below_top {
+/* Everything below the header */
+#below_header {
+  background: green;
   display: flex;
   flex-flow: row nowrap;
-  align-items: stretch;
-  background: green;
+  align-items: flex-start;
 }
 
 
 
-/* Left sidebar */
+/* Docs navigation, left sidebar */
 #leftnav {
-  background: #2b3136;
-/*  background: #3990c9; */
-  display: flex;
-  flex-flow: column nowrap;
-  flex: 0 0 200px;
+  min-width: 200px;
+  max-height: 100vh;
+  min-height: calc(100vh - 60px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
 
   position: sticky;
-  align-self: flex-start;
   top: 0;
+
+  background: #2b3136;
+
+  display: flex;
+  flex-flow: column nowrap;
 }
 #leftnav ul {
   display: flex;
@@ -153,6 +158,7 @@ align-items: center;
   padding-left: 15px;
 }
 
+
 .left_lesson {
   color: #ffffff;
   font-weight: 300;
@@ -166,6 +172,7 @@ align-items: center;
   color: #404040;
   font-weight: 500;
 }
+
 
 .lesson_step {
   background: #ccd2d8;
@@ -183,18 +190,17 @@ align-items: center;
 
 
 
-
-
-
-
-/* Main content */
-main {
-  background: #f2f2f2;
-  height: 100%;
+/* Main page and footer */
+#content_and_footer {
+  background: silver;
 }
-p {
-  padding: 10px 0 15px 0;
-}
+
+
+
+
+
+
+
 
 
 

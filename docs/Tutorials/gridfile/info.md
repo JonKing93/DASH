@@ -1,5 +1,4 @@
 ---
-layout: simple_layout
 title: "Summarize .grid File"
 ---
 
