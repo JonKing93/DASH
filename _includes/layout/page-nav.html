@@ -1,10 +1,10 @@
 <nav id="rightnav">
   <ul>
     <li id="on_this_page">On this page</li>
-    <li><a href="/">Load all data</a></li>
-    <li><a href="/">Request dimension order</a></li>
-    <li><a href="/">Subset loaded data</a></li>
-    <li><a href="/">Subset entire dimension</a></li>
-    <li><a href="/">Start, count, stride syntax</a></li>
+
+    {% for section in page.sections %}
+      {% assign link = section | remove: "," | replace: " ", "-" | downcase | prepend: "#" %}
+      <li><a href={{link}}>{{section}}</a></li>
+    {% endfor %}
   </ul>
 </nav>

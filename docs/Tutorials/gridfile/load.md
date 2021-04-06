@@ -1,4 +1,9 @@
 ---
+sections:
+  - Load all data
+  - Specify dimension order
+  - Load data subset
+  - Start, count, stride syntax
 ---
 
 # Load data from a .grid file
