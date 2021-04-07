@@ -1,6 +1,8 @@
 ---
-layout: simple_layout
-title: Weighted Means
+sections:
+  - Weighted means
+  - Weights for multiple dimensions
+  - Resetting mean options
 ---
 
 # Weighted Means
@@ -28,7 +30,7 @@ sv = sv.weightedMean('T', 'time', weights);
 could be used to take a weighted time-mean.
 
 <br>
-### Provide weights for multiple dimensions using a cell
+### Weights for multiple dimensions
 
 If you want to provide weights for multiple dimensions, one option is to use a cell vector with one element per listed dimension. Each element should contain the weights for the corresponding dimension. For example:
 ```matlab
@@ -37,9 +39,6 @@ weights = {latWeights, timeWeights};
 sv = sv.weightedMean(variables, dims, weights)
 ```
 could be used to specify mean weights for the "lat" and "time" dimensions.
-
-<br>
-### Provide weights for multiple dimensions using an array.
 
 Sometimes, you may have a multi-dimensional array of weights. For example, some climate models provide "areacella" output, a matrix that reports the area of each grid cell. Such output can be used to take area weighted means as an alternative to latitudinal weights. To use an array of weights, the dimensions of the weights must be in the same order as listed dimensions. For example, say that "lat" and "lon" are state dimensions with 96 and 144 state indices, respectively. Then, to make the following call:
 ```matlab
@@ -52,8 +51,6 @@ sv = sv.weightedMean(variables, ["lon", "lat"], weights)
 weights should be a 144 x 96 matrix.
 
 <br>
-### Resetting means
+### Resetting mean options
 
 Whenever you use the ["resetMeans" method](mean#optional-reset-mean-options), all weights are deleted for the specified dimensions.
-
-[Previous](mean)---[Next](build)

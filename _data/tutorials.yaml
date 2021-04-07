@@ -9,6 +9,16 @@
     - Load data, load
 
 - name: stateVector
+  steps:
+    - Concepts, concepts
+    - Dimension Indices, dimension-indices
+    - Create State Vector, new
+    - Add Variables, add
+    - Design, design
+    - Sequences, sequence
+    - Means, mean
+    - Weighted Means, weighted-mean
+    - Build Ensemble, build
 
 - name: ensemble
 

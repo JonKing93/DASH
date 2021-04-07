@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Advanced State Vectors
----
 
 # Advanced topics
 The following pages contain tutorials on more advanced stateVector features.

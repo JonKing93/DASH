@@ -1,6 +1,12 @@
 ---
-layout: simple_layout
-title: Dimension Indices
+sections:
+  - Dimension indices
+  - Typical workflow
+  - State indices
+  - Reference indices
+  - Mean indices
+  - Sequence indices
+  - Combining mean and sequence indices
 ---
 
 # Dimension Indices
@@ -179,5 +185,3 @@ This will result in a final ensemble that will look like:
 <img src="\DASH\assets\images\stateVector\ms-ensemble.svg" alt="The state vector is divided into 4 sections, each for a three month mean starting in a different month." style="width:80%;display:block">
 
 Whew, that was a lot of background. Fortunately, that's all you need to know to design state vector templates. So let's start making a state vector!
-
-[Previous](concepts)---[Next](new)

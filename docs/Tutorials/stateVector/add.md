@@ -1,6 +1,9 @@
 ---
-layout: simple_layout
-title: "Add Variables"
+sections:
+  - State vector variables
+  - Add variables
+  - Auto-coupling options
+  - Overlap options
 ---
 
 # State vector variables
@@ -21,7 +24,7 @@ Figure 1: An example state vector.
 
 Although T and Tmean both describe temperature, they are considered different variables because they have different spatial and temporal resolution.
 
-### Add variables
+### Add a variable
 To add a variable, use the "add" method. For each variable, provide an identifying name, as well as the gridfile that holds the necessary data, as per:
 ```matlab
 sv = sv.add('myVariable', 'my-gridfile.grid')
@@ -32,7 +35,6 @@ sv.variableNames
 ```
 The .grid file name indicates which grid file includes the data needed for the variable. Note that we have not yet indicated ***which*** data in the .grid file to use for the variable; we have only indicated that the required data is some subset of the data in the given file.
 
-### Add multiple variables at once
 You can add multiple variables at once by providing a list of variable name and a corresponding list of variable names. For example, let's say I want to add the T, Tmean, and P variables from my example state vector. Let's say that the temperature data for the T and Tmean variables is organized by "temperature.grid", and the precipitation data for the P variable is organized by "precipitation.grid". Then I could do:
 ```matlab
 vars = ["T","Tmean","P"];
@@ -43,7 +45,7 @@ sv = sv.add(vars, files);
 ```
 
 <br>
-### Optional: Set auto-coupling options
+### Auto-coupling options
 
 (Note: This is an advanced setting not necessary for most standard applications. If you would like to learn about variable coupling, please see the [variable coupling page](couple).)
 
@@ -53,7 +55,7 @@ sv = sv.add('myVariable', 'my-gridfile.grid', false)
 ```
 
 <br>
-### Optional: Set overlap options
+### Overlap options
 
 (Note: This is an advanced setting not necessary for many standard applications. If you would like to learn about variable overlap, please see the [overlap page](overlap).)
 
@@ -61,5 +63,3 @@ You can specify whether the variable should allow overlap in state vector ensemb
 ```matlab
 sv = sv.add('myVariable', 'my-gridfile.grid', [], true)
 ```
-
-[Previous](new)---[Next](design)

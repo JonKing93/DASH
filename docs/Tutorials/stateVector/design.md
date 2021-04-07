@@ -1,13 +1,18 @@
 ---
-layout: simple_layout
-title: Design Dimensions
+sections:
+  - Set dimension types
+  - Specify state or reference indices
+  - Design multiple variables simultaneously
+  - Design multiple dimensions simultaneously
+  - Indices for multiple dimensions
+  - Disable notifications
 ---
 
 # Design Method
 
 The "design" method can be used to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions), and to specify [dimension indices](dimension-indices). By default, stateVector treats each dimension as a state dimension and sets the dimension indices to every element along the dimension. Consequently, you do not need to apply the design method to state dimensions that use every element.
 
-# Set ensemble and state dimensions
+# Set dimension types
 
 You can use the design method to set variable dimensions as state or ensemble dimensions. To do this, provide the name of the variable, the name of the dimension, and indicate the type of the dimension. To specify a state dimension, you can use any of:
 ```matlab
@@ -56,7 +61,7 @@ sv = sv.design('T', 'lat', 'ensemble', preindustrial);
 to set the reference indices.
 
 <br>
-### Design multiple variables at once
+### Design multiple variables simultaneously
 
 You can design multiple variables at the same time by providing a string vector of variable names as the first input. For example
 ```matlab
@@ -66,7 +71,7 @@ sv = sv.design(vars, "time", "ensemble", preindustrial);
 ```
 will use the time dimension as an ensemble dimension and specify preindustrial reference indices for each of the "T", "P", and "Tmean" variables.
 
-### Design multiple dimensions at once
+### Design multiple dimensions simultaneously
 
 You can also design multiple dimensions at the same time by providing a string vector of dimension names as the second argument. When this is the case, using 'state', 's', or true as the third argument will set all listed dimensions as state dimensions. Likewise, using 'ensemble', 'ens', 'e', or false as the third argument will set all listed dimensions as ensemble dimensions. For example:
 ```matlab
@@ -94,7 +99,7 @@ sv = sv.design('myVariable', dims, type);
 either of these approaches would specify 'lat' and 'lon' as state dimensions, and 'time' and 'run' as ensemble dimensions.
 
 <br>
-### Specify indices for multiple dimensions
+### Indices for multiple dimensions
 
 If you would like to specify state or reference indices for multiple dimensions, then the fourth argument should be a cell vector with one element per listed dimension. Each element should hold the indices for the corresponding dimension. Use an empty array to use the default of all indices for a dimension. For example:
 ```matlab
@@ -113,8 +118,6 @@ would use latitude and longitude as state dimension and select Northern Hemisphe
 It's worth noting that we don't actually need to specify the options for the "lon" dimension in this example. Remember that the default setting for all dimensions is a state dimension with all elements selected. Since that's what we use here, we don't actually need to provide it to the "design" method. However, I've left it here to help clarify the example.
 
 <br>
-### Coupled variable notification
+### Disable notifications
 
 Sometimes, using the design method on a variable will alter the dimension settings for other variables and a notification will be printed to the console. Don't panic. This is the desired behavior for most assimilations and occurs because of [variable coupling](couple). You can [disable these notifications](notify-console) if you do not want to receive them.
-
-[Previous](add)---[Next](sequence)

@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Summarize a state vector
----
-
 # Summarize a state vector
 
 With large, complex state vectors, it can be easy to lose track of all the variables, dimensions, and design options. For this reason, stateVector provides several methods to help summarize information. Specifically, you can
@@ -60,5 +55,3 @@ Alternatively, you can use
 [vectorSummary, variableSummaries] = sv.info( varNames )
 ```
 to return the state vector summary as a structure, and variable summaries as a structure array instead of printing information to the console.
-
-[Advanced Topics](advanced)

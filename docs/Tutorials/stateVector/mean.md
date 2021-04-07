@@ -1,6 +1,10 @@
 ---
-layout: simple_layout
-title: Mean
+sections:
+  - Take a mean over state dimensions
+  - Take a mean over ensemble dimensions
+  - Take a mean over a mix of dimensions
+  - NaN options
+  - Reset mean options
 ---
 
 # Take a mean over a dimension
@@ -39,7 +43,7 @@ sv = sv.mean('T', dims, meanIndices);
 would take a 3 element mean over the time dimension, and a 12 element mean over the run dimension.
 
 <br>
-### Take a mean over a mix of state and ensemble dimensions
+### Take a mean over a mix of dimensions
 
 To specify mean options for both state and ensemble dimensions simultaneously, use the same syntax as for multiple ensemble dimensions and use empty arrays as the mean indices for the state dimensions. For example, say that "lat" and "lon" are state dimensions and "time" is an ensemble dimension. Then:
 ```matlab
@@ -50,7 +54,7 @@ sv = sv.mean('T', dims, indices);
 would take a mean over all three dimensions.
 
 <br>
-### Optional: Specify NaN options
+### NaN options
 
 You can use the fourth input to specify how to treat NaN values in a mean. By default, NaN values are included in means. To omit NaN values from the means of all listed dimensions, use either of the following options:
 ```matlab
@@ -79,7 +83,7 @@ sv = sv.mean(variables, dims, indices, omitnan);
 would include NaN values in means taken over the "lat" and "time" dimensions, but omit NaN values in the mean taken over the "lon" dimension.
 
 <br>
-### Optional: Reset Mean options
+### Reset Mean options
 
 You can reset mean options for variables and dimensions. When you reset the options, no mean is taken. Use
 ```matlab
@@ -96,5 +100,3 @@ to reset means for all dimensions of specific variables, and
 sv.resetMeans(variableNames, dimensionNames)
 ```
 to reset means for specific dimensions of listed variables.
-
-[Previous](sequence)---[Next](weighted-mean)

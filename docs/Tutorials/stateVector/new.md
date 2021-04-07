@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: "New State Vector"
----
-
 # Create a new stateVector
 
 To initialize a new state vector, use:
@@ -33,5 +28,3 @@ By default, state vectors will print notification messages to the console when c
 sv = stateVector('My name', false);
 ```
 If you change your mind, you can also [enable/disable notifications](notify-console) later.
-
-[Previous](dimension-indices)---[Next](add)

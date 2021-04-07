@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Overlap
----
-
 # Overlap
 
 When it builds a state vector ensemble, "buildEnsemble" will select ensemble members from different reference indices. This way, there are no repeat ensemble members. However, it is possible for mutliple ensemble members to use the same data, and this is known as overlap.
@@ -24,5 +19,3 @@ will allow overlap for the "T" and "P" variables. If you accidentally enable ove
 ```matlab
 sv = sv.allowOverlap( ["T", "P"], false)
 ```
-
-[Advanced Topics](advanced)

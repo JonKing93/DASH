@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Coupled Variables
----
 
 # Coupled varialbles
 
@@ -41,5 +37,3 @@ vars = ["T","P","Tmean"];
 sv = sv.couple(vars);
 ```
 would couple the "T", "P", and "Tmean" variables. When you couple variables, their ensemble dimensions will be matched to those of the first listed variable. So in this example, the ensemble dimensions of "P" and "Tmean" will be set to match those of "T".
-
-[Advanced Topics](advanced)

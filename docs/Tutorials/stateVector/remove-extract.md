@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Remove or Extract Variables
----
-
 # Removing or extracting variables
 
 Sometimes, it may be useful to only use a subset of variables in a saved state vector template. There are two ways to obtain a subset of variables from an existing state vector:
@@ -26,5 +21,3 @@ To extract desired variables from a state vector, use the "extract" method and s
 sv = sv.extract(["T","P","Tmean"])
 ```
 will limit a state vector to only including the "T", "P", and "Tmean" variables.
-
-[Advanced Topics](advanced)

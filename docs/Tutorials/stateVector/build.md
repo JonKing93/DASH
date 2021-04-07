@@ -1,6 +1,9 @@
 ---
-layout: simple_layout
-title: Build Ensemble
+sections:
+  - Build a state vector ensemble
+  - Select ensemble members sequentially
+  - Save to file
+  - Disable progress bar
 ---
 
 # Build a state vector ensemble
@@ -30,10 +33,10 @@ X = sv.build(50, false)
 ```
 will build an ensemble with 50 ensemble members. The first ensemble member will be the first month of year 1. The second ensemble member will be the first month of year 2, and the 50th ensemble member will be the first month of year 50, etc.
 
-### Save the ensemble to file
+### Save to file
 You can use the third and fourth inputs to save the ensemble to a .ens file. [This syntax](../ensemble/save) is detailed in the tutorial for the "ensemble" class.
 
-### Disable the progress bar
+### Disable progress bar
 By default, the "build" command will display a progress bar as it builds new ensemble members. You can specify whether to display the progress bar using the fifth input
 ```matlab
 X = sv.build(nEns, random, [], [], showprogress)
@@ -46,5 +49,3 @@ X = sv.build(50, false, [], [], false)
 will build the ensemble without displaying the progress bar.
 
 Nice! That's the tutorial. If you'd like more control over a state vector, check out the [Advanced Topics](advanced) page.
-
-[Previous](weighted-mean)---[All Tutorials](../welcome)
