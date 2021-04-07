@@ -23,3 +23,5 @@ DASH also includes modules for implementing data assimilation.
 * To implement a Kalman Filter, see the [kalmanFilter tutorial](kalmanFilter\welcome).
 * To test optimal sensor placement, see the [optimalSensor tutorial](sensor\welcome).
 * To implement a particle Filter, see the [particleFilter tutorial](particle\welcome).
+
+{% include buttons/all-docs.html %}
