@@ -21,6 +21,14 @@
     - Build Ensemble, build
 
 - name: ensemble
+  steps:
+    - Introduction, intro
+    - Save .ens files, save
+    - Ensemble objects, object
+    - Load ensemble, load
+    - Load data subsets, subset
+    - Summarize loaded data, info
+    - Add ensemble members, add
 
 - name: ensembleMetadata
 

@@ -1,13 +1,16 @@
 ---
-layout: simple_layout
-title: Subset Ensemble
+sections:
+  - Subset an ensemble
+  - Select variables
+  - Select ensemble members
+  - Reset
 ---
 
 # Subset an ensemble
 
 One powerful feature of ensemble objects is the ability to load or use a subset of a state vector ensemble for an analysis. In particular, you can request that only certain variables or only certain ensemble members are loaded from a file.
 
-### Specify Variables
+### Select Variables
 
 You can select which variables will be loaded via the "useVariables" command.
 ```matlab
@@ -31,7 +34,7 @@ s = ens.loadGrids;
 ```
 then "s" will only contain gridded "T" and "P" variables. There will not be a "Tmean" field.
 
-### Specify Ensemble Members
+### Select Ensemble Members
 
 You can also select which ensemble members will be loaded via the "useMembers" command:
 ```matlab
@@ -44,7 +47,7 @@ ens = ens.useMembers(members)
 ```
 specifies that the first, 7th, 18th, and 4th ensemble members should be loaded when calling "load" or "loadGrids".
 
-### Reset settings
+### Reset
 You can reset settings for variables by calling "useVariables" with no inputs. For example,
 ```matlab
 ens = ens.useVariables
@@ -56,5 +59,3 @@ Similarly, you can reset settings for ensemble members by calling "useMembers" w
 ens = ens.useMembers
 ```
 will cause all ensemble members to be loaded.
-
-[Previous](load)---[Next](info)

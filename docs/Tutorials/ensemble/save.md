@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Create a .ens file
----
 
 # Creating a .ens file
 
@@ -35,5 +31,3 @@ Here, overwrite is a scalar logical. Set it to true to allow the method to overw
 sv.build(15, true, 'myEnsemble.ens', true)
 ```
 will overwrite any data in a previously existing file named "myEnsemble.ens".
-
-[Previous](intro)---[Next](object)

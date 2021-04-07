@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Ensemble Objects
----
 
 # Ensemble Objects
 
@@ -33,5 +29,3 @@ You can also use the "rename" command to change the name of an ensemble object a
 ens = ens.rename(newName)
 ```
 Here "newName" is a string.
-
-[Previous](save)---[Next](load)

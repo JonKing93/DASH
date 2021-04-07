@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Load Ensemble
----
-
 # Load a saved ensemble
 
 You can use the "load" command to load an ensemble from a .ens file.
@@ -49,5 +44,3 @@ s.T.members.time
 s.T.members.run
 ```
 would have time and run metadata for the ensemble members.
-
-[Previous](object)---[Next](subset)

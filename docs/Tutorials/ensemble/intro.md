@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Saving ensembles
----
-
 # Saving state vector ensembles
 
 In the stateVector tutorial, we saw how to use the [build command](../stateVector/build) to create a state vector ensemble and return it as a matrix. However, it is often useful to save the state vector ensemble to a file, rather than returning it directly as an output matrix. Common reasons for this include:
@@ -28,5 +23,3 @@ DASH uses a ".ens" file format to save state vector ensembles. The .ens files us
 3. Add more ensemble members to a previously saved ensemble.
 
 In the next section, we will see how to generate these files using a stateVector object.
-
-[Previous](welcome)---[Next](save)
