@@ -1,6 +1,5 @@
 - name: gridfile
   steps:
-    - Welcome, welcome
     - Introduction, intro
     - Overview, overview
     - Create new gridfile, new

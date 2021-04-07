@@ -1,7 +1,3 @@
----
-title: "Add Dimensions"
----
-
 # Add New Dimensions
 It's possible that your dataset has more dimensions that the 7 dimensions included by default. If this is the case, you may want to add more dimensions to gridfile. To do this, edit the "dash.dimensionNames" method via
 ```matlab

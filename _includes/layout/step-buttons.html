@@ -4,22 +4,32 @@
 
 {% for tut in site.data.tutorials %}
   {% if lesson == {tut.name}} %}
+    {% if active_step==nil %}
+      <a href={{tut.steps[0] | split: "," | last}} class="step_button">Start Tutorial &gt</a>
 
-    {% for i in (1 .. tut.steps.size) %}
-      {% assign k = i | minus: 1 %}
-      {% assign address = tut.steps[k] | split: ", " | last %}
-      {% if active_step == address %}
-        {% assign previous = k | minus: 1 %}
+    {% elsif active_step=="advanced" %}
+      <a href={{"/docs/tutorials" | relative_url}} class="step_button">&lt All Tutorials</a>
 
-        {% if i != 1 %}
-          <a href={{tut.steps[previous] | split: ", " | last}} class="step_button">&lt Back</a>
+    {% else %}
+      {% for i in (1 .. tut.steps.size) %}
+        {% assign k = i | minus: 1 %}
+        {% assign address = tut.steps[k] | split: ", " | last %}
+        {% if active_step == address %}
+          {% assign previous = k | minus: 1 %}
+
+          {% if i != 1 %}
+            <a href={{tut.steps[previous] | split: ", " | last}} class="step_button">&lt Back</a>
+          {% endif %}
+
+          {% assign link = "advanced" %}
+          {% if i != tut.steps.size %}
+            {% assign link = tut.steps[i] | split: ", " | last %}
+          {% endif %}
+          <a href={{link}} class="step_button">Next &gt</a>
+
         {% endif %}
-        {% if i != tut.steps.size %}
-          <a href={{tut.steps[i] | split: ", " | last}} class="step_button">Next &gt</a>
-        {% endif %}
-
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
 
   {% endif %}
 {% endfor %}
