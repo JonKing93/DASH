@@ -240,6 +240,7 @@ footer a {
   display: flex;
   flex-flow: column nowrap;
   padding: 3.5px 0px 8px 0px;
+  max-width: 200px;
 }
 #rightnav a {
   color: #0F79D0;
