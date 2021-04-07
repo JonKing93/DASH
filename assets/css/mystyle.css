@@ -270,8 +270,23 @@ main {
   max-width: 800px;
   padding: 40px 20px 20px 20px;
 }
-.step_buttons {
-  background: yellow;
+.step_button {
+  margin: 40px 0px 0px 0px;
+  display: inline-block;
+  padding: 5px 0px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 900;
+  width: 80px;
+  text-align: center;
+  font-size: 16px;
+  background: #acb2b8;
+  color: #303030;
+  text-decoration: none;
+}
+.step_button:hover {
+  text-decoration: none;
+  background: #bcc2c8;
 }
 
 

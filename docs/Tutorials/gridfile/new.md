@@ -146,5 +146,3 @@ By default, gridfile.new will not overwrite an existing .grid file. However, if 
 ```matlab
 gridfile.new(filename, meta, attributes, true);
 ```
-
-[Previous](define)---[Next](object)

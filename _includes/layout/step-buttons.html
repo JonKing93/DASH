@@ -5,30 +5,20 @@
 {% for tut in site.data.tutorials %}
   {% if lesson == {tut.name}} %}
 
-    {% assign first_step = tut.steps[0] %}
-    {% assign last_step = tut.steps[-1] %}
-
-    {% assign index = 0 %}
-    {% for step in tut.steps %}
-      {% assign address = step | split: ", " | last %}
+    {% for i in (1 .. tut.steps.size) %}
+      {% assign k = i | minus: 1 %}
+      {% assign address = tut.steps[k] | split: ", " | last %}
       {% if active_step == address %}
+        {% assign previous = k | minus: 1 %}
 
-        {% if step != first_step %}
-          {% assign previous = index | minus: 1 %}
-          <div class="step_button">
-            Previous: {{tut.steps[previous]}}
-          </div>
+        {% if i != 1 %}
+          <a href={{tut.steps[previous] | split: ", " | last}} class="step_button">&lt Back</a>
         {% endif %}
-
-        {% if step != last_step %}
-          {% assign next = index | plus: 1 %}
-          <div class="step_button">
-            Next: {{tut.steps[next]}}
-          </div>
+        {% if i != tut.steps.size %}
+          <a href={{tut.steps[i] | split: ", " | last}} class="step_button">Next &gt</a>
         {% endif %}
 
       {% endif %}
-      {% assign index = index | plus: 1 %}
     {% endfor %}
 
   {% endif %}
