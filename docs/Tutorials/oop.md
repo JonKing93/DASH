@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: OOP
----
-
 ### Object-oriented programming
 DASH is written in a object-oriented style. But what does this mean?
 
