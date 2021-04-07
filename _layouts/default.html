@@ -8,28 +8,7 @@
 
   <div id="below_header">
     {% include layout/docs-nav.html %}
-
-    <div id="content_and_footer">
-
-      <div id="page_content">
-
-        <div id="content_wrap">
-
-          <main>
-            {{content}}
-            <div id="step_buttons">
-              Previous and Next
-            </div>
-          </main>
-
-        </div>
-
-        {% include layout/page-nav.html %}
-      </div>
-
-      {% include layout/footer.html %}
-    </div>
-
+    {% include layout/content-and-footer.html %}
   </div>
 
 </body>

@@ -1,0 +1,35 @@
+{% include liquid/active-tab.html %}
+{% include liquid/active-lesson.html %}
+{% include liquid/active-step.html %}
+
+{% for tut in site.data.tutorials %}
+  {% if lesson == {tut.name}} %}
+
+    {% assign first_step = tut.steps[0] %}
+    {% assign last_step = tut.steps[-1] %}
+
+    {% assign index = 0 %}
+    {% for step in tut.steps %}
+      {% assign address = step | split: ", " | last %}
+      {% if active_step == address %}
+
+        {% if step != first_step %}
+          {% assign previous = index | minus: 1 %}
+          <div class="step_button">
+            Previous: {{tut.steps[previous]}}
+          </div>
+        {% endif %}
+
+        {% if step != last_step %}
+          {% assign next = index | plus: 1 %}
+          <div class="step_button">
+            Next: {{tut.steps[next]}}
+          </div>
+        {% endif %}
+
+      {% endif %}
+      {% assign index = index | plus: 1 %}
+    {% endfor %}
+
+  {% endif %}
+{% endfor %}
