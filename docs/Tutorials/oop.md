@@ -1,5 +1,13 @@
-### Object-oriented programming
-DASH is written in a object-oriented style. But what does this mean?
+---
+sections:
+  - Object oriented programming
+  - How it works
+  - Practical implications
+  - Additional resources
+---
+
+### Object oriented programming
+DASH is written in an object oriented style. But what does this mean?
 
 In programming, you may be familiar with the concepts of variables and functions. For example, I might have a variable named "numbers":
 ```matlab
@@ -13,7 +21,7 @@ myAverage = mean(numbers);
 Object oriented programming (OOP) is a technique that lets you combine specific functions and variables together. This can help organize code and ensure that functions are applied to the correct variables.
 
 
-### So, how does this work?
+### How it works
 
 In practice, OOP is similar to Matlab structures. If you are familiar with structures, you know that you can define fields for a structure. For example,
 ```matlab
@@ -46,7 +54,7 @@ to specify how to treat NaN values when taking an average of numbers stored in m
 
 ### Practical Implications
 
-Okay, that's neat but why should I care?
+Okay that's neat, but why should you care?
 
 The main implication for DASH users is that most methods / functions are accessed via dot notation. For example
 ```matlab
@@ -59,10 +67,10 @@ stateVector.build
 might be used to build a state vector ensemble.
 
 
-### More help
+### Additional resources
 
-If you still aren't sure how this works, check out the tutorials, which provide step-by-step instructions for working with DASH.
+If you'd like more examples of how this works, check out the [DASH tutorials](../tutorials), which provide step-by-step instructions for working with DASH.
 
 If you are interested in learning more about OOP in Matlab, check out the [documentation for object-oriented design](https://www.mathworks.com/help/matlab/object-oriented-design-with-matlab.html).
 
-[All tutorials](welcome)
+{% include buttons/all-tutorials.html %}

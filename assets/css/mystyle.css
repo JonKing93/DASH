@@ -105,7 +105,7 @@ align-items: center;
 
 /* Everything below the header */
 #below_header {
-  background: green;
+  background: #2b3136;
   display: flex;
   flex-flow: row nowrap;
 }
@@ -234,7 +234,7 @@ footer a {
 #rightnav ul {
   display: flex;
   flex-flow: column nowrap;
-  padding: 30px 40px 0px 0px;
+  padding: 30px 10px 0px 0px;
 }
 #rightnav li {
   display: flex;
@@ -253,6 +253,9 @@ footer a {
   border-bottom: 1px solid silver;
   margin: 0px 0px 5px 0px;
 }
+.hidden {
+  visibility: hidden;
+}
 
 
 
@@ -267,17 +270,17 @@ footer a {
 
 /* The page's content */
 main {
-  max-width: 800px;
+  max-width: 700px;
   padding: 40px 20px 20px 20px;
 }
 .step_button {
   margin: 40px 0px 0px 0px;
   display: inline-block;
-  padding: 5px 0px;
+  padding: 5px 20px;
   border-radius: 5px;
   text-transform: uppercase;
   font-weight: 900;
-  width: 80px;
+  /*width: 80px;*/
   text-align: center;
   font-size: 16px;
   background: #acb2b8;

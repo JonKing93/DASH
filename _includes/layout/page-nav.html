@@ -1,8 +1,8 @@
 {% include liquid/active-tab.html %}
 
-{% if tab=="docs" and page.sections!=nil %}
+{% if tab=="docs" %}
 
-  <nav id="rightnav">
+  <nav id="rightnav" {% if page.sections==nil %}class="hidden"{% endif %} >
     <ul>
       <li id="on_this_page">On this page</li>
 

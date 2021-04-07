@@ -1,10 +1,10 @@
 # Welcome to the DASH Tutorials!
 
-Here you can find step-by-step guides for working with the various modules in DASH. Also check out the [DASH demos](demos) for examples of scientific applications.
+Here you can find step-by-step guides for working with the various modules in DASH. Also check out the [DASH demos](..\demos) for examples of scientific applications.
 
 ### Object oriented style
 
-DASH is written in an object-oriented style. If you are unfamiliar with object oriented programming (also known as OOP), check out the [introduction to OOP](tutorials\oop).
+DASH is written in an object-oriented style. If you are unfamiliar with object oriented programming (also known as OOP), check out the [introduction to OOP](oop).
 
 ### State vector ensembles
 
