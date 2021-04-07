@@ -90,7 +90,7 @@ will return X as a (longitude x latitude x level x time) array and will load eve
 
 <br>
 
-### Optional: Start, Count, Stride Syntax
+### Start, Count, Stride Syntax
 gridfile.load also supports the start/count/stride syntax as an alternative to specifying indices. Syntax is
 ```matlab
 grid.load(dimensions, start, count, stride)
