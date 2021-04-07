@@ -11,10 +11,13 @@
       <a href={{"/docs/tutorials" | relative_url}} class="step_button">&lt All Tutorials</a>
 
     {% else %}
+      {% assign is_step = false %}
+
       {% for i in (1 .. tut.steps.size) %}
         {% assign k = i | minus: 1 %}
         {% assign address = tut.steps[k] | split: ", " | last %}
         {% if active_step == address %}
+          {% assign is_step = true %}
           {% assign previous = k | minus: 1 %}
 
           {% if i != 1 %}
@@ -29,6 +32,10 @@
 
         {% endif %}
       {% endfor %}
+
+      {% if is_step==false %}
+        <a href="advanced" class="step_button">&lt Advanced Topics</a>
+      {% endif %}
     {% endif %}
 
   {% endif %}

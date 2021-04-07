@@ -10,18 +10,18 @@ DASH is written in an object-oriented style. If you are unfamiliar with object o
 
 DASH includes several modules to help design and build state vector ensembles.
 
-* To organize and catalogue climate data, check out the [gridfile tutorial](gridfile\welcome)
-* To design a state vector, see the [stateVector tutorial](stateVector\welcome)
-* To save and load state vector ensembles from file, see the [ensemble tutorial](ensemble\welcome)
-* To find metadata for elements of a state vector ensemble, see the [ensembleMetadata tutorial](ensembleMetadata\welcome).
+* To organize and catalogue climate data, check out the [gridfile tutorial](gridfile)
+* To design a state vector, see the [stateVector tutorial](stateVector)
+* To save and load state vector ensembles from file, see the [ensemble tutorial](ensemble)
+* To find metadata for elements of a state vector ensemble, see the [ensembleMetadata tutorial](ensembleMetadata).
 
 ### Data Assimilation
 
 DASH also includes modules for implementing data assimilation.
 
-* To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm\welcome).
-* To implement a Kalman Filter, see the [kalmanFilter tutorial](kalmanFilter\welcome).
-* To test optimal sensor placement, see the [optimalSensor tutorial](sensor\welcome).
-* To implement a particle Filter, see the [particleFilter tutorial](particle\welcome).
+* To use proxy-system models (PSMs) to estimate proxy records, see the [PSM tutorial](psm).
+* To implement a Kalman Filter, see the [kalmanFilter tutorial](kalmanFilter).
+* To test optimal sensor placement, see the [optimalSensor tutorial](sensor).
+* To implement a particle Filter, see the [particleFilter tutorial](particle).
 
 {% include buttons/all-docs.html %}
