@@ -1,17 +1,12 @@
 ---
-title: "New .grid File"
+sections:
+  - Define metadata
+  - Create file
+  - Non-dimensional attibutes
+  - Overwrite files
 ---
 
 # Create a new .grid file
-
-* [Define Metadata](#define-metadata)
-  * [Example 1: Basic Use](#example-1-basic-use)
-  * [Example 2: Multiple Variables](#example-2-multiple-variables)
-  * [Example 3: Irregularly-spaced data](#example-3-irregularly-spaced-data)
-  * [Example 4: Tripolar Data](#example-4-tripolar-data)
-* [Create File](#create-file)
-* [Optional: Include Non-Dimensional Attributes](#optional-include-non-dimensional-attributes)
-* [Optional: Overwrite Existing Files](#optional-overwrite-existing-files)
 
 Before creating a new .grid file, let's first recall that each .grid file manages an N-dimensional array:
 
@@ -127,7 +122,7 @@ because no data source files have been linked to the .grid file. In the next few
 
 
 <br>
-### Optional: Include Non-Dimensional Attributes
+### Non-Dimensional Attributes
 
 You can optionally add non-dimensional metadata to a .grid file as well. For this, use the syntax
 ```matlab
@@ -141,7 +136,7 @@ to remind yourself of the source of climate model output and the units of a data
 
 <br>
 
-### Optional: Overwrite Existing Files
+### Overwrite Files
 By default, gridfile.new will not overwrite an existing .grid file. However, if you wish to enable overwriting, you can set the fourth input argument to true, as per
 ```matlab
 gridfile.new(filename, meta, attributes, true);

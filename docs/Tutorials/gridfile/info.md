@@ -1,8 +1,4 @@
----
-title: "Summarize .grid File"
----
-
-# Get a summary of a .grid file's contents
+# Inspect a .grid file's contents
 
 #### Summarize file in console
 If you forget the contents of a .grid file, you can print a summary of its contents to the Matlab console using:
@@ -33,5 +29,3 @@ You can also return the .grid file and data source summaries as a structure. Spe
 [gridInfo, sourceInfo] = grid.info( 'all' );
 ```
 will cause the method to return these structures and not print anything to the console.
-
-[Advanced Topics](advanced)

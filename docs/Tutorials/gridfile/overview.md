@@ -1,5 +1,8 @@
 ---
-title: Overview
+sections:
+  - N-Dimensional array
+  - Unique metadata
+  - Data source files
 ---
 
 # So, how does this all work?
@@ -27,6 +30,3 @@ When you create a new .grid file, the N-dimensional array is initially empty. Ho
 
 <img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
 Figure 3: Data source files located within an N-dimensional array.
-
-
-[Previous](intro)---[Next](new)

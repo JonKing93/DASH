@@ -1,6 +1,3 @@
----
----
-
 # Change Dimension Names
 
 You may wish to change the name of a dimension to something you find more meaningful. For example, you might want to rename the latitude dimension from <span style="color:#cc00cc">"lat"</span> to <span style="color:#cc00cc">"latitude"</span>. To do this, start by opening the "dash.dimensionNames" method via
@@ -37,5 +34,3 @@ to
 lat = "latitude";
 ```
 **Important:** All new dimension names must be [valid Matlab variable names](https://www.mathworks.com/help/matlab/matlab_prog/variable-names.html).
-
-[Advanced Topics](advanced)

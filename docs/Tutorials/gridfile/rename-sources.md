@@ -1,7 +1,3 @@
----
-title: "Rename Sources"
----
-
 # Move / rename data source files
 
 By default, when a data source file is added to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection. If you change the relative path to the data source file (by moving either the .grid file or the data source file without moving the other), then you will need to update the file path in the .grid file.
@@ -44,5 +40,3 @@ By default, renameSources will use the same type of file path (relative or absol
 grid.renameSources( filenames, newnames, relativePath)
 ```
 where relativePath is a logical vector indicating whether the file paths to the renamed data sources should be stored as relative paths.
-
-[Advanced Topics](advanced)

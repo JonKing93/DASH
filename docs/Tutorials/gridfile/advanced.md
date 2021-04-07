@@ -1,6 +1,3 @@
----
----
-
 # Advanced topics
 The following pages contain tutorials on using more advanced gridfile features.
 

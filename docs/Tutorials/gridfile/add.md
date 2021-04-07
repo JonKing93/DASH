@@ -1,18 +1,15 @@
 ---
-title: "Add Data Sources"
+sections:
+  - Define source metadata
+  - Add source files
+  - Source filepaths
+  - Merging dimensions
+  - Convert units
+  - Fill value and valid range
+  - Use absolute file paths
 ---
 
 # Add data sources to a .grid file
-
-* [Define source file metadata](#define-source-file-metadata)
-* [Add source files](#add-source-files)
-  * [Example 1](#example-1)
-  * [Example 2](#example-2)
-* [Data source filepaths](#data-source-file-paths)
-* [Merging Dimensions (for tripolar grids)](#merging-dimensions-tripolar-grids)
-* [Optional: Convert Units](#optional-convert-units)
-* [Optional: Fill value and valid range](#optional-fill-value-and-valid-range)
-* [Optional: Absolute file paths](#optional-save-absolute-file-paths)
 
 So, we've have created a .grid file and defined the scope of its N-dimensional array. Returning to the illustrations, we have something like this:
 
@@ -23,7 +20,7 @@ At this point, that N-dimensional array is empty; it is not organizing any data.
 <img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
 
 
-### Define Source File Metadata
+### Define Source Metadata
 In order to add a data source file to a .grid file, we first need to define the scope of the data in the data source file. This way, the .grid file can locate the values in the data source within the N-dimensional array. Returning to the illustrations:
 
 <img src="\DASH\assets\images\gridfile\grid-source.svg" alt="An N-dimensional array with data source files." style="width:80%;display:block">
@@ -40,7 +37,7 @@ As before, the order in which you provide dimensions does not matter. However, t
 
 <br>
 
-### Add Source File
+### Add Source Files
 To add data source files to the .grid file's collection, use
 ```matlab
 grid.add(type, source, variable, dimensionOrder, sourceMeta)
@@ -109,13 +106,13 @@ end
 
 <br>
 
-### Data source file paths
+### Source filepaths
 
 By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#optional-save-absolute-file-paths).
 
 <br>
 
-### Merging Dimensions (Tripolar grids)
+### Merging Dimensions
 
 Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular spatial grids. We previously saw [how to use the "coord" dimension](new#example-4-tripolar-data) to define metadata for datasets with non-regular spatial coordinates. However, some non-regular datasets may still be saved with explicit latitude and longitude dimensions. This is most common for tripolar model output: tripolar data is often saved as (longitude x latitude x time) even though each tripolar spatial point has a unique latitude-longitude coordinate. Spatial metadata for such data is typically provided as a latitude *matrix* of size (nLon x nLat) and a longitude *matrix* also of size (nLon x nLat). The spatial coordinate for each spatial point can then be found by querying the appropriate element in each of the latitude and longitude matrices.
 
@@ -171,7 +168,7 @@ would not because "lon" comes before "lat" in one source, but after "lat" in ano
 
 <br>
 
-### Optional: Convert Units
+### Convert Units
 You can optionally have the .grid file convert the units of data values loaded from a particular data source. Gridfile converts units using a linear transformation: Y = aX + b, where X are the values loaded from a data source file and Y are the values returned to the user. To convert the units of values from a data source, use the optional 'convert' flag, as per:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', convert)
@@ -189,7 +186,7 @@ grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'convert', conver
 
 <br>
 
-### Optional: Fill Value and Valid Range
+### Fill Value and Valid Range
 You can have the .grid file convert data matching a fill value to NaN using the optional 'fill' flag:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'fill', fillValue);
@@ -213,12 +210,9 @@ to convert any values smaller than 0 or larger than 100 to NaN when data is load
 
 <br>
 
-### Optional: Save Absolute File Paths
+### Use Absolute File Paths
 
 When you add a data source file to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection by default. However, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolutePath' flag and select true as the option:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'absolutePath', true)
 ```
-
-
-[Previous](object)---[Next](load)

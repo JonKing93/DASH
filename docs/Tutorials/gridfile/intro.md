@@ -1,7 +1,3 @@
----
-title: Introduction
----
-
 # So, why use gridfile?
 
 In many scientific fields, it's common to use multiple geospatial datasets to perform an analysis. For example, I may want to compare temperature data from:
@@ -50,6 +46,3 @@ will allow us to load Northern Hemisphere temperature values post 1800 CE from A
 4. The same time metadata format -- we'll say I prefer decimal years.
 
 Pretty convenient!
-
-
-[Previous](welcome)---[Next](overview)

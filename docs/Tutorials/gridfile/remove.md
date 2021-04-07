@@ -1,6 +1,4 @@
----
-title: "Remove Sources"
----
+
 # Remove data source files from a .grid file.
 
 If you accidentally add a data source file to a .grid file, you may wish to remove it. The syntax is
@@ -30,5 +28,3 @@ You can exercise greater control over the "remove" method by also specifying the
 grid.remove( filename, variable )
 ```
 In this case, only data sources that match both the file and variable name will be removed from the .grid file.
-
-[Advanced Topics](advanced)

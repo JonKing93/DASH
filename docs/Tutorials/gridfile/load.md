@@ -102,5 +102,3 @@ grid.load(["lat","lon"], [1 5], [6, Inf], [3 4])
 will load 6 latitude elements, starting with the first element and loading every third element after that. This will also load every fourth longitude element starting from the fifth element until the end of the dimension.
 
 Nice! That's the tutorial. If you'd like more control over gridfile, check out the [Advanced Topics](advanced) page.
-
-[Previous](add)---[All Tutorials](../welcome)
