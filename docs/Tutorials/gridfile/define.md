@@ -55,5 +55,3 @@ meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ...
 metadata1, metadata2, ..., metadataN are the metadata fields along each specified dimension. Each row of a metadata field is used to index one element along a dimension, so each row must be unique. Metadata can use numeric, logical, string, char, cellstring, or datetime formats, but cannot contain NaN or NaT elements. In general, it's best to use metadata values that are meaningful to you, as this will allow you to reuse the .grid file many times in the future.
 
 If this feels a bit abstract, don't worry. In the next section, we'll see some concrete examples of how this all works and use it to help create a new .grid file.
-
-[Previous](overview)---[Next](define)

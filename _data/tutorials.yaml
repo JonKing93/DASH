@@ -2,6 +2,7 @@
   steps:
     - Introduction, intro
     - Overview, overview
+    - Define metadata, define
     - Create new gridfile, new
     - gridfile objects, object
     - Add data sources, add
