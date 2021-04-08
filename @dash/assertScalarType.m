@@ -16,7 +16,7 @@ function[] = assertScalarType(input, name, type, typeName)
 %    string.
 
 if ~isscalar(input) || ~isa(input, type)
-    error('%s must be a scalar %s.', name, typeName);
+    error('%s must be a %s scalar.', name, typeName);
 end
 
 end

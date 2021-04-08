@@ -193,9 +193,9 @@ classdef (Abstract) PSM
 
     % Estimate proxy values
     methods (Static)
-        [Ye, R] = estimate(X, F);   % User function call
+        [Ye, R] = estimate(X, F, throwError);   % User function call
         F = setupEstimate(X, F);    % Does error checking before computing estimates
-        [Ye, R] = computeEstimates(X, F);
+        [Ye, R] = computeEstimates(X, F, throwError);
     end
     
     % Run individual PSM objects

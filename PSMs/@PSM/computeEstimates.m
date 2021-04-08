@@ -1,4 +1,4 @@
-function[Ye, R] = computeEstimates(X, F)
+function[Ye, R] = computeEstimates(X, F, throwError)
 %% Computes proxy estimates for an ensemble and set of PSMs. This is a
 % low-level function and does not apply error-checking. Please see
 % "PSM.estimate" for the recommended user command.
@@ -9,6 +9,9 @@ function[Ye, R] = computeEstimates(X, F)
 % [Ye, R] = PSM.computeEstimates(X, F)
 % Also estimate error-variances from PSMs when possible
 %
+% [...] = PSM.computeEstimates(X, F, throwError)
+% Specify whether to throw an error when a PSM fails, or issue a warning.
+%
 % ----- Inputs -----
 %
 % X: A model ensemble. A numeric array with up to 3 
@@ -16,15 +19,24 @@ function[Ye, R] = computeEstimates(X, F)
 %
 % F: Cell vector of PSMs
 %
+% throwError: A scalar logical indicating whether to throw an error when a
+%    PSM fails (true), or instead issue a warning (false -- Default)
+%
 % ----- Outputs -----
 %
 % Ye: Proxy estimates for the prior(s). (nSite x nEns x nPrior)
 %
 % R: Error-variances for the priors. (nSite x nEns x nPrior)
 
+% Default and error check error throws
+if ~exist('throwError','var') || isempty(throwError)
+    throwError = false;
+end
+dash.assertScalarType(throwError, 'throwError', 'logical', 'logical');
+
 % Sizes
 nSite = numel(F);
-[~, nEns, nPrior] = size(X);
+[nState, nEns, nPrior] = size(X);
 
 % Preallocate
 Ye = NaN(nSite, nEns, nPrior);
@@ -37,7 +49,7 @@ for s = 1:nSite
     psm = F{s};
     
     % Propagate rows over ensemble members and priors
-    [~, nCols, nDim3] = size(psm.rows, 1:3);
+    [nRows, nCols, nDim3] = size(psm.rows);
     if nCols==1
         psm.rows = repmat(psm.rows, [1 nEns, 1]);
     end
@@ -46,52 +58,94 @@ for s = 1:nSite
     end
     
     % Extract the data required to run the PSM
-    [~, c, p] = ind2sub(siz, 1:prod(siz));
+    siz = [nRows, nEns, nPrior];
+    [~, c, p] = ind2sub(siz, (1:prod(siz))' );
     index = sub2ind([nState, nEns, nPrior], psm.rows(:), c, p);
     Xpsm = reshape( X(index), siz );
+    
+    % Notify user if PSMs fail
+    ranPSM = false(1, nPrior);
+    psmFailed = false(1, nPrior);
+    Rfailed = false(1, nPrior);
     
     % Run the PSM for each prior
     for p = 1:nPrior
         Xrun = Xpsm(:,:,p);
         
         % Run the PSM with R estimation
-        ranPSM = false;
         if nargout>1 && psm.estimatesR
-            Rfailed = false;
             try
                 [Yrun, Rrun] = psm.runPSM(Xrun);
-                ranPSM = true;           
-            catch
-                Rfailed = true;
-            end            
-            if ~isnumeric(Rrun) || ~isrow(Rrun) || numel(Rrun)~=nEns
-                Rfailed = true;
-            end
-            
-            % Notify user and reset R if failed
-            if Rfailed
-               warning('Failed to estimate R values for %s for prior %.f', psm.messageName(s), p);
-               Rrun = NaN(1, nEns);
+                ranPSM(p) = true;
+                Rname = sprintf('R estimates for %s for prior %.f', psm.messageName(s), p);
+                dash.assertVectorTypeN(Rrun, 'numeric', nEns, Rname);
+                assert(isrow(Rrun), sprintf('%s must be a row vector', Rname));
+            catch ME
+                Rfailed(p) = true;
+                
+                if throwError
+                    rethrow(ME);
+                end
             end
         end
         
-        % Run the PSM without R estimation
-        if ~ranPSM
-            Yrun = psm.runPSM(Xrun);
+        % Run the PSM without R estimation.
+        if ~ranPSM(p)
+            try
+                Yrun = psm.runPSM(Xrun);
+                ranPSM(p) = true;
+            catch ME
+                psmFailed(p) = true;
+                Rfailed(p) = true;
+                
+                if throwError
+                    rethrow(ME);
+                end
+            end
         end
         
         % Error check the Y output
-        name = sprintf('Y values for %s for prior %.f', psm.messageName(s), p);
-        dash.assertVectorTypeN(Yrun, 'numeric', nEns, name);
-        if ~isrow(Yrun)
-            error('%s must be a row vector', name);
-        end  
-        
-        % Record values
-        Ye(s,:,p) = Yrun;
-        if nargout>1 && psm.estimatesR
-            R(s,:,p) = Rrun;
+        if ranPSM(p)
+            try
+                Yname = sprintf("Y estimates for %s for prior %.f", psm.messageName(s), p);
+                dash.assertVectorTypeN(Yrun, 'numeric', nEns, Yname);
+                assert(isrow(Yrun), sprintf('%s must be a row vector', Yname));
+            catch ME
+                psmFailed(p) = true;
+                Rfailed(p) = true;
+                
+                if throwError
+                    rethrow(ME);
+                end
+            end
         end
+        
+        % Only record values if the PSM was successful
+        if ~psmFailed(p)
+            Ye(s,:,p) = Yrun;
+            if nargout>1 && psm.estimatesR && ~Rfailed(p)
+                R(s,:,p) = Rrun;
+            end
+        end
+    end
+    
+    % Notify user of failed PSMs
+    if any(psmFailed)
+        whichPrior = '';
+        if ~all(psmFailed)
+            whichPrior = sprintf(' for prior(s) %s', dash.messageList(find(psmFailed)));
+        end
+        warning('%s failed to run%s', psm.messageName(s), whichPrior);
+    end
+    
+    % Notify of failed R estimation
+    Rfailed = Rfailed & ~psmFailed;
+    if nargout>1 && psm.estimatesR && any(Rfailed)
+        whichPrior = '';
+        if ~all(Rfailed)
+            whichPrior = sprintf(' for prior(s) %s', dash.messageList(find(Rfailed)));
+        end
+        warning('%s failed to estimate R values%s', psm.messageName(s), whichPrior);
     end
 end
 
