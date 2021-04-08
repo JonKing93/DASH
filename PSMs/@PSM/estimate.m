@@ -28,7 +28,7 @@ function[Ye, R] = estimate(X, F, throwError)
 % R: Estimate error-variances as estimated by the PSMs.
 
 % Defaults
-if ~exist('throwErrors','var') || isempty(throwError)
+if ~exist('throwError','var') || isempty(throwError)
     throwError = [];
 end
 
