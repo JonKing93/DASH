@@ -26,7 +26,7 @@ classdef linearPSM < PSM
             % obj = linearPSM(rows, slope, ...)
             % Uses the same slope for all variables.
             %
-            % obj = linaerPSM(rows, slopes)
+            % obj = linearPSM(rows, slopes)
             % Uses a default intercept of 0.
             %
             % ----- Inputs -----
@@ -58,7 +58,7 @@ classdef linearPSM < PSM
             if ~exist('intercept','var')
                 intercept = [];
             end
-            [obj.slopes, obj.intercept] = linearPSM.checkInputs(slopes, intercept, numel(obj.rows));
+            [obj.slopes, obj.intercept] = linearPSM.checkInputs(slopes, intercept, size(obj.rows,1));
         end
         
         % Run the PSM
@@ -157,6 +157,7 @@ classdef linearPSM < PSM
             elseif nSlopes~=nRows
                 error('The number of slopes (%.f) does not match the number of rows (%.f)', nSlopes, nRows);
             end
+            slopes = slopes(:);
 
             % Default and error check intercept
             if ~exist('intercept','var') || isempty(intercept)

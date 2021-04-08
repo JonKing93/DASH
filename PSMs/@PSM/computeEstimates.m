@@ -33,7 +33,7 @@ if ~exist('throwError','var') || isempty(throwError)
     throwError = false;
 end
 dash.assertScalarType(throwError, 'throwError', 'logical', 'logical');
-
+ 
 % Sizes
 nSite = numel(F);
 [nState, nEns, nPrior] = size(X);
