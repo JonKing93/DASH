@@ -51,7 +51,6 @@ classdef baysparPSM < PSM
             if ~exist('options','var') || isempty(options)
                 options = {};
             end
-            baysparPSM.checkInputs(lat, lon, options);
             
             % Run the PSM
             tex = TEX_forward(lat, lon, ssts, options{:});
@@ -63,34 +62,6 @@ classdef baysparPSM < PSM
                 Y = Y';
                 R = R';
             end        
-        end
-        
-        % Error check the PSM inputs
-        function[lat, lon, options] = checkInputs(lat, lon, options)
-            %% Error checks the BaySPAR PSM parameters
-            %
-            % [lat, lon, options] = baysparPSM.checkInputs(lat, lon, options)
-            %
-            % ----- Inputs -----
-            %
-            % lat: Site latitude. A numeric scalar.
-            %
-            % lon: Site longitude. A numeric scalar.
-            %
-            % options: Calibration options. A cell vector with up to 3
-            %    elements.
-            
-            % Error check lat and lon
-            dash.assertScalarType(lat, 'lat', 'numeric', 'numeric');
-            dash.assertScalarType(lon, 'lon', 'numeric', 'numeric');
-            dash.assertRealDefined(lat, 'lat');
-            dash.assertRealDefined(lon, 'lon');
-            
-            % Error check calibration options
-            dash.assertVectorTypeN(options, 'cell', [], 'options');
-            if numel(options)>3
-                error('options cannot contain more than 3 elements.');
-            end
         end
     end
     
@@ -141,8 +112,15 @@ classdef baysparPSM < PSM
             % Error check the PSM inputs.
             if ~exist('options','var') || isempty(options)
                 options = {};
+            else
+                dash.assertVectorTypeN(options, 'cell', [], 'options');
+                assert(numel(options)<=3, 'options cannot have more than 3 elements');
             end
-            [obj.lat, obj.lon, obj.options] = baysparPSM.checkInputs(lat, lon, options);
+            
+            % Save the inputs
+            obj.lat = lat;
+            obj.lon = lon;
+            obj.options = options;
         end
         
         % Run the PSM
@@ -162,9 +140,7 @@ classdef baysparPSM < PSM
             % R: Proxy uncertainties estimated from the posterior
             
             % Run the forward model, convert to row
-            tex = TEX_forward(obj.lat, obj.lon, SSTs, obj.options{:});
-            Y = mean(tex,2)';
-            R = var(tex,[],2)';
+            [Y, R] = baysparPSM.run(obj.lat, obj.lon, SSTs, obj.options);
             
         end
     end

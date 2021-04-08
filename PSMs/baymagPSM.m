@@ -58,7 +58,7 @@ classdef baymagPSM < PSM
             R = var(mgca, [], 2);
             
             % Shape to the sst vector
-            if isrow(ssts)
+            if isrow(t)
                 Y = Y';
                 R = R';
             end        
@@ -109,13 +109,13 @@ classdef baymagPSM < PSM
             % Error check the optional argument cell            
             if ~exist('options','var') || isempty(options)
                 options = {};
+            else
+                dash.assertVectorTypeN(options, 'cell', [], 'options');
+                assert(numel(options)<=4, 'options cannot have more than 4 elements.');
             end
-            dash.assertVectorTypeN(options, 'cell', [], 'options');
-            assert(numel(options)<=4, 'options cannot have more than 4 elements.');
             
             % Set the inputs
             obj.age = age;
-            obj.t = t;
             obj.omega = omega;
             obj.salinity = salinity;
             obj.pH = pH;
@@ -141,10 +141,8 @@ classdef baymagPSM < PSM
             %
             % R: Proxy uncertainties estimated from the posterior
             
-            % Run the forward model, convert to row
-            mgca = baymag_forward_ln(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
-            Y = mean(mgca, 2)';
-            R = var(mgca, [], 2)';
+            % Run the forward model
+            [Y, R] = baymagPSM.run(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
         end
     end
 end
