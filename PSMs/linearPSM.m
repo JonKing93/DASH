@@ -52,7 +52,7 @@ classdef linearPSM < PSM
                 name = "";
             end            
             obj@PSM(name, false);            
-            obj = obj.useRows(rows, NaN);
+            obj = obj.useRows(rows);
             
             % Error check the slopes and intercept
             if ~exist('intercept','var')

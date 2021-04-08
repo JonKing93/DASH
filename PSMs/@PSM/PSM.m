@@ -105,10 +105,13 @@ classdef (Abstract) PSM
         end
                 
         % Set the rows
-        function[obj] = useRows(obj, rows, nRows)
+        function[obj] = useRows(obj, rows, nRequired)
             %% Specifies the state vector rows used by a PSM
             %
             % obj = obj.useRows(rows)
+            %
+            % obj = obj.useRows(rows, nRows)
+            % Require a specific number of rows.
             %
             % ----- Inputs -----
             %
@@ -126,6 +129,11 @@ classdef (Abstract) PSM
             %
             % obj: The updated PSM object
             
+            % Default nRows
+            if ~exist('nRequired','var') || isempty(nRequired)
+                nRequired = [];
+            end
+            
             % Error check
             assert(~isempty(rows), 'rows cannot be empty');
             assert(ndims(rows)<=3, 'rows cannot have more than 3 dimensions');
@@ -135,7 +143,6 @@ classdef (Abstract) PSM
             if isnumeric(rows)
                 dash.assertRealDefined(rows, 'rows');
                 dash.assertPositiveIntegers(rows, 'rows');
-                assert(size(rows,1)==nRows, sprintf('row(s) must have %.f element(s) along the first dimension', nRows));
                 
             % Error check logical indices
             else
@@ -147,6 +154,11 @@ classdef (Abstract) PSM
                 siz = size(rows, 1:3);
                 [rows, ~, ~] = ind2sub(siz, find(rows));
                 rows = reshape(rows, nRows, siz(2), siz(3));
+            end
+            
+            % Optionally check the number of rows
+            if ~isempty(nRequired)
+                assert(size(rows,1)==nRequired, sprintf('You must select %.f rows', nRequired));
             end
             
             % Save

@@ -1,5 +1,5 @@
 1. Run error checking for the new functionality
-2. Run EVERY error checker
+2. Run EVERY old error checker
 3. Update the tutorials
 4. Update the dependency lists
 5. Update dash.version
