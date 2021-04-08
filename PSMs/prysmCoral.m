@@ -96,7 +96,7 @@ classdef prysmCoral < PSM
                 name = "";
             end
             obj@PSM(name, false);            
-            obj.useRows(rows, 2);
+            obj = obj.useRows(rows, 2);
             
             % Model inputs
             dash.assertScalarType(useSSS, 'useSSS', 'logical', 'logical');

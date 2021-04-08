@@ -80,6 +80,8 @@ classdef prysmCellulose < PSM
             %    First row should be temperature, second is precipitation,
             %    third should be relative humidity.
             %
+            % model: A string. Either "Roden" or "Evans"
+            %
             % name: An optional name for the PSM. A string.
             %
             % Please see the documentation of PRYSM module
@@ -91,7 +93,7 @@ classdef prysmCellulose < PSM
                 name = "";
             end
             obj@PSM(name, false);            
-            obj.useRows(rows, 3);
+            obj = obj.useRows(rows, 3);
             
             % Error check model inputs
             dash.assertScalarType(d18Os, 'd18Os', 'numeric', 'numeric');

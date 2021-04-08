@@ -76,7 +76,7 @@ classdef prysmIcecore < PSM
                 name = "";
             end
             obj@PSM(name, false);
-            obj.useRows(row, 1);
+            obj = obj.useRows(row, 1);
             
             % Error check, set model inputs
             if exist('altitudeDifference','var') || isempty(altitudeDifference)

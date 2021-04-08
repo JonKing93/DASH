@@ -16,7 +16,7 @@ classdef prysmSpeleothem < PSM
    
     
     properties
-        timeStep;
+        timeStep = 1/12;
         model = 'Adv-Disp';
         tau0 = 1;
         Pe = 1;
@@ -85,7 +85,7 @@ classdef prysmSpeleothem < PSM
                 name = "";
             end
             obj@PSM(name, false);
-            obj.useRows(rows, 2);
+            obj = obj.useRows(rows, 2);
             
             % Error check and set model inputs
             assert(isscalar(timeStep) && timeStep>0, 'timeStep must be a positive scalar');
@@ -102,6 +102,9 @@ classdef prysmSpeleothem < PSM
             if exist('Pe', 'var') && ~isempty(Pe)
                 dash.assertScalarType(Pe, 'Pe', 'numeric', 'numeric');
                 obj.Pe = Pe;
+            end
+            if exist('timeStep','var') && ~isempty(timeStep)
+                assert(timeStep==1/12, 'timeStep must be 1/12 (monthly)');
             end
         end
         
