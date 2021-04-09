@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Coordinates
----
 
 # Latitude-Longitude Coordinates
 
@@ -35,5 +31,3 @@ Here, "verbose" is a scalar logical. To disable notifications, set it to false, 
 ```matlab
 latlon = ensMeta.coordinates(false);
 ```
-
-[Previous](dimension)---[Next](variable)

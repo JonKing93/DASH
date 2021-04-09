@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Advanced ensembleMetadata
----
 
 # Advanced topics
 The following pages contain tutorials on using more advanced ensembleMetadata features.

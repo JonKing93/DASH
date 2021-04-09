@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Column Metadata
----
-
 # Metadata at specific columns
 
 Sometimes you may want to query the metadata at particular columns in the state vector. This can be useful to sort output from the [variable command](variable) and as a sanity check when designing evolving priors. To query the metadata at specific rows, use the "columns" method using the syntax:
@@ -122,18 +117,3 @@ columns = 1:5;
 meta = ensMeta.columns(columns, 'T', 'lat', true)
 ```
 will return "meta" as a structure with a "T" field rather than as an array of latitude metadata.
-
-[Advanced Topics](advanced)
-
-
-
-
-The output metadata will only include metadata for the specified variables. For example,
-
-
-
-
-
-
-
- Since, "lat" and "lon" are state dimensions, they have no metadata

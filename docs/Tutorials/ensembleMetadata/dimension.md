@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Dimension Metadata
----
 
 # Metadata for a dimension over all variables
 
@@ -35,5 +31,3 @@ Here, alwaysStruct is a logical that indicates whether output should always be a
 meta = ensMeta.dimension("lat", true)
 ```
 will always return the metadata for the latitude dimension as a structure.
-
-[Advanced Topics](advanced)]

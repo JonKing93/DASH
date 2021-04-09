@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Closest coordinates
----
-
 # Closest latitude-longitude coordinates
 
 It is often useful to find elements in a state vector variable that are closest to a set of latitude-longitude coordinates. This is often useful when selecting inputs for proxy system models. You can use the "closestLatLon" method to do so. Here, the most basic syntax is:
@@ -95,5 +90,3 @@ will not display console notifications.
 
 <br>
 As seen in some of the examples, finding the inputs for PSMs can sometimes involve using several ensembleMetadata commands in conjunction. In the next section, we will examine a command that can help sanity check PSM inputs and ensure that commands have been combined correctly.
-
-[Previous](latlon)---[Next](rows)

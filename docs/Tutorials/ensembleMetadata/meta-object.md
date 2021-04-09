@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: ensembleMetadata
----
 
 # Metadata objects
 
@@ -79,5 +75,3 @@ You can rename the ensembleMetadata at any point using the "rename" command and 
 ensMeta.rename('A new name');
 ```
 will change the name of the metadata to "A new name".
-
- [Previous](intro)---[Next](sizes)

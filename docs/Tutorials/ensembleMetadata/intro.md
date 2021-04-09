@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: ensembleMetadata
----
 
 # Where we've been. Where we're going
 
@@ -37,5 +33,3 @@ In this tutorial, we will review some of the most commonly used features of ense
 6. Sanity checks for metadata.
 
 These topics highlight the most common uses of ensembleMetadata, but the class implements other features as well. In particular, if you are interested in concatenating ensembles, removing variables or ensemble members, or exercising greater control over metadata queries, check out the [Advanced Topics page](advanced).
-
-[Previous](welcome)---[Next](meta-object)

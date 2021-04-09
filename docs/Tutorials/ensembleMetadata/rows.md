@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Row metadata
----
 
 # Metadata at specific rows
 
@@ -100,5 +96,3 @@ will return "meta" as a structure with a "T" field rather than as an array of la
 
 <br>
 Alright, that's the tutorial. You can find more examples of how to use ensembleMetadata objects in the PSM and kalmanFilter tutorials. If you are interested in concatenating ensembles, removing ensemble members or variables, or exercising greater control over metadata queries, check out the [ensembleMetadata advanced topics](advanced).
-
-[Previous](closest)---[All Tutorials](../welcome)

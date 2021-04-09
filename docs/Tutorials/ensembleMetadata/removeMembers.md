@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Remove ensemble members
----
-
 # Remove metadata for specific ensemble members
 Sometimes, you might manipulate a state vector ensemble to remove some of the ensemble members. When you do sop, you may want to update the ensembleMetadata object to reflect the reduced ensemble. You can use the "removeMembers" method to remove the metadata for the deleted ensemble members. Here the syntax is:
 ```matlab
@@ -16,5 +11,3 @@ members = 1:5
 ensMeta2 = ensMeta.removeMembers(members)
 ```
 then ensMeta2 will manage metadata for an ensemble that only contains ensemble members 6 through 75.
-
-[Advanced Topics](advanced)

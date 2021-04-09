@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Regrid
----
-
 # Regrid a state vector variable
 
 You can use an ensembleMetadata object to reshape a state vector ensemble back into gridded climate variables. Do this using the "regrid" method. The most basic syntax is:
@@ -76,5 +71,3 @@ dims = ["lon","lat","time"];
 to ensure that "Y" is (25 longitudes x 10 latitudes x 1 time step x 75 ensemble members). Since the "time" dimension is listed in "dims", it will not be removed from the output, even though it is a singleton dimension.
 
 These sections have detailed several common methods for interacting with variables in a state vector. In the next few sections, we will change focus and see how to query the metadata at any point in a state vector ensemble.
-
-[Previous](sizes)---[Next](find-rows)

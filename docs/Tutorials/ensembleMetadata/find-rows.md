@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Find Rows
----
 
 # Variable rows
 
@@ -81,5 +77,3 @@ The line:
 rows = ensMeta.findRows("Tmean", [3 5])
 ```
 would return an error because the "Tmean" variable only has a single row.
-
-[Previous](regrid)---[Next](variable)

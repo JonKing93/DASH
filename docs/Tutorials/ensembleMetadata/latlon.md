@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Latitude-Longitude Coordinates
----
 
 # Latitude-Longitude coordinates
 
@@ -55,5 +51,3 @@ Here, "verbose" is a logical indicating whether to display console notifications
 meta = ensMeta.latlon([], false)
 ```
 would return coordinates for the entire state vector without displaying console notifications.
-
-[Previous](dimension)---[Next](closest)
