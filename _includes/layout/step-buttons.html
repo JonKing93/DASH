@@ -5,7 +5,8 @@
 {% for tut in site.data.tutorials %}
   {% if lesson == {tut.name}} %}
     {% if active_step==nil %}
-      <a href={{tut.steps[0] | split: "," | last}} class="step_button">Start Tutorial &gt</a>
+      <a href={{"/docs/Tutorials/" | append: lesson | append: "/advanced" | relative_url}}
+       class="step_button">Start Tutorial &gt</a>
 
     {% elsif active_step=="advanced" %}
       <a href={{"/docs/tutorials" | relative_url}} class="step_button">&lt All Tutorials</a>
