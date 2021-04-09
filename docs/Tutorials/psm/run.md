@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Run PSM
----
 
 # Run a PSM directly
 
@@ -31,5 +27,3 @@ If a PSM is able to estimate R, it will return those R estimates as the second o
 If a PSM is unable to estimate R, then this syntax will cause an error.
 
 As we have seen, the inputs required to create a PSM object and to use the "run" command will vary with the specific PSM being used. In the remainder of the tutorial, we will focus on specific PSMs and the details of their inputs.
-
-[Previous](estimate)---[Next](linear)

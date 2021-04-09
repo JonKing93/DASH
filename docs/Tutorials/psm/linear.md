@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Linear PSMs
----
 <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 
@@ -72,6 +68,3 @@ Here, Xpsm is a matrix with the $$X$$ variables for the PSM. Each row holds the 
 
 
 This is currently the only PSM provided with DASH. However, more PSMs are in the works.
-
-
-[Previous](run)---[All Tutorials](..\welcome)

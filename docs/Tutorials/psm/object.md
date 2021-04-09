@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: PSM Overview
----
-
 # PSM Overview
 The PSM class is most commonly used to estimate proxy observations for a model ensemble. There are two key steps in this process:
 1. Designing PSMs for individual proxy sites, and
@@ -93,5 +88,3 @@ myPSM.rename(newName);
 ```
 
 We have now seen some examples of how to create PSM objects. In the next section we will see how to use these objects to automatically estimate proxy observations from a state vector ensemble.
-
-[Previous](welcome)---[Next](estimate)

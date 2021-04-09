@@ -20,7 +20,7 @@ header {
   justify-content: space-between;
   align-items: center;
 
-  background: #212121;
+  background: #2980b9;
 }
 
 /* Logo link */
@@ -33,7 +33,7 @@ header {
 #logo a {
   font-size: 26px;
   font-weight: 500;
-  color: Silver;
+  color: white;
   text-decoration: none;
   padding: 14px 20px;
   /* border-right: 2px solid black; */
@@ -59,18 +59,18 @@ align-items: center;
 
   font-size: 21px;
   font-weight: 700;
-  color: Silver;
+  color: white;
 
   /*text-transform: uppercase;*/
   text-decoration: none;
 }
 #sitenav li a:hover {
-  background: #313131;
+  background: #3990c9;
 }
 
 #sitenav #activetab {
-  background: Silver;
-  color: #212121;
+  background: #096099;
+  color: white;
 }
 
 /* Github navigation links */
@@ -93,12 +93,12 @@ align-items: center;
 
   font-size: 21px;
   font-weight: 700;
-  color: Silver;
+  color: white;
 
   text-decoration: none;
 }
 #gitnav li a:hover {
-  background: #313131;
+  background: #3990c9;
 }
 
 
@@ -280,17 +280,18 @@ main {
   padding: 5px 20px;
   border-radius: 5px;
   text-transform: uppercase;
-  font-weight: 900;
+  font-weight: 500;
   /*width: 80px;*/
   text-align: center;
   font-size: 16px;
-  background: #acb2b8;
-  color: #303030;
+  background: #3990c9;
+  color: #ffffff;
   text-decoration: none;
+  /* text-shadow: 1px 1px 8px black; */
 }
 .step_button:hover {
   text-decoration: none;
-  background: #bcc2c8;
+  background: #49a0d9;
 }
 
 

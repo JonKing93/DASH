@@ -1,7 +1,4 @@
----
-layout: default
----
 
-{{page.url}}
+This is the homepage for DASH. It will include a splash background and short description of DASH's purpose.
 
-This is a test index page. Here is a lot more text. Blah blah blah blah blah blah blah blah blah blah blah blahb alhb alhlsdkfalskdjfalsdjhfalsdjhfalksdjhf dsfkjshdkfjhs  ksjhadkj ka sdkjfh sk djf hjsdhj ka ksjdfk  sdkf kshdfj
+It will also include links to the various parts of the site. Particularly the Docs.

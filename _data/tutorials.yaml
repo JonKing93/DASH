@@ -33,6 +33,11 @@
 - name: ensembleMetadata
 
 - name: PSM
+  steps:
+    - PSM Objects, object
+    - Estimate Observations, estimate
+    - Run PSM Directly, run
+    - Linear PSMs, linear
 
 - name: kalmanFilter
 

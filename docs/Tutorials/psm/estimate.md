@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Estimate Proxies
----
 
 # Estimate Proxies
 
@@ -64,5 +60,3 @@ Ye = PSM.estimate(ens, myPSM);
 ```
 
 So far, we have seen how to estimate proxy values given a state vector ensemble. However, in some cases you may want estimate proxy values without needing to create an entire ensemble. We will examine this syntax in the next section.
-
-[Previous](object)---[Next](run)
