@@ -17,33 +17,30 @@ function[whichArg] = parseWhich(obj, whichArg, name, nIndex, indexName)
 %
 % whichArg: The which* input adjusted for any default settings
 
-% If there is a single setting, cannot use whichArg
+% If unset, nTime is the number of whichArg elements
 empty = isempty(whichArg);
-if nIndex==1 && ~empty
-    error(['You have provided a single %s, so you cannot use the "%s" input ',...
-        'to specify time steps.'], indexName, name);
-    
-% Use to define time if necessary
-elseif nIndex>1
-    if obj.nTime==0 && empty
-        obj.nTime = nIndex;
-    elseif obj.nTime==0
-        obj.nTime = numel(whichArg);
-    end
-    
-    % Use a default whichArg or require user input
-    if empty && nIndex==obj.nTime
-        whichArg = 1:obj.nTime;
-    elseif empty
+if obj.nTime==0 && ~empty
+    obj.nTime = numel(whichArg);
+elseif obj.nTime==0
+    obj.nTime = nIndex;
+end
+
+% If empty, nIndex must be 1 or nTime. Leave empty if 1, but set to indices
+% if nTime
+if empty
+    if nIndex==obj.nTime && nIndex~=1
+        whichArg = (1:obj.nTime)';
+    elseif nIndex~=1
         error(['The number of %ss (%.f) does not match the number of time steps ',...
         '(%.f), so you must use the "%s" input to specify which ',...
         '%s to use in each time step.'], indexName, nIndex, obj.nTime, name, indexName);
     end
     
-    % Error check
+% Otherwise, error check the indices
+else
     dash.assertVectorTypeN(whichArg, 'numeric', obj.nTime, name);
     dash.checkIndices(whichArg, name, nIndex, strcat('the number of %ss', indexName));
-    whichArg = whichArg(:);
+    whichArg = whichArg(:);    
 end
     
 end

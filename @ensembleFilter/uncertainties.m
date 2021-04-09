@@ -38,20 +38,18 @@ function[obj] = uncertainties(obj, R, whichR, isCov)
 %
 % obj: The updated filter object
 
-% Require observations
-assert(~isempty(obj.Y), 'You must provide observations before you specify observation uncertainties');
-
-% Default and error check isCov
+% Default and error check covariance toggle
 if ~exist('isCov','var') || isempty(isCov)
     isCov = false;
 end
 dash.assertScalarType(isCov, 'isCov', 'logical', 'logical');
 
-% Type check and get sizes
-if ~isCov
+% Get sizes
+if ~iscov
     [nSite, nR] = obj.checkInput(R, 'Rvar', true, true);
 else
-    [nSite1, nSite2, nR] = obj.checkInput(R, 'Rcov', true, false);
+    [nSite, nSite2, nR] = obj.checkInput(R, 'Rcov', true, false);
+    assert(nSite==nSite2, sprintf('The number of rows in Rcov (%.f) does not match the number of columns (%.f)', nSite, nSite2));
 end
 
 % Default and parse whichR
@@ -60,28 +58,40 @@ if ~exist('whichR','var') || isempty(whichR)
 end
 whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties');
 
-% Error check variances
-if ~isCov
-    assert(nSite==obj.nSite, sprintf('You previously specified observations for %.f sites, but Rvar has %.f sites', obj.nSite, nSite));
+% Size checks
+assert(isempty(obj.Y) || nSite==obj.nSite, sprintf('You previously specified observations for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
+assert(isempty(obj.Ye) || nSite==obj.nSite, sprintf('You previously specified estimates for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
+
+if ~isempty(whichR)
+    nTime = numel(whichR);
+    assert(isempty(obj.Y) || nTime==obj.nTime, sprintf('You previously specified observations for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
+    assert(isempty(obj.whichPrior) || nTime==obj.nTime, sprintf('You previously specified a transient prior for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
+end
+
+% Check values are variances or covariances
+if ~iscov
     assert(~any(R(:)<=0), 'R variances must be greater than 0.');
-    
-% Error check covariances
+
 else
-    assert(nSite1==obj.nSite, sprintf('You previously specified observations for %.f sites, but Rcov has %.f sites (rows)', obj.nSite, nSite1));
-    assert(nSite1==nSite2, sprintf('The number of rows in Rcov (%.f) does not match the number of columns (%.f)', nSite1, nSite2));
     for c = 1:nR
         Rc = R(:,:,c);
-        Rc(isnan(Rc)) = 1;
-        assert(issymmetric(Rc), sprintf('R covariance %.f is not a symmetric matrix', c));
+        Rnan = isnan(Rc);
+        Rc(Rnan) = 1;
+        assert( issymmetric(Rnan) && issymmetric(Rc), sprintf('R covariance %.f is not a symmetric matrix', c));                
         assert( ~any(diag(Rc)<=0), sprintf('The diagonal elements of R covariance %.f must be greater than 0', c));
     end
 end
 
 % Save values
 obj.R = R;
-obj.whichR = whichR;
-obj.Rcov = isCov;
+obj.Rcov = iscov;
+obj.nSite = nSite;
 obj.nR = nR;
+
+if ~isempty(whichR)
+    obj.whichR = whichR;
+    obj.nTime = nTime;
+end
 
 % Check for missing R values
 obj.checkMissingR;
