@@ -35,7 +35,7 @@ else
     nCovs = size(Rcovs, 1);
     for c = 1:nCovs
         times = find(whichR==c);
-        s = sites(:, times(1));
+        s = sites(times(1),:);
         Rinv = pf.Rcovariance(times(1), s)^-1;
         
         % Get the innovations for each time step
@@ -59,7 +59,7 @@ out.weights = pf.weights(sse);
 if update
     for p = 1:pf.nPrior
         t = find(pf.whichPrior==p);
-        out.A(:,t) = pf.M(:,:,p) * out.weights(:, t);
+        out.A(:,t) = pf.X(:,:,p) * out.weights(:, t);
     end
 end
 

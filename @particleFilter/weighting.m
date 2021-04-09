@@ -31,7 +31,6 @@ if strcmpi(type, "bayes")
 % Error check "best" scheme number. Require a scalar integer within the
 % number of ensemble members
 elseif strcmpi(type, "best")
-    assert(~isempty(pf.M), 'You must specify a prior (using the "prior" command) before selecting the "best" weighting scheme.');
     assert(isscalar(N), 'N must be a scalar');
     dash.assertPositiveIntegers(N, 'N');
     assert(N<=pf.nEns, sprintf('N cannot be larger than the number of ensemble members (%.f)', pf.nEns));

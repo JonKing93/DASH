@@ -30,7 +30,7 @@ if ~exist('whichPrior','var') || isempty(whichPrior)
     whichPrior = [];
 end
 resetTime = isempty(obj.Y) && isempty(obj.whichR);
-whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior', resetTime);
+whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'priors', resetTime);
 nTime = numel(whichPrior);
 
 % Size checks

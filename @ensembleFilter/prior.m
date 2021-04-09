@@ -32,9 +32,12 @@ function[obj] = prior(obj, X, whichPrior)
 % Default and parse whichPrior
 if ~exist('whichPrior','var') || isempty(whichPrior)
     whichPrior = [];
+    if ~isempty(obj.whichPrior) && nPrior>1
+        whichPrior = obj.whichPrior;
+    end
 end
 resetTime = isempty(obj.Y) && isempty(obj.whichR);
-whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior', resetTime);
+whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'priors', resetTime);
 nTime = numel(whichPrior);
 
 % Size checks

@@ -39,7 +39,7 @@ if empty
     if nIndex==obj.nTime && nIndex~=1
         whichArg = (1:obj.nTime)';
     elseif nIndex~=1
-        error(['The number of %ss (%.f) does not match the number of time steps ',...
+        error(['The number of %s (%.f) does not match the number of time steps ',...
         '(%.f), so you must use the "%s" input to specify which ',...
         '%s to use in each time step.'], indexName, nIndex, obj.nTime, name, indexName);
     end
@@ -47,7 +47,7 @@ if empty
 % Otherwise, error check the indices
 else
     dash.assertVectorTypeN(whichArg, 'numeric', obj.nTime, name);
-    dash.checkIndices(whichArg, name, nIndex, strcat('the number of %ss', indexName));
+    dash.checkIndices(whichArg, name, nIndex, sprintf('the number of %s', indexName));
 end
 whichArg = whichArg(:);
     
