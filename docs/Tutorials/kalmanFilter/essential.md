@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Essentials
----
 
 # Essential Inputs
 
@@ -110,5 +106,3 @@ kf = kf.prior(X);
 kf = kf.estimates(Ye);
 output = kf.run;
 ```
-
-[Previous](object)---[Next](output)

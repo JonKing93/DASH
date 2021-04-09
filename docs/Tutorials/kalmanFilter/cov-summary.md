@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Covariance Summary
----
 
 # Covariance Summary
 
@@ -21,5 +17,3 @@ The order of covariance adjustments is:
 1. Inflate prior covariance
 2. Localize prior covariance
 3. Blend prior covariance with static covariance
-
-[Previous](misc-cov)---[All Tutorials](..\welcome)

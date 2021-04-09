@@ -1,7 +1,4 @@
----
-layout: simple_layout
-title: Blending
----
+
 <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 # Covariance Blending
@@ -81,5 +78,3 @@ whichCov = [ones(1000,1); 2*ones(150,1)];
 kf = kf.blend(C, Ycov, coeffs, whichCov);
 ```
 Here, the third dimension of C and Ycov has a length of 2 (one element for each static ensemble). The input "whichCov" indicates that the first thousand time steps should blend the first static ensemble, and the next 150 time steps should blend the second ensemble.
-
-[Previous](localize)---[Next](misc-cov)

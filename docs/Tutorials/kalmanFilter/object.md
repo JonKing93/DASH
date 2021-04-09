@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: New Kalman Filter
----
 
 # Overview
 
@@ -45,5 +41,3 @@ kf = kf.rename(newName);
 ```
 
 At this point, "kf" is an empty analysis; it does not yet have enough information to run a Kalman Filter. In the next section, we will see how to provide the essential inputs required to run a Kalman Filter analysis.
-
-[Previous](welcome)---[Next](essential)

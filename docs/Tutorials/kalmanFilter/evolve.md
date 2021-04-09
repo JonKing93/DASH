@@ -1,8 +1,3 @@
----
-layout: simple_layout
-title: Evolving Priors
----
-
 # Evolving Priors
 
 We have previously seen how to use the "prior" command to provide a prior for a Kalman Filter analysis:
@@ -77,5 +72,3 @@ Ye = PSM.estimate(X, myPSMs);
 kf = kf.estimates(Ye);
 ```
 Here, Ye will have three dimensions (Proxies x Ensemble Members x Priors), and the length of the third dimension will be 4 (one element for each seasonal prior).
-
-[Previous](index)---[Next](covariance)

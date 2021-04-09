@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Misc Covariance
----
 
 # Additional Covariance options
 
@@ -73,5 +69,3 @@ As touched on in the [covariance blending section](blend), you can use the comma
 [C, Ycov] = dash.estimateCovariance(X, Ye);
 ```
 where X is the usual ensemble, Ye are the associated proxy estimates, and C and Ycov are the covariance estimates.
-
-[Previous](blend)---[Next](cov-summary)

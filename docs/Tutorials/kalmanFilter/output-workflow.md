@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Output Workflow
----
 
 # Regridding Output
 
@@ -31,5 +27,3 @@ Posterior Index | index | index_&lt;name> | Ensemble members x Time | Mean and D
 
 
 We have now seen all the various output options for a Kalman Filter analysis. In the next sections, we will shift focus and examine how to design evolving priors, and how to adjust model covariance estimates.
-
-[Previous](indices)---[Next](evolve)

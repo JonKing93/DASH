@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Covariance Adjustments
----
 
 # Covariance Adjustments
 
@@ -14,5 +10,3 @@ Kalman Filter objects can implement several techniques to help mitigate these co
 * [Directly setting a covariance matrix](misc-cov#set-covariance-directly).
 
 The remainder of the tutorial will examine these techniques in detail.
-
-[Previous](evolve)---[Next](localize)

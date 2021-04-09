@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Posterior Index
----
 
 # Posterior of an index
 
@@ -114,5 +110,3 @@ and later decide I don't want to calculate it, I can remove it with:
 ```matlab
 kf = kf.index('globalT', 'delete');
 ```
-
-[Previous](output)---[Next](output-workflow)

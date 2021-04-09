@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Output
----
 
 # Kalman Filter Output
 
@@ -79,5 +75,3 @@ You can remove the ensemble mean from the output by using the "mean" command and
 kf = kf.mean(false);
 ```
 If you would like to re-enable the ensemble mean, call the "mean" command again and set the input to true.
-
-[Previous](essential)---[Next](indices)

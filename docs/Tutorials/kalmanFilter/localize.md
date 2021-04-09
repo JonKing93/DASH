@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: Localization
----
 
 # Covariance Localization
 
@@ -103,5 +99,3 @@ yloc = cat(3, yloc1, yloc2);
 whichLoc = [ones(1000,1); 2*ones(150,1)];
 kf = kf.localize(wloc, yloc, whichLoc);
 ```
-
-[Previous](covariance)---[Next](blend)
