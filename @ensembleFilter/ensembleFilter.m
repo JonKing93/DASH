@@ -44,6 +44,7 @@ classdef (Abstract) ensembleFilter
     methods
         whichArg = parseWhich(obj, whichArg, name, nIndex, indexName);
         obj = finalize(obj, actionName);
+        obj = finalizeWhich(obj);
         checkMissingR(obj);
     end
     methods (Static)

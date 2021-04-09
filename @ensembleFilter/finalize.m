@@ -15,12 +15,7 @@ function[obj] = finalize(obj, actionName)
 assert(~isempty(obj.Y), sprintf('You must provide observations before you %s', actionName));
 assert(~isempty(obj.Ye), sprintf('You must provide proxy estimates before you %s.', actionName));
 
-% Fill in empty whichPrior and whichRcov
-if isempty(obj.whichPrior)
-    obj.whichPrior = ones(obj.nTime, 1);
-end
-if isempty(obj.whichR)
-    obj.whichR = ones(obj.nTime, 1);
-end
+% Fill empty whichPrior and whichR
+obj = obj.finalizeWhich;
 
 end
