@@ -50,6 +50,18 @@
     - Linear PSMs, linear
 
 - name: kalmanFilter
+  steps:
+    - Kalman Filter Objects, object
+    - Essential Inputs, essential
+    - Output Options, output
+    - Posterior Index, indices
+    - Output Quick Reference, output-workflow
+    - Transient Priors, evolve
+    - Covariance Adjustments, covariance
+    - Localization, localize
+    - Blend Covariance, blend
+    - More Covariance Options, misc-cov
+    - Covariance Quick Reference, cov-summary
 
 - name: particleFilter
 
