@@ -31,6 +31,16 @@
     - Add ensemble members, add
 
 - name: ensembleMetadata
+  steps:
+    - Introduction, intro
+    - Metadata Objects, meta-object
+    - Variable Sizes, sizes
+    - Regriding Variables, regrid
+    - Find Rows, find-rows
+    - Variable Metadata, variable
+    - Latitude-Longitude Coordinates, latlon
+    - Closest Coordinates, closest
+    - Row Metadata, rows
 
 - name: PSM
   steps:
