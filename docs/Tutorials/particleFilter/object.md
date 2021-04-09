@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: New Particle Filter
----
 
 # Overview
 
@@ -45,5 +41,3 @@ pf = pf.rename(newName);
 ```
 
 At this point, "pf" is an empty analysis; it does not yet have enough information to run a particle filter. In the next section, we will see how to provide the essential inputs required to run a particle filter analysis.
-
-[Previous](welcome)---[Next](essential)

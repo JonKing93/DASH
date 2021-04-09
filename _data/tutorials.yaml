@@ -64,5 +64,7 @@
     - Covariance Quick Reference, cov-summary
 
 - name: particleFilter
+  steps:
+    - Particle Filter Objects, object
 
 - name: optimalSensor
