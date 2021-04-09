@@ -40,7 +40,7 @@ if empty
 else
     dash.assertVectorTypeN(whichArg, 'numeric', obj.nTime, name);
     dash.checkIndices(whichArg, name, nIndex, strcat('the number of %ss', indexName));
-    whichArg = whichArg(:);    
 end
+whichArg = whichArg(:);
     
 end

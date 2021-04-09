@@ -10,14 +10,13 @@ function[obj] = prior(obj, X, whichPrior)
 %
 % ----- Inputs -----
 %
-% X: A static offline or evolving offline prior. A numeric array that
-%    cannot contain Inf or complex values.
+% X: An offline prior. A numeric array that cannot contain Inf or complex values.
 %
 %    Static: X is a matrix (nState x nEns) and will be used as the
 %       prior in each time step.
 %
-%    Evolving: X is an array (nState x nEns x nPrior). If you do
-%    not provide a second input, must have one prior per time step.
+%    Transient: X is an array (nState x nEns x nPrior). If you do
+%       not provide a second input, must have one prior per time step.
 %
 % whichPrior: A vector with one element per time step. Each element
 %    is the index of the prior to use for that time step. The indices refer
@@ -27,29 +26,40 @@ function[obj] = prior(obj, X, whichPrior)
 %
 % obj: The updated ensembleFilter object
 
-% Default whichPrior
+% Error check data type and get sizes
+[nState, nEns, nPrior] = obj.checkInput(X, 'X', true);
+
+% Default and parse whichPrior
 if ~exist('whichPrior','var') || isempty(whichPrior)
     whichPrior = [];
 end
-
-% Error check M and get the size
-[nState, nEns, nPrior] = obj.checkInput(X, 'X', true);
-
-% Check for size conflicts
-assert(isempty(obj.Ye) || nEns==obj.nEns, sprintf('You previously specified observation estimates for %.f ensemble members, but X has %.f ensemble members (columns)', obj.nEns, nEns));
-assert(isempty(obj.Ye) || nPrior==obj.nPrior, sprintf('You previously specified observation estimates for %.f priors, but X has %.f priors (elements along dimension 3)', obj.nPrior, nPrior));
-
-% Parse and error check whichPrior
 whichPrior = obj.parseWhich(whichPrior, 'whichPrior', nPrior, 'prior');
+nTime = numel(whichPrior);
 
-% Set values
+% Size checks
+if ~isempty(obj.Ye)
+    assert( nEns==obj.nEns, sprintf('You previously specified estimates for %.f ensemble members, but X has %.f ensemble members (columns)', obj.nEns, nEns));
+    assert( nPrior==obj.nPrior, sprintf('You previously specified estimates for %.f priors, but X has %.f priors (elements along dimension 3)', obj.nPrior, nPrior));
+end
+if nTime~=obj.nTime && ~isempty(whichPrior)
+    assert(isempty(obj.Y), sprintf('You previously specified observations for %.f time steps, but here you specify transient priors for %.f time steps', obj.nTime, nTime));
+    assert(isempty(obj.whichR), sprintf('You previously specified R uncertainties for %.f time steps, but here you specify transient priors for %.f time steps', obj.nTime, nTime));
+end
+
+% If there is a whichPrior for estimates, require the same time steps
+if ~isempty(whichPrior) && ~isempty(obj.whichPrior) && ~isempty(obj.Ye)
+    assert(isequal(whichPrior, obj.whichPrior), 'The time steps for the transient priors do not match the time steps specified for the associated estimates. (check the whichPrior input for inconsistencies)');
+end
+
+% Save
+obj.X = X;
 obj.nState = nState;
 obj.nEns = nEns;
 obj.nPrior = nPrior;
+
 if ~isempty(whichPrior)
-    obj.nTime = numel(whichPrior);
+    obj.whichPrior = whichPrior;
+    obj.nTime = nTime;
 end
-obj.X = X;
-obj.whichPrior = whichPrior;
 
 end

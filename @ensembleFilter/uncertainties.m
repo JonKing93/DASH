@@ -57,15 +57,16 @@ if ~exist('whichR','var') || isempty(whichR)
     whichR = [];
 end
 whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties');
+nTime = numel(whichR);
 
 % Size checks
-assert(isempty(obj.Y) || nSite==obj.nSite, sprintf('You previously specified observations for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
-assert(isempty(obj.Ye) || nSite==obj.nSite, sprintf('You previously specified estimates for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
-
-if ~isempty(whichR)
-    nTime = numel(whichR);
-    assert(isempty(obj.Y) || nTime==obj.nTime, sprintf('You previously specified observations for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
-    assert(isempty(obj.whichPrior) || nTime==obj.nTime, sprintf('You previously specified a transient prior for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
+if nSite~=nSite
+    assert(isempty(obj.Y), sprintf('You previously specified observations for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
+    assert(isempty(obj.Ye), sprintf('You previously specified estimates for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
+end
+if nTime~=obj.nTime && ~isempty(whichR)
+    assert(isempty(obj.Y), sprintf('You previously specified observations for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
+    assert(isempty(obj.whichPrior), sprintf('You previously specified a transient prior for %.f time steps, but these R values are for %.f time steps', obj.nTime, nTime));
 end
 
 % Check values are variances or covariances
