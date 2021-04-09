@@ -317,6 +317,195 @@ main {
 
 
 /* Slate theme style */
+
+main h1, h2, h3, h4, h5, h6 {
+  margin: 10px 0;
+  font-weight: 700;
+  color:#222222;
+  font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
+  letter-spacing: -1px;
+}
+
+main h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+main h2 {
+  font-size: 32px;
+}
+
+main h3 {
+  font-size: 24px;
+}
+
+main h4 {
+  font-size: 21px;
+}
+
+main h5 {
+  font-size: 18px;
+}
+
+main h6 {
+  font-size: 16px;
+}
+
+main p {
+  margin: 10px 0 15px 0;
+}
+
+main a {
+  text-decoration: none;
+  color: #0F79D0;
+  text-shadow: none;
+
+  transition: color 0.5s ease;
+  transition: text-shadow 0.5s ease;
+  -webkit-transition: color 0.5s ease;
+  -webkit-transition: text-shadow 0.5s ease;
+  -moz-transition: color 0.5s ease;
+  -moz-transition: text-shadow 0.5s ease;
+  -o-transition: color 0.5s ease;
+  -o-transition: text-shadow 0.5s ease;
+  -ms-transition: color 0.5s ease;
+  -ms-transition: text-shadow 0.5s ease;
+}
+
+main a:hover, a:focus {
+  text-decoration: underline;
+}
+
+main em, cite {
+  font-style: italic;
+}
+
+main strong {
+  font-weight: bold;
+}
+
+main img {
+  position: relative;
+  margin: 0 auto;
+  max-width: 739px;
+  padding: 5px;
+  margin: 10px 0 10px 0;
+  border: 1px solid #ebebeb;
+
+  box-shadow: 0 0 5px #ebebeb;
+  -webkit-box-shadow: 0 0 5px #ebebeb;
+  -moz-box-shadow: 0 0 5px #ebebeb;
+  -o-box-shadow: 0 0 5px #ebebeb;
+  -ms-box-shadow: 0 0 5px #ebebeb;
+}
+
+main p img {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+  border: none;
+}
+
+main pre, code {
+  color: #222;
+  background-color: #fff;
+
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 0.875em;
+
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+main pre {
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  overflow: auto;
+}
+
+main code {
+  padding: 3px;
+  margin: 0 3px;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+}
+
+main pre code {
+  display: block;
+  box-shadow: none;
+}
+
+main blockquote {
+  color: #666;
+  margin-bottom: 20px;
+  padding: 0 0 0 20px;
+  border-left: 3px solid #bbb;
+}
+
+
+main ul, ol, dl {
+  margin-bottom: 15px
+}
+
+main ul {
+  list-style-position: inside;
+  list-style: disc;
+  padding-left: 20px;
+}
+
+main ol {
+  list-style-position: inside;
+  list-style: decimal;
+  padding-left: 20px;
+}
+
+main dl dt {
+  font-weight: bold;
+}
+
+main dl dd {
+  padding-left: 20px;
+  font-style: italic;
+}
+
+main dl p {
+  padding-left: 20px;
+  font-style: italic;
+}
+
+main hr {
+  height: 1px;
+  margin-bottom: 5px;
+  border: none;
+}
+
+main table {
+  border: 1px solid #373737;
+  margin-bottom: 20px;
+  text-align: left;
+ }
+
+main th {
+  font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 10px;
+  background: #373737;
+  color: #fff;
+ }
+
+main td {
+  padding: 10px;
+  border: 1px solid #373737;
+ }
+
+main form {
+  background: #f2f2f2;
+  padding: 20px;
+}
+
+
+/*
 main h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
   font-weight: 700;
@@ -452,3 +641,4 @@ main p img {
   text-align: center;
   border: none;
 }
+*/
