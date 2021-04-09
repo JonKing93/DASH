@@ -52,7 +52,7 @@ classdef particleFilter < ensembleFilter
     % User methods
     methods
         pf = prior(pf, X, whichPrior);
-        pf = estimates(pf, Y);
+        pf = estimates(pf, Y, whichPrior);
         out = run(pf);
         pf = weighting(pf, type, N);
     end

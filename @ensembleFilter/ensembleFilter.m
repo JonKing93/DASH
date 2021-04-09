@@ -5,7 +5,7 @@ classdef (Abstract) ensembleFilter
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
     
-    properties (SetAccess = private)
+    properties (SetAccess = protected)
         name;
         
         % Essential inputs
@@ -32,7 +32,7 @@ classdef (Abstract) ensembleFilter
         obj = observations(obj, Y);
         obj = uncertainties(obj, R, whichR, isCov);
         obj = prior(obj, X, whichPrior);
-        obj = estimates(obj, Ye);
+        obj = estimates(obj, Ye, whichPrior);
     end
     
     % User query

@@ -1,4 +1,4 @@
-function[whichArg] = parseWhich(obj, whichArg, name, nIndex, indexName)
+function[whichArg] = parseWhich(obj, whichArg, name, nIndex, indexName, resetTime)
 %% Parses which* inputs for evolving settings
 %
 % whichArg = obj.parseWhich(whichArg, name, nIndex, indexName)
@@ -13,9 +13,17 @@ function[whichArg] = parseWhich(obj, whichArg, name, nIndex, indexName)
 %
 % indexName: The name of the quantity being indexed
 %
+% resetTime: Scalar logical indicating that whichArg is the only input
+%    controlling the number of time steps
+%
 % ----- Outputs -----
 %
 % whichArg: The which* input adjusted for any default settings
+
+% Reset time
+if resetTime
+    obj.nTime = 0;
+end
 
 % If unset, nTime is the number of whichArg elements
 empty = isempty(whichArg);

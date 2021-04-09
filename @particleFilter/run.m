@@ -3,7 +3,7 @@ function[out] = run(pf)
 
 % Check for essential inputs. Set defaults
 pf = pf.finalize('run a particle filter');
-update = ~isempty(pf.M);
+update = ~isempty(pf.X);
 
 % Preallocate
 out = struct();

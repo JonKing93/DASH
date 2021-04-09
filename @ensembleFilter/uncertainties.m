@@ -45,7 +45,7 @@ end
 dash.assertScalarType(isCov, 'isCov', 'logical', 'logical');
 
 % Get sizes
-if ~iscov
+if ~isCov
     [nSite, nR] = obj.checkInput(R, 'Rvar', true, true);
 else
     [nSite, nSite2, nR] = obj.checkInput(R, 'Rcov', true, false);
@@ -56,7 +56,8 @@ end
 if ~exist('whichR','var') || isempty(whichR)
     whichR = [];
 end
-whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties');
+resetTime = isempty(obj.Y) && isempty(obj.whichPrior);
+whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties', resetTime);
 nTime = numel(whichR);
 
 % Size checks
@@ -70,7 +71,7 @@ if nTime~=obj.nTime && ~isempty(whichR)
 end
 
 % Check values are variances or covariances
-if ~iscov
+if ~isCov
     assert(~any(R(:)<=0), 'R variances must be greater than 0.');
 
 else
@@ -85,7 +86,7 @@ end
 
 % Save values
 obj.R = R;
-obj.Rcov = iscov;
+obj.Rcov = isCov;
 obj.nSite = nSite;
 obj.nR = nR;
 
