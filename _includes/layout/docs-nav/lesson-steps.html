@@ -19,7 +19,7 @@
 {% endfor %}
 
 <li>
-  {% assign link = "/docs/Tutorials/" | append: tut.name | append:"/" | append: "advanced" | relative_url %}
+  {% assign link = "/docs/Tutorials/" | append: tut.name | append:"/advanced" | relative_url %}
   <a href={{link}} class="lesson_step"
     {% if active_step=="advanced" %} id="active_step" {% endif %}>
     Advanced
