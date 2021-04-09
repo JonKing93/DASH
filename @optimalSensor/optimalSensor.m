@@ -28,7 +28,7 @@ classdef optimalSensor
     
     % User methods
     methods
-        obj = prior(obj, M);
+        obj = prior(obj, X);
         obj = psms(obj, F, R);
         obj = estimates(obj, Ye, R);
         obj = metric(obj, type, varargin);

@@ -96,10 +96,3 @@ if max(abs(diff),[],'all') > 1E-13
 end
 fprintf('Updated prior\n');
 
-
-
-
-
-
-
-

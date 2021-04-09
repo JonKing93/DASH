@@ -12,6 +12,11 @@ function[pf] = estimates(pf, Y, whichPrior)
 %
 % pf: The updated particleFilter object
 
+% Default whichPrior
+if ~exist('whichPrior','var') || isempty(whichPrior)
+    whichPrior = [];
+end
+
 % Record current nEns and apply standard error checking
 nEns = pf.nEns;
 pf = estimates@ensembleFilter(pf, Y, whichPrior);

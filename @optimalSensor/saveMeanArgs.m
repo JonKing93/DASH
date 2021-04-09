@@ -15,6 +15,6 @@ rows = dash.checkIndices(rows, 'rows', obj.nState, 'number of state vector eleme
 
 % Save the arg structure
 denom = sum(weights);
-obj.metricArgs = struct('weights',weights,'rows',rows,'denom',denom);
+obj.metricArgs = struct('weights',weights(:),'rows',rows,'denom',denom);
 
 end

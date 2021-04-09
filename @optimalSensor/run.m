@@ -8,6 +8,10 @@ function[bestSites, expVar] = run(obj, N)
 % N: How many sensors to find. A scalar positive integer.
 %
 % ----- Outputs -----
+%
+% bestSites: The index of the optimal sites
+%
+% expVar: The remaining variance explained by the site
 
 % Check for essential fields
 assert(~isempty(obj.X), 'You must specify a prior before you run an optimal sensor test');
@@ -56,7 +60,7 @@ for s = 1:N
     
     % Get the relative change in variance caused by each sensor. The
     % optimal sensor maximizes the change in variance
-    deltaVar = (unbias * Ydev * Jdev).^2 ./ (Yvar + R);
+    deltaVar = (unbias * Ydev * Jdev').^2 ./ (Yvar + R);
     maxSkill = max(deltaVar);
     best = find(deltaVar==maxSkill, 1);
     
