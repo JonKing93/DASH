@@ -380,57 +380,57 @@ main blockquote {
   padding: 0 0 0 20px;
   border-left: 3px solid #bbb;
 }
-/*
-ul, ol, dl {
+
+main ul, ol, dl {
   margin-bottom: 15px
 }
-ul {
+main ul {
   list-style-position: inside;
   list-style: disc;
   padding-left: 20px;
 }
-ol {
+main ol {
   list-style-position: inside;
   list-style: decimal;
   padding-left: 20px;
 }
-dl dt {
+main dl dt {
   font-weight: bold;
 }
-dl dd {
+main dl dd {
   padding-left: 20px;
   font-style: italic;
 }
-dl p {
+main dl p {
   padding-left: 20px;
   font-style: italic;
 }
-hr {
+main hr {
   height: 1px;
   margin-bottom: 5px;
   border: none;
   background: url('../images/bg_hr.png') repeat-x center;
 }
-table {
+main table {
   border: 1px solid #373737;
   margin-bottom: 20px;
   text-align: left;
 }
-th {
+main th {
   font-family: 'Lucida Grande', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   padding: 10px;
   background: #373737;
   color: #fff;
 }
-td {
+main td {
   padding: 10px;
   border: 1px solid #373737;
 }
-form {
+main form {
   background: #f2f2f2;
   padding: 20px;
-}*/
-/* img {
+}
+main img {
   position: relative;
   margin: 0 auto;
   max-width: 739px;
@@ -444,7 +444,7 @@ form {
   -o-box-shadow: 0 0 5px #ebebeb;
   -ms-box-shadow: 0 0 5px #ebebeb;
 }
-p img {
+main p img {
   display: inline;
   margin: 0;
   padding: 0;
@@ -452,4 +452,3 @@ p img {
   text-align: center;
   border: none;
 }
-*/
