@@ -66,7 +66,9 @@ nCols = size(exclude, 2);
 % Find the state vector rows associated with the minimum distances for each
 % set of excluded indices
 for m = 1:nCols
-    currentRows = find(dist==min(dist(~exclude)));
+    currentDist = dist;
+    currentDist(exclude(:,m)) = NaN;
+    currentRows = find( currentDist == min(currentDist) );
     nRows = numel(currentRows);
     
     % Preallocate the rows for each ensemble member
