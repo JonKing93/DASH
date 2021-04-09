@@ -48,7 +48,7 @@ if nTime~=obj.nTime && ~isempty(whichPrior)
 end
 
 % If there is a whichPrior for the prior, require the same time steps
-if ~isempty(whichPrior) && ~isempty(obj.whichPrior) && ~isempty(obj.Ye)
+if ~isempty(whichPrior) && ~isempty(obj.whichPrior) && ~isempty(obj.X)
     assert(isequal(whichPrior, obj.whichPrior), 'The time steps for these estimates do not match the time steps for the associated transient priors. (check the whichPrior input)');
 end
 

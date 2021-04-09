@@ -42,7 +42,7 @@ classdef (Abstract) ensembleFilter
     
     % Utilities
     methods
-        whichArg = parseWhich(obj, whichArg, name, nIndex, indexName);
+        whichArg = parseWhich(obj, whichArg, name, nIndex, indexName, resetTime);
         obj = finalize(obj, actionName);
         obj = finalizeWhich(obj);
         checkMissingR(obj);
