@@ -47,7 +47,7 @@ An optional input to specify additional parameters for the Bayesian model. A cel
 
 2. Element 2: A string specifying the calibration mode. If unspecified, uses the standard mode. Options are:
 * <code><span style="color:#cc00cc;font-size:0.875em">"standard"</span></code>: The standard mode. Best of Late Quaternary applications
-* <code><span style="color:#cc00cc;font-size:0.875em">"analog"</span></div>: The analogue mode. Best for deep time applications
+* <code><span style="color:#cc00cc;font-size:0.875em">"analog"</span></code>: The analogue mode. Best for deep time applications
 
 3. Element 3: Required for the analogue mode. A scalar specifying the tolerance in temperature units.
 

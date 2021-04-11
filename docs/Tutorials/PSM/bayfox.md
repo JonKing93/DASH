@@ -8,7 +8,7 @@ sections:
 
 # BayFOX
 
-Use the "bayfoxPSM" class to create PSMs that implement BayFOX, a Bayesian forward model for d18O<sub>c</sub> of planktic foraminifera. Find [BayFOX on Github](https://github.com/jesstierney/bayfoxm) or see the paper:
+Use the "bayfoxPSM" class to create PSMs that implement BayFOX, a Bayesian forward model for δ<sup>18</sup>O<sub>c</sub> of planktic foraminifera. Find [BayFOX on Github](https://github.com/jesstierney/bayfoxm) or see the paper:
 
  Malevich, S. B., Vetter, L., & Tierney, J. E. (2019). Global Core Top Calibration of δ18O in Planktic Foraminifera to Sea Surface Temperature. Paleoceanography and Paleoclimatology, 34(8), 1292-1315. [https://doi.org/10.1029/2019PA003576](https://doi.org/10.1029/2019PA003576)
 
@@ -28,7 +28,7 @@ mypsm = bayfoxPSM(rows, species);
 Here, the inputs are as follows
 
 ##### rows
-An array that indicates the state vector elements needed to run the PSM. This array should have two rows: the first should indicate sea-surface temperatures (in Celsius), and the second should indicate δ18O of sea-water (in VSMOW).
+An array that indicates the state vector elements needed to run the PSM. This array should have two rows: the first should indicate sea-surface temperatures (in Celsius), and the second should indicate δ<sup>18</sup>O of sea-water (in VSMOW).
 
 ##### species
 A string indicating the foram species. Options are:
@@ -47,4 +47,4 @@ You can run the BayFOX forward model directly using "bayfoxPSM.run". Here, the s
 ```matlab
 d18Oc = bayfoxPSM.run( SSTs, d18Osw, species );
 ```
-where SSTs is a vector of sea-surface temperatures (in Celsius), d18Osw is a vector of sea-water δ18O values (in VSMOW), and species is one of the aforementioned strings.
+where SSTs is a vector of sea-surface temperatures (in Celsius), d18Osw is a vector of sea-water δ<sup>18</sup>O values (in VSMOW), and species is one of the aforementioned strings.

@@ -503,3 +503,12 @@ main form {
   background: #f2f2f2;
   padding: 20px;
 }
+
+sub {
+  vertical-align: bottom;
+  font-size: 75%;
+}
+sup {
+  vertical-align: top;
+  font-size: 75%;
+}
