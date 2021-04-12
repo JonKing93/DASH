@@ -1,6 +1,7 @@
 ---
 sections:
   - VS-Lite
+  - Prerequisites
   - Initialize
   - Run directly
 ---

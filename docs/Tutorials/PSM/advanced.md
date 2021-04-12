@@ -5,7 +5,7 @@ In addition to a built-in general linear model, DASH provides support for workin
 2. PRYSM: A Python package with δ<sup>18</sup>O forward models for multiple proxies, and
 3. VS-Lite: A thresholding model of tree-ring growth.
 
-Follow the links below to find details on working with specific PSMs.
+Follow the links below to find details on working with specific PSMs, or see the [PSM quick reference](reference) page.
 
 ### Bay* Foraminiferal Models
 The following are Bayesian forward models for planktic foraminifera.
@@ -19,7 +19,7 @@ A Python package with δ<sup>18</sup>O forward models for multiple proxies. We r
 * [Cellulose](prysmCellulose): For δ<sup>18</sup>O of cellulose
 * [Coral](prysmCoral): For δ<sup>18</sup>O of coral
 * [Icecore](prysmIcecore): Precipitation-weighted δ<sup>18</sup>O of ice
-* [Speleothem](prysmSpeleothem): FOr δ<sup>18</sup>O of cellulose of speleothem calcite and dripwater.
+* [Speleothem](prysmSpeleothem): For δ<sup>18</sup>O of cellulose of speleothem calcite and dripwater.
 
 ### Misc
 Other supported forward models
@@ -28,4 +28,6 @@ Other supported forward models
 
 ### Other forward models
 
-You may be interested in using
+You may be interested in using other forward models. If this is the case, you can either
+* [estimate proxies *without* PSM.estimate](format-estimates), or
+* [create a new PSM class](new-class)

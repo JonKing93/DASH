@@ -1,23 +1,24 @@
 # PSM Overview
 The PSM class is most commonly used to estimate proxy observations for a model ensemble. There are two key steps in this process:
 1. Designing PSMs for individual proxy sites, and
-2. Using the PSM.estimate command to estimate values for all the different proxy sites.
+2. Using the PSM.estimate command to estimate proxy values using data from a state vector ensemble.
 
 ### PSM objects
-You can design PSMs for different proxy sites using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models. The PSMs in DASH include:
-* multiple linear relationships
-* VS-Lite
-* BAYMAG / BAYSPAR / BAYSPLINE, and
-* interfaces with PRySM
+You can design PSMs for different proxy sites using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models. DASH supports many PSMs, including:
 
-PSM objects allow you to use these different types of PSMs, and different site settings, in a modular and automated manner.
+* General linear relationships
+* Bayesian models of planktic foraminifera ([BayFOX](https://github.com/jesstierney/bayfoxm), [BayMAG](https://github.com/jesstierney/BAYMAG), [BaySPAR](https://github.com/jesstierney/BAYSPAR), [BAYSPLINE](https://github.com/jesstierney/BAYSPLINE))
+* δ<sup>18</sup>O forward models for multiple proxies via the [PRYSM Python package](https://github.com/sylvia-dee/PRYSM), and
+* the VS-Lite thresholding model of tree ring growth
+
+PSM objects allow you to use these different types of forward models for different proxy sites in a modular and automated manner.
 
 The exact command used to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax:
 ```matlab
-psmObject = psmName(rows, otherInput1, otherInput2, .., otherInputN)
+psmObject = psmName(rows, parameter1, parameter2, .., parameterN)
 ```
 
-* Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a linear relationship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite.
+* Here, psmName is the name of a specific PSM class. For example, use the "linearPSM" class to create a PSM that implements a general linear relationship. Alternatively, use the "vslitePSM" class to create a PSM that implements VS-Lite. You can find a list of PSM classes [here].
 
 * The "rows" argument indicates which state vector elements are required to run a PSM. This way, the PSM for each proxy site knows what data to use to run. The [ensembleMetadata class](..\ensembleMetadata\welcome) is useful for determining the rows; in particular, the [ensembleMetadata.closestLatLon command](..\ensembleMetadata\closest).
 
