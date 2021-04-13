@@ -38,13 +38,13 @@ A scalar indicating the longitude of the coral site in decimal degrees on the in
 
 ##### species
 A string indicating the coral species. This adjusts the slope of the forward model regression. Options are:
-* "Default": Use the default regression parameter, a = -0.22
-* "Porites_sp": a = -.26178
-* "Porites_lob": a = -.19646
-* "Porites_lut": a = -.17391
-* "Porites_aus": a = -.21
-* "Montast": a = -.22124
-* "Diploas": a = -.14992
+* <code><span style="color:#cc00cc;font-size:0.875em">"Default"</span></code>: Use the default regression parameter, a = -0.22
+* <code><span style="color:#cc00cc;font-size:0.875em">"Porites_sp"</span></code>: a = -.26178
+* <code><span style="color:#cc00cc;font-size:0.875em">"Porites_lob"</span></code>: a = -.19646
+* <code><span style="color:#cc00cc;font-size:0.875em">"Porites_lut"</span></code>: a = -.17391
+* <code><span style="color:#cc00cc;font-size:0.875em">"Porites_aus"</span></code>: a = -.21
+* <code><span style="color:#cc00cc;font-size:0.875em">"Montast"</span></code>: a = -.22124
+* <code><span style="color:#cc00cc;font-size:0.875em">"Diploas"</span></code>: a = -.14992
 
 ##### bcoeffs
 An optional input, used to specify the five regional b coefficients, as defined by [Legrande and Schmidt, 2006](https://doi.org/10.1029/2006GL026011).

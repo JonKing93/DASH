@@ -1,7 +1,7 @@
 
 # Estimate Proxies
 
-One of the benefits of PSM objects is that they all share a common interface. This interface allows you to estimate proxies for *any* PSM using the command "PSM.estimate". To call this command, use the following syntax:
+One of the benefits of PSM objects is that they all share a common interface. This interface allows you to estimate proxies for *all* PSMs using the command "PSM.estimate". To call this command, use the following syntax:
 ```matlab
 Ye = PSM.estimate(X, psmObject)
 ```
@@ -33,7 +33,7 @@ Here, Ye will have a size of (2 x 1000). The first row will hold the estimates f
 
 ### Estimate proxy uncertainty (R)
 
-Some PSMs can estimate the proxy measurement uncertainty for a site. (In the [Kalman Filter tutorial](..\kalmanFilter\welcome), we refer to this as R). Use the second output to obtain any estimated R values:
+Some PSMs can estimate the proxy measurement uncertainty / error-variance for a site. (We refer to this value as R in data assimilation tutorials). Use the second output to obtain any estimated R values:
 ```matlab
 [Ye, R] = PSM.estimate(X, psmObjects);
 ```
@@ -46,7 +46,7 @@ R will be a vector with two elements. The first element will hold the R estimate
 
 It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN.
 
-
+{% comment %}
 ### Estimate proxies for very large ensembles
 
 In some cases, you may have a state vector ensemble that is too large to fit into active memory. Typically, these very large ensembles are saved in a ".ens" file. You can estimate proxies for these state vector ensembles by providing an ensemble object as the first input to "PSM.estimate". For example, if I want to apply the linear PSM from the previous examples to a very large ensemble, I could do:
@@ -60,3 +60,4 @@ Ye = PSM.estimate(ens, myPSM);
 ```
 
 So far, we have seen how to estimate proxy values given a state vector ensemble. However, in some cases you may want estimate proxy values without needing to create an entire ensemble. We will examine this syntax in the next section.
+{% endcomment %}

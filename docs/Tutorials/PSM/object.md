@@ -1,18 +1,18 @@
-# PSM Overview
-The PSM class is most commonly used to estimate proxy observations for a model ensemble. There are two key steps in this process:
-1. Designing PSMs for individual proxy sites, and
-2. Using the PSM.estimate command to estimate proxy values using data from a state vector ensemble.
+---
+sections:
+  - PSM overview
+  - PSM objects
+  - Initialize a new PSM
+  - The rows input
+  - Example 1
+  - Example 2
+  - Name a PSM
+---
 
 ### PSM objects
-You can design PSMs for different proxy sites using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models. DASH supports many PSMs, including:
+Once you have downloaded any external PSM code, you can begin designing a PSM for each proxy site. You can design the PSM for each site using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models, and may require different climate variables to run. PSM objects allow you to implement disparate forward models for different proxy sites in a modular and automated manner.
 
-* General linear relationships
-* Bayesian models of planktic foraminifera ([BayFOX](https://github.com/jesstierney/bayfoxm), [BayMAG](https://github.com/jesstierney/BAYMAG), [BaySPAR](https://github.com/jesstierney/BAYSPAR), [BAYSPLINE](https://github.com/jesstierney/BAYSPLINE))
-* δ<sup>18</sup>O forward models for multiple proxies via the [PRYSM Python package](https://github.com/sylvia-dee/PRYSM), and
-* the VS-Lite thresholding model of tree ring growth
-
-PSM objects allow you to use these different types of forward models for different proxy sites in a modular and automated manner.
-
+### Initialize a new PSM
 The exact command used to create a PSM object will vary with the PSM itself. However, PSM creation always uses the same general syntax:
 ```matlab
 psmObject = psmName(rows, parameter1, parameter2, .., parameterN)
@@ -22,10 +22,45 @@ psmObject = psmName(rows, parameter1, parameter2, .., parameterN)
 
 * The "rows" argument indicates which state vector elements are required to run a PSM. This way, the PSM for each proxy site knows what data to use to run. The [ensembleMetadata class](..\ensembleMetadata\welcome) is useful for determining the rows; in particular, the [ensembleMetadata.closestLatLon command](..\ensembleMetadata\closest).
 
-* otherInput 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. We will examine these inputs in detail for specific PSMs later in the tutorial.
+* parameters 1 through N are any additional inputs required to run the PSM, which will vary with the specific PSM being created. You can read about these inputs in detail on the [pages for individual PSMs](advanced).
 
 * psmObject is the new PSM object for a specific proxy site.
 
+### The "rows" input
+
+The rows input indicates which state vector rows hold the data needed to run the PSM; it is an array with up to three dimensions. If rows has a single column, then the same state vector rows will be used for all ensemble members. For example:
+```matlab
+rows = [2
+        5];
+```
+will use the second and fifth state vector elements to run the PSM for each ensemble member.
+
+However, rows can instead have one column per ensemble member. In this case, each column indicates the state vector elements to use for a particular ensemble member. This can be useful if a prior contains NaNs in some ensemble members, but not others. As an example, say I have a state vector ensemble with three ensemble members. Then you could do:
+```matlab
+rows = [2 2 3;
+        5 6 5];
+```
+to use state vector elements 2 and 5 to run the PSMs for the first ensemble member, elements 2 and 6 for the second member, and 3 and 5 for the third.
+
+If "rows" has a single element along the third dimension, then the same state vector elements will be used to run the PSMs for all priors. However, if you are using transient offline priors for data assimilation, you can specify different state vector elements for different priors using the third dimension of "rows". For example, if I have two priors, as per:
+```matlab
+ens1 = ensemble('my-ensemble-1.ens');
+X1 = ens1.load;
+
+ens2 = ensemble('my-ensemble-2.ens');
+X2 = ens2.load;
+
+X = cat(3, X1, X2);
+```
+
+then I can do:
+
+```matlab
+rows1 = [2;5];
+rows2 = [3;6];
+rows = cat(3, rows1, rows2);
+```
+to use state vector elements 2 and 5 to run the PSMs for the first prior, and elements 3 and 6 to run the PSMs for the second prior.
 
 #### Example 1
 Let's say I want to use the "linearPSM" class to create a linear, temperature PSM for a site at [60N, 120E]. In my state vector ensemble, the temperature variable is named "Temperature". Then I could do:

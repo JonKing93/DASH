@@ -31,8 +31,8 @@ An optional input indicating the time step (in years). A scalar. By default, use
 
 ##### model
 An optional input specifying the aquifer-recharge model. A string. Options are:
-* "Well-Mixed": Assuming a well-mixed aquifer
-* "Adv-Disp": Uses an advective-dispersion model
+* <code><span style="color:#cc00cc;font-size:0.875em">"Well-Mixed"</span></code>: Assuming a well-mixed aquifer
+* <code><span style="color:#cc00cc;font-size:0.875em">"Adv-Disp"</span></code>: Uses an advective-dispersion model
 
 By default, uses the well-mixed model.
 

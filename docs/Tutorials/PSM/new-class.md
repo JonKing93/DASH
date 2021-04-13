@@ -6,4 +6,4 @@ DASH includes a template for creating new PSM classes. To access this template, 
 edit templatePSM
 ```
 
-This should open a file name "templatePSM" in the Matlab editor. Follow the instructions in this template to create your new PSM.
+This should open a file named "templatePSM" in the Matlab editor. Follow the instructions in this template to create your new PSM.
