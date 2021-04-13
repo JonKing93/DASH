@@ -68,8 +68,37 @@ Again, I will probably also want to use the [findRows command](find-rows) to loc
 ```matlab
 psmRow = ensMeta.findRows( mayRow );
 ```
-
 You can find more examples and details of how to implement these functions for proxy system models in the PSM tutorial.
+
+# Exclude rows from consideration
+
+In some cases, you may want to exclude certain rows from consideration in the search for the closest data element. This can occur if a state vector ensemble contains NaN elements and you want to return the closest rows that have data. You can exclude rows from the search using the third input:
+```matlab
+rows = ensMeta.closestLatLon(coordinate, [], exclude);  % To search the entire state vector
+rows = ensMeta.closestLatLon(coordinate, varName, exclude); % To search a specific variable
+```
+Here, "exclude" is a logical matrix with either:
+1. One row per state vector element, or
+2. One row per state vector element for the specified variable
+as appropriate.
+
+Any true elements in "exclude" will be removed from the search for the closest coordinate. For example, if I have a state vector with 1000 elements, then I could do:
+```matlab
+exclude = false(1000,1);
+exclude([2, 5, 17]) = true;
+rows = ensMeta.closestLatLon(coordinate, [], exclude);
+```
+to remove the second, fifth, and seventeenth state vector elements from consideration when searching for the closest coordinate.
+
+The "exclude" argument can also have multiple columns. If this is the case, the search is repeated once for each column; each new search will exclude the rows indicated in the corresponding column. This can be useful if a prior has NaN values in different rows of different ensemble members. For example, if I want to find the closest non-NaN elements in a state vector ensemble, I could do:
+```matlab
+ens = ensemble("my-ensemble.ens");
+[X, ensMeta] = ens.load;
+
+exclude = isnan(X);
+rows = ensMeta.closestLatLon(coordinate, [], exclude);
+```
+Here, the "rows" output will be a matrix; each column will hold the closest rows for the corresponding column of "exclude". So in the previous example, "rows" will hold the closest non-NaN rows for each ensemble member.
 
 ### Behavior and NaN coordinates
 

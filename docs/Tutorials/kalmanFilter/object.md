@@ -4,10 +4,12 @@
 The Kalman Filter class allows you to create and modify kalmanFilter objects, which can be used to run Kalman Filter analyses. When implementing a Kalman Filter, the general workflow is to
 
 1. Initialize a new kalmanFilter object,
-2. Provide essential inputs (such as a prior, proxy observations, uncertainties and estimates),
-3. Make any covariance adjustments (such as localization or blending),
-4. Choose output quantities, and then
-5. Run the filter
+2. Provide essential inputs (prior, proxy observations, uncertainties and estimates), and
+3. Run the filter.
+
+More advanced users may also be interested in
+* Making covariance adjustments (such as localization or blending), and
+* Selecting output quantities
 
 We will cover each of these steps in detail through this tutorial.
 

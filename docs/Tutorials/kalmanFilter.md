@@ -3,7 +3,7 @@
 
 This tutorial provides a guide to
 1. Creating and running a kalman filter,
-2. Building evolving priors, and
+2. Building transient offline priors, and
 3. Adjusting covariance estimates
 
 using the kalmanFilter class.
