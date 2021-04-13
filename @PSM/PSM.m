@@ -5,6 +5,9 @@ classdef (Abstract) PSM
     %   estimate - Estimate proxy values from a state vector ensemble
     %   rename - Renames a PSM
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         name;
         rows;
@@ -102,34 +105,64 @@ classdef (Abstract) PSM
         end
                 
         % Set the rows
-        function[obj] = useRows(obj, rows)
+        function[obj] = useRows(obj, rows, nRequired)
             %% Specifies the state vector rows used by a PSM
             %
             % obj = obj.useRows(rows)
             %
+            % obj = obj.useRows(rows, nRows)
+            % Require a specific number of rows.
+            %
             % ----- Inputs -----
             %
-            % rows: The rows used by the PSM. A vector of positive integers.
+            % rows: The state vector rows holding the data required to run
+            %    the PSM to estimate observations. If a column vector, uses
+            %    the same rows for every ensemble member. If a matrix, each
+            %    column indicates the rows to use for the corresponding
+            %    ensemble member. Either a logical matrix or matrix of
+            %    linear indices.
+            %
+            % nRows: The number of rows required by the PSM. A scalar
+            %    positive integer.
             %
             % ----- Outputs -----
             %
             % obj: The updated PSM object
             
+            % Default nRows
+            if ~exist('nRequired','var') || isempty(nRequired)
+                nRequired = [];
+            end
+            
             % Error check
-            assert(isvector(rows), 'rows must be a vector');
+            assert(~isempty(rows), 'rows cannot be empty');
+            assert(ndims(rows)<=3, 'rows cannot have more than 3 dimensions');
             assert(islogical(rows) || isnumeric(rows), 'rows must be numeric or logical');
             
             % Error check numeric indices
             if isnumeric(rows)
+                dash.assertRealDefined(rows, 'rows');
                 dash.assertPositiveIntegers(rows, 'rows');
                 
-            % Convert logical to numeric
+            % Error check logical indices
             else
-                rows = find(rows);
+                nRows = unique(sum(rows, 1));
+                assert(isscalar(nRows), 'Each column of rows must select the same number of state vector elements (must have the same number of "true" elements).')
+                assert(nRows~=0, 'rows is not selecting any state vector rows because it has no "true" elements');
+                
+                % Convert logical indices to linear
+                siz = size(rows, 1:3);
+                [rows, ~, ~] = ind2sub(siz, find(rows));
+                rows = reshape(rows, nRows, siz(2), siz(3));
+            end
+            
+            % Optionally check the number of rows
+            if ~isempty(nRequired)
+                assert(size(rows,1)==nRequired, sprintf('You must select %.f rows', nRequired));
             end
             
             % Save
-            obj.rows = rows(:);
+            obj.rows = rows;
         end
             
         % Allow R to be estimated
@@ -152,15 +185,17 @@ classdef (Abstract) PSM
         end
     end
     
+    % Download PSM repositories
     methods (Static)
-        % Estimate Y values for a set of PSMs
-        [Ye, R] = estimate(X, F)
-        
-        % Download the code for a PSM
         download(psmName, path);
-        
-        % Get the repository and commit information for a PSM
         [repo, commit] = githubLocation(psmName);
+    end
+
+    % Estimate proxy values
+    methods (Static)
+        [Ye, R] = estimate(X, F, throwError);   % User function call
+        F = setupEstimate(X, F);    % Does error checking before computing estimates
+        [Ye, R] = computeEstimates(X, F, throwError);
     end
     
     % Run individual PSM objects

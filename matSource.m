@@ -1,6 +1,9 @@
 classdef matSource < dataSource
     %% Reads data from a .mat file data source
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = private)
         m; % A matfile object
     end

@@ -1,11 +1,7 @@
 classdef linearPSM < PSM
-    % Implements a linear PSM of the following equation
+    % Implements a general linear PSM of the following form:
     %
     % Y = a1 X1 + a2 X2 + ... + an Xn + b
-    %
-    % linearPSM Methods:
-    %   linearPSM - Creates a new linearPSM object
-    %   run - Runs a linear PSM directly
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
@@ -30,7 +26,7 @@ classdef linearPSM < PSM
             % obj = linearPSM(rows, slope, ...)
             % Uses the same slope for all variables.
             %
-            % obj = linaerPSM(rows, slopes)
+            % obj = linearPSM(rows, slopes)
             % Uses a default intercept of 0.
             %
             % ----- Inputs -----
@@ -62,7 +58,7 @@ classdef linearPSM < PSM
             if ~exist('intercept','var')
                 intercept = [];
             end
-            [obj.slopes, obj.intercept] = linearPSM.checkInputs(slopes, intercept, numel(obj.rows));
+            [obj.slopes, obj.intercept] = linearPSM.checkInputs(slopes, intercept, size(obj.rows,1));
         end
         
         % Run the PSM
@@ -104,7 +100,8 @@ classdef linearPSM < PSM
             %    Each row is a different X value.
             %
             % slopes: The slopes for each variable. A numeric vector in the
-            %    order as the listed rows.
+            %    order as the listed rows. If a scalar, uses the same slope
+            %    for all variables.
             %
             % intercept: The intercept for the linear equation. A numeric
             %    scalar.
@@ -160,6 +157,7 @@ classdef linearPSM < PSM
             elseif nSlopes~=nRows
                 error('The number of slopes (%.f) does not match the number of rows (%.f)', nSlopes, nRows);
             end
+            slopes = slopes(:);
 
             % Default and error check intercept
             if ~exist('intercept','var') || isempty(intercept)

@@ -14,7 +14,7 @@ function[C, Ycov] = covarianceEstimate(kf, t)
 % Ycov: The covariance of the proxy sites with one another
 
 % Finalize the filter
-kf = kf.finalize('query covariance estimates');
+kf = kf.finalize;
 
 % Error check t
 dash.assertScalarType(t, 't', 'numeric', 'numeric');
@@ -27,13 +27,13 @@ if kf.setCov
     
 % Otherwise, load and decompose the prior and estimates
 else
-    M = kf.M(:,:, kf.whichPrior(t));
-    Y = kf.Y(:,:, kf.whichPrior(t));
-    [~, Mdev] = dash.decompose(M, 2);
-    [~, Ydev] = dash.decompose(Y, 2);
+    X = kf.X(:,:, kf.whichPrior(t));
+    Ye = kf.Ye(:,:, kf.whichPrior(t));
+    [~, Xdev] = dash.decompose(X, 2);
+    [~, Ydev] = dash.decompose(Ye, 2);
     
     % Then estimate the covariance
-    [C, Ycov] = kf.estimateCovariance(t, Mdev, Ydev);
+    [C, Ycov] = kf.estimateCovariance(t, Xdev, Ydev);
 end
 
 end

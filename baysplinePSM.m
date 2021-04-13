@@ -1,80 +1,31 @@
 classdef baysplinePSM < PSM
-    % Implements the BAYSPLINE UK37 PSM
-    % Requires the Curve Fitting Toolbox
+    % Implements the BAYSPLINE PSM, a Bayesian model for UK37 by Jess
+    % Tierney.
     %
-    % baysplinePSM Methods:
-    %   baysplinePSM - Creates a new baysplinePSM object
-    %   run - Runs BAYSPLINE directly
+    % Prerequisites: Requires the Curve Fitting Toolbox
+    %
+    % Find it on Github at: https://github.com/jesstierney/BAYSPLINE
+    %
+    % Or read the paper:
+    % Tierney, J.E. & Tingley, M.P. (2018) BAYSPLINE: A New Calibration for
+    % the Alkenone Paleothermometer. Paleoceanography and 
+    % Paleoclimatology 33, 281-301, [http://doi.org/10.1002/2017PA003201].
     
-    methods
-        % Constructor
-        function[obj] = baysplinePSM(row, name)
-            %% Creates a new BAYSPLINE PSM
-            %
-            % obj = baysplinePSM(row)
-            % Creates a BAYSPLINE PSM for a set of SST values.
-            %
-            % obj = baysplinePSM(row, name)
-            % Optionally names the PSM.
-            %
-            % ----- Inputs -----
-            %
-            % row: The state vector row with the SST values required to run
-            %    the PSM. A positive integer.
-            %
-            % name: An optional name for the PSM. A string
-            %
-            % ----- Outputs -----
-            %
-            % obj: The new baysplinePSM object
-        
-            % Set name, estimatesR
-            if ~exist('name','var')
-                name = "";
-            end            
-            obj@PSM(name, true);
-            
-            % Check and set rows
-            assert(isscalar(row), 'row must be a scalar');
-            obj = obj.useRows(row);
-        
-        end
-        
-        % Run the PSM
-        function[UK, R] = runPSM(~, SSTs)
-            %% Runs a baysplinePSM object
-            %
-            % [UK, R] = obj.run(SSTs)
-            %
-            % ----- Inputs -----
-            %
-            % SSTs: The SSTs for the BAYSPLINE model. A numeric row vector.
-            %
-            % ----- Outputs -----
-            %
-            % UK: A row vector of UK37 estimates.
-            %
-            % R: Uncertainty estimates from the posterior.
-     
-            % Currently, there are no additional parameters, so can just
-            % call the static method directly.
-            [UK, R] = baysplinePSM.run(SSTs);
-        end
-    end
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
     
-    % Run directly
+        % Run directly
     methods (Static)
         function[Y, R] = run(ssts)
-            %% Runs the BAYSPLINE PSM directly
+            %% Runs the BAYSPLINE UK37 forward model.
             %
-            % [Y, R] = baysplinePSM.run(ssts)
+            % [UK37, R] = baysplinePSM.run(ssts)
             % Applies BAYSPLINE to a set of SSTs to estimate UK37 values
             % and associated uncertainty.
             %
             % ----- Inputs -----
             %
             % ssts: A vector of sea surface temperatures (in Celsius).
-            %    Please see the BAYSPLINE documentation for more details.
             %
             % ----- Outputs -----
             %
@@ -98,6 +49,58 @@ classdef baysplinePSM < PSM
             end
         end  
     end
-          
+    
+    methods
+        % Constructor
+        function[obj] = baysplinePSM(row, name)
+            %% Creates a new baysplinePSM object
+            %
+            % obj = baysplinePSM(row)
+            % Creates a BAYSPLINE PSM for a set of SST values.
+            %
+            % obj = baysplinePSM(row, name)
+            % Optionally names the PSM.
+            %
+            % ----- Inputs -----
+            %
+            % row: The state vector row with the SST values required to run
+            %    the PSM.
+            %
+            % name: An optional name for the PSM. A string
+            %
+            % ----- Outputs -----
+            %
+            % obj: The new baysplinePSM object
+        
+            % Set name, estimatesR, row
+            if ~exist('name','var')
+                name = "";
+            end            
+            obj@PSM(name, true);
+            obj = obj.useRows(row, 1);
+        
+        end
+        
+        % Run the PSM
+        function[UK, R] = runPSM(~, SSTs)
+            %% Runs a baysplinePSM object
+            %
+            % [UK37, R] = obj.run(SSTs)
+            %
+            % ----- Inputs -----
+            %
+            % SSTs: The SSTs used to run the PSM. A numeric row vector.
+            %
+            % ----- Outputs -----
+            %
+            % UK37: A row vector of UK37 estimates. A vector.
+            %
+            % R: Error-variance uncertainty estimated from the posterior.
+            %    A vector.
+            
+            % Currently, there are no additional parameters, so can just
+            % call the static method directly.
+            [UK, R] = baysplinePSM.run(SSTs);
+        end
+    end
 end
-  

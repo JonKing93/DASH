@@ -11,16 +11,9 @@ function[members, v] = loadSettings(obj)
 %
 % v: Variable indices to load.
 
-% Defaults if unspecified
+% Get the object settings
 members = obj.members;
-if isempty(members)
-    members = 1:obj.metadata.nEns;
-end
-
 variables = obj.variables;
-if isempty(variables)
-    variables = obj.metadata.variableNames;
-end
 
 % Check the variables are still consistent with the .ens file
 filevars = obj.metadata.variableNames;

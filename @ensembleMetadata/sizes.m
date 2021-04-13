@@ -2,11 +2,11 @@ function[nState, nEns] = sizes(obj, vars)
 %% Returns the size of a state vector ensemble, or variables in the state
 % vector ensemble.
 %
-% [nState, nEns] = obj.size
+% [nState, nEns] = obj.sizes
 % Returns the size of the complete state vector ensemble.
 %
-% [nEls, nEns] = obj.size(varNames)
-% [nEls, nEns] = obj.size(v)
+% [nEls, nEns] = obj.sizes(varNames)
+% [nEls, nEns] = obj.sizes(v)
 % Returns the size of variables in the state vector ensemble.
 %
 % ------ Inputs -----

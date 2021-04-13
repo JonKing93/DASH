@@ -2,6 +2,9 @@ classdef (Abstract) posteriorCalculation
     %% Implements calculations that require the posterior deviations
     % (and optionally the posterior mean) from a Kalman Filter
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (Abstract, SetAccess = immutable)
         timeDim; % The time dimension in the output quantity
     end

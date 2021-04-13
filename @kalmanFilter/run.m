@@ -1,14 +1,44 @@
-function[out] = run(kf)
+function[out] = run(kf, showprogress, complexError)
 %% Runs a Kalman Filter using an ensemble square root implementation
 %
 % output = kf.run
+% Runs the Kalman Filter
+%
+% output = kf.run(showprogress)
+% Specify whether to display a progress bar for the Kalman Filter.
+%
+% output = kf.run(showprogress, complexError)
+% Specify whether to throw an error if the adjusted Kalman Gain becomes
+% complex-valued. Default is to throw an error. If disabling the error,
+% updated ensemble deviations are set to NaN is all time steps with a
+% complex-valued adjusted gain.
+%
+% ----- Inputs -----
+%
+% showprogress: A scalar logical indicating whether to display a progress
+%    bar (true), or not (false). By default, no progress bar is shown.
+%
+% complexError: A scalar logical indicating whether to throw an error when
+%    the adjusted Kalman Gain becomes complex valued (true -- Default), or
+%    whether to update using NaN deviations (false).
 %
 % ----- Outputs -----
 %
 % output: A structure containing output calculations
 
+% Defaults and error check
+if ~exist('showprogress','var') || isempty(showprogress)
+    showprogress = false;
+end
+dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
+
+if ~exist('complexError','var') || isempty(complexError)
+    complexError = true;
+end
+dash.assertScalarType(complexError, 'complexError', 'logical', 'logical');
+
 % Check for essential inputs and finalize whichArgs
-kf = kf.finalize('run a Kalman Filter');
+kf = kf.finalize;
 
 % Determine whether to update the deviations
 updateDevs = false;
@@ -31,10 +61,9 @@ for q = 1:numel(kf.Q)
     out.(name) = NaN(siz);
 end
 
-% Decompose ensembles and note observation sites
-[Mmean, Mdev] = dash.decompose(kf.M, 2);
-[Ymean, Ydev] = dash.decompose(kf.Y, 2);
-sites = ~isnan(kf.D);
+% Decompose ensembles
+[Xmean, Xdev] = dash.decompose(kf.X, 2);
+[Ymean, Ydev] = dash.decompose(kf.Ye, 2);
 
 % Get the covariance settings for each time step. Find the unique
 % covariances and the time steps associated with each
@@ -45,30 +74,40 @@ end
 [covSettings, ~, whichCov] = unique(covSettings, 'rows');
 nCov = size(covSettings, 1);
 
-% Make each covariance estimate. Get its associated time steps
+% Get all unique Kalman Gains
+sites = ~isnan(kf.Y);
+gains = [sites', kf.whichR, whichCov];
+[gains, ~, whichGain] = unique(gains, 'rows');
+
+% Initialize progress bar
+nGains = size(gains, 1);
+progress = progressbar(showprogress, 'Running Kalman Filter:', nGains, ceil(nGains/100));
+
+% Make each covariance estimate. Get its associated time steps, priors, and gains
 for c = 1:nCov
     times = find(whichCov==c);
     p = kf.whichPrior(times(1));
-    [Knum, Ycov] = kf.estimateCovariance(times(1), Mdev(:,:,p), Ydev(:,:,p));
+    covGains = find(gains(:,end)==c);
+    [Knum, Ycov] = kf.estimateCovariance(times(1), Xdev(:,:,p), Ydev(:,:,p));
     
-    % Find the time steps that have the same observation sites and R
-    % values. (These will have the same Kalman Gain)
-    gains = [sites(:,times); kf.R(:,times)]';
-    [gains, ~, whichGain] = unique(gains, 'rows');
-    nGains = size(gains,1);
-    
-    % Get the sites, time steps, and priors associated with each gain
-    for g = 1:nGains
-        t = times(whichGain==g);
+    % Get the sites, time steps, priors, and R covariance associated with each gain
+    for g = 1:numel(covGains)
+        t = times(whichGain == covGains(g));
         s = sites(:, t(1));
+        Rk = kf.Rcovariance(t(1), s);
         
         % Kalman Gain and adjusted Gain
-        Rk = diag( kf.R(s,t(1)) );
         Kdenom = Ycov(s,s) + Rk;
         K = Knum(:,s) / Kdenom;
         if updateDevs
             Ksqrt = sqrtm(Kdenom);
             Ka = Knum(:,s) * (Ksqrt^(-1))' * (Ksqrt + sqrtm(Rk))^(-1);
+            
+            % Check the adjusted gain is not complex valued
+            realKa = isreal(Ka);
+            if ~realKa && complexError
+                error('The adjusted gain in time step %.f is complex valued. This can occur if the R covariance matrix for the time step has negative eigenvalues.', t(1));
+            end
         end
         
         % Cycle through each prior that has updates using this gain. Get
@@ -78,14 +117,25 @@ for c = 1:nCov
             p = priors(pk);
             tu = t(updatePrior==pk);
             
-            % Update.
-            Amean = Mmean(:,:,p) + K * (kf.D(s,tu) - Ymean(s,:,p));
-            if updateDevs
-                Adev = Mdev(:,:,p) - Ka * Ydev(s,:,p);
+            % Update the mean and calibration ratio
+            Amean = repmat(Xmean(:,:,p), [1 numel(tu)]);
+            if any(s)
+                innovation = kf.Y(s,tu) - Ymean(s,:,p);
+                Amean = Amean + K * innovation;
+                out.calibRatio(s,tu) = innovation.^2 ./ diag(Kdenom);
             end
             
-            % Calculated quantities
-            out.calibRatio(s,tu) = (kf.D(s,tu) - Ymean(s,:,p)).^2 ./ diag(Kdenom);
+            % Deviations
+            if updateDevs
+                Adev = Xdev(:,:,p);
+                if any(s) && realKa
+                    Adev = Adev - Ka * Ydev(s,:,p);
+                elseif any(s) && ~realKa
+                    Adev(:) = NaN;
+                end
+            end
+            
+            % Calculated indices
             for q = 1:numel(kf.Q)
                 name = kf.Q{q}.outputName;
                 td = kf.Q{q}.timeDim;
@@ -103,6 +153,9 @@ for c = 1:nCov
                 out.Adev(:, :, tu) = Adev;
             end
         end
+        
+        % Update the progress bar
+        progress.update;
     end
 end
 

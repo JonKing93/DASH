@@ -1,4 +1,4 @@
-function[kf] = index(kf, name, weights, rows)
+function[kf] = index(kf, name, weights, rows, nanflag)
 %% Returns the posterior for an index calculated over the updated ensemble
 %
 % kf = kf.index(name)
@@ -9,6 +9,10 @@ function[kf] = index(kf, name, weights, rows)
 %
 % kf = kf.index(name, weights, rows)
 % Calculates a weighted mean over specific state vector rows.
+%
+% kf = kf.index(name, weights, rows, nanflag)
+% Specify how to treat NaN values in the weighted mean for the index. By
+% default, NaN values are included in means.
 %
 % kf = kf.index(name, 'delete')
 % Removes an index from the output.
@@ -26,12 +30,15 @@ function[kf] = index(kf, name, weights, rows)
 %    Either a logical vector the length of the state vector, or a set of
 %    linear indices.
 %
+% nanflag: Options are "includenan" to use NaN values (default) and
+%    "omitnan" to remove NaN values.
+%
 % ----- Outputs -----
 %
 % kf: The updated kalmanFilter object
 
 % Require a prior
-if isempty(kf.M)
+if isempty(kf.X)
     error('You must specify a prior (using the "prior" command) before creating a posterior index');
 end
 
@@ -47,6 +54,11 @@ end
 if ~exist('rows','var') || isempty(rows)
     rows = 1:kf.nState;
 end
+if ~exist('nanflag','var')
+    nanflag = "includenan";
+end
+
+% Parse 
 
 % Delete the index if requested
 if dash.isstrflag(weights) && strcmpi(weights, 'delete')
@@ -60,10 +72,12 @@ else
     dash.assertVectorTypeN(weights, 'numeric', numel(rows), 'weights');
     assert(~ismember(outputName, kf.Qname), sprintf('You already specified an index named %s', name));
     rows = dash.checkIndices(rows, 'rows', kf.nState, 'number of state vector elements');
+    dash.assertStrFlag(nanflag, 'nanflag');
+    assert(any(strcmpi(nanflag, ["omitnan","includenan"])), 'nanflag must either be "omitnan" or "includenan"');
 
     % Add to the calculations array
     k = numel(kf.Q)+1;
-    kf.Q{k,1} = posteriorIndex(outputName, weights, rows);
+    kf.Q{k,1} = posteriorIndex(outputName, weights, rows, nanflag);
     kf.Qname(k,1) = outputName;
 end
 

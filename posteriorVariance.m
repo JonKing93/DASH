@@ -1,6 +1,9 @@
 classdef posteriorVariance < posteriorCalculation
     %% Calculates the variance of a posterior ensemble.
     
+    % ----- Written By -----
+    % Jonathan King, University of Arizona, 2019-2020
+    
     properties (SetAccess = immutable)
         timeDim = 2;
     end

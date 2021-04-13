@@ -1,4 +1,4 @@
-classdef kalmanFilter
+classdef kalmanFilter < ensembleFilter
     %% Implements a Kalman Filter analysis using an ensemble square root Kalman Filter
     %
     % kalmanFilter Methods:
@@ -25,23 +25,6 @@ classdef kalmanFilter
     % Jonathan King, University of Arizona, 2019-2020
     
     properties (SetAccess = private)
-        % ID
-        name;
-        
-        % Basic inputs
-        M; % Priors
-        whichPrior; % Which prior to use in each time step
-        D; % Observations
-        R; % Observation uncertainties
-        Y; % Estimates
-        
-        % Sizes
-        nState = 0;
-        nEns = 0;
-        nPrior = 0;
-        nSite = 0;
-        nTime = 0;
-    
         %% Covariance adjustments
         
         % Inflation
@@ -97,7 +80,7 @@ classdef kalmanFilter
             %
             % kf: The new kalman filter object
             
-            % Default name
+            % Name            
             if ~exist('name','var') || isempty(name)
                 name = "";
             end
@@ -108,24 +91,22 @@ classdef kalmanFilter
             kf.return_devs = false;
             kf = kf.variance(true);
         end
-    end                
-        
-    % User basic inputs
-    methods
-        kf = rename(kf, newName);
-        kf = prior(kf, M, whichPrior);
-        kf = observations(kf, D, R);
-        kf = estimates(kf, Y);
-        out = run(kf);
     end
     
+    % ensembleFilter methods
+    methods
+        kf = prior(kf, M, whichPrior);
+        kf = observations(kf, D, R, isCovariance);
+        out = run(kf, showprogress, complexError);
+    end
+
     % User output options
     methods
         kf = mean(kf, tf);
         kf = deviations(kf, tf);
         kf = percentiles(kf, percs);
         kf = variance(kf, tf);
-        kf = index(kf, name, weights, rows);
+        kf = index(kf, name, weights, rows, nanflag);
     end
     
     % User covariance methods
@@ -140,15 +121,11 @@ classdef kalmanFilter
     
     % Utilities
     methods
-        whichArg = parseWhich(kf, whichArg, name, nIndex, indexName);
         checkSize(kf, siz, type, dim, inputName);
         assertEditableCovariance(kf, type);
         [whichCov, nCov] = checkCovariance(kf, C, Ycov, whichCov, locInputs);
-        kf = finalize(kf, actionName);
+        kf = finalize(kf);
         [Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev);
     end    
-    methods (Static)
-        [nDim1, nDim2, nDim3] = checkInput(X, name, allowNaN, requireMatrix);
-    end
     
 end

@@ -1,14 +1,14 @@
-function[Knum, Ycov] = estimateCovariance(kf, t, Mdev, Ydev)
+function[Knum, Ycov] = estimateCovariance(kf, t, Xdev, Ydev)
 %% Returns the covariance estimate in a time step given the deviations of
 % the prior and Y estimates
 %
-% [Knum, Ycov] = kf.estimateCovariance(t, Mdev, Ydev)
+% [Knum, Ycov] = kf.estimateCovariance(t, Xdev, Ydev)
 %
 % ----- Inputs -----
 %
 % t: The index of a single time step.
 %
-% Mdev: The deviations of the prior
+% Xdev: The deviations of the prior
 %
 % Ydev: The deviations for the Y estimates
 %
@@ -27,7 +27,7 @@ if kf.setCov
 % Otherwise, estimate covariance from the deviations
 else
     unbias = 1/(kf.nEns-1);
-    Knum = unbias .* (Mdev * Ydev');
+    Knum = unbias .* (Xdev * Ydev');
     Ycov = unbias .* (Ydev * Ydev');
     
     % Inflate
