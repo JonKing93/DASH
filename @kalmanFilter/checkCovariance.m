@@ -55,7 +55,7 @@ for c = 1:nCov
 end
 
 % Parse whichCov or whichLoc
-whichArg = kf.parseWhich(whichArg, names(4), nCov, names(3));
+whichArg = kf.parseWhich(whichArg, names(4), nCov, names(3), false);
 
 end
 

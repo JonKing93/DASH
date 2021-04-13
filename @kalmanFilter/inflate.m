@@ -30,7 +30,7 @@ assert(all(factor>=1), 'inflation factors cannot be smaller than 1.');
 if ~exist('whichFactor','var') || isempty(whichFactor)
     whichFactor = [];
 end
-whichFactor = kf.parseWhich(whichFactor, 'whichFactor', numel(factor), 'inflation factor');
+whichFactor = kf.parseWhich(whichFactor, 'whichFactor', numel(factor), 'inflation factor', false);
 
 % Save
 kf.inflateFactor = factor;

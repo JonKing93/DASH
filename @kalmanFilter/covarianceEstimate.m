@@ -14,7 +14,7 @@ function[C, Ycov] = covarianceEstimate(kf, t)
 % Ycov: The covariance of the proxy sites with one another
 
 % Finalize the filter
-kf = kf.finalize('query covariance estimates');
+kf = kf.finalize;
 
 % Error check t
 dash.assertScalarType(t, 't', 'numeric', 'numeric');
