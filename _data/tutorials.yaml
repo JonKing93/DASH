@@ -44,10 +44,10 @@
 
 - name: PSM
   steps:
+    - Overview, overview
+    - Download PSMs, download
     - PSM Objects, object
     - Estimate Observations, estimate
-    - Run PSM Directly, run
-    - Linear PSMs, linear
 
 - name: kalmanFilter
   steps:

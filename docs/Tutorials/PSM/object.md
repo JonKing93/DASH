@@ -9,7 +9,7 @@ sections:
   - Name a PSM
 ---
 
-### PSM objects
+# PSM objects
 Once you have downloaded any external PSM code, you can begin designing a PSM for each proxy site. You can design the PSM for each site using PSM objects. Each PSM object implements a particular type of PSM with site-specific settings. PSMs can range in complexity from a simple linear relationship, to more sophisticated process-based models, and may require different climate variables to run. PSM objects allow you to implement disparate forward models for different proxy sites in a modular and automated manner.
 
 ### Initialize a new PSM
