@@ -11,7 +11,7 @@ By default, the Kalman Filter estimates covariance using the prior and observati
 * [Blending](blend): Combines the covariance estimate linearly with a user-defined estimate
 * [Directly setting covariance](setCovariance): Allows a user to explicitly define covariances
 
-It is worth noting that, when using multiple covariance adjustments, they are applied in the following order:
+It is worth noting that multiple covariance adjustments are applied in the following order:
 1. Inflation,
 2. Localization,
 3. Blending

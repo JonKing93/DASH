@@ -1,6 +1,6 @@
 # Welcome to the DASH Tutorials!
 
-Here you can find step-by-step guides for working with the various modules in DASH. Also check out the [DASH demos](..\demos) for examples of scientific applications.
+Here you can find step-by-step guides for working with the various modules in DASH. Also check out the <a href="{{"/docs/demos" | relative_url}}">DASH demos</a> for examples of scientific applications.
 
 ### Object oriented style
 
