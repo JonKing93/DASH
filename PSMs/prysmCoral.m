@@ -19,18 +19,17 @@ classdef prysmCoral < PSM
         lon;
         useSSS;
         species = "Default";
-        b1 = 0.3007062;
-        b2 = 0.2619054;
-        b3 = 0.436509;
-        b4 = 0.1552032;
-        b5 = 0.15;
+        bcoeffs = prysmCoral.b_default;
     end
-    
+    properties (Constant, Hidden)
+        b_default = [0.3007062, 0.2619054, 0.436509, 0.1552032, .15];
+    end
+        
     methods (Static)
-        function[coral] = run(SST, SSS, d18O, lat, lon, species, b1, b2, b3, b4, b5)
+        function[coral] = run(lat, lon, SST, SSS, d18O, species, bcoeffs)
             %% Runs the PRYSM coral module
             %
-            % coral = prysmCoral.run(SST, SSS, d18O, lat, lon, species, b1, b2, b3, b4, b5)
+            % coral = prysmCoral.run(SST, SSS, d18O, lat, lon, species, bcoeffs)
             % Runs the Prysm coral model given sea surface temperatures and
             % either sea surface salinities or d18O (sea-water) for a site.
             %
@@ -48,13 +47,25 @@ classdef prysmCoral < PSM
                 d18O = -1;
             end
             
+            % B coefficients
+            b = prysmCoral.b_default;
+            if exist('bcoeffs','var') && ~isempty(bcoeffs)
+                dash.assertVectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
+                assert(numel(bcoeffs)<=5, 'bcoeffs cannot have more than 5 elements');
+                for k = 1:numel(bcoeffs)
+                    if ~isnan(bcoeffs(k))
+                        b(k) = bcoeffs(k);
+                    end
+                end
+            end
+            
             % Numpy arrays
             SST = py.numpy.array(SST);
             SSS = py.numpy.array(SSS);
             d18O = py.numpy.array(d18O);
             
             % Run PSM, convert output to Matlab numeric
-            coral = py.psm.coral.sensor.pseudocoral(lat, lon, SST, SSS, d18O, species, b1, b2, b3, b4, b5);
+            coral = py.psm.coral.sensor.pseudocoral(lat, lon, SST, SSS, d18O, species, b(1), b(2), b(3), b(4), b(5));
             coral = numeric(coral);
         end
     end
@@ -115,8 +126,9 @@ classdef prysmCoral < PSM
                 dash.assertVectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
                 assert(numel(bcoeffs)<=5, 'bcoeffs cannot have more than 5 elements');
                 for k = 1:numel(bcoeffs)
-                    name = sprintf('b%.f', k);
-                    obj.(name) = bcoeffs(k);
+                    if ~isnan(bcoeffs(k))
+                        obj.bcoeffs(k) = bcoeffs(k);
+                    end
                 end
             end
         end
@@ -142,7 +154,7 @@ classdef prysmCoral < PSM
             if ~obj.useSSS
                 d18O = SSS;
             end
-            d18O = obj.run(SST, SSS, d18O, obj.lat, obj.lon, obj.species, obj.b1, obj.b2, obj.b3, obj.b4, obj.b5);
+            d18O = obj.run(obj.lat, obj.lon, SST, SSS, d18O, obj.species, obj.bcoeffs);
         end
     end
     
