@@ -27,7 +27,7 @@ By default, DASH returns the posterior ensemble mean, posterior ensemble varianc
 * [Only updating the ensemble mean](mean-only): Speeds up calculations for exploratory analyses
 * [Ensemble Deviations](deviations)
 * [Ensemble Percentiles](percentiles), and
-* [Calculating posterior climate indices](index)
+* [Calculating posterior climate indices](indices)
 
 You can also adjust the output to disable the [ensemble mean](mean), and/or [ensemble variance](variance).
 
