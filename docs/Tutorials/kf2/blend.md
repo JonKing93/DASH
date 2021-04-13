@@ -9,7 +9,7 @@ Sampling errors can cause covariance biases in small ensembles. Such ensembles o
 
 ### 1. Static Covariance Estimates
 
-You can estimate covariance for an ensemble and associated proxy estimates using the "dash.estimateCovariace" command. Here the syntax is:
+You can estimate covariance for an ensemble and associated proxy estimates using the "dash.estimateCovariance" command. Here the syntax is:
 ```matlab
 [C, Ycov] = dash.estimateCovariance(X, Ye);
 ```

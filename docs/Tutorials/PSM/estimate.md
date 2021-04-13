@@ -52,6 +52,17 @@ R will be a vector with two elements. The first element will hold the R estimate
 
 It's important to note that not all PSMs can estimate R values. If a PSM cannot estimate R values, the R value for that proxy site will be NaN.
 
+### Multiple priors
+PSM.estimate can also operate on multiple priors. If you have multiple priors, organize them along the third dimension of X, then run the command as normal. For example
+```matlab
+ens1 = ensemble('my-ensemble-1.ens');
+ens2 = ensemble('my-ensemble-2.ens');
+X = cat(3, ens1.load, ens2.load);
+
+[Ye, R] = PSM.estimate(X, myPSMs);
+```
+would generate estimates and R values for both priors. The values for the different priors will be organized along the third dimension of Ye and R.
+
 {% comment %}
 ### Estimate proxies for very large ensembles
 
