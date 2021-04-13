@@ -1,3 +1,9 @@
+---
+sections:
+  - Estimate proxies
+  - Multiple proxy sites
+  - Estimate proxy uncertainty R
+---
 
 # Estimate Proxies
 
