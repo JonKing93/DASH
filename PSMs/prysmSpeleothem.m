@@ -117,7 +117,7 @@ classdef prysmSpeleothem < PSM
             %
             % X: The data used to run the PSM. A numeric matrix with three
             %    rows. First row is d18O (dripwater), second row is 
-            %    temperature..
+            %    temperature.
             %
             % ----- Outputs -----
             %
