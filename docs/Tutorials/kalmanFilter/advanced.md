@@ -11,6 +11,11 @@ By default, the Kalman Filter estimates covariance using the prior and observati
 * [Blending](blend): Combines the covariance estimate linearly with a user-defined estimate
 * [Directly setting covariance](setCovariance): Allows a user to explicitly define covariances
 
+It is worth noting that, when using multiple covariance adjustments, they are applied in the following order:
+1. Inflation,
+2. Localization,
+3. Blending
+
 The module also includes several helper methods for working with covariance estimates. These include
 * [covarianceEstimate](covarianceEstimate): Returns the covariance estimate for a queried time step after applying any covariance adjustments,
 * [dash.estimateCovariance](estimateCovariance): Returns the default covariance estimate for a prior and observation estimates, and
