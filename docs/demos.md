@@ -1,3 +1,3 @@
-This is the demos landing page. It will link to all the demos.
+There are currently no completed demos, but several are in the works.
 
 {% include buttons/all-docs.html %}
