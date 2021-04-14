@@ -8,7 +8,7 @@ DASH has been used to implement a number of recent scientific publications. Find
 
 <li class="showcase_paper">
   <div>
-    <a class="showcase-title" href="{{paper.link}}">{{paper.title}}</a>
+    <a class="showcase_title" href="{{paper.link}}">{{paper.title}}</a>
   </div>
 
   <div class="showcase_authors">
@@ -18,6 +18,7 @@ DASH has been used to implement a number of recent scientific publications. Find
   <div class="showcase_pub">
     {{paper.journal}} {{paper.volume}}({{paper.number}})
   </div>
+</li>
 
 {% endfor %}
 <ul>
