@@ -316,23 +316,23 @@ main {
   list-style-position: inside;
   list-style-type: none;
 }
-.showcase-paper {
+.showcase_paper {
   background: white;
   border: 1px solid silver;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 15px;
 }
-.showcase-title {
+.showcase_title {
   font-size: 24px;
   font-weight: 600;
 }
-.showcase-authors {
+.showcase_authors {
   font-size: 16px;
   font-weight: 400;
   color: #222;
 }
-.showcase-pub {
+.showcase_pub {
   font-size: 16px;
   font-weight: 600;
   color: #555;
