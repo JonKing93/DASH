@@ -25,9 +25,11 @@ end
 ```
 
 You will need to change this function in three places to add a new dimension name.
-1. Specify the name of a new dimension in the last of names
-2. Add the new dimension to the "dims" array.
-3. Add the new dimension to the function output.
+1. Specify the name of a new dimension after the existing names,
+2. Add the new dimension to the end "dims" array, and
+3. Add the new dimension to the end of the function output.
+
+**Note:** It is important to add the new dimension to the end of the "dims" array and function output, as the order of the existing dimensions is hard-coded in various DASH methods.
 
 Use the following template
 

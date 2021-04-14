@@ -298,10 +298,45 @@ main {
 
 
 
+/* For the Homepage splash */
+.splash-name {
+  font-size: 42px;
+  font-weight: 700;
+}
+.splash-description {
+  font-size: 24px;
+  font-weight: 300;
+  text-shadow: #777 0px 0px 10px;
+  padding-bottom: 80px;
+}
 
 
-
-
+/* For the showcase section */
+#showcase {
+  list-style-position: inside;
+  list-style-type: none;
+}
+.showcase-paper {
+  background: white;
+  border: 1px solid silver;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+.showcase-title {
+  font-size: 24px;
+  font-weight: 400;
+}
+.showcase-authors {
+  font-size: 16px;
+  font-weight: 400;
+  color: #222;
+}
+.showcase-pub {
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+}
 
 
 

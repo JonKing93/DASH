@@ -33,4 +33,6 @@ to
 ```matlab
 lat = "latitude";
 ```
-**Important:** All new dimension names must be [valid Matlab variable names](https://www.mathworks.com/help/matlab/matlab_prog/variable-names.html).
+**Important:**
+1. All new dimension names must be [valid Matlab variable names](https://www.mathworks.com/help/matlab/matlab_prog/variable-names.html), and
+2. Do not change the order of dimensions in the "dims" array or in the function output (the order of these dimensions is hard-coded into later DASH methods).
