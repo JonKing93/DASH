@@ -21,4 +21,4 @@ DASH has been used to implement a number of recent scientific publications. Find
 </li>
 
 {% endfor %}
-<ul>
+</ul>
