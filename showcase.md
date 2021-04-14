@@ -7,8 +7,8 @@ DASH has been used to implement a number of recent scientific publications. Find
 {% for paper in site.data.showcase %}
 
 <li class="showcase_paper">
-  <div class="showcase-title">
-    <a href="{{paper.link}}">{{paper.title}}</a>
+  <div>
+    <a class="showcase-title" href="{{paper.link}}">{{paper.title}}</a>
   </div>
 
   <div class="showcase_authors">
