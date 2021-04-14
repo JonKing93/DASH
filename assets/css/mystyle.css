@@ -306,8 +306,8 @@ main {
 .splash-description {
   font-size: 24px;
   font-weight: 300;
-  text-shadow: #777 0px 0px 10px;
-  padding-bottom: 80px;
+  text-shadow: #aaa 0px 0px 10px;
+  padding-bottom: 40px;
 }
 
 
@@ -324,8 +324,8 @@ main {
   margin-bottom: 15px;
 }
 .showcase_title {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 400;
   line-height: 1.2em;
 }
 .showcase_authors {

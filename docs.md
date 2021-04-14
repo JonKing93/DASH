@@ -1,3 +1,5 @@
-This is the root page for docs.
+# Tutorials
+The <a href="{{"/docs/tutorials" | relative_url}}">DASH Tutorials</a> include step-by-step guides for working with the various modules of DASH, and detailed descriptions of all DASH commands. These tutorials document every possible input to the commands in DASH.
 
-It links to the <a href="{{"/docs/demos" | relative_url}}">demos</a>, and the <a href="{{"/docs/tutorials" | relative_url}}" >tutorials</a>.
+# Demos
+The <a href="{{"/docs/demos" | relative_url}}">DASH Demos</a> illustrate how to use DASH for realistic scientific experiments. These tend to focus on a single use-case, but help illustrate how to integrate the various components of DASH.
