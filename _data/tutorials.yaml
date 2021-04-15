@@ -67,3 +67,9 @@
     - Run a Particle Filter, run
 
 - name: optimalSensor
+  steps:
+    - Optimal Sensor Objects, object
+    - Prior, prior
+    - Reconstruction Metric, metric
+    - Estimates and PSMs, estimates
+    - Run an Optimal Sensor, run
