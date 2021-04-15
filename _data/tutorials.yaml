@@ -61,5 +61,9 @@
 - name: particleFilter
   steps:
     - Particle Filter Objects, object
+    - Observations, observations
+    - Uncertainties, uncertainties
+    - Estimates, estimates
+    - Run a Particle Filter, run
 
 - name: optimalSensor

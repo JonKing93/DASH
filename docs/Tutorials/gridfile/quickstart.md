@@ -1,6 +1,3 @@
----
-title: Gridfile Quickstart
----
 
 # Welcome to the gridfile quickstart!
 

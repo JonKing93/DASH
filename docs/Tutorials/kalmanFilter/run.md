@@ -26,7 +26,7 @@ Amean | State vector elements X Time steps | The mean of the posterior ensemble 
 Avar | State vector elements X Time steps | The variance across the posterior ensemble in each time step
 calibRatio | Observation sites X Time steps | The calibration ratio for each site in each time step
 
-However, the DASH also includes options for returning:
+However, the Kalman Filter class also includes options for returning:
 * Ensemble percentiles
 * Ensemble deviations, and
 * Climate indices

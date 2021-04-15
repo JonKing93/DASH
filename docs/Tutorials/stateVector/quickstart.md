@@ -1,7 +1,3 @@
----
-layout: simple_layout
-title: stateVector Quickstart
----
 
 # Welcome to the stateVector quickstart!
 

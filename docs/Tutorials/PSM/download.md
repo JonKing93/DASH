@@ -5,6 +5,7 @@ sections:
   - Prerequisites
   - Usage
   - Download path
+  - Troubleshooting
 ---
 
 # External PSMs
@@ -56,3 +57,6 @@ PSM.download('bayfox', 'Users/myUsername/Matlab/PSM-downloads')
 to download the BayFOX repository to a custom folder for PSMs.
 
 Once you have downloaded any external code, you can begin designing proxy system models for different proxy sites. In the next section, we will see how to use [PSM objects](object) to do this.
+
+### Troubleshooting
+On some machines, PSM.download may terminate with an error if folders on the download path include special characters or whitespace. For best results, limit folder names to alphanumeric characters, hyphens, and underscores.

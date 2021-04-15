@@ -1,7 +1,7 @@
 
 # Overview
 
-The Kalman Filter class allows you to create and modify kalmanFilter objects, which can be used to run Kalman Filter analyses. When implementing a Kalman Filter, the general workflow is to
+The Kalman Filter class allows you to create and modify objects that can be used to run Kalman Filter analyses. When implementing a Kalman Filter, the general workflow is to
 
 1. Initialize a new kalmanFilter object,
 2. Provide essential inputs (prior, proxy observations, uncertainties and estimates), and
