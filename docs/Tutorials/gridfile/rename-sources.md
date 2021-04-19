@@ -1,9 +1,17 @@
-# Move / rename data source files
+---
+sections:
+  - Move or rename data source files
+  - Update all data sources
+  - Update specific data sources
+  - Specify renamed files
+  - Relative and absolute file paths
+---
+# Move or rename data source files
 
 By default, when a data source file is added to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection. If you change the relative path to the data source file (by moving either the .grid file or the data source file without moving the other), then you will need to update the file path in the .grid file.
 
 <br>
-#### Check / update all data sources
+### Update all data sources
 
 The easiest way to ensure that all data source file paths are up to date is to use:
 ```matlab
@@ -13,7 +21,7 @@ where grid is a gridfile object. This will iterate through each data source in t
 
 <br>
 
-#### Check / update specific data sources
+### Update specific data sources
 
 You can limit the .grid file to only updating a few data sources my supplying a list of data source names, as per:
 ```matlab
@@ -23,7 +31,7 @@ where filenames is a string vector or cellstring vector of data source file name
 
 <br>
 
-#### Specify renamed files.
+### Specify renamed files
 
 If you renamed a data source (for example, from "myfile.nc" to "different-name.nc"), or if you moved data source files off the Matlab active path, then you will need to specify the new name of the file. Do so via:
 ```matlab
@@ -33,7 +41,7 @@ where newnames is a string vector or cellstring vector containing the updated fi
 
 <br>
 
-#### Optional: Specify whether to save relative or absolute file paths
+### Relative and absolute file paths
 
 By default, renameSources will use the same type of file path (relative or absolute) when updating the file path or renaming a data source. However, you can specify which type of path to use with the optional 'relativePath' flag, as per:
 ```matlab

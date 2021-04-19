@@ -1,5 +1,9 @@
-
-# Remove data source files from a .grid file.
+---
+sections:
+  - Remove data source files
+  - Specify variable name
+---
+# Remove data source files
 
 If you accidentally add a data source file to a .grid file, you may wish to remove it. The syntax is
 ```matlab
@@ -21,7 +25,7 @@ and the method will remove any data source files matching the given name from th
 
 <br>
 
-#### Include a variable name
+### Specify variable name
 
 You can exercise greater control over the "remove" method by also specifying the name of a variable. For example:
 ```matlab

@@ -1,18 +1,17 @@
 ---
 sections:
-  - Add data sources to a grid file | Data sources
+  - Data sources
   - Define source metadata
   - Add source files
   - Example 1 | | 2
-  - Example 2| | 2
-  - Source filepaths
-  - Merging dimensions
+  = Example 2 | | 2
+  - Merge dimensions
   - Convert units
-  - Fill value and valid range| Fill values
-  - Use absolute file paths| Absolute file paths
+  - Fill values | Fill value and valid range
+  - Source filepaths
 ---
 
-# Add data sources to a .grid file
+# Data Sources
 
 So, we've have created a .grid file and defined the scope of its N-dimensional array. Returning to the illustrations, we have something like this:
 
@@ -109,13 +108,7 @@ end
 
 <br>
 
-### Source filepaths
-
-By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case, there is no relative path, so the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources). Alternatively, [save the absolute file path](#optional-save-absolute-file-paths).
-
-<br>
-
-### Merging Dimensions
+### Merge Dimensions
 
 Gridfile organizes data using a regular grid; every element along a dimension is associated with a unique metadata value. However, not all datasets use regular spatial grids. We previously saw [how to use the "coord" dimension](new#example-4-tripolar-data) to define metadata for datasets with non-regular spatial coordinates. However, some non-regular datasets may still be saved with explicit latitude and longitude dimensions. This is most common for tripolar model output: tripolar data is often saved as (longitude x latitude x time) even though each tripolar spatial point has a unique latitude-longitude coordinate. Spatial metadata for such data is typically provided as a latitude *matrix* of size (nLon x nLat) and a longitude *matrix* also of size (nLon x nLat). The spatial coordinate for each spatial point can then be found by querying the appropriate element in each of the latitude and longitude matrices.
 
@@ -213,9 +206,11 @@ to convert any values smaller than 0 or larger than 100 to NaN when data is load
 
 <br>
 
-### Use Absolute File Paths
+### Source Filepaths
 
-When you add a data source file to a .grid file, the relative path from the .grid file to the data source is added to the .grid file's collection by default. However, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolutePath' flag and select true as the option:
+By default, .grid files save the relative path between the .grid file and data source files. This way, you can move saved .grid files and data sources files to new machines or new directories, so long as you maintain the same relative path. One exception occurs for data source files on a different drive than the .grid file. In this case,  the .grid file stores the absolute path to the data source. If you would like to move data source files without moving the .grid file or vice versa, see how to [update data source file paths](rename-sources).
+
+Alternatively, you may want to save the absolute path to a data source file if you anticipate moving the .grid file but not the data source. To do so, use the 'absolutePath' flag and select true as the option:
 ```matlab
 grid.add(type, filename, variable, dimensionOrder, sourceMeta, 'absolutePath', true)
 ```

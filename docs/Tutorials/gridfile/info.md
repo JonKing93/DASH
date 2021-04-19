@@ -1,7 +1,11 @@
-# Inspect a .grid file's contents
-
-#### Summarize file in console
-If you forget the contents of a .grid file, you can print a summary of its contents to the Matlab console using:
+---
+sections:
+  - Summarize .grid file
+  - Summarize data sources
+  - Output structure
+---
+# Summarize .grid file
+You can print a summary of a .grid file's contents to the Matlab console using:
 ```matlab
 grid.info;
 ```
@@ -9,7 +13,7 @@ where grid is a gridfile object. The summary will include information on the .gr
 
 <br>
 
-#### Summarize data sources
+### Summarize data sources
 You can include information about specific data sources in the .grid file in the summary, by doing:
 ```matlab
 grid.info( filename );
@@ -23,7 +27,7 @@ to obtain a summary of data sources. Here, s is a set of indices that refer to s
 grid.info('all');
 ```
 <br>
-#### Return summary as a structure
+### Output structure
 You can also return the .grid file and data source summaries as a structure. Specifying output arguments:
 ```matlab
 [gridInfo, sourceInfo] = grid.info( 'all' );

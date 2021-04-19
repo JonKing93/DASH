@@ -1,15 +1,15 @@
 ---
 sections:
-  - Load all data
+  - Load data | Load data from a .grid file
   - Specify dimension order
   - Load data subset
+  - Order loaded data
+  - Dimension order without subsetting
   - Start, count, stride syntax
 ---
 
 # Load data from a .grid file
-
-### Load all data
-To load the entire N-Dimensional array use
+To load the entire N-Dimensional array from a .grid file use
 ```matlab
 [X, Xmeta] = grid.load;
 ```
@@ -17,7 +17,7 @@ This returns the N-dimensional array (X) and the metadata associated with each d
 
 <br>
 
-### Request Specific Dimension Order
+### Specify Dimension Order
 When you call grid.load with no inputs, the order of the dimensions of the returned array are determined by an internal gridfile method. However, you can instead request that the array be returned with a specific dimension order by specifying a dimension order as the first input. For example:
 ```matlab
 [X, Xmeta] = grid.load( ["lat","lon","time"] )
@@ -63,7 +63,7 @@ would not work because the dimension order lists "lon" as the *first* dimension,
 
 <br>
 
-### Specify order of loaded data values
+### Order loaded data
 If you specify linear indices for a dimension (as opposed to logical indices) gridfile will load the values for the dimension in the specified order (just like a normal matlab array). For example, if the values in meta.lon use a [0, 360] coordinate system, then:
 ```matlab
 [~, lon] = sort(meta.lon);
@@ -80,7 +80,7 @@ would load the fifth, then the fourth, and then the nineteenth element along the
 
 <br>
 
-### Request dimension order without subsetting a dimension
+### Dimension order without subsetting
 
 If you want to specify a dimension order, but only want to subset a few dimensions, you can use an empty array to load every element from a dimension. For example:
 ```matlab

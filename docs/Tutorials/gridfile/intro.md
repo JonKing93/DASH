@@ -1,4 +1,9 @@
-# So, why use gridfile?
+---
+sections:
+  - Motivation
+  - Example | A quick example
+---
+# Motivation
 
 In many scientific fields, it's common to use multiple geospatial datasets to perform an analysis. For example, I may want to compare temperature data from:
 1. A climate model simulation,
@@ -9,17 +14,17 @@ However, different datasets use a variety of different conventions to record the
 
 In brief, gridfile allows values stored in different datasets to be accessed via a single set of common commands. Gridfile is based on the idea that data and metadata should be meaningful to the user, so all data is organized via the user's preferred metadata format. Furthermore, gridfile can automatically convert data values to the same units, load values in any requested dimensional format, and efficiently access subsets of large datasets. If any of these features sound useful, then this tutorial is for you.
 
-# A quick example
+### A quick example
 
 To illustrate how gridfile can facilitate file I/O, consider the following scenario: Let's say I want to analyze temperature data from three datasets.
 
-#### Dataset 1
+##### Dataset 1
 Temperature values from a climate model simulation. These temperatures are saved in NetCDF files under the name "tas" with a dimensional order of (longitude x latitude x time). The values are split across two files; the first records temperatures from 850 CE to 1849 CE, and the second records temperatures from 1850 CE to 2005 CE. The time metadata is provided as days since 850 CE, and the temperature values are in units of Kelvin. The dataset has a resolution of 2.5 degrees longitude by 4 degrees latitude and uses a [0, 360] longitude coordinate system.
 
-#### Dataset 2
+##### Dataset 2
 Temperature values from an instrumental reanalysis. The temperatures are saved in a NetCDF file under the name "TREFHT" with a dimensional order of (latitude x longitude x time). Time metadata is provided as decimal years, and temperature values are in Celsius. The dataset has a resolution of 1 degree longitude by 1 degree latitude and uses a [-180, 180] longitude coordinate system.
 
-#### Dataset 3
+##### Dataset 3
 A laboratory temperature reconstruction. The temperatures are saved in a Matlab .mat file under the name "T" with a dimensional order of (time x latitude x longitude). Time metadata is provided as a date vector, and temperature values are in Celsius. The dataset has a resolution of 5 degrees longitude by 5 degrees latitude and uses a [0, 360] longitude coordinate system.
 
 These datasets use many different conventions, and preparing the data for analysis will take quite a bit of effort. However, we can use gridfile to simplify this process. Without getting into details (that's the rest of the tutorial!), we can use gridfile to organize and catalogue the values in each dataset. The details for each dataset are saved in a file ending in a .grid extension. For this example, let's say we named the .grid files:
