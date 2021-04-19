@@ -23,5 +23,3 @@ Here, showprogress is a scalar logical. Set it to false to disable the progress 
 ens.add(5, false)
 ```
 will add 5 new ensemble members to the state vector ensemble, but will not display a progress bar.
-
-Cool beans, that's the ensemble tutorial. If you are interested in finding specific data elements or ensemble members in a state vector ensemble, check out the [ensembleMetadata tutorial](../ensembleMetadata/welcome).

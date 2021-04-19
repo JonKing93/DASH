@@ -38,13 +38,13 @@ So far, the examples have assumed that the state vector proceeds down the first 
 ```
 where d is a positive integer.
 
-Continuing the example, say I perform three assimilations on the ensemble, each with different settings. I store the output from these assimilations in array "X2" which has size (3 assimilations x 2001 state vector elements x 75 ensemble members). In this scenario, the state vector proceeds along the second dimension, so I would need to use:
+Continuing the example, say I perform three assimilations on the ensemble, each with different settings. I store the output from these assimilations in array "X2" which has size [3 assimilations x 2001 state vector elements x 75 ensemble members]. In this scenario, the state vector proceeds along the second dimension, so I would need to use:
 ```matlab
 dims = ["lon", "lat", "lat"];
 d = 2;
 [Y2, meta] = ensMeta.regrid(X2, 'T', dims, d);
 ```
-Here, the output "Y2" would have size (3 assimilations x 25 longitudes x 10 latitudes x 4 months x 75 ensemble members). Note that the "dims" input only affects the order of the regridded dimensions. So "lon", "lat", and "time" will not appear before the dimension for the 3 assimilations (dimension 1). Instead, the state vector dimension (dimension 2) will be regridded into ("lon" x "lat" x "time").
+Here, the output "Y2" would have size [3 assimilations x (25 longitudes x 10 latitudes x 4 months) x 75 ensemble members]. Note that the "dims" input only affects the order of the regridded dimensions. So "lon", "lat", and "time" will not appear before the dimension for the 3 assimilations (dimension 1). Instead, the state vector dimension (dimension 2) will be regridded into ("lon" x "lat" x "time").
 
 ### Retain singleton dimensions
 By default, the "regrid" command will remove singleton dimensions from the regridded variable and its metadata. Changing the example, let's say that "T" was originally an array of size (25 latitudes x 10 longitudes x 1 time step). In this case, the line:

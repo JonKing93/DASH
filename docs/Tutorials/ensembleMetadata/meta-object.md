@@ -35,43 +35,34 @@ ensMeta = ens.metadata;
 
 <br>
 ### Loaded ensemble
-If you are only loading a subset of a state vector ensemble from a .ens file, you can get the ensembleMetadata object for the loaded subset using the "loadedMetadata" command. For example:
-```matlab
-ens = ensemble('my-ensemble.ens');
-ens = ens.useVariables('P');
-ens = ens.useMembers([1 5 17]);
-ensMeta = ens.loadedMetadata;
-```
-will return the ensemble metadata object for a state vector ensemble that only includes the "P" variable ad ensemble members 1, 5, and 17.
-
-Additionally, metadata for a loaded ensemble is provided as the second output of "ensemble.load". For example, you could instead use:
+Metadata for a loaded ensemble is provided as the second output of "ensemble.load". For example, you could use:
 ```matlab
 ens = ensemble('my-ensemble.ens');
 ens = ens.useVariables('P');
 ens = ens.useMembers([1 5 17]);
 [X, ensMeta] = ens.load;
 ```
-to load both the subset of the ensemble, and the metadata for the subset, with one command.
+to load a subset of a saved ensemble, and the metadata for that subset.
+
+
+You can also use the "loadedMetadata" command to return the metadata for the data that will be loaded from a .ens file, without actually loading any data. For example, here:
+```matlab
+ens = ensemble('my-ensemble.ens');
+ens = ens.useVariables('P');
+ens = ens.useMembers([1 5 17]);
+ensMeta = ens.loadedMetadata;
+```
+"ensMeta" has metadata for the "P" variable, and ensemble members 1, 5, and 17.
 
 <br>
-# Name the metadata
-When you create an ensembleMetadata object from a stateVector, you can optionally give the metadata an identifying name using the second input:
+### Name the metadata
+You can add a name to an ensembleMetadata object at any point using the "rename" command and providing a name as the only input. For example:
 ```matlab
-ensMeta = ensembleMetadata(sv, name);
+ensMeta.rename('A name for the metadata');
 ```
 
-For example, I could do:
-```matlab
-ensMeta = ensembleMetadata(sv, 'My demo ensemble')
-```
-The name of ensembleMetadata can be accessed using the "name" command. Continuing the example:
+The name of an ensembleMetadata object can be accessed at any point using the "name" command. Continuing the example:
 ```matlab
 ensMeta.name
 ```
-would return "My demo ensemble".
-
-You can rename the ensembleMetadata at any point using the "rename" command and providing a new name as the only input. For example
-```matlab
-ensMeta.rename('A new name');
-```
-will change the name of the metadata to "A new name".
+would return "A name for the metadata".

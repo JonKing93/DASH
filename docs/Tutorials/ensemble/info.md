@@ -25,7 +25,7 @@ You can use the "metadata" command to return an [ensembleMetadata](../ensembleMe
 meta = ens.metadata;
 ```
 
-If you have used the "useVariables" or "useMembers" commands, you can use the "loadedMetadata" command with no inpouts to return an ensembleMetadata object for the subset of the ensemble that will be loaded:
+If you have used the "useVariables" or "useMembers" commands, you can use the "loadedMetadata" command with no inputs to return an ensembleMetadata object for the subset of the ensemble that will be loaded:
 ```matlab
 meta = ens.loadedMetadata;
 ```

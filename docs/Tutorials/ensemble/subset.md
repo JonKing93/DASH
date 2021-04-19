@@ -47,6 +47,15 @@ ens = ens.useMembers(members)
 ```
 specifies that the first, 7th, 18th, and 4th ensemble members should be loaded when calling "load" or "loadGrids".
 
+### Subset metadata
+You can use the "loadedMetadata" command to return an ensembleMetadata object for the data subset that will be loaded. For example, in the following call:
+```matlab
+members = [1 7 18 4];
+ens = ens.useMembers(members);
+ensMeta = ens.loadedMetadata
+```
+"ensMeta" will have metadata for ensemble members 1, 7, 18 amd 4.
+
 ### Reset
 You can reset settings for variables by calling "useVariables" with no inputs. For example,
 ```matlab

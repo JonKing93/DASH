@@ -1,12 +1,15 @@
 ---
 sections:
+  - Add data sources to a grid file| Data sources
   - Define source metadata
   - Add source files
+  - Example 1| | 2
+  - Example 2| | 2
   - Source filepaths
   - Merging dimensions
   - Convert units
-  - Fill value and valid range
-  - Use absolute file paths
+  - Fill value and valid range| Fill values
+  - Use absolute file paths| Absolute file paths
 ---
 
 # Add data sources to a .grid file
@@ -58,7 +61,7 @@ If the file name includes a complete file path (for example "C:\Users\filepath\m
 **Note**: When you use the "add" command, you are providing the .grid file with the information it needs to read and organize the data in a file. The file name / opendap url let the .grid file know how to find the data (it's saved as variable X in file Y). The dimension order and source metadata tell the .grid file where that data fits in the N-dimensional grid. This lets the .grid file automate future interactions with the organized data. Although you may sometimes read metadata from a data source file, you will ***never*** need to touch the data directly; the data wrangling is all automated by the .grid file.
 
 
-#### Example 1
+##### Example 1
 
 The following is an example of how to add one data source to a .grid file (named "my-grid.grid") that organizes a surface temperature variable. The data source file holds monthly data from 1850 to 2000 CE, and the .grid file uses a datetime format for the "time" dimension. The temperature variable is saved under the name "tas" in the data source file.
 ```matlab
@@ -77,7 +80,7 @@ grid = gridfile('my-grid.grid');
 grid.add(type, filename, variable, dimensionOrder, sourceMeta)
 ```
 
-#### Example 2
+##### Example 2
 In practice, we often want to add multiple data source files to a .grid file, so let's use a more realistic example. Say I run a climate model three times. The output for each run is split into two parts: time period A covers the first 1000 time steps, and time period B covers the following 250 time steps. The data is saved as variable 'T' and organized as longitude by latitude by time. Adding these files to a .grid file might look like:
 ```matlab
 files = ["run1-A.nc", "run1-B.nc", "run2-A.nc", "run2-B.nc", "run3-A.nc", "run30B.nc"];

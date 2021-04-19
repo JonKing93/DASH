@@ -239,7 +239,6 @@ footer a {
 #rightnav li {
   display: flex;
   flex-flow: column nowrap;
-  padding: 3.5px 0px 8px 0px;
   max-width: 200px;
 }
 #rightnav a {
@@ -252,10 +251,22 @@ footer a {
 #on_this_page {
   color: black;
   border-bottom: 1px solid silver;
-  margin: 0px 0px 5px 0px;
+  margin: 0px 0px 0px 0px;
 }
 .hidden {
   visibility: hidden;
+}
+.pagenav_level1 {
+  padding: 11.5px 0px 0px 0px;
+}
+.pagenav_level2, .pagenav_level3 {
+  padding: 0px 0px 0px 0px;
+}
+.pagenav_level2 a {
+  padding: 0 0 0 20px;
+}
+.pagenav_level3 a {
+  padding: 0 0 0 40px;
 }
 
 

@@ -7,8 +7,22 @@
       <li id="on_this_page">On this page</li>
 
       {% for section in page.sections %}
-        {% assign link = section | remove: "," | replace: " ", "-" | downcase | prepend: "#" %}
-        <li><a href={{link}}>{{section}}</a></li>
+        {% assign page_array = section | split: "| " %}
+        {% assign heading = page_array[0] %}
+        {% assign link = heading | remove: "," | remove: ":" | remove: "." | replace: " ", "-" | downcase | prepend: "#" %}
+
+        {% assign title = page_array[1] %}
+        {% if title==nil or title=="" %}
+          {% assign title = heading %}
+        {% endif %}
+
+        {% assign level = page_array[2] %}
+        {% if level==nil %}
+          {% assign level = 1 %}
+        {% endif %}
+        {% assign class = "pagenav_level" | append: level %}
+
+        <li class="{{class}}"><a href={{link}}>{{title}}</a></li>
       {% endfor %}
     </ul>
   </nav>

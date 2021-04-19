@@ -1,11 +1,12 @@
 ---
 sections:
+  - Metadata
   - Define metadata
   - Dimension names
   - Dimension metadata
 ---
 
-# Custom Metadata
+# Metadata
 
 One powerful feature of gridfile is the ability to organize a dataset using custom metadata. Climate data is often provided with metadata, such as spatial coordinates and time steps. However, you may find that the format of this metadata is not always useful and instead convert the metadata to some other format.
 
@@ -28,9 +29,9 @@ The syntax for using the defineMetadata method is:
 meta = gridfile.defineMetadata(dimension1, metadata1, dimension2, metadata2, ..., dimensionN, metadataN);
 ```
 
-Here, the style is to provide the name of a dimension and then its metadata; this pattern is repeated for all dimensions in the dataset. Hence, Hence, dimension1, dimension2, ..., dimensionN are a set of dimension names.
+Here, the syntax is to provide the name of a dimension and then its metadata; this pattern is repeated for all dimensions in the dataset. Hence, Hence, dimension1, dimension2, ..., dimensionN are a set of dimension names.
 
-#### Dimension Names
+### Dimension Names
 By default, gridfile allows the following dimension names:
 
 * <span style="color:#cc00cc">"lon"</span> -- for the longitude / x dimension
@@ -45,7 +46,7 @@ By default, gridfile allows the following dimension names:
 
 You DO NOT need to provide metadata for all these dimensions; only the dimensions appearing in your dataset need metadata. Also, you may provide the dimensions in any order, regardless of the dimension order of your dataset. (If you would like to use different dimension names, you can [rename dimensions](change-dimension-names). If your dataset has more dimensions that the 7 defaults, you can [add new dimensions](add-dimension-names)).
 
-#### Dimension metadata
+### Dimension metadata
 
 Returning to the "defineMetadata" syntax:
 ```matlab

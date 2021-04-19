@@ -1,7 +1,11 @@
 
 # Latitude-Longitude coordinates
 
-You can obtain latitude-longitude coordinates for each element down a state vector using the "latlon" command. Such metadata is often useful for implementing covariance localization. This command differs from the "variable" query in several ways. A first difference is that the "latlon" command can return metadata over multiple variables at once. Furthermore, "latlon" will attempt to extract latitude-longitude coordinates from the "lat", "lon", or "coord" dimensions as appropriate; it can extract metadata from different dimensions for different variables. Finally, the "latlon" command will always return a two-column matrix with one row per state vector element. The first column contains the latitude coordinate for each point, and the second column holds the longitude coordinate for each point. It will never return a structure.
+You can obtain latitude-longitude coordinates for each element down a state vector using the "latlon" command. Such metadata is often useful for implementing covariance localization. Here the syntax is:
+```matlab
+coord = ensMeta.latlon;
+```
+where coord is a matrix with two columns. The first column contains the latitude coordinate for each state vector element, and the second column is longitude.
 
 For example, say I have a state vector that has a "T" variable with 1000 elements, a "Tmean" variable with 1 element, and a "P" variable with 1000 elements. Latitude and longitude metadata for the "T" and "Tmean" variables are stored along the "lat" and "lon" dimensions. However, the latitude and longitude metadata for the "P" variable is stored along the "coord" dimension. The line:
 ```matlab

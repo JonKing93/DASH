@@ -7,6 +7,7 @@
     - gridfile objects, object
     - Add data sources, add
     - Load data, load
+  tail: Advanced, advanced
 
 - name: stateVector
   steps:
@@ -19,6 +20,7 @@
     - Means, mean
     - Weighted Means, weighted-mean
     - Build Ensemble, build
+  tail: Advanced, advanced
 
 - name: ensemble
   steps:
@@ -26,21 +28,16 @@
     - Save .ens files, save
     - Ensemble objects, object
     - Load ensemble, load
-    - Load data subsets, subset
-    - Summarize loaded data, info
-    - Add ensemble members, add
+  tail: Advanced, advanced
 
 - name: ensembleMetadata
   steps:
     - Introduction, intro
     - Metadata Objects, meta-object
-    - Variable Sizes, sizes
-    - Regriding Variables, regrid
-    - Find Rows, find-rows
-    - Variable Metadata, variable
+    - Closest Elements, closest
     - Latitude-Longitude Coordinates, latlon
-    - Closest Coordinates, closest
-    - Row Metadata, rows
+    - Regrid Variables, regrid
+  tail: Advanced, advanced
 
 - name: PSM
   steps:
@@ -48,6 +45,7 @@
     - Download PSMs, download
     - PSM Objects, object
     - Estimate Observations, estimate
+  tail: Supported Models, models
 
 - name: kalmanFilter
   steps:
@@ -57,6 +55,7 @@
     - Priors, prior
     - Estimates, estimates
     - Run a Kalman Filter, run
+  tail: Advanced, advanced
 
 - name: particleFilter
   steps:
@@ -65,11 +64,13 @@
     - Uncertainties, uncertainties
     - Estimates, estimates
     - Run a Particle Filter, run
+  tail: Advanced, advanced
 
 - name: optimalSensor
   steps:
     - Optimal Sensor Objects, object
     - Prior, prior
     - Reconstruction Metric, metric
-    - Estimates and PSMs, estimates
+    - Estimates or PSMs, estimates
     - Run an Optimal Sensor, run
+  tail: Additional Metrics, additional-metrics
