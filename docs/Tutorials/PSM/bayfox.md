@@ -3,6 +3,8 @@ sections:
   - BayFOX
   - Prerequisites
   - Initialize
+  - rows | | 2
+  - species | | 2
   - Run directly
 ---
 

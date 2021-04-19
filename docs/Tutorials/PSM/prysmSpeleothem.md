@@ -1,8 +1,13 @@
 ---
 sections:
-  - PRYSM Speleothem
+  - PRYSM speleothem
   - Prerequisites
   - Initialize
+  - rows | | 2
+  - timeStep | | 2
+  - mode1 | | 2
+  - tau0 | | 2
+  - Pe | | 2
   - Run directly
 ---
 

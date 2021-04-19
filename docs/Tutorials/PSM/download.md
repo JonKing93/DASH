@@ -4,7 +4,7 @@ sections:
   - PSM.download
   - Prerequisites
   - Usage
-  - Download path
+  - Download Path
   - Troubleshooting
 ---
 
@@ -17,7 +17,7 @@ Proxy system models can range in complexity from linear relationships to more so
 
 The code for these models is not included in DASH, so you will need to download any of these external PSMs that you want to work with. Although you can download the code for these PSMs manually, by navigating to their Github repositories, the PSM class provides a command to download this code automatically.
 
-# PSM.download
+### PSM.download
 
 You can use the "PSM.download" command to download the code for external PSMs and add it to the Matlab active path. This command automatically downloads external code versions that have been error-tested within the DASH framework, so we recommend using "PSM.download" when possible.
 

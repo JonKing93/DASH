@@ -2,7 +2,8 @@
 sections:
   - Estimate proxies
   - Multiple proxy sites
-  - Estimate proxy uncertainty R
+  - Estimate proxy uncertainty
+  - Multiple priors
 ---
 
 # Estimate Proxies
@@ -37,7 +38,7 @@ Ye = PSM.estimate(X, myPSMs);
 ```
 Here, Ye will have a size of (2 x 1000). The first row will hold the estimates for the proxy site using the linear PSM, and the second row will hold the estimates for proxy site using the VS-Lite PSM.
 
-### Estimate proxy uncertainty (R)
+### Estimate proxy uncertainty
 
 Some PSMs can estimate the proxy measurement uncertainty / error-variance for a site. (We refer to this value as R in data assimilation tutorials). Use the second output to obtain any estimated R values:
 ```matlab

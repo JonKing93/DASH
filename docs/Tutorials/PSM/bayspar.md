@@ -3,6 +3,10 @@ sections:
   - BaySPAR
   - Prerequisites
   - Initialize
+  - row | | 2
+  - lat | | 2
+  - lon | | 2
+  - options | | 2
   - Run directly
 ---
 

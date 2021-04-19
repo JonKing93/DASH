@@ -3,6 +3,12 @@ sections:
   - PRYSM Cellulose
   - Prerequisites
   - Initialize
+  - rows | | 2
+  - d18Os | | 2
+  - d18Op | | 2
+  - d18Ov | | 2
+  - model | | 2
+  - useIsotopes | | 2
   - Run directly
 ---
 

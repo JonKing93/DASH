@@ -20,7 +20,8 @@
           {% assign level = 1 %}
         {% endif %}
 
-        {% assign link = heading | remove: "," | remove: ":" | remove: "." | replace: " ", "-" | downcase | prepend: "#" %}
+        {% assign link = heading | remove: "," | remove: ":" | remove: "." | remove: "(" | remove: ")" %}
+        {% assign link = link | replace: " ", "-" | downcase | prepend: "#" %}
         {% assign class = "pagenav_level" | append: level %}
 
         <li class="{{class}}"><a href={{link}}>{{title}}</a></li>

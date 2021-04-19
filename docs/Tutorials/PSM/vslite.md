@@ -3,6 +3,13 @@ sections:
   - VS-Lite
   - Prerequisites
   - Initialize
+  - rows | | 2
+  - phi | | 2
+  - T1 | | 2
+  - T2 | | 2
+  - M1 | | 2
+  - M2 | | 2
+  - options | | 2
   - Run directly
 ---
 

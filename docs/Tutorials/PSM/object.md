@@ -1,11 +1,10 @@
 ---
 sections:
-  - PSM overview
   - PSM objects
-  - Initialize a new PSM
-  - The rows input
-  - Example 1| | 2
-  - Example 2| | 3
+  - Initialize PSM
+  - rows input
+  - Example 1 | | 2
+  - Example 2 | | 2
   - Name a PSM
 ---
 
@@ -26,7 +25,7 @@ psmObject = psmName(rows, parameter1, parameter2, .., parameterN)
 
 * psmObject is the new PSM object for a specific proxy site.
 
-### The "rows" input
+### rows input
 
 The rows input indicates which state vector rows hold the data needed to run the PSM; it is an array with up to three dimensions. If rows has a single column, then the same state vector rows will be used for all ensemble members. For example:
 ```matlab
@@ -62,7 +61,7 @@ rows = cat(3, rows1, rows2);
 ```
 to use state vector elements 2 and 5 to run the PSMs for the first prior, and elements 3 and 6 to run the PSMs for the second prior.
 
-#### Example 1
+##### Example 1
 Let's say I want to use the "linearPSM" class to create a linear, temperature PSM for a site at [60N, 120E]. In my state vector ensemble, the temperature variable is named "Temperature". Then I could do:
 ```matlab
 rows = ensMeta.closestLatLon([60 120], "Temperature");
@@ -77,7 +76,7 @@ intercept = 0;
 myPSM = linearPSM(rows, slope, intercept);
 ```
 
-#### Example 2
+##### Example 2
 Let's say I want to use the "vslitePSM" class to apply VS-Lite to a site at [32N, 110W]. VS-Lite requires monthly temperature and precipitation variables to run; let's say these are named "T_monthly" and "P_monthly" in my state vector ensemble. VS-Lite also requires the latitude of the proxy site (32 N), temperature thresholds (let's say 0C and 40C for my site), and soil moisture thresholds (let's say 0 and 1). Then creating a PSM object for the site will look like:
 ```matlab
 Trows = ensMeta.closestLatLon([32 -110], "T_monthly");

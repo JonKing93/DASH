@@ -3,10 +3,16 @@ sections:
   - PRYSM Coral
   - Prerequisites
   - Initialize
+  - rows | | 2
+  - useSSS | | 2
+  - lat | | 2
+  - lon | | 2
+  - species | | 2
+  - bcoeffs | | 2
   - Run directly
 ---
 
-# PRYSM Cellulose
+# PRYSM Coral
 Use the "prysmCoral" class to create PSMs that implement the PRYSM forward model for δ<sup>18</sup>O of coral. [Find PRYSM on Github](https://github.com/sylvia-dee/PRYSM), or see the paper:
 
 Dee, S., Emile‐Geay, J., Evans, M. N., Allam, A., Steig, E. J., & Thompson, D. M. (2015). PRYSM: An open‐source framework for PRoxY System Modeling, with applications to oxygen‐isotope systems. Journal of Advances in Modeling Earth Systems, 7(3), 1220-1247. [https://doi.org/10.1002/2015MS000447](https://doi.org/10.1002/2015MS000447).

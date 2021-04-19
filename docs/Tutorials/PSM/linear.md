@@ -1,5 +1,13 @@
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+---
+sections:
+  - Linear PSMs
+  - Create a linear PSM
+  - Same slope for all variables | Use the same slope for all variables
+  - Default intercept of 0
+  - linearPSM.run
+---
 
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 # Linear PSMs
 

@@ -3,6 +3,14 @@ sections:
   - BayMAG
   - Prerequisites
   - Initialize
+  - row | | 2
+  - age | | 2
+  - omega | | 2
+  - salinity | | 2
+  - pH | | 2
+  - clean | | 2
+  - species | | 2
+  - options | | 2
   - Run directly
 ---
 
