@@ -1,3 +1,9 @@
+---
+sections:
+  - Overview
+  - particleFilter objects
+  - Name a particle filter
+---
 # Overview
 The Particle Filter allows you to create and modify objects that can be used to run Particle Filter analyses. When implementing a particle filter, the general workflow is to:
 
@@ -21,7 +27,7 @@ pf = particleFilter;
 
 Here, pf is a new particleFilter object. Throughout this tutorial, I will use "pf" to refer to a particleFilter object, however feel free to use a different convention in your own code.
 
-#### Optionally name a particle filter
+### Name a particle filter
 
 You can optionally name a particle filter object by providing a string as the first input to the particleFilter command. For example:
 ```matlab

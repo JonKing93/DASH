@@ -1,3 +1,12 @@
+---
+sections:
+  - Observation uncertainty
+  - Error variances
+  - Time-dependent variances | | 2
+  - Error covariances
+  - Time-dependent covariances | | 2
+  - NaN values
+---
 # Observation Uncertainty
 
 You must provide observation uncertainties (R) in order to run a particle filter analysis. These uncertainties are used to weight the observations in the particle filter.
@@ -22,7 +31,7 @@ pf = pf.uncertainties(R);
 ```
 to use an error variance of 4 for the first site, 15 for the second site, and 1 for the third in each time step.
 
-##### Different values in different time steps
+##### Time-dependent variances
 
 If R has multiple columns, then different error-variances can be used in different time steps. If R has one column per assimilated time step, each column of R values will be used for the corresponding time step. If R has a different number of columns, you must use the second input to specify which set of error variances to use in each time step. Here, the syntax is:
 ```matlab
@@ -69,7 +78,7 @@ Then I should use:
 pf = pf.uncertainties(Rcov, [], true);
 ```
 
-##### Values for different time steps
+##### Time-dependent covariances
 
 You can provide multiple error covariance matrices by organizing them down the third dimension. If Rcov has a single element along the third dimension, then the same R covariances will be used in each time step. If the third dimension of Rcov has one element per time step, then each successive covariance matrix will be used for the corresponding time step.
 

@@ -1,3 +1,10 @@
+---
+sections:
+  - Observation estimates
+  - Typical workflow
+  - Transient priors
+  - Time-dependent estimates
+---
 # Observation Estimates
 You must provide observation estimates (Ye) to run a particle filter analysis. The estimates allow comparison of each ensemble member with the observations in order to weight the particles.
 
@@ -20,7 +27,7 @@ pf = pf.estimates(Ye);
 ```
 to provide them to a particle filter.
 
-### Typical worpflow
+### Typical workflow
 It is common to use the [PSM.estimate](../PSM/estimate) command to estimate proxy observations. Say I have a cell vector of [PSM obejcts](../PSM/object), then I could do:
 ```matlab
 F; % A cell vector of PSM objects
@@ -58,7 +65,7 @@ Ye = PSM.estimate(X, F);
 pf = pf.estimates(Ye);
 ```
 
-### Estimates for different time steps
+### Time-dependent estimates
 
 If you specify Ye for multiple priors, then you can use the second input to specify which prior to use in each time step. The syntax is:
 ```matlab

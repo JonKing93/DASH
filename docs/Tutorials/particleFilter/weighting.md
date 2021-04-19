@@ -1,3 +1,10 @@
+---
+sections:
+  - Weighting
+  - Bayesian weights
+  - Best N particles
+---
+
 <script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 # Weighting scheme

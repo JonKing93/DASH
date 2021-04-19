@@ -1,3 +1,10 @@
+---
+sections:
+  - Prior
+  - Transient priors
+  - Time-dependent priors
+  - NaN values
+---
 # Prior
 
 You can optionally provide a prior ensemble (X) to assimilate in a particle filter analysis. This prior will be used to compute a final climate state (sometime called the "analysis") for each assimilated time step. The analysis is computed as the weighted mean of the particles using the selected [particle filter weighting scheme](weighting).
@@ -19,7 +26,7 @@ X = cat(3, ens1.load, ens2.load);
 ```
 Note that transient priors must have the same number of state vector elements and ensemble members.
 
-### Priors for different time steps
+### Time-dependent priors
 If X has a single element along the third dimension, then the same prior will be used in each time step. If the third dimension of X has one element per assimilated time step, then each prior will be used for the corresponding time step. For any other number of elements, you will need to use the second input to specify which prior to use in each time step:
 ```matlab
 pf = pf.prior(X, whichPrior);
