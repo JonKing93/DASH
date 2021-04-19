@@ -1,5 +1,9 @@
-
-# Creating a .ens file
+---
+sections:
+  - Save a .ens file
+  - Overwrite | Overwrite existing .ens files
+---
+# Save a .ens file
 
 In the stateVector tutorial, we showed how to use the [build command](../stateVector/build) to build a state vector ensemble. Recall that the first input specifies the number of ensemble members to select, and that the second input specifies whether to select ensemble members sequentially or at random.
 ```matlab
@@ -20,7 +24,7 @@ sv.build(15, true, 'myEnsemble');
 ```
 will also save the built ensemble to file "myEnsemble.ens". Note that .ens files will always be written to the current directory.
 
-### Optional: Overwrite existing .ens files
+### Overwrite existing .ens files
 
 By default, the "build" command will not let you overwrite existing .ens files. However, you can change this option using the fourth input.
 ```matlab

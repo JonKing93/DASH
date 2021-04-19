@@ -1,16 +1,16 @@
 ---
 sections:
-  - Support for useVariables and useMembers
+  - Metadata information
   - Variable names
   - Ensemble metadata
   - Summary
 ---
 
-# Support for useVariables and useMembers
+# Metadata information
 
-The ensemble class also has several functions to facilitate use of the "useVariables" and "useMembers" commands.
+You can use the following commands to return metadata and summary information for an ensemble.
 
-#### Variable Names
+### Variable Names
 
 You can use the "variableNames" command to return a list of all the variables stored in a .ens file:
 ```matlab
@@ -18,7 +18,7 @@ varNames = ens.variableNames;
 ```
 Here, varNames is a string vector.
 
-#### Ensemble Metadata
+### Ensemble Metadata
 
 You can use the "metadata" command to return an [ensembleMetadata](../ensembleMetadata/welcome) object for the ensemble stored in a .ens file:
 ```matlab
@@ -35,7 +35,7 @@ Alternatively, you can provide variable names and ensemble members as the first 
 meta = ens.loadedMetadata(varNames, members);
 ```
 
-#### Summary
+### Summary
 
 You can use the "info" method to return a summary of the ensemble in a .ens file as well as a summary of the data that will be loaded. Use
 ```matlab

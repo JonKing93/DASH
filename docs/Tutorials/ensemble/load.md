@@ -1,3 +1,9 @@
+---
+sections:
+  - Load ensemble
+  - Load gridded ensemble
+---
+
 # Load a saved ensemble
 
 You can use the "load" command to load an ensemble from a .ens file.
@@ -6,7 +12,7 @@ You can use the "load" command to load an ensemble from a .ens file.
 ```
 The two outputs are the state vector ensemble matrix (X), and an ensembleMetadata object for the matrix (meta).
 
-# Load gridded climate variables
+### Load gridded ensemble
 
 You can also use the "loadGrids" command to load gridded climate variables instead of state vectors.
 ```matlab

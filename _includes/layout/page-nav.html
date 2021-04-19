@@ -8,18 +8,19 @@
 
       {% for section in page.sections %}
         {% assign page_array = section | split: "| " %}
-        {% assign heading = page_array[0] %}
-        {% assign link = heading | remove: "," | remove: ":" | remove: "." | replace: " ", "-" | downcase | prepend: "#" %}
+        {% assign title = page_array[0] | strip %}
 
-        {% assign title = page_array[1] %}
-        {% if title==nil or title=="" %}
-          {% assign title = heading %}
+        {% assign heading = page_array[1] | strip %}
+        {% if heading==nil or heading=="" %}
+          {% assign heading = title %}
         {% endif %}
 
         {% assign level = page_array[2] %}
-        {% if level==nil %}
+        {% if level==nil or level=="" %}
           {% assign level = 1 %}
         {% endif %}
+
+        {% assign link = heading | remove: "," | remove: ":" | remove: "." | replace: " ", "-" | downcase | prepend: "#" %}
         {% assign class = "pagenav_level" | append: level %}
 
         <li class="{{class}}"><a href={{link}}>{{title}}</a></li>

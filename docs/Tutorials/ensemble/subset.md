@@ -3,6 +3,7 @@ sections:
   - Subset an ensemble
   - Select variables
   - Select ensemble members
+  - Subset metadata
   - Reset
 ---
 

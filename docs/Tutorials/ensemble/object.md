@@ -1,4 +1,8 @@
-
+---
+sections:
+  - Ensemble objects
+  - Name an ensemble object
+---
 # Ensemble Objects
 
 The ".ens" files use a specialized format, so we don't want to manipulate them directly. Instead, we'll create an ensemble object to interact with a particular file. Create an ensemble object using the "ensemble" command. For example:
@@ -9,7 +13,7 @@ creates an ensemble object (named "ens") that will allow us to interact with "my
 
 Throughout the rest of this tutorial, I will use "ens" to refer to an ensemble object. However, feel free to use a different naming convention in your own code.
 
-### Optional: Name the ensemble object
+### Name an ensemble object
 
 You can use the second input to provide a name for an ensemble object.
 ```matlab

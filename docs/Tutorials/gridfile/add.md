@@ -1,9 +1,9 @@
 ---
 sections:
-  - Add data sources to a grid file| Data sources
+  - Add data sources to a grid file | Data sources
   - Define source metadata
   - Add source files
-  - Example 1| | 2
+  - Example 1 | | 2
   - Example 2| | 2
   - Source filepaths
   - Merging dimensions

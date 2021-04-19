@@ -1,3 +1,8 @@
+---
+sections:
+  - Add ensemble members
+  - Disable progress bar
+---
 
 # Add ensemble members
 You can also use an ensemble object to add more ensemble members to the ensemble stored in a .ens file. Use the "add" command and specify the number of new ensemble members to add to the file.
@@ -11,7 +16,7 @@ ens.add(5);
 ```
 will add 5 more ensemble members to the state vector ensemble saved in the file "myEnsemble.ens".
 
-### Optional: Disable progress bar
+### Disable progress bar
 
 By default, the "add" command will display a progress bar as it builds new ensemble members. You can specify whether to display the progress bar using the second input
 ```matlab
