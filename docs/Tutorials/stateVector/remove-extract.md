@@ -1,3 +1,9 @@
+---
+sections:
+  - Removing or extracting variables
+  - Remove
+  - Extract
+---
 # Removing or extracting variables
 
 Sometimes, it may be useful to only use a subset of variables in a saved state vector template. There are two ways to obtain a subset of variables from an existing state vector:

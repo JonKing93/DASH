@@ -1,3 +1,10 @@
+---
+sections:
+  - Summarize a state vector
+  - Variable names
+  - Dimensions
+  - Detailed summaries
+---
 # Summarize a state vector
 
 With large, complex state vectors, it can be easy to lose track of all the variables, dimensions, and design options. For this reason, stateVector provides several methods to help summarize information. Specifically, you can

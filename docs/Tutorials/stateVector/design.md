@@ -1,18 +1,21 @@
 ---
 sections:
+  - Design variables
   - Set dimension types
-  - Specify state or reference indices
-  - Design multiple variables simultaneously
-  - Design multiple dimensions simultaneously
+  - Specify indices | Specify state or reference indices
+  - Example 1 | | 2
+  - Example 2 | | 2
+  - Design multiple variables
+  - Design multiple dimensions
   - Indices for multiple dimensions
   - Disable notifications
 ---
 
-# Design Method
+# Design Variables
 
 The "design" method can be used to specify variable dimensions as [state or ensemble dimensions](concepts#state-and-ensemble-dimensions), and to specify [dimension indices](dimension-indices). By default, stateVector treats each dimension as a state dimension and sets the dimension indices to every element along the dimension. Consequently, you do not need to apply the design method to state dimensions that use every element.
 
-# Set dimension types
+### Set dimension types
 
 You can use the design method to set variable dimensions as state or ensemble dimensions. To do this, provide the name of the variable, the name of the dimension, and indicate the type of the dimension. To specify a state dimension, you can use any of:
 ```matlab
@@ -61,7 +64,7 @@ sv = sv.design('T', 'lat', 'ensemble', preindustrial);
 to set the reference indices.
 
 <br>
-### Design multiple variables simultaneously
+### Design multiple variables
 
 You can design multiple variables at the same time by providing a string vector of variable names as the first input. For example
 ```matlab
@@ -71,7 +74,7 @@ sv = sv.design(vars, "time", "ensemble", preindustrial);
 ```
 will use the time dimension as an ensemble dimension and specify preindustrial reference indices for each of the "T", "P", and "Tmean" variables.
 
-### Design multiple dimensions simultaneously
+### Design multiple dimensions
 
 You can also design multiple dimensions at the same time by providing a string vector of dimension names as the second argument. When this is the case, using 'state', 's', or true as the third argument will set all listed dimensions as state dimensions. Likewise, using 'ensemble', 'ens', 'e', or false as the third argument will set all listed dimensions as ensemble dimensions. For example:
 ```matlab

@@ -1,3 +1,10 @@
+---
+sections:
+  - Metadata conflicts
+  - Specify metadata
+  - Convert metadata
+  - Reset metadata options
+---
 # Metadata conflicts
 
 When state vector builds an ensemble, it requires [coupled variables](couple) to have the same metadata in each ensemble member. However, this can cause a conflict when coupled variables use metadata in different formats. For example, say I have two coupled variables: "X_annual" is annually resolved and its time metadata is a numeric vector of years; "X_monthly" has monthly resolution and its time metadata is a datetime vector, so something like:

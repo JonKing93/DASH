@@ -18,3 +18,6 @@ These methods help provide information about the state of a state vector
 * [Summarize a state vector](info)
 * [Rename a state vector or variables](rename)
 * [Enable / Disable console notifications](notify-console)
+
+### Notifications
+You can use the [notifyConsole command](notify-console) to enable or disable notifications.

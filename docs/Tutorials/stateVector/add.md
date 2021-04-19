@@ -1,7 +1,7 @@
 ---
 sections:
   - State vector variables
-  - Add variables
+  - Add a variable
   - Auto-coupling options
   - Overlap options
 ---
