@@ -1,3 +1,10 @@
+---
+sections:
+  - Observation estimates
+  - Typical workflow
+  - Transient priors
+  - Time-dependent estimates
+---
 # Observation Estimates
 You must provide observation estimates (Ye) to run a Kalman Filter analysis. The estimates allow comparison of each ensemble member with the observations in order to update the ensemble.
 
@@ -58,7 +65,7 @@ Ye = PSM.estimate(X, F);
 kf = kf.estimates(Ye);
 ```
 
-### Estimates for different time steps
+### Time-dependent estimates
 
 If you specify Ye for multiple priors, then you can use the second input to specify which prior to use in each time step. The syntax is:
 ```matlab

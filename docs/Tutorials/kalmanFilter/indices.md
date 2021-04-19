@@ -1,4 +1,13 @@
-
+---
+sections:
+  - Posterior of an index
+  - Mean of all elements | Take a mean over all state vector elements
+  - Weighted means
+  - Area weighted index | Example 1 area weighted index | 2
+  - Principal component index | Example 2 principal component index | 2
+  - Specify rows
+  - Remove an index
+---
 # Posterior of an index
 
 It is often useful to calculate an index from an updated ensemble and return the full posterior of the index without the posterior ensemble. For example, say you are assimilating a global, spatial temperature field in order to reconstruct a global temperature index. The full posterior of the spatial field might be too large to save, but the posterior of the index is much smaller and sufficient to quantify reconstruction uncertainty.
@@ -28,7 +37,7 @@ output = kf.run;
 ```
 then the output structure will include a field named "index_globalT". This field will hold the mean of each updated ensemble member in each assimilated time step.
 
-### Take a weighted mean
+### Weighted means
 
 It is often more useful to take a weighted mean over the state vector. You can specify weights using the second input:
 ```matlab
@@ -77,7 +86,7 @@ output = kf.run;
 Here, the output structure will have a field named "index_PC1" that holds the full posterior for PC1 calculated across the updated ensemble.
 
 
-### Calculate an index over specific rows
+### Specify rows
 
 Sometimes, you may only want to calculate an index over specific state vector rows. This is common when a state vector includes multiple climate variables. Although you could set the weights of all unused rows to 0, it is often easier to directly specify which rows to use. Do this using the third input:
 ```matlab
@@ -95,7 +104,7 @@ kf = kf.index('globalT', weights, rows);
 ```
 This will calculate a latitude-weighted mean over the temperature variable and return it in the output structure as the field "index_globalT".
 
-### Remove an index from output
+### Remove an index
 
 If you previously specified an index, you can later remove it from the output by calling the "index" command and using the string `'delete'` as the second input:
 ```matlab

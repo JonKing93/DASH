@@ -1,4 +1,10 @@
-# Enable or disable ensemble percentiles output
+---
+sections:
+  - Percentiles
+  = Delete percentiles
+  - Output field  
+---
+# Percentiles output
 You can use "kalmanFilter.percentiles" to return percentiles of the posterior ensemble as output. Here the syntax is:
 ```matlab
 kf = kf.percentiles( percs );

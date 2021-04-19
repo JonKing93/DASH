@@ -1,4 +1,9 @@
-
+---
+sections:
+  - Overview
+  - kalmanFilter objects
+  - Name a Kalman Filter
+---
 # Overview
 
 The Kalman Filter class allows you to create and modify objects that can be used to run Kalman Filter analyses. When implementing a Kalman Filter, the general workflow is to
@@ -23,7 +28,7 @@ kf = kalmanFilter;
 
 Here, kf is a new kalmanFilter object. Throughout this tutorial, I will use "kf" to refer to a kalmanFilter object, however feel free to use a different convention in your own code.
 
-#### Optionally name a Kalman Filter
+### Name a Kalman Filter
 
 You can optionally name a Kalman Filter object by providing a string as the first input to the kalmanFilter command. For example:
 ```matlab

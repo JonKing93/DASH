@@ -1,4 +1,12 @@
-
+---
+sections:
+  - Covariance localization
+  - Spatial coordinates | 1 obtain spatial coordinates | 2
+  - Localization weights | 2 calculate localization weights | 2
+  - localize | 3 provide localization weights to the kalman filter | 2
+  - Summary
+  - Time-dependent localization
+---
 # Covariance Localization
 
 Covariance localization reduces covariance as grid points become more distant from the proxy sites. This allows nearby proxy sites to most strongly influence updated grid points, and helps reduce covariance biases at distant points. The basic workflow for localization is to:
@@ -76,7 +84,7 @@ scheme = "gc2d"; % Gaspari-Cohn polynomial in 2D
 kf = kf.localize(wloc, yloc);
 ```
 
-### Use different localization weights in different time steps
+### Time-dependent localization
 
 You can also use different localization weights in different assimilated time steps using a third input to the "localize" command:
 ```matlab

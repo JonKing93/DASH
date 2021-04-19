@@ -1,3 +1,8 @@
+---
+sections:
+  - Covariance inflation
+  - Time-dependent inflation
+---
 # Covariance Inflation
 
 Covariance inflation multiplies proxy covariances by a scalar greater than 1. This increases covariance estimates, effectively increasing the proxy weights in the filter. Use the "kalmanFilter.inflate" command to implement covariance inflation. Here the syntax is:
@@ -10,7 +15,7 @@ kf = kf.inflate(2)
 ```
 would multiply covariance estimates by 2.
 
-### Factors for different time steps
+### Time-dependent inflation
 In some cases, you may wish to use different inflation factors in different time steps. Do so using the second input:
 ```matlab
 kf = kf.inflate( factors, whichFactor )

@@ -1,4 +1,12 @@
 
+---
+sections:
+  - Covariance blending
+  - Estimate covariance
+  - Static estimates
+  - Blending weights
+  - Time-dependent blending
+---
 <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 # Covariance Blending
@@ -7,7 +15,7 @@ Sampling errors can cause covariance biases in small ensembles. Such ensembles o
 1. Obtain covariance estimates from a static ensembles, and
 2. Provide these estimates to the Kalman Filter.
 
-### 1. Static Covariance Estimates
+### Estimate covariance
 
 You can estimate covariance for an ensemble and associated proxy estimates using the "dash.estimateCovariance" command. Here the syntax is:
 ```matlab
@@ -25,7 +33,7 @@ Ye = PSM.estimate(X, psms.myPSMs);
 [C, Ycov] = dash.estimateCovariance(X, Ye);
 ```
 
-### 2. Provide covariances to the Kalman Filter
+### Static Estimates
 
 You can implement covariance blending for a Kalman Filter using the "blend" command. Here the basic syntax is:
 ```matlab
@@ -34,7 +42,7 @@ output = kf.run;
 ```
 Note that blending is applied *after* any localization is applied to the covariance estimate from the prior.
 
-### Specify blending weights
+### Blending weights
 
 The Kalman filter will blend the covariance of the prior and the static ensemble as a linear combination:
 
@@ -51,7 +59,7 @@ kf = kf.blend(C, Ycov, coeffs);
 ```
 It is generally recommended (although not required), that the blending coefficients sum to 1.
 
-### Blend different covariances in different time steps
+### Time-dependent Blending
 
 In some cases, you might want to blend the covariance estimate from the prior with different covariances in different time steps. You can do this using the fourth input to the "blend" command:
 ```matlab
