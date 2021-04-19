@@ -1,4 +1,14 @@
-# Closest latitude-longitude coordinates
+---
+sections:
+  - Closest elements
+  - Search specific variables
+  - Multiple rows | Multiple closest rows
+  - Exclude rows | Exclude rows from consideration
+  - Metadata requirements | Metadata requirements and NaN coordinates
+  - Disable notifications
+---
+
+# Closest elements
 
 It is often useful to find elements in a state vector variable that are closest to a set of latitude-longitude coordinates. This commonly occurs when selecting inputs for proxy system models. You can use the "closestLatLon" method to do this. Here, the most basic syntax is:
 ```matlab
@@ -21,7 +31,7 @@ row = ensMeta.closestLatLon(coordinate);
 
 Note that you can use (-180 to 180) and (0 to 360) longitude coordinate systems interchangeably as the coordinate system does not affect the haversine distance function. You can even search for a (-180 to 180) coordinate that is closest to a (0 to 360) coordinate and vice versa without error.
 
-### Search a specific variable
+### Search specific variables
 
 Often, a state vector will contain multiple variables, but you need a specific variable to run a PSM. You can use the second input to search for the closest row within a certain variable:
 ```matlab
@@ -96,7 +106,7 @@ If any of these requirements do not work well with your workflow, you can use th
 
 
 
-### Disable console notifications
+### Disable notifications
 
 The "closestLatLon" method will display notification messages when using NaN coordinates and detecting latitude-longitude data from "coord" metadata. You can disable these notifications using the fourth output:
 ```matlab

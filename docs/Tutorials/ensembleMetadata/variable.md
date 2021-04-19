@@ -1,4 +1,11 @@
-
+---
+sections:
+  - Variable metadata
+  - Specify dimensions
+  - Metadata direction
+  - Specify rows or columns
+  - Output structure
+---
 # Variable Metadata
 
 The "variable" command is one of the most versatile methods for working with ensemble metadata. As the name suggests, this command returns the metadata for a variable in the state vector. In the most basic use of the command, provide the name of a variable as the only input:
@@ -14,7 +21,7 @@ meta = ensMeta.variable("T")
 ```
 meta will be a structure with a "lat", "lon", "time", and "run" field. The contents of the "lat" and "lon" fields will each have 1000 rows, each corresponding to a state vector element for the variable. The "time" and "run" fields will each have 75 rows, each corresponding to an ensemble member.
 
-### Return metadata for specific dimensions
+### Specify dimensions
 
 You can use the second input to specify which dimensions should have their metadata returned.
 ```matlab
@@ -38,7 +45,7 @@ meta = ensMeta.variable("T", dims)
 ```
 in this case, "meta" will be a structure with a "time", "lat", and "lon" field.
 
-# Down the state vector vs. across the ensemble
+# Metadata direction
 
 By default, the "variable" method will return metadata down the state vector for [state dimensions](..\stateVector\concepts#state-and-ensemble-dimensions) and across the ensemble for [ensemble dimensions](..\stateVector\concepts#state-and-ensemble-dimensions). However, you can use the third input to select the metadata direction for each variable. This is most commonly used when an ensemble dimension has a sequence and you want the metadata for the sequence down the state vector. Continuing the example, say the "time" dimension for the "T" variable is an ensemble dimension, but also has a sequence of four months (May, June, July, and August) down the state vector. If I have a proxy system model that requires May temperatures, then I will need the monthly "time" metadata down the state vector to find data from May.
 
@@ -85,7 +92,7 @@ meta = ensMeta.variable('T', dims, direction);
 ```
 would return metadata down the state vector for the "time", "lat", and "lon" dimensions, and metadata across the ensemble for the "run" dimension.
 
-### Query specific rows or columns
+### Specify rows or columns
 
 You can use the fourth input to query the metadata at specific columns across the ensemble, or at specific rows for the variable down the state vector.
 ```matlab
@@ -117,7 +124,7 @@ indices = {[8 20 22], [1 5 17], []};
 ```
 would return "time" metadata at rows 8, 20 and 22; "run" metadata for ensemble members 1, 5, and 17; and "lat" metadata for all 1000 rows of the "T" variable.
 
-### Always return a structure
+### Output structure
 
 When scripting, it can be useful to always return outputs in a common form. Consequently, you may want to require the "variable" command to output a structure even when returning metadata for a single dimension. You can do this using the fifth input:
 ```matlab

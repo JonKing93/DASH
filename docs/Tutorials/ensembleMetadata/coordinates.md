@@ -1,3 +1,9 @@
+---
+sections:
+  - Latitude-Longitude coordinates
+  - Behavior | Differences from ensembleMetadata.dimension
+  - Disable notifications
+---
 
 # Latitude-Longitude Coordinates
 
@@ -7,7 +13,7 @@ latlon = ensMeta.coordinates;
 ```
 to return them. Here, latlon is a numeric matrix with two columns and one row per state vector element. The first column contains the latitude coordinate for each state vector element, and the second column contains the longitude coordinate for each element.
 
-# Behavior and Differences from ensembleMetadata.dimension
+### Differences from ensembleMetadata.dimension
 
 The "coordinates" method is built specifically with covariance localization in mind. Consequently, it behaves differently from the "dimension" command is many ways. To begin, the "coordinates" method will **always** return a numeric matrix with two columns. It will not return a structure array or any other metadata formats. To accommodate this, there are several additional changes to the method's behavior.
 
@@ -21,7 +27,7 @@ The "coordinates" method is built specifically with covariance localization in m
 
 5. When using "coord" metadata, the method will attempt to automatically detect which column is latitude and which is longitude. If it cannot decide, it will use the first column as latitude.
 
-# Notifications
+### Disable Notifications
 
 Given these differences in behavior, the "coordinates" method with print a notification message to the console anytime it uses NaN coordinates for a variable. It will also display notifications when deciding which column of "coord" metadata is which. These notifications are enabled by default, but you can disable them using the first input to the "coordinates" command.
 ```matlab

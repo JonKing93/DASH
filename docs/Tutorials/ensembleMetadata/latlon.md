@@ -1,4 +1,14 @@
-
+---
+sections:
+  - Latitude-Longitude coordinates
+  - NaN coordinates
+  - Variable dimensions | | 2
+  - Metadata format | | 2
+  - Spatial means | | 2
+  - Manual coordinates | | 2
+  - Variable coordinates
+  - Disable notifications
+---
 # Latitude-Longitude coordinates
 
 You can obtain latitude-longitude coordinates for each element down a state vector using the "latlon" command. Such metadata is often useful for implementing covariance localization. Here the syntax is:
@@ -28,11 +38,11 @@ When using "coord" metadata, the "latlon" method will attempt to automatically d
 ##### Spatial means
 Finally, if a variable takes a mean over the "lat", "lon", or "coord" dimension, then the method will return NaN coordinates for each row of the variable. This occurs because the variable extends over a range of spatial coordinates thus does not have a well-defined latitude-longitude coordinate.
 
-##### Circumventing metadata requirements
+##### Manual coordinates
 If you would like to use different metadata formats, or store spatial metadata along different dimensions than those listed here, you can use the [variable](variable) and [findRows](find-rows) commands to build a list of coordinates manually. You can find an example of how to do this in the Kalman Filter tutorial.
 
 <br>
-### Coordinates for a single variable
+### Variable Coordinates
 
 You can alternatively return latitude-longitude coordinates for a single variable by specifying the variable's name as the first input:
 ```matlab
@@ -44,7 +54,7 @@ meta = ensMeta.latlon("P")
 ```
 will return a matrix with 1000 rows and two columns.
 
-### Disable console notifications.
+### Disable notifications.
 
 By default, the "latlon" method will notify the console whenever it uses NaN coordinates for a variable and when it attempts to detect latitude and longitude columns in "coord" metadata. You can disable these notifications using the second input
 ```matlab

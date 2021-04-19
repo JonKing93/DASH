@@ -1,5 +1,9 @@
-
-# Metadata for a dimension over all variables
+---
+sections:
+  - Dimension metadata | Dimension metadata down a state vector
+  - Output structure
+---
+# Dimension metadata down a state vector
 
 You can use the "dimension" command to obtain all the metadata for a particular dimension down a state vector over all variables. This is often useful when implementing covariance localization. To get the metadata for a dimension down the entire state vector, provide the name of the dimension as the first input:
 ```matlab
@@ -20,7 +24,7 @@ meta = ensMeta.dimension("lat")
 
 If a variable does not have the specified dimension, then its metadata will be an array of NaN values (for numeric arrays), NaT values (for datetime metadata), or empty strings (for character/string/cellstring metadata). The metadata for the variable will still have one row per state vector element.
 
-### Always return a structure
+### Output structure
 
 When writing scripts, it can be useful to always return outputs that use the same format. Consequently, you may want the "dimension" command to always return a structure, even if the variables use a common format for the dimension's metadata. You can use the second input to indicate that metadata should always be a structure using the syntax:
 ```matlab

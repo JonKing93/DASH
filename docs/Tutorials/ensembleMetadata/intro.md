@@ -1,5 +1,13 @@
-
-# Where we've been. Where we're going
+---
+sections:
+  - Ensemble Metadata
+  - PSMs | Example 1 Proxy system models | 2
+  - Covariance localization | Example 2 covariance localization | 2
+  - Regrid variables | Example 3 Regridding state vectors | 2
+  - Transient priors | Example 4 Transient priors | 2
+  - Tutorial overview
+---
+# Ensemble Metadata
 
 In previous tutorials, we saw how to use the gridfile, stateVector, and ensemble modules to facilitate the creation of state vector ensembles. These state vector ensembles are a core part of paleoclimate data assimilation. For example, they can be used:
 1. As an assimilation prior
@@ -19,11 +27,11 @@ When using a state vector ensemble to estimate climate system covariance, you ma
 ### Example 3: Regridding state vectors
 In most analyses, you will eventually want to reshape state vector variables back into gridded climate variables. For example, after data assimilation, you may want to convert a variable in a posterior state vector ensemble back into a gridded form so that you can plot it in a figure. Regridding a variable in this way requires knowledge of the metadata associated with the variable's gridded dimensions. Consequently, you can use the ensembleMetadata class to perform this transformation.
 
-#### Example 4: Evolving Priors
+#### Example 4: Transient Priors
 
 In some cases, you may want to use different subsets of a state vector ensemble as priors for different assimilated time steps. For example, you may want to use a different prior in different months, or different priors for pre-industrial and post-industrial periods. To design these evolving priors, you will need to be able to find ensemble members with specific characteristics within the state vector ensemble. You can use the ensembleMetadata module to obtain metadata for different ensemble members, which can then be used to select different subsets of the full ensemble.
 
-# Tutorial Overview
+### Tutorial Overview
 In this tutorial, we will review some of the most commonly used features of ensembleMetadata. Specifically, we will examine how to:
 1. Find state vector elements closest to proxy sites,
 2. Return latitude-longitude coordinates down the state vector (to implement covariance localization), and

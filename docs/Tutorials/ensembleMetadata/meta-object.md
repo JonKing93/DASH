@@ -1,9 +1,18 @@
-
+---
+sections:
+  - Metadata objects
+  - From stateVector objects
+  - stateVector.build
+  - stateVector.add
+  - Saved ensemble
+  - Loaded ensemble
+  - Name the metadata
+---
 # Metadata objects
 
 In the DASH framework, metadata for a state vector ensemble is stored in an ensembleMetadata object. You can then use these objects to retrieve various types of metadata. There are several ways to obtain an ensembleMetadata object. Throughout this tutorial, I will use "ensMeta" to refer to an ensemble metadata object. However, feel free to use a different name in your own code.
 
-### Before building an ensemble
+### From stateVector objects
 If you would like to examine the metadata for a state vector *before* building an ensemble, you can also call "ensembleMetadata" directly on a stateVector object.
 ```matlab
 ensMeta = ensembleMetadata(sv);

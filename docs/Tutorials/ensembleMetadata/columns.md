@@ -1,4 +1,12 @@
-# Metadata at specific columns
+---
+sections:
+  - Column metadata
+  - Specify variables
+  - Specify dimensions
+  - Output structure
+---
+
+# Column Metadata
 
 Sometimes you may want to query the metadata at particular columns in the state vector. This can be useful to sort output from the [variable command](variable) and as a sanity check when designing evolving priors. To query the metadata at specific rows, use the "columns" method using the syntax:
 ```matlab
@@ -43,7 +51,7 @@ meta.P.run
 ```
 which hold the metadata for the P variable at the 5 queried ensemble members.
 
-### Query specific variables
+### Specify variables
 You can return metadata for specific variables using the second input:
 ```matlab
 meta = ensMeta.columns(columns, varNames)
@@ -63,7 +71,7 @@ meta = ensMeta.columns(columns, 'T')
 ```
 then "meta" will be a structure with a "lat", "lon", and "time" field.
 
-### Query specific dimensions
+### Specify dimensions
 
 You can query metadata for specific dimensions using the third input
 ```matlab
@@ -106,7 +114,7 @@ meta.P.lon
 meta.P.time
 ```
 
-### Always return output in the same format
+### Output structure
 When writing scripts, it can be useful to always return outputs that use the same format. You can use the fourth input to indicate that "columns" output should always use the same format:
 ```matlab
 meta = ensMeta.columns(columns, varNames, dims, fullStruct)

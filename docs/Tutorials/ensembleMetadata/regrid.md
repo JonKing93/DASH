@@ -1,3 +1,10 @@
+---
+sections:
+  - Regrid variables
+  - Specify dimension order
+  - State vector dimension | Specify the state vector dimension
+  - Retain singleton dimensions
+---
 # Regrid a state vector variable
 
 You can use an ensembleMetadata object to reshape a state vector ensemble back into gridded climate variables. Do this using the "regrid" method. The most basic syntax is:
@@ -12,7 +19,7 @@ For example, say I have a state vector ensemble with 75 ensemble members, a "T" 
 ```
 the array "Y" is the regridded "T" variable. It will have size (25 longitudes x 10 latitudes x 4 months x 75 ensemble members). The output "meta" is a structure with fields "lon", "lat", and "time" (the regridded dimensions). The "lon" field holds an array of longitude metadata with 25 rows, the "lat" field holds an array of latitude metadata with 10 rows, and the "time" field holds an array of monthly time metadata with 4 rows.
 
-### Specify the order of regridded dimensions
+### Specify Dimension Order
 If unspecified, the "regrid" command will return the gridded variable with a default dimension order. However, you can use the third input to specify the order of dimensions in the regridded variable:
 ```matlab
 [Y, meta] = ensMeta.regrid(X, varName, dims)

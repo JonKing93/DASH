@@ -1,4 +1,8 @@
-
+---
+sections:
+  - Variable rows
+  - Rows within a variable
+---
 # Variable rows
 
 Sometimes, you may want to find the state vector rows corresponding to a specific variable. For example, most proxy system models (PSMs) require specific climate variables as input, so you may want to locate a particular variable within a state vector ensemble. You can use the "findRows" command to return the rows for a particular variable.
@@ -8,7 +12,7 @@ rows = ensMeta.findRows(varName)
 
 To illustrate, let's return to example state vector ensemble that consists in order of: a "T" variable with 1000 state vector elements, a "Tmean" variable with 1 element, and a "P" variable with 1000 elements.
 
-#### T
+##### T
 In this example, the line:
 ```matlab
 rows = ensMeta.findRows('T')
@@ -18,7 +22,7 @@ will return
 rows = 1:1000
 ```
 <br>
-#### Tmean
+##### Tmean
 By contrast:
 ```matlab
 rows = ensMeta.findRows('Tmean')
@@ -28,7 +32,7 @@ will return
 rows = 1001
 ```
 <br>
-#### P
+##### P
 Finally,
 ```matlab
 rows = ensMeta.findRows('P')
@@ -47,7 +51,7 @@ Some ensembleMetadata methods return metadata for a particular variable, rather 
 stateVectorRows = ensMeta.findRows(varName, variableRows);
 ```
 <br>
-#### P
+##### P
 Continuing the example, let's say I want to apply a PSM to my state vector. I determine that I need the third and fifth rows of the "P" variable to run the PSM. I could do:
 ```matlab
 rows = ensMeta.findRows("P", [3 5]);
@@ -59,7 +63,7 @@ rows = [1004 1006]
 because the "P" variable starts at row 1002 of the state vector.
 
 <br>
-#### T
+##### T
 By contrast:
 ```matlab
 rows = ensMeta.findRows("T", [3 5]);
@@ -71,7 +75,7 @@ rows = [3 5]
 because the third and fifth rows of the "T" variable are the third and fifth rows of the state vector.
 
 <br>
-#### Tmean
+##### Tmean
 The line:
 ```matlab
 rows = ensMeta.findRows("Tmean", [3 5])

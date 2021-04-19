@@ -1,5 +1,11 @@
-
-# Metadata at specific rows
+---
+sections:
+  - Row metadata
+  - Specify dimensions
+  - Return variable names
+  - Output structure
+---
+# Row metadata
 
 Sometimes, you may want to obtain the metadata for a particular row of a state vector. This can be used to further [sort output from closestLatLon](closest#multiple-closest-rows), and as a sanity check to ensure that methods like "closestLatLon" and "find-rows" have been used correctly in conjunction. To query the metadata at specific rows, use the "rows" method using the syntax:
 ```matlab
@@ -39,7 +45,7 @@ meta.T.time
 ```
 which hold the latitude, longitude, and time metadata at state vector rows 1002 through 1012.
 
-### Query row metadata for specific dimensions
+### Specify dimensions
 You can query row metadata for specific dimensions using the second input:
 ```matlab
 meta = ensMeta.rows(rows, dims)
@@ -82,7 +88,7 @@ will produce the following "meta" output
 meta = ["T"; "T"; "T"; "Tmean"; "P"; "P"];
 ```
 
-### Always use the same output format
+### Output structure
 When writing scripts, it can be useful to always return outputs that use the same format. You can use the third input to indicate that "rows" output should always use the same format:
 ```matlab
 meta = ensMeta.rows(rows, dims, fullStruct)
