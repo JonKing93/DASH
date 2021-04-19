@@ -1,3 +1,9 @@
+---
+sections:
+  - Observation Estimates
+  - Provide estimates directly
+  - Provide PSMs
+---
 # Observation Estimates
 You must specify observation estimates (Ye) in order to run an optimal sensor experiment. These are estimates of the observations for each ensemble member at the tested sampling sites. The covariance of these estimates with the target metric is used to help rank the sampling sites.
 

@@ -1,3 +1,10 @@
+---
+sections:
+  - Reconstruction target metric
+  - Mean
+  - Weighted mean | | 2
+  - Take mean over specific rows | | 2
+---
 # Reconstruction target metric
 To run an optimal sensor experiment, you must specify a method for computing the target reconstruction metric (J) from the prior. This allows the algorithm to construct a probability distribution for the metric from the prior ensemble.
 
@@ -33,7 +40,7 @@ os = os.metric('mean', weights);
 ```
 to implement this.
 
-##### Limit mean to specific state vector rows
+##### Take mean over specific rows
 You can also limit the calculation of the mean to specific state vector rows using the third input:
 ```matlab
 os = os.metric('mean', [], rows);

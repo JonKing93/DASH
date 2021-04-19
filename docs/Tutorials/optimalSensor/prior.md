@@ -1,3 +1,8 @@
+---
+sections:
+  - Prior
+  - NaN values
+---
 # Prior
 You must provide a prior ensemble (X) in order to run an optimal sensor experiment. The prior ensemble is used to generate a probability distribution for the reconstruction target. It optionally may also be used to run PSMs and dynamically generate observation estimates.
 

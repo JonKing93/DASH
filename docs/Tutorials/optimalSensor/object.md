@@ -1,3 +1,9 @@
+---
+sections:
+  - Overview
+  - optimalSensor objects
+  - Name an optimal sensor
+---
 # Overview
 The optimalSensor class allows you to rank sampling sites by their ability to reduce uncertainty for a reconstruction target. The method uses an ensemble of climate states to compute a probability distribution for a reconstruction target. A modified Kalman Filter then ranks potential sampling sites by their ability to reduce the spread of this distribution. For more details, please see [Comboul et al., 2015](https://doi.org/10.1175/JCLI-D-14-00802.1).
 
@@ -19,7 +25,7 @@ os = optimalSensor;
 
 Here, os is a new optimalSensor object. Throughout this tutorial, I will use "os" to refer to an optimalSensor object, however feel free to use a different convention in your own code.
 
-#### Optionally name an optimal sensor
+### Name an optimal sensor
 
 You can optionally name an optimal sensor object by providing a string as the first input to the optimalSensor command. For example:
 ```matlab
