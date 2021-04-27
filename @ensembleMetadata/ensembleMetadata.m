@@ -168,31 +168,35 @@ classdef ensembleMetadata
     
     % User methods
     methods
-        % variableNames -- Just a direct call to the field
+        % Summary info
         obj = rename(obj, newName);
-
+        % variableNames -- Just a direct call to the field
+        [nState, nEns] = sizes(obj, vars);
+        
+        % Most common
+        rows = findRows(obj, varName, varRows);
+        rows = closestLatLon(obj, latlon, varName, exclude, verbose);
+        [latlon] = latlon(obj, varName, verbose);
         [V, meta] = regrid(obj, X, varName, dimOrder, d, keepSingletons);
         
+        % Metadata queries
         meta = variable(obj, varName, dims, type, indices, alwaysStruct);
         meta = dimension(obj, dim, alwaysStruct);
         meta = rows(obj, rows, dims, fullStruct);
         meta = columns(obj, cols, varNames, dims, alwaysStruct);
         
-        [latlon] = latlon(obj, varName, verbose);
-        rows = closestLatLon(obj, latlon, varName, exclude, verbose);
-        rows = findRows(obj, varName, varRows);
-        [nState, nEns] = sizes(obj, vars);
-        
+        % Add/remove variables
         obj = remove(obj, varNames);
         obj = append(obj, meta2);
         obj = extract(obj, varNames);
         
+        % Add/remove ensemble members
         obj = removeMembers(obj, members)
         obj = appendMembers(obj, meta2);
         obj = extractMembers(obj, members);
     end
     
-    % New stuff
+    % Primitives for saves
     methods
         s = convertToPrimitives(obj);
         obj = buildFromPrimitives(obj, s);
