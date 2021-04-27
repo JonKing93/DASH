@@ -29,7 +29,7 @@ Here, dims is a string vector that lists dimensions of the variable. Continuing 
 dims = ["time", "lat", "lon"];
 [Y, meta] = ensMeta.regrid(X, 'T', dims);
 ```
-then output "Y" will have size (4 months x 10 latitudes x 25 longitudes) and the order of the fields in "meta" will be "time", then "lat", then "lon".
+then output "Y" will have size (4 months x 10 latitudes x 25 longitudes x 75 ensemble members) and the order of the fields in "meta" will be "time", then "lat", then "lon".
 
 Note that you do not need to specify all the dimensions of a variable. Any unspecified dimensions will use a default dimension order. For example I could use:
 ```matlab
@@ -47,7 +47,7 @@ where d is a positive integer.
 
 Continuing the example, say I perform three assimilations on the ensemble, each with different settings. I store the output from these assimilations in array "X2" which has size [3 assimilations x 2001 state vector elements x 75 ensemble members]. In this scenario, the state vector proceeds along the second dimension, so I would need to use:
 ```matlab
-dims = ["lon", "lat", "lat"];
+dims = ["lon", "lat", "time"];
 d = 2;
 [Y2, meta] = ensMeta.regrid(X2, 'T', dims, d);
 ```
