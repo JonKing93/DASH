@@ -20,9 +20,6 @@ function[obj] = metric(obj, type, varargin)
 
 % Note: This method is a switch that directs to appropriate metric methods
 
-% Specify the prior first
-assert(~isempty(obj.X), 'You must specify a prior before you choose a metric.');
-
 % Error check the type
 dash.assertStrFlag(type, 'The first input');
 allowedTypes = "mean";
