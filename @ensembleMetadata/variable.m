@@ -2,33 +2,38 @@ function[meta] = variable(obj, varName, dims, type, indices, alwaysStruct)
 %% Returns metadata down the state vector or across the ensemble for a
 % variable in a state vector ensemble.
 %
+% metaStruct = obj.lookup(v)
 % metaStruct = obj.lookup(varName)
 % Returns the metadata for the non-singleton dimensions of a variable in a
 % state vector ensemble. Returns the metadata down the state vector for
 % state dimensions and the metadata across the ensemble for ensemble
 % dimensions.
 %
-% metaStruct = obj.lookup(varName, dims)
+% metaStruct = obj.lookup(varName/v, dims)
 % Only returns metadata for specified dimensions.
 %
-% meta = obj.lookup(varName, dim)
+% meta = obj.lookup(varName/v, dim)
 % Return the metadata for a single dimension directly as an array.
 %
-% [...] = obj.lookup(varName, dim/dims, type)
-% [...] = obj.lookup(varName, dim/dims, returnState)
+% [...] = obj.lookup(varName/v, dim/dims, type)
+% [...] = obj.lookup(..., dim/dims, returnState)
 % Specify whether to return metadata down the state vector or acrosss the
 % ensemble for listed dimensions.
 %
-% [...] = obj.lookup(varName, dim, type/returnState, indices)
-% [...] = obj.lookup(varName, dims, type/returnState, indexCell)
+% [...] = obj.lookup(varName/v, dim, type/returnState, indices)
+% [...] = obj.lookup(varName/v, dims, type/returnState, indexCell)
 % Return the metadata for specific elements of a variable.
 %
-% [...] = obj.lookup(varName, dim, type/returnState, indices, alwaysStruct)
+% [...] = obj.lookup(varName/v, dim, type/returnState, indices, alwaysStruct)
 % Specify if metadata should always be returned as a structure.
 %
 % ----- Inputs -----
-%
+% 
 % varName: The name of a variable in the state vector. A string.
+%
+% v: The linear index of one of the variables in the state vector. A scalar
+%    positive integer. Variable indices use the same order of variables as
+%    returned by ensembleMetadata.variableNames.
 %
 % dim(s): The name(s) of dimensions for which to return metadata. A string
 %    vector, cellstring vector, or character row vector.
@@ -70,9 +75,19 @@ function[meta] = variable(obj, varName, dims, type, indices, alwaysStruct)
 % metaStruct: A structure containing the metadata for multiple dimensions.
 
 % Error check variable, get index
-varName = dash.assertStrFlag(varName, 'varName');
-v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
-
+if ischar(varName) || isstring(varName) || iscellstr(varName)
+    varName = dash.assertStrFlag(varName, 'varName');
+    v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+elseif isnumeric(varName)
+    v = varName;
+    nVar = numel(obj.variableNames);
+    assert(isscalar(v) && isreal(v) && v>0 && mod(v,1)==0 && v<=nVar, ...
+        sprintf('v must be a scalar integer between 1 and %.f', nVar));
+    varName = obj.variableNames(v);
+else
+    error('The first input must either be a string or linear index');
+end    
+    
 % Defaults and error check for dims. Get dimension indices and type.
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v} | obj.meanSize{v}>1);
