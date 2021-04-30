@@ -92,7 +92,7 @@ for c = 1:nCov
     
     % Get the sites, time steps, priors, and R covariance associated with each gain
     for g = 1:numel(covGains)
-        t = times(whichGain == covGains(g));
+        t = find(whichGain == covGains(g));
         s = sites(:, t(1));
         Rk = kf.Rcovariance(t(1), s);
         
