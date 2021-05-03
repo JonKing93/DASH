@@ -7,6 +7,6 @@ function[ver] = version
 %
 % ver: A version string.
 
-ver = "4.0.0-alpha-5.0.0";
+ver = "4.0.0-alpha-5.0.4";
 
 end
