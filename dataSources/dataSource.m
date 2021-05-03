@@ -174,7 +174,7 @@ classdef (Abstract) dataSource
             nDims = numel(source.unmergedDims);
             minimumDims = max( [1, find(source.unmergedSize~=1,1,'last')] );            
             if nDims < minimumDims
-                error('The first %.f dimensions of variable %s in file %s require names, but dims only contains %.f elements',minimumDims, obj.var, obj.file, numel(obj.dims) );
+                error('The first %.f dimensions of variable %s in file %s require names, but dims only contains %.f elements',minimumDims, var, file, numel(dims) );
             elseif numel(source.unmergedSize) < nDims
                 source.unmergedSize( end+1:nDims ) = 1;
             end
@@ -261,7 +261,9 @@ classdef (Abstract) dataSource
                 isdim = strcmp(obj.unmergedDims, obj.mergedDims(d));
                 order = [order(isdim), order(~isdim)];
                 isdim = find(isdim);
-                X = permute(X, order);
+                if ~isequal(order,1)
+                    X = permute(X, order);
+                end
 
                 % Reshape dimensions being merged into a single dimension. Use
                 % singletons for secondary merged dimensions to preserve dimension order
@@ -274,7 +276,9 @@ classdef (Abstract) dataSource
 
                 % Unpermute and note if any dimensions should be removed
                 [~, reorder] = sort(order);
-                X = permute( X, reorder );
+                if ~isequal(reorder, 1)
+                    X = permute( X, reorder );
+                end
 
                 k = find(isnan(remove), 1, 'first');
                 remove(k:k+nDim-2) = isdim(2:end);
@@ -292,7 +296,9 @@ classdef (Abstract) dataSource
             % Remove singletons resulting from the merge. 
             dimOrder = 1:nUnmerged;
             order = [dimOrder(~ismember(dimOrder,remove)), remove];
-            X = permute(X, order);
+            if ~isequal(order, 1)
+                X = permute(X, order);
+            end
 
             % Remove any unrequested data elements that were loaded to
             % fulfill equal spacing requirements

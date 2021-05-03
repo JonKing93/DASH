@@ -90,6 +90,12 @@ classdef matSource < dataSource
             warn = warning('query', obj.warnID);
             warning('off', obj.warnID);
             
+            % Matfile objects must have at least two indices. If there is
+            % only a single dimension, use 1 for the second index
+            if numel(indices)==1
+                indices{2} = 1;
+            end
+            
             % Load the data
             X = obj.m.(obj.var)(indices{:});
             
