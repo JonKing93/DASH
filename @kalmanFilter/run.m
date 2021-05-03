@@ -150,7 +150,7 @@ for c = 1:nCov
                 out.Amean(:,tu) = Amean;
             end
             if kf.return_devs
-                out.Adev(:, :, tu) = Adev;
+                out.Adev(:, :, tu) = repmat(Adev, [1 1 numel(tu)]);
             end
         end
         
