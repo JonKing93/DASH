@@ -1,4 +1,4 @@
-function[out] = preallocateOutput(os, N)
+function[out] = preallocateOutput(obj, N)
 %% Preallocates the output structure for an optimal sensor test
 
 % Site rankings

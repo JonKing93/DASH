@@ -24,12 +24,12 @@
 15. Final updated prior
 
 
-out.best
-out.rank
+%out.best
+%out.rank
 
-metricVar.initial
-metricVar.updated
-metricVar.final
+%metricVar.initial
+%metricVar.updated
+%metricVar.final
 
 metric.initial
 metric.updated
@@ -38,8 +38,8 @@ metric.final
 posterior.updated
 posterior.final
 
-expVar.best
-expVar.potential
+%expVar.best
+%expVar.potential
 
 estimates.updated
 estimates.final

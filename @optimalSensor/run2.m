@@ -33,6 +33,7 @@ sites = (1:obj.nSite)';
 % Initialize metric
 J = obj.computeMetric(X);
 [~, Jdev] = dash.decompose(J);
+Jvar = unbias * sum(Jdev.^2, 2);
 
 % Initialize estimate deviations
 if obj.hasPSMs
@@ -42,9 +43,8 @@ end
 [~, Ydev] = dash.decompose(obj.Ye);
 
 % Record initial value output
-if os.return_metric.initial
-    out.metric.initial = J;
-end
+out.metric.initial = J;
+out.metricVar.initial = Jvar;
 
 % For each new sensor, get the relative change in variance for each site
 for s = 1:N
@@ -73,6 +73,7 @@ for s = 1:N
     % Update the new metric
     J = obj.computeMetric(X);
     [~, Jdev] = dash.decompose(J);
+    Jvar = unbias * sum(Jdev.^2, 2);
     
     % Remove the best site from future consideration
     sites(best) = [];
@@ -102,15 +103,24 @@ for s = 1:N
     out.rank(allSites, s) = rank;
     out.expVar.best(s) = deltaVar(best);
     out.expVar.potential(allSites,s) = deltaVar;
-    if os.return_metric.updated
-        out.metric.updated(s,:) = J;
-    end
+    out.metricVar.updated(s) = Jvar;
+    out.metric.updated(s,:) = J;
 end
 
 % Record final output values
-if os.return_metric.final
-    out.metric.final = J;
-end
+out.metricVar.final = Jvar;
+out.metric.final = J;
+
+% Compute percent explained variances
+out.percentVar.best = 100 * out.expVar.best / out.metricVar.initial;
+out.percentVar.potential = 100 * out.expVar.potential / out.metricVar.initial;
+
+remVar = [out.metricVar.initial, out.metricVar.updated(1:end-1)];
+out.percRemVar.best = 100 * out.expVar.best ./ remVar;
+out.percRemVar.potential = 100 * out.expVar.potential ./ remVar;
+
+
+
 
 end
 
