@@ -14,6 +14,10 @@ classdef optimalSensor
         nState;
         nEns;
         nSite;
+
+        % Output options
+        return_metric = struct('initial', false, 'updated', false, 'final', false);
+        
     end
     
     % Constructor
@@ -32,6 +36,12 @@ classdef optimalSensor
         obj = psms(obj, F, R);
         obj = estimates(obj, Ye, R);
         obj = metric(obj, type, varargin);
+        [bestSites, expVar, initialVar] = run(obj, N);
+    end
+
+    % Output options
+    methods
+        obj = returnMetric(obj, fields, returnFields);
     end
     
     % Metrics

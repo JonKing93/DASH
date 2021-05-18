@@ -10,7 +10,7 @@ classdef kalmanFilter < ensembleFilter
     %
     %   variance - Enable or disable posterior ensemble variance as output
     %   percentiles - Return posterior ensemble percentiles as output
-    %   deviations - Return posterior ensemble percentiles as output
+    %   deviations - Return posterior ensemble deviations as output
     %   index - Returns the posterior for an index as output
     %   mean - Enable or disable the ensemble mean as output
     %

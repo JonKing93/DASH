@@ -29,7 +29,7 @@ if any(~inList)
     if numel(input)>1
         badName = sprintf('Element %.f in %s', bad, name);
     end
-    error('%s (%s) is not a %s. Allowed values are %s.', badName, input(bad), listName, dash.messageList(list));
+    error('%s (%s) is not a(n) %s. Allowed values are %s.', badName, input(bad), listName, dash.messageList(list));
 end
 
 end
