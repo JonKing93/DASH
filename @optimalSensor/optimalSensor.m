@@ -54,6 +54,7 @@ classdef optimalSensor
     % Object utilities
     methods
         obj = rename(obj, name);
+        out = preallocateOutput(obj, N);
     end
     methods (Static)
         checkR(R, nSite);
