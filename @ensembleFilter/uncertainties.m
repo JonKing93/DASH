@@ -61,7 +61,7 @@ whichR = obj.parseWhich(whichR, 'whichR', nR, 'R uncertainties', resetTime);
 nTime = numel(whichR);
 
 % Size checks
-if nSite~=nSite
+if nSite~=obj.nSite
     assert(isempty(obj.Y), sprintf('You previously specified observations for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
     assert(isempty(obj.Ye), sprintf('You previously specified estimates for %.f sites, but R has %.f sites (rows)', obj.nSite, nSite));
 end
