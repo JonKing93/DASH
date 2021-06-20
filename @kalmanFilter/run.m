@@ -10,7 +10,7 @@ function[out] = run(kf, showprogress, complexError)
 % output = kf.run(showprogress, complexError)
 % Specify whether to throw an error if the adjusted Kalman Gain becomes
 % complex-valued. Default is to throw an error. If disabling the error,
-% updated ensemble deviations are set to NaN is all time steps with a
+% updated ensemble deviations are set to NaN in all time steps with a
 % complex-valued adjusted gain.
 %
 % ----- Inputs -----
