@@ -13,6 +13,7 @@ function[obj] = extract(obj, varNames)
 % obj: The updated ensembleMetadata object.
 
 % Error check, variable indices
+assert(~isempty(varNames), 'varNames cannot be empty');
 v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
 
 % Get the variables to remove

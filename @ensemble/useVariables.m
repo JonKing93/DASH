@@ -23,7 +23,7 @@ if ~exist('varNames','var') || isempty(varNames)
 else
     obj.stateVector.checkVariables(varNames);
     varNames = string(varNames);
-    varNames = unique(varNames(:), 'stable');
+    varNames = unique(varNames(:));
 end
 obj.variables = varNames;
 

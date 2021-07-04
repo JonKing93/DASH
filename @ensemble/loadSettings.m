@@ -29,6 +29,9 @@ if max(members) > nEns
     notEnoughMembersError(max(members), nEns, obj.file);
 end
 
+% Return the variable indices in sorted order
+v = sort(v);
+
 end
 
 % Long error messages
