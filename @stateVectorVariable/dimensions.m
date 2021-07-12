@@ -36,7 +36,7 @@ end
 
 % Console output
 if nargout==0
-    fprintf('%simensions for variable "%s": %s\n', str, obj.name, dash.messageList(dims));
+    fprintf('%simensions for variable "%s": %s\n', str, obj.name, dash.string.messageList(dims));
 end
 
 end

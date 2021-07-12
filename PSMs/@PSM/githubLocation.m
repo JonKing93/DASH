@@ -25,10 +25,10 @@ info = [
 ];
 
 % Error check the psm name
-psmName = dash.assertStrFlag(psmName);
+psmName = dash.assert.strflag(psmName);
 p = strcmpi(psmName, info(:,1));
 if ~any(p)
-    error('Unrecognized PSM name. Allowed options are %s.', dash.messageList(info(:,1)));
+    error('Unrecognized PSM name. Allowed options are %s.', dash.string.messageList(info(:,1)));
 end
 
 % Return the repo and commit

@@ -113,7 +113,7 @@ classdef baysparPSM < PSM
             if ~exist('options','var') || isempty(options)
                 options = {};
             else
-                dash.assertVectorTypeN(options, 'cell', [], 'options');
+                dash.assert.vectorTypeN(options, 'cell', [], 'options');
                 assert(numel(options)<=3, 'options cannot have more than 3 elements');
             end
             

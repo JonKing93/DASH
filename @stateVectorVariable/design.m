@@ -51,7 +51,7 @@ function[obj] = design(obj, dims, type, indices)
 nDims = numel(d);
 
 % Parse, error check the dimension type. Save
-isState = dash.parseLogicalString(type, nDims, 'isState', 'type', ...
+isState = dash.parse.logicalOrString(type, nDims, 'isState', 'type', ...
                    ["state","s","ensemble","ens","e"], 2, 'The dimension type');
 obj.isState(d) = isState;
                
@@ -59,7 +59,7 @@ obj.isState(d) = isState;
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indexCell');
 name = 'stateIndices';
 if ~wasCell && ~isState
     name = 'ensIndices';
@@ -74,7 +74,7 @@ for k = 1:nDims
         name = sprintf('Element %.f of indexCell', k);
     end
     lengthName = sprintf('the length of the %s dimension', obj.dims(d(k)));
-    indices{k} = dash.checkIndices(indices{k}, name, obj.gridSize(d(k)), lengthName);
+    indices{k} = dash.assert.indices(indices{k}, name, obj.gridSize(d(k)), lengthName);
     
     % State dimension
     if obj.isState(d(k))

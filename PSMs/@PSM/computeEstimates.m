@@ -32,7 +32,7 @@ function[Ye, R] = computeEstimates(X, F, throwError)
 if ~exist('throwError','var') || isempty(throwError)
     throwError = false;
 end
-dash.assertScalarType(throwError, 'throwError', 'logical', 'logical');
+dash.assert.scalarType(throwError, 'throwError', 'logical', 'logical');
  
 % Sizes
 nSite = numel(F);
@@ -78,7 +78,7 @@ for s = 1:nSite
                 [Yrun, Rrun] = psm.runPSM(Xrun);
                 ranPSM(p) = true;
                 Rname = sprintf('R estimates for %s for prior %.f', psm.messageName(s), p);
-                dash.assertVectorTypeN(Rrun, 'numeric', nEns, Rname);
+                dash.assert.vectorTypeN(Rrun, 'numeric', nEns, Rname);
                 assert(isrow(Rrun), sprintf('%s must be a row vector', Rname));
             catch ME
                 Rfailed(p) = true;
@@ -108,7 +108,7 @@ for s = 1:nSite
         if ranPSM(p)
             try
                 Yname = sprintf("Y estimates for %s for prior %.f", psm.messageName(s), p);
-                dash.assertVectorTypeN(Yrun, 'numeric', nEns, Yname);
+                dash.assert.vectorTypeN(Yrun, 'numeric', nEns, Yname);
                 assert(isrow(Yrun), sprintf('%s must be a row vector', Yname));
             catch ME
                 psmFailed(p) = true;
@@ -133,7 +133,7 @@ for s = 1:nSite
     if any(psmFailed)
         whichPrior = '';
         if ~all(psmFailed)
-            whichPrior = sprintf(' for prior(s) %s', dash.messageList(find(psmFailed)));
+            whichPrior = sprintf(' for prior(s) %s', dash.string.messageList(find(psmFailed)));
         end
         warning('%s failed to run%s', psm.messageName(s), whichPrior);
     end
@@ -143,7 +143,7 @@ for s = 1:nSite
     if nargout>1 && psm.estimatesR && any(Rfailed)
         whichPrior = '';
         if ~all(Rfailed)
-            whichPrior = sprintf(' for prior(s) %s', dash.messageList(find(Rfailed)));
+            whichPrior = sprintf(' for prior(s) %s', dash.string.messageList(find(Rfailed)));
         end
         warning('%s failed to estimate R values%s', psm.messageName(s), whichPrior);
     end

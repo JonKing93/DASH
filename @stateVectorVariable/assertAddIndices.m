@@ -11,7 +11,7 @@ function[] = assertAddIndices(obj, indices, d, name)
 %
 % name: The name of the input. A string.
 
-dash.assertVectorTypeN(indices, 'numeric', [], 'indices');
+dash.assert.vectorTypeN(indices, 'numeric', [], 'indices');
 if any(mod(indices,1)~=0)
     error('%s must be a vector of integers.', name);
 elseif any(abs(indices)>obj.gridSize(d))

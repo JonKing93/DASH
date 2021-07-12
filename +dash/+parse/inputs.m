@@ -21,10 +21,10 @@ function[varargout] = inputs( inArgs, flags, defaults, nPrev )
 
 % Error check the inputs
 if ~isempty(inArgs)
-    dash.assertVectorTypeN(inArgs, 'cell', [], 'inArgs');
+    dash.assert.vectorTypeN(inArgs, 'cell', [], 'inArgs');
 end
-dash.assertStrList(flags, "flags");
-dash.assertVectorTypeN(defaults, 'cell', [], 'defaults');
+dash.assert.strlist(flags, "flags");
+dash.assert.vectorTypeN(defaults, 'cell', [], 'defaults');
 
 flags = string(flags);
 nFlags = numel(flags);
@@ -46,8 +46,8 @@ if ~isempty(inArgs)
     % Check that the input flags are strings and recognized.
     for k = 1:2:numel(inArgs)
         name = sprintf('Input %.f', k+nPrev);
-        dash.assertStrFlag( inArgs{k}, name );
-        f = dash.checkStrsInList( inArgs{k}, flags, name, 'recognized flag');
+        dash.assert.strflag( inArgs{k}, name );
+        f = dash.assert.strsInList( inArgs{k}, flags, name, 'recognized flag');
         
         % Prevent duplicates
         if setValue(f)

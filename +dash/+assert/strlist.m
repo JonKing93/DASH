@@ -16,7 +16,7 @@ function[input] = strlist(input, name)
 %
 % input: The input as a string data type.
 
-if ~dash.isstrlist(input)
+if ~dash.string.islist(input)
     error('%s must be a string vector or cellstring vector.', name);
 end
 input = string(input);

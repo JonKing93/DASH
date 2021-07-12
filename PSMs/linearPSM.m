@@ -147,8 +147,8 @@ classdef linearPSM < PSM
             % intercept: The intercept to use in the linear equation.
 
             % Error check the slopes
-            dash.assertVectorTypeN(slopes, 'numeric', [], 'slopes');
-            dash.assertRealDefined(slopes, 'slopes');
+            dash.assert.vectorTypeN(slopes, 'numeric', [], 'slopes');
+            dash.assert.realDefined(slopes, 'slopes');
 
             % Propagate a single slope over all rows. Otherwise check size
             nSlopes = numel(slopes);
@@ -163,8 +163,8 @@ classdef linearPSM < PSM
             if ~exist('intercept','var') || isempty(intercept)
                 intercept = 0;
             end
-            dash.assertScalarType(intercept, 'intercept', 'numeric', 'numeric');
-            dash.assertRealDefined(intercept, 'intercept');
+            dash.assert.scalarType(intercept, 'intercept', 'numeric', 'numeric');
+            dash.assert.realDefined(intercept, 'intercept');
         end
     end
 end

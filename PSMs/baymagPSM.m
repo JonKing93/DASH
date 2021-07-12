@@ -110,7 +110,7 @@ classdef baymagPSM < PSM
             if ~exist('options','var') || isempty(options)
                 options = {};
             else
-                dash.assertVectorTypeN(options, 'cell', [], 'options');
+                dash.assert.vectorTypeN(options, 'cell', [], 'options');
                 assert(numel(options)<=4, 'options cannot have more than 4 elements.');
             end
             

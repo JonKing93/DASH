@@ -80,7 +80,7 @@ classdef prysmIcecore < PSM
             
             % Error check, set model inputs
             if exist('altitudeDifference','var') || isempty(altitudeDifference)
-                dash.assertScalarType(altitudeDifference, altitudeDifference, 'numeric', 'numeric');
+                dash.assert.scalarType(altitudeDifference, altitudeDifference, 'numeric', 'numeric');
                 obj.altitudeDifference = altitudeDifference;
             end
         end

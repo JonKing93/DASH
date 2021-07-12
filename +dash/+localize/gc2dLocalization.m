@@ -40,19 +40,19 @@ end
 % Error check the coordinates
 assert(isnumeric(ensCoords), 'ensCoords must be numeric');
 assert(isnumeric(siteCoords), 'siteCoords must be numeric');
-dash.assertRealDefined(ensCoords, 'ensCoords', true, true);
-dash.assertRealDefined(siteCoords, 'siteCoords', true, true);
+dash.assert.realDefined(ensCoords, 'ensCoords', true, true);
+dash.assert.realDefined(siteCoords, 'siteCoords', true, true);
 assert(ismatrix(ensCoords), 'ensCoords must be a matrix');
 assert(ismatrix(siteCoords), 'siteCoords must be a matrix');
 assert(size(ensCoords,2)==2, 'ensCoords must have 2 columns');
 assert(size(siteCoords,2)==2, 'siteCoords must have 2 columns');
 
 % Get the distances
-wdist = dash.haversine(ensCoords, siteCoords);
-ydist = dash.haversine(siteCoords);
+wdist = dash.distance.haversine(ensCoords, siteCoords);
+ydist = dash.distance.haversine(siteCoords);
 
 % Apply the Gaspari-Cohn polynomial
-wloc = dash.gaspariCohn2D(wdist, R, scale);
-yloc = dash.gaspariCohn2D(ydist, R, scale);
+wloc = dash.localize.gaspariCohn2D(wdist, R, scale);
+yloc = dash.localize.gaspariCohn2D(ydist, R, scale);
 
 end

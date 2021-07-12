@@ -16,7 +16,7 @@ function[k] = strsInList(input, list, name, listName )
 % listName: Name of the list. A string
 
 % Check the input is a string list
-dash.assertStrList(input, name);
+dash.assert.strlist(input, name);
 input = string(input);
 
 % Check all strings are allowed. Get their indices in the list.
@@ -29,7 +29,7 @@ if any(~inList)
     if numel(input)>1
         badName = sprintf('Element %.f in %s', bad, name);
     end
-    error('%s (%s) is not a(n) %s. Allowed values are %s.', badName, input(bad), listName, dash.messageList(list));
+    error('%s (%s) is not a(n) %s. Allowed values are %s.', badName, input(bad), listName, dash.string.messageList(list));
 end
 
 end

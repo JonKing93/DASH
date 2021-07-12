@@ -25,9 +25,9 @@ function[closest] = closestLatLon(coords, lats, lons)
 assert(isnumeric(coords)&&ismatrix(coords)&&size(coords,2)==2, 'coords must be a numeric matrix with 2 columns');
 assert(isnumeric(lats)&&isvector(lats), 'lats must be a numeric vector');
 assert(isnumeric(lons)&&isvector(lons), 'lons must be a numeric vector');
-dash.assertRealDefined(coords, 'coords');
-dash.assertRealDefined(lats, 'lats');
-dash.assertRealDefined(lons, 'lons');
+dash.assert.realDefined(coords, 'coords');
+dash.assert.realDefined(lats, 'lats');
+dash.assert.realDefined(lons, 'lons');
 assert(all(abs(lats)<=90), 'The elements of "lats" must be between -90 and 90');
 assert(all(abs(coords(:,1))<=90), 'The latitude points in the first column of "coords" must be between -90 and 90');
 
@@ -39,7 +39,7 @@ lons = repmat(lons(:) , [1, nLat]);
 latlon = [lats(:), lons(:)];
 
 % Use haversine to find the closest point to each coordinate
-dist = dash.haversine(coords, latlon);
+dist = dash.distance.haversine(coords, latlon);
 [~, closest] = min(dist, [], 2);
 closest = latlon(closest, :);
 

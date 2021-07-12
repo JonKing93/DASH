@@ -91,16 +91,16 @@ classdef prysmSpeleothem < PSM
             assert(isscalar(timeStep) && timeStep>0, 'timeStep must be a positive scalar');
             obj.timeStep = timeStep;
             if exist('model','var') && ~isempty(model)
-                dash.assertStrFlag(model);
+                dash.assert.strflag(model);
                 assert(any(strcmp(model, ["Well-Mixed","Adv-Disp"])), 'model can either be "Well-Mixed" or "Adv-Disp"');
                 obj.model = model;
             end
             if exist('tau0', 'var') && ~isempty(tau0)
-                dash.assertScalarType(tau0, 'tau0', 'numeric', 'numeric');
+                dash.assert.scalarType(tau0, 'tau0', 'numeric', 'numeric');
                 obj.tau0 = tau0;
             end
             if exist('Pe', 'var') && ~isempty(Pe)
-                dash.assertScalarType(Pe, 'Pe', 'numeric', 'numeric');
+                dash.assert.scalarType(Pe, 'Pe', 'numeric', 'numeric');
                 obj.Pe = Pe;
             end
             if exist('timeStep','var') && ~isempty(timeStep)

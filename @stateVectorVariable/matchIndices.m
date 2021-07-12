@@ -17,7 +17,7 @@ function[obj] = matchIndices(obj, meta, grid, dim)
 
 % Get the variable's metadata. Find the metadata intersect
 varMeta = obj.dimMetadata(grid, dim);
-if dash.bothNaN(meta, varMeta)
+if dash.misc.bothNaN(meta, varMeta)
     keep = 1;
 else
     [~, keep] = intersect(varMeta, meta, 'rows', 'stable');

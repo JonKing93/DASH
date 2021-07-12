@@ -20,7 +20,7 @@ function[input, wasCell] = inputOrCell(input, nDims, name)
 % wasCell: Scalar logical. Whether the input was a cell or not
 
 if nDims>1 || iscell(input)
-    dash.assertVectorTypeN(input, 'cell', nDims, name);
+    dash.assert.vectorTypeN(input, 'cell', nDims, name);
     wasCell = true;
 else
     input = {input};

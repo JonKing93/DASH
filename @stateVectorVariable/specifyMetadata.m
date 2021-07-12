@@ -24,7 +24,7 @@ if any(obj.convert(d))
 end
 
 % Check the metadata is an allowed gridfile type. Convert cellstrings
-metadata = dash.checkMetadataField(metadata, dim);
+metadata = dash.assert.metadataField(metadata, dim);
 
 % Check the rows match the number of reference indices
 if size(metadata,1) ~= obj.ensSize(d)

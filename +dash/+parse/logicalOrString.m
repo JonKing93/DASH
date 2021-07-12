@@ -35,16 +35,16 @@ end
 % Logical
 if islogical(input)
     if ~isscalar(input)
-        dash.assertVectorTypeN(input, [], nDims, sprintf('Since %s is not a scalar, it', logicalName));
+        dash.assert.vectorTypeN(input, [], nDims, sprintf('Since %s is not a scalar, it', logicalName));
     end
     
 % Strings
 elseif ischar(input) || isstring(input) || iscellstr(input)
     input = string(input);
     if ~isscalar(input)
-        dash.assertVectorTypeN(input, [], nDims, sprintf('Since %s is not a string scalar, it', stringName));
+        dash.assert.vectorTypeN(input, [], nDims, sprintf('Since %s is not a string scalar, it', stringName));
     end
-    k = dash.checkStrsInList(input, allowedStrings, stringName, 'recognized flag');
+    k = dash.assert.strsInList(input, allowedStrings, stringName, 'recognized flag');
     input = k<=lastTrue;
     
 % Anything else

@@ -50,7 +50,7 @@ classdef prysmCoral < PSM
             % B coefficients
             b = prysmCoral.b_default;
             if exist('bcoeffs','var') && ~isempty(bcoeffs)
-                dash.assertVectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
+                dash.assert.vectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
                 assert(numel(bcoeffs)<=5, 'bcoeffs cannot have more than 5 elements');
                 for k = 1:numel(bcoeffs)
                     if ~isnan(bcoeffs(k))
@@ -110,20 +110,20 @@ classdef prysmCoral < PSM
             obj = obj.useRows(rows, 2);
             
             % Model inputs
-            dash.assertScalarType(useSSS, 'useSSS', 'logical', 'logical');
+            dash.assert.scalarType(useSSS, 'useSSS', 'logical', 'logical');
             obj.useSSS = useSSS;
-            dash.assertScalarType(lat,'lat','numeric','numeric');
+            dash.assert.scalarType(lat,'lat','numeric','numeric');
             obj.lat = lat;
-            dash.assertScalarType(lon,'lon','numeric','numeric');
+            dash.assert.scalarType(lon,'lon','numeric','numeric');
             obj.lon = lon;
-            dash.assertStrFlag(species, 'species');
+            dash.assert.strFlag(species, 'species');
             allowed = ["Default","Porites_sp","Porites_lob","Porites_lut","Porites_aus","Montast","Diploas"];
-            dash.checkStrsInList(species, allowed, 'species', 'species name');
+            dash.assert.strsInList(species, allowed, 'species', 'species name');
             obj.species = species;
             
             % b coefficients
             if exist('bcoeffs','var') && ~isempty(bcoeffs)
-                dash.assertVectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
+                dash.assert.vectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
                 assert(numel(bcoeffs)<=5, 'bcoeffs cannot have more than 5 elements');
                 for k = 1:numel(bcoeffs)
                     if ~isnan(bcoeffs(k))

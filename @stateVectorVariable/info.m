@@ -37,7 +37,7 @@ if nargout~=0
     nDims = numel(dims);
     dimFields = {'name','type','stateLength','ensembleMembers','indices',...
         'sequence','hasMean','meanIndices','weights'};
-    [dimInfo, dimInputs] = dash.preallocateStructs(dimFields, [nDims, 1]);
+    [dimInfo, dimInputs] = dash.struct.preallocate(dimFields, [nDims, 1]);
 
 % Print to console
 else
@@ -99,7 +99,7 @@ for k = 1:numel(alldims)
         % State dimension header
         if strcmp(type,'state')
             if d==sd(1)
-                fprintf('\n\tSTATE DIMENSIONS: %s\n', dash.messageList(stateDims));
+                fprintf('\n\tSTATE DIMENSIONS: %s\n', dash.string.messageList(stateDims));
             end
             fprintf('\t%s has a length of %.f in the state vector.\n', name, stateSize);
 
@@ -132,7 +132,7 @@ for k = 1:numel(alldims)
         % Ensemble dimension header
         else
             if d==ed(1)
-                fprintf('\n\tENSEMBLE DIMENSIONS: %s\n', dash.messageList(ensDims));
+                fprintf('\n\tENSEMBLE DIMENSIONS: %s\n', dash.string.messageList(ensDims));
             end
             fprintf('\t%s has %.f elements that can be used in an ensemble.\n', name, numel(indices));
             
@@ -145,7 +145,7 @@ for k = 1:numel(alldims)
                 if isequal(abs(sequence), 1)
                     strs(2) = "index";
                 end
-                list = dash.messageList(sequence);
+                list = dash.string.messageList(sequence);
                 fprintf('\t\tIt has a length of %.f in the state vector.\n', stateSize);
                 fprintf('\t\tIt uses %s %s %s after each reference element.\n', strs(1), list, strs(2));
             end
@@ -163,7 +163,7 @@ for k = 1:numel(alldims)
                 if isequal(abs(meanIndices),1)
                     strs(2) = "index";
                 end
-                list = dash.messageList(meanIndices);
+                list = dash.string.messageList(meanIndices);
                 fprintf('\t\tIt takes a %s mean over the data %s %s %s after each sequence element.\n', weighted, strs(1), list, strs(2));
             end
         end

@@ -67,7 +67,7 @@ classdef (Abstract) PSM
             %
             % obj: The renamed PSM
             
-            obj.name = dash.assertStrFlag(name, 'name');
+            obj.name = dash.assert.strflag(name, 'name');
         end
         
         % Return name for error messages
@@ -141,8 +141,8 @@ classdef (Abstract) PSM
             
             % Error check numeric indices
             if isnumeric(rows)
-                dash.assertRealDefined(rows, 'rows');
-                dash.assertPositiveIntegers(rows, 'rows');
+                dash.assert.realDefined(rows, 'rows');
+                dash.assert.positiveIntegers(rows, 'rows');
                 
             % Error check logical indices
             else
@@ -180,7 +180,7 @@ classdef (Abstract) PSM
             %
             % obj: The updated PSM object
             
-            dash.assertScalarType(tf, 'tf', 'logical', 'logical');
+            dash.assert.scalarType(tf, 'tf', 'logical', 'logical');
             obj.estimatesR = tf;
         end
     end

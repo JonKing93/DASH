@@ -30,21 +30,21 @@ function[Y] = gaspariCohn2D(X, R, scale)
 % Set defaults
 if ~exist('scale','var') || isempty(scale)
     scale = 0.5;
-elseif dash.isstrflag(scale) && strcmp(scale, 'optimal')
+elseif dash.string.isflag(scale) && strcmp(scale, 'optimal')
     scale = sqrt(10/3);
 end
 
 % Error check
-dash.assertScalarType(R, 'R', 'numeric', 'numeric');
-dash.assertRealDefined(R, 'R', false, true);
+dash.assert.scalarType(R, 'R', 'numeric', 'numeric');
+dash.assert.realDefined(R, 'R', false, true);
 assert(R>0, 'R must be positive');
 
-dash.assertScalarType(scale, 'scale', 'numeric', 'numeric');
-dash.assertRealDefined(scale, 'scale');
+dash.assert.scalarType(scale, 'scale', 'numeric', 'numeric');
+dash.assert.realDefined(scale, 'scale');
 assert(scale>=0&scale<=0.5, 'scale must be on the interval [0 0.5]');
 
 assert(isnumeric(X), 'dist must be numeric');
-dash.assertRealDefined(X, 'dist', true, true);
+dash.assert.realDefined(X, 'dist', true, true);
 assert(~any(X(:)<0), 'dist cannot have negative elements');
 
 % Get the length scale and localization radius

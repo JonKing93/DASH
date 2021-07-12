@@ -37,7 +37,7 @@ if iscellstr(meta) %#ok<ISCLSTR>
 end
 
 % Check there are no duplicate rows. 
-if dash.hasDuplicateRows(meta)
+if dash.misc.hasDuplicateRows(meta)
     error('The %s metadata contains duplicate rows.', dim);
 end
 

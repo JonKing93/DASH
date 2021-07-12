@@ -12,8 +12,8 @@ function[] = convertToV7_3( filename )
 %    the file extension.
 
 % Error check
-dash.assertStrFlag(filename, 'filename');
-filename = dash.checkFileExists(filename);
+dash.assert.strflag(filename, 'filename');
+filename = dash.assert.fileExists(filename);
 
 % Going to resave data into a temp file and then rename it. Get the temp 
 % file name. Ensure no pre-existing temp files are overwritten

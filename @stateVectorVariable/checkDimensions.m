@@ -32,7 +32,7 @@ if ~isempty(dims)
     % Check the dimensions are in the variable and get their index.
     % Optionally check for a single input
     listName = sprintf('dimension in the .grid file for the %s variable', obj.name);
-    d = dash.checkStrsInList(dims, obj.dims, 'dims', listName);
+    d = dash.assert.strsInList(dims, obj.dims, 'dims', listName);
     if ~allowMultiple && numel(d)>1
         error('dim can only list one dimension. It should be a string scalar or character row vector.');
     end

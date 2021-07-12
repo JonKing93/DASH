@@ -49,7 +49,7 @@ end
 if ~exist('functionArgs','var') || isempty(functionArgs)
     functionArgs = {};
 else
-    dash.assertVectorTypeN(functionArgs, 'cell', [], 'functionArgs');
+    dash.assert.vectorTypeN(functionArgs, 'cell', [], 'functionArgs');
 end
 
 % Update

@@ -38,7 +38,7 @@ if ~isequal(indices, [])
 
     % Numeric indices
     elseif isnumeric(indices)
-        dash.assertPositiveIntegers(indices, name);
+        dash.assert.positiveIntegers(indices, name);
         if max(indices) > length
             error('%s has elements larger than %s (%.f).', name, lengthName, length);
         end

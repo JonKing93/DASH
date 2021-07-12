@@ -53,8 +53,8 @@ classdef (Abstract) dataSource
             %    additive constant (b).
             
             % Error check strings, vectors.
-            source = dash.assertStrFlag(source, sourceName);
-            dims = dash.assertStrList(dims, "dims");
+            source = dash.assert.strflag(source, sourceName);
+            dims = dash.assert.strlist(dims, "dims");
             
             % Error check the post-processing values
             if ~isnumeric(fill) || ~isscalar(fill)
@@ -81,11 +81,11 @@ classdef (Abstract) dataSource
         end    
         function[obj] = checkFile(obj)
             %% Checks the data source is a file that exists
-            obj.source = dash.checkFileExists(obj.source);
+            obj.source = dash.assert.fileExists(obj.source);
         end
         function[obj] = setVariable(obj, var)
             %% For hdf data sources, sets the variable name
-            obj.var = dash.assertStrFlag(var, 'var');
+            obj.var = dash.assert.strflag(var, 'var');
         end
         function[] = checkVariableInSource(obj, sourceVariables)
             %% Checks that a variable is in a data source
@@ -135,7 +135,7 @@ classdef (Abstract) dataSource
             %    additive constant (b).
             
             % Error check type
-            type = dash.assertStrFlag(type, 'type');
+            type = dash.assert.strflag(type, 'type');
             
             % Set defaults for optional values
             if ~exist('fill','var') || isempty(fill)
@@ -236,7 +236,7 @@ classdef (Abstract) dataSource
             % (This may eventually be merged into hdfSource).
             for d = 1:nUnmerged
                 uniqueIndices = unique(sort(unmergedIndices{d}));
-                loadIndices{d} = dash.equallySpacedIndices(uniqueIndices);
+                loadIndices{d} = dash.indices.equallySpaced(uniqueIndices);
                 loadSize(d) = numel(loadIndices{d});
 
                 % Determine the location of requested data elements in the loaded data

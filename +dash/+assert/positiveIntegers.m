@@ -34,7 +34,7 @@ if ~isnumeric(input)
 end
 
 % Process NaN and Inf
-dash.assertRealDefined(input, name, allowNaN, allowInf);
+dash.assert.realDefined(input, name, allowNaN, allowInf);
 input(isnan(input)) = 1;
 input(isinf(input)) = 1;
 

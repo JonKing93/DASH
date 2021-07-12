@@ -32,15 +32,15 @@ function[wloc, yloc] = localizationWeights(type, varargin)
 %    sites. A symmetric numeric matrix.
 
 % Error check the type
-dash.assertStrFlag(type, 'The first input');
+dash.assert.strflag(type, 'The first input');
 allowedTypes = "gc2d";
 assert( any(strcmpi(type, allowedTypes)), ...
     sprintf(['The first input must be a recognized localization scheme. ',...
-    'Recognized types are: %s.'], dash.messageList(allowedTypes)) );
+    'Recognized types are: %s.'], dash.string.messageList(allowedTypes)) );
 
 % Switch to the appropriate localization scheme
 if strcmpi(type, 'gc2d')
-    [wloc, yloc] = dash.gc2dLocalization(varargin{:});
+    [wloc, yloc] = dash.localize.gc2dLocalization(varargin{:});
 end
 
 end

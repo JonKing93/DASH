@@ -76,9 +76,9 @@ classdef stateVectorVariable
             if nargin>0
                 
                 % Error check
-                varName = dash.assertStrFlag(varName, 'varName');
-                file = dash.assertStrFlag(file, 'file');
-                file = dash.checkFileExists(file);
+                varName = dash.assert.strflag(varName, 'varName');
+                file = dash.assert.strflag(file, 'file');
+                file = dash.assert.fileExists(file);
 
                 % Name. Use string internally
                 obj.name = string(varName);

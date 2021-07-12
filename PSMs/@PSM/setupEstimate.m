@@ -15,13 +15,13 @@ function[F] = setupEstimate(X, F)
 
 % Error check the ensemble and get sizes
 assert(isnumeric(X), 'X must be numeric');
-dash.assertRealDefined(X, 'X');
+dash.assert.realDefined(X, 'X');
 assert(ndims(X)<=3, 'X cannot have more than 3 dimensions');
 [nState, nEns, nPrior] = size(X);
 
 % Parse the PSM vector
 nSite = numel(F);
-[F, wasCell] = dash.parseInputCell(F, nSite, 'F');
+[F, wasCell] = dash.parse.inputOrCell(F, nSite, 'F');
 name = "F";
 
 % Error check the individual PSMs
@@ -30,7 +30,7 @@ for s = 1:nSite
     if wasCell
         name = sprintf('Element %.f of F', s);
     end
-    dash.assertScalarType(psm, name, 'PSM', 'PSM');
+    dash.assert.scalarType(psm, name, 'PSM', 'PSM');
 
     % Check the PSM rows match ensemble sizes
     name = psm.messageName(s);

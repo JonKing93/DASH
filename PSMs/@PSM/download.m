@@ -28,7 +28,7 @@ if ~exist('path','var') || isempty(path)
     userPath = false;
 else
     userPath = true;
-    path = dash.assertStrFlag(path);
+    path = dash.assert.strflag(path);
 end
 
 % Get the Github repository for the PSM

@@ -44,8 +44,8 @@ end
 nDims = numel(d);
 
 % Parse indices and metadata. Error check cell vectors
-[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
-metadata = dash.parseInputCell(metadata, nDims, 'metadataCell');
+[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indexCell');
+metadata = dash.parse.inputOrCell(metadata, nDims, 'metadataCell');
 
 % Error check indices for each dimension
 name = 'indices';
@@ -56,7 +56,7 @@ for k = 1:nDims
     obj.assertAddIndices(indices{k}, d(k), name);
     
     % Check metadata is allowed type. Convert cellstring to string
-    metadata{k} = dash.checkMetadataField(metadata{k}, dims(k));
+    metadata{k} = dash.assert.metadataField(metadata{k}, dims(k));
     
     % Metadata rows
     if size(metadata{k},1)~=numel(indices{k})

@@ -96,20 +96,20 @@ classdef prysmCellulose < PSM
             obj = obj.useRows(rows, 3);
             
             % Error check model inputs
-            dash.assertScalarType(d18Os, 'd18Os', 'numeric', 'numeric');
-            dash.assertScalarType(d18Op, 'd18Op', 'numeric', 'numeric');
-            dash.assertScalarType(d18Ov, 'd18Ov', 'numeric', 'numeric');
+            dash.assert.scalarType(d18Os, 'd18Os', 'numeric', 'numeric');
+            dash.assert.scalarType(d18Op, 'd18Op', 'numeric', 'numeric');
+            dash.assert.scalarType(d18Ov, 'd18Ov', 'numeric', 'numeric');
             obj.d18Os = d18Os;
             obj.d18Op = d18Op;
             obj.d18Ov = d18Ov;
             
-            dash.assertStrFlag(model);
+            dash.assert.strflag(model);
             if exist('model','var') && ~isempty(model)
-               dash.checkStrsInList(model, ["Roden","Evans"], 'model', 'model name');
+               dash.assert.strsInList(model, ["Roden","Evans"], 'model', 'model name');
                obj.model = model;
             end
             if exist('useIsotopes','var') && ~isempty(useIsotopes)
-                dash.assertScalarType(useIsotopes, 'useIsotopes', 'logical', 'logical');
+                dash.assert.scalarType(useIsotopes, 'useIsotopes', 'logical', 'logical');
                 obj.useIsotopes = useIsotopes;
             end
         end

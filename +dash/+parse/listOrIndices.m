@@ -23,10 +23,10 @@ function[index] = listOrIndices(input, strName, indexName, list, listName, lengt
 % index: Linear indices. If string inputs were provided, the indices of the
 %    inputs in the list.
 
-if dash.isstrlist(input)
-    index = dash.checkStrsInList(input, list, strName, listName);
+if dash.string.islist(input)
+    index = dash.assert.strsInList(input, list, strName, listName);
 elseif isnumeric(input) || islogical(input)
-    index = dash.checkIndices(input, indexName, numel(list), lengthName);
+    index = dash.assert.indices(input, indexName, numel(list), lengthName);
 else
     error('Input %.f must either be a list of %s, or a set of indices.', inputNumber, eltNames);
 end

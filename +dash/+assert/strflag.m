@@ -16,7 +16,7 @@ function[input] = strflag( input, name )
 %
 % input: The input as a string data type.
 
-if ~dash.isstrflag(input)
+if ~dash.string.isflag(input)
     error('%s must be a string scalar or character row vector.',name);
 end
 input = string(input);

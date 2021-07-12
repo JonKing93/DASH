@@ -44,7 +44,7 @@ obj.hasWeights(d) = true;
 
 % Error check weightArray
 if nDims>1 && isnumeric(weights)
-    dash.assertRealDefined(weights, 'weightArray');
+    dash.assert.realDefined(weights, 'weightArray');
     
     % Check there are no more than nDims non-singleton dimensions
     siz = size(weights);
@@ -62,7 +62,7 @@ if nDims>1 && isnumeric(weights)
     end
     
     % Permute to match internal order. Break into weightCell. Save
-    weights = dash.permuteDimensions(weights, d, false, numel(obj.dims));
+    weights = dash.misc.permuteDimensions(weights, d, false, numel(obj.dims));
     for k = 1:nDims
         weightVector = sum(weights, d([1:k-1,k+1:end]));
         obj.weightCell{d(k)} = weightVector(:);
@@ -70,7 +70,7 @@ if nDims>1 && isnumeric(weights)
     
 % Parse and error check weightCell
 else
-    [weights, wasCell] = dash.parseInputCell(weights, nDims, 'weightCell');
+    [weights, wasCell] = dash.parse.inputOrCell(weights, nDims, 'weightCell');
     name = 'weights';
 
     % If weights is empty, this is an unweighted mean
@@ -83,8 +83,8 @@ else
             if wasCell
                 name = sprintf('Element %.f of weightCell', k);
             end
-            dash.assertVectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
-            dash.assertRealDefined(weights{k}, name);
+            dash.assert.vectorTypeN(weights{k}, 'numeric', obj.meanSize(d(k)), name);
+            dash.assert.realDefined(weights{k}, name);
             obj.weightCell{d(k)} = weights{k}(:);
         end
     end
