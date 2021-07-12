@@ -10,7 +10,7 @@ DASH is written in an object-oriented style. If you are unfamiliar with object o
 
 DASH includes several modules to help design and build state vector ensembles.
 
-* To organize and catalogue climate data, check out the [gridfile tutorial](gridfile)
+* To organize and catalogue climate data, check out the [gridfile tutorial](Tutorials/gridfile)
 * To design a state vector, see the [stateVector tutorial](stateVector)
 * To save and load state vector ensembles from file, see the [ensemble tutorial](ensemble)
 * To find metadata for elements of a state vector ensemble, see the [ensembleMetadata tutorial](ensembleMetadata).
