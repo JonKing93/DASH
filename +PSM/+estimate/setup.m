@@ -30,7 +30,7 @@ for s = 1:nSite
     if wasCell
         name = sprintf('Element %.f of F', s);
     end
-    dash.assert.scalarType(currentPSM, name, 'PSM', 'PSM');
+    dash.assert.scalarType(currentPSM, name, 'PSM.Interface', 'PSM');
 
     % Check the PSM rows match ensemble sizes
     name = currentPSM.messageName(s);
