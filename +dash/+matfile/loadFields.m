@@ -1,4 +1,4 @@
-function[s] = loadMatfileFields(file, matFields, extName)
+function[s] = loadFields(file, matFields, extName)
 %% Checks that a file is a .mat formatted file with required fields.
 % Returns a structure (not a matfile) with the fields.
 %

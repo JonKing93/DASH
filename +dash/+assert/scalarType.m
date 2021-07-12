@@ -1,4 +1,4 @@
-function[] = assertScalarType(input, name, type, typeName)
+function[] = scalarType(input, name, type, typeName)
 %% Checks that an input is a scalar of a particular class. Throws a custom
 % error message if not.
 %

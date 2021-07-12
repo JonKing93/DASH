@@ -1,4 +1,4 @@
-function[s, inputs] = preallocateStructs( fields, siz )
+function[s, inputs] = preallocate( fields, siz )
 %% Preallocates a struct array. Fills all fields with empty arrays.
 %
 % [s, inputs] = dash.preallocateStruct(fields, siz)

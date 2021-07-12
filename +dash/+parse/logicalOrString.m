@@ -1,4 +1,4 @@
-function[input] = parseLogicalString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name)
+function[input] = logicalOrString(input, nDims, logicalName, stringName, allowedStrings, lastTrue, name)
 %% Parses inputs that can either be a logical or string. Returns the input
 % as a logical. Throws custom error messages.
 %

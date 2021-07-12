@@ -1,4 +1,4 @@
-function[input, wasCell] = parseInputCell(input, nDims, name)
+function[input, wasCell] = inputOrCell(input, nDims, name)
 %% Parses inputs that may either be an input, or a cell vector of inputs.
 % Returns the input as a cell. Throws a custom error message if cell
 % vectors are incorrect.

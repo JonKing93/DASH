@@ -1,4 +1,4 @@
-function[tf] = isstrlist( input )
+function[tf] = islist( input )
 %% Tests if an input is a string vector, cellstring vector, or character
 % row vector.
 %

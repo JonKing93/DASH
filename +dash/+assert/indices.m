@@ -1,4 +1,4 @@
-function[indices] = checkIndices( indices, name, length, lengthName )
+function[indices] = indices( indices, name, length, lengthName )
 %% Checks that an input is a set of indices. Indices may be a logical
 % vector the length of a dimension, or a vector of linear indices. Linear
 % indices may not exceed the dimension length. Returns custom error

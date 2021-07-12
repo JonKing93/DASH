@@ -1,4 +1,4 @@
-function[] = assertPositiveIntegers(input, name, allowNaN, allowInf)
+function[] = positiveIntegers(input, name, allowNaN, allowInf)
 %% Checks that an input consists of positive integers. Optionally allows
 % NaN and Inf values. Returns customized error messages.
 %

@@ -1,4 +1,4 @@
-function[dims] = commaDelimitedDims( dims )
+function[dims] = commaDelimited( dims )
 %% Converts a string array of dimension names to a comma delimited
 % character row vector.
 %

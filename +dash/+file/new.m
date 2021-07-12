@@ -1,4 +1,4 @@
-function[filename] = setupNewFile( filename, ext, overwrite )
+function[filename] = new( filename, ext, overwrite )
 %% Does setup tasks for a new file. Adds the required extension if missing.
 % Gets the full file path. If not overwriting, checks the file does not
 % already exist.

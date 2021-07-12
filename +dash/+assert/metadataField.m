@@ -1,4 +1,4 @@
-function[meta] = checkMetadataField( meta, dim )
+function[meta] = metadataField( meta, dim )
 %% Error checks the metadata for a grid dimension. Converts cellstring to
 % string.
 % 

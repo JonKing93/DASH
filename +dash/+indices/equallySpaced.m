@@ -1,4 +1,4 @@
-function[indices] = equallySpacedIndices(indices)
+function[indices] = equallySpaced(indices)
 %% For a set of linear indices, returns a set of equally spaced indices
 % that will include all input indices.
 %

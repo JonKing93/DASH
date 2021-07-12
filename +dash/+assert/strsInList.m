@@ -1,4 +1,4 @@
-function[k] = checkStrsInList(input, list, name, listName )
+function[k] = strsInList(input, list, name, listName )
 %% Checks that an input is a set of strings that are all members of a list.
 % Throws a custom error message if not. Returns the indices of the strings
 % in the list.

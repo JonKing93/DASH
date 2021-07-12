@@ -1,4 +1,4 @@
-function[path] = checkFileExists( file )
+function[path] = fileExists( file )
 %% Error checking to see if a file exists. If the file exists, returns the
 % absolute path as a string with UNIX style file separators.
 %

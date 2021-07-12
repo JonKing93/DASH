@@ -1,4 +1,4 @@
-function[index] = parseListIndices(input, strName, indexName, list, listName, lengthName, inputNumber, eltNames)
+function[index] = listOrIndices(input, strName, indexName, list, listName, lengthName, inputNumber, eltNames)
 %% Parses inputs that can either be strings in a list or set of indices. Returns 
 % the input as a set of linear indices.
 %

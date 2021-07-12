@@ -1,4 +1,4 @@
-function[input] = assertStrFlag( input, name )
+function[input] = strflag( input, name )
 %% Checks that an input is a string flag. Returns a customized error
 % message if not. Optionally returns input as a string data type.
 %

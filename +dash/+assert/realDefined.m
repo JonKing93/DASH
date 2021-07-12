@@ -1,4 +1,4 @@
-function[] = assertRealDefined(input, name, allowNaN, allowInf, allowComplex)
+function[] = realDefined(input, name, allowNaN, allowInf, allowComplex)
 %% Checks that an input is real, not NaN, and not Inf. Optionally allows
 % NaN, Inf, or complex. Returns custom error messages.
 %

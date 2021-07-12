@@ -1,4 +1,4 @@
-function[] = assertVectorTypeN( input, type, N, name )
+function[] = vectorTypeN( input, type, N, name )
 %% Checks that an input is a vector with length N. Optionally also checks
 % the vector is a specific data type. Returns a customized error message if not.
 %

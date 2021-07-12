@@ -1,4 +1,4 @@
-function[input] = assertStrList(input, name)
+function[input] = strlist(input, name)
 %% Checks that an input is a string list. Returns a customized error
 % message if not. Optionally returns input as a string data type.
 %
