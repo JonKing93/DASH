@@ -1,6 +1,6 @@
-classdef (Abstract) posteriorCalculation
-    %% Implements calculations that require the posterior deviations
-    % (and optionally the posterior mean) from a Kalman Filter
+classdef (Abstract) Interface
+    %% Implements an interface for calculations that require the posterior
+    % deviations (and optionally the posterior mean) from a Kalman Filter
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020

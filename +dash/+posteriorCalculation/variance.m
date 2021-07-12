@@ -1,4 +1,4 @@
-classdef posteriorVariance < posteriorCalculation
+classdef variance < dash.posteriorCalculation.Interface
     %% Calculates the variance of a posterior ensemble.
     
     % ----- Written By -----

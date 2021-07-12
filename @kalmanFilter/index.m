@@ -77,7 +77,7 @@ else
 
     % Add to the calculations array
     k = numel(kf.Q)+1;
-    kf.Q{k,1} = posteriorIndex(outputName, weights, rows, nanflag);
+    kf.Q{k,1} = dash.posteriorCalculation.index(outputName, weights, rows, nanflag);
     kf.Qname(k,1) = outputName;
 end
 

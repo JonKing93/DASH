@@ -1,4 +1,4 @@
-classdef posteriorIndex < posteriorCalculation
+classdef index < dash.posteriorCalculation.Interface
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
@@ -18,7 +18,7 @@ classdef posteriorIndex < posteriorCalculation
         function[siz] = outputSize(~, ~, nTime, nEns)
             siz = [nEns, nTime];
         end
-        function[obj] = posteriorIndex(name, weights, rows, nanflag)
+        function[obj] = index(name, weights, rows, nanflag)
             obj.name = name;
             obj.weights = weights;
             obj.rows = rows;

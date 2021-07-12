@@ -1,4 +1,4 @@
-classdef posteriorPercentiles < posteriorCalculation
+classdef percentiles < dash.posteriorCalculation.Interface
     %% Calculates percentiles of a posterior ensemble.
     
     % ----- Written By -----
@@ -9,25 +9,25 @@ classdef posteriorPercentiles < posteriorCalculation
     end
     
     properties (SetAccess = private)
-        percentiles;
+        percs;   % The queried percentiles
     end
     
     methods
-        function[obj] = posteriorPercentiles(percentiles)
+        function[obj] = percentiles(percs)
             
             % Error check
-            assert(isvector(percentiles), 'percentiles must be a vector');
-            assert(isnumeric(percentiles), 'percentiles must be numeric');
-            assert( all(percentiles>=0 & percentiles<=100), 'percentiles must be between 0 and 100');
+            assert(isvector(percs), 'percentiles must be a vector');
+            assert(isnumeric(percs), 'percentiles must be numeric');
+            assert( all(percs>=0 & percs<=100), 'percentiles must be between 0 and 100');
             
             % Save
-            obj.percentiles = percentiles;
+            obj.percs = percs;
         end      
         function[Aperc] = calculate(obj, Adev, Amean)
-            Aperc = prctile(Adev, obj.percentiles, 2) + permute(Amean, [1 3 2]);
+            Aperc = prctile(Adev, obj.percs, 2) + permute(Amean, [1 3 2]);
         end
         function[siz] = outputSize(obj, nState, nTime, ~)
-            siz = [nState, numel(obj.percentiles), nTime];
+            siz = [nState, numel(obj.percs), nTime];
         end
     end
     methods (Static)

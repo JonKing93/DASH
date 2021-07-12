@@ -17,12 +17,13 @@ function[kf] = variance(kf, tf)
 dash.assert.scalarType(tf, 'tf', 'logical', 'logical');
 
 % Check for an existing variance calculation
-[hasvariance, k] = ismember(posteriorVariance.outputName, kf.Qname);
+name = dash.posteriorCalculation.variance.outputName;
+[hasvariance, k] = ismember(name, kf.Qname);
 
 % If returning variance and it doesn't exist, add to the calculation array
 if tf && ~hasvariance
-    kf.Q{end+1,1} = posteriorVariance;
-    kf.Qname(end+1,1) = posteriorVariance.outputName;
+    kf.Q{end+1,1} = dash.posteriorCalculation.variance;
+    kf.Qname(end+1,1) = name;
     
 % If removing variance and it exists, delete from the calculation array
 elseif ~tf && hasvariance
