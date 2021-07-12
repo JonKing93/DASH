@@ -1,4 +1,4 @@
-classdef ncSource < dataSource
+classdef nc < dash.dataSource.Interface
     %% Used to read data from source based on a NetCDF format. Includes 
     % local NetCDF files and OPeNDAP requests.
     
@@ -10,10 +10,10 @@ classdef ncSource < dataSource
     end
     
     methods
-        function obj = ncSource(source, sourceName, var, dims, fill, range, convert)
+        function obj = nc(source, sourceName, var, dims, fill, range, convert)
             
             % Constructor and error checking
-            obj@dataSource(source, sourceName, dims, fill, range, convert);
+            obj@dash.dataSource.Interface(source, sourceName, dims, fill, range, convert);
             obj = obj.setVariable(var);
             if strcmp(sourceName, 'file')
                 obj = obj.checkFile;

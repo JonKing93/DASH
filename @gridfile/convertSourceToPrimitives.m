@@ -31,14 +31,16 @@ s.mergedSize = source.mergedSize;
 s.unmergedDims = dash.string.commaDelimited( source.unmergedDims );
 s.mergedDims = dash.string.commaDelimited( source.mergedDims );
 
-% Record whether this is an .nc or .mat data source
-s.type = '';
-if isa(source, 'ncSource')
-    s.type = 'nc';
-elseif isa(source, 'matSource')
-    s.type = 'mat';
-elseif isa(source, 'opendapSource')
-    s.type = 'opendap';
+% Record the type of data source
+types = ["nc","mat","opendap"];
+for t = 1:numel(types)
+    if isa(source, strcat("dash.dataSource.", types(t)))
+        s.type = types(t);
+        break;
+    end
+end
+if ~isfield(s, 'type')
+    error('Unrecognized dataSource type');
 end
 
 % Post-processing fields

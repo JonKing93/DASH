@@ -32,7 +32,7 @@ for s = 1:nSource
     
     % Build the data source.
     try
-        sources{s} = dataSource.new( type(s), filenames(s), var(s), unmerge, ...
+        sources{s} = dash.dataSource.new( type(s), filenames(s), var(s), unmerge, ...
                                  fill{s}, range{s}, convert{s} );
                              
     % Provide extra error information if the data source file is missing

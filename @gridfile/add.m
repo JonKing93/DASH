@@ -92,7 +92,7 @@ end
     
 % Create the dataSource object. This will error check type, file, var, and
 % dims. It also has information on the size of the merged / unmerged data.
-source = dataSource.new(type, file, var, dims, fill, range, convert);
+source = dash.dataSource.new(type, file, var, dims, fill, range, convert);
 
 % Check that all dims are recognized by the grid. Any dims with undefined
 % .grid metadata must be trailing dimensions in the data source.

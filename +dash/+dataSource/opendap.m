@@ -1,4 +1,4 @@
-classdef opendapSource < ncSource
+classdef opendap < dash.dataSource.nc
     %% Reads data accessed via an OPeNDAP url. Attempts to load and save 
     % the entire variable when using repeated loads to increase speed.
     
@@ -12,7 +12,7 @@ classdef opendapSource < ncSource
     end
     
     methods
-        function obj = opendapSource(url, var, dims, fill, range, convert)
+        function obj = opendap(url, var, dims, fill, range, convert)
             %% Creates a new opendapSource. Checks the url links to a valid
             % netcdf file that contains the specified variable.
             %
@@ -31,7 +31,7 @@ classdef opendapSource < ncSource
             % obj: The new opendapSource object
             
             % Superclass constructors
-            obj@ncSource(url, false, var, dims, fill, range, convert);
+            obj@dash.dataSource.nc(url, false, var, dims, fill, range, convert);
             
             % Track status of loading the entire dataset
             obj.attemptFullLoad = true;
@@ -67,7 +67,7 @@ classdef opendapSource < ncSource
             if obj.saved
                 X = obj.X(indices{:});
             else
-                [X, obj] = load@ncSource(obj, indices);
+                [X, obj] = load@dash.dataSource.nc(obj, indices);
             end
         end
     end
