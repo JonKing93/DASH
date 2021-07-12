@@ -40,7 +40,7 @@ assert( any(strcmpi(type, allowedTypes)), ...
 
 % Switch to the appropriate localization scheme
 if strcmpi(type, 'gc2d')
-    [wloc, yloc] = dash.localize.gc2dLocalization(varargin{:});
+    [wloc, yloc] = dash.localize.gc2d(varargin{:});
 end
 
 end

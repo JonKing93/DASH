@@ -1,11 +1,11 @@
-function[wloc, yloc] = gc2dLocalization(ensCoords, siteCoords, R, scale)
+function[wloc, yloc] = gc2d(ensCoords, siteCoords, R, scale)
 %% Determines localization weights using a Gaspari-Cohn 5th order polynomial
 % in 2 dimensions.
 %
-% [wloc, yloc] = gc2dLocalization(ensCoords, siteCoords, R)
+% [wloc, yloc] = gc2d(ensCoords, siteCoords, R)
 % Determines localization weights for a specified cutoff radius.
 %
-% [wloc, yloc] = gc2dLocalization(ensCoords, siteCoords, R, scale)
+% [wloc, yloc] = gc2d(ensCoords, siteCoords, R, scale)
 % Also sets the length scale for the polynomial.
 %
 % ----- Inputs -----
