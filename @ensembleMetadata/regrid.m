@@ -58,8 +58,8 @@ if ~exist('keepSingletons','var') || isempty(keepSingletons)
 end
 
 % Error check variable, get index
-dash.assertStrFlag(varName, 'varName');
-v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+dash.assert.strflag(varName, 'varName');
+v = dash.assert.strsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 
 % Get user dimensions and dimension order default
 userDims = dimOrder;
@@ -71,12 +71,12 @@ if isempty(dimOrder)
 end
 
 % Error check
-dimOrder = dash.assertStrList(dimOrder, 'dimOrder');
-index = dash.checkStrsInList(dimOrder, dims, 'dimOrder', sprintf('dimension of variable "%s"', varName) );
+dimOrder = dash.assert.strlist(dimOrder, 'dimOrder');
+index = dash.assert.strsInList(dimOrder, dims, 'dimOrder', sprintf('dimension of variable "%s"', varName) );
 assert( numel(dimOrder)==numel(unique(dimOrder)), 'dimOrder cannot contain duplicate names' );
 assert(isscalar(d), 'd must be a scalar');
-dash.assertPositiveIntegers(d, 'd');
-dash.assertScalarType(keepSingletons, 'single', 'logical', 'logical');
+dash.assert.positiveIntegers(d, 'd');
+dash.assert.scalarType(keepSingletons, 'single', 'logical', 'logical');
 
 % Check the array size matches the ensemble metadata
 nState = obj.varLimit(end);

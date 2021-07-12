@@ -85,7 +85,7 @@ classdef ensembleMetadata
 
                 % Get names and size
                 if exist('name','var')
-                    obj.name = dash.assertStrFlag(name, 'name');
+                    obj.name = dash.assert.strflag(name, 'name');
                 else
                     obj.name = [];
                 end

@@ -42,7 +42,7 @@ function[obj] = uncertainties(obj, R, whichR, isCov)
 if ~exist('isCov','var') || isempty(isCov)
     isCov = false;
 end
-dash.assertScalarType(isCov, 'isCov', 'logical', 'logical');
+dash.assert.scalarType(isCov, 'isCov', 'logical', 'logical');
 
 % Get sizes
 if ~isCov

@@ -1,4 +1,4 @@
-function[latlon] = coordinates(obj, varName, verbose)
+function[latlon] = latlon(obj, varName, verbose)
 %% Returns lat-lon coordinate metadata down the state vector. Reads metadata
 % from the "lat", "lon", and "coord" dimensions as appropriate. Returns NaN
 % coordinates for any state vector elements that use a spatial mean or
@@ -46,7 +46,7 @@ function[latlon] = coordinates(obj, varName, verbose)
 if ~exist('verbose','var') || isempty(verbose)
     verbose = true;
 end
-dash.assertScalarType(verbose, 'verbose', 'logical', 'logical');
+dash.assert.scalarType(verbose, 'verbose', 'logical', 'logical');
 notified = false;
 
 % Get the dimension names and variable(s). Preallocate the coordinates
@@ -55,8 +55,8 @@ if ~exist('varName','var') || isempty(varName)
     v = 1:numel(obj.nEls);
     latlon = NaN(obj.varLimit(end), 2);
 else
-    dash.assertStrFlag(varName, 'varName');
-    v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+    dash.assert.strflag(varName, 'varName');
+    v = dash.assert.strsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
     latlon = NaN(obj.nEls(v), 2);
 end
 

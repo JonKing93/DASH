@@ -48,35 +48,35 @@ function[meta] = columns(obj, cols, varNames, dims, alwaysStruct)
 %    Has one row per specified ensemble member.
 
 % Error check the columns
-dash.assertVectorTypeN(cols, 'numeric', [], 'cols');
-cols = dash.checkIndices(cols, 'cols', obj.nEns, 'the number of ensemble members');
+dash.assert.vectorTypeN(cols, 'numeric', [], 'cols');
+cols = dash.assert.indices(cols, 'cols', obj.nEns, 'the number of ensemble members');
 
 % Default variable names. Error check. Indices
 if ~exist('varNames','var') || isempty(varNames)
     varNames = obj.variableNames;
 end
-varNames = dash.assertStrList(varNames, 'varNames');
-v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variables in the state vector');
+varNames = dash.assert.strlist(varNames, 'varNames');
+v = dash.assert.strsInList(varNames, obj.variableNames, 'varNames', 'variables in the state vector');
 nVars = numel(v);
 
 % Default dimension names. Error check. Propagate strings into cells
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims(v);
 elseif ~iscell(dims)
-    dims = dash.assertStrList(dims, 'dims');
+    dims = dash.assert.strlist(dims, 'dims');
     dims = repmat({dims}, [nVars,1]);
 else
     for d = 1:numel(dims)
-        dims{d} = dash.assertStrList(dims{d}, sprintf('Element %.f of dimCell', d));
+        dims{d} = dash.assert.strlist(dims{d}, sprintf('Element %.f of dimCell', d));
     end
 end
-dash.assertVectorTypeN(dims, 'cell', nVars, 'dims');
+dash.assert.vectorTypeN(dims, 'cell', nVars, 'dims');
 
 % Default and error check alwaysStruct
 if ~exist('alwaysStruct','var') || isempty(alwaysStruct)
     alwaysStruct = false;
 end
-dash.assertScalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
+dash.assert.scalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
 
 % Initialize the output structure
 meta = struct();

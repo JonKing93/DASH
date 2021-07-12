@@ -39,7 +39,7 @@ end
 % Otherwise, parse the inputs
 listName = 'variable in the state vector';
 lengthName = 'the number of variables in the state vector';
-v = dash.parseListIndices(vars,'varNames','v',obj.variableNames,listName, lengthName, 1, 'variable names');
+v = dash.parse.listOrIndices(vars,'varNames','v',obj.variableNames,listName, lengthName, 1, 'variable names');
 
 % Get nEls
 nState = obj.nEls(v);

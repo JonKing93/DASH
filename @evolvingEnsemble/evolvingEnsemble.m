@@ -27,7 +27,7 @@ classdef evolvingEnsemble
             
             % Require at least one ensemble. Get sizes
             assert(~isempty(varargin), 'You must provide at least one ensemble object to create an evolvingEnsemble.');
-            dash.assertScalarType(varargin{1}, 'The first input', 'ensemble', 'ensemble');
+            dash.assert.scalarType(varargin{1}, 'The first input', 'ensemble', 'ensemble');
             [obj.nState, obj.nEns] = varargin{1}.loadedMetadata.sizes;
             
             % Add to the evolving ensemble
@@ -50,7 +50,7 @@ classdef evolvingEnsemble
             % Check each input is a scalar ensemble object
             nPriors = numel(varargin);
             for k = 1:nPriors
-                dash.assertScalarType(varargin{k}, sprintf('Input %.f', k), 'ensemble', 'ensemble');
+                dash.assert.scalarType(varargin{k}, sprintf('Input %.f', k), 'ensemble', 'ensemble');
             end
             
             % Ensure all ensemble objects are the same size
@@ -81,7 +81,7 @@ classdef evolvingEnsemble
             % obj: The updated evolvingEnsemble object
             
             % Check the indices are allowed
-            p = dash.checkIndices(p, 'p', obj.nPrior, 'the number of priors in the evolving ensemble');
+            p = dash.assert.indices(p, 'p', obj.nPrior, 'the number of priors in the evolving ensemble');
             p = unique(p);            
             assert(numel(p)<obj.nPrior, 'You cannot remove all the priors from an evolving ensemble');
             
@@ -103,7 +103,7 @@ classdef evolvingEnsemble
             %
             % ens: The requested ensemble object
             
-            p = dash.checkIndices(p, 'p', obj.nPrior, 'the number of priors in the evolving ensemble');
+            p = dash.assert.indices(p, 'p', obj.nPrior, 'the number of priors in the evolving ensemble');
             assert(isscalar(p), 'p must index a single prior');
             ens = obj.ensembles(p);
         end

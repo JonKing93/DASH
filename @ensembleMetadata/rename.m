@@ -11,6 +11,6 @@ function[obj] = rename(obj, newName)
 %
 % obj: The updated ensembleMetadata object.
 
-obj.name = dash.assertStrFlag(newName, 'newName');
+obj.name = dash.assert.strflag(newName, 'newName');
 
 end

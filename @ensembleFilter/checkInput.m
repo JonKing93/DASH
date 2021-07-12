@@ -37,7 +37,7 @@ if requireMatrix
 end
 
 % No Inf or complex, optionally allow NaN
-dash.assertRealDefined(X, name, allowNaN);
+dash.assert.realDefined(X, name, allowNaN);
 
 % No empty arrays (they break size checks)
 assert(~isempty(X), sprintf('%s cannot be empty', name));

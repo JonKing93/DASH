@@ -14,7 +14,7 @@ function[obj] = extract(obj, varNames)
 
 % Error check, variable indices
 assert(~isempty(varNames), 'varNames cannot be empty');
-v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
+v = dash.assert.strsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
 
 % Get the variables to remove
 allVars = 1:numel(obj.variableNames);

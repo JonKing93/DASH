@@ -14,7 +14,7 @@ function[obj] = remove(obj, varNames)
 
 % Error check
 if ~isempty(varNames)
-    v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
+    v = dash.assert.strsInList(varNames, obj.variableNames, 'varNames', 'variable in the state vector');
 
     % Remove from arrays
     obj.variableNames(v) = [];

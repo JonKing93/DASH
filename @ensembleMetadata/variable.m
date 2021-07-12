@@ -76,8 +76,8 @@ function[meta] = variable(obj, varName, dims, type, indices, alwaysStruct)
 
 % Error check variable, get index
 if ischar(varName) || isstring(varName) || iscellstr(varName)
-    varName = dash.assertStrFlag(varName, 'varName');
-    v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+    varName = dash.assert.strflag(varName, 'varName');
+    v = dash.assert.strsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 elseif isnumeric(varName)
     v = varName;
     nVar = numel(obj.variableNames);
@@ -92,9 +92,9 @@ end
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims{v}(obj.stateSize{v}>1 | ~obj.isState{v} | obj.meanSize{v}>1);
 end
-dims = dash.assertStrList(dims);
+dims = dash.assert.strlist(dims);
 nDims = numel(dims);
-d = dash.checkStrsInList(dims, obj.dims{v}, 'dims', sprintf('dimension of variable "%s"', varName));
+d = dash.assert.strsInList(dims, obj.dims{v}, 'dims', sprintf('dimension of variable "%s"', varName));
 
 % Default for type. Parse metadata direction.
 if ~exist('type','var') || isempty(type)
@@ -106,7 +106,7 @@ returnState = obj.parseDirection(type, nDims);
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-[indices, wasCell] = dash.parseInputCell(indices, nDims, 'indexCell');
+[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indexCell');
 name = 'indices';
 if wasCell
     name = 'indexCell';
@@ -116,7 +116,7 @@ end
 if ~exist('alwaysStruct','var') || isempty(alwaysStruct)
     alwaysStruct = false;
 end
-dash.assertScalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
+dash.assert.scalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
 
 % Initialize output structure
 if nDims>1 || alwaysStruct
@@ -144,7 +144,7 @@ for k = 1:nDims
     if isempty(indices{k})
         indices{k} = 1:nEls;
     end
-    indices{k} = dash.checkIndices(indices{k}, name, nEls, lengthName);
+    indices{k} = dash.assert.indices(indices{k}, name, nEls, lengthName);
     
     % Metadata for ensemble and state dimensions. Need to propagate state
     % metadata over all state dimensions.

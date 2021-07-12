@@ -29,10 +29,10 @@ function[meta] = rows(obj, rows, dims, fullStruct)
 if ~exist('fullStruct','var') || isempty(fullStruct)
     fullStruct = false;
 end
-dash.assertScalarType(fullStruct, 'fullStruct', 'logical', 'logical');
+dash.assert.scalarType(fullStruct, 'fullStruct', 'logical', 'logical');
 
 % Error check the rows
-rows = dash.checkIndices(rows, 'rows', obj.varLimit(end), 'the number of elements in the state vector');
+rows = dash.assert.indices(rows, 'rows', obj.varLimit(end), 'the number of elements in the state vector');
 if ~isrow(rows)
     rows = rows';
 end
@@ -55,7 +55,7 @@ elseif isequal(dims, 0)
 % Error check user-specified dimensions
 else
     allDims = unique(cat(2, obj.dims{:}));
-    dash.checkStrsInList(dims, allDims, 'dims', 'a dimension of any variable in the state vector ensemble');
+    dash.assert.strsInList(dims, allDims, 'dims', 'a dimension of any variable in the state vector ensemble');
     dims = unique(string(dims));
 end
 nUserDims = numel(dims);

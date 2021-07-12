@@ -14,7 +14,7 @@ function[obj] = appendMembers(obj, meta2)
 % obj: The updated ensembleMetadata object
 
 % Error check
-dash.assertScalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
+dash.assert.scalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
 
 % Check that properties exactly match the current ensemble metadata
 props = ["variableNames","varLimit","nEls","dims","stateSize","isState","meanSize"];

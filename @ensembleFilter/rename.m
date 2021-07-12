@@ -11,6 +11,6 @@ function[obj] = rename(obj, name)
 %
 % obj: The updated ensembleFilter object
 
-obj.name = dash.assertStrFlag(name, 'name');
+obj.name = dash.assert.strflag(name, 'name');
 
 end

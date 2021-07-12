@@ -36,8 +36,8 @@ if ~exist('alwaysStruct','var') || isempty(alwaysStruct)
 end
 
 % Error check
-dim = dash.assertStrFlag(dim, 'dim');
-dash.assertScalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
+dim = dash.assert.strflag(dim, 'dim');
+dash.assert.scalarType(alwaysStruct, 'alwaysStruct', 'logical', 'logical');
 
 % Record whether a variable has the dimension
 nVars = numel(obj.variableNames);

@@ -46,8 +46,8 @@ if empty
     
 % Otherwise, error check the indices
 else
-    dash.assertVectorTypeN(whichArg, 'numeric', obj.nTime, name);
-    dash.checkIndices(whichArg, name, nIndex, sprintf('the number of %s', indexName));
+    dash.assert.vectorTypeN(whichArg, 'numeric', obj.nTime, name);
+    dash.assert.indices(whichArg, name, nIndex, sprintf('the number of %s', indexName));
 end
 whichArg = whichArg(:);
     

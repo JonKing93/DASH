@@ -27,8 +27,8 @@ function[rows] = findRows(obj, varName, varRows)
 % rows: The rows of the variable's elements in the state vector.
 
 % Error check variable, get index
-varName = dash.assertStrFlag(varName, 'varName');
-v = dash.checkStrsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
+varName = dash.assert.strFlag(varName, 'varName');
+v = dash.assert.strsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 
 % Parse secondary inputs
 if ~exist('varRows','var') || isempty(varRows) || isequal(varRows, 'all')
@@ -37,7 +37,7 @@ elseif isequal(varRows,'end') || isequal(varRows, "end")
     varRows = obj.nEls(v);
 else
     name = sprintf('the number of state vector elements for variable "%s"', varName);
-    varRows = dash.checkIndices(varRows, 'varRows', obj.nEls(v), name);
+    varRows = dash.assert.indices(varRows, 'varRows', obj.nEls(v), name);
 end
 
 % Get rows in complete state vector.

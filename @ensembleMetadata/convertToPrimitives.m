@@ -14,13 +14,13 @@ end
 dims = strings(nVars, 1);
 nDims = NaN(nVars, 1);
 for v = 1:nVars
-    dims(v) = dash.commaDelimitedDims(meta.dims{v});
+    dims(v) = dash.string.commaDelimited(meta.dims{v});
     nDims(v) = numel(meta.dims{v});
 end
 s.dims = dims;
 
 % Dimension vectors
-s.limits = dash.buildLimits(nDims);
+s.limits = dash.indices.limits(nDims);
 names = meta.vectorFields;
 for n = 1:numel(names)
     name = names{n};

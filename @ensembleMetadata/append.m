@@ -14,7 +14,7 @@ function[obj] = append(obj, meta2)
 % obj: The updated ensembleMetadata object
 
 % Error check
-dash.assertScalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
+dash.assert.scalarType(meta2, 'meta2', 'ensembleMetadata', 'ensembleMetadata object');
 
 % Check for naming conflicts and same ensemble size
 [ismem, k] = ismember(obj.variableNames, meta2.variableNames);

@@ -14,7 +14,7 @@ function[obj] = extractMembers(obj, members)
 % obj: The updated ensembleMetadata object
 
 % Error check indices
-members = dash.checkIndices(members, 'members', obj.nEns, 'the number of ensemble members');
+members = dash.assert.indices(members, 'members', obj.nEns, 'the number of ensemble members');
 
 % Get the ensemble dimensions for each variable
 vars = obj.variableNames;

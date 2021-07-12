@@ -20,14 +20,14 @@ function[Rcov] = Rcovariance(obj, t, s)
 
 % Error check
 assert(~isempty(obj.R), 'You have not yet specified R uncertainties');
-dash.assertScalarType(t, 't', 'numeric', 'numeric');
-t = dash.checkIndices(t, 't', obj.nTime, 'number of time steps');
+dash.assert.scalarType(t, 't', 'numeric', 'numeric');
+t = dash.assert.indices(t, 't', obj.nTime, 'number of time steps');
 
 % Default and error check sites
 if ~exist('s','var') || isempty(s)
     s = ~isnan(obj.Y(:,t));
 end
-s = dash.checkIndices(s, 's', obj.nSite, 'the number of observation sites');
+s = dash.assert.indices(s, 's', obj.nSite, 'the number of observation sites');
 
 % Empty whichR
 if isempty(obj.whichR)

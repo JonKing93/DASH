@@ -47,13 +47,13 @@ end
 % Error check the user-specified coordinate
 assert( isnumeric(latlon) & isvector(latlon), 'latlon must be a numeric vector.');
 assert(numel(latlon)==2, 'latlon must have two elements.');
-dash.assertRealDefined(latlon, 'latlon');
+dash.assert.realDefined(latlon, 'latlon');
 assert(abs(latlon(1))<=90, 'latitude coordinates must be between -90 and 90.');
 
 % Get the state vector lat-lon coordinates and get the distance to each
 svLatLon = obj.latlon(varName, verbose);
 nState = size(svLatLon, 1);
-dist = dash.haversine(svLatLon, latlon);
+dist = dash.distance.haversine(svLatLon, latlon);
 
 % Default and error check exclude
 if ~exist('exclude','var') || isempty(exclude)
