@@ -39,7 +39,7 @@ info = whos(ens, 'X');
 X = zeros([nState, nEns], info.class);
 
 % Get equally spaced column indices
-loadCols = dash.equallySpacedIndices(members);
+loadCols = dash.indices.equallySpaced(members);
 keep = ismember(loadCols, members);
 
 % Get the rows for each block of contiguous variables

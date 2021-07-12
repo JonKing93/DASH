@@ -53,8 +53,8 @@ classdef ensemble
             % obj: An ensemble object for the specified .ens file.
             
             % Error check file name. Get matfile properties
-            filename = dash.assertStrFlag(filename, "filename");
-            obj.file = dash.checkFileExists(filename);
+            filename = dash.assert.strflag(filename, "filename");
+            obj.file = dash.assert.fileExists(filename);
             obj = obj.update;
             
             % Use all members and variables by default

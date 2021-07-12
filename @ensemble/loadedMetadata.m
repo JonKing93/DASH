@@ -41,7 +41,7 @@ else
     list = 'variable in the state vector';
     length = 'the number of variables in the state vector';
     elt = 'variables in the state vector';
-    v = dash.parseListIndices(varNames, 'varNames', 'v', vars, list, length, 1, elt);
+    v = dash.parse.listOrIndices(varNames, 'varNames', 'v', vars, list, length, 1, elt);
 end
 
 % Defaults for members
@@ -49,7 +49,7 @@ end
 if nargin==2 || (nargin==3 && isempty(members))
     m = 1:nEns;
 elseif nargin==3
-    m = dash.checkIndices(members, 'members', nEns, 'the number of ensemble members');
+    m = dash.assert.indices(members, 'members', nEns, 'the number of ensemble members');
 end
 
 % Build the ensembleMetadata object

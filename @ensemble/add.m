@@ -28,8 +28,8 @@ end
 if ~isscalar(nAdd)
     error('nAdd must be a scalar.');
 end
-dash.assertPositiveIntegers(nAdd, 'nAdd');
-dash.assertScalarType(showprogress, 'showprogress','logical','logical');
+dash.assert.positiveIntegers(nAdd, 'nAdd');
+dash.assert.scalarType(showprogress, 'showprogress','logical','logical');
 
 % Build the matfile, update matfile properties. Pre-build gridfiles and
 % data sources

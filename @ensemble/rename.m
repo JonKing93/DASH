@@ -13,6 +13,6 @@ function[obj] = rename(obj, newName)
 
 % Update name (error checking via ensembleMetadata)
 obj.metadata = obj.metadata.rename(name);
-obj.name = dash.assertStrFlag(newName, 'newName');
+obj.name = dash.assert.strflag(newName, 'newName');
 
 end

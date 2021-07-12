@@ -14,7 +14,7 @@ function[obj] = update(obj, ens)
 % If no matfile object is provided, load data into a structure
 fields = ["metadata","stateVector"];
 if ~exist('ens','var') || isempty(ens)
-    ens = dash.loadMatfileFields(obj.file, fields, '.ens');
+    ens = dash.matfile.loadFields(obj.file, fields, '.ens');
 end
 
 % Fill in the fields. Convert metadata and stateVector back from primitives

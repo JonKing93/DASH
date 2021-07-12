@@ -17,7 +17,7 @@ if ~exist('writable','var') || isempty(writable)
 end
 
 % Check the file exists
-dash.checkFileExists(obj.file);
+dash.assert.fileExists(obj.file);
 
 % Build the matfile object
 try

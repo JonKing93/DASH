@@ -29,7 +29,7 @@ if nargout==0
     if isequal(v(:), (1:numel(obj.metadata.variableNames))')
         fprintf('This ensemble object will load data for all variables.\n');
     else
-        fprintf('This object will load data for variables: %s.\n', dash.messageList(obj.variables));
+        fprintf('This object will load data for variables: %s.\n', dash.string.messageList(obj.variables));
     end
     fprintf('The loaded data will have a state vector length of %.f and %.f ensemble members.\n\n', nStateLoad, nEnsLoad);
     

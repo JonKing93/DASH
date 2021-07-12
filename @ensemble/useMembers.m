@@ -23,7 +23,7 @@ if ~exist('members','var') || isempty(members)
     members = [];
 else
     [~, nEns] = obj.metadata.sizes;
-    members = dash.checkIndices(members, 'members', nEns, 'the number of ensemble members');
+    members = dash.assert.indices(members, 'members', nEns, 'the number of ensemble members');
     members = members(:);
 end
 obj.members = members;
