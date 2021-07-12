@@ -1,4 +1,4 @@
-classdef prysmIcecore < PSM.PSM
+classdef prysmIcecore < PSM.Interface
     %% Implements the icecore module of the PRYSM package
     %
     % Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
@@ -75,7 +75,7 @@ classdef prysmIcecore < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM.PSM(name, false);
+            obj@PSM.Interface(name, false);
             obj = obj.useRows(row, 1);
             
             % Error check, set model inputs

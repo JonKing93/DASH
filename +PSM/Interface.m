@@ -1,4 +1,4 @@
-classdef (Abstract) PSM
+classdef (Abstract) Interface
     %% Implements a common interface for all PSMs
     %
     % PSM Methods:
@@ -16,7 +16,7 @@ classdef (Abstract) PSM
     
     methods
         % Constructor
-        function[obj] = PSM(name, estimatesR)
+        function[obj] = Interface(name, estimatesR)
             %% PSM constructor. Records a name and whether the PSM can estimate R
             %
             % obj = PSM

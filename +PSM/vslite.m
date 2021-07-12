@@ -1,4 +1,4 @@
-classdef vslite < PSM.PSM
+classdef vslite < PSM.Interface
     %% Implements the VS-Lite tree-ring PSM
     %
     % Find it on Github at: https://github.com/suztolwinskiward/VSLite
@@ -93,7 +93,7 @@ classdef vslite < PSM.PSM
             if ~exist('name','var') || isempty(name)
                 name = "";
             end
-            obj@PSM.PSM(name, false);
+            obj@PSM.Interface(name, false);
             obj = obj.useRows(rows, 24);
             
             % Save the parameters

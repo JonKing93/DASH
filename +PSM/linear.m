@@ -1,4 +1,4 @@
-classdef linear < PSM.PSM
+classdef linear < PSM.Interface
     % Implements a general linear PSM of the following form:
     %
     % Y = a1 X1 + a2 X2 + ... + an Xn + b
@@ -51,7 +51,7 @@ classdef linear < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end            
-            obj@PSM.PSM(name, false);            
+            obj@PSM.Interface(name, false);            
             obj = obj.useRows(rows);
             
             % Error check the slopes and intercept

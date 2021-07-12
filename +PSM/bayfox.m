@@ -1,4 +1,4 @@
-classdef bayfox < PSM.PSM
+classdef bayfox < PSM.Interface
     % Implements the BayFOX PSM, a Bayesian model for d18Oc of planktic
     % foraminifera by Jess Tierney.
     %
@@ -90,7 +90,7 @@ classdef bayfox < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM.PSM(name, true);
+            obj@PSM.Interface(name, true);
             obj = obj.useRows(rows, 2);
             
             % Set the species parameter

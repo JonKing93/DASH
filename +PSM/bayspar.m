@@ -1,4 +1,4 @@
-classdef bayspar < PSM.PSM
+classdef bayspar < PSM.Interface
     % Implements the BAYSPAR PSM, a Bayesian model for TEX86 by Jess Tierney
     %
     % Prerequisites: Requires the Curve Fitting Toolbox
@@ -106,7 +106,7 @@ classdef bayspar < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM.PSM(name, true);
+            obj@PSM.Interface(name, true);
             obj = obj.useRows(row,1);
             
             % Error check the PSM inputs.

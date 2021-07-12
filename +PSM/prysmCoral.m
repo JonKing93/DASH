@@ -1,4 +1,4 @@
-classdef prysmCoral < PSM.PSM
+classdef prysmCoral < PSM.Interface
     %% Implements the coral module of the PRYSM package
     %
     % Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
@@ -106,7 +106,7 @@ classdef prysmCoral < PSM.PSM
             if ~exist('name', 'var')
                 name = "";
             end
-            obj@PSM.PSM(name, false);            
+            obj@PSM.Interface(name, false);            
             obj = obj.useRows(rows, 2);
             
             % Model inputs

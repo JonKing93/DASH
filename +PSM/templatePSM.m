@@ -2,7 +2,7 @@
 
 % This first line specifies the name of the new PSM. You should change the
 % word "templatePSM" to whatever name you want to use for the PSM.
-classdef templatePSM < PSM.PSM
+classdef templatePSM < PSM.Interface
     
     % The properties block holds any input parameters required to run the
     % PSM. Parameters include any PSM inputs that are **not** in a state
@@ -65,7 +65,7 @@ classdef templatePSM < PSM.PSM
             % uncertainties (R). If you use the PSM to estimate R, then
             % leave the second input as true. If you do not use the PSM to
             % estimate R, change the second input to false.
-            obj@PSM.PSM(name, true);
+            obj@PSM.Interface(name, true);
             
             % If you would like to error check the state vector rows, you
             % can do so here.

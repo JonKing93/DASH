@@ -1,4 +1,4 @@
-classdef baymag < PSM.PSM
+classdef baymag < PSM.Interface
     % Implements the BAYMAG PSM, A Bayesian model for Mg/Ca of planktic
     % foraminiera by Jess Tierney.
     %
@@ -103,7 +103,7 @@ classdef baymag < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM.PSM(name, true);
+            obj@PSM.Interface(name, true);
             obj = obj.useRows(row, 1);
             
             % Error check the optional argument cell            

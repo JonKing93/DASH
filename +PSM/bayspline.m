@@ -1,4 +1,4 @@
-classdef bayspline < PSM.PSM
+classdef bayspline < PSM.Interface
     % Implements the BAYSPLINE PSM, a Bayesian model for UK37 by Jess
     % Tierney.
     %
@@ -76,7 +76,7 @@ classdef bayspline < PSM.PSM
             if ~exist('name','var')
                 name = "";
             end            
-            obj@PSM.PSM(name, true);
+            obj@PSM.Interface(name, true);
             obj = obj.useRows(row, 1);
         
         end
