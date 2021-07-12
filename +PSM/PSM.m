@@ -185,19 +185,6 @@ classdef (Abstract) PSM
         end
     end
     
-    % Download PSM repositories
-    methods (Static)
-        download(psmName, path);
-        [repo, commit] = githubLocation(psmName);
-    end
-
-    % Estimate proxy values
-    methods (Static)
-        [Ye, R] = estimate(X, F, throwError);   % User function call
-        F = setupEstimate(X, F);    % Does error checking before computing estimates
-        [Ye, R] = computeEstimates(X, F, throwError);
-    end
-    
     % Run individual PSM objects
     methods (Abstract)
         [Y, R] = runPSM(obj, X);

@@ -1,4 +1,4 @@
-classdef vslitePSM < PSM
+classdef vslite < PSM.PSM
     %% Implements the VS-Lite tree-ring PSM
     %
     % Find it on Github at: https://github.com/suztolwinskiward/VSLite
@@ -63,7 +63,7 @@ classdef vslitePSM < PSM
     
     methods
         % Constructor
-        function[obj] = vslitePSM(rows, phi, T1, T2, M1, M2, options, name)
+        function[obj] = vslite(rows, phi, T1, T2, M1, M2, options, name)
             %% Creates a new vslitePSM object
             %
             % obj = vslitePSM(rows, phi, T1, T2, M1, M2, options)
@@ -93,7 +93,7 @@ classdef vslitePSM < PSM
             if ~exist('name','var') || isempty(name)
                 name = "";
             end
-            obj@PSM(name, false);
+            obj@PSM.PSM(name, false);
             obj = obj.useRows(rows, 24);
             
             % Save the parameters

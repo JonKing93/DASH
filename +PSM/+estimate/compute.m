@@ -1,4 +1,4 @@
-function[Ye, R] = computeEstimates(X, F, throwError)
+function[Ye, R] = compute(X, F, throwError)
 %% Computes proxy estimates for an ensemble and set of PSMs. This is a
 % low-level function and does not apply error-checking. Please see
 % "PSM.estimate" for the recommended user command.

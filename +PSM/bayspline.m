@@ -1,4 +1,4 @@
-classdef baysplinePSM < PSM
+classdef bayspline < PSM.PSM
     % Implements the BAYSPLINE PSM, a Bayesian model for UK37 by Jess
     % Tierney.
     %
@@ -52,7 +52,7 @@ classdef baysplinePSM < PSM
     
     methods
         % Constructor
-        function[obj] = baysplinePSM(row, name)
+        function[obj] = bayspline(row, name)
             %% Creates a new baysplinePSM object
             %
             % obj = baysplinePSM(row)
@@ -76,7 +76,7 @@ classdef baysplinePSM < PSM
             if ~exist('name','var')
                 name = "";
             end            
-            obj@PSM(name, true);
+            obj@PSM.PSM(name, true);
             obj = obj.useRows(row, 1);
         
         end
@@ -100,7 +100,7 @@ classdef baysplinePSM < PSM
             
             % Currently, there are no additional parameters, so can just
             % call the static method directly.
-            [UK, R] = baysplinePSM.run(SSTs);
+            [UK, R] = obj.run(SSTs);
         end
     end
 end

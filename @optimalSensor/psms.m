@@ -22,7 +22,7 @@ assert(isempty(obj.Ye), 'You cannot specify PSMs because you already provided es
 % Error check the uncertainties and PSMs
 nSite = numel(F);
 obj.checkR(R, nSite);
-F = PSM.setupEstimate(obj.X, F);
+F = PSM.estimate.setup(obj.X, F);
 
 % Save
 obj.F = F;

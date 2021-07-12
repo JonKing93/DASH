@@ -1,4 +1,4 @@
-classdef prysmCoral < PSM
+classdef prysmCoral < PSM.PSM
     %% Implements the coral module of the PRYSM package
     %
     % Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
@@ -48,7 +48,7 @@ classdef prysmCoral < PSM
             end
             
             % B coefficients
-            b = prysmCoral.b_default;
+            b = PSM.prysmCoral.b_default;
             if exist('bcoeffs','var') && ~isempty(bcoeffs)
                 dash.assert.vectorTypeN(bcoeffs, 'numeric', [], 'bcoeffs');
                 assert(numel(bcoeffs)<=5, 'bcoeffs cannot have more than 5 elements');
@@ -106,7 +106,7 @@ classdef prysmCoral < PSM
             if ~exist('name', 'var')
                 name = "";
             end
-            obj@PSM(name, false);            
+            obj@PSM.PSM(name, false);            
             obj = obj.useRows(rows, 2);
             
             % Model inputs

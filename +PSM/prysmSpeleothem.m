@@ -1,4 +1,4 @@
-classdef prysmSpeleothem < PSM
+classdef prysmSpeleothem < PSM.PSM
     %% Implements the speleothem module of the PRYSM package
     %
     % Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
@@ -84,7 +84,7 @@ classdef prysmSpeleothem < PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, false);
+            obj@PSM.PSM(name, false);
             obj = obj.useRows(rows, 2);
             
             % Error check and set model inputs

@@ -1,4 +1,4 @@
-classdef baysparPSM < PSM
+classdef bayspar < PSM.PSM
     % Implements the BAYSPAR PSM, a Bayesian model for TEX86 by Jess Tierney
     %
     % Prerequisites: Requires the Curve Fitting Toolbox
@@ -67,7 +67,7 @@ classdef baysparPSM < PSM
     
     methods
         % Constructor
-        function[obj] = baysparPSM(row, lat, lon, options, name)
+        function[obj] = bayspar(row, lat, lon, options, name)
             %% Creates a new BAYSPAR PSM
             %
             % obj = baysparPSM(row, lat, lon)
@@ -106,7 +106,7 @@ classdef baysparPSM < PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, true);
+            obj@PSM.PSM(name, true);
             obj = obj.useRows(row,1);
             
             % Error check the PSM inputs.
@@ -140,7 +140,7 @@ classdef baysparPSM < PSM
             % R: Proxy uncertainties estimated from the posterior
             
             % Run the forward model, convert to row
-            [Y, R] = baysparPSM.run(obj.lat, obj.lon, SSTs, obj.options);
+            [Y, R] = obj.run(obj.lat, obj.lon, SSTs, obj.options);
             
         end
     end

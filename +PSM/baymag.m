@@ -1,4 +1,4 @@
-classdef baymagPSM < PSM
+classdef baymag < PSM.PSM
     % Implements the BAYMAG PSM, A Bayesian model for Mg/Ca of planktic
     % foraminiera by Jess Tierney.
     %
@@ -67,7 +67,7 @@ classdef baymagPSM < PSM
     
     methods
         % Constructor
-        function[obj] = baymagPSM(row, age, omega, salinity, pH, clean, species, options, name)
+        function[obj] = baymag(row, age, omega, salinity, pH, clean, species, options, name)
             %% Creates a new baymagPSM object
             %
             % obj = baymagPSM(row, age, omega, salinity, pH, clean, species)
@@ -103,7 +103,7 @@ classdef baymagPSM < PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, true);
+            obj@PSM.PSM(name, true);
             obj = obj.useRows(row, 1);
             
             % Error check the optional argument cell            
@@ -142,7 +142,7 @@ classdef baymagPSM < PSM
             % R: Proxy uncertainties estimated from the posterior
             
             % Run the forward model
-            [Y, R] = baymagPSM.run(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
+            [Y, R] = obj.run(obj.age, T, obj.omega, obj.salinity, obj.pH, obj.clean, obj.species, obj.options{:});
         end
     end
 end

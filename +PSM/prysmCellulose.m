@@ -1,4 +1,4 @@
-classdef prysmCellulose < PSM
+classdef prysmCellulose < PSM.PSM
     %% Implements the cellulose module of the PRYSM package
     %
     % Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
@@ -92,7 +92,7 @@ classdef prysmCellulose < PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, false);            
+            obj@PSM.PSM(name, false);            
             obj = obj.useRows(rows, 3);
             
             % Error check model inputs

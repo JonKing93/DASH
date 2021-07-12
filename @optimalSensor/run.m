@@ -51,7 +51,7 @@ Jvar = unbias * sum(Jdev.^2, 2);
 
 % Initialize estimate deviations
 if obj.hasPSMs
-    obj.Ye = PSM.computeEstimates(X, obj.F);
+    obj.Ye = PSM.estimate.compute(X, obj.F);
     checkPSMOutput;
 end
 [Ymean, Ydev] = dash.decompose(obj.Ye);
@@ -111,7 +111,7 @@ for s = 1:N
     
     % Update PSM estimates
     if obj.hasPSMs
-        Ye = PSM.computeEstimates(X, obj.F);
+        Ye = PSM.estimate.compute(X, obj.F);
         checkPSMOutput;
         [Ymean, Ydev] = dash.decompose(Ye);
         

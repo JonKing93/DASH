@@ -1,4 +1,4 @@
-classdef bayfoxPSM < PSM
+classdef bayfox < PSM.PSM
     % Implements the BayFOX PSM, a Bayesian model for d18Oc of planktic
     % foraminifera by Jess Tierney.
     %
@@ -54,7 +54,7 @@ classdef bayfoxPSM < PSM
     
     methods
         % Constructor
-        function[obj] = bayfoxPSM(rows, species, name)
+        function[obj] = bayfox(rows, species, name)
             %% Creates a new bayfoxPSM object
             %
             % obj = bayfoxPSM(rows, species)
@@ -90,7 +90,7 @@ classdef bayfoxPSM < PSM
             if ~exist('name','var')
                 name = "";
             end
-            obj@PSM(name, true);
+            obj@PSM.PSM(name, true);
             obj = obj.useRows(rows, 2);
             
             % Set the species parameter
@@ -116,7 +116,7 @@ classdef bayfoxPSM < PSM
             % Split out the climate variables and run the model
             T = X(1,:);
             d18Osw = X(2,:);
-            [Y, R] = bayfoxPSM.run(T, d18Osw, obj.species);
+            [Y, R] = obj.run(T, d18Osw, obj.species);
         end
     end
     

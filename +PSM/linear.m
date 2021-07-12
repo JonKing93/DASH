@@ -76,7 +76,7 @@ classdef linear < PSM.PSM
             %
             % Y: The output of the linear equation.
             
-            Y = sum(obj.slopes.*X, 1) + obj.intercept;
+            Y = obj.run( X, obj.slopes, obj.intercept );
         end
     end
 
@@ -118,7 +118,7 @@ classdef linear < PSM.PSM
             if ~exist('intercept','var')
                 intercept = [];
             end
-            [slopes, intercept] = linearPSM.checkInputs(slopes, intercept, size(Xpsm,1));
+            [slopes, intercept] = PSM.linear.checkInputs(slopes, intercept, size(Xpsm,1));
             
             % Run the PSM
             Y = sum(slopes.*Xpsm, 1) + intercept;
