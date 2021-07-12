@@ -81,7 +81,7 @@ gains = [sites', kf.whichR, whichCov];
 
 % Initialize progress bar
 nGains = size(gains, 1);
-progress = progressbar(showprogress, 'Running Kalman Filter:', nGains, ceil(nGains/100));
+progress = dash.misc.progressbar(showprogress, 'Running Kalman Filter:', nGains, ceil(nGains/100));
 
 % Make each covariance estimate. Get its associated time steps, priors, and gains
 for c = 1:nCov

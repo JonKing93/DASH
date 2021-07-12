@@ -95,7 +95,7 @@ progress = cell(nVars, 1);
 step = ceil(nEns/100);
 for v = 1:nVars
     message = sprintf('Building "%s":', obj.variables(v).name);
-    progress{v} = progressbar(showprogress, message, nEns, step);
+    progress{v} = dash.misc.progressbar(showprogress, message, nEns, step);
 end
 
 % Either load the array directly or write to file
