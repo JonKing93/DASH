@@ -1,4 +1,4 @@
-classdef linearPSM < PSM
+classdef linear < PSM.PSM
     % Implements a general linear PSM of the following form:
     %
     % Y = a1 X1 + a2 X2 + ... + an Xn + b
@@ -13,7 +13,7 @@ classdef linearPSM < PSM
     
     methods
         % Constructor
-        function[obj] = linearPSM(rows, slopes, intercept, name)
+        function[obj] = linear(rows, slopes, intercept, name)
             %% Creates a new linear PSM
             %
             % obj = linearPSM(rows, slopes, intercept)
@@ -51,14 +51,14 @@ classdef linearPSM < PSM
             if ~exist('name','var')
                 name = "";
             end            
-            obj@PSM(name, false);            
+            obj@PSM.PSM(name, false);            
             obj = obj.useRows(rows);
             
             % Error check the slopes and intercept
             if ~exist('intercept','var')
                 intercept = [];
             end
-            [obj.slopes, obj.intercept] = linearPSM.checkInputs(slopes, intercept, size(obj.rows,1));
+            [obj.slopes, obj.intercept] = obj.checkInputs(slopes, intercept, size(obj.rows,1));
         end
         
         % Run the PSM
