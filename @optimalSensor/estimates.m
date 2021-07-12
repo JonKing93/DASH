@@ -24,7 +24,7 @@ assert(~obj.hasPSMs, 'You cannot provide estimates for this optimal sensor test 
 % Error check
 assert(isnumeric(Ye), 'Ye must be numeric');
 assert(ismatrix(Ye), 'Ye must be a matrix');
-dash.assertRealDefined(Ye, 'Ye');
+dash.assert.realDefined(Ye, 'Ye');
 [nSite, nEns] = size(Ye);
 assert(nEns==obj.nEns, sprintf(['You previously specified a prior with %.f ',...
     'ensemble members (columns), but Ye has %.f columns'], obj.nEns, nEns));

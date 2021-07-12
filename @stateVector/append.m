@@ -15,7 +15,7 @@ function[obj] = append(obj, secondVector)
 
 % Error check
 obj.assertEditable;
-dash.assertScalarType(secondVector, 'secondVector', 'stateVector', 'stateVector object');
+dash.assert.scalarType(secondVector, 'secondVector', 'stateVector', 'stateVector object');
 
 % Check there are no naming conflicts
 title2 = secondVector.errorTitle;
@@ -49,7 +49,7 @@ function[] = notifyAutocoupling(obj, names1, names2)
 % Only notify if there are variables to couple and the user enabled
 % notifications
 if obj.verbose && numel(names1)>0 && numel(names2)>0
-    fprintf('\nCoupling %s to %s.\n', dash.messageList(names1), dash.messageList(names2));
+    fprintf('\nCoupling %s to %s.\n', dash.string.messageList(names1), dash.string.messageList(names2));
 end
 
 end

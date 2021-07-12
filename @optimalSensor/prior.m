@@ -15,7 +15,7 @@ function[obj] = prior(obj, X)
 %% Error check
 assert(isnumeric(X), 'X must be numeric');
 assert(ismatrix(X), 'X must be a matrix');
-dash.assertRealDefined(X, 'X', true);
+dash.assert.realDefined(X, 'X', true);
 
 % Size check
 [nState, nEns] = size(X);

@@ -18,9 +18,9 @@ function[] = rewriteMetadata( obj, dim, meta )
 obj.update;
 
 % Error check
-dim = dash.assertStrFlag(dim, "dim");
+dim = dash.assert.strflag(dim, "dim");
 obj.checkAllowedDims(dim);
-meta = dash.checkMetadataField(meta, dim);
+meta = dash.assert.metadataField(meta, dim);
 
 % Check the new metadata is the correct size
 if size(meta,1) ~= size(obj.meta.(dim),1)

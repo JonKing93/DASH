@@ -17,7 +17,7 @@ for v = 1:nVars
 end
 
 % Get the limits
-limits = dash.buildLimits(nEls);
+limits = dash.indices.limits(nEls);
 
 end
     

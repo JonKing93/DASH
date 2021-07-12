@@ -31,6 +31,6 @@ else
 end
 
 % Check the dimensions are allowed
-dash.checkStrsInList(dims, allowed, 'dims', allowedName);
+dash.assert.strsInList(dims, allowed, 'dims', allowedName);
 
 end

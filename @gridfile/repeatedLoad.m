@@ -103,11 +103,11 @@ for s = 1:numel(useSource)
     % Load the data from the data source. Match .grid dimension order
     [Xsource, sources{useSource(s)}] = source.read( sourceIndices );
     [~, index] = ismember(source.mergedDims, obj.dims);
-    X(outputIndices{:}) = dash.permuteDimensions(Xsource, index, false, nDims);
+    X(outputIndices{:}) = dash.misc.permuteDimensions(Xsource, index, false, nDims);
 end
 
 % Permute to match the requested dimension order
-[X, order] = dash.permuteDimensions(X, inputOrder, true, nDims);
+[X, order] = dash.misc.permuteDimensions(X, inputOrder, true, nDims);
 dims = obj.dims(order);
 
 % Determine which dimensions to keep and which to remove. Keep dimensions

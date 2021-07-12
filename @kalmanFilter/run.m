@@ -30,12 +30,12 @@ function[out] = run(kf, showprogress, complexError)
 if ~exist('showprogress','var') || isempty(showprogress)
     showprogress = false;
 end
-dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
+dash.assert.scalarType(showprogress, 'showprogress', 'logical', 'logical');
 
 if ~exist('complexError','var') || isempty(complexError)
     complexError = true;
 end
-dash.assertScalarType(complexError, 'complexError', 'logical', 'logical');
+dash.assert.scalarType(complexError, 'complexError', 'logical', 'logical');
 
 % Check for essential inputs and finalize whichArgs
 kf = kf.finalize;

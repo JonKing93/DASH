@@ -26,13 +26,13 @@ assert(~isempty(obj.metricType), 'You must specify a metric before running an op
 % Default and parse N
 if ~exist('N','var') || isempty(N)
     N = 1;
-elseif dash.isstrflag(N) && strcmpi(N, 'all')
+elseif dash.string.isflag(N) && strcmpi(N, 'all')
     N = obj.nSite;
 end
 
 % Error check
-dash.assertScalarType(N, 'N', 'numeric', 'numeric');
-dash.assertPositiveIntegers(N, 'N', false, false);
+dash.assert.scalarType(N, 'N', 'numeric', 'numeric');
+dash.assert.positiveIntegers(N, 'N', false, false);
 assert(N<=obj.nSite, sprintf('N cannot be larger than the number of sensor sites (%.f)', obj.nSite));
 
 % Preallocate the output structure

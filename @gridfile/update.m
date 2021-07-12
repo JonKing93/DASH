@@ -8,7 +8,7 @@ function[] = update(obj)
 % Load the fields
 fields = ["dims","gridSize","isdefined","metadata","source","fieldLength",...
               "maxLength","dimLimit","absolutePath"];
-s = dash.loadMatfileFields(obj.file, fields, '.grid');
+s = dash.matfile.loadFields(obj.file, fields, '.grid');
 
 % Update properties
 props = ["dims","size","isdefined","meta","source","fieldLength",...

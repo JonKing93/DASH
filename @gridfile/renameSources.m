@@ -50,7 +50,7 @@ if ~exist('name','var') || isempty(name)
     name = obj.collectFullPaths(1:nSource);
     name(isfile(name)) = [];
 end
-name = dash.assertStrList(name, "name");
+name = dash.assert.strlist(name, "name");
 
 % Get the data sources associated with each file name.
 nFile = numel(name);
@@ -66,7 +66,7 @@ end
 if ~exist('newname','var') || isempty(newname)
     newname = strings(nFile,1);
 end
-newname = dash.assertStrList(newname,"newname");
+newname = dash.assert.strlist(newname,"newname");
 if numel(newname) ~= numel(name)
     error('newname must have one element for each element in name (%.f), but newname currently has %.f elements.', numel(name), numel(newname));
 end
@@ -89,7 +89,7 @@ for f = 1:nFile
         [~, file, ext] = fileparts( char(name(f)) );
         newname(f) = [file, ext];
     end
-    newname(f) = dash.checkFileExists(newname(f));
+    newname(f) = dash.assert.fileExists(newname(f));
 end
 
 % Preallocate the length of each new file path

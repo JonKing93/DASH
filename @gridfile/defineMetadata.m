@@ -32,7 +32,7 @@ meta = struct();
 
 % Prevent duplicate dimension names
 for v = 1:2:nargin-1
-    dash.assertStrFlag( varargin{v}, sprintf("Input %.f",v) );
+    dash.assert.strflag( varargin{v}, sprintf("Input %.f",v) );
     if ismember( varargin{v}, userDims )
         error('Dimension name "%s" is specified multiple times.', varargin{v});
     end
@@ -49,7 +49,7 @@ end
 for v = 2:2:nargin
     dim = varargin{v-1};
     value = varargin{v};
-    value = dash.checkMetadataField(value, dim);
+    value = dash.assert.metadataField(value, dim);
     
     % Warn user if metadata is a row vector. (They probably want a column)
     if isrow(value) && ~isscalar(value)

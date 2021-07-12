@@ -45,7 +45,7 @@ if isequal(sources, 'all')
     index = 1:nSource;
         
 % If filenames, check that all files are recognized
-elseif dash.isstrlist(sources)
+elseif dash.string.islist(sources)
     files = string(sources);
     nFile = numel(files);
     index = [];
@@ -59,7 +59,7 @@ elseif dash.isstrlist(sources)
         
 % Check indices are valid. Throw error for anything else
 elseif isnumeric(sources) || islogical(sources)
-    index = dash.checkIndices(sources, 's', nSource, 'the number of data sources in the .grid file');
+    index = dash.assert.indices(sources, 's', nSource, 'the number of data sources in the .grid file');
 else
     error('The first input may be ''all'', a list of file names, or a set of linear indices.');
 end
@@ -89,7 +89,7 @@ end
 % Preallocate source structure
 nSource = numel(index);
 sourceFields = {"file","variable","dimensions","size","metadata","fillValue","validRange","linearTransformation"};
-[sourceInfo, inputs] = dash.preallocateStructs(sourceFields, [nSource, 1]);
+[sourceInfo, inputs] = dash.struct.preallocate(sourceFields, [nSource, 1]);
 
 % Source information
 sources = obj.buildSources(index);

@@ -15,7 +15,7 @@ function[obj] = rename(obj, name)
 
 % Error check. Change name. Use string internally. Check editable
 obj.assertEditable;
-dash.assertStrFlag(name, 'name');
+dash.assert.strflag(name, 'name');
 obj.name = string(name);
 
 end

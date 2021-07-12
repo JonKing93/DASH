@@ -27,7 +27,7 @@ v = obj.checkVariables(varNames);
 if ~islogical(auto)
     error('auto must be a logical');
 elseif ~isscalar(auto)
-    dash.assertVectorTypeN(auto, [], numel(v), 'Since auto is not a scalar, it');
+    dash.assert.vectorTypeN(auto, [], numel(v), 'Since auto is not a scalar, it');
 end
 
 % Update

@@ -34,11 +34,11 @@ if ~exist('varNames','var') || isempty(varNames)
 end
 
 % Error check inputs
-if dash.isstrlist(varNames)
+if dash.string.islist(varNames)
     v = obj.checkVariables(varNames);
 elseif isnumeric(varNames) || islogical(varNames)
     lengthName = 'the number of variables in the state vector';
-    v = dash.checkIndices(varNames, 'v', numel(obj.variables), lengthName);
+    v = dash.assert.indices(varNames, 'v', numel(obj.variables), lengthName);
 else
     error('The first input must either be list of variable names or indices.');
 end
@@ -69,7 +69,7 @@ if nargout > 0
     
     % Preallocate the variable structure
     nVars = numel(v);
-    varInfo = dash.preallocateStructs(stateVectorVariable.infoFields, [nVars, 1]);
+    varInfo = dash.struct.preallocate(stateVectorVariable.infoFields, [nVars, 1]);
     
 % Print to console
 else
@@ -78,7 +78,7 @@ else
     if nVars==1
         plural = "variable";
     end
-    fprintf('It has %.f %s: %s\n', nVars, plural, dash.messageList(vars));
+    fprintf('It has %.f %s: %s\n', nVars, plural, dash.string.messageList(vars));
     
     % Coupled variables
     if nSets>0
@@ -88,7 +88,7 @@ else
         end
         fprintf('There %s %.f %s of coupled variables\n', plural(1), nSets, plural(2));
         for s = 1:nSets
-            fprintf('\tVariables %s are coupled.\n', dash.messageList(coupledNames{s}));
+            fprintf('\tVariables %s are coupled.\n', dash.string.messageList(coupledNames{s}));
         end
     end
     fprintf('\n');

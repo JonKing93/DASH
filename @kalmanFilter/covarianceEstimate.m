@@ -17,8 +17,8 @@ function[C, Ycov] = covarianceEstimate(kf, t)
 kf = kf.finalize;
 
 % Error check t
-dash.assertScalarType(t, 't', 'numeric', 'numeric');
-t = dash.checkIndices(t, 't', kf.nTime, 'number of time steps');
+dash.assert.scalarType(t, 't', 'numeric', 'numeric');
+t = dash.assert.indices(t, 't', kf.nTime, 'number of time steps');
 
 % If the covariance is set directly, load covariance directly
 if kf.setCov

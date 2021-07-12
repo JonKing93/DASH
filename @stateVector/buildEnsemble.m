@@ -78,7 +78,7 @@ end
 
 % Preallocate load settings for each variable
 nVars = numel(obj.variables);
-settings = dash.preallocateStructs(stateVectorVariable.loadSettingFields, [nVars, 1]);
+settings = dash.struct.preallocate(stateVectorVariable.loadSettingFields, [nVars, 1]);
 
 % Get load settings, and check that single ensemble members can fit in memory
 for v = 1:nVars
@@ -123,11 +123,11 @@ if numel(varNames) == 1
     str2 = sprintf('variable "%s"', varNames);
 else
     str1 = sprintf('\b');
-    str2 = sprintf('couple variables %s', dash.messageList(varNames));
+    str2 = sprintf('couple variables %s', dash.string.messageList(varNames));
     if sum(~overlap)==1
         str2 = strcat(str2, sprintf(' with no overlap for variable "%s"', varNames(overlap)));
     elseif sum(~overlap)>1
-        str2 = strcat(str2, sprintf(' with no overlap in variables %s', dash.messageList(varNames(overlap))));
+        str2 = strcat(str2, sprintf(' with no overlap in variables %s', dash.string.messageList(varNames(overlap))));
     end
     str3 = '.';
     if any(~overlap)

@@ -43,7 +43,7 @@ if isempty(kf.X)
 end
 
 % Error check the name
-name = dash.assertStrFlag(name, "name");
+name = dash.assert.strflag(name, "name");
 outputName = strcat('index_', name);
 assert(isvarname(outputName), 'name can only contain numbers, letters, and underscores');
 
@@ -61,7 +61,7 @@ end
 % Parse 
 
 % Delete the index if requested
-if dash.isstrflag(weights) && strcmpi(weights, 'delete')
+if dash.string.isflag(weights) && strcmpi(weights, 'delete')
     delete = strcmp(outputName, kf.Qname);
     assert(any(delete), sprintf('There is no index named %s', name));
     kf.Q(delete,:) = [];
@@ -69,10 +69,10 @@ if dash.isstrflag(weights) && strcmpi(weights, 'delete')
     
 % Otherwise, error check the inputs
 else
-    dash.assertVectorTypeN(weights, 'numeric', numel(rows), 'weights');
+    dash.assert.vectorTypeN(weights, 'numeric', numel(rows), 'weights');
     assert(~ismember(outputName, kf.Qname), sprintf('You already specified an index named %s', name));
-    rows = dash.checkIndices(rows, 'rows', kf.nState, 'number of state vector elements');
-    dash.assertStrFlag(nanflag, 'nanflag');
+    rows = dash.assert.indices(rows, 'rows', kf.nState, 'number of state vector elements');
+    dash.assert.strflag(nanflag, 'nanflag');
     assert(any(strcmpi(nanflag, ["omitnan","includenan"])), 'nanflag must either be "omitnan" or "includenan"');
 
     % Add to the calculations array

@@ -14,7 +14,7 @@ function[kf] = deviations(kf, tf)
 % kf: The updated kalmanFilter object
 
 % Error check and save
-dash.assertScalarType(tf, 'tf', 'logical', 'logical');
+dash.assert.scalarType(tf, 'tf', 'logical', 'logical');
 kf.return_devs = tf;
 
 end

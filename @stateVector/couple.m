@@ -58,8 +58,8 @@ if ~isempty(sv) && obj.verbose
     % Format variable names as string
     names = obj.variableNames;
     template = names(t);
-    input = dash.messageList( names(uv) );
-    secondary = dash.messageList( names(sv) );
+    input = dash.string.messageList( names(uv) );
+    secondary = dash.string.messageList( names(sv) );
     
     % Message
     fprintf(['\nVariable%s %s %s coupled to %s. Thus, %s will also be ', ...

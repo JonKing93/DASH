@@ -22,7 +22,7 @@ nVars = numel(obj.variables);
 if ~exist('v','var') || isempty(v)
     v = 1:nVars;
 elseif islogical(v) || isnumeric(v)
-    v = dash.checkIndices(v, 'v', nVars, 'the number of variables');
+    v = dash.assert.indices(v, 'v', nVars, 'the number of variables');
 else
     error('v must either be a logical or numeric vector.');
 end
@@ -32,7 +32,7 @@ varNames = strings(0,1);
 
 % Get the variable names
 if ~isempty(obj.variables)
-    varNames = dash.collectField(obj.variables(v), 'name');
+    varNames = dash.struct.collectField(obj.variables(v), 'name');
     varNames = string(varNames);
 end
 

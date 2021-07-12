@@ -21,9 +21,9 @@ obj.assertEditable;
 v = obj.checkVariables(varNames);
 
 % Error check the new names
-dash.assertStrList(newNames, 'newNames');
+dash.assert.strlist(newNames, 'newNames');
 newNames = string(newNames);
-dash.assertVectorTypeN(newNames, [], numel(v), 'newNames');
+dash.assert.vectorTypeN(newNames, [], numel(v), 'newNames');
 
 % Check there are no naming conflicts and names are valid
 obj.checkVariableNames(newNames, v, 'newNames', 'rename variables for');

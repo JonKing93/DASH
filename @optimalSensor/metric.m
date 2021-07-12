@@ -21,10 +21,10 @@ function[obj] = metric(obj, type, varargin)
 % Note: This method is a switch that directs to appropriate metric methods
 
 % Error check the type
-dash.assertStrFlag(type, 'The first input');
+dash.assert.strflag(type, 'The first input');
 allowedTypes = "mean";
 assert(any(strcmpi(type, allowedTypes)), sprintf(['The first index must be a ',...
-    'recognized type of metric. Recognized types are: %s.'], dash.messageList(allowedTypes)));
+    'recognized type of metric. Recognized types are: %s.'], dash.string.messageList(allowedTypes)));
 
 % Save the arguments for the metric
 if strcmpi(type, 'mean')

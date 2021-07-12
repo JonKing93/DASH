@@ -89,7 +89,7 @@ if ~isempty(sv) && obj.verbose
     % Format variable names as string
     names = obj.variableNames;
     template = names(t);
-    secondary = dash.messageList( names(sv) );
+    secondary = dash.string.messageList( names(sv) );
     
     % Message
     fprintf(['\nVariable%s %s %s coupled to "%s". Updating %s to match the ',...

@@ -21,7 +21,7 @@ if ~isempty(varNames)
     
     % Check the variables are in the state vector
     listName = sprintf('variable in %s', obj.errorTitle);
-    v = dash.checkStrsInList(varNames, obj.variableNames, 'varNames', listName);
+    v = dash.assert.strsInList(varNames, obj.variableNames, 'varNames', listName);
     
     % No duplicates
     if numel(v) ~= numel(unique(v))

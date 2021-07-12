@@ -22,9 +22,9 @@ function[] = expand( obj, dim, meta )
 obj.update;
 
 % Error check
-dim = dash.assertStrFlag(dim, "dim");
+dim = dash.assert.strflag(dim, "dim");
 obj.checkAllowedDims(dim, true);
-meta = dash.checkMetadataField(meta, dim);
+meta = dash.assert.metadataField(meta, dim);
 
 % Get the old metadata
 oldMeta = obj.meta.(dim);
@@ -47,7 +47,7 @@ catch
 end
 
 % Check that the new metadata does not duplicate rows in the old metadata
-if dash.hasDuplicateRows(meta)
+if dash.misc.hasDuplicateRows(meta)
     error('The new %s metadata duplicates rows in the existing %s metadata in .grid file %s.', dim, dim, obj.file);
 end
 

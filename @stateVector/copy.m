@@ -55,15 +55,15 @@ function[obj] = copy(obj, templateName, varNames, varargin)
 % Error check template, template index, parse inputs, editable
 obj.assertEditable;
 t = obj.checkVariables(templateName);
-[copySequences, copyMeans, copyWeights, copyDesigns, copyMetadata] = dash.parseInputs( varargin, ...
+[copySequences, copyMeans, copyWeights, copyDesigns, copyMetadata] = dash.parse.inputs( varargin, ...
     ["sequence","mean","weightedMean","design","metadata"], {true, true, true, true, true}, 2 );
 
 % Error check
-dash.assertScalarType(copySequences, 'copySequences', 'logical', 'logical');
-dash.assertScalarType(copyMeans, 'copyMeans', 'logical', 'logical');
-dash.assertScalarType(copyWeights, 'copyWeights', 'logical', 'logical');
-dash.assertScalarType(copyDesigns, 'copyDesigns', 'logical', 'logical');
-dash.assertScalarType(copyMetadata, 'copyMetadata', 'logical', 'logical');
+dash.assert.scalarType(copySequences, 'copySequences', 'logical', 'logical');
+dash.assert.scalarType(copyMeans, 'copyMeans', 'logical', 'logical');
+dash.assert.scalarType(copyWeights, 'copyWeights', 'logical', 'logical');
+dash.assert.scalarType(copyDesigns, 'copyDesigns', 'logical', 'logical');
+dash.assert.scalarType(copyMetadata, 'copyMetadata', 'logical', 'logical');
 
 % Get the template variable
 var = obj.variables(t);

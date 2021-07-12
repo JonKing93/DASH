@@ -46,9 +46,9 @@ if islogical(fields)
     fields = outputFields;
 
 % String fields
-elseif dash.isstrlist(fields)
+elseif dash.string.islist(fields)
     fields = string(fields);
-    dash.checkStrsInList(fields, outputFields, 'fields', 'allowed output field');
+    dash.assert.strsInList(fields, outputFields, 'fields', 'allowed output field');
     assert(numel(fields)==numel(unique(fields)), 'fields contains duplicate names');
 
 % Anything else
@@ -67,7 +67,7 @@ nFields = numel(fields);
 if isscalar(returnFields)
     returnFields = repmat(returnFields, [1 nFields]);
 else
-    dash.assertVectorTypeN(returnFields, [], nFields, 'returnFields');
+    dash.assert.vectorTypeN(returnFields, [], nFields, 'returnFields');
 end
 
 % Update the output fields

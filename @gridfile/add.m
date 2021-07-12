@@ -78,14 +78,14 @@ function[] = add( obj, type, file, var, dims, meta, varargin )
 obj.update;
 
 % Parse and error check the optional inputs (fill, range, convert, absolute)
-[fill, range, convert, absolute] = dash.parseInputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
+[fill, range, convert, absolute] = dash.parse.inputs( varargin, {'fill','validRange','convert','absolutePath'}, ...
                                       {NaN, [-Inf, Inf], [1 0], false}, 5 );
-dash.assertScalarType(absolute, 'absolute', 'logical', 'logical');
-dash.assertVectorTypeN(fill, 'numeric', 1, 'fill');
-dash.assertVectorTypeN(convert, 'numeric', 2, 'convert');
-dash.assertRealDefined(convert, 'convert');
-dash.assertVectorTypeN(range, 'numeric', 2, 'range');
-dash.assertRealDefined(range, 'range', false, true);
+dash.assert.scalarType(absolute, 'absolute', 'logical', 'logical');
+dash.assert.vectorTypeN(fill, 'numeric', 1, 'fill');
+dash.assert.vectorTypeN(convert, 'numeric', 2, 'convert');
+dash.assert.realDefined(convert, 'convert');
+dash.assert.vectorTypeN(range, 'numeric', 2, 'range');
+dash.assert.realDefined(range, 'range', false, true);
 if range(1) > range(2)
     error('The first element of range cannot be larger than the second element.');
 end

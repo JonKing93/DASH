@@ -14,7 +14,7 @@ function[kf] = variance(kf, tf)
 % kf: The updated kalman filter object
 
 % Error check
-dash.assertScalarType(tf, 'tf', 'logical', 'logical');
+dash.assert.scalarType(tf, 'tf', 'logical', 'logical');
 
 % Check for an existing variance calculation
 [hasvariance, k] = ismember(posteriorVariance.outputName, kf.Qname);

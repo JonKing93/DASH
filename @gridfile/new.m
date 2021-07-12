@@ -41,16 +41,16 @@ if ~exist('overwrite','var') || isempty(overwrite)
 end
 
 % Error check
-filename = dash.assertStrFlag( filename, "filename" );
+filename = dash.assert.strflag( filename, "filename" );
 if ~isempty(attributes)  && (~isstruct(attributes) || ~isscalar(attributes))
     error('attributes must be a scalar struct.');
 end
-dash.assertScalarType(overwrite, 'overwrite', 'logical', 'logical');
+dash.assert.scalarType(overwrite, 'overwrite', 'logical', 'logical');
 dims = dash.dimensionNames;
 meta = gridfile.checkMetadataStructure( meta, dims, "recognized dimension names" );
 
 % Set file extension. Optionally check overwriting. Get full path
-filename = dash.setupNewFile(filename, '.grid', overwrite);
+filename = dash.file.new(filename, '.grid', overwrite);
 
 % Get all internal metadata names.
 atts = gridfile.attributesName;

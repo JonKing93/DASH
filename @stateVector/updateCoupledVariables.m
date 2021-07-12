@@ -61,7 +61,7 @@ if obj.verbose && (numel(toEns)>0 || numel(toState)>0)
         if nEns == 1
             plural = ["a state dimension", "an ensemble dimension"];
         end
-        fprintf('\tConverting %s from %s to %s.\n', dash.messageList(toEns), plural(1), plural(2));
+        fprintf('\tConverting %s from %s to %s.\n', dash.string.messageList(toEns), plural(1), plural(2));
     end
     
     % Converting to state
@@ -71,7 +71,7 @@ if obj.verbose && (numel(toEns)>0 || numel(toState)>0)
         if nState == 1
             plural = ["an ensemble dimension", "a state dimension"];
         end
-        fprintf('\tConverting %s from %s to %s.\n', dash.messageList(toState), plural(1), plural(2));
+        fprintf('\tConverting %s from %s to %s.\n', dash.string.messageList(toState), plural(1), plural(2));
     end
 end
 

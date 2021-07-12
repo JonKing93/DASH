@@ -76,10 +76,10 @@ if ~isscalar(nEns)
 elseif numel(obj.variables)==0
     error('There are no variables in %s.', obj.errorTitle);
 end
-dash.assertPositiveIntegers(nEns, 'nEns');
-dash.assertScalarType(random, 'random', 'logical', 'logical');
-dash.assertScalarType(overwrite, 'overwrite', 'logical', 'logical');
-dash.assertScalarType(showprogress, 'showprogress', 'logical', 'logical');
+dash.assert.positiveIntegers(nEns, 'nEns');
+dash.assert.scalarType(random, 'random', 'logical', 'logical');
+dash.assert.scalarType(overwrite, 'overwrite', 'logical', 'logical');
+dash.assert.scalarType(showprogress, 'showprogress', 'logical', 'logical');
 
 % Check that each variable has both state and ensemble dimensions
 nVars = numel(obj.variables);
@@ -124,7 +124,7 @@ for s = 1:nSets
             varMeta = obj.variables(v(k)).dimMetadata(grids.grids{g}, dims(d) );
             
             % Get the metadata intersect
-            if dash.bothNaN(meta, varMeta)
+            if dash.misc.bothNaN(meta, varMeta)
                 meta = NaN;
             else
                 try
@@ -164,8 +164,8 @@ end
 ens = [];
 writeFile = false;
 if ~isempty(filename)
-    filename = dash.assertStrFlag(filename, 'filename');
-    filename = dash.setupNewFile(filename, '.ens', overwrite);
+    filename = dash.assert.strflag(filename, 'filename');
+    filename = dash.file.new(filename, '.ens', overwrite);
     writeFile = true;
     
     % Initialize the new matfile
@@ -218,7 +218,7 @@ error(['Cannot couple variables %s because they have no common metadata ', ...
     'along the "%s" dimension. This can occur when metadata for different ',...
     'variables are in different formats. If this is the case, consider using ',...
     'either the "stateVector.specifyMetadata" or "stateVector.convertMetadata" ',...
-    'method.'], dash.messageList(varNames), dim);
+    'method.'], dash.string.messageList(varNames), dim);
 end
 function[] = loadTooBigError(filename)
 warning(['The state vector ensemble was successfully written to file "%s". ', ...

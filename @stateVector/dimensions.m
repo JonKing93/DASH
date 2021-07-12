@@ -43,7 +43,7 @@ flags = ["state","s","ensemble","ens","e","all","a"];
 if ~exist('type','var') || isempty(type)
     type = 'all';
 elseif ~any(strcmpi(type, flags))
-    error('type must be one of the following strings: %s', dash.messageList(flags));
+    error('type must be one of the following strings: %s', dash.string.messageList(flags));
 end
 type = lower(type);
 

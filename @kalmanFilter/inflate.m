@@ -22,8 +22,8 @@ function[kf] = inflate(kf, factor, whichFactor)
 kf.assertEditableCovariance('covariance inflation options');
 
 % Error check the inflation factors
-dash.assertVectorTypeN(factor, 'numeric', [], 'factor');
-dash.assertRealDefined(factor, 'factor');
+dash.assert.vectorTypeN(factor, 'numeric', [], 'factor');
+dash.assert.realDefined(factor, 'factor');
 assert(all(factor>=1), 'inflation factors cannot be smaller than 1.');
 
 % Default and error check whichFactor

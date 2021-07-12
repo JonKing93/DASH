@@ -8,7 +8,7 @@ function[g] = prebuildSources(obj)
 % grids: A prebuiltGrids object
 
 % Get the .grid files associated with each variable.
-files = dash.collectField(obj.variables, 'file');
+files = dash.struct.collectField(obj.variables, 'file');
 files = string(files);
 
 % Find the unique gridfiles. Preallocate data sources, grids, and the limits

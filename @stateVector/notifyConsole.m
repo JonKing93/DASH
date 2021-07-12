@@ -13,7 +13,7 @@ function[obj] = notifyConsole(obj, verbose)
 % obj: The updated stateVector object
 
 % Error check. Set toggle
-dash.assertScalarType(verbose, 'verbose', 'logical', 'logical');
+dash.assert.scalarType(verbose, 'verbose', 'logical', 'logical');
 obj.verbose = verbose;
 
 end

@@ -27,7 +27,7 @@ v = obj.checkVariables(varNames);
 if ~islogical(overlap)
     error('overlap must be a logical');
 elseif ~isscalar(overlap)
-    dash.assertVectorTypeN(overlap, [], numel(v), 'Since overlap is not a scalar, it');
+    dash.assert.vectorTypeN(overlap, [], numel(v), 'Since overlap is not a scalar, it');
 end
 
 % Update

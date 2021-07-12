@@ -10,8 +10,8 @@ if ~exist('rows','var') || isempty(rows)
 end
 
 % Error check the inputs
-dash.assertVectorTypeN(weights, 'numeric', numel(rows), 'weights');
-rows = dash.checkIndices(rows, 'rows', obj.nState, 'number of state vector elements');
+dash.assert.vectorTypeN(weights, 'numeric', numel(rows), 'weights');
+rows = dash.assert.indices(rows, 'rows', obj.nState, 'number of state vector elements');
 
 % Save the arg structure
 denom = sum(weights);

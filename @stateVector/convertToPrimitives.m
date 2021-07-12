@@ -18,7 +18,7 @@ s.name = [obj.variables.name];
 s.file = [obj.variables.file];
 s.dims = strings(nVars, 1);
 for v = 1:nVars
-    s.dims(v) = dash.commaDelimitedDims(obj.variables(v).dims);
+    s.dims(v) = dash.string.commaDelimited(obj.variables(v).dims);
 end
 
 % Get dimension string and number of dimensions per variable
@@ -30,7 +30,7 @@ end
 % Collect vectors, store in a single vector
 fields = stateVectorVariable.vectorFields;
 nFields = numel(fields);
-limits = dash.buildLimits(nDims*nFields);
+limits = dash.indices.limits(nDims*nFields);
 
 % Collect the vectors for each variable
 vectors = NaN(limits(end), 1);

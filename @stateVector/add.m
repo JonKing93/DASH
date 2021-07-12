@@ -54,14 +54,14 @@ end
 obj.assertEditable;
 
 % Error check the variable names. Get the number of new variables
-varNames = dash.assertStrList(varNames, 'varNames');
+varNames = dash.assert.strlist(varNames, 'varNames');
 obj.checkVariableNames(varNames, [], 'varNames', 'add new variables to');
 nNew = numel(varNames);
 
 % Error check the other inputs.
-files = dash.assertStrList(files, 'files');
-dash.assertVectorTypeN(autoCouple, 'logical', [], 'autoCouple');
-dash.assertVectorTypeN(overlap, 'logical', [], 'overlap');
+files = dash.assert.strlist(files, 'files');
+dash.assert.vectorTypeN(autoCouple, 'logical', [], 'autoCouple');
+dash.assert.vectorTypeN(overlap, 'logical', [], 'overlap');
 
 % Check sizes and propagate scalar inputs
 fields = {files, autoCouple, overlap};

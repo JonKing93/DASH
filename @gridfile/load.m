@@ -71,7 +71,7 @@ obj.update;
 if ~exist('dims','var') || isempty(dims)
     dims = obj.dims(obj.isdefined);
 end
-dims = dash.assertStrList(dims, "dims");
+dims = dash.assert.strlist(dims, "dims");
 obj.checkAllowedDims(dims, false);
 if numel(dims) < numel(unique(dims))
     error('dims contains duplicate names.');
@@ -111,8 +111,8 @@ if ~haveIndices
     name = ["start","count","stride"];
     allowInf = [false true false];
     for i = 1:numel(input)
-        dash.assertVectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
-        dash.assertPositiveIntegers( input{i}, name(i), false, allowInf(i) );
+        dash.assert.vectorTypeN( input{i}, 'numeric', nInputDims, name(i) );
+        dash.assert.positiveIntegers( input{i}, name(i), false, allowInf(i) );
         if any( input{i}>obj.size(inputOrder) & ~isinf(input{i}) )
             bad = find(input{i}>obj.size(inputOrder),1);
             error('Element %.f of %s (%.f) is larger than the length of the %s dimension (%.f)', bad, name(i), start(bad), obj.dims(inputOrder(bad)), obj.size(inputOrder(bad)) );
@@ -131,7 +131,7 @@ if ~haveIndices
 
 % User specified indices. Error check cell
 else
-    dash.assertVectorTypeN(inputIndices, 'cell', nInputDims, 'indices');
+    dash.assert.vectorTypeN(inputIndices, 'cell', nInputDims, 'indices');
     
     % Default for empty indices
     for d = 1:nInputDims
@@ -142,7 +142,7 @@ else
         % Error check indices for individual dimensions
         name = sprintf('Element %.f of indices', d);
         lengthName = sprintf('the length of the %s dimension', obj.dims(inputOrder(d)));
-        inputIndices{d} = dash.checkIndices(inputIndices{d}, name, obj.size(inputOrder(d)), lengthName );
+        inputIndices{d} = dash.assert.indices(inputIndices{d}, name, obj.size(inputOrder(d)), lengthName );
     end
 end
 

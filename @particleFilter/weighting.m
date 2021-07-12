@@ -19,7 +19,7 @@ function[pf] = weighting(pf, type, N)
 % pf: The updated particleFilter object
 
 % Error check and save the weighting type
-type = dash.assertStrFlag(type, 'type');
+type = dash.assert.strflag(type, 'type');
 assert(any(strcmpi(type, ["best","bayes"])), 'The weighting scheme must either be "best" or "bayes"');
 
 % Error check and set up "bayes" scheme
@@ -32,7 +32,7 @@ if strcmpi(type, "bayes")
 % number of ensemble members
 elseif strcmpi(type, "best")
     assert(isscalar(N), 'N must be a scalar');
-    dash.assertPositiveIntegers(N, 'N');
+    dash.assert.positiveIntegers(N, 'N');
     assert(N<=pf.nEns, sprintf('N cannot be larger than the number of ensemble members (%.f)', pf.nEns));
     
     pf.weightType = 1;

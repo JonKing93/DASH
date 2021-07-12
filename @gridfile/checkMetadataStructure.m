@@ -26,13 +26,13 @@ end
 metaFields = string(fields(meta));
 allowed = ismember(metaFields, dims);
 if any( ~allowed )
-    error('Only %s (%s) are allowed as field names in meta.', errorString, dash.messageList(dims) );
+    error('Only %s (%s) are allowed as field names in meta.', errorString, dash.string.messageList(dims) );
 end
 
 % Metadata values
 for d = 1:numel(metaFields)
     name = metaFields(d);
-    meta.(name) = dash.checkMetadataField( meta.(name), name );
+    meta.(name) = dash.assert.metadataField( meta.(name), name );
 end
 
 end

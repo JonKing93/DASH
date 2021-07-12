@@ -24,9 +24,9 @@ if ~exist('var','var') || isempty(var)
 end
 
 % Error check. Use string internally
-file = dash.assertStrFlag(file, "file");
+file = dash.assert.strflag(file, "file");
 if ~isempty(var)
-    var = dash.assertStrFlag(var, "var");
+    var = dash.assert.strflag(var, "var");
 end
 
 % Determine which sources match the file name
