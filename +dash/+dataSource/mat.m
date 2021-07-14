@@ -33,8 +33,8 @@ classdef mat < dash.dataSource
             
             % Constructor and error checks
             obj@dash.dataSource(file, 'file', dims, fill, range, convert);
-            obj = obj.checkFile;
-            obj = obj.setVariable(var);
+            obj.source = dash.assert.fileExists( obj.source, '.mat' );
+            obj.var = dash.assert.strflag(var, 'var');
             
             % Use chars to access matfile variables
             obj.var = char(obj.var);

@@ -14,9 +14,9 @@ classdef nc < dash.dataSource
             
             % Constructor and error checking
             obj@dash.dataSource(source, sourceName, dims, fill, range, convert);
-            obj = obj.setVariable(var);
+            obj.var = dash.assert.strflag(var, 'var');
             if strcmp(sourceName, 'file')
-                obj = obj.checkFile;
+                obj.source = dash.assert.fileExists(obj.source, '.nc');
             end
             
             % Check the source is actually a NetCDF

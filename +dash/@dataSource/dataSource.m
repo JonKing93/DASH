@@ -87,21 +87,12 @@ classdef (Abstract) dataSource
     
     % Object utilities
     methods
-        function[obj] = checkFile(obj)
-            %% Checks the data source is a file that exists
-            obj.source = dash.assert.fileExists(obj.source);
-        end
-        function[obj] = setVariable(obj, var)
-            %% For hdf data sources, sets the variable name
-            obj.var = dash.assert.strflag(var, 'var');
-        end
         function[] = checkVariableInSource(obj, sourceVariables)
             %% Checks that a variable is in a data source
             if ~ismember(obj.var, sourceVariables)
                 error('The data source "%s" does not have a %s variable', obj.source, obj.var);
             end
         end
-        
         [X, obj] = read(obj, mergedIndices);
     end
 
