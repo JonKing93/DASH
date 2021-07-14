@@ -38,10 +38,11 @@ end
 exist = isfile(file);
 path = which(file);
 empty = isempty(path);
+missing = false;
 
 % If the file does not exist, and has no path, it cannot be found
 if empty && ~exist
-    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
+    missing = true;
 
 % If the file exists, but the path is empty, find the path
 elseif empty
@@ -52,10 +53,34 @@ elseif empty
     
 % If the full path is not a file, throw error
 elseif ~exist && ~isfile(path)
-    error("DASH:missingFile",'Could not find file %s.', file);
+    missing = true;
 end
 
-% Use string internally
+% If the file is missing, check for a default extension
+if missing && exist('ext','var') && ~isempty(ext)
+    file = char(file);
+    ext = char(ext);
+    N = numel(ext);
+    
+    % If the file is missing the default extension, get the new name
+    if numel(file)<N || ~strcmp(file(end-N+1:end), ext)
+        fullname = [file, ext];
+    end
+    
+    % Re-search using the extended file name
+    try
+        path = dash.assert.fileExists( fullname );
+        missing = false;
+    catch
+    end
+end
+
+% If the file is missing, throw an error
+if missing
+    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
+end
+
+% Use strings for file paths
 path = string(path);
 
 end
