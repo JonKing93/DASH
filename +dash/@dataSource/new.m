@@ -63,7 +63,7 @@ end
 
 % Check that the subclass constructor set all fields for which
 % it is responsible
-fields = dataSource.subclassResponsibilities;
+fields = source.subclassResponsibilities;
 for f = 1:numel(fields)
     if isempty( source.(fields(f)) )
         error('The dataSource subclass constructor did not set the "%s" property.', fields(f));

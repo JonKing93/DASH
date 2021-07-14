@@ -1,4 +1,4 @@
-classdef mat < dash.dataSource.Interface
+classdef mat < dash.dataSource
     %% Reads data from a .mat file data source
     
     % ----- Written By -----
@@ -32,7 +32,7 @@ classdef mat < dash.dataSource.Interface
             % obj: The new matSource object
             
             % Constructor and error checks
-            obj@dash.dataSource.Interface(file, 'file', dims, fill, range, convert);
+            obj@dash.dataSource(file, 'file', dims, fill, range, convert);
             obj = obj.checkFile;
             obj = obj.setVariable(var);
             
