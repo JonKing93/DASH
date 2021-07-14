@@ -34,6 +34,9 @@ function[X, order] = permuteDimensions(X, index, iscomplete, nDims)
 
 % Get the order of the subset dimensions in the complete array
 d = 1:nDims;
+if ~isrow(index)
+    index = index';
+end
 order = [index, d(~ismember(d, index))];
 
 % Case 1, the current dimension order is the complete array.
