@@ -44,23 +44,24 @@ if nargout>1
     R = NaN(nSite, nEns, nPrior);
 end
 
-% Get the estimates for each PSM.
+% Get the estimates for each PSM and the recorded rows
 for s = 1:nSite
     psm = F{s};
+    rows = psm.rows;
     
     % Propagate rows over ensemble members and priors
-    [nRows, nCols, nDim3] = size(psm.rows);
+    [nRows, nCols, nDim3] = size(rows);
     if nCols==1
-        psm.rows = repmat(psm.rows, [1 nEns, 1]);
+        rows = repmat(rows, [1 nEns, 1]);
     end
     if nDim3==1
-        psm.rows = repmat(psm.rows, [1 1 nPrior]);
+        rows = repmat(rows, [1 1 nPrior]);
     end
     
     % Extract the data required to run the PSM
     siz = [nRows, nEns, nPrior];
     [~, c, p] = ind2sub(siz, (1:prod(siz))' );
-    index = sub2ind([nState, nEns, nPrior], psm.rows(:), c, p);
+    index = sub2ind([nState, nEns, nPrior], rows(:), c, p);
     Xpsm = reshape( X(index), siz );
     
     % Notify user if PSMs fail

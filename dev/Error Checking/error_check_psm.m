@@ -37,14 +37,14 @@ X = [1:10;101:110;201:210];
 X = cat(3, X, X+1000);
 
 try
-    p1 = linearPSM(-2,1,1);
+    p1 = PSM.linear(-2,1,1);
     error('bad');
 catch
     fprintf('Caught bad index\n');
 end
 
 try
-    p1 = linearPSM(4,1,1);
+    p1 = PSM.linear(4,1,1);
     Ye = PSM.estimate(X, p1);
     error('bad');
 catch
@@ -53,7 +53,7 @@ end
 
 % Basic estimate
 rows = [2;3];
-p1 = linearPSM(rows,2,1);
+p1 = PSM.linear(rows,2,1);
 Ye1 = PSM.estimate(X, p1);
 Xpsm = X(rows,:,:);
 if ~isequal(sum(2*X(rows,:,:),1)+1, Ye1)
@@ -62,7 +62,7 @@ end
 fprintf('Ran estimator\n');
 
 % R estimation
-p2 = bayfoxPSM([1;2], 'all');
+p2 = PSM.bayfox([1;2], 'all');
 rng('default');
 [Ye2, R2] = PSM.estimate(X, p2, true);
 fprintf('Estimated R values\n');
@@ -84,7 +84,7 @@ fprintf('Estimated values and R for mixed PSMs');
 
 % Mixed columns
 rows = [1 1 1 2 2 2 3 3 3 3];
-p3 = linearPSM(rows, 1, 0);
+p3 = PSM.linear(rows, 1, 0);
 Ye1 = PSM.estimate(X, p3);
 Ye2 = cat(2, X(1,1:3,:), X(2,4:6,:), X(3,7:10,:));
 if ~isequal(Ye1, Ye2)
@@ -98,7 +98,7 @@ fprintf('Used different rows for different ensemble members\n');
 X = rand(155, 100);
 
 % Linear PSM
-p = linearPSM((1:5)', 1:5, 1);
+p = PSM.linear((1:5)', 1:5, 1);
 Ye1 = PSM.estimate(X, p, true);
 Ye2 = sum(X(1:5,:).*(1:5)',1)+1;
 if ~isequal(Ye1, Ye2)
@@ -107,7 +107,7 @@ end
 fprintf('Ran linear PSM\n');
 
 % VS-Lite
-p = vslitePSM((1:24)', 30, 0, 1, 0, 1, {});
+p = PSM.vslite((1:24)', 30, 0, 1, 0, 1, {});
 Ye1 = PSM.estimate(X, p);
 Ye2 = VSLite_v2_3(1, 100, 30, 0, 1, 0, 1, X(1:12,:), X(13:24,:));
 if ~isequal(Ye1, Ye2)
@@ -116,7 +116,7 @@ end
 fprintf('Ran VS-Lite PSM\n');
 
 % Bayfox
-p = bayfoxPSM([1;2], 'all');
+p = PSM.bayfox([1;2], 'all');
 rng('default');
 [Ye1, R1] = PSM.estimate(X, p);
 rng('default');
@@ -131,7 +131,7 @@ end
 fprintf('Ran BayFOX\n');
 
 % Baymag
-p = baymagPSM(1, 1, .5, .5, 7, 1, 'all');
+p = PSM.baymag(1, 1, .5, .5, 7, 1, 'all');
 rng('default');
 [Ye1, R1] = PSM.estimate(X, p, true);
 rng('default');
@@ -146,7 +146,7 @@ end
 fprintf('Ran BayMAG\n');
 
 % BaySpar
-p = baysparPSM(1, 31, 129);
+p = PSM.bayspar(1, 31, 129);
 rng('default');
 [Ye1, R1] = PSM.estimate(X, p, true);
 rng('default');
@@ -161,7 +161,7 @@ end
 fprintf('Ran BaySPAR\n');
 
 % Bayspline
-p = baysplinePSM(1);
+p = PSM.bayspline(1);
 rng('default');
 [Ye1, R1] = PSM.estimate(X, p, true);
 rng('default');
@@ -176,17 +176,17 @@ end
 fprintf('Ran BaySPAR\n');
 
 % Prysm Cellulose
-p = prysmCellulose([1;2;3], 0, 0, 0, 'Evans', false);
+p = PSM.prysmCellulose([1;2;3], 0, 0, 0, 'Evans', false);
 Ye1 = PSM.estimate(X, p, true);
 fprintf('Ran Prysm Cellulose\n');
 
 % Prysm coral
-p = prysmCoral([1;2], true, 30, 120, "Default");
+p = PSM.prysmCoral([1;2], true, 30, 120, "Default");
 PSM.estimate(X, p, true);
 fprintf('Ran PRYSM Coral\n');
 
 % Prysm ice core
-p = prysmIcecore(1, 5);
+p = PSM.prysmIcecore(1, 5);
 [Ye, R] = PSM.estimate(X, p, true);
 fprintf('Ran PRYSM Ice core\n');
 

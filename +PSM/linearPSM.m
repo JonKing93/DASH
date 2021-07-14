@@ -118,7 +118,7 @@ classdef linearPSM < PSM.Interface
             if ~exist('intercept','var')
                 intercept = [];
             end
-            [slopes, intercept] = PSM.linear.checkInputs(slopes, intercept, size(Xpsm,1));
+            [slopes, intercept] = PSM.linearPSM.checkInputs(slopes, intercept, size(Xpsm,1));
             
             % Run the PSM
             Y = sum(slopes.*Xpsm, 1) + intercept;
