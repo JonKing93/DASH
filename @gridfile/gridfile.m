@@ -121,7 +121,7 @@ classdef gridfile < handle
             
             % Check the input is a file name
             file = dash.assert.strflag(file, "file");
-            obj.file = dash.assert.fileExists(file);
+            obj.file = dash.assert.fileExists(file, '.grid');
             
             % Fill the fields
             obj.update;
