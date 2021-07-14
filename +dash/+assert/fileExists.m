@@ -1,4 +1,4 @@
-function[path] = fileExists( file )
+function[path] = fileExists( file, ext )
 %% Error checking to see if a file exists. If the file exists, returns the
 % absolute path as a string with UNIX style file separators.
 %
@@ -8,6 +8,10 @@ function[path] = fileExists( file )
 % dash.checkFileExists( filename )
 % Checks if a file on the active path matches the file name.
 %
+% dash.checkFileExists(name, ext)
+% If the initial filename is not found, also searches for a file with the
+% given extension.
+%
 % path = dash.checkFileExists(...)
 % Returns the full file name (including path and extension) as a string.
 %
@@ -15,7 +19,11 @@ function[path] = fileExists( file )
 %
 % fullname: An full file name including path. A string
 %
-% file: Just the file name. A string. Must include the file extension.
+% filename: The file name including extension. A string.
+%
+% name: A file name, optionally including extension. A string.
+%
+% ext: A default file extension to check if name is not found. A string.
 %
 % ----- Outputs -----
 %
@@ -26,20 +34,25 @@ if isfolder(file)
     error('%s is a folder instead of a file.', file);
 end
 
-% Check if the file exists or has a path string.
+% Check if the file exists or has a path string
 exist = isfile(file);
 path = which(file);
+empty = isempty(path);
 
-% Throw error if the file doesn't exist
-if isempty(path)
-    if ~exist
-        error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
-    end
+% If the file does not exist, and has no path, it cannot be found
+if empty && ~exist
+    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
 
-    % Get the path string if off the active path.
-    addpath(fileparts(file));
+% If the file exists, but the path is empty, find the path
+elseif empty
+    subpath = fileparts(file);
+    addpath(subpath);
     path = which(file);
-    rmpath(fileparts(file));
+    rmpath(subpath);
+    
+% If the full path is not a file, throw error
+elseif ~exist && ~isfile(path)
+    error("DASH:missingFile",'Could not find file %s.', file);
 end
 
 % Use string internally
