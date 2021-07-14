@@ -35,13 +35,13 @@ if isfolder(file)
 end
 
 % Check if the file exists or has a path string
-exist = isfile(file);
+found = isfile(file);
 path = which(file);
 empty = isempty(path);
 missing = false;
 
 % If the file does not exist, and has no path, it cannot be found
-if empty && ~exist
+if empty && ~found
     missing = true;
 
 % If the file exists, but the path is empty, find the path
@@ -52,7 +52,7 @@ elseif empty
     rmpath(subpath);
     
 % If the full path is not a file, throw error
-elseif ~exist && ~isfile(path)
+elseif ~found && ~isfile(path)
     missing = true;
 end
 
