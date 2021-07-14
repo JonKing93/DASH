@@ -54,7 +54,7 @@ classdef ensemble
             
             % Error check file name. Get matfile properties
             filename = dash.assert.strflag(filename, "filename");
-            obj.file = dash.assert.fileExists(filename);
+            obj.file = dash.assert.fileExists(filename, '.ens');
             obj = obj.update;
             
             % Use all members and variables by default
