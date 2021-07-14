@@ -32,10 +32,16 @@ function[X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources
 % sources: A cell array holding any dataSource objects built for previous load
 %    operations.
 
-% Default for unset sources
+% Defaults
 if ~exist('sources','var') || isempty(sources)
     nSource = size(obj.fieldLength,1);
     sources = cell(nSource,1);
+end
+if ~exist('inputOrder','var') || isempty(inputOrder)
+    inputOrder = [];
+end
+if ~exist('inputIndices','var') || isempty(inputIndices)
+    inputIndices = cell(numel(inputOrder), 1);
 end
 
 % Preallocate indices for all dimensions, the size of the output grid, and

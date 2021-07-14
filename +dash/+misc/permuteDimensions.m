@@ -32,11 +32,13 @@ function[X, order] = permuteDimensions(X, index, iscomplete, nDims)
 %
 % order: The permutation order used to permute X.
 
-% Get the order of the subset dimensions in the complete array
-d = 1:nDims;
+% Permutation vectors must be row vectors
 if ~isrow(index)
     index = index';
 end
+
+% Get the order of the subset dimensions in the complete array
+d = 1:nDims;
 order = [index, d(~ismember(d, index))];
 
 % Case 1, the current dimension order is the complete array.
