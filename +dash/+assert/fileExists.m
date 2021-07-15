@@ -34,6 +34,35 @@ if isfolder(file)
     error('%s is a folder instead of a file.', file);
 end
 
+% Get the file path if it's not missing
+[path, missing] = getpath( file );
+
+% If the file is missing, check for a default extension
+if missing && exist('ext','var') && ~isempty(ext)
+    file = char(file);
+    ext = char(ext);
+    N = numel(ext);
+    
+    % Add the extension to the file name and search for the file path
+    if numel(file)<N || ~strcmp(file(end-N+1:end), ext)
+        fullname = [file, ext];
+        [path, missing] = getpath( fullname );
+    end
+end
+
+% If the file is missing throw an error
+if missing
+    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
+end
+
+% Use string internally for file paths
+path = string(path);
+
+end
+
+%% Returns the path to a file
+function[path, missing] = getpath(file)
+
 % Check if the file exists or has a path string
 found = isfile(file);
 path = which(file);
@@ -55,32 +84,5 @@ elseif empty
 elseif ~found && ~isfile(path)
     missing = true;
 end
-
-% If the file is missing, check for a default extension
-if missing && exist('ext','var') && ~isempty(ext)
-    file = char(file);
-    ext = char(ext);
-    N = numel(ext);
-    
-    % If the file is missing the default extension, get the new name
-    if numel(file)<N || ~strcmp(file(end-N+1:end), ext)
-        fullname = [file, ext];
-    end
-    
-    % Re-search using the extended file name
-    try
-        path = dash.assert.fileExists( fullname );
-        missing = false;
-    catch
-    end
-end
-
-% If the file is missing, throw an error
-if missing
-    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
-end
-
-% Use strings for file paths
-path = string(path);
 
 end
