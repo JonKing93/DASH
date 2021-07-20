@@ -27,7 +27,7 @@ function[rows] = findRows(obj, varName, varRows)
 % rows: The rows of the variable's elements in the state vector.
 
 % Error check variable, get index
-varName = dash.assert.strFlag(varName, 'varName');
+varName = dash.assert.strflag(varName, 'varName');
 v = dash.assert.strsInList(varName, obj.variableNames, 'varName', 'variable in the state vector');
 
 % Parse secondary inputs
