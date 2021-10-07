@@ -1,29 +1,15 @@
-function[fullname] = fileExists(filename, idHeader, ext)
-%% Throws an error if a file does not exist
-% Uses a custom error message / id based on the name of the file
-% variable. If the file does exist, returns the full path to the file as a
-% string.
+function[abspath] = fileExists(filename, idHeader, ext)
+%% dash.assert.fileExists  Throw error if a file does not exist
 %
-% fullname = dash.assert.fileExists(filename, idHeader)
-% Tests the existence of the given file. Searches for files with the same
-% absolute path, and files on the active path.
+%   abspath = dash.assert.fileExists(filename, idHeader)  
+%   Checks if a file exists and throws an error (with a custom error ID) if
+%   it does not. If the file does exist, returns the absolute path to the
+%   file as a string.
 %
-% fullname = dash.assert.fileExists(filename, idHeader, ext)
-% Specify a default extension. If the file is not initially found, but does
-% not have the extension, appends the extension and re-checks file
-% existence
+%   abspath = dash.assert.fileExists(filename, idHeader, extension)  
+%   Also checks for files with a specified default extension.
 %
-% ----- Inputs -----
-%
-% filename: A filename being tested. A string scalar or character row vector
-%
-% idHeader: Header for an error ID. A string scalar.
-%
-% ext: A default file extension. A string scalar
-%
-% ----- Outputs -----
-%
-% fullname: The full file name (including path and extension). A string.
+%   <a href="matlab:dash.doc('dash.assert.fileExists')">Online Documentation</a>
 
 % Get the file path if the file exists
 [path, missing] = getpath(filename);
@@ -48,7 +34,7 @@ end
 
 % Convert output to string
 if nargout>0
-    fullname = string(path);
+    abspath = string(path);
 end
 
 end

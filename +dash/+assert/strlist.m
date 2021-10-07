@@ -1,22 +1,12 @@
 function[input] = strlist(input, name, idHeader)
-%% Throws an error if an input is not a string list.
-% If the input is a string list, returns it as a "string" data type. If
-% throwing an error, returns a customized error message and ID using the
-% input's name.
+%% dash.assert.strlist  Throws error if input is not a string vector, cellstring vector, or char row vector
 %
-% str = dash.assert.strlist(input, name, idHeader)
+%   list = dash.assert.strlist(A, name, idHeader)
+%   Checks if A is a string vector, cellstring vector, or char row vector.
+%   If so, returns A as a string vector. If not, throws an error with
+%   custom message and ID.
 %
-% ----- Inputs -----
-%
-% input: The input being checked
-%
-% name: The name of the input. A string
-%
-% idHeader: Header for the error ID
-%
-% ----- Outputs -----
-%
-% str: The input as a string data type
+% <a href="matlab:dash.doc('dash.assert.strlist')">Online Documentation</a>
 
 if ~dash.is.strlist(input)
     id = sprintf('%s:%sNotStrlist', idHeader, name);

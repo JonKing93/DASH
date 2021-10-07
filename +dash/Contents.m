@@ -1,9 +1,9 @@
 % Contents of the <strong>dash</strong> package:
-%
-% Functions
-%   displayContents - Prints a formatted description of package contents to the console
 %   
-% Utility Subpackages
+% Functions
+%   doc - Open online reference page in a web browser
+%
+% Subpackages
 %   assert - Methods that throw errors when an input does not match required criteria
 %       is - Methods that test whether an input is a particular type
 %

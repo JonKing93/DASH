@@ -1,16 +1,10 @@
 function[tf] = strlist( input )
-%% Test if input is a string vector, cellstring vector, or character row vector
+%% dash.is.strlist  True for a string vector, cellstring vector, or character row vector
 %
-% tf = dash.is.strlist(input)
-% Returns true if the input is a string list. Otherwise, returns false.
+%   dash.is.strlist(A) returns true if A is a string vector, cellstring
+%   vector, or char row vector. Otherwise returns false.
 %
-% ----- Inputs -----
-%
-% input: The input being tested.
-%
-% ----- Outputs -----
-%
-% tf: A scalar logical. True if the input is a string list, otherwise false
+%   <a href="matlab:dash.doc('dash.is.strlist')">Online Documentation</a>
 
 if isvector(input) && ( (ischar(input) && isrow(input)) || isstring(input) || iscellstr(input) )
     tf = true;

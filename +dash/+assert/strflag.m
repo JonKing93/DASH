@@ -1,21 +1,12 @@
 function[input] = strflag(input, name, idHeader)
-%% Throws an error if an input is not a string flag.
-% If the input is a string flag, returns it as a "string" data type.
-% Otherwise, returns a custom error message and ID using the input's name.
+%% dash.assert.strflag  Throw error if input is not a string flag
 %
-% str = dash.assert.strflag(input, name, idHeader)
+%   str = dash.assert.strflag(A, name, idHeader)
+%   Checks if A is either a string scalar or char row vector. If not, 
+%   throws an error with custom message and ID. If so, returns A as a
+%   "string" data type.
 %
-% ----- Inputs -----
-%
-% input: An input being checked.
-%
-% name: The name of the input. A string scalar
-%
-% idHeader: Header for the error ID. A string scalar
-%
-% ----- Outputs -----
-%
-% str: The input as a string data type.
+% <a href="matlab:dash.doc('dash.assert.strflag')">Online Documentation</a>
 
 if ~dash.is.strflag(input)
     id = sprintf('%s:%sNotStrflag', idHeader, name);

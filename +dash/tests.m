@@ -1,13 +1,13 @@
 function[] = tests
-%% Implements unit tests for the dash package
+%% dash.tests Implements unit testing for the dash package
 %
-% dash.tests
+%   dash.tests() runs the units tests. If the tests pass, exits silently.
+%   If the tests fail, prints the first failed test to the console.
 %
-% tests the following:
-%   Subpackages:
-%       assert
-%       is
+%   The following are tested:
+%     Subpackages: assert, is
 
+% Subpackages
 dash.assert.tests;
 dash.is.tests;
 

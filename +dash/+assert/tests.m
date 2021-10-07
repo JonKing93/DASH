@@ -1,12 +1,11 @@
 function[] = tests
-%% Implements unit testing for the functions in dash.assert
+%% dash.assert.tests  Implement unit testing for the dash.assert subpackage
 %
-% dash.assert.tests
-% Runs the tests. If successful, exits silently. If failed, prints the
-% first failed test to console.
+%   dash.assert.tests()
+%   Runs the units tests. If the tests pass, exits silently. If the tests
+%   fail, prints the first failed test to the console.
 %
-% Tests the following functions:
-% fileExists, strflag, strlist
+%   Tests the following functions: fileExists, strflag, strlist
 
 %% fileExists
 

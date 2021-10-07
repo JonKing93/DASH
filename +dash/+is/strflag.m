@@ -1,16 +1,10 @@
-function[tf] = strflag( input )
-%% Test if input is a string scalar or character row vector
+function[tf] = strflag(input)
+%% dash.is.strflag  True for string scalar or char row vector.
+%    
+%    dash.is.strflag(A) returns true if A is a string scalar or char
+%    row vector and false otherwise.
 %
-% tf = dash.is.strflag(input)
-% Returns true if the input is a string flag. Otherwise, returns false
-%
-% ----- Inputs -----
-%
-% input: The input being tested.
-%
-% ----- Outputs -----
-%
-% tf: A scalar logical. True if the input is a string flag, otherwise false
+%    <a href="matlab: dash.doc('dash.is.strflag')">Online Documentation</a>
 
 if (ischar(input) && isrow(input)) || (isstring(input) && isscalar(input))
     tf = true;

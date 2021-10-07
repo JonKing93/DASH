@@ -1,13 +1,10 @@
 function[] = tests
-%% Implements unit testing for the functions in dash.is
+%% dash.is.tests  Implement unit tests for the dash.is subpackage
 %
-% dash.is.tests
-% Runs the tests. If successful, exits silently. If failed, prints the
-% first failed test to console.
+%   dash.is.tests() runs the units tests. If the tests pass, exits silently.
+%   If the tests fail, prints the first failed test to the console.
 %
-% Tests the following functions:
-% strflag
-% strlist
+%   Tests the following functions: strflag, strlist
 
 
 %% strflag
