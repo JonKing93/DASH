@@ -1,24 +1,29 @@
-function[input] = strflag( input, name )
-%% Checks that an input is a string flag. Returns a customized error
-% message if not. Optionally returns input as a string data type.
+function[input] = strflag(input, name, idHeader)
+%% Throws an error if an input is not a string flag.
+% If the input is a string flag, returns it as a "string" data type.
+% Otherwise, returns a custom error message and ID using the input's name.
 %
-% dash.assertStrFlag( input, name )
-%
-% input = dash.assertStrFlag(input, name)
+% str = dash.assert.strflag(input, name, idHeader)
 %
 % ----- Inputs -----
 %
-% input: A variable being checked.
+% input: An input being checked.
 %
-% name: The name of the variable to use in the error message. A string.
+% name: The name of the input. A string scalar
+%
+% idHeader: Header for the error ID. A string scalar
 %
 % ----- Outputs -----
 %
-% input: The input as a string data type.
+% str: The input as a string data type.
 
-if ~dash.string.isflag(input)
-    error('%s must be a string scalar or character row vector.',name);
+if ~dash.is.strflag(input)
+    id = sprintf('%s:%sNotStrflag', idHeader, name);
+    error(id, '%s must be a string scalar or character row vector', name);
 end
-input = string(input);
+
+if nargout>0
+    input = string(input);
+end
     
 end

@@ -1,24 +1,30 @@
-function[input] = strlist(input, name)
-%% Checks that an input is a string list. Returns a customized error
-% message if not. Optionally returns input as a string data type.
+function[input] = strlist(input, name, idHeader)
+%% Throws an error if an input is not a string list.
+% If the input is a string list, returns it as a "string" data type. If
+% throwing an error, returns a customized error message and ID using the
+% input's name.
 %
-% dash.assertStrList(input, name)
-%
-% input = dash.assertStrList(input, name)
+% str = dash.assert.strlist(input, name, idHeader)
 %
 % ----- Inputs -----
 %
 % input: The input being checked
 %
-% name: The name of a variable being check. A string.
+% name: The name of the input. A string
+%
+% idHeader: Header for the error ID
 %
 % ----- Outputs -----
 %
-% input: The input as a string data type.
+% str: The input as a string data type
 
-if ~dash.string.islist(input)
-    error('%s must be a string vector or cellstring vector.', name);
+if ~dash.is.strlist(input)
+    id = sprintf('%s:%sNotStrlist', idHeader, name);
+    error(id, '%s must be a string vector, cellstring vector, or character row vector', name);
 end
-input = string(input);
+
+if nargout>0
+    input = string(input);
+end
 
 end

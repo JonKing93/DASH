@@ -1,66 +1,59 @@
-function[path] = fileExists( file, ext )
-%% Error checking to see if a file exists. If the file exists, returns the
-% absolute path as a string with UNIX style file separators.
+function[fullname] = fileExists(filename, idHeader, ext)
+%% Throws an error if a file does not exist
+% Uses a custom error message / id based on the name of the file
+% variable. If the file does exist, returns the full path to the file as a
+% string.
 %
-% dash.checkFileExists( fullname )
-% Checks if the file exists.
+% fullname = dash.assert.fileExists(filename, idHeader)
+% Tests the existence of the given file. Searches for files with the same
+% absolute path, and files on the active path.
 %
-% dash.checkFileExists( filename )
-% Checks if a file on the active path matches the file name.
-%
-% dash.checkFileExists(name, ext)
-% If the initial filename is not found, also searches for a file with the
-% given extension.
-%
-% path = dash.checkFileExists(...)
-% Returns the full file name (including path and extension) as a string.
+% fullname = dash.assert.fileExists(filename, idHeader, ext)
+% Specify a default extension. If the file is not initially found, but does
+% not have the extension, appends the extension and re-checks file
+% existence
 %
 % ----- Inputs -----
 %
-% fullname: An full file name including path. A string
+% filename: A filename being tested. A string scalar or character row vector
 %
-% filename: The file name including extension. A string.
+% idHeader: Header for an error ID. A string scalar.
 %
-% name: A file name, optionally including extension. A string.
-%
-% ext: A default file extension to check if name is not found. A string.
+% ext: A default file extension. A string scalar
 %
 % ----- Outputs -----
 %
-% path: The full file name including path and extension. A string.
+% fullname: The full file name (including path and extension). A string.
 
-% Check that user didn't provide a folder
-if isfolder(file)
-    error('%s is a folder instead of a file.', file);
-end
-
-% Get the file path if it's not missing
-[path, missing] = getpath( file );
+% Get the file path if the file exists
+[path, missing] = getpath(filename);
 
 % If the file is missing, check for a default extension
 if missing && exist('ext','var') && ~isempty(ext)
-    file = char(file);
+    filename = char(filename);
     ext = char(ext);
     N = numel(ext);
     
-    % Add the extension to the file name and search for the file path
-    if numel(file)<N || ~strcmp(file(end-N+1:end), ext)
-        fullname = [file, ext];
-        [path, missing] = getpath( fullname );
+    % If the file does not have the extension, append and check existence
+    if numel(filename)<N || ~strcmp(filename(end-N+1:end), ext)
+        [path, missing] = getpath([filename, ext]);
     end
 end
 
-% If the file is missing throw an error
+% If the file is missing, throw an error
 if missing
-    error("DASH:missingFile",'Could not find file %s. It may be misspelled or not on the active path.', file);
+    id = sprintf('%s:fileNotFound', idHeader);
+    error(id, 'File "%s" could not be found. It may be misspelled or not on the active path', filename);
 end
 
-% Use string internally for file paths
-path = string(path);
+% Convert output to string
+if nargout>0
+    fullname = string(path);
+end
 
 end
 
-%% Returns the path to a file
+%% Checks if a file exists. If so, returns the path
 function[path, missing] = getpath(file)
 
 % Check if the file exists or has a path string
