@@ -1,8 +1,8 @@
-function[tf] = islist( input )
-%% Tests if an input is a string vector, cellstring vector, or character
-% row vector.
+function[tf] = strlist( input )
+%% Test if input is a string vector, cellstring vector, or character row vector
 %
-% tf = dash.isstrlist( input )
+% tf = dash.is.strlist(input)
+% Returns true if the input is a string list. Otherwise, returns false.
 %
 % ----- Inputs -----
 %
@@ -10,11 +10,12 @@ function[tf] = islist( input )
 %
 % ----- Outputs -----
 %
-% tf:  Whether the input is a string list. A scalar logical.
+% tf: A scalar logical. True if the input is a string list, otherwise false
 
-tf = false;
-if isvector( input ) && ( (ischar(input) && isrow(input)) || isstring(input) || iscellstr(input) )
+if isvector(input) && ( (ischar(input) && isrow(input)) || isstring(input) || iscellstr(input) )
     tf = true;
+else
+    tf = false;
 end
 
 end

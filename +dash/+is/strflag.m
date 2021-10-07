@@ -1,7 +1,8 @@
-function[tf] = isflag( input )
-%% Tests if an input is a character row vector or string scalar.
+function[tf] = strflag( input )
+%% Test if input is a string scalar or character row vector
 %
-% tf = dash.isstrflag( input )
+% tf = dash.is.strflag(input)
+% Returns true if the input is a string flag. Otherwise, returns false
 %
 % ----- Inputs -----
 %
@@ -9,13 +10,12 @@ function[tf] = isflag( input )
 %
 % ----- Outputs -----
 %
-% tf: Whether the input is a flag. A scalar logical.
+% tf: A scalar logical. True if the input is a string flag, otherwise false
 
-tf = false;
-if ischar(input) && isrow(input)
+if (ischar(input) && isrow(input)) || (isstring(input) && isscalar(input))
     tf = true;
-elseif isstring(input) && isscalar(input)
-    tf = true;
+else
+    tf = false;
 end
 
 end
