@@ -3,11 +3,11 @@ classdef mat < dash.dataSource.hdf
     %
     %   <strong>General dataSource operations</strong>
     %   mat Properties:
-    %        m - The matfile object used to load data
+    %                m - The matfile object used to load data
     %
     %   mat Methods:
-    %      mat - Create a new dash.dataSource.mat object
-    %     load - Load data from a .MAT file
+    %              mat - Create a new dash.dataSource.mat object
+    %      loadStrided - Load data from a .MAT file at strided linear indices
     %
     %   <strong>Manipulate MAT-file warnings</strong>
     %   mat Properites:
@@ -41,20 +41,20 @@ classdef mat < dash.dataSource.hdf
         header = 'DASH:dataSource:mat';
         dash.assert.strflag(var, 'var', header);
         dash.assert.strflag(file, 'file', header);
-        dash.assert.fileExists(file, header, '.mat');
+        obj.source = dash.assert.fileExists(file, header, '.mat');
 
         % Check the file is a valid matfile
         try
-            obj.m = matfile(file);
+            obj.m = matfile(obj.source);
         catch problem
-            ME = MException(sprintf('%s:invalidMatfile',header), 'The file "%s" is not a valid .mat file', file);
+            ME = MException(sprintf('%s:invalidMatfile',header), 'The file "%s" is not a valid .mat file', obj.source);
             ME = addCause(ME, problem);
             throw(ME);
         end
 
         % Check the variable is valid
         fileVars = string(who(obj.m));
-        obj = obj.setVariable(var, fileVars);
+        obj = obj.setVariable(char(var), fileVars);
 
         % Get data type and size
         info = whos(obj.m, var);
@@ -67,18 +67,22 @@ classdef mat < dash.dataSource.hdf
         firstIndex = repmat({1}, [1, numel(obj.size)]);
         try
             obj.m.(obj.var)(firstIndex{:});
-        catch
-            obj.v73warning;
+        catch ME
+            if strcmp(ME.identifier, obj.warnID)
+                obj.v73warning;
+            else
+                rethrow(ME);
+            end
         end
         
         end
-        function[X] = load(obj, indices)
-        %% dash.dataSource.mat.load  Load data from a MAT-file source
+        function[X] = loadStrided(obj, indices)
+        %% dash.dataSource.mat.loadStrided  Load data from a MAT-file source
         %
-        %   X = obj.load(indices)
-        %   Load data from the variable in the MAT-file at the specified indices.
+        %   X = obj.loadStrided(stridedIndices)
+        %   Load data from the variable in the MAT-file at the specified strided indices.
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.load')">Online Documentation</a>
+        %   <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Online Documentation</a>
         
         % Disable the partial load warning, then load
         obj.toggleWarning('off');
@@ -112,12 +116,13 @@ classdef mat < dash.dataSource.hdf
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.v73warning')>Online Documentation</a>
         
-        [~,name,ext] = fileparts(obj.file);
+        [~,name,ext] = fileparts(obj.source);
         file = strcat(name, ext);
         saveLink = "matlab:web(fullfile(docroot, 'matlab/ref/save.html#btox10b-1-version'))";
         versionsLink = "matlab:web(fullfile(docroot, 'matlab/import_export/mat-file-versions.html'))";
         
-        warning(['File "%s" is not a version 7.3 MAT-file. Version 7.3 files are recommended ',...
+        warning("DASH:dataSource:mat:matfileNotV73",...
+            ['File "%s" is not a version 7.3 MAT-file. Version 7.3 files are recommended ',...
             'for use with DASH. You may want to re-save "%s" using the ''-v7.3'' ',...
             'flag. See the Matlab documentation on <a href="%s">save</a> ',...
             'and <a href="%s">MAT-File versions</a> for more information.'],...
