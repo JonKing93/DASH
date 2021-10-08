@@ -5,10 +5,11 @@ function[] = tests
 %   If the tests fail, prints the first failed test to the console.
 %
 %   The following are tested:
-%     Subpackages: assert, is
+%     Subpackages: is, indices, assert
 
 % Subpackages
-dash.assert.tests;
 dash.is.tests;
+dash.indices.tests;
+dash.assert.tests;
 
 end
