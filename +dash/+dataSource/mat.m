@@ -47,7 +47,8 @@ classdef mat < dash.dataSource.hdf
         try
             obj.m = matfile(obj.source);
         catch problem
-            ME = MException(sprintf('%s:invalidMatfile',header), 'The file "%s" is not a valid .mat file', obj.source);
+            ME = MException(sprintf('%s:invalidMatfile',header), ...
+                'The file "%s" is not a valid .mat file', obj.source);
             ME = addCause(ME, problem);
             throw(ME);
         end
