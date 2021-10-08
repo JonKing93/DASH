@@ -9,12 +9,22 @@ classdef nc < dash.dataSource.hdf
     
     methods
         function[obj] = nc(file, var)
-            %% dash.dataSource.nc.nc  Create a new dash.dataSource.nc object
-            %
-            %   obj = dash.dataSource.nc(file, var)
-            %   Creates a nc object to read data from a variable in a NetCDF file
-            %
-            %   <a href="matlab:dash.doc('dash.dataSource.nc.nc')">Online Documentation</a>
+        %% dash.dataSource.nc.nc  Create a new dash.dataSource.nc object
+        % ----------
+        %   obj = dash.dataSource.nc(file, var)
+        %   Creates a nc object to read data from a variable in a NetCDF file
+        % ----------
+        %   Inputs:
+        %       file (string scalar): The name of a NetCDF file
+        %       var (string scalar): The name of the variable in the file
+        %
+        %   Outputs:
+        %       obj: A new dash.dataSource.nc object
+        %
+        %   Throws:
+        %       DASH:dataSource:nc:invalidNetCDF  when file is not a valid NetCDF
+        %
+        %   <a href="matlab:dash.doc('dash.dataSource.nc.nc')">Online Documentation</a>
             
             % Error check
             header = "DASH:dataSource:nc";
@@ -42,12 +52,19 @@ classdef nc < dash.dataSource.hdf
             obj.size = info.Variables(v).Size;
         end
         function[X] = loadStrided(obj, indices)
-            %% dash.dataSource.nc.loadStrided  Load data from a NetCDF file at strided indices
-            %
-            %   X = obj.loadStrided(stridedIndices)
-            %   Load data from the variable in the NetCDF file at the specified strided indices
-            %
-            %   <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Online Documentation</a>
+        %% dash.dataSource.nc.loadStrided  Load data from a NetCDF file at strided indices
+        % ----------
+        %   X = obj.loadStrided(stridedIndices)
+        %   Load data from the variable in the NetCDF file at the specified strided indices
+        % ----------
+        %   Inputs:
+        %       indices (vector, strided linear indices): The indices of the data
+        %           elements to load from the NetCDF
+        %
+        %   Outputs:
+        %       X (array): The loaded data
+        %
+        %   <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Online Documentation</a>
             
             % Preallocate
             nDims = numel(indices);

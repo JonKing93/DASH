@@ -23,9 +23,16 @@ classdef (Abstract) Base
     methods (Abstract)
         
         % dash.dataSource.Base/load  Loads data from a source
-        %
+        % ----------
         %   X = <strong>obj.load</strong>(indices)
         %   Loads data from a source at the specified LINEAR indices.
+        % ----------
+        %   Inputs:
+        %       indices (cell vector, elements are vectors of linear indices):
+        %           The indices of the data elements to load from the source
+        %
+        %   Outputs:
+        %       X (array): The loaded dataset
         %
         %   <a href="matlab:dash.doc('dash.dataSource.Base.load')">Online Documentation</a>
         X = load(obj, indices)

@@ -20,11 +20,22 @@ classdef (Abstract) hdf < dash.dataSource.Base
     methods
         function[obj] = setVariable(obj, var, fileVars)
         %% dash.dataSource.hdf.setVariable  Ensure variable exists in HDF file
-        %
+        % ----------
         %   obj = obj.setVariable(var, fileVars)
         %   Checks that a variable being loaded is in the list of variables
         %   in a HDF file. If not, throws an error. If so, saves the
         %   variable name.
+        % ----------
+        %   Inputs:
+        %       var (string scalar): Name of the variable to load from the file
+        %       fileVars (string vector): List of variables in the file
+        %
+        %   Outputs:
+        %       obj: Updated with the saved variable name
+        %
+        %   Throws:
+        %       DASH:dataSource:hdf:variableNotInFile  when the named variable is
+        %           not in the file
         %
         %   <a href="matlab:dash.doc('dash.dataSource.hdf.setVariable')">Online Documentation</a>
         
@@ -38,10 +49,17 @@ classdef (Abstract) hdf < dash.dataSource.Base
     methods (Sealed)
         function[X] = load(obj, indices)
         %% dash.dataSource.hdf.load  Load data from a HDF5 source
-        %
+        % ----------
         %   X = obj.load(indices)
         %   Loads data from a HDF source at the requested linear indices.
         %   Acquires data along strided intervals but only returns requested indices.
+        % ----------
+        %   Inputs:
+        %       indices (cell vector, elements are vectors of linear indices):
+        %           The indices of data elements to load from the source
+        %
+        %   Outputs:
+        %       X (array): The loaded data
         %
         %   <a href="matlab:dash.doc('dash.dataSource.hdf.load')">Online Documentation</a>
             
@@ -65,9 +83,16 @@ classdef (Abstract) hdf < dash.dataSource.Base
     methods (Abstract)
         
         % dash.dataSource.hdf.loadStrided  Loads data from a HDF source at strided indices
-        %
+        % ----------
         %   X = <strong>obj.load</strong>(stridedIndices)
         %   Loads data from a HDF source at specified strided linear indices
+        % ----------
+        %   Inputs:
+        %       stridedIndices (vector, strided linear indices): The data elements
+        %           to load from the source. Should be sorted and equally spaced
+        %
+        %   Outputs:
+        %       X (array): The loaded data
         %
         %   <a href="matlab:dash.doc('dash.dataSource.hdf.loadStrided')">Online Documentation</a>
         X = loadStrided(obj, indices)

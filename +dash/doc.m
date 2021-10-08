@@ -1,6 +1,6 @@
 function[] = doc(name)
 %% dash.doc  Open online reference page in a web browser.
-%
+% ----------
 %   dash.doc(name)  opens the online reference page for a method, package,
 %   or class in the DASH toolbox.
 %
@@ -9,6 +9,10 @@ function[] = doc(name)
 %   >> dash.doc( "dash.is.strflag" )
 %   >> dash.doc( "kalmanFilter" )
 %   >> dash.doc( "kalmanFilter.prior" )
+% ----------
+%   Inputs:
+%       name (string scalar): The full name of a method, package, or class
+%           in the DASH toolbox.
 %
 %   <a href="matlab:dash.doc('dash.doc')">Online Documentation</a>
 

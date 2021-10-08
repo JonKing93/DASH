@@ -1,11 +1,18 @@
 function[indices] = strided(indices)
 %% dash.indices.strided  Return equally spaced indices
-%
+% ----------
 %   B = dash.indices.strided(A)
 %   Returns a set of equally spaced, monotonically increasing indices (B)
 %   that contain all linear indices specified in A.
+% ----------
+%   Inputs:
+%        A (vector, linear indices)
 %
-%   <a href="matlab:dash.doc('dash.indices.strided')>Online Documentation</a>
+%   Outputs:
+%       B (vector, linear indices): Equally spaced set of indices that
+%           includes all indices in A
+%
+%   <a href="matlab:dash.doc('dash.indices.strided')">Online Documentation</a>
 
 % Sort indices and get spacing
 if numel(indices)>1

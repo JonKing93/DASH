@@ -1,13 +1,24 @@
 function[abspath] = fileExists(filename, idHeader, ext)
 %% dash.assert.fileExists  Throw error if a file does not exist
-%
+% ----------
 %   abspath = dash.assert.fileExists(filename, idHeader)  
 %   Checks if a file exists and throws an error (with a custom error ID) if
 %   it does not. If the file does exist, returns the absolute path to the
 %   file as a string.
 %
-%   abspath = dash.assert.fileExists(filename, idHeader, extension)  
+%   abspath = dash.assert.fileExists(filename, idHeader, ext)  
 %   Also checks for files with a specified default extension.
+% ----------
+%   Inputs:
+%       filename (string scalar): The name of a file
+%       idHeader (string scalar): Header to use in thrown error IDs
+%       ext (string scalar): Default file extension
+%
+%   Outputs:
+%       abspath (string scalar): The absolute path to the file
+%
+%   Throws:
+%       <idHeader>:fileNotFound  when the file cannot be found
 %
 %   <a href="matlab:dash.doc('dash.assert.fileExists')">Online Documentation</a>
 

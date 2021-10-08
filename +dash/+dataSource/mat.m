@@ -31,9 +31,19 @@ classdef mat < dash.dataSource.hdf
     methods
         function[obj] = mat(file, var)
         %% dash.dataSource.mat.mat  Create a new dash.dataSource.mat object
-        %
+        % ----------
         %   obj = dash.dataSource.mat(file, var)
         %   Creates a mat object to read data from a variable in a MAT-file
+        % ----------
+        %   Inputs:
+        %       file (string scalar): The name of a MAT-file
+        %       var (string scalar): The name of the variable to load from the file
+        %
+        %   Outputs:
+        %       obj: A new dash.dataSource.mat object
+        %
+        %   Throws:
+        %       DASH:dataSource:mat:invalidMatfile  if file is not a valid .mat file
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.mat')">Online Documentation</a>
             
@@ -79,9 +89,16 @@ classdef mat < dash.dataSource.hdf
         end
         function[X] = loadStrided(obj, indices)
         %% dash.dataSource.mat.loadStrided  Load data from a MAT-file source
-        %
+        % ----------
         %   X = obj.loadStrided(stridedIndices)
         %   Load data from the variable in the MAT-file at the specified strided indices.
+        % ----------
+        %   Inputs:
+        %       stridedIndices (vector, strided linear indices): The indices of
+        %           data elements to load from the MAT-file
+        % 
+        %   Outputs:
+        %       X (array): The loaded data
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Online Documentation</a>
         
@@ -96,11 +113,18 @@ classdef mat < dash.dataSource.hdf
     methods
         function[reset] = toggleWarning(obj, state)
         %% dash.dataSource.mat.toggleWarning  Change the state of the v7.3 matfile warning.
-        %
+        % ----------
         %   reset = obj.toggleWarning(state)  toggles the state of the
         %   Old-Format Mat-File warning to a specified state and returns a
         %   cleanup object that will reset the warning to its initial state
         %   when the object is destroyed.
+        % ----------
+        %   Inputs:
+        %       state ('on'|'off'|'error'): Desired state of the warning.
+        %
+        %   Outputs:
+        %       reset (onCleanup object): An object that resets the initial state
+        %           of warning when destroyed
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.toggleWarning')">Online Documentation</a>
         
@@ -111,9 +135,12 @@ classdef mat < dash.dataSource.hdf
         end
         function[] = v73warning(obj)
         %% dash.dataSource.mat.v73warning  Issue warning if the .mat file for a dataSource is not version 7.3
-        %
+        % ----------
         %   dash.dataSource.mat.v73warning issues a warning that the .mat file for
         %   the dataSource.mat object is not version 7.3
+        % ----------
+        %   Outputs:
+        %       Prints a warning to the console
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.v73warning')>Online Documentation</a>
         
