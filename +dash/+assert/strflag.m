@@ -15,12 +15,12 @@ function[str] = strflag(input, name, idHeader)
 %       str (string scalar): The input converted to a string data type
 %
 %   Throws:
-%       <idHeader>:<name>NotStrFlag  when input is not a strflag
+%       <idHeader>:inputNotStrFlag  when input is not a strflag
 %
 % <a href="matlab:dash.doc('dash.assert.strflag')">Online Documentation</a>
 
 if ~dash.is.strflag(input)
-    id = sprintf('%s:%sNotStrflag', idHeader, name);
+    id = sprintf('%s:inputNotStrflag', idHeader);
     error(id, '%s must be a string scalar or character row vector', name);
 end
 

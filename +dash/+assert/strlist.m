@@ -17,10 +17,10 @@ function[list] = strlist(input, name, idHeader)
 %   Throws:
 %       <idHeader>:<name>NotStrlist  when input is not a strlist
 %
-% <a href="matlab:dash.doc('dash.assert.strlist')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.assert.strlist')">Online Documentation</a>
 
 if ~dash.is.strlist(input)
-    id = sprintf('%s:%sNotStrlist', idHeader, name);
+    id = sprintf('%s:inputNotStrlist', idHeader);
     error(id, '%s must be a string vector, cellstring vector, or character row vector', name);
 end
 
