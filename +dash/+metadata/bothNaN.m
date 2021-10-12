@@ -17,7 +17,7 @@ function[tf] = bothNaN(A, B)
 if isnumeric(A) && isnumeric(B) && isscalar(A) && isscalar(B) && isnan(A) && isnan(B)
     tf = true;
 else
-    tf = false 
+    tf = false;
 end
 
 end
