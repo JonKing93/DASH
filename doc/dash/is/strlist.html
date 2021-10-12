@@ -1,0 +1,34 @@
+# dash.is.strlist
+Returns true if an input is a string vector, cellstring vector, or character row vector
+
+# Description
+tf = dash.is.strlist(input) returns true if input is a string vector, cellstring vector, or character row vector and false otherwise
+
+## Examples
+These examples show the values dash.is.strflag returns with various inputs
+
+'''matlab
+dash.is.strlist(["A","string","vector"])
+ans =
+     1
+     
+dash.is.strlist({'A', 'cellstring', 'vector'})
+ans =
+     1
+     
+dash.is.strlist('A character row vector')
+ans =
+     1
+     
+dash.is.strlist(["An","example";"string","matrix"])
+ans =
+     0
+     
+dash.is.strlist(5)
+ans =
+     0
+     
+dash.is.strlist(true)
+ans =
+     0
+'''

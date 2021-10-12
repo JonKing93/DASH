@@ -1,0 +1,39 @@
+# dash.is.strflag
+Return true if input is a string scalar or character row vector
+
+## Syntax
+tf = dash.is.strflag(input)
+
+## Description
+tf = dash.is.strflag(input) returns true if input is a string scalar or char
+row vector and false otherwise.
+
+## Examples
+These examples show the values dash.is.strflag returns with various inputs
+
+'''matlab
+dash.is.strflag("A string scalar")
+ans = 
+     1
+     
+dash.is.strflag('Character row vector')
+ans =
+     1
+     
+dash.is.strflag(["A","string","vector"])
+ans =
+     0
+     
+dash.is.strflag({'A cellstring scalar'})
+ans =
+     0
+     
+dash.is.strflag(5)
+ans =
+     0
+     
+dash.is.strflag(true)
+ans =
+     0
+'''
+

@@ -1,0 +1,79 @@
+# dash.assert.strflag
+Throw error if input is not a strflag (string scalar or character row vector)
+
+## Syntax
+dash.assert.strflag(input, name, idHeader)
+str = dash.assert.strflag(input, name, idHeader)
+
+## Description
+dash.assert.strflag(input, name, idHeader) throws an error if input
+is not a strflag. The thrown error displays a custom error message and ID 
+using the provided variable name and error ID header.
+
+str = dash.assert.strflag(input, name, idHeader) returns input
+converted to a string scalar when input is a strflag
+
+## Example
+
+#### Input is a string scalar or character row vector
+'''
+input = "A string scalar";
+dash.assert.strflag(input, "", "")
+```
+The assertion passes and no error is thrown
+
+#### Custom error message and ID
+```
+input = 5;
+varName = "myVariable";
+idHeader = "my:header";
+
+dash.assert.strflag(input, varName, idHeader)
+```
+myVariable must be a string scalar or character row vector
+
+The assertion fails and throws an error. The error message references the 
+input by name.
+
+```
+ME = lasterror;
+ME.identifier
+ans =
+     'my:header:myVariableNotStrflag'
+```
+The error identifier begins with the ID header.
+
+#### Convert input to string scalar
+
+```
+input = 'An example';
+class(input)
+ans =
+     'char'
+
+str = dash.assert.strflag(input, "", "")
+str =
+     "An example"
+     
+class(str)
+ans =
+     'string'
+```
+The character row vector passes the assert and is converted to a string scalar
+
+
+## Inputs
+input - The input being tested
+
+name - Name of the input in the calling function
+string scalar | character row vector
+
+idHeader - Header for the thrown error identifier
+string scalar | character row vector
+
+## Outputs
+str - The input converted to a string scalar
+string scalar
+
+## Throws
+<idHeader>:<name>NotStrflag
