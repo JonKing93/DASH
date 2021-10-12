@@ -33,10 +33,10 @@ elseif ~isempty(type) && ~isa(input, type)
         name, type, class(input));
     
 % Length
-elseif ~isempty(N) && length(input)~=N
-    id = sprintf('%s:WrongLength', idHeader);
+elseif ~isempty(length) && numel(input)~=length
+    id = sprintf('%s:inputWrongLength', idHeader);
     error(id, '%s must have %.f elements, but has %.f elements instead', ...
-        name, N, length(input));
+        name, length, numel(input));
 end
 
 end

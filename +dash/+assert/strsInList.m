@@ -27,10 +27,10 @@ function[k] = strsInList(strings, list, name, listName, idHeader)
 
 % Throw error if any strings are not in list
 if ~all(inList)
-    bad = find(inList, 1);
+    bad = find(~inList, 1);
     
     % Reference the variable or element of strings by name
-    if numel(input)==1
+    if numel(strings)==1
         badName = name;
     else
         badName = sprintf('Element %.f in %s', bad, name);
@@ -40,7 +40,7 @@ if ~all(inList)
     id = sprintf('%s:stringNotInList', idHeader);
     allowed = dash.string.list(list);
     error(id, '%s (%s) is not a(n) %s. Allowed values are %s.',...
-        badName, input(bad), listName, allowed);
+        badName, strings(bad), listName, allowed);
 end
 
 end

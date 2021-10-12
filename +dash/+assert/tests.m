@@ -5,7 +5,8 @@ function[] = tests
 %   Runs the units tests. If the tests pass, exits silently. If the tests
 %   fail, prints the first failed test to the console.
 %
-%   Tests the following functions: fileExists, strflag, strlist
+%   Tests the following functions: 
+%   fileExists, scalarType, strflag, strlist, strsInList, vectorTypeN
 
 %% fileExists
 
@@ -85,6 +86,54 @@ elseif ~strcmp(ME.message, sprintf('File "%s" could not be found. It may be miss
 end
 
 
+%% scalarType
+
+passTests = {...
+    struct('test',1), 'struct', 'scalar struct';...
+    5, 'double', 'scaalr double';...
+    5, 'numeric', 'scalar numeric';...
+    true, 'logical', 'scalar logical';...
+    5, [], 'scalar no type';...
+    };
+failTests = {...
+    ones(4,1), 'numeric', 'not scalar right type';...
+    1, 'logical', 'scalar wrong type';...
+    ones(4,1), [], 'not scalar no type';...
+    };
+
+errorTests = {...
+    'not scalar', [], [], 'my variable is not scalar', 'myHeader:inputNotScalar', 'not scalar';...
+    "wrong type", 'numeric', [], 'my variable must be a numeric scalar, but it is a string scalar instead', 'myHeader:inputWrongType', 'wrong type';...
+    "type name", 'numeric', 'custom type name', 'my variable must be a custom type name scalar, but it is a string scalar instead', 'myHeader:inputWrongType', 'custom type name';...
+    };
+
+for t = 1:size(passTests,1)
+    try
+        dash.assert.scalarType(passTests{t,1}, passTests{t,2}, "", "");
+    catch
+        error('scalarType:%s', passTests{t,3});
+    end
+end
+
+for t = 1:size(failTests,1)
+    try
+        dash.assert.scalarType(passTests{t,1}, passTests{t,2}, "", "");
+        error('scalarType:%s', failTests{t,3});
+    catch
+    end
+end
+
+tests = errorTests;
+for t = 1:size(tests, 1)
+    try
+        dash.assert.scalarType(tests{t,1}, tests{t,2}, 'my variable', 'myHeader', tests{t,3});
+    catch ME
+    end
+    assert(strcmp(ME.message, tests{t,4}), 'scalarType: %s message', tests{t,6});
+    assert(strcmp(ME.identifier, tests{t,5}), 'scalarType: %s ID', tests{t,6});
+end
+
+
 %% strflag
 
 charRow = 'test';
@@ -126,7 +175,7 @@ try
     dash.assert.strflag(false, "name", "header");
 catch ME
 end
-assert(strcmp(ME.identifier, "header:nameNotStrflag"), 'strflag: ID');
+assert(strcmp(ME.identifier, "header:inputNotStrflag"), 'strflag: ID');
 assert(strcmp(ME.message, 'name must be a string scalar or character row vector'), 'strflag: message');
 
 
@@ -174,9 +223,97 @@ try
     dash.assert.strlist(false, "name", "header");
 catch ME
 end
-assert(strcmp(ME.identifier, "header:nameNotStrlist"), 'strlist: ID');
+assert(strcmp(ME.identifier, "header:inputNotStrlist"), 'strlist: ID');
 assert(strcmp(ME.message, 'name must be a string vector, cellstring vector, or character row vector'), 'strlist: message');
 
+
+%% strsInList
+
+allowed = ["a1", "a2", "a3"];
+passTests = {...
+    "a3", 'element in list';...
+    ["a3", "a1"], 'unsorted elements from list';...
+    ["a1","a1","a2"], 'repeated elements from list';...
+    };
+failTests = {...
+    "B", 'element not from list';...
+    ["a2","b"], 'some elements not from list';...
+    };
+
+for t = 1:size(passTests,1)
+    try
+        dash.assert.strsInList(passTests{t,1}, allowed, "", "", "");
+    catch
+        error('strsInList:%s', passTests{t,2});
+    end
+end
+
+for t = 1:size(failTests,1)
+    try
+        dash.assert.strsInList(failTests{t,1}, allowed, "", "", "");
+        error('strsInList:%s', passTests{t,2});
+    catch
+    end
+end
+
+try
+    dash.assert.strsInList("fail", "test", "my variable", "element in list", "myHeader");
+catch ME
+end
+message = "my variable (fail) is not a(n) element in list. Allowed values are ""test"".";
+id = "myHeader:stringNotInList";
+assert(strcmp(ME.message, message), 'strsInList: error message');
+assert(strcmp(ME.identifier, id), 'strsInList: error ID');
+
+
+%% vectorTypeN
+
+passTests = {...
+    ones(5,1), 'numeric', 5, 'numeric column length';...
+    ones(1,5), 'numeric', 5, 'numeric row length';...
+    ["a","b","c"], 'string', 3, 'string row length';...
+    ones(5,1), [], 5, 'numeric length, no type';...
+    ones(5,1), 'double', [], 'double length, no type';...
+    ones(5,1), [], [], 'numeric, no length, no type';...
+    };
+failTests = {...
+    ones(4,4), [], [], 'matrix';...
+    ones(5,1), 'string', [], 'wrong type';...
+    ones(5,1), 'numeric', 7, 'wrong length';...
+    };
+errorTests = {...
+    ones(4,4), [], [], 'my variable is not a vector', 'myHeader:inputNotVector', 'not vector error';...
+    ones(5,1), 'string', [], 'my variable must be a string vector, but it is a double vector instead', 'myHeader:inputWrongType', 'wrong type error';...
+    ones(5,1), 'numeric', 7, 'my variable must have 7 elements, but has 5 elements instead', 'myHeader:inputWrongLength', 'wrong length error';...
+    };
+
+test = passTests;
+for t = 1:size(test,1)
+    try
+        dash.assert.vectorTypeN(test{t,1}, test{t,2}, test{t,3}, "", "");
+    catch ME
+        error('vectorTypeN: %s', test{t,4});
+    end
+end
+
+test = failTests;
+for t = 1:size(test,1)
+    try
+        dash.assert.vectorTypeN(test{t,1}, test{t,2}, test{t,3}, "", "");
+        error('vectorTypeN: %s', test{t,4});
+    catch
+    end
+end
+
+test = errorTests;
+for t = 1:size(test, 1)
+    try
+        dash.assert.vectorTypeN(test{t,1}, test{t,2}, test{t,3}, 'my variable', 'myHeader');
+    catch ME
+    end
+    assert(strcmp(ME.message, test{t,4}), 'vectorTypeN: %s', test{t,6});
+    assert(strcmp(ME.identifier, test{t,5}), 'vectorTypeN: %s', test{t,6});
+end
 
 
 end
