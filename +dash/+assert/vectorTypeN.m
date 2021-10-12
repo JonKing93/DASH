@@ -23,18 +23,18 @@ function[] = vectorTypeN(input, type, length, name, idHeader)
 
 % Vector
 if ~isvector(input)
-    id = sprintf('%s:%sNotVector', idHeader, name);
+    id = sprintf('%s:inputNotVector', idHeader);
     error(id, '%s is not a vector', name);
 
 % Type
 elseif ~isempty(type) && ~isa(input, type)
-    id = sprintf('%s:%sWrongType', idHeader, name);
+    id = sprintf('%s:inputWrongType', idHeader);
     error(id, '%s must be a %s vector, but it is a %s vector instead', ...
         name, type, class(input));
     
 % Length
 elseif ~isempty(N) && length(input)~=N
-    id = sprintf('%s:%sWrongLength', idHeader, name);
+    id = sprintf('%s:WrongLength', idHeader);
     error(id, '%s must have %.f elements, but has %.f elements instead', ...
         name, N, length(input));
 end
