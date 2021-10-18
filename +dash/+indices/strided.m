@@ -1,5 +1,5 @@
 function[indices] = strided(indices)
-%% dash.indices.strided  Return equally spaced indices
+%% dash.indices.strided  Equally spaced indices that include all input indices
 % ----------
 %   B = dash.indices.strided(A)
 %   Returns a set of equally spaced, monotonically increasing indices (B)

@@ -1,5 +1,5 @@
 function[list] = strlist(input, name, idHeader)
-%% dash.assert.strlist  Throws error if input is not a string vector, cellstring vector, or char row vector
+%% dash.assert.strlist  Throw error if input is not a string vector, cellstring vector, or char row vector
 % ----------
 %   list = dash.assert.strlist(input)
 %   Checks if input is a string vector, cellstring vector, or char row vector.

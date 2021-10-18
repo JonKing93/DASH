@@ -1,5 +1,5 @@
 function[keep] = keep(requested, loaded)
-%% dash.indices.keep  Identify requested indices in superset of l
+%% dash.indices.keep  Identify requested indices in superset of loaded indices
 % ----------
 %   keep = dash.indices.keep(requested, loaded)
 %   Takes the linear indices of requested data elements and compares them
