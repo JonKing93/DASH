@@ -1,12 +1,24 @@
 % Contents of the <strong>dash</strong> package:
 %   
-% Functions
-%   doc - Open online reference page in a web browser
+% Documentation Functions:
+%          doc - Open online reference page in a web browser
+%      version - Return the current version of the DASH toolbox
 %
-% Subpackages
-%       assert - Methods that throw errors when an input does not match required criteria
-%           is - Methods that test whether an input is a particular type
-%   dataSource - Classes that read data from sources for gridfiles
+% Input Utilities:
+%           is - Functions that test whether an input is a particular type
+%       assert - Functions that throw errors when an input does not match required criteria
+%        parse - Functions that parse user inputs
 %
-% Tests
-%   tests - Implements unit tests for functions, classes, and sub-packages
+% Data Specific Utilities
+%      indices - Functions that manipulate array indices
+%      strings - Functions that manipulate strings
+%     metadata - Functions that implement gridded metadata
+%
+% Gridfile Utilities:
+%   dataSource - Classes that read data from source files
+%     gridfile - ...
+%
+% Tests:
+%        tests - Implements unit tests for functions, classes, and sub-packages in the DASH Toolbox
+%       
+% <a href="matlab:dash.doc('dash')">Online Documentation</a>
