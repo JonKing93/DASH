@@ -74,7 +74,6 @@ classdef gridfile < handle
     
     % Static user methods
     methods (Static)
-        meta = defineMetadata( varargin );
         grid = new(filename, meta, attributes, overwrite);
     end
     

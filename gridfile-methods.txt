@@ -1,0 +1,35 @@
+%% gridfile  Organize and catalogue gridded datasets
+%
+%   gridfile Methods:
+%       new - Create a new gridfile
+%       load
+%       disp/info
+%
+%   Metadata:
+%       define - 
+%       metadata - Returns metadata
+%       expand - Expands dimension
+%       rewriteMetadata - Changes metadata values
+%       addAttribute - 
+%       removeAtttribute - 
+%
+%   Data sources:
+%       add
+%       remove
+%       renameSource
+%
+%   Data source alterations:
+%       fillValue
+%       validRange
+%       transform
+%           - plus
+%           - times
+%           - linear
+%           - log
+%           - exp
+%   
+%   Arithmetic:
+%       plus
+%       minus
+%       divide
+%       multiply

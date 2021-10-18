@@ -37,6 +37,10 @@ for t = 1:size(tests,1)
     assert(result == tests{t,2}, 'hasDuplicateRows:%s', tests{t,3});
 end
 
+%% assertField
+
+
+
 
 
 
