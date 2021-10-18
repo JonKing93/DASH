@@ -30,7 +30,7 @@ classdef nc < dash.dataSource.hdf
             header = "DASH:dataSource:nc";
             dash.assert.strflag(file, 'file', header);
             var = dash.assert.strflag(var, 'var', header);
-            obj.source = dash.assert.fileExists(file, header, '.nc');
+            obj.source = dash.assert.fileExists(file, ".nc", header);
             
             % Check the file is a valid NetCDF
             try

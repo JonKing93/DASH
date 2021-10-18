@@ -51,7 +51,7 @@ classdef mat < dash.dataSource.hdf
         header = 'DASH:dataSource:mat';
         dash.assert.strflag(var, 'var', header);
         dash.assert.strflag(file, 'file', header);
-        obj.source = dash.assert.fileExists(file, header, '.mat');
+        obj.source = dash.assert.fileExists(file, ".mat", header);
 
         % Check the file is a valid matfile
         try
