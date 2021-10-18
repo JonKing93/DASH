@@ -1,9 +1,15 @@
 function[] = vectorTypeN(input, type, length, name, idHeader)
 %% dash.assert.vector  Throws error if input is not a vector of a specified format
 % ----------
+%   dash.assert.vectorTypeN(input, type, length)
+%   Checks if an input is a vector of the required data type and length. If
+%   not, throws an error
+%
+%   dash.assert.vectorTypeN(input, type, length, name)
+%   Use a custom name to refer to the input in error messages.
+%
 %   dash.assert.vectorTypeN(input, type, length, name, idHeader)
-%   Checks if an input is a vector of the specified type and length. If
-%   not, throws an error with custom message and ID.
+%   Use a custom header for thrown error IDs.
 % ----------
 %   Inputs:
 %       input: The input being tested
@@ -11,15 +17,25 @@ function[] = vectorTypeN(input, type, length, name, idHeader)
 %           input. Use an empty array to allow any type
 %       length (scalar positive integer | empty array): The required length
 %           of the vector. Use an empty array to allow any length
-%       name (string scalar): The name of the input in the calling function
-%       idHeader (string scalar): Header for thrown error IDs
+%       name (string scalar): The name of the input in the calling
+%           function for use in error messages. Default is "input"
+%       idHeader (string scalar): Header for thrown error IDs. Default is
+%           "DASH:assert:vectorTypeN"
 %
 %   Throws:
-%       <idHeader>:<name>NotVector  when input is not a vector
-%       <idHeader>:<name>WrongType  when input is not the required type
-%       <idHeader>:<name>WrongLength  when input is not the required length
+%       <idHeader>:inputNotVector  when input is not a vector
+%       <idHeader>:inputWrongType  when input is not the required type
+%       <idHeader>:inputWrongLength  when input is not the required length
 %
 %   <a href="matlab:dash.doc('dash.assert.vectorTypeN')">Online Documentation</a>
+
+% Defaults
+if ~exist('name','var') || isempty(name)
+    name = "input";
+end
+if ~exist('idHeader','var') || isempty(idHeader)
+    idHeader = "DASH:assert:vectorTypeN";
+end
 
 % Vector
 if ~isvector(input)
