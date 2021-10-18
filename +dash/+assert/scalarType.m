@@ -1,12 +1,9 @@
-function[] = scalarType(input, type, name, idHeader, typeName)
+function[] = scalarType(input, type, name, idHeader)
 %% dash.assert.scalarType  Throw error if input is not a scalar of a required data type
 % ----------
 %   dash.assert.scalarType(input, type, name, idHeader)  checks if input is
 %   scalar and the required data type. If not, throws an error with custom
 %   message and identifier.
-%
-%   dash.assert.scalarType(input, type, name, idHeader, typeName)  use the
-%   specified name to refer to the required type in error messages
 % ----------
 %   Inputs:
 %       input: The input being tested
@@ -26,14 +23,9 @@ function[] = scalarType(input, type, name, idHeader, typeName)
 if ~isscalar(input)
     id = sprintf('%s:inputNotScalar', idHeader);
     error(id, '%s is not scalar', name);
-
-elseif ~isempty(type) && ~isa(input, type)
-    if ~exist('typeName','var') || isempty(typeName)
-        typeName = type;
-    end  
-    id = sprintf('%s:inputWrongType', idHeader);
-    error(id, '%s must be a %s scalar, but it is a %s scalar instead',...
-        name, typeName, class(input));
+    
+elseif ~isempty(type)
+    dash.assert.type(input, type, name, "scalar", idHeader);
 end
 
 end

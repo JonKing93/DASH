@@ -27,10 +27,8 @@ if ~isvector(input)
     error(id, '%s is not a vector', name);
 
 % Type
-elseif ~isempty(type) && ~isa(input, type)
-    id = sprintf('%s:inputWrongType', idHeader);
-    error(id, '%s must be a %s vector, but it is a %s vector instead', ...
-        name, type, class(input));
+elseif ~isempty(type)
+    dash.assert.type(input, type, name, "vector", idHeader);
     
 % Length
 elseif ~isempty(length) && numel(input)~=length
