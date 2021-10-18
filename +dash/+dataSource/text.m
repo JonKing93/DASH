@@ -46,7 +46,7 @@ classdef text < dash.dataSource.Base
             % Error check
             header = 'DASH:dataSource:text';
             dash.assert.strflag(file, 'file', header);
-            obj.source = dash.assert.fileExists(file, header);
+            obj.source = dash.assert.fileExists(file, [], header);
             
             % Check the data can be imported
             try
