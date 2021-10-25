@@ -20,12 +20,10 @@ eol = [0, find(header==10)];
 nLines = numel(eol);
 
 % Scan through each line of text, checking for the section
-eol = [0, find(header==10)];
 inSection = false;
 start = [];
 for k = 2:nLines
     line = header(eol(k-1)+1:eol(k));
-    blank = all(isspace(line(2:end)));
     
     % Section header
     if ~inSection && contains(line, strcat("%   ",sectionName))

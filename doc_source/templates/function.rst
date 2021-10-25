@@ -9,53 +9,57 @@ Syntax
 
 .. rst-class:: syntax
 
-| :ref:`str = dash.assert.strflag(input) <syntax1>`
-| :ref:`str = dash.assert.strflag(input, name) <syntax2>`
-| :ref:`str = dash.assert.strflag(input, name, idHeader) <syntax3>`
+| :ref:`str = dash.assert.strflag(input) <dash.assert.strflag.syntax1>`
+| :ref:`str = dash.assert.strflag(input, name) <dash.assert.strflag.syntax2>`
+| :ref:`str = dash.assert.strflag(input, name, idHeader) <dash.assert.strflag.syntax3>`
 
 ----
 
 Description
 -----------
 
-.. _syntax1:
+.. _dash.assert.strflag.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`str <str>` = dash.assert.strflag(:ref:`input`)
+:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`)
 
 Checks if an input is either a string scalar or char row vector. If not, throws an error. If so, returns the input as a string data type.
 
-Here is a second paragraph
+Here is a second paragraph with information about the function.
 
 
-.. _syntax2:
+.. _dash.assert.strflag.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`str <str>` = dash.assert.strflag(:ref:`input`, :ref:`name`)
+:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`)
 
 Refers to the input by a custom name in thrown error messages.
 
 
-.. _syntax3:
+.. _dash.assert.strflag.syntax3:
 
 .. rst-class:: syntax
 
-:ref:`str <str>` = dash.assert.strflag(:ref:`input`, :ref:`name`, :ref:`idHeader`)
+:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`, :ref:`idHeader <dash.assert.strflag.input.idHeader>`)
 
-Uses a custom header for thrown error IDs
+Uses a custom header for thrown error IDs.
+
 
 ----
 
-Examples (Style 1)
-------------------
+Examples
+--------
 
-.. rst-class:: example-header
+.. rst-class:: collapse-examples
 
 Assert input is strflag
 +++++++++++++++++++++++
 
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is strflag</strong></label><div class="content">
 
 Example inputs that pass the assertion::
 
@@ -78,161 +82,62 @@ Example inputs that fail the assertion:
 ::
 
     input must be a string scalar or character row vector
-
-----
-
-.. rst-class:: example-header
-
-Customize error
-+++++++++++++++
-
-Customize the error message so it mimics errors from a calling function:
-
-.. rst-class:: no-margin
-
-::
-
-    name = 'my variable';
-    header = 'myHeader';
-    dash.assert.strflag(5, name, header);
-
-.. rst-class:: example-output error-message
-
-::
-
-    my variable must be a string scalar or character row vector
-
-Examine the error ID:
-
-.. rst-class:: no-margin
-
-::
-
-    ME = lasterror;
-    ID = ME.identifier
-
-.. rst-class:: example-output
-
-::
-
-    ID =
-        myHeader:inputNotStrflag
-
-----
-
-.. rst-class:: example-header
-
-Convert input to string
-+++++++++++++++++++++++
-
-If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:
-
-.. rst-class:: no-margin
-
-::
-
-    input = 'A char row vector';
-    str = dash.assert.strflag(input);
-    type = class(str)
-
-.. rst-class:: example-output
-
-::
-
-    type =
-          'string'
-
-The char input has been converted to a string data type.
-
-----
-
-
-.. rst-class: collapse-examples
-
-Examples (Style 2)
-------------------
-
-.. rst-class:: collapse-examples
-
-Assert input is strflag
-+++++++++++++++++++++++
-
-.. raw:: html
-
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle1"><label for="handle1">Assert input is strflag</label><div class="content">
-
-Example inputs that pass the assertion::
-
-    dash.assert.strflag("A string scalar")
-    dash.assert.strflag('A char row vector')
-
-Example inputs that fail the assertion:
-
-.. rst-class:: no-margin
-
-::
-
-    dash.assert.strflag(5)
-    dash.assert.strflag(true)
-    dash.assert.strflag({'A cellstring scalar'})
-    dash.assert.strflag(["A","string","vector"])
-
-.. rst-class:: example-output error-message
-
-::
-
-    input must be a string scalar or character row vector
-
-
-
-
-
-.. rst-class:: collapse-examples
-
-Customize Error
-+++++++++++++++
-
-.. raw:: html
-
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle2"><label for="handle2">Customize Error</label><div class="content">
-
-Customize the error message so it mimics errors from a calling function:
-
-.. rst-class:: no-margin
-
-::
-
-    name = 'my variable';
-    header = 'myHeader';
-    dash.assert.strflag(5, name, header);
-
-.. rst-class:: example-output error-message
-
-::
-
-    my variable must be a string scalar or character row vector
-
-Examine the error ID:
-
-.. rst-class:: no-margin
-
-::
-
-    ME = lasterror;
-    ID = ME.identifier
-
-.. rst-class:: example-output
-
-::
-
-    ID =
-        myHeader:inputNotStrflag
+    
 
 .. raw:: html
 
     </div></section>
 
 
+
+.. rst-class:: collapse-examples
+
+Customize error
++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Customize error</strong></label><div class="content">
+
+Customize the error message so it mimics errors from a calling function:
+
+.. rst-class:: no-margin
+
+::
+
+    name = 'my variable';
+    header = 'myHeader';
+    dash.assert.strflag(5, name, header);
+
+.. rst-class:: example-output error-message
+
+::
+
+    my variable must be a string scalar or character row vector
+
+Examine the error ID:
+
+.. rst-class:: no-margin
+
+::
+
+    ME = lasterror;
+    ID = ME.identifier
+
+.. rst-class:: example-output
+
+::
+
+    ID =
+        myHeader:inputNotStrflag
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
 .. rst-class:: collapse-examples
 
 Convert input to string
@@ -240,7 +145,7 @@ Convert input to string
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle3"><label for="handle3">Convert input to string</label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Convert input to string</strong></label><div class="content">
 
 If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:
 
@@ -260,6 +165,12 @@ If the assertion passes, the input is returned as a scalar string. Use this to a
           'string'
 
 The char input has been converted to a string data type.
+
+.. raw:: html
+
+    </div></section>
+
+
 
 ----
 
@@ -268,41 +179,36 @@ Input Arguments
 
 .. rst-class:: collapse-examples
 
-.. _input:
+.. _dash.assert.strflag.input.input:
 
 input
 +++++
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle4"><label for="handle4"><strong>input</strong></label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>input</strong></label><div class="content">
 
-| The input being tested.
+| The input being tested
 
 .. raw:: html
 
     </div></section>
 
 
+
 .. rst-class:: collapse-examples
 
-.. _name:
+.. _dash.assert.strflag.input.name:
 
 name
-+++++
+++++
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle5"><label for="handle5"><strong>name</strong></label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>name</strong></label><div class="content">
 
-| 1 | 2 | 3
-| Options for matching gridfile metadata and sizes.
-
-[1 (default)]: requires data dimensions to have compatible sizes AND have the same metadata along each non-singleton dimension. Does arithmetic on all data elements.
-
-[2]: Searches for data elements with matching elements in non-singleton dimensions. Only does arithmetic at these elements. Does not require data dimensions to have compatible sizes.
-
-[3]: Does not compare dimensional metadata. Loads all data elements from both files and applies arithmetic directly. Requires data dimensions to have compatible sizes.
+| *string scalar*
+| Name of the input in the calling function. Default is "input".
 
 .. raw:: html
 
@@ -312,21 +218,23 @@ name
 
 .. rst-class:: collapse-examples
 
-.. _idHeader:
+.. _dash.assert.strflag.input.idHeader:
 
 idHeader
 ++++++++
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle6"><label for="handle6"><strong>idHeader</strong></label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>idHeader</strong></label><div class="content">
 
 | *string scalar*
-| Header of thrown error IDs. Default is "DASH:assert:strflag"
+| Header for thrown error IDs. Default is "DASH:assert:strflag".
 
 .. raw:: html
 
     </div></section>
+
+
 
 ----
 
@@ -335,18 +243,21 @@ Output Arguments
 
 .. rst-class:: collapse-examples
 
-.. _str:
+.. _dash.assert.strflag.output.str:
 
 str
-+++++
++++
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="handle7"><label for="handle7"><strong>str</strong></label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>str</strong></label><div class="content">
 
 | *string scalar*
-| The input as a string scalar
+| The input converted to a string data type.
 
 .. raw:: html
 
     </div></section>
+
+
+

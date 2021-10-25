@@ -27,8 +27,17 @@ Indices and tables
 * :ref:`search`
 
 .. toctree::
-    :caption: The DASH contents
-    :name: Test name
+    :caption: Reference
+    :hidden:
     
     A function <function>
+
+.. toctree::
+    :hidden:
+
     A package <package>
+
+.. toctree::
+    :caption: Demos
+
+    A demo <demo>

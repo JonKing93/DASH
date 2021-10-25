@@ -2,9 +2,9 @@ dash.assert
 ===========
 Functions that assert inputs meet required conditions
 
-----
-
 The dash.assert subpackage facilitates the creation of informative error messages and helps provide consistent error ID handling for common input error checks. These functions produce error messages that appear to originate from higher level calling functions.
+
+This is another paragraph
 
 Strings
 -------
@@ -38,8 +38,6 @@ Size and Type
     vectorTypeN <assert/vectorTypeN>
 
 
-File Existence
---------------
 
 :doc:`fileExists <assert/fileExists>` - The H1 line...
 
