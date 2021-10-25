@@ -1,3 +1,4 @@
+%% dash.assert
 % Functions that assert inputs meet required conditions
 %
 % The dash.assert subpackage facilitates the creation of informative

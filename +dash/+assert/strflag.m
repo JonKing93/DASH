@@ -1,30 +1,32 @@
 function[str] = strflag(input, name, idHeader)
-%% dash.assert.strflag  Throw error if input is not a string flag
+%% dash.assert.strflag  Throw error if input is not a string flag.
 % ----------
 %   str = dash.assert.strflag(input)
 %   Checks if an input is either a string scalar or char row vector. If not, 
-%   throws an error. If so, returns the input as a string data type
+%   throws an error. If so, returns the input as a string data type.
+%
+%   Here is a second paragraph with information about the function.
 %
 %   str = dash.assert.strflag(input, name)
 %   Refers to the input by a custom name in thrown error messages.
 %
 %   str = dash.assert.strflag(input, name, idHeader)
-%   Uses a custom header for thrown error IDs
+%   Uses a custom header for thrown error IDs.
 % ----------
 %   Inputs:
 %       input: The input being tested
 %       name (string scalar): Name of the input in the calling function.
-%           Default is "input"
+%           Default is "input".
 %       idHeader (string scalar): Header for thrown error IDs. Default is
-%           "DASH:assert:strflag"
+%           "DASH:assert:strflag".
 %
 %   Outputs:
-%       str (string scalar): The input converted to a string data type
+%       str (string scalar): The input converted to a string data type.
 %
 %   Throws:
-%       <idHeader>:inputNotStrFlag  when input is not a strflag
+%       <idHeader>:inputNotStrFlag: When input is not a strflag.
 %
-% <a href="matlab:dash.doc('dash.assert.strflag')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.strflag')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)
