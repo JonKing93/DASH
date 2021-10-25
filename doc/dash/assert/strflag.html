@@ -1,79 +1,307 @@
-# dash.assert.strflag
-Throw error if input is not a strflag (string scalar or character row vector)
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-## Syntax
-dash.assert.strflag(input, name, idHeader)
-str = dash.assert.strflag(input, name, idHeader)
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.strflag &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="gridfile" href="../../gridfile.html" />
+    <link rel="prev" title="dash.is.strflag" href="../is/strflag.html" /> 
+</head>
 
-## Description
-dash.assert.strflag(input, name, idHeader) throws an error if input
-is not a strflag. The thrown error displays a custom error message and ID 
-using the provided variable name and error ID header.
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../is/strflag.html">dash.is.strflag</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dash.assert.strflag</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples-style-1">Examples (Style 1)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#assert-input-is-strflag">Assert input is strflag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#customize-error">Customize error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convert-input-to-string">Convert input to string</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#examples-style-2">Examples (Style 2)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Assert input is strflag</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Customize Error</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Convert input to string</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#input">input</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#idheader">idHeader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#str">str</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+</ul>
 
-str = dash.assert.strflag(input, name, idHeader) returns input
-converted to a string scalar when input is a strflag
+        </div>
+      </div>
+    </nav>
 
-## Example
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
 
-#### Input is a string scalar or character row vector
-'''
-input = "A string scalar";
-dash.assert.strflag(input, "", "")
-```
-The assertion passes and no error is thrown
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+      <li>dash.assert.strflag</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dash/assert/strflag.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-strflag">
+<h1>dash.assert.strflag<a class="headerlink" href="#dash-assert-strflag" title="Permalink to this headline"></a></h1>
+<p>Throw error if input is not a string flag.</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#syntax1"><span class="std std-ref">str = dash.assert.strflag(input)</span></a></div>
+<div class="line"><a class="reference internal" href="#syntax2"><span class="std std-ref">str = dash.assert.strflag(input, name)</span></a></div>
+<div class="line"><a class="reference internal" href="#syntax3"><span class="std std-ref">str = dash.assert.strflag(input, name, idHeader)</span></a></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p class="syntax" id="syntax1"><a class="reference internal" href="#str"><span class="std std-ref">str</span></a> = dash.assert.strflag(<a class="reference internal" href="#input"><span class="std std-ref">input</span></a>)</p>
+<p>Checks if an input is either a string scalar or char row vector. If not, throws an error. If so, returns the input as a string data type.</p>
+<p class="syntax" id="syntax2"><a class="reference internal" href="#str"><span class="std std-ref">str</span></a> = dash.assert.strflag(<a class="reference internal" href="#input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#name"><span class="std std-ref">name</span></a>)</p>
+<p>Refers to the input by a custom name in thrown error messages.</p>
+<p class="syntax" id="syntax3"><a class="reference internal" href="#str"><span class="std std-ref">str</span></a> = dash.assert.strflag(<a class="reference internal" href="#input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#idheader"><span class="std std-ref">idHeader</span></a>)</p>
+<p>Uses a custom header for thrown error IDs</p>
+</section>
+<hr class="docutils" />
+<section id="examples-style-1">
+<h2>Examples (Style 1)<a class="headerlink" href="#examples-style-1" title="Permalink to this headline"></a></h2>
+<section class="example-header" id="assert-input-is-strflag">
+<h3>Assert input is strflag<a class="headerlink" href="#assert-input-is-strflag" title="Permalink to this headline"></a></h3>
+<p>Example inputs that pass the assertion:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(&quot;A string scalar&quot;)
+dash.assert.strflag(&#39;A char row vector&#39;)
+</pre></div>
+</div>
+<p>Example inputs that fail the assertion:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(5)
+dash.assert.strflag(true)
+dash.assert.strflag({&#39;A cellstring scalar&#39;})
+dash.assert.strflag([&quot;A&quot;,&quot;string&quot;,&quot;vector&quot;])
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a string scalar or character row vector
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section class="example-header" id="customize-error">
+<h3>Customize error<a class="headerlink" href="#customize-error" title="Permalink to this headline"></a></h3>
+<p>Customize the error message so it mimics errors from a calling function:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>name = &#39;my variable&#39;;
+header = &#39;myHeader&#39;;
+dash.assert.strflag(5, name, header);
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>my variable must be a string scalar or character row vector
+</pre></div>
+</div>
+<p>Examine the error ID:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
+ID = ME.identifier
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
+    myHeader:inputNotStrflag
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section class="example-header" id="convert-input-to-string">
+<h3>Convert input to string<a class="headerlink" href="#convert-input-to-string" title="Permalink to this headline"></a></h3>
+<p>If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>input = &#39;A char row vector&#39;;
+str = dash.assert.strflag(input);
+type = class(str)
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>type =
+      &#39;string&#39;
+</pre></div>
+</div>
+<p>The char input has been converted to a string data type.</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="examples-style-2">
+<h2>Examples (Style 2)<a class="headerlink" href="#examples-style-2" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="id1">
+<h3>Assert input is strflag<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle1"><label for="handle1">Assert input is strflag</label><div class="content"><p>Example inputs that pass the assertion:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(&quot;A string scalar&quot;)
+dash.assert.strflag(&#39;A char row vector&#39;)
+</pre></div>
+</div>
+<p>Example inputs that fail the assertion:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(5)
+dash.assert.strflag(true)
+dash.assert.strflag({&#39;A cellstring scalar&#39;})
+dash.assert.strflag([&quot;A&quot;,&quot;string&quot;,&quot;vector&quot;])
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a string scalar or character row vector
+</pre></div>
+</div>
+</section>
+<section class="collapse-examples" id="id2">
+<h3>Customize Error<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle2"><label for="handle2">Customize Error</label><div class="content"><p>Customize the error message so it mimics errors from a calling function:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>name = &#39;my variable&#39;;
+header = &#39;myHeader&#39;;
+dash.assert.strflag(5, name, header);
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>my variable must be a string scalar or character row vector
+</pre></div>
+</div>
+<p>Examine the error ID:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
+ID = ME.identifier
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
+    myHeader:inputNotStrflag
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="id3">
+<h3>Convert input to string<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle3"><label for="handle3">Convert input to string</label><div class="content"><p>If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>input = &#39;A char row vector&#39;;
+str = dash.assert.strflag(input);
+type = class(str)
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>type =
+      &#39;string&#39;
+</pre></div>
+</div>
+<p>The char input has been converted to a string data type.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="input">
+<span id="id4"></span><h3>input<a class="headerlink" href="#input" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle4"><label for="handle4"><strong>input</strong></label><div class="content"><div class="line-block">
+<div class="line">The input being tested.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="id5"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle5"><label for="handle5"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string scalar</em></div>
+<div class="line">The name of the input in the error message. Default is “input”.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="idheader">
+<span id="id6"></span><h3>idHeader<a class="headerlink" href="#idheader" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle6"><label for="handle6"><strong>idHeader</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string scalar</em></div>
+<div class="line">Header of thrown error IDs. Default is “DASH:assert:strflag”</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="str">
+<span id="id7"></span><h3>str<a class="headerlink" href="#str" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="handle7"><label for="handle7"><strong>str</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string scalar</em></div>
+<div class="line">The input as a string scalar</div>
+</div>
+</div></section></section>
+</section>
+</section>
 
-#### Custom error message and ID
-```
-input = 5;
-varName = "myVariable";
-idHeader = "my:header";
 
-dash.assert.strflag(input, varName, idHeader)
-```
-myVariable must be a string scalar or character row vector
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../is/strflag.html" class="btn btn-neutral float-left" title="dash.is.strflag" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../gridfile.html" class="btn btn-neutral float-right" title="gridfile" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
-The assertion fails and throws an error. The error message references the 
-input by name.
+  <hr/>
 
-```
-ME = lasterror;
-ME.identifier
-ans =
-     'my:header:myVariableNotStrflag'
-```
-The error identifier begins with the ID header.
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
 
-#### Convert input to string scalar
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
-```
-input = 'An example';
-class(input)
-ans =
-     'char'
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-str = dash.assert.strflag(input, "", "")
-str =
-     "An example"
-     
-class(str)
-ans =
-     'string'
-```
-The character row vector passes the assert and is converted to a string scalar
-
-
-## Inputs
-input - The input being tested
-
-name - Name of the input in the calling function
-string scalar | character row vector
-
-idHeader - Header for the thrown error identifier
-string scalar | character row vector
-
-## Outputs
-str - The input converted to a string scalar
-string scalar
-
-## Throws
-<idHeader>:<name>NotStrflag
+</body>
+</html>
