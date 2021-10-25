@@ -1,7 +1,7 @@
-function[rst] = packageTitle(title, h1, details)
+function[rst] = packageSummary(title, h1, details)
 
 % Get components
-underline = repmat("=", [1 strlength(title)]);
+underline = repmat('=', [1 strlength(title)]);
 details = strjoin([h1;details], "\n\n");
 
 % Format

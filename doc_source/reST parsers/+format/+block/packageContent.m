@@ -1,7 +1,7 @@
 function[rst] = packageContent(section, files, h1, links)
 
 % Section underline
-underline = repmat("-", 1, strlength(section));
+underline = repmat('-', 1, strlength(section));
 
 % Linked files
 nFiles = numel(files);

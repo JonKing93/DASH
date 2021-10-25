@@ -1,10 +1,14 @@
 function[links] = packageContents(subfolder, files)
 
-nFiles = numel(files);
-links = strings(nFiles, 1);
+nSections = numel(files);
+links = cell(nSections, 1);
 
-for f = 1:nFiles
-    links(f) = sprintf("%s/%s", subfolder, files(f));
+for s = 1:nSections
+    nFiles = numel(files{s});
+    links{s} = strings(nFiles, 1);
+    for f = 1:nFiles
+        links{s}(f) = sprintf("%s/%s", subfolder, files{s}(f));
+    end
 end
 
 end
