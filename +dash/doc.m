@@ -17,14 +17,18 @@ function[] = doc(name)
 %   <a href="matlab:dash.doc('dash.doc')">Online Documentation</a>
 
 % Reference page header
-header = "https://jonking93.github.io/DASH/docs/ref";
+path = mfilename('fullpath');
+folders = strsplit(path, filesep);
+docs = [folders(1:end-2), 'doc'];
+header = strjoin(docs, filesep);
 
 % Parse the package headings into the url
-name = string(name);
-folders = strsplit(name, ".");
-url = strcat(header, sprintf('/%s', folders));
+folders = strsplit(name, '.');
+docPath = strjoin(folders, filesep);
+docPath = [docPath, '.html'];
+url = strjoin({header, docPath}, filesep);
 
 % Open in browser
-web(url);
+web(url, '-browser');
 
 end
