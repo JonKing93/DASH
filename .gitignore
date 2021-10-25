@@ -13,3 +13,6 @@
 # Dash data file extensions
 **.grid
 **.ens
+
+# Documentation builds
+doc_source/sphinx-source-rst/**
