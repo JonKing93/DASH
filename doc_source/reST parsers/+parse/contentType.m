@@ -14,7 +14,7 @@ elseif name(1) == '+'
 end
 
 % File types
-text = fileread(file);
+text = fileread(content);
 if strcmp(text(1:8), 'function')
     type = 'function';
 elseif strcmp(text(1:8), 'classdef')
