@@ -1,8 +1,8 @@
 function[meta] = assert(meta, dimsList, idHeader)
 %% dash.metadata.assert  Throw error if input is not a valid metadata structure
 % ----------
-%   meta = dash.metadata.assert(meta, dimsList, idHeader)  checks
-%   if meta if a valid metadata structure. If not, throws an error with
+%   meta = dash.metadata.assert(meta, dimsList, idHeader)  
+%   Checks if meta is a valid metadata structure. If not, throws an error with
 %   custom error message and identifier. If so, converts cellstring
 %   metadata fields to string.
 %
@@ -22,7 +22,7 @@ function[meta] = assert(meta, dimsList, idHeader)
 %       <idHeader>:unallowedMetadataDimension  if meta has fields that are
 %           not in the list of allowed dimensions
 %
-%   <a href="matlab:dash.doc('dash.metadata.assert')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.metadata.assert')">Documentation Page</a>
 
 % Scalar structure
 dash.assert.scalarType(meta, 'struct', 'meta', idHeader);

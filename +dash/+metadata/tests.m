@@ -1,11 +1,13 @@
 function[] = tests
 %% dash.metadata.tests  Unit-tests for dash.metadata subpackage
-%
-%   dash.metadata.tests()  runs the tests. If successful, exits silently.
-%   Otherwise, throws an error at the first failed test
+% ----------
+%   dash.metadata.tests  
+%   Runs the tests. If successful, exits silently. Otherwise, throws an
+%   error at the first failed test
 %
 %   Tests the following functions:
 %   assert, assertField, bothNaN, define, hasDuplicateRows
+% ----------
 
 %% bothNaN
 

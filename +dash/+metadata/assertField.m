@@ -1,14 +1,14 @@
 function[meta] = assertField(meta, dim, idHeader)
 %% dash.metadata.assertField  Throw error if input is not a valid metadata field
 % ----------
-%   meta = dash.metadata.assertField(meta, dim, idHeader)  checks if meta
-%   is a valid metadata field. If not, throws an error with custom message
-%   and identifier. If so and the metadata is cellstring, returns the
-%   metadata as a string matrix.
+%   meta = dash.metadata.assertField(meta, dim, idHeader)  
+%   Checks if meta is a valid metadata field. If not, throws an error with
+%   custom message and identifier. If so and the metadata is cellstring, 
+%   returns the  metadata as a string matrix.
 %
-%   Valid metadata fields are a matrix, have no duplicate rows, and are one
+%   Valid metadata fields matrices, have no duplicate rows, and are one
 %   of the following data type: numeric, logical, char, string, cellstring,
-%   or datetime
+%   or datetime.
 % ----------
 %   Inputs:
 %       meta: The metadata input being tested
@@ -28,7 +28,7 @@ function[meta] = assertField(meta, dim, idHeader)
 %       <idHeader>:metadatahasNaT if meta contains NaT elements
 %       <idHeader>:metadataHasDuplicateRows  if meta has duplicate rows
 %
-%   <a href="matlab:dash.doc('dash.metadata.assertField')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.metadata.assertField')">Documentation Page</a>
 
 % Type
 if ~isnumeric(meta) && ~islogical(meta) && ~ischar(meta) && ...

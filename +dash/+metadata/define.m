@@ -2,7 +2,7 @@ function[meta] = define(varargin)
 %% dash.metadata.define  Creates a metadata structure for a gridded dataset
 % ----------
 %   meta = dash.define.metadata(dim1, meta1, dim2, meta2, ..., dimN, metaN)
-%   returns a metadata structure for a gridded dataset
+%   Returns a metadata structure for a gridded dataset
 % ----------
 %   Inputs:
 %       dimN (string scalar): The name of a dimension of a gridded dataset
@@ -26,7 +26,7 @@ function[meta] = define(varargin)
 %       (Warning) DASH:metadata:define:metadataFieldIsRow  if a metadata
 %           field is a row vector
 %   
-%   <a href="matlab:dash.doc('dash.metadata.define')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.metadata.define')">Documentation Page</a>
 
 % Header for error IDs
 header = "DASH:metadata:define";

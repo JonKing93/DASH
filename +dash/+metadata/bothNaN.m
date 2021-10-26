@@ -1,8 +1,8 @@
 function[tf] = bothNaN(A, B)
 %% dash.metadata.bothNaN  True if two inputs are both scalar NaN
 % ----------
-%   tf = dash.metadata.bothNaN(A, B)  returns true if A and B are both
-%   scalar NaN. Otherwise, returns false
+%   tf = dash.metadata.bothNaN(A, B)  
+%   Returns true if A and B are both scalar NaN. Otherwise, returns false
 % ----------
 %   Inputs:
 %       A: The first input being tested
@@ -12,7 +12,7 @@ function[tf] = bothNaN(A, B)
 %       tf (scalar logical): True if A and B are both scalar NaN. Otherwise
 %           false
 %
-%   <a href="matlab:dash.doc('dash.metadata.bothNaN')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.metadata.bothNaN')">Documentation Page</a>
 
 if isnumeric(A) && isnumeric(B) && isscalar(A) && isscalar(B) && isnan(A) && isnan(B)
     tf = true;
