@@ -13,12 +13,12 @@ function[lastLine] = lastUsageLine(header, eols)
 %       lastLine (scalar, linear index): The index of the element in eols
 %           that corresponds to the last line of the usage section.
 
-for k = 3:numel(eols)
+for k = numel(eols):-1:3
     line = header(eols(k-1):eols(k));
-        if contains(line, '% ----------')
-            lastLine = k;
-            break;
-        end
+    if contains(line, '% ----------')
+        lastLine = k;
+        break;
+    end
 end
 
 end
