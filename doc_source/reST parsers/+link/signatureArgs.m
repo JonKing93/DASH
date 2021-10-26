@@ -17,7 +17,7 @@ inputLinks = link.args(title, 'input', inputs);
 outputLinks = link.args(title, 'output', outputs);
 
 % Replace keys with links in the funtion signatures
-for s = 1:nSyntax
+for s = 1:numel(signatures)
     signatures(s) = link.inputs(signatures(s), inputs, inputLinks);
     signatures(s) = link.outputs(signatures(s), outputs, outputLinks);
 end
