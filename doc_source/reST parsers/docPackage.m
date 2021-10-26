@@ -1,7 +1,15 @@
-function[] = docPackage(codeRoot, examplesRoot)
+function[] = docPackage(codeRoot, examplesRoot, excludes)
 %% Builds the .rst pages for a package.
 %
 % Currently does not support subpackages or subclasses
+
+% Default
+if ~exist('excludes','var') || isempty(excludes)
+    excludes = "";
+end
+
+% List of contents to exclude from build
+excludes = [".", "..", "Contents.m", excludes];
 
 % Use strings internally
 codeRoot = string(codeRoot);
@@ -17,17 +25,34 @@ home = pwd;
 goback = onCleanup( @()cd(home) );  % Return to initial location when function ends
 cd(subfolder);
 
-% Get the files in the package. Remove ., .., and contents
-files = dir(codeRoot);
-files = string( {files.name} );
-files(1:2) = [];
-files(strcmp(files, "Contents.m")) = [];
+% Get the contents of the package. Remove excluded 
+contents = dir(codeRoot);
+contents = string( {contents.name} );
+contents(ismember(contents, excludes)) = [];
 
-% Get the files needed to build the .rst for each function
-for f = 1:numel(files)
-    [~, name] = fileparts(files(f));
-    codeFile = strcat(codeRoot, filesep, files(f));
-    exampleFile = strcat(examplesRoot, filesep, name, ".md");
+% Get the type of each content
+for c = 1:numel(contents)
+    type = parse.contentType( name );
+    
+    % Classes
+    if strcmp(type, 'class') || strcmp(type, 'class_folder')
+        % ...
+        
+    % Subpackage
+    elseif strcmp(type, 'package')
+        subCodeRoot = strcat(codeRoot, filesep, contents(f));
+        
+        name = char(contents(c));
+        [~, name] = fileparts(name);
+        subExamplesRoot = strcat(examplesRoot, filesep, name(2:end));
+        
+        docPackage(subCodeRoot, subExamplesRoot);
+        
+    % Function
+    elseif strcmp(type, 'function')
+        [~, name] = fileparts(contents(f));
+        codeFile = strcat(codeRoot, filesep, contents(f));
+        exampleFile = strcat(examplesRoot, filesep, name, ".md");
     
     % No example files if there are not examples
     if ~isfile(exampleFile)
