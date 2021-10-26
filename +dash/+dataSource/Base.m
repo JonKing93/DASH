@@ -1,9 +1,9 @@
 classdef (Abstract) Base
     %% dash.dataSource.Base  Superclass for objects that read data from a source
-    %
+    % ----------
     %   dash.dataSource.Base is abstract and requires concrete subclasses
     %   to implement a "load" method for reading data from a source.
-    %
+    % ----------
     %   Base Properties:
     %       source - The data source. A filename or opendap url
     %     dataType - The type of data stored in the source
