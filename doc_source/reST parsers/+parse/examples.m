@@ -1,4 +1,4 @@
-function[labels, details] = examples2(file)
+function[labels, details] = examples(file)
 
 % Read file, remove carriage returns
 text = fileread(file);
@@ -6,7 +6,7 @@ text(text==13) = [];
 
 % Labels and sections
 labels = strings(0,1);
-details = cell(0,1);
+details = strings(0,1);
 entry = 0;
 
 % Track code blocks
@@ -24,7 +24,7 @@ for k = 2:nLines
         line = strip(line);
         labels = cat(1, labels, line);
         entry = entry+1;
-        details{entry} = "";
+        details(entry) = "";
         
     % New code block
     elseif length(line)>=3 && strcmp(line(1:3), '```')        
@@ -41,24 +41,24 @@ for k = 2:nLines
             elseif strcmp(tag, 'error')
                 addline = ".. rst-class:: example-output error-message \n\n";
             end
-            details{entry} = strcat(details{entry}, addline);
+            details(entry) = strcat(details(entry), addline);
             
             % Add code marker
-            details{entry} = strcat(details{entry}, "::\n\n");
+            details(entry) = strcat(details(entry), "::\n\n");
             
         % Ended code block
         else
             inBlock = false;
-            details{entry} = strcat(details{entry}, "\n");
+            details(entry) = strcat(details(entry), "\n");
         end
         
     % Continued code block - indent 4 spaces
     elseif inBlock
-        details{entry} = strcat(details{entry}, "    ", string(line));
+        details(entry) = strcat(details(entry), "    ", string(line));
         
     % Continued a normal line
     else
-        details{entry} = strcat(details{entry}, string(line));
+        details(entry) = strcat(details(entry), string(line));
     end
 end
 
