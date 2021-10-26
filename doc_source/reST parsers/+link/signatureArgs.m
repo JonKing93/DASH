@@ -1,4 +1,4 @@
-function[signatures] = signatureArgs(signatures, title)
+function[signatures] = signatureArgs(signatures, title, inputs, outputs)
 %% Inserts links to input/output descriptions in a set of function syntaxes
 % ----------
 %   signatures = link.signatureArgs(signatures, title)
@@ -6,28 +6,20 @@ function[signatures] = signatureArgs(signatures, title)
 %   Inputs:
 %       signatures (string vector): A set of function signatures
 %       title (string scalar): The title of the function
+%       inputs (string vector): List of input names
+%       outputs (string vector): List of output names
 %
 %   Outputs:
 %       signatures (string vector): Function signatures with linked inputs/outputs
 
-% Get inputs and outputs for each syntax
-nSyntax = numel(signatures);
-inputs = cell(nSyntax, 1);
-outputs = cell(nSyntax, 1);
-for s = 1:nSyntax
-    [inputs{s}, outputs{s}] = parse.args( signatures(s) );
-end
-
 % Get the arg keys and reference links
-inKeys = link.getKeys(inputs);
-inLinks = link.args(title, 'input', inKeys);
-outKeys = link.getKeys(outputs);
-outLinks = link.args(title, 'output', outKeys);
+inputLinks = link.args(title, 'input', inputs);
+outputLinks = link.args(title, 'output', outputs);
 
 % Replace keys with links in the funtion signatures
 for s = 1:nSyntax
-    signatures(s) = link.inputs(signatures(s), inKeys, inLinks);
-    signatures(s) = link.outputs(signatures(s), outKeys, outLinks);
+    signatures(s) = link.inputs(signatures(s), inputs, inputLinks);
+    signatures(s) = link.outputs(signatures(s), outputs, outputLinks);
 end
 
 end

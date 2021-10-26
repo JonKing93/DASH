@@ -13,9 +13,13 @@ function[rst] = description(header)
 [signatures, details] = parse.usage(header);
 title = parse.title(header);
 
-% Get the syntax links, as well as links to signature inputs and outputs
+% Syntax Links
 links = link.syntax(title, numel(signatures));
-signatures = link.signatureArgs(signatures, title);
+
+% Link signature inputs and outputs
+inputs = parse.parameters('Inputs', header);
+outputs = parse.parameters('Outputs', header);
+signatures = link.signatureArgs(signatures, title, inputs, outputs);
 
 % Format
 rst = format.description(links, signatures, details);
