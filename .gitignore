@@ -17,3 +17,4 @@
 # Documentation builds
 doc_source/sphinx-source-rst/**
 doc_source/templates/html-build/**
+doc_source/html/**

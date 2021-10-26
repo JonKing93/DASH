@@ -1,4 +1,4 @@
-function[] = packageHelp(file)
+function[subfolder] = packageHelp(file)
 %% Convert a package help file to .rst file
 
 % Get the help text
@@ -17,5 +17,8 @@ filetext = strcat(summary, contents);
 fid = fopen(newfile, 'w');
 closeFile = onCleanup( @()fclose(fid) );
 fprintf(fid, filetext);
+
+% Return the name of the package subfolder
+subfolder = parse.titleEnd(help);
 
 end
