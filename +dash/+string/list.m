@@ -1,9 +1,10 @@
 function[string] = list(list)
 %% dash.string.list  List the elements of a vector in a formatted sting
 % ----------
-%   string = dash.string.list(list)  prints the elements of a vector in a
-%   string. In the returned string, elements are separated by commas and
-%   the word "and" is placed before the final element, if appropriate.
+%   string = dash.string.list(list)  
+%   Rrints the elements of a vector in a string. In the returned string, 
+%   elements are separated by commas and the word "and" is placed before 
+%   the final element, if appropriate.
 % ----------
 %   Inputs:
 %       vector (string array | integer array): The list being converted
@@ -13,7 +14,7 @@ function[string] = list(list)
 %       string (string scalar): The elements of the list formatted as a
 %           string
 %
-%   <a href="matlab:dash.doc('dash.string.list')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.string.list')">Documentation Page</a>
 
 % Get the format specifier
 if isstring(list)
