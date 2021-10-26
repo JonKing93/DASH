@@ -1,28 +1,101 @@
 classdef gridfile < handle
-    % A class that creates and edits .grid files. Each .grid file organizes
-    % organizes a collection of gridded data. The .grid file stores
-    % instructions on how to read data from different sources (such as
-    % NetCDF and .mat files), and organizes metadata for the values in each
-    % data source.
+    % gridfile  Catalogue and load gridded data sets
+    % ----------
+    %   The gridfile class creates and manages gridfile objects. These
+    %   objects catalogue 1. metadata, and 2. data source files for a
+    %   gridded dataset. The catalogue is stored in a file with a ".grid"
+    %   extension.
     %
-    % To create a new gridfile object, use:
-    %   obj = gridfile(filename)
+    %   A key function of gridfile is to provide an interface for loading
+    %   data from the source files. This interface allows the user to
+    %   efficiently:
+    %       1. Load subsets of the catalogued data
+    %       2. Order the dimensions of loaded data
+    %       3. Apply linear or log transforms to loaded data, and
+    %       4. Perform simple arithmetic on large gridded datasets
     %
-    % gridFile Methods:
-    %   defineMetadata - Defines metadata for a .grid file or data source
-    %   new - Initializes a new .grid file.
-    %   gridfile - Creates a new gridfile object.
-    %   add - Adds a data source to a .grid file.
-    %   metadata - Returns the metadata for a .grid file.
-    %   load - Loads values from the data sources organized by the .grid file
-    % 
-    % *** Advanced ***
-    % gridFile Methods:
-    %   info - Returns a summary of a .grid file's contents.
-    %   rewriteMetadata - Rewrites metadata for a dimension in a .grid file
-    %   renameSources - Changes the file name associated with a data source.
-    %   expand - Increases the size of a dimension in a .grid file
-    %   remove - Removes a data source from a .grid file.
+    %   The other key function of gridfile is to associate all gridded data
+    %   with dimensional metadata. This allows data to be accessed using
+    %   human-readable metadata, rather than array indices.
+    % ----------
+    % gridfile methods:
+    %
+    % KEY METHODS
+    % The following methods are the most commonly used methods by users.
+    %
+    % Essential:  Core functionality
+    %   gridfile        - Build the gridfile object for a .grid file
+    %   metadata        - Return the metadata for a gridfile object
+    %   new             - Create a new (empty) .grid file
+    %   add             - Catalogue a data source file in a .grid file
+    %   defineMetadata  - Organize dimensional metadata for a .grid file or data source file.
+    %   load            - Load data from source files.
+    %
+    %
+    % ALL USER METHODS:
+    % The complete list of gridfile methods for users.
+    %
+    % Arithmetic:
+    %   plus - 
+    %   minus - 
+    %   times - 
+    %   divide -
+    %
+    % Create gridfile:
+    %   gridfile - 
+    %   new - 
+    %
+    % Data transformations:
+    %   fillValue - 
+    %   validRange - 
+    %   transform - 
+    %
+    % Data sources:
+    %   add - 
+    %   remove - 
+    %   renameSources - 
+    %
+    % Load data:
+    %   load - 
+    %
+    % Metadata:
+    %   defineMetadata - 
+    %   editMetadata -
+    %   metadata - 
+    %   expand -
+    %
+    % Summary:
+    %   info - 
+
+    % UTILITY METHODS:
+    % "Under-the-hood" methods used internally to run the gridfile objects.
+    % These methods may be useful to developers, but are not intended for
+    % users.
+    %
+    % Data sources:
+    %   findFileSources -
+    %   buildSources - 
+    %   buildSourcesForFiles - 
+    %   checkSourcesMatchGrid -
+    %   sourceFilepath - 
+    %
+    % Load:
+    %   review - 
+    %   repeatedLoad - 
+    %
+    % Misc:
+    %   collectFullPaths - 
+    %   checkAllowedDims - 
+    %
+    % Primitive Conversion:
+    %   padPrimitives - 
+    %   convertSourceToPrimitives -
+    %   collectPrimitives - 
+    %
+    % Save and update:
+    %   save - 
+    %   update - 
+    %   updateMetadataField -
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
