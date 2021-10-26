@@ -1,9 +1,9 @@
 function[varargout] = inputs( inputs, flags, defaults, nPrev )
-%% dash.parse.inputs Parses inputs for flag-value input pairs. 
+%% dash.parse.inputs  Parses inputs for flag-value input pairs. 
 % ----------
-% values = dash.parse.inputs(inputs, flags, defaults, nPrev)
-% Parses a set of inputs given a set of input string flags. If a flag is
-% not passed to a function, returns a default value.
+%   values = dash.parse.inputs(inputs, flags, defaults, nPrev)
+%   Parses a set of inputs given a set of input string flags. If a flag is
+%   not passed to a function, returns a default value.
 % ----------
 %   Inputs:
 %       inputs (cell vector)[nInputs]: A set of Name-Value input paris.
@@ -28,7 +28,7 @@ function[varargout] = inputs( inputs, flags, defaults, nPrev )
 %       DASH:parse:inputs:flagAlreadySet  if the value for a flag is set
 %           more than once
 %
-%   <a href="matlab:dash.doc('dash.parse.inputs')">Online documentation</a>
+%   <a href="matlab:dash.doc('dash.parse.inputs')">Documentation Page</a>
 
 % Error check developer flags and defaults
 header = "DASH:parse:inputs";
