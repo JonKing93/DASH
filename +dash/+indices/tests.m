@@ -1,8 +1,10 @@
 function[] = tests
 %% dash.indices.tests  Unit tests for the dash.indices subpackage
-%
-%   dash.indices.tests() runs the units tests. If the tests pass, exits silently.
+% ----------
+%   dash.indices.tests
+%   Runs the units tests. If the tests pass, exits silently.
 %   If the tests fail, prints the first failed test to the console.
+% ----------
 
 %% strided
 

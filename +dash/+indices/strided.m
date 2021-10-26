@@ -12,7 +12,7 @@ function[indices] = strided(indices)
 %       B (vector, linear indices): Equally spaced set of indices that
 %           includes all indices in A
 %
-%   <a href="matlab:dash.doc('dash.indices.strided')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.indices.strided')">Documentation Page</a>
 
 % Sort indices and get spacing
 if numel(indices)>1
