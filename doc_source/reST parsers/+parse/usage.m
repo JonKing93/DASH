@@ -11,9 +11,14 @@ function[signatures, details] = usage(header)
 %       details (cell vector): Usage details for each signature. Elements
 %           are paragraphs of the description.
 
-title = parse.title(header);
+% Get the usage text
 usage = get.usage(header);
 
+% Get the title and object signature title
+title = parse.title(header);
+objTitle = sprintf("<strong>obj.%s</strong>", parse.titleEnd(title, true));
+
+% Initialize signatures and details
 signatures = {};
 details = {};
 newParagraph = true;
@@ -30,8 +35,16 @@ for k = 2:numel(eol)
         line = line(5:end);
         line = string(line);
         
-        % Signature
-        if newParagraph && contains(line, title)
+        % Signatures
+        if newParagraph && (contains(line, title) || contains(line, objTitle))
+            
+            % Remove strong tags from object signatures
+            if contains(line, objTitle)
+                line = replace(line, "<strong>", "");
+                line = replace(line, "</strong>", "");
+            end
+            
+            % New signature
             signatures = cat(1, signatures, line);
             details = cat(1, details, {strings(0,1)});
             entry = entry + 1;
