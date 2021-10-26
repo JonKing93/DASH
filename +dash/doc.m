@@ -1,8 +1,9 @@
 function[] = doc(name)
 %% dash.doc  Open online reference page in a web browser.
 % ----------
-%   dash.doc(name)  opens the online reference page for a method, package,
-%   or class in the DASH toolbox.
+%   dash.doc(name)  
+%   Opens the online reference page for a method, package, or class in the
+%   DASH toolbox.
 %
 %   The name of the method, package, or class should include all
 %   package/subpackage headers. For example:
