@@ -1,5 +1,5 @@
 classdef gridfile < handle
-    % gridfile  Catalogue and load gridded data sets
+    %% gridfile  Catalogue and load gridded data sets
     % ----------
     %   The gridfile class creates and manages gridfile objects. These
     %   objects catalogue 1. metadata, and 2. data source files for a
@@ -66,7 +66,7 @@ classdef gridfile < handle
     %
     % Summary:
     %   info - 
-
+    %
     % UTILITY METHODS:
     % "Under-the-hood" methods used internally to run the gridfile objects.
     % These methods may be useful to developers, but are not intended for
