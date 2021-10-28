@@ -7,7 +7,6 @@ function[] = tests
 % ----------
 
 
-
 %% Add the test data to the path
 currentPath = mfilename('fullpath');
 testPath = split(currentPath, filesep);

@@ -1,14 +1,11 @@
-classdef text < dash.dataSource.Base
+classdef text < dash.dataSource.Interface
     %% dash.dataSource.text  Objects that read data from delimited text files
-    % 
-    %   text Properties:
-    %     importOptions - Optional arguments to the "readmatrix.m" function
+    % ----------
+    % text Methods:
+    %   text - Create a new dash.dataSource.text object
+    %   load - Load data from a delimited text file
     %
-    %   text Methods:
-    %              text - Creates a new dash.dataSource.text object
-    %              load - Load data from a delimited text file
-    %
-    %   <a href="matlab:dash.doc('dash.dataSource.text')">Online Documentation</a>
+    % <a href="matlab:dash.doc('dash.dataSource.text')">Documentation Page</a>
     
     properties
         importOptions;   % Optional arguments to the readmatrix.m function
@@ -16,7 +13,7 @@ classdef text < dash.dataSource.Base
     
     methods
         function[obj] = text(file, varargin)
-        %% dash.dataSource.text.text  Create a new object for reading data from delimited text files
+        %% dash.dataSource.text.text  Create a new dash.dataSource.text object
         % ----------
         %   obj = dash.dataSource.text(file)
         %   Creates an object to read data from a delimited text file
@@ -26,7 +23,9 @@ classdef text < dash.dataSource.Base
         %
         %   obj = dash.dataSource.text(..., Name, Value)
         %   Specifies additional import options using name-value pair arguments.
-        %   Supported Name-Value pairs are those in Matlab's "readmatrix" function
+        %   Supported Name-Value pairs are those in Matlab's "readmatrix"
+        %   function. See the documentation page for "readmatrix" for
+        %   details.
         % ----------
         %   Inputs:
         %       file (string scalar): The name of a delimited text file
@@ -41,7 +40,7 @@ classdef text < dash.dataSource.Base
         %       DASH:dataSource:text:invalidTextFile  if data cannot be imported
         %           from the file
         %
-        %   <a href="dash.doc('dash.dataSource.text.text')">Online Documentation</a>
+        %   <a href="dash.doc('dash.dataSource.text.text')">Documentation Page</a>
             
             % Error check
             header = 'DASH:dataSource:text';
@@ -67,17 +66,19 @@ classdef text < dash.dataSource.Base
         function[X] = load(obj, indices)
         %% dash.dataSource.text.load  Load data from a delimited text file
         % ----------
-        %   X = obj.load(indices)
+        %   X = <strong>obj.load</strong>(indices)
         %   Loads data from a delimited text at the specified linear indices.
         % ----------
         %   Inputs:
-        %       indices (cell vector, elements are vectors of linear indices): The
-        %           indices of data elements to load from the file
+        %       indices (cell vector [nDims] {vector, linear indices}):
+        %           The indices of data elements along each dimension to load from 
+        %           the text file. Should have one element per dimension of the variable.
+        %           Each element holds a vector of linear indices.
         %
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.text.load')">Online Documentation</a>
+        %   <a href="matlab:dash.doc('dash.dataSource.text.load')">Documentation Page</a>
  
             X = readmatrix(obj.source, obj.importOptions{:});
             X = X(indices{:});
