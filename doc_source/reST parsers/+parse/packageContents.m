@@ -1,49 +1,83 @@
-function[sections, files, h1] = packageContents(help)
-%
-% sections (string vector): Named sections
-% files (cell vector): Files in each section
-% h1 (cell vector): H1 line for each file
+function[sections, summaries, headings, files, h1] = packageContents(header)
+%%
+% sections: reST section headings. The first element is empty
+% summaries: reST section descriptions. The first element is empty
+% headings (cell vector of string vectors): html sub-headings placed in
+%   each reST section
+% files (cell vector{cell vector{string vector}}): The files in each html
+%   heading
+% h1 (cell vector{cell vector{string vector}}): The H1 description for each
+%   file
 
-% Move below the description
-eol = find(help==10);
-k = get.lastUsageLine(help, eol);
-contents = help(eol(k)+1:end);
+% Get the details section
+details = get.details(header);
+details = [details, newline];
 
-% Preallocate
-sections = strings(0,1);
-files = cell(0,1);
-h1 = cell(0,1);
-s = 0;
+% Preallocate reST sections
+sections = "";
+summaries = "";
+headings = {""};
+files = {{strings(0,1)}};
+h1 = {{strings(0,1)}};
+s = 1;
+h = 1;
+inSummary = false;
 
 % Get each line of text
-eol = [0, find(contents==10)];
+eol = [0, find(details==10)];
 for k = 2:numel(eol)
-    line = contents(eol(k-1)+1:eol(k));
+    line = details(eol(k-1)+1:eol(k));
+    [line, hastext] = parse.line(line, 3);
+    line = char(line);
     
     % Ignore blank lines and doc links
-    if all(isspace(line(2:end))) || contains(line, '<a href=')
-        continue;
-    end
+    if ~hastext || contains(line, '<a href=')
+        % Do nothing
     
-    % Remove comment symbol, strip newlines
-    line = line(3:end);
-    line = strip(line, 'right');
-    
-    % New section
-    if ~isspace(line(1))
-        sections = cat(1, sections, line(1:end-1));
-        files = cat(1, files, {strings(0,1)});
-        h1 = cat(1, h1, {strings(0,1)});
+    % New reST section
+    elseif line(1)=='*' && line(2)=='*'
         s = s+1;
+        h = 1;
+        sections(s) = line(3:end-2);
+        summaries(s) = "";
+        headings{s} = "";
+        files{s} = {strings(0,1)};
+        h1{s} = {strings(0,1)};
         
-    % File in a section
-    else
-        line = strip(line, 'left');
-        firstSpace = find(line==' ', 1);
-        files{s} = cat(1, files{s}, line(1:firstSpace-1));
+        inSummary = true;
+        
+    % HTML heading
+    elseif line(end)==':'
+        h = h+1;
+        headings{s}(end+1) = line(1:end-1);
+        files{s}{h} = strings(0,1);
+        h1{s}{h} = strings(0,1);
+        inSummary = false;
+        
+    % Content line
+    elseif length(line)>=2 && all(isspace(line(1:2))) && contains(line, ' -')
+        line = line(3:end);
+        inSummary = false;
+        
+        firstSpace = find(line==' ',1);
+        files{s}{h}(end+1) = line(1:firstSpace-1);
+        
         firstHyphen = find(line=='-', 1);
-        h1{s} = cat(1, h1{s}, line(firstHyphen+2:end));
+        h1{s}{h}(end+1) = line(firstHyphen+2:end);
+        
+    % Continuing summary
+    elseif inSummary
+        if strcmp(summaries(s), "")
+            summaries(s) = line;
+        else
+            summaries(s) = strcat(summaries(s), " ", line);
+        end
+        
+    % Anything else
+    else
+        error('Unknown contents syntax');
     end
 end
 
 end
+        

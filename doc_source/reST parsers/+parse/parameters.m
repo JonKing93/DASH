@@ -14,7 +14,7 @@ function[names, types, details] = parameters(type, header)
 %           paragraphs of the description.
 
 % Extract header text
-args = get.args(type, header);
+args = get.section(type, header);
 
 % Initialize outputs
 names = strings(0,1);
