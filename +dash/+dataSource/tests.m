@@ -1,8 +1,11 @@
 function[] = tests
-%% Implement unit tests for classes in the dash.dataSource subpackage
-%
-%   dash.dataSource.tests()  runs the units tests. If the tests pass, exits silently.
-%   If the tests fail, prints the first failed test to the console.
+%% dash.dataSource.tests  Implement unit tests for classes in the package
+% ----------
+%   dash.dataSource.tests
+%   Runs the units tests. If the tests pass, exits silently. If the tests
+%   fail, prints the first failed test to the console.
+% ----------
+
 
 
 %% Add the test data to the path

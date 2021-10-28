@@ -7,8 +7,11 @@ function[] = doc(name)
 %
 %   The name of the method, package, or class should include all
 %   package/subpackage headers. For example:
+%
 %   >> dash.doc( "dash.is.strflag" )
+%
 %   >> dash.doc( "kalmanFilter" )
+%
 %   >> dash.doc( "kalmanFilter.prior" )
 % ----------
 %   Inputs:

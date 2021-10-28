@@ -1,5 +1,5 @@
-% Contents of the <strong>dash</strong> package:
-%   
+% dash  Utilities for the DASH toolbox
+% ----------
 % Documentation Functions:
 %          doc - Open online reference page in a web browser
 %      version - Return the current version of the DASH toolbox
@@ -21,4 +21,4 @@
 % Tests:
 %        tests - Implements unit tests for functions, classes, and sub-packages in the DASH Toolbox
 %       
-% <a href="matlab:dash.doc('dash')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash')">Documentation Page</a>

@@ -1,5 +1,27 @@
 classdef mat < dash.dataSource.hdf
     %% dash.dataSource.mat  Objects that read data from .mat files
+    % ----------
+    % mat Methods:
+    %
+    % General:
+    %   mat           - Create
+    %   loadStrided   - load in intervals
+    %
+    % v73 Matfile Warnings:
+    %   toggleWarning - Change warning state
+    %   v73warning    - Informative
+    %
+    % Inherited:
+    %   load          -  Load from HDF5 source
+    %   setVariable   - Set the name of the variable in the HDF5 source
+    %
+    % <a href="matlab:dash.doc('dash.dataSource.mat')">Documentation Page</a>
+
+    
+    %
+    %
+    % 
+    %   
     %
     %   <strong>General dataSource operations</strong>
     %   mat Properties:

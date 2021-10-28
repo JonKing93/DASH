@@ -6,7 +6,8 @@ function[indices] = strided(indices)
 %   that contain all linear indices specified in A.
 % ----------
 %   Inputs:
-%        A (vector, linear indices)
+%       A (vector, linear indices): A set of indices that the strided
+%           output must include.
 %
 %   Outputs:
 %       B (vector, linear indices): Equally spaced set of indices that

@@ -1,4 +1,4 @@
-%% dash.is  Classes that read data from different types of sources files
+%% dash.dataSource  Classes that read data from different types of sources files
 % ----------
 %   The Base class implements an interface for loading data from source
 %   files. Subclasses actually implement the steps needed to extract data
