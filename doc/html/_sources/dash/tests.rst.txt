@@ -1,0 +1,27 @@
+dash.tests
+==========
+Implements unit testing for the dash package
+
+----
+
+Syntax
+------
+
+.. rst-class:: syntax
+
+| :ref:`dash.tests <dash.tests.syntax1>`
+
+----
+
+Description
+-----------
+
+.. _dash.tests.syntax1:
+
+.. rst-class:: syntax
+
+dash.tests
+
+Runs the units tests. If the tests pass, exits silently. If the tests fail, prints the first failed test to the console.
+
+

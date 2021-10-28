@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.fileExists &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.tests" href="tests.html" />
+    <link rel="prev" title="dash.assert.vector" href="vectorTypeN.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Top level name</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="strflag.html">strflag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strlist.html">strlist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strsInList.html">strsInList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="type.html">type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalarType.html">scalarType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vectorTypeN.html">vectorTypeN</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">fileExists</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#assert-that-a-file-exists">Assert that a file exists</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#include-default-file-extension">Include default file extension</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#customize-error-message">Customize error message</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-absolute-file-path">Return absolute file path</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#id1">Customize error message</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#filename">filename</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ext">ext</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dash-assert-fileexists-input-idheader">idHeader</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#abspath">abspath</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.fileExists</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dash/assert/fileExists.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-fileexists">
+<h1>dash.assert.fileExists<a class="headerlink" href="#dash-assert-fileexists" title="Permalink to this headline"></a></h1>
+<p>Throw error if a file does not exist</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-fileexists-syntax1"><span class="std std-ref">abspath = dash.assert.fileExists(filename)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-fileexists-syntax2"><span class="std std-ref">abspath = dash.assert.fileExists(filename, ext)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-fileexists-syntax3"><span class="std std-ref">abspath = dash.assert.fileExists(filename, ext, idHeader)</span></a></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p class="syntax" id="dash-assert-fileexists-syntax1"><a class="reference internal" href="#dash-assert-fileexists-output-abspath"><span class="std std-ref">abspath</span></a> = dash.assert.fileExists(<a class="reference internal" href="#dash-assert-fileexists-input-filename"><span class="std std-ref">filename</span></a>)</p>
+<p>Checks if a file exists. If not, throws an error. If so, returns the absolute path to the file as a string.</p>
+<p class="syntax" id="dash-assert-fileexists-syntax2"><a class="reference internal" href="#dash-assert-fileexists-output-abspath"><span class="std std-ref">abspath</span></a> = dash.assert.fileExists(<a class="reference internal" href="#dash-assert-fileexists-input-filename"><span class="std std-ref">filename</span></a>, <a class="reference internal" href="#dash-assert-fileexists-input-ext"><span class="std std-ref">ext</span></a>)</p>
+<p>Also checks for files with the given extension.</p>
+<p class="syntax" id="dash-assert-fileexists-syntax3"><a class="reference internal" href="#dash-assert-fileexists-output-abspath"><span class="std std-ref">abspath</span></a> = dash.assert.fileExists(<a class="reference internal" href="#dash-assert-fileexists-input-filename"><span class="std std-ref">filename</span></a>, <a class="reference internal" href="#dash-assert-fileexists-input-ext"><span class="std std-ref">ext</span></a>, <a class="reference internal" href="#dash-assert-fileexists-input-idheader"><span class="std std-ref">idHeader</span></a>)</p>
+<p>Uses a custom header in thrown error IDs.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="assert-that-a-file-exists">
+<h3>Assert that a file exists<a class="headerlink" href="#assert-that-a-file-exists" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert that a file exists</strong></label><div class="content"><p>A file that passes the assertion:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>filename = &quot;a-file-that-exists.mat&quot;;
+dash.assert.fileExists(filename)
+
+filename = &quot;path/to/a-file-that-exists.mat&quot;;
+dash.assert.fileExists(filename)
+</pre></div>
+</div>
+<p>Files that fail the assertion:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>filename = &quot;not-a-real-file.mat&quot;;
+dash.assert.fileExists(filename)
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>File &quot;not-a-real-file.mat&quot; could not be found. It may be misspelled or not on the active path.
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="include-default-file-extension">
+<h3>Include default file extension<a class="headerlink" href="#include-default-file-extension" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Include default file extension</strong></label><div class="content"><p>Look at the extension of a file on the active path:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.      ..      myFile.mat
+</pre></div>
+</div>
+<p>We can see that “myFile” has a “.mat” extension.</p>
+<p>Provide the file name and default extension:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.fileExists(&quot;myFile&quot;, &quot;.mat&quot;)
+</pre></div>
+</div>
+<p>The assertion passes.</p>
+</div></section></section>
+<section class="collapse-examples" id="customize-error-message">
+<h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content"><p>Customize error messages so they appear to originate from the calling function:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;not-a-file.mat&quot;;
+idHeader = &quot;my:error:header&quot;;
+dash.assert.fileExists(file, [], idHeader);
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>File &quot;not-a-file.mat&quot; could not be found. It may be misspelled or not on the active path.&quot;
+</pre></div>
+</div>
+<p>Examine the error ID:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
+ID = ME.identifier
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
+    &#39;my:error:header:fileNotFound&#39;
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="return-absolute-file-path">
+<h3>Return absolute file path<a class="headerlink" href="#return-absolute-file-path" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example4"><label for="example4"><strong>Return absolute file path</strong></label><div class="content"><p>Look for files on the active path:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.    ..    myFolder
+</pre></div>
+</div>
+<p>Look for files in the folder:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir myFolder
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.   ..   myFile.txt
+</pre></div>
+</div>
+<p>We can see the file “myFile.txt” is located in the folder named “myFolder”. If we assert that myFile.txt exists using only the filename, the function returns the full path to the file:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;myFile.txt&quot;;
+fullpath = dash.assert.fileExists(file)
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>fullpath =
+          &quot;myFolder/myFile.txt&quot;
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="id1">
+<h3>Customize error message<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example5"><label for="example5"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from the calling function:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;not-a-real-file.m&quot;;
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="filename">
+<span id="dash-assert-fileexists-input-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>filename</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of a file</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ext">
+<span id="dash-assert-fileexists-input-ext"></span><h3>ext<a class="headerlink" href="#ext" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>ext</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>empty</em> <em>array</em></div>
+<div class="line">Default file extension. Leave unset, or use an empty array to not check extensions.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dash-assert-fileexists-input-idheader">
+<span id="idheader"></span><h3>idHeader<a class="headerlink" href="#dash-assert-fileexists-input-idheader" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>idHeader</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header to use in thrown error IDs. Default is “DASH:assert:fileExists”</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="abspath">
+<span id="dash-assert-fileexists-output-abspath"></span><h3>abspath<a class="headerlink" href="#abspath" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>abspath</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The absolute path to the file</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vectorTypeN.html" class="btn btn-neutral float-left" title="dash.assert.vector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="dash.assert.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

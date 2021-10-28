@@ -1,0 +1,30 @@
+dash.dataSource.nc
+==================
+Objects that read data from NetCDF files
+
+
+.. raw:: html
+
+    <h3>nc Methods</h3>
+
+.. rst-class:: package-links
+
+| :doc:`nc <nc/nc>` - Create a new dash.dataSource.nc object
+| :doc:`loadStrided <nc/loadStrided>` - Load data from a NetCDF file at strided indices
+
+.. toctree::
+    :hidden:
+
+    nc <nc/nc>
+    loadStrided <nc/loadStrided>
+
+
+.. raw:: html
+
+    <h3>Inherited</h3>
+
+.. rst-class:: package-links
+
+| :doc:`load <hdf/load>` - Load data from a HDF5 file
+| :doc:`setVariable <hdf/setVariable>` - Ensure the variable exists in the NetCDF file
+

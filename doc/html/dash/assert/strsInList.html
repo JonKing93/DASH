@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.strsInList &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.type" href="type.html" />
+    <link rel="prev" title="dash.assert.strlist" href="strlist.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Top level name</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="strflag.html">strflag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strlist.html">strlist</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">strsInList</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#assert-strings-are-members-of-a-list">Assert strings are members of a list</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#return-indices-of-strings-in-the-list">Return indices of strings in the list</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#customize-error-message">Customize error message</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#strings">strings</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#list">list</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#listname">listName</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dash-assert-strsinlist-input-idheader">idHeader</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#k">k</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="type.html">type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalarType.html">scalarType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vectorTypeN.html">vectorTypeN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fileExists.html">fileExists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.strsInList</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/dash/assert/strsInList.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-strsinlist">
+<h1>dash.assert.strsInList<a class="headerlink" href="#dash-assert-strsinlist" title="Permalink to this headline"></a></h1>
+<p>Throw error if strings are not in a list of allowed strings</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-strsinlist-syntax1"><span class="std std-ref">k = dash.assert.strsInList(strings, list)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-strsinlist-syntax2"><span class="std std-ref">k = dash.assert.strsInList(strings, list, name, listName)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-strsinlist-syntax3"><span class="std std-ref">k = dash.assert.strsInList(strings, list, name, listName, idHeader)</span></a></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p class="syntax" id="dash-assert-strsinlist-syntax1"><a class="reference internal" href="#dash-assert-strsinlist-output-k"><span class="std std-ref">k</span></a> = dash.assert.strsInList(<a class="reference internal" href="#dash-assert-strsinlist-input-strings"><span class="std std-ref">strings</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-list"><span class="std std-ref">list</span></a>)</p>
+<p>Checks if all elements in strings are members of list. If not, throws an error. If so, returns the indices of each string in the list.</p>
+<p class="syntax" id="dash-assert-strsinlist-syntax2"><a class="reference internal" href="#dash-assert-strsinlist-output-k"><span class="std std-ref">k</span></a> = dash.assert.strsInList(<a class="reference internal" href="#dash-assert-strsinlist-input-strings"><span class="std std-ref">strings</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-list"><span class="std std-ref">list</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-listname"><span class="std std-ref">listName</span></a>)</p>
+<p>Use custom names for the strings and list in the thrown error message.</p>
+<p class="syntax" id="dash-assert-strsinlist-syntax3"><a class="reference internal" href="#dash-assert-strsinlist-output-k"><span class="std std-ref">k</span></a> = dash.assert.strsInList(<a class="reference internal" href="#dash-assert-strsinlist-input-strings"><span class="std std-ref">strings</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-list"><span class="std std-ref">list</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-listname"><span class="std std-ref">listName</span></a>, <a class="reference internal" href="#dash-assert-strsinlist-input-idheader"><span class="std std-ref">idHeader</span></a>)</p>
+<p>Use a custom header in thrown error IDs.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="assert-strings-are-members-of-a-list">
+<h3>Assert strings are members of a list<a class="headerlink" href="#assert-strings-are-members-of-a-list" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert strings are members of a list</strong></label><div class="content"><p>Example that passes the assertion:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;,&quot;list&quot;];
+strings = [&quot;an&quot;, &quot;here&quot;, &quot;list&quot;];
+
+dash.assert.strsInList(strings, list)
+</pre></div>
+</div>
+<p>Example that fails the assertion</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;,&quot;list&quot;];
+strings = [&quot;different&quot;, &quot;strings&quot;];
+
+dash.assert.strsInList(strings, list)
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>Element 1 in strings (&quot;different&quot;) is not a(n) value in the list. Allowed values are &quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;, and &quot;list&quot;.
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="return-indices-of-strings-in-the-list">
+<h3>Return indices of strings in the list<a class="headerlink" href="#return-indices-of-strings-in-the-list" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Return indices of strings in the list</strong></label><div class="content"><p>If the assert passes, the function returns the index of each string in the list:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;];
+strings = [&quot;C&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;];
+
+indices = dash.assert.strsInList(strings, list)
+</pre></div>
+</div>
+<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>indices =
+         [3     1     2     2]
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="customize-error-message">
+<h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from a calling function:</p>
+<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>stringsName = &quot;my strings&quot;;
+listName = &quot;allowed list value&quot;;
+idHeader = &quot;my:error:header&quot;;
+
+list = [&quot;allowed&quot;,&quot;values&quot;];
+strings = [&quot;not&quot;,&quot;in&quot;,&quot;the&quot;,&quot;list&quot;];
+
+dash.assert.strsInList(strings, list, stringsName, listName, idHeader)
+</pre></div>
+</div>
+<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>Element 1 of my strings (&quot;not&quot;) is not a(n) allowed list value. Allowed values are &quot;allowed&quot;, and &quot;values&quot;
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="strings">
+<span id="dash-assert-strsinlist-input-strings"></span><h3>strings<a class="headerlink" href="#strings" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>strings</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em>)[<em>nStrings</em></div>
+<div class="line">The set of strings being checked</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="list">
+<span id="dash-assert-strsinlist-input-list"></span><h3>list<a class="headerlink" href="#list" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>list</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The set of allowed strings</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="dash-assert-strsinlist-input-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of strings in the calling function. Default is “strings”</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="listname">
+<span id="dash-assert-strsinlist-input-listname"></span><h3>listName<a class="headerlink" href="#listname" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>listName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of list in the calling function. Default is “value in the list”</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dash-assert-strsinlist-input-idheader">
+<span id="idheader"></span><h3>idHeader<a class="headerlink" href="#dash-assert-strsinlist-input-idheader" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>idHeader</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A header for thrown error IDs. Default is “DASH:assert:strsInList”</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="k">
+<span id="dash-assert-strsinlist-output-k"></span><h3>k<a class="headerlink" href="#k" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>k</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em>)[<em>nStrings</em></div>
+<div class="line">The index of each element of strings in the list of allowed values</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="strlist.html" class="btn btn-neutral float-left" title="dash.assert.strlist" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="type.html" class="btn btn-neutral float-right" title="dash.assert.type" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
