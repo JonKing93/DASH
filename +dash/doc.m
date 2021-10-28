@@ -18,12 +18,12 @@ function[] = doc(name)
 %       name (string scalar): The full name of a method, package, or class
 %           in the DASH toolbox.
 %
-%   <a href="matlab:dash.doc('dash.doc')">Online Documentation</a>
+%   <a href="matlab:dash.doc('dash.doc')">Documentation Page</a>
 
 % Reference page header
 path = mfilename('fullpath');
 folders = strsplit(path, filesep);
-docs = [folders(1:end-2), 'doc'];
+docs = [folders(1:end-2), 'doc', 'html'];
 header = strjoin(docs, filesep);
 
 % Parse the package headings into the url
@@ -33,6 +33,6 @@ docPath = [docPath, '.html'];
 url = strjoin({header, docPath}, filesep);
 
 % Open in browser
-web(url, '-browser');
+web(url);%, '-browser');
 
 end
