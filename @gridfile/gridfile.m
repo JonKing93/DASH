@@ -20,10 +20,9 @@ classdef gridfile < handle
     % ----------
     % gridfile methods:
     %
-    % KEY METHODS
+    % **KEY METHODS**
     % The following methods are the most commonly used methods by users.
     %
-    % Essential:  Core functionality
     %   gridfile        - Build the gridfile object for a .grid file
     %   metadata        - Return the metadata for a gridfile object
     %   new             - Create a new (empty) .grid file
@@ -32,42 +31,43 @@ classdef gridfile < handle
     %   load            - Load data from source files.
     %
     %
-    % ALL USER METHODS:
+    % **ALL USER METHODS**
     % The complete list of gridfile methods for users.
     %
     % Arithmetic:
-    %   plus - 
-    %   minus - 
-    %   times - 
-    %   divide -
+    %   plus - a
+    %   minus - a
+    %   times - a
+    %   divide - a
     %
     % Create gridfile:
-    %   gridfile - 
-    %   new - 
+    %   gridfile - a
+    %   new - a
     %
     % Data transformations:
-    %   fillValue - 
-    %   validRange - 
-    %   transform - 
+    %   fillValue - a
+    %   validRange - a
+    %   transform - a
     %
     % Data sources:
-    %   add - 
-    %   remove - 
-    %   renameSources - 
+    %   add - a
+    %   remove - a
+    %   renameSources - a
     %
     % Load data:
-    %   load - 
+    %   load - a
     %
     % Metadata:
-    %   defineMetadata - 
-    %   editMetadata -
-    %   metadata - 
-    %   expand -
+    %   defineMetadata - a
+    %   editMetadata - a
+    %   metadata - a
+    %   expand - a
     %
     % Summary:
-    %   info - 
+    %   info -
     %
-    % UTILITY METHODS:
+    %
+    % **UTILITY METHODS**
     % "Under-the-hood" methods used internally to run the gridfile objects.
     % These methods may be useful to developers, but are not intended for
     % users.
@@ -96,6 +96,12 @@ classdef gridfile < handle
     %   save - 
     %   update - 
     %   updateMetadataField -
+    %
+    %
+    % **PROPERTIES**
+    % For a complete list of properties, follow the "Documentation Page" link.
+    %
+    % <a href="matlab:dash.doc('gridfile')">Documentation Page</a>
     
     % ----- Written By -----
     % Jonathan King, University of Arizona, 2019-2020
