@@ -29,7 +29,7 @@ for t = 1:numel(types)
             
         % Begin bracket
         elseif inEmphasis && line(c)=='['
-            out = [out(1:end-1), '* ['];
+            out = [out, '* ['];
             inBracket = true;
             inEmphasis = false;
             
@@ -40,7 +40,12 @@ for t = 1:numel(types)
             
         % End emphasis with |
         elseif inEmphasis && line(c)=='|'
-            out = [out(1:end-1), '* |'];
+            out = [out, '*|'];
+            inEmphasis = false;
+            
+        % End emphasis with non-letter
+        elseif inEmphasis && ~isletter(line(c))
+            out = [out, '*', line(c)];
             inEmphasis = false;
             
         % End emphasis with end of description

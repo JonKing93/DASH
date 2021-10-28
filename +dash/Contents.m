@@ -11,12 +11,11 @@
 %
 % Data Specific Utilities:
 %   indices    - Functions that manipulate array indices
-%   strings    - Functions that manipulate strings
+%   string     - Functions that manipulate strings
 %   metadata   - Functions that implement gridded metadata
 %
 % Gridfile Utilities:
 %   dataSource - Classes that read data from source files
-%   gridfile   - ...
 %
 % Tests:
 %   tests      - Implements unit tests for functions, classes, and sub-packages in the DASH Toolbox

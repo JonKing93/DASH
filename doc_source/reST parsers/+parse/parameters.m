@@ -64,7 +64,11 @@ for k = 2:numel(eol)
     % Otherwise continue current paragraph
     else
         line = strip(line, 'left');
-        details{entry}(paragraph) = strcat(details{entry}(paragraph), " ", line);
+        space = " ";
+        if strcmp(details{entry}(paragraph), "")
+            space = "";
+        end
+        details{entry}(paragraph) = strcat(details{entry}(paragraph), space, line);
     end
 end
 

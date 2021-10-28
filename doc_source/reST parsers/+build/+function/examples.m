@@ -11,7 +11,7 @@ function[rst] = examples(file)
 
 
 % Only parse if file exists
-if ~exist('file','var') || isempty(file)
+if ~exist('file','var') || isempty(file) || ~isfile(file)
     rst = '';
     return;
 end

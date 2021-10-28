@@ -17,8 +17,7 @@ end
 
 % Get details text
 if nBreaks==0 || breakEOL==numel(eol)
-    details = '';
-    eol = [];
+    details = header;
 else
     start = eol(breakEOL)+1;
     details = header(start:end);

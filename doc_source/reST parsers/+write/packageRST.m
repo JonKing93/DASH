@@ -6,16 +6,9 @@ if ~exist('saveIn','var') || isempty(saveIn)
     saveIn = pwd;
 end
 
-% Get the new file
-name = parse.name(title, true);
-newfile = [saveIn, filesep, char(name), '.rst'];
-
-% Get the rst
+% Get the new file, write rst content
+newfile = write.filename(title, saveIn);
 rst = build.package.rst(title);
-
-% Write
-fid = fopen(newfile, 'w');
-closeFile = onCleanup( @()fclose(fid) );
-fprintf(fid, rst);
+write.rst(newfile, rst);
 
 end

@@ -4,9 +4,14 @@ function[] = tests
 %   dash.assert.tests
 %   Runs the units tests. If the tests pass, exits silently. If the tests
 %   fail, prints the first failed test to the console.
-%
-%   Tests the following functions: 
-%   fileExists, scalarType, strflag, strlist, strsInList, vectorTypeN
+% ----------
+%   Tests:
+%       fileExists
+%       scalarType
+%       strflag
+%       strlist
+%       strsInList
+%       vectorTypeN
 
 %% fileExists
 

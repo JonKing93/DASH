@@ -1,25 +1,21 @@
-function[] = docPackage(codeRoot, examplesRoot, excludes)
-%% Builds the .rst pages for a package.
-%
-% Currently does not support subpackages or subclasses
+function[] = docPackage(title, examplesRoot, excludes)
+%% Builds the .rst pages for a package and its contents
 
-% Default
+% Contents to exclude from build
 if ~exist('excludes','var') || isempty(excludes)
     excludes = "";
 end
-
-% List of contents to exclude from build
 excludes = [".", "..", "Contents.m", excludes];
 
-% Use strings internally
-codeRoot = string(codeRoot);
-examplesRoot = string(examplesRoot);
+% Use chars
+title = char(title);
+examplesRoot = char(examplesRoot);
 
-% Build the contents .rst page
-contents = strcat(codeRoot, filesep, "Contents.m");
-subfolder = write.packageHelp(contents);
-
-% Create and move to the subfolder for content .rst pages
+% Build contents page
+write.packageRST(title);
+ 
+% Move to content subfolder
+subfolder = parse.name(title, true);
 if ~isfolder(subfolder)
     mkdir(subfolder);
 end
@@ -27,43 +23,26 @@ home = pwd;
 goback = onCleanup( @()cd(home) );  % Return to initial location when function ends
 cd(subfolder);
 
+% Find the root of the package
+packageInfo = [title, '.Contents'];
+codeRoot = which(packageInfo);
+codeRoot = fileparts(codeRoot);
+
 % Get the contents of the package. Remove excluded 
 contents = dir(codeRoot);
 files = string({contents.name});
 files(ismember(files, excludes)) = [];
 contents = strcat(codeRoot, filesep, files);
 
-% Get the type of each content
-for c = 1:numel(contents)  
-    type = parse.contentType(contents(c));
-    [~, name] = fileparts( char(contents(c)) );
-    
-    % Classes
-    if strcmp(type, 'class') || strcmp(type, 'class_folder')
-        % ...
-        
-    % Subpackage
-    elseif strcmp(type, 'package')
-        subCodeRoot = strcat(codeRoot, filesep, name);
-        subExamplesRoot = strcat(examplesRoot, filesep, name(2:end));
-        docPackage(subCodeRoot, subExamplesRoot);
-        
-    % Function
-    elseif strcmp(type, 'function')
-        codeFile = strcat(codeRoot, filesep, name, ".m");
-        exampleFile = strcat(examplesRoot, filesep, name, ".md");    
-        if ~isfile(exampleFile)
-            exampleFile = [];
-        end
-        
-        % Display problem function if failed
-        try
-            write.functionHelp(codeFile, exampleFile);
-        catch ME
-            cause = MException('', '%s', codeFile);
-            ME = addCause(ME, cause);
-            rethrow(ME);
-        end
+% Attempt to document the contents. Report problem content if failed
+for c = 1:numel(contents)
+    try
+        docContent(title, contents(c), examplesRoot)
+    catch ME
+        [~, name] = fileparts(contents(c));
+        cause = MException('', '%s.%s', title, name);
+        ME = addCause(ME, cause);
+        rethrow(ME);
     end
 end
 

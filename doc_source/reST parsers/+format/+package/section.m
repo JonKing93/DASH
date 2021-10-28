@@ -3,7 +3,7 @@ function[rst] = section(section, summary, headings, files, h1, links)
 % Join the heading blocks
 contents = [];
 for h = 1:numel(headings)
-    nextblock = format.block.heading(headings(h), files{h}, h1{h}, links{h});
+    nextblock = format.package.heading(headings(h), files{h}, h1{h}, links{h});
     if strlength(nextblock)>0
         contents = strjoin([contents, nextblock], "\n\n");
     end

@@ -15,19 +15,27 @@ function[signatures, details] = usage(header)
 usage = get.description(header);
 usage = [newline, usage, newline];
 
-% Get the title and object signature title
+% Regular title
 title = parse.h1(header);
-objTitle = sprintf("<strong>obj.%s</strong>", parse.name(header));
+sigIndex = strfind(usage, title);
 
-% Find the signature lines
-if contains(usage, objTitle)
+% Object method
+if isempty(sigIndex)
+    objTitle = sprintf("<strong>obj.%s</strong>", parse.name(header));
     sigIndex = strfind(usage, objTitle);
-else
-    sigIndex = strfind(usage, title);
 end
-nSyntax = numel(sigIndex);
+
+% Class constructor
+if isempty(sigIndex)
+    titleParts = split(title, '.');
+    if strcmp(titleParts(end), titleParts(end-1))
+        constructorTitle = strjoin(titleParts(1:end-1), '.');
+        sigIndex = strfind(usage, constructorTitle);
+    end
+end
 
 % Preallocate
+nSyntax = numel(sigIndex);
 signatures = strings(nSyntax, 1);
 details = cell(nSyntax, 1);
 
@@ -52,5 +60,9 @@ for s = 1:nSyntax
     description = usage(start:stop);
     details{s} = parse.paragraphs(description);
 end
+
+% Remove strong tags from signatures
+signatures = erase(signatures, '<strong>');
+signatures = erase(signatures, '</strong>');
 
 end
