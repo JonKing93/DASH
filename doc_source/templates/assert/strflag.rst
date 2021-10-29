@@ -49,6 +49,146 @@ Uses a custom header for thrown error IDs.
 
 ----
 
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Assert input is strflag
++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is strflag</strong></label><div class="content">
+
+
+Example inputs that pass the assertion:
+
+.. rst-class:: no-margin
+
+::
+
+    dash.assert.strflag("A string scalar")
+    dash.assert.strflag('A char row vector')
+
+
+Example inputs that fail the assertion:
+
+.. rst-class:: no-margin
+
+::
+
+    dash.assert.strflag(5)
+    dash.assert.strflag(true)
+    dash.assert.strflag({'A cellstring scalar'})
+    dash.assert.strflag(["A","string","vector"])
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    input must be a string scalar or character row vector
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Customize Error
++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Customize Error</strong></label><div class="content">
+
+
+Customize the error message so it mimics errors from a calling function:
+
+.. rst-class:: no-margin
+
+::
+
+    name = 'my variable';
+    header = 'myHeader';
+    dash.assert.strflag(5, name, header);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    my variable must be a string scalar or character row vector
+
+
+Examine the error ID:
+
+.. rst-class:: no-margin
+
+::
+
+    ME = lasterror;
+    ID = ME.identifier
+
+
+.. rst-class:: example-output
+
+::
+
+    ID =
+        myHeader:inputNotStrflag
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Convert input to string
++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Convert input to string</strong></label><div class="content">
+
+
+If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:
+
+.. rst-class:: no-margin
+
+::
+
+    input = 'A char row vector';
+    str = dash.assert.strflag(input);
+    type = class(str)
+
+
+.. rst-class:: example-output
+
+::
+
+    type =
+          'string'
+
+
+The char input has been converted to a string data type.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
 Input Arguments
 ---------------
 
@@ -110,7 +250,6 @@ idHeader
     </div></section>
 
 
-
 ----
 
 Output Arguments
@@ -133,6 +272,5 @@ str
 .. raw:: html
 
     </div></section>
-
 
 
