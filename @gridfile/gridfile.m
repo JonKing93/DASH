@@ -128,7 +128,7 @@ classdef gridfile < handle
     % Static utilities
     methods (Static)
         source = convertSourceToPrimitives(source);
-        X = padPrimitives(X, maxCol);        
+        X = padPrimitives(X, maxCol);   
     end
     
     % Object utilities
@@ -149,6 +149,8 @@ classdef gridfile < handle
 
         sources = review(obj);
         [X, meta, sources] = repeatedLoad(obj, inputOrder, inputIndices, sources);
+        
+        arithmetic(obj, operation, grid2, filename, overwrite, atts, type);
     end
     
     % Static user methods
@@ -168,6 +170,11 @@ classdef gridfile < handle
 
         meta = metadata(obj, includeUndefined);
         [X, meta] = load(obj, start, count, stride);
+        
+        plus(obj, grid2, filename, varargin);
+        minus(obj, grid2, filename, varargin);
+        times(obj, grid2, filename, varargin);
+        divide(obj, grid2, filename, varargin);
     end
     
     % Constructor
