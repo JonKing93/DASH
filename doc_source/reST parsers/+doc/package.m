@@ -1,4 +1,4 @@
-function[] = docPackage(title, examplesRoot, excludes)
+function[] = package(title, examplesRoot, excludes)
 %% Builds the .rst pages for a package and its contents
 
 % Contents to exclude from build
@@ -37,7 +37,7 @@ contents = strcat(codeRoot, filesep, files);
 % Attempt to document the contents. Report problem content if failed
 for c = 1:numel(contents)
     try
-        docContent(title, contents(c), examplesRoot)
+        doc.content(title, contents(c), examplesRoot)
     catch ME
         [~, name] = fileparts(contents(c));
         cause = MException('', '%s.%s', title, name);

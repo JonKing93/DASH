@@ -1,4 +1,4 @@
-function[] = docMethod(classTitle, name, examplesRoot)
+function[] = method(classTitle, name, examplesRoot)
 
 % Ignore methods inherited from handle
 supers = superclasses(classTitle);
@@ -28,6 +28,6 @@ end
 
 % Document as function
 examples = strcat(examplesRoot, filesep, name);
-docFunction(title, examples);
+doc.function_(title, examples);
 
 end

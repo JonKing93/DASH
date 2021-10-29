@@ -1,4 +1,4 @@
-function[] = docClass(title, examplesRoot)
+function[] = class(title, examplesRoot)
 
 % Use chars
 title = char(title);
@@ -22,7 +22,7 @@ methodNames = string(methods(title));
 % Attempt to document each method. Display problem method if failed
 for m = 1:numel(methodNames)
     try
-        docMethod(title, methodNames(m), examplesRoot);
+        doc.method(title, methodNames(m), examplesRoot);
     catch ME
         cause = MException('', '%s.%s', title, methodNames(m));
         ME = addCause(ME, cause);

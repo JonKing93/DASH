@@ -1,4 +1,4 @@
-function[] = docContent(packageTitle, content, examplesRoot)
+function[] = content(packageTitle, content, examplesRoot)
 
 % Get the type of content and title
 type = parse.contentType(content);
@@ -10,17 +10,21 @@ if ismember(type, ["class_folder","package"])
     name = name(2:end);
 end
 
-% Get title and examples root/file
-title = strcat(packageTitle, '.', name);
+% Get title and root of the examples files
+if strcmp(packageTitle, '')
+    title = name;
+else
+    title = strcat(packageTitle, '.', name);
+end
 examples = strcat(examplesRoot, filesep, name);
 
 % Document each type of content
 if strcmp(type, 'function')
-    docFunction(title, examples);
+    doc.function_(title, examples);
 elseif strcmp(type, 'package')
-    docPackage(title, examples);    
+    doc.package(title, examples);    
 elseif strcmp(type,'class') || strcmp(type, 'class_folder')
-    docClass(title, examples);
+    doc.class(title, examples);
 else
     error('Unrecognized content type');
 end
