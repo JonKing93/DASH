@@ -20,6 +20,11 @@ function[] = doc(name)
 %
 %   <a href="matlab:dash.doc('dash.doc')">Documentation Page</a>
 
+% Open default page if no contents
+if nargin==0
+    name = 'index';
+end
+
 % Reference page header
 path = mfilename('fullpath');
 folders = strsplit(path, filesep);
