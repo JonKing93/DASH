@@ -1,0 +1,35 @@
+dash.dataSource.hdf
+===================
+Superclass for objects that read data from HDF5 files
+
+dash.dataSource.hdf is abstract. It's primary function is to check that the variable being read from the HDF file actually exists in the file.
+
+
+.. raw:: html
+
+    <h3>hdf Methods</h3>
+
+.. rst-class:: package-links
+
+| :doc:`setVariable <hdf/setVariable>` - Ensure a variable exists in an HDF file
+| :doc:`load <hdf/load>` - Load data from a HDF5 source
+
+.. toctree::
+    :hidden:
+
+    setVariable <hdf/setVariable>
+    load <hdf/load>
+
+
+.. raw:: html
+
+    <h3>Abstract</h3>
+
+.. rst-class:: package-links
+
+| :doc:`loadStrided <hdf/loadStrided>` - Load data from a HDF source at strided indices
+
+.. toctree::
+    :hidden:
+
+    loadStrided <hdf/loadStrided>

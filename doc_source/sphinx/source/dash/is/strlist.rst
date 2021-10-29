@@ -1,0 +1,131 @@
+dash.is.strlist
+===============
+True for a string vector, cellstring vector, or character row vector
+
+----
+
+Syntax
+------
+
+.. rst-class:: syntax
+
+| :ref:`dash.is.strlist(input) <dash.is.strlist.syntax1>`
+
+----
+
+Description
+-----------
+
+.. _dash.is.strlist.syntax1:
+
+.. rst-class:: syntax
+
+dash.is.strlist(:ref:`input <dash.is.strlist.input.input>`)
+
+Returns true if input is a string vector, cellstring vector, or char row vector. Otherwise returns false.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Test if input is strlist
+++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Test if input is strlist</strong></label><div class="content">
+
+
+When the input is a strlist:
+
+.. rst-class:: no-margin
+
+::
+
+    tf = dash.is.strlist('A char row vector')
+    tf = dash.is.strlist(["A","string","vector"])
+    tf = dash.is.strlist({'A', 'cellstring', 'vector'})
+
+
+.. rst-class:: example-output
+
+::
+
+    tf = 
+        true
+
+
+When the input is not a strlist:
+
+.. rst-class:: no-margin
+
+::
+
+    tf = dash.is.strlist(5)
+    tf = dash.is.strlist(true)
+    tf = dash.is.strlist(["An","example";"string","matrix"])
+
+
+.. rst-class:: example-output
+
+::
+
+    tf = 
+        false
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.strlist.input.input:
+
+input
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>input</strong></label><div class="content">
+
+| The input being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.strlist.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *scalar* *logical*
+| True if input is a string vector, cellstring vector, or char row vector.
+
+.. raw:: html
+
+    </div></section>
+
+
