@@ -124,16 +124,16 @@
 <section class="collapse-examples" id="find-requested-data-indices-in-a-superset-of-loaded-elements">
 <h3>Find requested data indices in a superset of loaded elements<a class="headerlink" href="#find-requested-data-indices-in-a-superset-of-loaded-elements" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Find requested data indices in a superset of loaded elements</strong></label><div class="content"><p>Specify a requested set of data indices. Use a strided superset of the indices to load data from an HDF5 format data source</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>indices = [20 12 11 10 30 55];
-loaded = dash.indices.strided(indices);
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">20</span><span class="w"> </span><span class="mi">12</span><span class="w"> </span><span class="mi">11</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">55</span><span class="p">];</span><span class="w"></span>
+<span class="n">loaded</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">indices</span><span class="p">.</span><span class="n">strided</span><span class="p">(</span><span class="n">indices</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Find the requested indices in the loaded superset</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>keep = dash.indices.keep(indices, loaded)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">keep</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">indices</span><span class="p">.</span><span class="n">keep</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">loaded</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>keep =
-      [11     3     2     1    21    46]
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">keep</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">      </span><span class="p">[</span><span class="mi">11</span><span class="w">     </span><span class="mi">3</span><span class="w">     </span><span class="mi">2</span><span class="w">     </span><span class="mi">1</span><span class="w">    </span><span class="mi">21</span><span class="w">    </span><span class="mi">46</span><span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

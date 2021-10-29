@@ -140,51 +140,51 @@
 <section class="collapse-examples" id="assert-strings-are-members-of-a-list">
 <h3>Assert strings are members of a list<a class="headerlink" href="#assert-strings-are-members-of-a-list" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert strings are members of a list</strong></label><div class="content"><p>Example that passes the assertion:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;,&quot;list&quot;];
-strings = [&quot;an&quot;, &quot;here&quot;, &quot;list&quot;];
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;here&quot;</span><span class="p">,</span><span class="s">&quot;is&quot;</span><span class="p">,</span><span class="s">&quot;an&quot;</span><span class="p">,</span><span class="s">&quot;example&quot;</span><span class="p">,</span><span class="s">&quot;list&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="nb">strings</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;an&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;here&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;list&quot;</span><span class="p">];</span><span class="w"></span>
 
-dash.assert.strsInList(strings, list)
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strsInList</span><span class="p">(</span><span class="nb">strings</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Example that fails the assertion</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;,&quot;list&quot;];
-strings = [&quot;different&quot;, &quot;strings&quot;];
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;here&quot;</span><span class="p">,</span><span class="s">&quot;is&quot;</span><span class="p">,</span><span class="s">&quot;an&quot;</span><span class="p">,</span><span class="s">&quot;example&quot;</span><span class="p">,</span><span class="s">&quot;list&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="nb">strings</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;different&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;strings&quot;</span><span class="p">];</span><span class="w"></span>
 
-dash.assert.strsInList(strings, list)
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strsInList</span><span class="p">(</span><span class="nb">strings</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>Element 1 in strings (&quot;different&quot;) is not a(n) value in the list. Allowed values are &quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;, and &quot;list&quot;.
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="s">in</span><span class="w"> </span><span class="s">strings</span><span class="w"> </span><span class="s">(&quot;different&quot;)</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a(n)</span><span class="w"> </span><span class="s">value</span><span class="w"> </span><span class="s">in</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">list.</span><span class="w"> </span><span class="s">Allowed</span><span class="w"> </span><span class="s">values</span><span class="w"> </span><span class="s">are</span><span class="w"> </span><span class="s">&quot;here&quot;,&quot;is&quot;,&quot;an&quot;,&quot;example&quot;,</span><span class="w"> </span><span class="s">and</span><span class="w"> </span><span class="s">&quot;list&quot;.</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="return-indices-of-strings-in-the-list">
 <h3>Return indices of strings in the list<a class="headerlink" href="#return-indices-of-strings-in-the-list" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Return indices of strings in the list</strong></label><div class="content"><p>If the assert passes, the function returns the index of each string in the list:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>list = [&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;,&quot;E&quot;];
-strings = [&quot;C&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;];
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="s">&quot;E&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="nb">strings</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="s">&quot;B&quot;</span><span class="p">];</span><span class="w"></span>
 
-indices = dash.assert.strsInList(strings, list)
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strsInList</span><span class="p">(</span><span class="nb">strings</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>indices =
-         [3     1     2     2]
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">         </span><span class="p">[</span><span class="mi">3</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">2</span><span class="w">     </span><span class="mi">2</span><span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="customize-error-message">
 <h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from a calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>stringsName = &quot;my strings&quot;;
-listName = &quot;allowed list value&quot;;
-idHeader = &quot;my:error:header&quot;;
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">stringsName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my strings&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">listName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;allowed list value&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">idHeader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my:error:header&quot;</span><span class="p">;</span><span class="w"></span>
 
-list = [&quot;allowed&quot;,&quot;values&quot;];
-strings = [&quot;not&quot;,&quot;in&quot;,&quot;the&quot;,&quot;list&quot;];
+<span class="n">list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;allowed&quot;</span><span class="p">,</span><span class="s">&quot;values&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="nb">strings</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;not&quot;</span><span class="p">,</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="s">&quot;list&quot;</span><span class="p">];</span><span class="w"></span>
 
-dash.assert.strsInList(strings, list, stringsName, listName, idHeader)
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strsInList</span><span class="p">(</span><span class="nb">strings</span><span class="p">,</span><span class="w"> </span><span class="n">list</span><span class="p">,</span><span class="w"> </span><span class="n">stringsName</span><span class="p">,</span><span class="w"> </span><span class="n">listName</span><span class="p">,</span><span class="w"> </span><span class="n">idHeader</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>Element 1 of my strings (&quot;not&quot;) is not a(n) allowed list value. Allowed values are &quot;allowed&quot;, and &quot;values&quot;
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">1</span><span class="w"> </span><span class="s">of</span><span class="w"> </span><span class="s">my</span><span class="w"> </span><span class="s">strings</span><span class="w"> </span><span class="s">(&quot;not&quot;)</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a(n)</span><span class="w"> </span><span class="s">allowed</span><span class="w"> </span><span class="s">list</span><span class="w"> </span><span class="s">value.</span><span class="w"> </span><span class="s">Allowed</span><span class="w"> </span><span class="s">values</span><span class="w"> </span><span class="s">are</span><span class="w"> </span><span class="s">&quot;allowed&quot;,</span><span class="w"> </span><span class="s">and</span><span class="w"> </span><span class="s">&quot;values&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

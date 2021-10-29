@@ -135,49 +135,49 @@
 <section class="collapse-examples" id="assert-input-is-data-type">
 <h3>Assert input is data type<a class="headerlink" href="#assert-input-is-data-type" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is data type</strong></label><div class="content"><p>Examples that pass the assertion:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.type(5, &#39;numeric&#39;)
-dash.assert.type(5, &#39;double&#39;)
-dash.assert.type(false, &#39;logical&#39;)
-dash.assert.type(struct(&#39;myField&#39;,1), &#39;struct&#39;)
-dash.assert.type(&quot;a string&quot;, &#39;string&#39;)
-dash.assert.type({rand(4,5)}, &#39;cell&#39;)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;double&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="nb">false</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;logical&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="nb">struct</span><span class="p">(</span><span class="s">&#39;myField&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;struct&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="s">&quot;a string&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;string&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">({</span><span class="nb">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)},</span><span class="w"> </span><span class="s">&#39;cell&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Examples that fail the assertion:
 .. rst-class:: no-margin</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.type({5}, &#39;numeric&#39;)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">({</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a numeric data type, but it is a cell data type instead
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">numeric</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">cell</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.type(&quot;a string&quot;, &#39;char&#39;)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">(</span><span class="s">&quot;a string&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;char&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a char data type, but it is a string data type instead
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">char</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="customize-the-error-message">
 <h3>Customize the error message<a class="headerlink" href="#customize-the-error-message" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Customize the error message</strong></label><div class="content"><p>Customize the error messages so they appear to originate from a calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>name = &quot;my variable&quot;;
-description = &quot;(data type descriptor)&quot;;
-idHeader = &quot;my:error:header&quot;;
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my variable&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">description</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;(data type descriptor)&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">idHeader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my:error:header&quot;</span><span class="p">;</span><span class="w"></span>
 
-dash.assert.type({5}, &#39;logical&#39;)
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">type</span><span class="p">({</span><span class="mi">5</span><span class="p">},</span><span class="w"> </span><span class="s">&#39;logical&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>my variable must be a logical (data type descriptor), but it is a cell (data type descriptor) instead
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">must</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">logical</span><span class="w"> </span><span class="s">(data</span><span class="w"> </span><span class="s">type</span><span class="w"> </span><span class="s">descriptor),</span><span class="w"> </span><span class="s">but</span><span class="w"> </span><span class="s">it</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">cell</span><span class="w"> </span><span class="s">(data</span><span class="w"> </span><span class="s">type</span><span class="w"> </span><span class="s">descriptor)</span><span class="w"> </span><span class="s">instead</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Also examine the error ID:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
-ID = ME.identifier
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
-    &#39;my:error:header:inputWrongType&#39;
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;my:error:header:inputWrongType&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

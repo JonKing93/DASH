@@ -16,6 +16,17 @@ You can find the source code `on Github <source>`_.
 
 .. _source: https://github.com/JonKing93/DASH
 
+::
+
+    % This is a test comment
+    varName = 1:3;
+
+    if
+    elseif
+    end
+
+    for k = 1:4
+    end
 
 
 Indices and tables

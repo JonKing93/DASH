@@ -139,52 +139,52 @@
 <section class="collapse-examples" id="assert-input-is-strflag">
 <h3>Assert input is strflag<a class="headerlink" href="#assert-input-is-strflag" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is strflag</strong></label><div class="content"><p>Example inputs that pass the assertion:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(&quot;A string scalar&quot;)
-dash.assert.strflag(&#39;A char row vector&#39;)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="s">&quot;A string scalar&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="s">&#39;A char row vector&#39;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Example inputs that fail the assertion:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.strflag(5)
-dash.assert.strflag(true)
-dash.assert.strflag({&#39;A cellstring scalar&#39;})
-dash.assert.strflag([&quot;A&quot;,&quot;string&quot;,&quot;vector&quot;])
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">({</span><span class="s">&#39;A cellstring scalar&#39;</span><span class="p">})</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">([</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;vector&quot;</span><span class="p">])</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a string scalar or character row vector
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">character</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="n">vector</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="customize-error">
 <h3>Customize Error<a class="headerlink" href="#customize-error" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Customize Error</strong></label><div class="content"><p>Customize the error message so it mimics errors from a calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>name = &#39;my variable&#39;;
-header = &#39;myHeader&#39;;
-dash.assert.strflag(5, name, header);
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;my variable&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">header</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;myHeader&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>my variable must be a string scalar or character row vector
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">must</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">string</span><span class="w"> </span><span class="s">scalar</span><span class="w"> </span><span class="s">or</span><span class="w"> </span><span class="s">character</span><span class="w"> </span><span class="s">row</span><span class="w"> </span><span class="s">vector</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Examine the error ID:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
-ID = ME.identifier
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
-    myHeader:inputNotStrflag
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="n">myHeader</span><span class="p">:</span><span class="n">inputNotStrflag</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="convert-input-to-string">
 <h3>Convert input to string<a class="headerlink" href="#convert-input-to-string" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Convert input to string</strong></label><div class="content"><p>If the assertion passes, the input is returned as a scalar string. Use this to allow for a single data type (string) in subsequent code. For example:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>input = &#39;A char row vector&#39;;
-str = dash.assert.strflag(input);
-type = class(str)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;A char row vector&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">str</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="nb">input</span><span class="p">);</span><span class="w"></span>
+<span class="nb">type</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">class</span><span class="p">(</span><span class="n">str</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>type =
-      &#39;string&#39;
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;string&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The char input has been converted to a string data type.</p>

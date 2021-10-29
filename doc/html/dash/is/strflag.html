@@ -123,23 +123,23 @@
 <section class="collapse-examples" id="test-if-input-is-strflag">
 <h3>Test if input is strflag<a class="headerlink" href="#test-if-input-is-strflag" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Test if input is strflag</strong></label><div class="content"><p>When the input is a strflag:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>tf = dash.is.strflag(&#39;A char row vector&#39;)
-tf = dash.is.strflag(&quot;A string scalar&quot;)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="s">&#39;A char row vector&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="s">&quot;A string scalar&quot;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>tf =
-    true
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="nb">true</span><span class="w"></span>
 </pre></div>
 </div>
 <p>When the input is not a strflag:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>tf = dash.is.strflag(5)
-tf = dash.is.strflag({&#39;A cellstring&#39;})
-tf = dash.is.strflag([&quot;A&quot;,&quot;string&quot;,&quot;vector&quot;])
-tf = dash.is.strflag(true)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">({</span><span class="s">&#39;A cellstring&#39;</span><span class="p">})</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">([</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;vector&quot;</span><span class="p">])</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strflag</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>tf =
-    false
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="nb">false</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

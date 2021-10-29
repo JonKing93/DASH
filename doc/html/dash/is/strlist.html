@@ -123,23 +123,23 @@
 <section class="collapse-examples" id="test-if-input-is-strlist">
 <h3>Test if input is strlist<a class="headerlink" href="#test-if-input-is-strlist" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Test if input is strlist</strong></label><div class="content"><p>When the input is a strlist:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>tf = dash.is.strlist(&#39;A char row vector&#39;)
-tf = dash.is.strlist([&quot;A&quot;,&quot;string&quot;,&quot;vector&quot;])
-tf = dash.is.strlist({&#39;A&#39;, &#39;cellstring&#39;, &#39;vector&#39;})
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">(</span><span class="s">&#39;A char row vector&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">([</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;vector&quot;</span><span class="p">])</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">({</span><span class="s">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;cellstring&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;vector&#39;</span><span class="p">})</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>tf =
-    true
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="nb">true</span><span class="w"></span>
 </pre></div>
 </div>
 <p>When the input is not a strlist:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>tf = dash.is.strlist(5)
-tf = dash.is.strlist(true)
-tf = dash.is.strlist([&quot;An&quot;,&quot;example&quot;;&quot;string&quot;,&quot;matrix&quot;])
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">is</span><span class="p">.</span><span class="n">strlist</span><span class="p">([</span><span class="s">&quot;An&quot;</span><span class="p">,</span><span class="s">&quot;example&quot;</span><span class="p">;</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;matrix&quot;</span><span class="p">])</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>tf =
-    false
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">tf</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="nb">false</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

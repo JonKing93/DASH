@@ -16,7 +16,7 @@ function[varargout] = inputs( inputs, flags, defaults, nPrev )
 %           varargin in the calling function. Used for error messages
 %
 %   Outputs:
-%       values (cell vector)[nFlags]: The parsed value for each flag
+%       values (cell vector [nFlags]): The parsed value for each flag
 %
 %   Throws:
 %       DASH:parse:inputs:duplicateFlags  if flags contains duplicate

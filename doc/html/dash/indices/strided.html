@@ -124,12 +124,12 @@
 <h3>Get strided indices that include requested indices<a class="headerlink" href="#get-strided-indices-that-include-requested-indices" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Get strided indices that include requested indices</strong></label><div class="content"><p>Data stored in HDF5 formatted files is accessed using strided (evenly spaced) indices, so it is often useful to find a strided set of data indices that includes requested data elements. In this way, the loaded data will include the requested dataset.</p>
 <p>Get a strided superset of indices:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>indices = [8 4 10 12];
-strided = dash.indices.strided(indices)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="mi">12</span><span class="p">];</span><span class="w"></span>
+<span class="n">strided</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">indices</span><span class="p">.</span><span class="n">strided</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>strided =
-         [4     5     6     7     8     9    10    11    12]
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">strided</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">         </span><span class="p">[</span><span class="mi">4</span><span class="w">     </span><span class="mi">5</span><span class="w">     </span><span class="mi">6</span><span class="w">     </span><span class="mi">7</span><span class="w">     </span><span class="mi">8</span><span class="w">     </span><span class="mi">9</span><span class="w">    </span><span class="mi">10</span><span class="w">    </span><span class="mi">11</span><span class="w">    </span><span class="mi">12</span><span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

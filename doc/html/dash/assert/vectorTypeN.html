@@ -137,65 +137,65 @@
 <section class="collapse-examples" id="assert-input-is-a-vector-with-required-data-type-and-length">
 <h3>Assert input is a vector with required data type and length<a class="headerlink" href="#assert-input-is-a-vector-with-required-data-type-and-length" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is a vector with required data type and length</strong></label><div class="content"><p>Examples that pass the assertion:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN([1 2 3], &#39;numeric&#39;, 3)
-dash.assert.vectorTypeN([1 2 3], &#39;double&#39;, 3)
-dash.assert.vectorTypeN(true(4,1), &#39;logical&#39;, 4)
-dash.assert.vectorTypeN([&quot;a&quot;,&quot;string&quot;,&quot;vector&quot;], &#39;string&#39;, 3)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;double&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">true</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;logical&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;vector&quot;</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;string&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Examples that fail the assertion</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN(rand(4,4), &#39;numeric&#39;, 16)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input is not a vector
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">vector</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN(true(4,1), &#39;numeric&#39;, 5)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">true</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must be a numeric vector, but it is a logical vector instead
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">numeric</span><span class="w"> </span><span class="n">vector</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">logical</span><span class="w"> </span><span class="n">vector</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN([1 2 3], &#39;numeric&#39;, 4)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>input must have 4 elements, but has 3 elements instead
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ignore-data-type">
 <h3>Ignore data type<a class="headerlink" href="#ignore-data-type" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Ignore data type</strong></label><div class="content"><p>Use an empty array for the second input to not require a data type:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN([1 2 3], [], 3)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ignore-vector-length">
 <h3>Ignore vector length<a class="headerlink" href="#ignore-vector-length" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Ignore vector length</strong></label><div class="content"><p>Use an empty array for the third input to not require a vector length:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.vectorTypeN([1 2 3], &#39;numeric&#39;, [])
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="customize-error-message">
 <h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example4"><label for="example4"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from a calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>name = &quot;my variable&quot;;
-idHeader = &quot;my:error:header&quot;;
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my variable&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">idHeader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my:error:header&quot;</span><span class="p">;</span><span class="w"></span>
 
-dash.assert.vectorTypeN(rand(4,4), &#39;numeric&#39;, 16)
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>my variable is not a vector
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">vector</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Also examine the error ID:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
-ID = ME.identifier
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
-    &#39;my:error:header:inputNotVector&#39;
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;my:error:header:inputNotVector&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

@@ -140,34 +140,34 @@
 <section class="collapse-examples" id="assert-that-a-file-exists">
 <h3>Assert that a file exists<a class="headerlink" href="#assert-that-a-file-exists" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert that a file exists</strong></label><div class="content"><p>A file that passes the assertion:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>filename = &quot;a-file-that-exists.mat&quot;;
-dash.assert.fileExists(filename)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;a-file-that-exists.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 
-filename = &quot;path/to/a-file-that-exists.mat&quot;;
-dash.assert.fileExists(filename)
+<span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;path/to/a-file-that-exists.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Files that fail the assertion:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>filename = &quot;not-a-real-file.mat&quot;;
-dash.assert.fileExists(filename)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;not-a-real-file.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>File &quot;not-a-real-file.mat&quot; could not be found. It may be misspelled or not on the active path.
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">File</span><span class="w"> </span><span class="s">&quot;not-a-real-file.mat&quot;</span><span class="w"> </span><span class="s">could</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">found.</span><span class="w"> </span><span class="s">It</span><span class="w"> </span><span class="s">may</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">misspelled</span><span class="w"> </span><span class="s">or</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">on</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">active</span><span class="w"> </span><span class="s">path.</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="include-default-file-extension">
 <h3>Include default file extension<a class="headerlink" href="#include-default-file-extension" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Include default file extension</strong></label><div class="content"><p>Look at the extension of a file on the active path:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.      ..      myFile.mat
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="w">      </span><span class="p">..</span><span class="w">      </span><span class="n">myFile</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can see that “myFile” has a “.mat” extension.</p>
 <p>Provide the file name and default extension:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dash.assert.fileExists(&quot;myFile&quot;, &quot;.mat&quot;)
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="s">&quot;myFile&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;.mat&quot;</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
 <p>The assertion passes.</p>
@@ -175,54 +175,54 @@ dash.assert.fileExists(filename)
 <section class="collapse-examples" id="customize-error-message">
 <h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content"><p>Customize error messages so they appear to originate from the calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;not-a-file.mat&quot;;
-idHeader = &quot;my:error:header&quot;;
-dash.assert.fileExists(file, [], idHeader);
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;not-a-file.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">idHeader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my:error:header&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="n">idHeader</span><span class="p">);</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output error-message highlight-none notranslate"><div class="highlight"><pre><span></span>File &quot;not-a-file.mat&quot; could not be found. It may be misspelled or not on the active path.&quot;
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">File</span><span class="w"> </span><span class="s">&quot;not-a-file.mat&quot;</span><span class="w"> </span><span class="s">could</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">found.</span><span class="w"> </span><span class="s">It</span><span class="w"> </span><span class="s">may</span><span class="w"> </span><span class="s">be</span><span class="w"> </span><span class="s">misspelled</span><span class="w"> </span><span class="s">or</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">on</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">active</span><span class="w"> </span><span class="s">path.&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Examine the error ID:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>ME = lasterror;
-ID = ME.identifier
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>ID =
-    &#39;my:error:header:fileNotFound&#39;
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;my:error:header:fileNotFound&#39;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="return-absolute-file-path">
 <h3>Return absolute file path<a class="headerlink" href="#return-absolute-file-path" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example4"><label for="example4"><strong>Return absolute file path</strong></label><div class="content"><p>Look for files on the active path:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.    ..    myFolder
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="w">    </span><span class="p">..</span><span class="w">    </span><span class="n">myFolder</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Look for files in the folder:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>dir myFolder
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">dir</span><span class="w"> </span><span class="n">myFolder</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>.   ..   myFile.txt
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="w">   </span><span class="p">..</span><span class="w">   </span><span class="n">myFile</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
 </pre></div>
 </div>
 <p>We can see the file “myFile.txt” is located in the folder named “myFolder”. If we assert that myFile.txt exists using only the filename, the function returns the full path to the file:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;myFile.txt&quot;;
-fullpath = dash.assert.fileExists(file)
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;myFile.txt&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">fullpath</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">fileExists</span><span class="p">(</span><span class="n">file</span><span class="p">)</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="example-output highlight-none notranslate"><div class="highlight"><pre><span></span>fullpath =
-          &quot;myFolder/myFile.txt&quot;
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">fullpath</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">          </span><span class="s">&quot;myFolder/myFile.txt&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="id1">
 <h3>Customize error message<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="example5"><label for="example5"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from the calling function:</p>
-<div class="no-margin highlight-none notranslate"><div class="highlight"><pre><span></span>file = &quot;not-a-real-file.m&quot;;
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;not-a-real-file.m&quot;</span><span class="p">;</span><span class="w"></span>
 </pre></div>
 </div>
 </div></section></section>

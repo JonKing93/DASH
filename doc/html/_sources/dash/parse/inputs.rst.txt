@@ -102,7 +102,7 @@ inputs
 
     <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>inputs</strong></label><div class="content">
 
-| *cell* *vector*)[*nInputs*
+| *cell* *vector* [*nInputs*]
 | A set of Name-Value input paris. Usually the varargin vector from the calling function
 
 .. raw:: html
@@ -122,7 +122,7 @@ flags
 
     <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>flags</strong></label><div class="content">
 
-| *string* *vector*)[*nFlags*
+| *string* *vector* [*nFlags*]
 | The strings used to flag options for a function
 
 .. raw:: html
@@ -142,7 +142,7 @@ defaults
 
     <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>defaults</strong></label><div class="content">
 
-| *cell* *vector*)[*nFlags*
+| *cell* *vector* [*nFlags*]
 | The default value for each flagged option
 
 .. raw:: html
@@ -186,7 +186,7 @@ values
 
     <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>values</strong></label><div class="content">
 
-| *cell* *vector*)[*nFlags*
+| *cell* *vector* [*nFlags*]
 | The parsed value for each flag
 
 .. raw:: html
