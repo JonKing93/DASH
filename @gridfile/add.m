@@ -1,6 +1,6 @@
 function[] = add( obj, type, file, var, dims, meta, varargin )
-% Adds a data source to a .grid file.
-%
+%% gridfile.add  Adds a data source to a .grid file.
+% 
 % obj.add('nc', file, var, dims, meta)
 % Adds a NetCDF data source.
 %

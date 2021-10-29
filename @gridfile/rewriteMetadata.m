@@ -1,5 +1,5 @@
 function[] = rewriteMetadata( obj, dim, meta )
-%% Rewrites the metadata in a .grid file along a specified dimension.
+%% gridfile.rewriteMetadata  Rewrites the metadata in a .grid file along a specified dimension.
 %
 % obj.rewriteMetadata( dim, meta )
 %

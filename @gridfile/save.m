@@ -1,5 +1,12 @@
 function[] = save(obj)
-%% Saves the values in a gridfile object to file.
+%% gridfile.save  Save a gridfile object to a .grid file.
+% ----------
+%   <strong>obj.save</strong>
+%   Saves the contents of the current gridfile object to its associated
+%   .grid file.
+% ----------
+%
+% <a href="matlab:dash.doc('gridfile.updateMetadataField')">Documentation Page</a>
 
 % Save the values
 dims = obj.dims;

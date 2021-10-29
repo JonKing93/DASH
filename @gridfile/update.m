@@ -1,8 +1,13 @@
 function[] = update(obj)
-%% Updates the current gridfile object to ensure it matches the values
-% stored in the associated .grid file.
+%% gridfile.update  Updates a gridfile object to match the content of its .grid file.
+% ----------
+%   <strong>obj.update</strong>
+%   Updates the current object to match the content of its .grid file. This
+%   ensure that the gridfile object matches the file content, even if the
+%   .grid file is modified by a second gridfile object.
+% ----------
 %
-% obj.update;
+% <a href="matlab:dash.doc('gridfile.update')">Documentation Page</a>
 
 
 % Load the fields

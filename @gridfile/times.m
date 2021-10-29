@@ -1,7 +1,7 @@
 function[] = times(obj, grid2, filename, varargin)
 %% gridfile.times  Multiplies the data elements of two gridfiles
 % ----------
-%   obj.times(grid2, filename)
+%   <strong>obj.times</strong>(grid2, filename)
 %   Multiples the data in the current gridfile with a second gridfile. Saves the
 %   product to a .mat file and organizes the product in a new .grid file. The names
 %   of the new files are specified by filename. Provide a single name to
@@ -24,20 +24,20 @@ function[] = times(obj, grid2, filename, varargin)
 %   default, the new file will have no metadata attributes (but see the 
 %   "attributes" flag for alternate options).
 %
-%   obj.times(..., 'overwrite', overwrite)
+%   <strong>obj.times</strong>(..., 'overwrite', overwrite)
 %   Specify whether to overwrite existing .mat and .grid files. If
 %   overwrite is scalar, uses the same option for both files. Use two
 %   elements to specify the option for each file individually. By default,
 %   does not overwrite existing files.
 %
-%   obj.times(..., 'attributes', attributes)
+%   <strong>obj.times</strong>(..., 'attributes', attributes)
 %   Options for including metadata attributes in the new .grid file. If
 %   atts=1, copies the attributes from the current gridfile to the new
 %   file. If atts=2, copies the attributes from the second gridfile to the
 %   new file. If atts is a scalar struct, uses atts directly as the new
 %   metadata attributes.
 %
-%   obj.times(..., 'type', type)
+%   <strong>obj.times</strong>(..., 'type', type)
 %   Specify how to implement multiplication for the gridfiles. If case=1 (Default),
 %   requires the files to have compatible sizes for multiplication, as well as
 %   the same metadata along each non-singleton dimension. If case=2, the

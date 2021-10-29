@@ -9,14 +9,16 @@
 %       define - 
 %       metadata - Returns metadata
 %       expand - Expands dimension
-%       rewriteMetadata - Changes metadata values
-%       addAttribute - 
-%       removeAtttribute - 
+%       edit - Changes metadata values
+%
+%       addAttribute - Add a non-dimensional attribute to the metadata
+%       removeAttribute - Remove a non-dimensional attribute from the metadata
+%       attributes - Set the non-dimensional attributes
 %
 %   Data sources:
 %       add
 %       remove
-%       renameSource
+%       rename
 %
 %   Data source alterations:
 %       fillValue
