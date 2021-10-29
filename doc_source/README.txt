@@ -28,7 +28,7 @@ Resources needed for sphinx (v4.2.0) to build the documentation pages. This incl
         breadcrumbs.html hardcodes the DASH Github Page into the top-right Github link. Place in <python path>/Python/Lib/site-packages/sphinx-rtd-theme
 
 4. build
-Built documentation resources. Includes
+Built documentation resources. Includes:
 
     A. html
-    The built html pages. These pages are for inspecting the build to make sure it completed properly. Move its contents to DASH/doc/html to make the documentation accessible.
+    The built html pages. These pages are for inspecting the build to make sure it completed properly. Move its contents to DASH/doc/html to make the documentation accessible to the dash.doc command.

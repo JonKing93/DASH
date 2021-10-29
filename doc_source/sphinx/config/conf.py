@@ -41,7 +41,9 @@ templates_path = ['_templates']
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
 
-highlight_language = 'none'
+# Matlab code highlighting
+highlight_language = 'matlab'
+pygments_style = 'matlab'
 
 
 # -- Options for HTML output -------------------------------------------------
