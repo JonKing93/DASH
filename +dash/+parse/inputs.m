@@ -6,11 +6,11 @@ function[varargout] = inputs( inputs, flags, defaults, nPrev )
 %   not passed to a function, returns a default value.
 % ----------
 %   Inputs:
-%       inputs (cell vector)[nInputs]: A set of Name-Value input paris.
+%       inputs (cell vector [nInputs]): A set of Name-Value input paris.
 %           Usually the varargin vector from the calling function
-%       flags (string vector)[nFlags]: The strings used to flag options
+%       flags (string vector [nFlags]): The strings used to flag options
 %           for a function
-%       defaults (cell vector)[nFlags]: The default value for each flagged
+%       defaults (cell vector [nFlags]): The default value for each flagged
 %           option
 %       nPrev (scalar positive integer): The number of inputs before
 %           varargin in the calling function. Used for error messages
