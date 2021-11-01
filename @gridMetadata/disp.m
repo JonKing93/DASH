@@ -30,7 +30,7 @@ end
 % Also determine if attributes should be displayed
 hasAttributes = false;
 meta = obj.(atts);
-if ~isempty(meta)
+if numel(fieldnames(meta))>0
     hasAttributes = true;
     empty = false;
     display.(atts) = meta;

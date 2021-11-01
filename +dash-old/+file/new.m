@@ -19,9 +19,8 @@ function[filename] = new( filename, ext, overwrite )
 % filename: The full file path. A string
 
 % Ensure the file has the correct extension
-filename = char(filename);
 [path, ~, currentExt] = fileparts(filename);
-if ~strcmpi(ext, currentExt)
+if ~strcmpi(currentExt, ext)
     filename = strcat(filename, ext);
 end
 

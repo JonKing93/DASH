@@ -33,9 +33,6 @@ recognized = [dims;atts];
 dim = dash.assert.strflag(dim, 'dim', header);
 n = dash.assert.strsInList(dim, recognized, 'dim', 'recognized dimension name', header);
 
-% Track whether to record metadata
-setValue = true;
-
 % Require valid dimensional metadata. Warn about row vectors
 if n < numel(recognized)
     value = gridMetadata.assertField(value, dim, header);
@@ -45,17 +42,12 @@ if n < numel(recognized)
             'a single element along the dimension'], dim);
     end
     
-% Require valid non-dimensional attributes. Only record if fields are present
+% Require valid non-dimensional attributes.
 else
     dash.assert.scalarType(value, 'struct', 'attributes', header);
-    if numel(fieldnames(value))==0
-        setValue = false;
-    end
 end
 
-% Edit object
-if setValue
-    obj.(dim) = value;
-end
+% Update object
+obj.(dim) = value;
 
 end

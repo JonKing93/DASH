@@ -27,12 +27,12 @@ classdef gridMetadata
         
         %% Non-dimensional metadata attributes
         % This should always be the last listed property.
-        attributes;
+        attributes = struct();
     end
 
     methods       
         
-        % Set properties
+        % Properties / dimensions
         function[obj] = gridMetadata(varargin)
         %% gridMetadata.gridMetadata  Creates a new gridMetadata object
         % ----------
@@ -106,10 +106,12 @@ classdef gridMetadata
         
         end
         obj = edit(obj, name, value);
+        dims = defined(obj);
         
         % Console display
         disp(obj);
         dispAttributes(obj);
+        
     end
     
     methods (Static)

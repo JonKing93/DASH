@@ -34,15 +34,12 @@ end
 % Get the file path if the file exists
 [path, missing] = getpath(filename);
 
-% If the file is missing, check for a default extension
+% Check default extension
 if missing && exist('ext','var') && ~isempty(ext)
-    filename = char(filename);
-    ext = char(ext);
-    N = numel(ext);
-    
-    % If the file does not have the extension, append and check existence
-    if numel(filename)<N || ~strcmp(filename(end-N+1:end), ext)
-        [path, missing] = getpath([filename, ext]);
+    [~,~,currentExt] = fileparts(filename);
+    if ~strcmpi(currentExt, ext)
+        newName = strcat(filename, ext);
+        [path, missing] = getpath(newName);
     end
 end
 
