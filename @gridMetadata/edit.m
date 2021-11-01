@@ -30,8 +30,8 @@ header = 'DASH:gridMetadata:edit';
 recognized = [dims;atts];
 
 % Check that the dimension is recognzied
-dim = dash.assert.strflag(dim, dimName, header);
-n = dash.assert.strsInList(dim, recognized, dimName, 'recognized dimension name', header);
+dim = dash.assert.strflag(dim, 'dim', header);
+n = dash.assert.strsInList(dim, recognized, 'dim', 'recognized dimension name', header);
 
 % Track whether to record metadata
 setValue = true;
