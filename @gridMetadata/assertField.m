@@ -37,7 +37,7 @@ if ~isnumeric(meta) && ~islogical(meta) && ~ischar(meta) && ...
     id = sprintf('%s:unallowedMetadataType', idHeader);
     allowed = ["numeric","logical","char","string","cellstring","datetime"];
     error(id, 'The "%s" metadata must be one of the following data types: %s',...
-        dim, dash.string.list(allowed, "or"));
+        dim, dash.string.list(allowed));
     
 % Matrix
 elseif ~ismatrix(meta)
@@ -59,7 +59,7 @@ if iscellstr(meta) %#ok<ISCLSTR>
 end
 
 % Duplicate rows
-if dash.metadata.hasDuplicateRows(meta)
+if gridMetadata.hasDuplicateRows(meta)
     id = sprintf('%s:metadataHasDuplicateRows', idHeader);
     error(id, 'The "%s" metadata contains duplicate rows', dim);
 end
