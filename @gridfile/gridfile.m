@@ -18,7 +18,7 @@ classdef gridfile < handle
         % Data sources
         source = strings(0,1);
         relativePath = false(0,1);
-        dimLimit = NaN(0,2);
+        dimLimit = NaN(0,2,0);
         
         % Data source transformations
         source_fill = NaN(0,1);
@@ -39,9 +39,8 @@ classdef gridfile < handle
         edit(obj, dim, value);
         expand(obj, dim, value);
         
-        addAttributes;
-        removeAttributes;
-        attributes;
+        % Arithmetic
+        arithmetic
         
         
         
