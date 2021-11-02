@@ -38,6 +38,16 @@ classdef gridfile < handle
         meta = metadata(obj);
         edit(obj, dim, value);
         expand(obj, dim, value);
+        addAttributes(obj, varargin);
+        removeAttributes(obj, varargin);
+
+        
+        
+        
+        
+        
+        
+        
         
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
