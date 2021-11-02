@@ -1,23 +1,23 @@
-function[dims, atts] = dimensions
+function[dimensions, attributes] = dimensions
 %% gridMetadata.dimensions  Return the list of gridMetadata dimensions
 % ----------
-%   dims = gridMetadata.dimensions
+%   dimensions = gridMetadata.dimensions
 %   Returns the list of data dimensions recognized by gridMetadata.
 %
-%   [dims, atts] = gridMetadata.dimensions
+%   [dimensions, attributes] = gridMetadata.dimensions
 %   Also returns the name of the attributes property.
 % ----------
 %   Outputs:
-%       dims (string vector): The list of dimensions recognized by
+%       dimensions (string vector): The list of dimensions recognized by
 %           gridMetadata
-%       atts (string scalar): The name of the metadata attributes property
+%       attributes (string scalar): The name of the metadata attributes property
 %
 % <a href="matlab:dash.doc('gridMetadata.dimensions')">Documentation Page</a>
 
 props = properties('gridMetadata');
-dims = string(props(1:end-1));
+dimensions = string(props(1:end-1));
 if nargout>1
-    atts = string(props(end));
+    attributes = string(props(end));
 end
 
 end

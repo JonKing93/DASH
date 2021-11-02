@@ -36,17 +36,17 @@ classdef gridMetadata
         function[obj] = gridMetadata(varargin)
         %% gridMetadata.gridMetadata  Creates a new gridMetadata object
         % ----------
-        %   obj = gridMetadata(dim1, meta1, dim2, meta2, ..., dimN, metaN)
+        %   obj = gridMetadata(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
         %   Creates a metadata object for a gridded dataset.
         %
         %   obj = gridMetadata(..., 'attributes', attributes)
         %   Include non-dimensional metadata attributes in the metadata object
         % ----------
         %   Inputs:
-        %       dimN (string scalar): The name of a dimension of a gridded dataset.
+        %       dimensionN (string scalar): The name of a dimension of a gridded dataset.
         %           Must be a recognized grid dimension. 
         %           (See gridMetadata.dimensions for a list of available dimensions)
-        %       metaN (matrix, numeric | logical | char | string | cellstring | datetime): 
+        %       metadataN (matrix, numeric | logical | char | string | cellstring | datetime): 
         %           The metadata for the dimension. Cannot have NaN or NaT elements.
         %           All rows must be unique.
         %       attributes (scalar struct): Non-dimensional metadata attributes for

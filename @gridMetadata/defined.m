@@ -1,12 +1,12 @@
-function[dims] = defined(obj)
+function[dimensions] = defined(obj)
 %% gridMetadata.defined  Returns the list of dimensions with defined metadata
 % ----------
-%   dims = obj.defined;
+%   dimensions = obj.defined;
 %   Returns the list of dimensions that have metadata in the current
 %   gridMetadata object. Does not include attributes.
 % ----------
 %   Outputs:
-%       dims (string vector): A list of dimensions with metadata
+%       dimensions (string vector): A list of dimensions with metadata
 %
 % <a href="matlab:dash.doc('gridMetadata.defined')">Documentation Page</a>
 
@@ -20,6 +20,6 @@ for d = 1:nDims
     end
 end
 
-dims = dims(hasMetadata);
+dimensions = dims(hasMetadata);
 
 end
