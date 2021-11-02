@@ -72,7 +72,7 @@ classdef gridMetadata
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
 
         % Header for error IDs
-        header = "DASH:metadata:define";
+        header = "DASH:gridMetadata";
         
         % Get the set of recognized dimensions and attributes. Track user
         % input dimensions
@@ -111,6 +111,10 @@ classdef gridMetadata
         % Console display
         disp(obj);
         dispAttributes(obj);
+        
+        % Attribute manipulation
+        obj = addAttributes(obj, varargin);
+        obj = removeAttributes(obj, varargin);
         
     end
     
