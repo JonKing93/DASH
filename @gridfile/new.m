@@ -45,10 +45,10 @@ nDims = numel(obj.dims);
 obj.dimLimit = NaN(nDims, 2, 0);
 
 % Get dimension sizes
-obj.sizes = NaN(1, nDims);
+obj.size = NaN(1, nDims);
 for d = 1:nDims
     dim = obj.dims(d);
-    obj.sizes(d) = size(metadata.(dim), 1);
+    obj.size(d) = size(metadata.(dim), 1);
 end
 
 % Save the file. Update file name to absolute path

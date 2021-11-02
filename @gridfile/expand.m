@@ -46,7 +46,7 @@ siz = size(metadata, 1);
 if ~infile
     obj.meta = obj.meta.edit(dim, metadata);
     obj.dims = [obj.dims, dim];
-    obj.sizes = [obj.sizes, siz];
+    obj.size = [obj.size, siz];
 
     newRow = ones(size(obj.dimLimit(1,:,:)));
     obj.dimLimit = cat(1, obj.dimLimit, newRow);
@@ -92,7 +92,7 @@ else
     
     % Error check / update metadata. Also update sizes
     obj.meta = obj.meta.edit(dim, metadata);
-    obj.sizes(d) = obj.sizes(d) + siz;
+    obj.size(d) = obj.size(d) + siz;
 end
 
 % Save changes

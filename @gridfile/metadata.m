@@ -21,7 +21,7 @@ function[metadata] = metadata(obj, source)
 
 % Get up-to-date metadata for the full file
 obj.update;
-metadata = obj.metadata;
+metadata = obj.meta;
 
 % If no inputs, return metadata directly
 if ~exist('source','var')

@@ -141,7 +141,7 @@ matName = dash.file.setupNew(filename(1), ".mat", overwrite(1));
 gridName = dash.file.setupNew(filename(2), ".grid", overwrite(2));
 
 
-%% Check that gridfiles can be summed. Get load order and metadata
+%% Check that gridfiles can be operated on. Get load order and metadata
 
 % Get gridfile dimensions, metadata, and sizes
 [dims1, size1, meta1] = gridValues(obj);

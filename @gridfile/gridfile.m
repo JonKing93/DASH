@@ -5,7 +5,7 @@ classdef gridfile < handle
         % Overall gridfile
         file = strings(0,1);
         dims = strings(1,0);
-        sizes = NaN(1,0);
+        size = NaN(1,0);
         meta;
         
         % Default transformations
@@ -46,7 +46,8 @@ classdef gridfile < handle
         times(obj, grid2, filename, varargin);
         divide(obj, grid2, filename, varargin);
         
-        
+        % Summary
+        name = name(obj);
         
         
         
