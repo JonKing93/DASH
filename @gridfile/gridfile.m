@@ -40,7 +40,13 @@ classdef gridfile < handle
         expand(obj, dim, value);
         
         % Arithmetic
-        arithmetic
+        arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
+        plus(obj, grid2, filename, varargin);
+        minus(obj, grid2, filename, varargin);
+        times(obj, grid2, filename, varargin);
+        divide(obj, grid2, filename, varargin);
+        
+        
         
         
         
