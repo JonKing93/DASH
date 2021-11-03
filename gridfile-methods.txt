@@ -1,37 +1,47 @@
 %% gridfile  Organize and catalogue gridded datasets
 %
-%   gridfile Methods:
-%       new - Create a new gridfile
-%       load
-%       disp/info
 %
-%   Metadata:
-%       define - 
-%       metadata - Returns metadata
-%       expand - Expands dimension
-%       edit - Changes metadata values
+% --- TODO ---
 %
-%       addAttribute - Add a non-dimensional attribute to the metadata
-%       removeAttribute - Remove a non-dimensional attribute from the metadata
-%       attributes - Set the non-dimensional attributes
-%
-%   Data sources:
-%       add
-%       remove
-%       rename
-%
-%   Data source alterations:
-%       fillValue
-%       validRange
-%       transform
-%           - plus
-%           - times
-%           - linear
-%           - log
-%           - exp
-%   
 %   Arithmetic:
+%   !! Still need to correct .arithmetic for new build
 %       plus
 %       minus
 %       divide
 %       multiply
+%
+%   Summary:
+%       name
+%       disp
+%       info?
+%       dispSource?
+%       
+%   Data sources:
+%       add
+%       remove
+%       rename
+%       relativePath
+%
+%   Load:
+%       load
+%
+% --- DONE ---
+%
+%   File Interactions:
+%       new - Create new file
+%       gridfile - Create object from file
+%       update - Update object to match file
+%       save - Update file to match object
+%
+%   Metadata:
+%       metadata - Return metadata
+%       expand - Expands dimension
+%       edit - Changes metadata values
+%       addAttributes
+%       removeAttributes
+%
+%   Data transformations:
+%       fillValue
+%       validRange
+%       transform
+%
