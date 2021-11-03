@@ -10,6 +10,23 @@ function[] = disp(obj)
 % 
 % <a href="matlab:dash.doc('gridMetadata.disp')">Documentation Page</a>
 
+% Get the class documentation link
+link = '<a href="matlab:dash.doc(''gridMetadata'')">gridMetadata</a>';
+
+% If not scalar, display array size and exit
+if ~isscalar(obj)
+    N = ndims(obj);
+    if N < 5
+        siz = size(obj);
+        siz = sprintf('%.fx', siz);
+        siz(end) = [];
+    else
+        siz = sprintf('%.f-D', N);
+    end
+    fprintf('  %s %s array\n\n', siz, link);
+    return;
+end
+
 % Collect the dimension and attribute names
 props = string(properties(obj));
 dims = props(1:end-1);
@@ -35,9 +52,6 @@ if numel(fieldnames(meta))>0
     empty = false;
     display.(atts) = meta;
 end
-
-% Get the header link
-link = '<a href="matlab:dash.doc(''gridMetadata'')">gridMetadata</a>';
 
 % Display an empty metadata object
 if empty
