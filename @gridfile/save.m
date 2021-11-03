@@ -15,8 +15,7 @@ size = obj.size;
 
 fill = obj.fill;
 range = obj.range;
-transform = obj.transform;
-transform_type = obj.transform_type;
+transform_ = obj.transform_;
 transform_params = obj.transform_params;
 
 source = obj.source;
@@ -26,16 +25,14 @@ dimLimit = obj.dimLimit;
 source_fill = obj.source_fill;
 source_range = obj.source_range;
 source_transform = obj.source_transform;
-source_transform_type = obj.source_transform_type;
 source_transform_params = obj.source_transform_params;
 
 % Save to file
 save(obj.file, '-mat',...
     'meta', 'dims', 'size',...
-    'fill','range','transform','transform_type','transform_params',...
+    'fill','range','transform_','transform_params',...
     'source', 'relativePath', 'dimLimit',...
-    'source_fill','source_range',...
-    'source_transform','source_transform_type','source_transform_params'...
+    'source_fill','source_range','source_transform','source_transform_params'...
     );
 
 end

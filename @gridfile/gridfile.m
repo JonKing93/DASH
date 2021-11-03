@@ -11,8 +11,7 @@ classdef gridfile < handle
         % Default transformations
         fill = NaN;
         range = [-Inf, Inf];
-        transform = false;
-        transform_type = "none";
+        transform_ = "none";
         transform_params = [NaN, NaN];
         
         % Data sources
@@ -23,8 +22,7 @@ classdef gridfile < handle
         % Data source transformations
         source_fill = NaN(0,1);
         source_range = NaN(0,2);
-        source_transform = false(0,1);
-        source_transform_type = strings(0,1);
+        source_transform = strings(0,1);
         source_transform_params = NaN(0,2);
     end
     
@@ -37,17 +35,16 @@ classdef gridfile < handle
         % Metadata
         meta = metadata(obj);
         edit(obj, dim, value);
-        expand(obj, dim, value);
         addAttributes(obj, varargin);
         removeAttributes(obj, varargin);
-
+        expand(obj, dim, value);
         
+        % Data sources
         
-        
-        
-        
-        
-        
+        % Data transformations
+        fillValue(obj, fill, sources);
+        validRange(obj, range, sources);
+        transform(obj, type, params, sources);
         
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
