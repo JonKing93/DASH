@@ -121,5 +121,5 @@ compatible = dash.string.list(compatible);
 id = sprintf('%s:incompatibleDataTypes', header);
 error(id, ['Cannot append the new "%s" metadata because its data type (%s) ',...
     'is not compatible with the existing metadata''s type (%s) in gridfile "%s". ',...
-    'Compatiable types are: %s.'], dim, newType, oldType, file, compatible);
+    'Compatible types are: %s.'], dim, newType, oldType, file, compatible);
 end
