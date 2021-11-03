@@ -21,8 +21,8 @@ function[] = validRange(obj, range, sources)
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be assigned the valid range.
 %       sourceName (string vector): The names of the data sources that
-%           should be assigned a valid range. Names can be absolute file
-%           paths, the relative file paths on the active path, or opendap URLs.
+%           should be assigned a valid range. Names may either be just file
+%           names, or the full file path / opendap url to the source.
 %
 % <a href="matlab:dash.doc('gridfile.validRange')">Documentation Page</a>
 
@@ -41,7 +41,7 @@ end
 
 % Set range for data sources and .grid file
 if exist('sources','var')
-    s = dash.parse.listOrIndices(sources);
+    s = obj.sourceIndices(sources);
 else
     obj.range = range;
     s = 1:numel(obj.source);

@@ -58,6 +58,11 @@ function[] = transform(obj, type, params, sources)
 %           constant, and the second element is the additive constant.
 %           Linear transformations are applied via: 
 %           Y = coeffs(1) * X + coeffs(2)
+%       s (logical vector [nSources] | vector, linear indices): The indices
+%           of the data sources that should be receive the transformation.
+%       sourceName (string vector): The names of the data sources that
+%           should receive the transformation. Names may either be just file
+%           names, or the full file path / opendap url to the source.
 %
 % <a href="matlab:dash.doc('gridfile.transform')">Documentation Page</a>
 
@@ -88,9 +93,9 @@ elseif strcmp(type, 'linear')
     dash.assert.vectorTypeN(params, 'numeric', 2, 'coeffs', header);
 end
 
-% Get data source indices, set transformation for .grid file
+% Set transformation for .grid file and data sources
 if exist('sources','var')
-    s = dash.parse.listOrIndices(sources);
+    s = obj.sourceIndices(sources);
 else
     obj.transform_ = type;
     obj.transform_params = params;

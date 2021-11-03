@@ -19,9 +19,8 @@ function[] = fillValue(obj, fill, sources)
 %       s (logical vector [nSources] | vector, linear indices): The indices of the data
 %           sources that should be assigned a fill value.
 %       sourceName (string vector): The names of the data sources that
-%           should be assigned a fill value. Names can be absolute file
-%           paths, the relative path to data sources on the active path, or
-%           opendap URLs.
+%           should be assigned a fill value. Names may either be just file
+%           names, or the full file path / opendap url to the source.
 %
 % <a href="matlab:dash.doc('gridfile.fillValue')">Documentation Page</a>
 
@@ -31,7 +30,7 @@ dash.assert.scalarType(fill, 'numeric', 'fill', header);
 
 % Set datasource fills. Optionally set fill for entire gridfile
 if exist('sources','var')
-    s = dash.parse.listOrIndices(sources);
+    s = obj.sourceIndices(sources);
 else
     obj.fill = fill;
     s = 1:numel(obj.source);

@@ -40,6 +40,7 @@ classdef gridfile < handle
         expand(obj, dim, value);
         
         % Data sources
+        remove(obj, sources);
         
         % Data transformations
         fillValue(obj, fill, sources);
@@ -55,9 +56,10 @@ classdef gridfile < handle
         
         % Summary
         name = name(obj);
+        disp(obj);
         
-        
-        
+        % Utilities
+        s = sourceIndices(obj, sources)
         
     end
     

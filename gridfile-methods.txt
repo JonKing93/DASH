@@ -3,13 +3,6 @@
 %
 % --- TODO ---
 %
-%   Arithmetic:
-%   !! Still need to correct .arithmetic for new build
-%       plus
-%       minus
-%       divide
-%       multiply
-%
 %   Summary:
 %       name
 %       disp
@@ -44,4 +37,10 @@
 %       fillValue
 %       validRange
 %       transform
+%
+%   Arithmetic:
+%       plus
+%       minus
+%       divide
+%       multiply
 %
