@@ -54,9 +54,10 @@ classdef gridfile < handle
         times(obj, grid2, filename, varargin);
         divide(obj, grid2, filename, varargin);
         
-        % Summary
+        % Summary information
         name = name(obj);
         disp(obj);
+        dispSources(obj);
         
         % Utilities
         s = sourceIndices(obj, sources)
