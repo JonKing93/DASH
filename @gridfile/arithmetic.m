@@ -81,9 +81,9 @@ end
 % Second gridfile
 if dash.is.strflag(grid2)
     grid2 = gridfile(grid2);
-elseif ~isa(grid2, 'gridfile')
+elseif ~isa(grid2, 'gridfile') || ~isscalar(grid2)
     id = sprintf('%s:invalidGridfile', header);
-    error(id, 'grid2 must either be a gridfile object, or the name of a .grid file.');
+    error(id, 'grid2 must either be a scalar gridfile object, or the name of a .grid file.');
 end
 
 % Names of new save files
@@ -103,12 +103,13 @@ else
 end
 
 % Metadata attributes
+[~, atts] = gridMetadata.dimensions;
 if ~exist('attributes','var') || isempty(attributes)
     attributes = struct();
 elseif attributes==1
-    attributes = obj.metadata.attributes;
+    attributes = obj.meta.(atts);
 elseif attributes==2
-    attributes = grid2.metadata.attributes;
+    attributes = grid2.meta.(atts);
 elseif ~(isscalar(attributes) && isstruct(attributes))
     id = sprintf('%s:invalidAttributes', header);
     error(id, 'attributes must be one of the following: 1, 2, or a scalar struct');
@@ -137,8 +138,8 @@ if isscalar(overwrite)
 end
 
 % Setup for new files
-matName = dash.file.setupNew(filename(1), ".mat", overwrite(1));
-gridName = dash.file.setupNew(filename(2), ".grid", overwrite(2));
+matName = dash.file.new(filename(1), ".mat", overwrite(1));
+gridName = dash.file.new(filename(2), ".grid", overwrite(2));
 
 
 %% Check that gridfiles can be operated on. Get load order and metadata
@@ -148,7 +149,7 @@ gridName = dash.file.setupNew(filename(2), ".grid", overwrite(2));
 [dims2, size2, meta2] = gridValues(grid2);
 
 % Initialize metadata structure and load order for second gridfile
-meta = struct();
+meta = gridMetadata;
 order1 = repmat({[]}, numel(dims1), 1);
 order2 = repmat({[]}, numel(dims2), 1);
 
@@ -171,9 +172,9 @@ for d = 1:numel(xdims)
     % Type 3: Use grid1 metadata
     if length1==length2 && length1~=1
         if type==2
-            [meta.(dim), order1{d1(d)}, order2{d2(d)}] = ...
+            [dimMetadata, order1{d1(d)}, order2{d2(d)}] = ...
             intersect(meta1.(dim), meta2.(dim), 'rows', 'stable');
-            if isempty(meta.(dim))
+            if isempty(dimMetadata)
                 noMatchingMetadataError(strs, obj.name, grid2.name, dim, header);
             end
         else
@@ -185,25 +186,30 @@ for d = 1:numel(xdims)
                 end
                 order2{d2(d)} = loc;
             end
-            meta.(dim) = meta1.(dim);
+            dimMetadata = meta1.(dim);
         end
 
     % BROADCAST DIMENSIONS
     elseif length2==1
-        meta.(dim) = meta1.(dim);
+        dimMetadata = meta1.(dim);
     else
-        meta.(dim) = meta2.(dim);
+        dimMetadata = meta2.(dim);
     end
+    
+    % Update metadata
+    meta = meta.edit(dim, dimMetadata);
 end
 
 % NON-INTERSECTING
 udims1 = setdiff(dims1, xdims);
 for d = 1:numel(udims1)
-    meta.(udims1(d)) = meta1.(udims1(d));
+    dim = udims1(d);
+    meta = meta.edit(dim, meta1.(dim));
 end
 udims2 = setdiff(dims2, xdims);
 for d = 1:numel(udims2)
-    meta.(udims2(d)) = meta2.(udims2(d));
+    dim = udims2(d);
+    meta = meta.edit(dim, meta2.(dim));
 end
 
 
@@ -222,23 +228,20 @@ X2 = dash.permuteDimensions(X2, index, false);
 X = math(X1, X2);
 
 % Save .mat file
-atts = {};
-if numel(fieldnames(attributes))~=0
-    atts = {'attributes'};
-end
-save(matName, 'meta', atts{:}, 'X', '-v7.3');
+meta = meta.edit(atts, attributes);
+save(matName, 'meta', 'X', '-v7.3');
 
 % Build new .grid file
-grid = gridfile.new(gridName, meta, attributes, true);
+grid = gridfile.new(gridName, meta, true);
 grid.add("mat", matName, "X", alldims, meta);
 
 end
 
 %% Helper function
 function[dims, size, meta] = gridValues(grid)
-dims = grid.dims(grid.isdefined);
-size = grid.size(grid.isdefined);
-meta = grid.metadata;
+dims = grid.dims;
+size = grid.size;
+meta = grid.meta;
 end
 
 %% Long error messages
