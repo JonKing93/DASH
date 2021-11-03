@@ -43,7 +43,6 @@ gridDims = obj.dims(obj.size>1);         % non-singleton gridfile dimensions
 metaDims = metadata.defined;             % metadata dimensions
 
 nListed = numel(listedDims);
-nSourceDims = numel(sourceDims);
 nGridDims = numel(gridDims);
 nMetaDims = numel(metaDims);
 
@@ -87,8 +86,8 @@ for d = 1:nMerged
 end
 
 % Get values and sizes of dimensional metadata. Initialize dimensional limits
-dimLimit = ones(numel(gridDims), 2);
-for d = 1:numel(metaDims)
+dimLimit = ones(nGridDims, 2);
+for d = 1:nMetaDims
     dim = metaDims(d);
     metaValues = metadata.(dim);
     nRows = size(metaValues, 1);
@@ -127,11 +126,7 @@ lower = all(dimLimit<obj.dimLimit(:,1,:), 2);
 higher = all(dimLimit>obj.dimLimit(:,2,:), 2);
 overlap = all(~(lower|higher), 1);
 if any(overlap)
-    id = sprintf('%s:overlappingDataSource', header);
-    alreadyExists = find(overlap, 1);
-    error(id, ['The new data source overlaps a data source already in the gridfile.\n',...
-        'New Data Source: %s\nExisting Data Source: %s\ngridfile: %s'],...
-        source.source, obj.source(alreadyExists), obj.name);
+    overlappingDataSourceError(source.source, overlap, obj, header);
 end
 
 % Add the new source to the gridfile
@@ -180,7 +175,7 @@ undefined = sourceDims(undefined);
 
 error(id, ['The "%s" data source dimension is not in the gridfile. Consider ',...
     'adding "%s" metadata to the gridfile. (See gridfile.expand)\n',...
-    'Data source: %s\ngridfile: %s', undefined, undefined, sourceName, gridName);
+    'Data source: %s\ngridfile: %s'], undefined, undefined, sourceName, gridName);
 end
 function[] = missingMetadataDimensionError(dim, sourceName, header)
 id = sprintf('%s:missingMetadataDimension', header);
@@ -212,4 +207,12 @@ id = sprintf('%s:skippedMetadata', header);
 error(id, ['The "%s" metadata for the data source skips elements ',...
     'of the "%s" metadata in the gridfile.\nData source: %s\n',...
     'gridfile: %s'], dim, dim, sourceName, gridName);
+end
+function[] = overlappingDataSourceError(sourceName, overlap, obj, header)
+id = sprintf('%s:overlappingDataSource', header);
+alreadyExists = find(overlap, 1);
+alreadyExists = obj.source(alreadyExists);
+error(id, ['The new data source overlaps a data source already in the gridfile.\n',...
+    'New Data Source: %s\nExisting Data Source: %s\ngridfile: %s'],...
+    sourceName, alreadyExists, obj.name);
 end
