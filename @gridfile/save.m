@@ -8,31 +8,17 @@ function[] = save(obj)
 %
 % <a href="matlab:dash.doc('gridfile.save')">Documentation Page</a>
 
-% Get the values
-meta = obj.meta;
-dims = obj.dims;
-size = obj.size;
+% Get the save properties
+props = string(properties(obj));
+props(strcmp(props, "file")) = [];
 
-fill = obj.fill;
-range = obj.range;
-transform_ = obj.transform_;
-transform_params = obj.transform_params;
-
-source = obj.source;
-relativePath = obj.relativePath;
-dimLimit = obj.dimLimit;
-
-source_fill = obj.source_fill;
-source_range = obj.source_range;
-source_transform = obj.source_transform;
-source_transform_params = obj.source_transform_params;
+% Build a struct with each value
+s = struct();
+for p = 1:numel(props)
+    s.(props(p)) = obj.(props(p));
+end
 
 % Save to file
-save(obj.file, '-mat',...
-    'meta', 'dims', 'size',...
-    'fill','range','transform_','transform_params',...
-    'source', 'relativePath', 'dimLimit',...
-    'source_fill','source_range','source_transform','source_transform_params'...
-    );
+save(obj.file,  '-mat', '-struct', 's');
 
 end

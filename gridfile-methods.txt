@@ -7,7 +7,7 @@
 %       name
 %       disp
 %       info?
-%       dispSource?
+%       dispSources
 %       
 %   Data sources:
 %       add

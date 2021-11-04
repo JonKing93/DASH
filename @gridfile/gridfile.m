@@ -15,15 +15,8 @@ classdef gridfile < handle
         transform_params = [NaN, NaN];
         
         % Data sources
-        source = strings(0,1);
-        relativePath = false(0,1);
         dimLimit = NaN(0,2,0);
-        
-        % Data source transformations
-        source_fill = NaN(0,1);
-        source_range = NaN(0,2);
-        source_transform = strings(0,1);
-        source_transform_params = NaN(0,2);
+        sources = gridfileSources;
     end
     
     methods
@@ -40,6 +33,7 @@ classdef gridfile < handle
         expand(obj, dim, value);
         
         % Data sources
+        add(obj, type, source, varargin);
         remove(obj, sources);
         
         % Data transformations

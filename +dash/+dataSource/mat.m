@@ -59,13 +59,16 @@ classdef mat < dash.dataSource.hdf
             ME = addCause(ME, problem);
             throw(ME);
         end
-
-        % Check the variable is valid
-        fileVars = string(who(obj.m));
-        obj = obj.setVariable(char(var), fileVars);
-
-        % Get data type and size
+        
+        % Check the variable is valid, get data type and size
         info = whos(obj.m, var);
+        if isempty(info)
+            name = '';
+        else
+            name = info.name;
+        end
+        
+        obj = obj.setVariable(char(var), name);        
         obj.dataType = info.class;
         obj.size = info.size;
 

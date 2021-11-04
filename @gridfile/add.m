@@ -14,6 +14,29 @@ function[] = add(obj, type, source, varargin)
 %   obj.add(..., Name, Value)
 %   Adds data stored in a delimited text file to the .grid file catalogue.
 % ----------
+%   Inputs:
+%       file (string scalar): The name of a data source file. Name may
+%           either be an absolute file path, or the name of a file on the
+%           active path.
+%       opendapURL (string scalar): An OPENDAP url to a data source file       
+%       variable (string scalar): The name of a variable in a NetCDF or
+%           MAT-file. Only this variable is catalogued in the gridfile.
+%       dimensions (string vector): The order of dimensions for data in the
+%           data source. Dimensions with repeated names are merged when
+%           loading data from the gridfile.
+%       metadata (scalar gridMetadata object): Dimensional metadata for the
+%           data source. The number of rows must match the length the size
+%           of the dimension in the data source. Must include metadata for
+%           all non-singleton dimensions in both the gridfile and data
+%           source. Metadata values for gridfile dimensions must exactly
+%           match a sequence of gridfile metadata for the dimension.
+%       opts (ImportOptions object): Additional options for importing data
+%           from delimited text files using the builtin "readmatrix" function.
+%       Name,Value: Additional import options for reading data from a
+%           delimited text file using the builtin "readmatrix" functions.
+%           (See the readmatrix reference page for supported pairs.)
+%
+% <a href="matlab:dash.doc('gridfile.add')">Documentation Page</a>
 
 % Setup
 obj.update;
@@ -29,7 +52,7 @@ assert(numel(varargin)==3)
 % Build the data source, this will error check the file and variable. Also
 % error check the metadata
 source = dash.dataSource.mat(source, variable);
-metadata = dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
+dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
 
 % Check dimensions are recognized
 valid = gridMetadata.dimensions;
@@ -67,11 +90,14 @@ elseif ~all(sourceInGrid)
     undefinedSourceDimensionError(sourceDims, sg, source.source, obj.name, header);
 end
 
-% Pad source size with trailing 1s if it is shorter than listed dimensions
+% Pad source size with trailing 1s if it is shorter than listed dimensions.
+% Remove excess trailing 1s
 sourceSize = source.size;
 nSize = numel(sourceSize);
 if nSize < nListed
     sourceSize = [sourceSize, ones(1, nListed-nSize)];
+elseif nSize > nListed
+    sourceSize = sourceSize(1:nListed);
 end
 
 % Get merged dimensions, sizes, and merge map
@@ -130,17 +156,12 @@ if any(overlap)
 end
 
 % Add the new source to the gridfile
-obj.source = [obj.source; source.source];
-obj.relativePath = [obj.relativePath; false];
+obj.sources = obj.sources.add(source, listedDims, sourceSize, mergedDims,...
+    mergedSize, obj.fill, obj.range, obj.transform_, obj.transform_params);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
 
-obj.source_fill = [obj.source_fill; obj.fill];
-obj.source_range = [obj.source_range; obj.range];
-obj.source_transform = [obj.source_transform; obj.transform_];
-obj.source_transform_params = [obj.source_transform_params; obj.transform_params];
-
 % Save to file
-obj.file;
+obj.save;
 
 end
 
@@ -211,8 +232,8 @@ end
 function[] = overlappingDataSourceError(sourceName, overlap, obj, header)
 id = sprintf('%s:overlappingDataSource', header);
 alreadyExists = find(overlap, 1);
-alreadyExists = obj.source(alreadyExists);
-error(id, ['The new data source overlaps a data source already in the gridfile.\n',...
-    'New Data Source: %s\nExisting Data Source: %s\ngridfile: %s'],...
+alreadyExists = obj.sources.source(alreadyExists);
+error(id, ['The new data source overlaps a data source already in the gridfile.\n\n',...
+    '     New Data Source: %s\nExisting Data Source: %s\n            gridfile: %s'],...
     sourceName, alreadyExists, obj.name);
 end
