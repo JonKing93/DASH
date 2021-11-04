@@ -156,8 +156,7 @@ if any(overlap)
 end
 
 % Add the new source to the gridfile
-obj.sources = obj.sources.add(source, listedDims, sourceSize, mergedDims,...
-    mergedSize, obj.fill, obj.range, obj.transform_, obj.transform_params);
+obj.sources = obj.sources.add(obj, source, listedDims, sourceSize, mergedDims, mergedSize);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
 
 % Save to file

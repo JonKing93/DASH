@@ -30,11 +30,11 @@ dash.assert.scalarType(fill, 'numeric', 'fill', header);
 
 % Set datasource fills. Optionally set fill for entire gridfile
 if exist('sources','var')
-    s = obj.sourceIndices(sources);
+    s = obj.sources.indices(sources);
 else
     obj.fill = fill;
     s = 1:numel(obj.source);
 end
-obj.source_fill(s) = fill;
+obj.sources.fill(s) = fill;
 
 end

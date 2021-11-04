@@ -2,21 +2,25 @@ classdef gridfile < handle
     
     properties
         
-        % Overall gridfile
-        file = strings(0,1);
-        dims = strings(1,0);
-        size = NaN(1,0);
-        meta;
+        %% Overall gridfile
         
-        % Default transformations
-        fill = NaN;
-        range = [-Inf, Inf];
-        transform_ = "none";
-        transform_params = [NaN, NaN];
+        file = strings(0,1);            % The absolute path to the .grid file
+        dims = strings(1,0);            % The gridfile dimensions
+        size = NaN(1,0);                % The size of each gridfile dimension
+        meta;                           % Dimensional metadata and attributes
         
-        % Data sources
-        dimLimit = NaN(0,2,0);
-        sources = gridfileSources;
+        %% Default transformations 
+        
+        fill = NaN;                     % Default fill value
+        range = [-Inf, Inf];            % Default valid range
+        transform_ = "none";            % Default data transformation
+        transform_params = [NaN, NaN];  % Data transformation parameters
+        
+        %% Data sources
+        
+        dimLimit = NaN(0,2,0);          % The limits of each data source in the gridfile dimensions
+        relativePath = true;            % Whether to save data source file paths relative to the gridfile
+        sources = dash.gridfileSources; % The collection of data sources
     end
     
     methods
@@ -52,9 +56,6 @@ classdef gridfile < handle
         name = name(obj);
         disp(obj);
         dispSources(obj);
-        
-        % Utilities
-        s = sourceIndices(obj, sources)
         
     end
     
@@ -115,7 +116,8 @@ classdef gridfile < handle
 
         % Get the absolute file path
         file = dash.assert.strflag(filename, 'filename', header);
-        obj.file = dash.assert.fileExists(file, '.grid', header);
+        file = dash.assert.fileExists(file, '.grid', header);
+        obj.file = dash.file.urlSeparators(file);
 
         % Fill the object fields with values from the file
         obj.update;

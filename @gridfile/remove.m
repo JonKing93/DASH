@@ -9,23 +9,17 @@ function[] = remove(obj, sources)
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be removed.
 %       sourceName (string vector): The names of the data sources that
-%           should be removed. Names may either be just file names, or the
-%           full file path / opendap url to the file. 
+%           should be removed. Names may be absolute file paths, the names
+%           of files on the active path, or opendap urls.
 %
 % <a href="matlab:dash.doc('gridfile.remove')">Documentation Page</a>
 
 % Get data source indices
-s = gridfile.sourceIndices(sources);
+s = obj.sources.indices(sources);
 
 % Remove the sources
-obj.source(s) = [];
-obj.relativePath(s) = [];
 obj.dimLimit(:,:,s) = [];
-
-obj.source_fill(s) = [];
-obj.source_range(s,:) = [];
-obj.source_transform(s) = [];
-obj.source_transform_params(s,:) = [];
+obj.sources = obj.sources.remove(s);
 
 % Save
 obj.save;

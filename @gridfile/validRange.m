@@ -41,11 +41,11 @@ end
 
 % Set range for data sources and .grid file
 if exist('sources','var')
-    s = obj.sourceIndices(sources);
+    s = obj.sources.indices(sources);
 else
     obj.range = range;
     s = 1:numel(obj.source);
 end
-obj.source_range(s,:) = repmat(range, numel(s), 1);
+obj.sources.range(s,:) = repmat(range, numel(s), 1);
 
 end
