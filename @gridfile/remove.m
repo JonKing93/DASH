@@ -15,7 +15,8 @@ function[] = remove(obj, sources)
 % <a href="matlab:dash.doc('gridfile.remove')">Documentation Page</a>
 
 % Get data source indices
-s = obj.sources.indices(sources);
+header = "DASH:gridfile:remove";
+s = obj.sources.indices(sources, obj.file, header);
 
 % Remove the sources
 obj.dimLimit(:,:,s) = [];

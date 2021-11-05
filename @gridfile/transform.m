@@ -95,10 +95,11 @@ end
 
 % Set transformation for .grid file and data sources
 if exist('sources','var')
-    s = obj.source.indices(sources);
+    s = obj.source.indices(sources, obj.file, header);
 else
     obj.transform_ = type;
     obj.transform_params = params;
+    s = 1:numel(obj.sources.source);
 end
 obj.sources.transform(s) = type;
 obj.sources.transform_params(s,:) = repmat(params, numel(s), 1);

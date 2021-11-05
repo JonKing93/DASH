@@ -13,42 +13,36 @@ if isnumeric(sources) || islogical(sources)
     linearMax = 'number of data sources';
     indices = dash.assert.indices(sources, nSources, 'sources', logicalLength, linearMax, header);
     
-% File name input
+% File name input - start by getting absolute paths to sources
 elseif dash.is.strlist(sources)
     inputSources = string(sources);
-    inputSources = dash.file.urlSeparators(inputSources);
-    sourcePaths = obj.source;
-    gridPath = fileparts(gridFile);
-    
-    % Get absolute path to all files
-    rel = obj.relativePath;
-    if any(rel)
-        absPaths = strcat(gridPath, '/', sourcePaths(rel));
-        for s = 1:numel(absPaths)
-            absPaths(s) = dash.file.collapsePath(absPaths(s));
-        end
-        sourcePaths(rel) = absPaths;
-    end
+    sourcePaths = obj.absolutePaths(gridFile);
     
     % Split source names from extensions
     sourceNames = cellstr(sourcePaths);
     sourceExt = cell(nSources, 1);
     for s = 1:nSources
         [path, name, ext] = fileparts(sourceNames{s});
-        sourceNames{s} = [path,'/',name];
+        sourceNames{s} = ['/',path,'/',name];
         sourceExt{s} = ext;
     end
     
-    % Preallocate indices, use char comparisons
+    % Preallocate indices, use char comparisons. 
     nInputs = numel(inputSources);
     indices = NaN(nInputs, 1);
-    inputSources = cellstr(inputSources);
     
-    % Check each input for an extension. Get total input length
+    % Check each input for an extension.
     [~,~,ext] = fileparts(inputSources);
     for k = 1:nInputs
-        hasExtension = ~isempty(ext{k});
-        inputLength = length(inputSources{k});
+        hasExtension = ~strcmp(ext(k), "");
+        
+        % Clean input string and get char length
+        input = char(inputSources(k));
+        input = dash.file.urlSeparators(input);
+        if input(1)~='/'
+            input = strcat('/',input);
+        end
+        inputLength = length(input);
         
         % Get the source path (with or without extension) for comparison
         for s = 1:nSources
@@ -60,7 +54,7 @@ elseif dash.is.strlist(sources)
             % Check for a match.
             match = false;
             if length(comparePath)>=inputLength &&...
-                    strcmp(comparePath(end-inputLength+1:end), inputSources{k})
+                    strcmp(comparePath(end-inputLength+1:end), input)
                 match = true;
             end
             
@@ -68,13 +62,13 @@ elseif dash.is.strlist(sources)
             if match && isnan(indices(k))
                 indices(k) = s;
             elseif match
-                multipleMatchesError(k, inputSources{k}, indices(k), s, gridFile, header);
+                multipleMatchesError(k, input, indices(k), s, gridFile, header);
             end
         end
         
         % Throw error if there are no matches
         if isnan(indices(k))
-            noMatchingSourcesError(k, inputSources{k}, gridFile, header);
+            noMatchingSourcesError(k, input, gridFile, header);
         end
     end
     
@@ -85,4 +79,19 @@ else
         'a list of data source names.']);
 end
 
+end
+
+% Long error messages
+
+function[] = multipleMatchesError(k, input, existingIndex, newIndex, gridFile, header)
+id = sprintf('%s:multipleMatchingSources', header);
+error(id, ['Input %.f ("%s") matches multiple data sources (sources %.f and %.f) ',...
+    'in the gridfile. Either use data source indices to select sources, or ',...
+    'add more file path information to input %.f.\n\ngridfile: %s'],...
+    k, input(2:end), existingIndex, newIndex, k, gridFile);
+end
+function[] = noMatchingSourcesError(k, input, gridFile, header)
+id = sprintf('%s:noMatchingSources', header);
+error(id, 'No data sources match input %.f ("%s").\n\ngridfile: %s', ...
+    k, input(2:end), gridFile);
 end

@@ -1,17 +1,17 @@
 function[] = add(obj, type, source, varargin)
 %% gridfile.add  Catalogue a data source in a .grid file
 % ----------
-%   obj.add('nc', file, variable, dimensions, metadata)
-%   obj.add('nc', opendapURL, variable, dimensions, metadata)
+%   <strong>obj.add</strong>('nc', file, variable, dimensions, metadata)
+%   <strong>obj.add</strong>('nc', opendapURL, variable, dimensions, metadata)
 %   Adds a NetCDF variable to the .grid file catalogue. The NetCDF can be
 %   accessed either via a local file, or opendap URL.
 %
-%   obj.add('mat', file, variable, dimensions, metadata)
+%   <strong>obj.add</strong>('mat', file, variable, dimensions, metadata)
 %   Adds a variable saved in a MAT-file to the .grid file catalogue.
 %
-%   obj.add('text', file, dimensions, metadata)
-%   obj.add(..., opts)
-%   obj.add(..., Name, Value)
+%   <strong>obj.add</strong>('text', file, dimensions, metadata)
+%   <strong>obj.add</strong>(..., opts)
+%   <strong>obj.add</strong>(..., Name, Value)
 %   Adds data stored in a delimited text file to the .grid file catalogue.
 % ----------
 %   Inputs:
@@ -38,21 +38,39 @@ function[] = add(obj, type, source, varargin)
 %
 % <a href="matlab:dash.doc('gridfile.add')">Documentation Page</a>
 
+%% Setup - Parse inputs, build data sources, initial metadata check
+
 % Setup
 obj.update;
 header = "DASH:gridfile:add";
 
-% Just write .mat version for now
-assert(strcmp(type, 'mat'));
+% HDF source - parse inputs and build source
+if strcmpi(type, 'mat') || strcmpi(type, 'nc')
+    if numel(varargin)~=3
+        wrongNumberHDFInputsError(type, header);
+    end
+    [variable, dimensions, metadata] = varargin{:};
+    type = lower(type);
+    source = dash.dataSource.(type)(source, variable);
+        
+% Parse inputs for delimited text source
+elseif strcmpi(type, 'text')
+    if numel(varargin)<2
+        wrongNumberTextInputsError(header);
+    end
+    [dimensions, metadata] = varargin{1:2};
+    importOptions = varargin(3:end);
+    source = dash.dataSource.text(source, importOptions{:});
+    
+% Throw error for any other type
+else
+    unrecognizedTypeError(header);
+end
 
-% Extract inputs
-assert(numel(varargin)==3)
-[variable, dimensions, metadata] = varargin{:};
-
-% Build the data source, this will error check the file and variable. Also
-% error check the metadata
-source = dash.dataSource.mat(source, variable);
+% Check metadata type
 dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
+
+%% Dimensions - Check required dimensions are present, and get sizes
 
 % Check dimensions are recognized
 valid = gridMetadata.dimensions;
@@ -111,6 +129,8 @@ for d = 1:nMerged
     mergedSize(d) = prod( sourceSize(originalDimLocation) );
 end
 
+%% Metadata - Number of rows, gridfile sequence, dimension limits, overlap
+
 % Get values and sizes of dimensional metadata. Initialize dimensional limits
 dimLimit = ones(nGridDims, 2);
 for d = 1:nMetaDims
@@ -148,12 +168,14 @@ for d = 1:nMetaDims
 end
 
 % Ensure the data source does not overlap another data source
-lower = all(dimLimit<obj.dimLimit(:,1,:), 2);
-higher = all(dimLimit>obj.dimLimit(:,2,:), 2);
-overlap = all(~(lower|higher), 1);
+below = all(dimLimit<obj.dimLimit(:,1,:), 2);
+above = all(dimLimit>obj.dimLimit(:,2,:), 2);
+overlap = all(~(below|above), 1);
 if any(overlap)
     overlappingDataSourceError(source.source, overlap, obj, header);
 end
+
+%% Add new data source and save
 
 % Add the new source to the gridfile
 obj.sources = obj.sources.add(obj, source, listedDims, sourceSize, mergedDims, mergedSize);
@@ -166,6 +188,20 @@ end
 
 
 % Long error messages
+function[] = wrongNumberHDFInputsError(type, header)
+id = sprintf('%s:wrongNumberOfInputs', header);
+error(id, ['The must be exactly 4 inputs after the "%s" flag. (file/opendap, ',...
+    'variable, dimensions, and metadata)'], lower(type));
+end
+function[] = wrongNumberTextInputsError(header)
+id = sprintf('%s:wrongNumberOfInputs', header);
+error(id, ['There must be at least 3 inputs after the "text" flag. ',...
+    '(file, dimensions, and metadata)']);
+end
+function[] = unrecognizedTypeError(header)
+id = sprintf('%s:unrecognizedType', header);
+error(id, 'The first input (the data source type) must either be "mat", "nc", or "text".');
+end
 function[] = unnamedDimensionError(nListed, nNontrailing, sourceName, header)
 id = sprintf('%s:unnamedDimension', header);
 error(id, ['The number of listed dimensions (%.f) is smaller than the number ',...

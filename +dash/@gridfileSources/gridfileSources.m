@@ -27,5 +27,6 @@ classdef gridfileSources
         obj = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize);
         obj = remove(obj, s);
         s = indices(obj, sources, gridFile, header);
+        paths = absolutePaths(obj, gridFile);
     end
 end

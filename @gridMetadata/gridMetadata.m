@@ -70,42 +70,9 @@ classdef gridMetadata
         %           field is a row vector%
         %
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
-
-        % Header for error IDs
-        header = "DASH:gridMetadata";
-        
-        % Get the set of recognized dimensions and attributes. Track user
-        % input dimensions
-        [dims, atts] = gridMetadata.dimensions;
-        names = [dims;atts];
-        nNames = numel(names);
-        isSet = false(nNames,1);
-        
-        % Require an even number of inputs
-        if mod(nargin, 2)~=0        
-            id = sprintf('%s:oddNumberOfInputs', header);
-            error(id, 'There must be an even number of inputs. (Inputs should be Name, Value pair arguments)');
+        obj = obj.edit(varargin{:});
         end
-        
-        % Check that the first argument in each pair is a valid dimension name
-        for v = 1:2:nargin-1
-            inputName = sprintf('Input %.f', v);
-            dim = dash.assert.strflag(varargin{v}, inputName, header);
-            n = dash.assert.strsInList(dim, names, inputName, 'recognized dimension name', header);
-            
-            % Prevent duplicates
-            if isSet(n)
-                id = sprintf('%s:repeatedDimension', header);
-                error(id, 'Dimension name "%s" is listed multiple times', dim); 
-            end
-            isSet(n) = true;
-            
-            % Error check and update metadata
-            obj = obj.edit(dim, varargin{v+1});
-        end
-        
-        end
-        obj = edit(obj, name, value);
+        obj = edit(obj, varargin);
         dims = defined(obj);
         
         % Console display

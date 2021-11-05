@@ -11,8 +11,10 @@ nSource = size(obj.dimLimit, 3);
 countLength = strlength(string(nSource));
 format = sprintf('    %%%.f.f. %%s\n', countLength);
 
+paths = obj.sources.absolutePaths(obj.file);
+
 for s = 1:nSource
-    fprintf(format, s, obj.sources.source(s));
+    fprintf(format, s, paths(s));
 end
 fprintf('\n');
 

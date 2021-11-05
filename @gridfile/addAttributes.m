@@ -1,7 +1,7 @@
 function[] = addAttributes(obj, varargin)
 %% gridfile.addAttributes  Add attributes to gridfile metadata
 % ----------
-%   obj.addAttributes(field1, value1, field2, value2, .., fieldN, valueN)
+%   <strong>obj.addAttributes</strong>(field1, value1, field2, value2, .., fieldN, valueN)
 %   Adds the named fields and associated values to the metadata attributes
 %   of the current gridfile.
 % ----------

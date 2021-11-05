@@ -2,15 +2,14 @@ function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize)
 
 % Relative or absolute path to data source. Use URL separators
 sourceName = dataSource.source;
-relative = false;
+isrelative = false;
 if grid.relativePath
     gridPath = fileparts(grid.file);
-    sourceName = dash.file.relativePath(sourceName, gridPath);
-    relative = true;
+    [sourceName, isrelative] = dash.file.relativePath(sourceName, gridPath);
 end
 sourceName = dash.file.urlSeparators(sourceName);
 obj.source = [obj.source; sourceName];
-obj.relativePath = [obj.relativePath; relative];
+obj.relativePath = [obj.relativePath; isrelative];
 
 % HDF variable names
 varName = "";
