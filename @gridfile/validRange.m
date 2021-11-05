@@ -26,8 +26,11 @@ function[] = validRange(obj, range, sources)
 %
 % <a href="matlab:dash.doc('gridfile.validRange')">Documentation Page</a>
 
-% Error check the valid range
+% Setup
 header = "DASH:gridfile:validRange";
+obj.update;
+
+% Error check the valid range
 dash.assert.vectorTypeN(range, 'numeric', 2, 'range', header);
 if range(1) >= range(2)
     id = sprintf('%s:invalidRange', header);
@@ -47,5 +50,8 @@ else
     s = 1:obj.nSource;
 end
 obj.sources.range(s,:) = repmat(range, numel(s), 1);
+
+% Save
+obj.save;
 
 end

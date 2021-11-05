@@ -1,10 +1,21 @@
 function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize)
 
+% Data source file type and saved data type
+if isa(dataSource, 'dash.dataSource.mat')
+    type = "mat";
+elseif isa(dataSource, 'dash.dataSource.nc')
+    type = "nc";
+elseif isa(dataSource, 'dash.dataSource.text')
+    type = "text";
+end
+obj.type = [obj.type; type];
+obj.dataType = [obj.dataType; dataSource.dataType];
+
 % Relative or absolute path to data source. Use URL separators
 sourceName = dataSource.source;
 isrelative = false;
 if grid.relativePath
-    gridPath = fileparts(grid.file);
+    gridPath = fileparts(obj.gridfile);
     [sourceName, isrelative] = dash.file.relativePath(sourceName, gridPath);
 end
 sourceName = dash.file.urlSeparators(sourceName);

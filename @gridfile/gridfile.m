@@ -1,23 +1,20 @@
 classdef gridfile < handle
     
-    properties
+    properties (SetAccess = private)
         
-        %% Overall gridfile
-        
+        % Overall gridfile
         file = strings(0,1);            % The absolute path to the .grid file
         dims = strings(1,0);            % The gridfile dimensions
         size = NaN(1,0);                % The size of each gridfile dimension
         meta;                           % Dimensional metadata and attributes
         
-        %% Default transformations 
-        
+        % Default transformations 
         fill = NaN;                     % Default fill value
         range = [-Inf, Inf];            % Default valid range
         transform_ = "none";            % Default data transformation
         transform_params = [NaN, NaN];  % Data transformation parameters
         
-        %% Data sources
-        
+        % Data sources
         nSource = 0;                    % The number of data sources in the gridfile
         dimLimit = NaN(0,2,0);          % The limits of each data source in the gridfile dimensions
         relativePath = true;            % Whether to save data source file paths relative to the gridfile
@@ -47,6 +44,11 @@ classdef gridfile < handle
         validRange(obj, range, sources);
         transform(obj, type, params, sources);
         
+        % Load
+        dataSources = review(obj);
+        load;
+        repeatedLoad;
+        
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
         plus(obj, grid2, filename, varargin);
@@ -58,6 +60,7 @@ classdef gridfile < handle
         name = name(obj);
         disp(obj);
         dispSources(obj);
+        info;
         
     end
     

@@ -13,6 +13,8 @@ function[] = addAttributes(obj, varargin)
 %
 % <a href="matlab:dash.doc('gridfile.addAttributes')">Documentation Page</a>
 
+obj.update
 obj.meta = obj.meta.addAttributes(varargin{:});
+obj.save;
 
 end

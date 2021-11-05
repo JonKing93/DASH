@@ -24,8 +24,11 @@ function[] = fillValue(obj, fill, sources)
 %
 % <a href="matlab:dash.doc('gridfile.fillValue')">Documentation Page</a>
 
-% Error check the fill value
+% Setup
+obj.update;
 header = "DASH:gridfile:fillValue";
+
+% Error check
 dash.assert.scalarType(fill, 'numeric', 'fill', header);
 
 % Set datasource fills. Optionally set fill for entire gridfile
@@ -36,5 +39,8 @@ else
     s = 1:obj.nSource;
 end
 obj.sources.fill(s) = fill;
+
+% Save
+obj.save;
 
 end

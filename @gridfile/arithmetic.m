@@ -86,6 +86,10 @@ elseif ~isa(grid2, 'gridfile') || ~isscalar(grid2)
     error(id, 'grid2 must either be a scalar gridfile object, or the name of a .grid file.');
 end
 
+% Ensure gridfiles are up to date
+obj.update;
+grid2.update;
+
 % Names of new save files
 filename = dash.assert.strlist(filename, "filename", header);
 if ~dash.is.strflag(filename)

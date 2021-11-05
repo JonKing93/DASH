@@ -1,4 +1,4 @@
-function[indices] = indices(obj, sources, gridFile, header)
+function[indices] = indices(obj, sources, header)
 %% Return the indices of data sources
 
 % Setup
@@ -16,7 +16,7 @@ if isnumeric(sources) || islogical(sources)
 % File name input - start by getting absolute paths to sources
 elseif dash.is.strlist(sources)
     inputSources = string(sources);
-    sourcePaths = obj.absolutePaths(gridFile);
+    sourcePaths = obj.absolutePaths;
     
     % Split source names from extensions
     sourceNames = cellstr(sourcePaths);
@@ -62,13 +62,13 @@ elseif dash.is.strlist(sources)
             if match && isnan(indices(k))
                 indices(k) = s;
             elseif match
-                multipleMatchesError(k, input, indices(k), s, gridFile, header);
+                multipleMatchesError(k, input, indices(k), s, obj.gridfile, header);
             end
         end
         
         % Throw error if there are no matches
         if isnan(indices(k))
-            noMatchingSourcesError(k, input, gridFile, header);
+            noMatchingSourcesError(k, input, obj.gridfile, header);
         end
     end
     

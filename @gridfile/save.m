@@ -8,6 +8,9 @@ function[] = save(obj)
 %
 % <a href="matlab:dash.doc('gridfile.save')">Documentation Page</a>
 
+% Strip path from gridfile sources
+obj.sources.gridfile = "";
+
 % Get the save properties
 props = string(properties(obj));
 props(strcmp(props, "file")) = [];

@@ -43,8 +43,11 @@ function[] = absolutePath(obj, useAbsolute, sources)
 %
 % <a href="matlab:dash.doc('gridfile.useAbsolute')">Documentation Page</a>
 
-% Error check useAbsolute
+% Setup
+obj.update;
 header = "DASH:gridfile:useAbsolute";
+
+% Error check
 dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);
 
 % Get data source indices, set gridfile default
@@ -72,5 +75,8 @@ else
         end
     end
 end
+
+% Save
+obj.save;
 
 end

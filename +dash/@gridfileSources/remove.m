@@ -1,17 +1,15 @@
 function[obj] = remove(obj, s)
 
-% Use linear indices
-if islogical(s)
-    s = find(s);
-end
-
 % Remove indexed import options
 remove = find(ismember(obj.importOptionSource, s));
 obj.importOptions(remove) = [];
 obj.importOptionSource(remove) = [];
 
 % Remove everything else
+obj.type(s) = [];
 obj.source(s) = [];
+obj.relativePath(s) = [];
+obj.dataType(s) = [];
 obj.var(s) = [];
 obj.dims(s) = [];
 obj.size(s) = [];

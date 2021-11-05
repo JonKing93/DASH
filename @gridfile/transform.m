@@ -66,8 +66,11 @@ function[] = transform(obj, type, params, sources)
 %
 % <a href="matlab:dash.doc('gridfile.transform')">Documentation Page</a>
 
-% Error check the transformation type
+% Setup
+obj.update;
 header = "DASH:gridfile:transform";
+
+% Error check the transformation type
 type = dash.assert.strflag(type, 'First input (transformation type)', header);
 type = lower(type);
 validTypes = ["ln","log","exp","power","plus","times","linear","none"];
@@ -103,5 +106,8 @@ else
 end
 obj.sources.transform(s) = type;
 obj.sources.transform_params(s,:) = repmat(params, numel(s), 1);
+
+% Save
+obj.save;
 
 end

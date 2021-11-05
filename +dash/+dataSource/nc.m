@@ -12,14 +12,19 @@ classdef nc < dash.dataSource.hdf
     % <a href="matlab:dash.doc('dash.dataSource.nc')">Documentation Page</a>
     
     methods
-        function[obj] = nc(file, var)
+        function[obj] = nc(source, var)
         %% dash.dataSource.nc.nc  Create a new dash.dataSource.nc object
         % ----------
         %   obj = dash.dataSource.nc(file, var)
         %   Creates a nc object to read data from a variable in a NetCDF file
+        %
+        %   obj = dash.dataSource.nc(opendapURL, var)
+        %   Creates an nc object to read data from a variable stored in a
+        %   NetCDF file accessed via an OPENDAP url.
         % ----------
         %   Inputs:
         %       file (string scalar): The name of a NetCDF file
+        %       url (string scalar): An OPENDAP url to a NetCDF file.
         %       var (string scalar): The name of the variable in the file
         %
         %   Outputs:
@@ -32,9 +37,16 @@ classdef nc < dash.dataSource.hdf
             
             % Error check
             header = "DASH:dataSource:nc";
-            dash.assert.strflag(file, 'file', header);
+            source = dash.assert.strflag(source, 'file', header);
             var = dash.assert.strflag(var, 'var', header);
-            obj.source = dash.assert.fileExists(file, ".nc", header);
+            
+            % Check local files exist, but don't check OPENDAP
+            source = char(source);
+            if numel(source)>=4 && strcmp(source(1:4),'http') && contains(source, '://')
+                obj.source = string(source);
+            else
+                obj.source = dash.assert.fileExists(source, ".nc", header);
+            end
             
             % Check the file is a valid NetCDF
             try

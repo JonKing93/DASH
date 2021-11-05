@@ -104,7 +104,7 @@ end
 
 % Data sources
 if obj.nSource>0
-    fprintf('    Data Sources: %.f\n\n', nSource);
+    fprintf('    Data Sources: %.f\n\n', obj.nSource);
     listLink = sprintf('<a href="matlab:%s.dispSources">data sources</a>', inputname(1));
     fprintf('  Show %s\n\n', listLink);
 end
