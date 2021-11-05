@@ -44,7 +44,7 @@ if exist('sources','var')
     s = obj.sources.indices(sources, obj.file, header);
 else
     obj.range = range;
-    s = 1:numel(obj.sources.source);
+    s = 1:obj.nSource;
 end
 obj.sources.range(s,:) = repmat(range, numel(s), 1);
 

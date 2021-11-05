@@ -103,8 +103,7 @@ if numel(fields)>0
 end
 
 % Data sources
-nSource = size(obj.dimLimit, 3);
-if nSource>0
+if obj.nSource>0
     fprintf('    Data Sources: %.f\n\n', nSource);
     listLink = sprintf('<a href="matlab:%s.dispSources">data sources</a>', inputname(1));
     fprintf('  Show %s\n\n', listLink);

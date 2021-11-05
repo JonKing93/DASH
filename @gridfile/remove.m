@@ -21,6 +21,7 @@ s = obj.sources.indices(sources, obj.file, header);
 % Remove the sources
 obj.dimLimit(:,:,s) = [];
 obj.sources = obj.sources.remove(s);
+obj.nSource = size(obj.dimLimit, 3);
 
 % Save
 obj.save;

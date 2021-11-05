@@ -18,6 +18,7 @@ classdef gridfile < handle
         
         %% Data sources
         
+        nSource = 0;                    % The number of data sources in the gridfile
         dimLimit = NaN(0,2,0);          % The limits of each data source in the gridfile dimensions
         relativePath = true;            % Whether to save data source file paths relative to the gridfile
         sources = dash.gridfileSources; % The collection of data sources
@@ -39,6 +40,7 @@ classdef gridfile < handle
         % Data sources
         add(obj, type, source, varargin);
         remove(obj, sources);
+        absolutePath(obj, useAbsolute, sources);
         
         % Data transformations
         fillValue(obj, fill, sources);

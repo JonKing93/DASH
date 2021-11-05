@@ -1,7 +1,7 @@
 function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, type)
 %% gridfile.arithmetic  Arithmetic operations across two gridfiles
 % ----------
-%   obj.arithmetic(operation, grid2, filename, overwrite, atts, type)
+%   <strong>obj.arithmetic</strong>(operation, grid2, filename, overwrite, atts, type)
 %   Implement an arithmetic operation on the data in two .grid files. Saves
 %   the result of the operation to a .mat file and catalogues the result in
 %   a new .grid file.

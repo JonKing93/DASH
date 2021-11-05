@@ -99,7 +99,7 @@ if exist('sources','var')
 else
     obj.transform_ = type;
     obj.transform_params = params;
-    s = 1:numel(obj.sources.source);
+    s = 1:obj.nSource;
 end
 obj.sources.transform(s) = type;
 obj.sources.transform_params(s,:) = repmat(params, numel(s), 1);

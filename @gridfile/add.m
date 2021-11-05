@@ -180,6 +180,7 @@ end
 % Add the new source to the gridfile
 obj.sources = obj.sources.add(obj, source, listedDims, sourceSize, mergedDims, mergedSize);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
+obj.nSource = obj.nSource+1;
 
 % Save to file
 obj.save;
