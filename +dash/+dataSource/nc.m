@@ -40,10 +40,9 @@ classdef nc < dash.dataSource.hdf
             source = dash.assert.strflag(source, 'file', header);
             var = dash.assert.strflag(var, 'var', header);
             
-            % Check local files exist, but don't check OPENDAP
-            source = char(source);
-            if numel(source)>=4 && strcmp(source(1:4),'http') && contains(source, '://')
-                obj.source = string(source);
+            % Check local files exist, but don't check OPENDAP URLs
+            if dash.is.url(source)
+                obj.source = source;
             else
                 obj.source = dash.assert.fileExists(source, ".nc", header);
             end
