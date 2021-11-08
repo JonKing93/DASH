@@ -1,4 +1,4 @@
-function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize)
+function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap)
 
 % Data source file type and saved data type
 if isa(dataSource, 'dash.dataSource.mat')
@@ -11,16 +11,8 @@ end
 obj.type = [obj.type; type];
 obj.dataType = [obj.dataType; dataSource.dataType];
 
-% Relative or absolute path to data source. Use URL separators
-sourceName = dataSource.source;
-isrelative = false;
-if grid.relativePath
-    gridPath = fileparts(obj.gridfile);
-    [sourceName, isrelative] = dash.file.relativePath(sourceName, gridPath);
-end
-sourceName = dash.file.urlSeparators(sourceName);
-obj.source = [obj.source; sourceName];
-obj.relativePath = [obj.relativePath; isrelative];
+% Save relative or absolute path to data source
+obj = obj.savePath(dataSource, grid.relativePath);
 
 % HDF variable names
 varName = "";
@@ -42,11 +34,13 @@ dims = strjoin(dims, ',');
 size = strjoin(string(size), ',');
 mergedDims = strjoin(mergedDims, ',');
 mergedSize = strjoin(string(mergedSize), ',');
+mergeMap = strjoin(string(mergeMap), ',');
 
 obj.dims = [obj.dims; dims];
 obj.size = [obj.size; size];
 obj.mergedDims = [obj.mergedDims; mergedDims];
 obj.mergedSize = [obj.mergedSize; mergedSize];
+obj.mergeMap = [obj.mergeMap; mergeMap];
 
 % Data transformations
 obj.fill = [obj.fill; grid.fill];

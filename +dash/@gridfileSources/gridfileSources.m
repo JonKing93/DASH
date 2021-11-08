@@ -22,6 +22,7 @@ classdef gridfileSources
         size = strings(0,1);            % The size of each dimension
         mergedDims = strings(0,1);      % The data dimensions after merging
         mergedSize = strings(0,1);      % The size of each merged dimension
+        mergeMap = strings(0,1);        % The location of each original dimension after merging
         
         % Data transformations
         fill = NaN(0,1);                % Fill value
@@ -31,9 +32,18 @@ classdef gridfileSources
     end
     
     methods
-        obj = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize);
+        
+        % Array management
+        obj = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap);
         obj = remove(obj, s);
         s = indices(obj, sources, gridFile, header);
+        
+        % Data source objects
+        dataSource = build(obj, s, filepath);
+        [tf, property, sourceValue, gridValue] = ismatch(obj, dataSource, s);
+        
+        % File paths
         paths = absolutePaths(obj, gridFile);
+        obj = savePath(obj, dataSource, tryRelative, s)
     end
 end

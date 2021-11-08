@@ -15,6 +15,7 @@ obj.dims(s) = [];
 obj.size(s) = [];
 obj.mergedDims(s) = [];
 obj.mergedSize(s) = [];
+obj.mergeMap(s) = [];
 obj.fill(s) = [];
 obj.range(s,:) = [];
 obj.transform(s) = [];
