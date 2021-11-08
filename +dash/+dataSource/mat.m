@@ -104,8 +104,16 @@ classdef mat < dash.dataSource.hdf
         %
         %   <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Documentation Page</a>
         
-        % Disable the partial load warning, then load
+        % Disable the partial load warning (it will reset state by default)
         obj.toggleWarning('off');
+        
+        % Adjust the indices to include a second dimension if the variable
+        % is a column vector
+        if numel(indices)==1
+            indices = [indices, {1}];
+        end
+        
+        % Load
         X = obj.m.(obj.var)(indices{:});
         
         end
