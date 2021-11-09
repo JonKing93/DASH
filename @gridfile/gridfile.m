@@ -15,10 +15,10 @@ classdef gridfile < handle
         transform_params = [NaN, NaN];  % Data transformation parameters
         
         % Data sources
-        nSource = 0;                    % The number of data sources in the gridfile
-        dimLimit = NaN(0,2,0);          % The limits of each data source in the gridfile dimensions
-        relativePath = true;            % Whether to save data source file paths relative to the gridfile
-        sources = dash.gridfileSources; % The collection of data sources
+        nSource = 0;                     % The number of data sources in the gridfile
+        dimLimit = NaN(0,2,0);           % The limits of each data source in the gridfile dimensions
+        relativePath = true;             % Whether to save data source file paths relative to the gridfile
+        sources_ = dash.gridfileSources; % The collection of data sources
     end
     
     methods
@@ -31,12 +31,14 @@ classdef gridfile < handle
         meta = metadata(obj);
         edit(obj, dim, value);
         addAttributes(obj, varargin);
-        removeAttributes(obj, varargin);
+        removeAttributes(obj, varargin);        
         expand(obj, dim, value);
+        addDimension(obj, dim, value);
         
         % Data sources
         add(obj, type, source, varargin);
         remove(obj, sources);
+        rename(obj, sources, newNames);
         absolutePath(obj, useAbsolute, sources);
         
         % Data transformations
@@ -46,8 +48,8 @@ classdef gridfile < handle
         
         % Load
         dataSources = review(obj);
-        load;
-        repeatedLoad;
+        [X, meta] = load(obj, dimensions, indices);
+        [X, meta, sources] = repeatedLoad(obj, userDimOrder, userIndices, sources);
         
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
@@ -58,10 +60,10 @@ classdef gridfile < handle
         
         % Summary information
         name = name(obj);
+        sources = sources(obj);
+        info = info(obj, s)
         disp(obj);
         dispSources(obj);
-        info;
-        
     end
     
     methods (Static)        

@@ -83,6 +83,12 @@ classdef nc < dash.dataSource.hdf
         %
         %   <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Documentation Page</a>
             
+            % Add any missing indices for trailing singletons
+            nMissing = numel(obj.size) - numel(indices);
+            if nMissing > 0
+                indices = [indices, repmat({1}, 1, nMissing)];
+            end
+        
             % Preallocate
             nDims = numel(indices);
             start = NaN(1, nDims);
@@ -96,7 +102,7 @@ classdef nc < dash.dataSource.hdf
                 if numel(indices{d})>1
                     stride(d) = indices{d}(2) - indices{d}(1);
                 end
-            end
+            end 
             
             % Load the data
             X = ncread(obj.source, obj.var, start, count, stride);

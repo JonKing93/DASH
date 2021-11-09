@@ -77,7 +77,7 @@ elseif isnumeric(indices)
     [maxIndex, loc] = max(indices);
     if maxIndex > length
         id = sprintf('%s:linearIndicesTooLarge', header);
-        error(id, 'Element %.f of %s (%.f) is greater than the %s (%.f).',...
+        error(id, 'Element %.f of %s (%.f) is greater than %s (%.f).',...
             loc, name, maxIndex, linearMaxName, length);
     end
    

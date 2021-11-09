@@ -37,6 +37,7 @@ classdef gridfileSources
         obj = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap);
         obj = remove(obj, s);
         s = indices(obj, sources, gridFile, header);
+        [dims, size, mergedDims, mergedSize, mergeMap] = unpack(obj, s);
         
         % Data source objects
         dataSource = build(obj, s, filepath);
