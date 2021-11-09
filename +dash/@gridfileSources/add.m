@@ -1,4 +1,31 @@
 function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap)
+%% dash.gridfileSources.add  Add a new data source to the catalogue
+% ----------
+%   obj = <strong>obj.add(grid, dataSource, dims, size, mergedDims, mergedSize, mergedMap)
+%   Adds a new data source to a gridfile catalogue. Converts the data type
+%   of various properties to speed up save/load operations.
+% ----------
+%   Inputs:
+%       grid (scalar gridfile object): The parent gridfile object
+%       dataSource (scalar dataSource object): The dataSource object for
+%           the new source file.
+%       dims (string vector [nNonTS]): The names of non-trailing-singleton
+%           dimensions in the data source.
+%       size (numeric vector [nNonTS]): The size of each
+%           non-trailing-singleton dimension in the source.
+%       mergedDims (string vector [nMerged]): The names of the merged
+%           non-ts dimensions in the data source.
+%       mergedSize (numeric vector [nMerged]): The size of the merged
+%           non-ts dimensions in the data source.
+%       mergeMap (numeric vector [nNonTS]): Each element maps an original
+%           dimension to a merged dimension for the source. Has one element
+%           per original dimension. Each element holds the index of the
+%           merged dimension that includes the original dimension.
+%
+%   Outputs:
+%       obj (scalar dash.gridfileSources object): The updated catalogue.
+%
+% <a href="matlab:dash.doc('dash.gridfileSources.add')">Documentation Page</a>
 
 % Data source file type and saved data type
 if isa(dataSource, 'dash.dataSource.mat')

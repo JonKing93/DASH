@@ -1,5 +1,22 @@
 function[paths] = absolutePaths(obj, s)
-%% Returns the absolute paths to all data sources
+%% dash.gridfileSources.absolutePaths  Return the absolute paths to data sources in the catalogue
+% ----------
+%   paths = <strong>obj.absolutePaths
+%   Returns the absolute paths to all data sources. Paths are returned in
+%   the order that sources are stored in the object.
+%
+%   paths = <strong>obj.absolutePaths(s)
+%   Returns the absolute paths to the specified data sources. Paths are
+%   returned in the order of input indices.
+% ----------
+%   Inputs:
+%       s (logical vector [nSources] | vector, linear indices): The indices
+%           of the data sources for which to return absolute paths.
+%
+%   Outputs:
+%       paths (string vector): The absolute paths to the data sources
+%
+% <a href="matlab:dash.doc('dash.gridfileSources.absolutePaths')">Documentation Page</a>
 
 % Default is all sources
 if ~exist('s','var') || isempty(s)

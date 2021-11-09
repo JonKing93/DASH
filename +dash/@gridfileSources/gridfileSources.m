@@ -1,5 +1,24 @@
 classdef gridfileSources
-    %% Manages additional data source details for gridfiles
+    %% dash.gridfileSources  Implement a gridfile's catalogue of data sources
+    % ----------
+    % dash.gridfileSources methods:
+    %
+    % Catalogue Management:
+    %   add           - Add a new data source to the catalogue
+    %   remove        - Remove data sources from the catalogue
+    %   indices       - Parse the indices of data sources in the catalogue
+    %   unpack        - Convert catalogued values to their original data types
+    %   info          - Return information about data sources in the catalogue
+    %
+    % dataSource Objects:
+    %   build         - Build the dataSource object for a data source in the catalogue
+    %   ismatch       - Test if a dataSource object matches an entry in the catalogue
+    %
+    % File Paths:
+    %   absolutePaths - Return the absolute paths to data sources in the catalogue
+    %   savePath      - Record the path to a data source in the catalogue
+    %
+    % <a href="matlab:dash.doc('dash.gridfileSources')">Documentation Page</a>
     
     properties
         
@@ -38,6 +57,7 @@ classdef gridfileSources
         obj = remove(obj, s);
         s = indices(obj, sources, gridFile, header);
         [dims, size, mergedDims, mergedSize, mergeMap] = unpack(obj, s);
+        info = info(obj, s)
         
         % Data source objects
         dataSource = build(obj, s, filepath);

@@ -1,5 +1,22 @@
 function[indices] = indices(obj, sources, header)
-%% Return the indices of data sources
+%% dash.gridfileSources.indices  Parse the indices of data sources in the catalogue
+% ----------
+%   indices = obj.indices(sources, header)
+%   Parse the indices of data sources in the catalogue. Error checks array
+%   indices and locates source names. Returns linear indices to the
+%   specified sources. Throws error if sources are an unrecognized input
+%   type.
+% ----------
+%   Inputs:
+%       sources: The input being parsed. Should either be array indices or
+%           source names.
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       indices (vector, linear indices): The indices of the specified data
+%           sources in the catalogue.
+%
+% <a href="matlab:dash.doc('dash.gridfileSources.indices')">Documentation Page</a>
 
 % Setup
 if ~exist('header','var') || isempty(header)

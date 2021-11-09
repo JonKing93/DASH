@@ -1,4 +1,17 @@
 function[obj] = remove(obj, s)
+%% dash.gridfileSources.remove  Remove data sources from the catalogue
+% ----------
+%   obj = obj.remove(s)
+%   Removes the indicated sources from the catalogue.
+% ----------
+%   Inputs:
+%       s (logical vector [nSources] | vector, linear indices): The indices
+%           of the data sources to remove from the catalogue.
+%
+%   Outputs:
+%       obj (scalar gridfileSources object): The updated catalogue.
+%
+% <a href="matlab:dash.doc('dash.gridfileSources.remove')">Documentation Page</a>
 
 % Remove indexed import options
 remove = find(ismember(obj.importOptionSource, s));

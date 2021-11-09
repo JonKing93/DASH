@@ -1,14 +1,24 @@
 function[dataSource] = build(obj, s, filepath)
-%% dash.gridfileSources.build
+%% dash.gridfileSources.build  Build the dataSource object for a data source in the catalogue
 % ----------
-%   obj.build(s)
+%   dataSource = <strong>obj.build(s)
 %   Builds a data source object for the specified data source stored in the
 %   gridfileSources object.
 %
-%   obj.build(s, filepath)
+%   dataSource = <strong>obj.build(s, filepath)
 %   Builds a data source object using values stored in the gridfileSources
 %   object, but with a custom filepath.
 % ----------
+%   Inputs:
+%       s (numeric scalar): The index of a data source in the catalogue.
+%       filepath (string scalar): The absolute filename to use when
+%           building the dataSource.
+%
+%   Outputs:
+%       dataSource (scalar dataSource object): The dataSource object for
+%           the source file.
+%
+% <a href="matlab:dash.doc('dash.gridfileSources.build')">Documentation Page</a>
 
 % Default file path
 if ~exist('filepath','var')
