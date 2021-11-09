@@ -7,12 +7,13 @@ function[] = dispSources(obj)
 % 
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>
 
+% Format the numbered list
 nSource = size(obj.dimLimit, 3);
 countLength = strlength(string(nSource));
 format = sprintf('    %%%.f.f. %%s\n', countLength);
 
-paths = obj.sources.absolutePaths(obj.file);
-
+% Print each data source path
+paths = obj.sources_.absolutePaths;
 for s = 1:nSource
     fprintf(format, s, paths(s));
 end

@@ -49,34 +49,20 @@ header = "DASH:gridfile:useAbsolute";
 
 % Error check
 dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);
+tryRelative = ~useAbsolute;
 
 % Get data source indices, set gridfile default
 if exist('sources','var')
-    s = obj.sources.indices(sources, obj.file, header);
+    s = obj.sources_.indices(sources, obj.file, header);
 else
-    obj.relativePath = ~useAbsolute;
+    obj.relativePath = tryRelative;
     s = 1:obj.nSource;
 end
 
-% Update to absolute
-if absolutePath
-    obj.sources.source(s) = obj.sources.absolutePaths(obj.file, s);
-    obj.sources.relativePath(s) = false;
-    
-% Update to relative
-else
-    gridPath = fileparts(obj.file);
-    for k = 1:numel(s)
-        if ~obj.sources.relativePath(s(k))
-            sourceFile = obj.sources.source(s(k));
-            [sourceFile, isrelative] = dash.file.relativePath(sourceFile, gridPath);
-            obj.sources.source(s(k)) = sourceFile;
-            obj.sources.relativePath(s(k)) = isrelative;
-        end
-    end
+% Get the absolute paths, use to update each source
+absPaths = obj.sources_.absolutePaths(s);
+for p = 1:numel(s)
+    obj.sources_ = obj.sources_.savePath(absPaths(p), tryRelative, s(p));
 end
-
-% Save
-obj.save;
 
 end

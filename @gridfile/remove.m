@@ -19,11 +19,11 @@ header = "DASH:gridfile:remove";
 obj.update;
 
 % Get data source indices
-s = obj.sources.indices(sources, obj.file, header);
+s = obj.sources_.indices(sources, obj.file, header);
 
 % Remove the sources
 obj.dimLimit(:,:,s) = [];
-obj.sources = obj.sources.remove(s);
+obj.sources_ = obj.sources_.remove(s);
 obj.nSource = size(obj.dimLimit, 3);
 
 % Save

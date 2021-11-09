@@ -57,7 +57,7 @@ function[] = transform(obj, type, params, sources)
 %           transformation. The first element is the multiplicative
 %           constant, and the second element is the additive constant.
 %           Linear transformations are applied via: 
-%           Y = coeffs(1) * X + coeffs(2)
+%           Y = coeffs(1) + coeffs(2) * X
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be receive the transformation.
 %       sourceName (string vector): The names of the data sources that
@@ -104,8 +104,8 @@ else
     obj.transform_params = params;
     s = 1:obj.nSource;
 end
-obj.sources.transform(s) = type;
-obj.sources.transform_params(s,:) = repmat(params, numel(s), 1);
+obj.sources_.transform(s) = type;
+obj.sources_.transform_params(s,:) = repmat(params, numel(s), 1);
 
 % Save
 obj.save;

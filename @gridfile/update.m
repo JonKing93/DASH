@@ -39,7 +39,7 @@ for f = 1:numel(fields)
     obj.(fields{f}) = m.(fields{f});
 end
 
-% Add path to gridfileSources
-obj.sources.gridfile = obj.file;
+% Add gridfile path to sources object
+obj.sources_.gridfile = obj.file;
 
 end

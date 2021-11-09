@@ -51,9 +51,10 @@ for d = 1:nDims
     obj.size(d) = size(metadata.(dim), 1);
 end
 
-% Save the file. Update file name to absolute path
+% Save the file. Update file name to absolute path and add to sources
 obj.file = filename;
 obj.save;
 obj.file = dash.assert.fileExists(obj.file);
+obj.sources_.gridfile = obj.file;
 
 end

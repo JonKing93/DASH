@@ -88,7 +88,7 @@ nGridDims = numel(gridDims);
 nMetaDims = numel(metaDims);
 
 % Parameters for error checking
-nNontrailing = find(source.size>1, 1, 'last');
+nNontrailing = max(1, find(source.size>1, 1, 'last'));
 [gridInMeta, gm] = ismember(gridDims, metaDims);
 [sourceInMeta, sm] = ismember(sourceDims, metaDims);
 [sourceInGrid, sg] = ismember(sourceDims, gridDims);
@@ -108,21 +108,16 @@ elseif ~all(sourceInGrid)
     undefinedSourceDimensionError(sourceDims, sg, source.source, obj.name, header);
 end
 
-% Pad source size with trailing 1s if it is shorter than listed dimensions.
-% Remove excess trailing 1s
-sourceSize = source.size;
-nSize = numel(sourceSize);
-if nSize < nListed
-    sourceSize = [sourceSize, ones(1, nListed-nSize)];
-elseif nSize > nListed
-    sourceSize = sourceSize(1:nListed);
-end
+% Adjust listed dimensions and source size to only include dimensions that
+% are not trailing singletons. (Only non-TS dimensions matter for merging)
+listedDims = listedDims(1:nNontrailing);
+sourceSize = source.size(1:nNontrailing);
 
 % Get merged dimensions, sizes, and merge map
 mergedDims = unique(listedDims, 'stable');
 nMerged = numel(mergedDims);
 mergedSize = NaN(1, nMerged);
-mergeMap = NaN(1, nListed);
+mergeMap = NaN(1, nNontrailing);
 for d = 1:nMerged
     originalDimLocation = strcmp(mergedDims(d), listedDims);
     mergeMap(originalDimLocation) = d;
@@ -178,7 +173,7 @@ end
 %% Add new data source and save
 
 % Add the new source to the gridfile
-obj.sources = obj.sources.add(obj, source, listedDims, sourceSize, mergedDims, mergedSize);
+obj.sources_ = obj.sources_.add(obj, source, listedDims, sourceSize, mergedDims, mergedSize, mergeMap);
 obj.dimLimit = cat(3, obj.dimLimit, dimLimit);
 obj.nSource = obj.nSource+1;
 
@@ -268,7 +263,7 @@ end
 function[] = overlappingDataSourceError(sourceName, overlap, obj, header)
 id = sprintf('%s:overlappingDataSource', header);
 alreadyExists = find(overlap, 1);
-alreadyExists = obj.sources.source(alreadyExists);
+alreadyExists = obj.sources_.source(alreadyExists);
 error(id, ['The new data source overlaps a data source already in the gridfile.\n\n',...
     '     New Data Source: %s\nExisting Data Source: %s\n            gridfile: %s'],...
     sourceName, alreadyExists, obj.name);
