@@ -1,7 +1,7 @@
 function[indices] = indices(obj, sources, header)
 %% dash.gridfileSources.indices  Parse the indices of data sources in the catalogue
 % ----------
-%   indices = obj.indices(sources, header)
+%   indices = <strong>obj.indices</strong>(sources, header)
 %   Parse the indices of data sources in the catalogue. Error checks array
 %   indices and locates source names. Returns linear indices to the
 %   specified sources. Throws error if sources are an unrecognized input

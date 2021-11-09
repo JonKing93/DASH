@@ -1,7 +1,7 @@
 function[obj] = remove(obj, s)
 %% dash.gridfileSources.remove  Remove data sources from the catalogue
 % ----------
-%   obj = obj.remove(s)
+%   obj = <strong>obj.remove</strong>(s)
 %   Removes the indicated sources from the catalogue.
 % ----------
 %   Inputs:

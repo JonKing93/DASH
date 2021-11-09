@@ -1,11 +1,11 @@
 function[paths] = absolutePaths(obj, s)
 %% dash.gridfileSources.absolutePaths  Return the absolute paths to data sources in the catalogue
 % ----------
-%   paths = <strong>obj.absolutePaths
+%   paths = <strong>obj.absolutePaths</strong>
 %   Returns the absolute paths to all data sources. Paths are returned in
 %   the order that sources are stored in the object.
 %
-%   paths = <strong>obj.absolutePaths(s)
+%   paths = <strong>obj.absolutePaths</strong>(s)
 %   Returns the absolute paths to the specified data sources. Paths are
 %   returned in the order of input indices.
 % ----------

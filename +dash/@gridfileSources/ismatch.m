@@ -1,11 +1,11 @@
 function[tf, property, objValue, catalogueValue] = ismatch(obj, dataSource, s)
 %% dash.gridfileSources.ismatch  Test if a dataSource object matches an entry in the catalogue
 % ----------
-%   tf = obj.ismatch(dataSource, s)
+%   tf = <strong>obj.ismatch</strong>(dataSource, s)
 %   Returns true if a dataSource object matches the specified source in the
 %   catalogue. Otherwise, returns false.
 %
-%   [tf, property, objValue, catalogueValue] = obj.ismatch(dataSource, s)
+%   [tf, property, objValue, catalogueValue] = <strong>obj.ismatch</strong>(dataSource, s)
 %   If the dataSource is not a match, returns information about the
 %   properties that do not match the values in the catalogue. If a match,
 %   the additional outputs are empty.

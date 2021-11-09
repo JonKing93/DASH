@@ -1,11 +1,11 @@
 function[dataSource] = build(obj, s, filepath)
 %% dash.gridfileSources.build  Build the dataSource object for a data source in the catalogue
 % ----------
-%   dataSource = <strong>obj.build(s)
+%   dataSource = <strong>obj.build</strong>(s)
 %   Builds a data source object for the specified data source stored in the
 %   gridfileSources object.
 %
-%   dataSource = <strong>obj.build(s, filepath)
+%   dataSource = <strong>obj.build</strong>(s, filepath)
 %   Builds a data source object using values stored in the gridfileSources
 %   object, but with a custom filepath.
 % ----------

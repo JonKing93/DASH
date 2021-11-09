@@ -1,7 +1,7 @@
 function[obj] = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap)
 %% dash.gridfileSources.add  Add a new data source to the catalogue
 % ----------
-%   obj = <strong>obj.add(grid, dataSource, dims, size, mergedDims, mergedSize, mergedMap)
+%   obj = <strong>obj.add</strong>(grid, dataSource, dims, size, mergedDims, mergedSize, mergedMap)
 %   Adds a new data source to a gridfile catalogue. Converts the data type
 %   of various properties to speed up save/load operations.
 % ----------

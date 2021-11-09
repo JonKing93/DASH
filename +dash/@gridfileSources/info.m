@@ -1,7 +1,7 @@
 function[info] = info(obj, s)
 %% dash.gridfileSources.info  Return information about data sources in the catalogue
 % ----------
-%   info = obj.info(s)
+%   info = <strong>obj.info</strong>(s)
 %   Returns a struct array with information about the specified data
 %   sources.
 % ----------

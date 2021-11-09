@@ -1,7 +1,7 @@
 function[dims, size, mergedDims, mergedSize, mergeMap] = unpack(obj, s)
 %% dash.gridfileSources.unpack  Convert catalogued values to their original data types
 % ----------
-%   [dims, size, mergedDims, mergedSize, mergeMap] = obj.unpack(s)
+%   [dims, size, mergedDims, mergedSize, mergeMap] = <strong>obj.unpack</strong>(s)
 %   Returns recorded values for a data source in the catalogue. Converts
 %   recorded values from optimized save/load data types to original data
 %   types.

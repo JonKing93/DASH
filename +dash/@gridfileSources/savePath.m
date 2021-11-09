@@ -1,10 +1,10 @@
 function[obj] = savePath(obj, dataSource, tryRelative, s)
 %% dash.gridfileSources.savePath  Record the path to a data source in the catalogue
 % ----------
-%   obj = obj.savePath(dataSource, tryRelative)
+%   obj = <strong>obj.savePath</strong>(dataSource, tryRelative)
 %   Records the path to a new data source in the catalogue.
 %
-%   obj = obj.savePath(dataSource, tryRelative, s)
+%   obj = <strong>obj.savePath</strong>(dataSource, tryRelative, s)
 %   Update the path to a data source in the catalogue.
 % ----------
 %   Inputs:
