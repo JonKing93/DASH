@@ -1,6 +1,16 @@
 function[dataSources] = review(obj)
-% Checks that data sources are valid, returns a cell vector of pre-built
-% sources
+%% gridfile.review  Error check and build data sources prior to loading
+% ----------
+%   dataSources = <strong>obj.review</strong>
+%   Checks that data sources are valid prior to loading data. Builds each
+%   data source and checks that the source's values match the values
+%   recorded by the gridfile. Returns the set of pre-built data sources.
+% ----------
+%   Outputs:
+%       dataSources (cell vector [nSource]): The dataSource object for each
+%           source in the gridfile.
+%
+% <a href="matlab:dash.doc('gridfile.review')">Documentation Page</a>
 
 % Setup
 obj.update;

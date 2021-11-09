@@ -3,7 +3,7 @@ function[info] = info(obj, s)
 % Initialize source structure array
 nSource = numel(s);
 pre = cell(nSource, 1);
-info = struct('name', pre, 'file', pre, 'variable', pre, 'data_type', pre, ...
+info = struct('name', pre, 'variable', pre, 'index', pre, 'file', pre, 'data_type', pre, ...
     'dimensions', pre, 'size', pre, 'data_adjustments', pre, ...
     'uses_relative_path', pre, 'import_options', pre);
 
@@ -18,6 +18,7 @@ for k = 1:nSource
     name = strcat(name, ext);
     info(k).name = name;
     
+    info(k).index = s(k);
     info(k).file = obj.absolutePaths(s(k));
     info(k).uses_relative_path = obj.relativePath(s(k));
     info(k).data_type = obj.dataType(s(k));

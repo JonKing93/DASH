@@ -77,8 +77,8 @@ function[] = plus(obj, grid2, filename, varargin)
 %               from both files and applies arithmetic directly. Requires data
 %               dimensions to have compatible sizes.
 %
-%   Outputs:
-%       Creates a .mat and .grid file with the specified names
+%   Saves:
+%       A .mat and .grid file with the specified names
 %
 %   Throws:
 %       DASH:gridfile:plus:invalidGridfile - when grid2 is not a

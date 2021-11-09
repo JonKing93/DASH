@@ -1,15 +1,15 @@
 function[] = fillValue(obj, fill, sources)
 %% gridfile.fillValue  Specify a fill value for data catalogued in a .grid file
 % ----------
-%   obj.fillValue(fill)
+%   <strong>obj.fillValue</strong>(fill)
 %   Implement a fill value for data loaded from a .grid file. Numeric data
 %   matching the fill value are converted to NaN when loading. This syntax
 %   sets the fill value for all data sources currently in the .grid file
 %   and applies the fill value by default to all data sources added in the
 %   future.
 %
-%   obj.fillValue(fill, s)
-%   obj.fillValue(fill, sourceNames)
+%   <strong>obj.fillValue</strong>(fill, s)
+%   <strong>obj.fillValue</strong>(fill, sourceNames)
 %   Implements a fill value for the specified data sources. The fill value
 %   overrides any fill values previously applied to the data sources.
 % ----------

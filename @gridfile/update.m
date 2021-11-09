@@ -3,7 +3,7 @@ function[] = update(obj)
 % ----------
 %   <strong>obj.update</strong>
 %   Updates the current object to match the content of its .grid file. This
-%   ensure that the gridfile object matches the file content, even if the
+%   ensures that the gridfile object matches the file content, even if the
 %   .grid file is modified by a second gridfile object.
 % ----------
 %

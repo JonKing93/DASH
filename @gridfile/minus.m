@@ -1,7 +1,7 @@
 function[] = minus(obj, grid2, filename, varargin)
 %% gridfile.minus  Subtract the data in a gridfile from the current gridfile
 % ----------
-%   obj.minus(grid2, filename)
+%   <strong>obj.minus</strong>(grid2, filename)
 %   Subtracts the data in a second gridfile from the current gridfile. Saves the
 %   difference to a .mat file and organizes the rdifference in a new .grid file.
 %   The names of the new files are specified by filename. Provide a single name to
@@ -24,20 +24,20 @@ function[] = minus(obj, grid2, filename, varargin)
 %   default, the new file will have no metadata attributes (but see the 
 %   "attributes" flag for alternate options).
 %
-%   obj.minus(..., 'overwrite', overwrite)
+%   <strong>obj.minus</strong>(..., 'overwrite', overwrite)
 %   Specify whether to overwrite existing .mat and .grid files. If
 %   overwrite is scalar, uses the same option for both files. Use two
 %   elements to specify the option for each file individually. By default,
 %   does not overwrite existing files.
 %
-%   obj.minus(..., 'attributes', attributes)
+%   <strong>obj.minus</strong>(..., 'attributes', attributes)
 %   Options for including metadata attributes in the new .grid file. If
 %   atts=1, copies the attributes from the current gridfile to the new
 %   file. If atts=2, copies the attributes from the second gridfile to the
 %   new file. If atts is a scalar struct, uses atts directly as the new
 %   metadata attributes.
 %
-%   obj.minus(..., 'type', type)
+%   <strong>obj.minus</strong>(..., 'type', type)
 %   Specify how to implement subtraction for the gridfiles. If case=1 (Default),
 %   requires the files to have compatible sizes for subtraction, as well as
 %   the same metadata along each non-singleton dimension. If case=2, the
@@ -77,8 +77,8 @@ function[] = minus(obj, grid2, filename, varargin)
 %           from both files and applies arithmetic directly. Requires data
 %           dimensions to have compatible sizes.
 %
-%   Outputs:
-%       Creates a .mat and .grid file with the specified names
+%   Saves:
+%       A .mat and .grid file with the specified names
 %
 %   Throws:
 %       DASH:gridfile:plus:invalidGridfile  when grid2 is not a
@@ -94,7 +94,7 @@ function[] = minus(obj, grid2, filename, varargin)
 %       DASH:gridfile:plus:noMatchingMetadata  when type is 2 and
 %           there is no matching metadata along a non-singleton dimension
 %
-% <a href="matlab:dash.doc('gridfile.plus')">Online Documentation</a>
+% <a href="matlab:dash.doc('gridfile.minus')">Online Documentation</a>
 
 % Parse optional inputs
 [overwrite, atts, type] = dash.parse.inputs(varargin, ...

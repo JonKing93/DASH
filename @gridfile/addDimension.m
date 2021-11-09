@@ -1,7 +1,22 @@
 function[] = addDimension(obj, dimension, metadata)
-%% gridfile.addDimension  Adds a new dimension to a .grid file
+%% gridfile.addDimension  Add a new dimension to a .grid file
 % ----------
-%   obj.addDimension(dimension, metadata)
+%   <strong>obj.addDimension</strong>(dimension, metadata)
+%   Adds a new dimension and associated metadata to a gridfile. The new
+%   dimension is treated as a trailing singleton dimensions in the existing
+%   data grid. Consequently, the metadata for the new dimension must be a
+%   row vector or scalar.
+% ----------
+%   Inputs:
+%       dimension (string scalar): The name of a new dimension to add to
+%           the gridfile. Must be a recognized grid dimension.
+%           (See gridMetadata.dimensions for a list of recognzied
+%           dimensions).
+%       metadata (row vector, numeric | logical | char | string | cellstring | datetime):
+%           metadata values for the new, singleton dimension. Cellstring
+%           values will be converted to string.
+%
+% <a href="matlab:dash.doc('gridfile.addDimension')">Documentation Page</a>
 
 % Setup
 obj.update;

@@ -1,11 +1,11 @@
 function[metadata] = metadata(obj, source)
 %% gridfile.metadata  Return the metadata for a gridfile
 % ----------
-%   metadata = obj.metadata
+%   metadata = <strong>obj.metadata</strong>
 %   Returns the gridMetadata object for a .grid file.
 %
-%   metadata = obj.metadata(s)
-%   metadata = obj.metadata(sourceFilename)
+%   metadata = <strong>obj.metadata</strong>(s)
+%   metadata = <strong>obj.metadata</strong>(sourceFilename)
 %   Returns the metadata for a data source catalogued in the .grid file.
 %   The non-dimensional attributes will match the attributes of the full
 %   .grid file.

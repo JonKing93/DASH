@@ -1,7 +1,7 @@
 function[] = transform(obj, type, params, sources)
 %% gridfile.transform  Transform data loaded from a .grid file.
 % ----------
-%   obj.transform(type, params)
+%   <strong>obj.transform</strong>(type, params)
 %   Applies a data transformation to data loaded from a .grid file. The
 %   transformation is applied to all data sources in currently in the .grid
 %   file, as well as any data sources added in the future. Only one
@@ -9,38 +9,38 @@ function[] = transform(obj, type, params, sources)
 %   override any previously specified transformations. See below for
 %   details of different transformations
 %
-%   obj.transform(type, params, s)
-%   obj.transform(type, params, sources)
+%   <strong>obj.transform</strong>(type, params, s)
+%   <strong>obj.transform</strong>(type, params, sources)
 %   Applies a transformation to data loaded from the specified data
 %   Overrides any data transformations previously applied to the data
 %   sources.
 %
-%   obj.transform('ln')
-%   obj.transform('ln', [], ...)
+%   <strong>obj.transform</strong>('ln')
+%   <strong>obj.transform</strong>('ln', [], ...)
 %   Take the natural logarithm of loaded data.
 %
-%   obj.transform('log', base, ...)
+%   <strong>obj.transform</strong>('log', base, ...)
 %   Takes the logarithm of loaded data. Supports base-10 and
 %   base-e (natural) logarithms.
 %
-%   obj.transform('exp')
-%   obj.transform('exp', [], ...)
+%   <strong>obj.transform</strong>('exp')
+%   <strong>obj.transform</strong>('exp', [], ...)
 %   Takes the exponential of loaded data.
 %
-%   obj.transform('power', power, ...)
+%   <strong>obj.transform</strong>('power', power, ...)
 %   Raise loaded data to the specified power.
 %
-%   obj.transform('plus', plus, ...)
+%   <strong>obj.transform</strong>('plus', plus, ...)
 %   Add the indicated value to loaded data.
 %
-%   obj.transform('times', times, ...)
+%   <strong>obj.transform</strong>('times', times, ...)
 %   Multiply loaded data by the specified value.
 %
-%   obj.transform('linear', coeffs, ...)
+%   <strong>obj.transform</strong>('linear', coeffs, ...)
 %   Apply a linear transformation to loaded data.
 %
-%   obj.transform('none', ...)
-%   obj.transform('none', [], ...)
+%   <strong>obj.transform</strong>('none', ...)
+%   <strong>obj.transform</strong>('none', [], ...)
 %   Do not apply a transformation to loaded data.
 % ----------
 %   Inputs:

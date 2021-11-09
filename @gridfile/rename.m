@@ -1,7 +1,7 @@
 function[] = rename(obj, sources, newNames)
-%% gridfile.rename
+%% gridfile.rename  Update paths to data sources catalogued in a gridfile
 % ----------
-%   obj.rename
+%   <strong>obj.rename</strong>
 %   Checks every data source in the .grid file to make sure it still
 %   exists. If a data source cannot be found, the method searches the
 %   active path for files with the same name and extension. If a file with
@@ -15,21 +15,25 @@ function[] = rename(obj, sources, newNames)
 %   a file system drive. Data sources accessed via an OPENDAP url are not
 %   checked.
 %
-%   obj.rename(s)
-%   obj.rename(sources)
+%   <strong>obj.rename</strong>(s)
+%   <strong>obj.rename</strong>(sourceNames)
 %   Specify which data sources should be checked and renamed. Any specified
 %   data sources accessed via an OPENDAP url are not checked.
 %
-%   obj.rename(..., newNames)
+%   <strong>obj.rename</strong>(..., newNames)
 %   Specify the new names to use for the data sources. Use this syntax when
 %   the file name or extension of a data source file has changed. This
 %   syntax also allows data sources accessed via an OPENDAP url to be
 %   relocated (either to a different OPENDAP url, or a local data file).
 % ----------
 %   Inputs:
-%       s
-%       sources
-%       newNames
+%       s (logical vector [nSources] | vector, linear indices): The indices
+%           of the data sources that should be checked and/or renamed.
+%       sourceNames (string vector): The names of the data sources that
+%           should be checked and/or renamed.
+%       newNames (string vector [nRename]): The new file paths/names for
+%           the specified sources. Should have one element per specified
+%           data source.
 %
 % <a href="matlab:dash.doc('gridfile.rename')">Documentation Page</a>
 

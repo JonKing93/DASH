@@ -1,7 +1,7 @@
 function[] = dispSources(obj)
-%% gridfile.dispSources  Lists gridfile data sources in the console
+%% gridfile.dispSources  List gridfile data sources in the console
 % ----------
-%   obj.dispSources
+%   <strong>obj.dispSources</strong>
 %   Prints a numbered list of gridfile data sources to the console.
 % ----------
 % 

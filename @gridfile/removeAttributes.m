@@ -1,8 +1,8 @@
 function[] = removeAttributes(obj, varargin)
 %% gridfile.removeAttributes  Remove attributes from the metadata of a gridded dataset
 % ----------
-%   obj.removeAttributes(fields)
-%   obj.removeAttributes(field1, field2, .., fieldN)
+%   <strong>obj.removeAttributes</strong>(fields)
+%   <strong>obj.removeAttributes</strong>(field1, field2, .., fieldN)
 %   Removes the listed fields from the metadata attributes of the current
 %   gridMetadata object.
 % ----------

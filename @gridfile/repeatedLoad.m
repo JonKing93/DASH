@@ -1,4 +1,5 @@
 function[X, meta, sources] = repeatedLoad(obj, userDimOrder, userIndices, sources)
+%% gridfile.repeatedLoad  Load data from a gridfile and return built data sources
 %
 % dimOrder: The of output dimensions relative to gridfile dimensions
 

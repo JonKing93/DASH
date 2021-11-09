@@ -1,7 +1,7 @@
 function[] = disp(obj)
 %% gridfile.disp  Display gridfile object in console
 % ----------
-%   obj.disp
+%   <strong>obj.disp</strong>
 %   Displays the contents of a gridfile object to the console. Prints .grid
 %   file name, dimensions, dimension sizes, and the limits of dimensional
 %   metadata. Prints metadata attributes if they exist. Prints a summary of

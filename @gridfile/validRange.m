@@ -1,15 +1,15 @@
 function[] = validRange(obj, range, sources)
 %% gridfile.validRange  Specify a valid range for data catalogued in a .grid file
 % ----------
-%   obj.validRange(range)
+%   <strong>obj.validRange</strong>(range)
 %   Specify a valid range for data catalogued in a .grid file. Data outside
 %   of the valid range are converted to NaN when loaded. This syntax sets
 %   the valid range for all data sources currently in the gridfile, and
 %   applies the valid range any data sources added to the .grid file in the
 %   future.
 %
-%   obj.validRange(range, s)
-%   obj.validRange(range, sourceNames)
+%   <strong>obj.validRange</strong>(range, s)
+%   <strong>obj.validRange</strong>(range, sourceNames)
 %   Implements a valid range for the specified data sources. Overrides any
 %   valid range values previously applied to the data sources.
 % ----------
@@ -21,8 +21,7 @@ function[] = validRange(obj, range, sources)
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be assigned the valid range.
 %       sourceName (string vector): The names of the data sources that
-%           should be assigned a valid range. Names may either be just file
-%           names, or the full file path / opendap url to the source.
+%           should be assigned a valid range.
 %
 % <a href="matlab:dash.doc('gridfile.validRange')">Documentation Page</a>
 

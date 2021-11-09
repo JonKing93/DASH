@@ -1,7 +1,7 @@
 function[] = divide(obj, grid2, filename, varargin)
 %% gridfile.divide  Divides the data in the current gridfile by a second gridfile
 % ----------
-%   obj.divide(grid2, filename)
+%   <strong>obj.divide</strong>(grid2, filename)
 %   Divides the data in the current gridfile with a second gridfile. Saves the
 %   result to a .mat file and organizes the result in a new .grid file. The names
 %   of the new files are specified by filename. Provide a single name to
@@ -24,20 +24,20 @@ function[] = divide(obj, grid2, filename, varargin)
 %   default, the new file will have no metadata attributes (but see the 
 %   "attributes" flag for alternate options).
 %
-%   obj.divide(..., 'overwrite', overwrite)
+%   <strong>obj.divide</strong>(..., 'overwrite', overwrite)
 %   Specify whether to overwrite existing .mat and .grid files. If
 %   overwrite is scalar, uses the same option for both files. Use two
 %   elements to specify the option for each file individually. By default,
 %   does not overwrite existing files.
 %
-%   obj.divide(..., 'attributes', attributes)
+%   <strong>obj.divide</strong>(..., 'attributes', attributes)
 %   Options for including metadata attributes in the new .grid file. If
 %   atts=1, copies the attributes from the current gridfile to the new
 %   file. If atts=2, copies the attributes from the second gridfile to the
 %   new file. If atts is a scalar struct, uses atts directly as the new
 %   metadata attributes.
 %
-%   obj.divide(..., 'type', type)
+%   <strong>obj.divide</strong>(..., 'type', type)
 %   Specify how to implement division for the gridfiles. If case=1 (Default),
 %   requires the files to have compatible sizes for division, as well as
 %   the same metadata along each non-singleton dimension. If case=2, the
@@ -77,8 +77,8 @@ function[] = divide(obj, grid2, filename, varargin)
 %           from both files and applies arithmetic directly. Requires data
 %           dimensions to have compatible sizes.
 %
-%   Outputs:
-%       Creates a .mat and .grid file with the specified names
+%   Saves:
+%       A .mat and .grid file with the specified names
 %
 %   Throws:
 %       DASH:gridfile:divide:invalidGridfile  when grid2 is not a

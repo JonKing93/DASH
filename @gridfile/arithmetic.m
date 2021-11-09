@@ -37,8 +37,8 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 %           from both files and applies arithmetic directly. Requires data
 %           dimensions to have compatible sizes.
 %
-%   Outputs:
-%       Creates a .mat and .grid file with the specified names
+%   Saves:
+%       A .mat and .grid file with the specified names.
 %
 %   Throws:
 %       DASH:gridfile:<operation>:invalidGridfile  when grid2 is not a

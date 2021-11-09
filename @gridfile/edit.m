@@ -1,11 +1,11 @@
 function[] = edit(obj, dimension, metadata)
 %% gridfile.edit  Rewrite .grid file metadata
 % ----------
-%   obj.edit(dimension, metadata)
+%   <strong>obj.edit</strong>(dimension, metadata)
 %   Replace the metadata for the named dimension with new values. The new
 %   metadata must have the same number of rows as the previous metadata.
 %
-%   obj.edit('attributes', attributes)
+%   <strong>obj.edit</strong>('attributes', attributes)
 %   Replace the existing metadata attributes with new values.
 % ----------
 %   Inputs:

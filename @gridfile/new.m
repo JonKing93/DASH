@@ -20,6 +20,8 @@ function[obj] = new(filename, metadata, overwrite)
 %
 %   Outputs:
 %       obj (gridfile object): A gridfile object for the new .grid file.
+%
+% <a href="matlab:dash.doc('gridfile.new')">Documentation Page</a>
 
 % Default
 if ~exist('overwrite','var') || isempty(overwrite)
