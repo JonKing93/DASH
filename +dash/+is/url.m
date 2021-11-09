@@ -1,7 +1,16 @@
 function[tf] = url(name)
-%% dash.is.url  Tests if a name is a URL
+%% dash.is.url  Test if a name is a URL
 % ----------
 %   tf = dash.is.url(name)
+%   Returns true if name is a URL. Otherwise, returns false.
+% ----------
+%   Inputs:
+%       name (string scalar): The name being tested
+%       
+%   Outputs:
+%       tf (scalar logical): True if the name is a URL. Otherwise false.
+%
+% <a href="matlab:dash.doc('dash.is.url')">Documentation Page</a>
 
 name = char(name);
 if (numel(name)>=7 && strcmp(name(1:7), 'http://')) || ...
