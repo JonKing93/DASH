@@ -2,6 +2,7 @@ function[fill] = fillValue(obj, fill, sources)
 %% gridfile.fillValue  Specify a fill value for data catalogued in a .grid file
 % ----------
 %   fill = <strong>obj.fillValue</strong>
+%   fill = <strong>obj.fillValue</strong>('default')
 %   Return the default fill value for a grid file.
 %
 %   sourceFills = <strong>obj.fillValue</strong>('sources')
@@ -45,13 +46,14 @@ header = "DASH:gridfile:fillValue";
 %% Return fill values
 
 % Default fill
-if ~exist('fill','var')
+if ~exist('fill','var') || strcmpi(fill, 'default')
+    assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
     fill = obj.fill;
     return
     
 % Source fill values
 elseif strcmpi(fill, 'sources')
-    if ~exist('sources','var') || isempty(sources)
+    if ~exist('sources','var')
         s = 1:obj.nSource;
     else
         s = obj.sources_.indices(sources, header);
@@ -63,12 +65,9 @@ end
 %% Set fill values
     
 % No outputs allowed
-if nargout>0
-    id = 'MATLAB:TooManyOutputs';
-    error(id, 'Too many output arguments.');
-end
+assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
 
-% Error check
+% Error check the fill value
 dash.assert.scalarType(fill, 'numeric', 'fill', header);
 
 % Set datasource fills. Optionally set fill for entire gridfile

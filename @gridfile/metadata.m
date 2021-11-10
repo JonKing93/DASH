@@ -1,21 +1,26 @@
-function[metadata] = metadata(obj, source)
+function[metadata] = metadata(obj, sources)
 %% gridfile.metadata  Return the metadata for a gridfile
 % ----------
 %   metadata = <strong>obj.metadata</strong>
+%   metadata = <strong>obj.metadata</strong>(0)
 %   Returns the gridMetadata object for a .grid file.
 %
-%   metadata = <strong>obj.metadata</strong>(s)
-%   metadata = <strong>obj.metadata</strong>(sourceFilename)
-%   Returns the metadata for a data source catalogued in the .grid file.
-%   The non-dimensional attributes will match the attributes of the full
-%   .grid file.
+%   sourceMetadata = <strong>obj.metadata</strong>(-1)
+%   sourceMetadata = <strong>obj.metadata</strong>(s)
+%   sourceMetadata = <strong>obj.metadata</strong>(sourceNames)
+%   Returns the metadata for the specified data sources. If -1 is provided
+%   as input, returns the metadata for all data sources in the gridfile.
 % ----------
 %   Inputs:
-%       s (scalar positive integer): The index of a data source in the gridfile
-%       sourceFilename (string scalar): The name of a data source in the gridfile
+%       s (logical vector [nSources] | vector, linear indices): The indices
+%           of the data sources for which to return metadata.
+%       sourceName (string vector): The names of the data sources for which
+%           to return metadata.
 %
 %   Outputs:
-%       metadata (gridMetadata object): Metadata for the gridfile.
+%       metadata (scalar gridMetadata object): Metadata for the gridfile.
+%       sourceMetadata (gridMetadata vector [nSource]): Metadata for each
+%           specified data source.
 %       
 % <a href="matlab:dash.doc('gridfile.metadata')">Documentation Page</a>
 
@@ -24,20 +29,32 @@ obj.update;
 metadata = obj.meta;
 
 % If no inputs, return metadata directly
-if ~exist('source','var')
+if ~exist('sources','var') || isequal(sources, 0)
     return;
 end
 
-% Otherwise, error check and parse data source index
-s = dash.parse.listOrIndices(source);
+% Otherwise, get data source indices
+header = "DASH:gridfile:metadata";
+if isequal(sources, -1)
+    s = 1:obj.nSource;
+else
+    s = obj.sources_.indices(sources, header);
+end
 
-% Build the metadata for each dimension of the source
+% Preallocate source metadata
+nSource = numel(s);
+sourceMetadata = repmat(gridMetadata, [nSource, 1]);
+
+% Get metadata for each dimension of each source
 for d = 1:numel(obj.dims)
     dim = obj.dims(d);
     values = metadata.(dim);
-    lim = obj.dimLimit(d,:,s);
     
-    metadata = metadata.edit(dim, values(lim(1):lim(2),:));
+    for s = 1:nSource
+        rows = obj.dimLimit(d,1,s):obj.dimLimit(d,2,s);
+        sourceMetadata(s) = sourceMetadata(s).edit(dim, values(rows,:));
+    end
 end
+metadata = sourceMetadata;
 
 end

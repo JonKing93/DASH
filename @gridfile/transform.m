@@ -2,6 +2,7 @@ function[transform, parameters] = transform(obj, type, params, sources)
 %% gridfile.transform  Transform data loaded from a .grid file.
 % ----------
 %   [transform, parameters] = <strong>obj.transform</strong>
+%   [transform, parameters] = <strong>obj.transform</strong>('default')
 %   Return the default transformation for a gridfile.
 %
 %   [sourceTransform, sourceParameters] = <strong>obj.transform</strong>('sources')
@@ -91,18 +92,19 @@ header = "DASH:gridfile:transform";
 %% Return transformations
 
 % Default
-if ~exist('type','var')
+if ~exist('type','var') || strcmpi(type, 'default')
+    assert(~exist('params','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
     transform = obj.transform_;
     parameters = obj.transform_params;
     return
     
 % Source transformations
 elseif strcmpi(type, 'sources')
-    if exist('sources','var')
-        error('MATLAB:TooManyInputs', 'Too many input arguments.');
-    elseif ~exist('params','var') || isempty(params)
+    assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if ~exist('params','var')
         s = 1:obj.nSource;
     else
+        sources = params;
         s = obj.source_.indices(sources, header);
     end
     transform = obj.sources_.transform(s);
@@ -113,9 +115,7 @@ end
 %% Set transformation
 
 % No outputs allowed
-if nargout>0
-    error('MATLAB:TooManyOutputs', 'Too many output arguments.');
-end
+assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
 
 % Error check the transformation type
 type = dash.assert.strflag(type, 'First input (transformation type)', header);

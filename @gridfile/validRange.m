@@ -2,6 +2,7 @@ function[range] = validRange(obj, range, sources)
 %% gridfile.validRange  Specify a valid range for data catalogued in a .grid file
 % ----------
 %   range = <strong>obj.validRange</strong>
+%   range = <strong>obj.validRange</strong>('default')
 %   Return the default valid range for a gridfile.
 %
 %   sourceRanges = <strong>obj.validRange</strong>('sources')
@@ -47,13 +48,14 @@ obj.update;
 %% Return valid ranges
 
 % Default
-if ~exist('range','var')
+if ~exist('range','var') || strcmpi(range, 'default')
+    assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
     range = obj.range;
     return
     
 % Source ranges
 elseif strcmpi(range, 'sources')
-    if ~exist('sources', 'var') || isempty(sources)
+    if ~exist('sources', 'var')
         s = 1:obj.nSource;
     else
         s = obj.sources_.indices(sources, header);
@@ -65,10 +67,7 @@ end
 %% Set fill values
 
 % No outputs allowed
-if nargout>0
-    id = 'MATLAB:TooManyOutputs';
-    error(id, 'Too many output arguments.');
-end
+assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
 
 % Error check the valid range
 dash.assert.vectorTypeN(range, 'numeric', 2, 'range', header);

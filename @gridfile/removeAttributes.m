@@ -5,6 +5,9 @@ function[] = removeAttributes(obj, varargin)
 %   <strong>obj.removeAttributes</strong>(field1, field2, .., fieldN)
 %   Removes the listed fields from the metadata attributes of the current
 %   gridMetadata object.
+%
+%   <strong>obj.removeAttributes</strong>(0)
+%   Removes all attributes from the gridfile metadata.
 % ----------
 %   Inputs:
 %       fields (string vector): A list of fields to remove from the
