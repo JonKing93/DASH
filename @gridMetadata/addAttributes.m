@@ -31,7 +31,7 @@ end
 attributes = obj.(atts);
 fields = string(fieldnames(attributes));
 
-% Get the new field name for each Name,Value paor
+% Get the new field name for each Name,Value pair
 for v = 1:2:nArgs-1
     inputName = sprintf('Input %.f', v);
     name = dash.assert.strflag(varargin{v}, inputName, header);

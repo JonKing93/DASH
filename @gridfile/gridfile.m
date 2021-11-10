@@ -28,12 +28,15 @@ classdef gridfile < handle
         save(obj);
         
         % Metadata
-        meta = metadata(obj);
+        meta = metadata(obj, sources);
         edit(obj, dim, value);
-        addAttributes(obj, varargin);
-        removeAttributes(obj, varargin);        
         expand(obj, dim, value);
         addDimension(obj, dim, value);
+        
+        % Metadata attributes
+        addAttributes(obj, varargin);
+        removeAttributes(obj, varargin);        
+        editAttributes(obj, varargin)
         
         % Data sources
         add(obj, type, source, varargin);
@@ -42,13 +45,20 @@ classdef gridfile < handle
         absolutePath(obj, useAbsolute, sources);
         
         % Data transformations
-        fillValue(obj, fill, sources);
-        validRange(obj, range, sources);
-        transform(obj, type, params, sources);
+        fill = fillValue(obj, fill, sources);
+        range = validRange(obj, range, sources);
+        [transform, parameters] = transform(obj, type, params, sources);
         
         % Load
-        dataSources = review(obj);
+        loadIndices = getLoadIndices(obj, userDims, userIndices);
+        s = sourcesForLoad(obj, loadIndices);
+        [dataSources, failed, causes] = buildSources(obj, s);
         [X, meta] = load(obj, dimensions, indices);
+        [X, meta] = loadInternal(obj, userDims, loadIndices, dataSources);
+        
+        
+        
+        dataSources = review(obj);
         [X, meta, sources] = repeatedLoad(obj, userDimOrder, userIndices, sources);
         
         % Arithmetic

@@ -72,6 +72,7 @@ classdef gridMetadata
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
         obj = obj.edit(varargin{:});
         end
+        
         obj = edit(obj, varargin);
         dims = defined(obj);
         
@@ -82,6 +83,7 @@ classdef gridMetadata
         % Attribute manipulation
         obj = addAttributes(obj, varargin);
         obj = removeAttributes(obj, varargin);
+        obj = editAttributes(obj, varargin);
         
     end
     
