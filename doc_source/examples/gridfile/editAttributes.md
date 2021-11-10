@@ -41,5 +41,6 @@ grid.editAttributes('a-missing-field', 5)
 ```
 
 ```error
-a-missing-field is not a metadata attribute. Allowed values are: "Units", "reference-pressure", "date-downloaded", and "DOI".
+a-missing-field is not a metadata attribute.
+Allowed values are: "Units", "reference-pressure", "date-downloaded", and "DOI".
 ```
