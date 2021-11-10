@@ -1,6 +1,16 @@
-function[] = transform(obj, type, params, sources)
+function[transform, parameters] = transform(obj, type, params, sources)
 %% gridfile.transform  Transform data loaded from a .grid file.
 % ----------
+%   [transform, parameters] = <strong>obj.transform</strong>
+%   Return the default transformation for a gridfile.
+%
+%   [sourceTransform, sourceParameters] = <strong>obj.transform</strong>('sources')
+%   [sourceTransform, sourceParameters] = <strong>obj.transform</strong>('sources', s)
+%   [sourceTransform, sourceParameters] = <strong>obj.transform</strong>('sources', sourceNames)
+%   Returns the transformations for the specified data sources. If no
+%   soures are specified, returns the transformation for all data sources
+%   in the gridfile.
+%
 %   <strong>obj.transform</strong>(type, params)
 %   Applies a data transformation to data loaded from a .grid file. The
 %   transformation is applied to all data sources in currently in the .grid
@@ -64,11 +74,48 @@ function[] = transform(obj, type, params, sources)
 %           should receive the transformation. Names may either be just file
 %           names, or the full file path / opendap url to the source.
 %
+%   Outputs:
+%       transform (string scalar): The default transformation for the gridfile
+%       parameters (numeric row vector [2]): Parameters for the default transformation
+%       sourceTransform (string vector [nSource]): The transformations for the
+%           specified data sources
+%       sourceParameters (numeric matrix [nSource, 2]): Parameters for the
+%           data source transformations
+%
 % <a href="matlab:dash.doc('gridfile.transform')">Documentation Page</a>
 
 % Setup
 obj.update;
 header = "DASH:gridfile:transform";
+
+%% Return transformations
+
+% Default
+if ~exist('type','var')
+    transform = obj.transform_;
+    parameters = obj.transform_params;
+    return
+    
+% Source transformations
+elseif strcmpi(type, 'sources')
+    if exist('sources','var')
+        error('MATLAB:TooManyInputs', 'Too many input arguments.');
+    elseif ~exist('params','var') || isempty(params)
+        s = 1:obj.nSource;
+    else
+        s = obj.source_.indices(sources, header);
+    end
+    transform = obj.sources_.transform(s);
+    parameters = obj.sources_.transform_params(s,:);
+    return
+end
+
+%% Set transformation
+
+% No outputs allowed
+if nargout>0
+    error('MATLAB:TooManyOutputs', 'Too many output arguments.');
+end
 
 % Error check the transformation type
 type = dash.assert.strflag(type, 'First input (transformation type)', header);

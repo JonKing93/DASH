@@ -1,8 +1,18 @@
-function[] = fillValue(obj, fill, sources)
+function[fill] = fillValue(obj, fill, sources)
 %% gridfile.fillValue  Specify a fill value for data catalogued in a .grid file
 % ----------
+%   fill = <strong>obj.fillValue</strong>
+%   Return the default fill value for a grid file.
+%
+%   sourceFills = <strong>obj.fillValue</strong>('sources')
+%   sourceFills = <strong>obj.fillValue</strong>('sources', s)
+%   sourceFills = <strong>obj.fillValue</strong>('sources', sourceNames)
+%   Return the fill values for the specified data sources. If no sources
+%   are specified, returns the fill value for all data sources in the
+%   gridfile.
+%
 %   <strong>obj.fillValue</strong>(fill)
-%   Implement a fill value for data loaded from a .grid file. Numeric data
+%   Set the default fill value for data loaded from a .grid file. Numeric data
 %   matching the fill value are converted to NaN when loading. This syntax
 %   sets the fill value for all data sources currently in the .grid file
 %   and applies the fill value by default to all data sources added in the
@@ -22,11 +32,41 @@ function[] = fillValue(obj, fill, sources)
 %           should be assigned a fill value. Names may either be just file
 %           names, or the full file path / opendap url to the source.
 %
+%   Outputs:
+%       fill (numeric scalar): The default fill value for the gridfile
+%       sourceFills (numeric vector): The fill values for the specified data sources
+%
 % <a href="matlab:dash.doc('gridfile.fillValue')">Documentation Page</a>
 
 % Setup
 obj.update;
 header = "DASH:gridfile:fillValue";
+
+%% Return fill values
+
+% Default fill
+if ~exist('fill','var')
+    fill = obj.fill;
+    return
+    
+% Source fill values
+elseif strcmpi(fill, 'sources')
+    if ~exist('sources','var') || isempty(sources)
+        s = 1:obj.nSource;
+    else
+        s = obj.sources_.indices(sources, header);
+    end
+    fill = obj.sources_.fill(s);
+    return
+end
+
+%% Set fill values
+    
+% No outputs allowed
+if nargout>0
+    id = 'MATLAB:TooManyOutputs';
+    error(id, 'Too many output arguments.');
+end
 
 % Error check
 dash.assert.scalarType(fill, 'numeric', 'fill', header);

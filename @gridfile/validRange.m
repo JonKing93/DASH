@@ -1,6 +1,16 @@
-function[] = validRange(obj, range, sources)
+function[range] = validRange(obj, range, sources)
 %% gridfile.validRange  Specify a valid range for data catalogued in a .grid file
 % ----------
+%   range = <strong>obj.validRange</strong>
+%   Return the default valid range for a gridfile.
+%
+%   sourceRanges = <strong>obj.validRange</strong>('sources')
+%   sourceRanges = <strong>obj.validRange</strong>('sources', s)
+%   sourceRanges = <strong>obj.validRange</strong>('sources', sourceNames)
+%   Return the valid ranges for the specified data sources. If no data
+%   sources are specified, returns the valid range for all data sources in
+%   the gridfile.
+%
 %   <strong>obj.validRange</strong>(range)
 %   Specify a valid range for data catalogued in a .grid file. Data outside
 %   of the valid range are converted to NaN when loaded. This syntax sets
@@ -23,11 +33,42 @@ function[] = validRange(obj, range, sources)
 %       sourceName (string vector): The names of the data sources that
 %           should be assigned a valid range.
 %
+%   Outputs:
+%       range (numeric vector [2]): The default valid range for the gridfile
+%       sourceRanges (numeric matrix [nSource, 2]): The valid ranges for
+%           the specified data sources
+%
 % <a href="matlab:dash.doc('gridfile.validRange')">Documentation Page</a>
 
 % Setup
 header = "DASH:gridfile:validRange";
 obj.update;
+
+%% Return valid ranges
+
+% Default
+if ~exist('range','var')
+    range = obj.range;
+    return
+    
+% Source ranges
+elseif strcmpi(range, 'sources')
+    if ~exist('sources', 'var') || isempty(sources)
+        s = 1:obj.nSource;
+    else
+        s = obj.sources_.indices(sources, header);
+    end
+    range = obj.sources_.range(s,:);
+    return
+end
+
+%% Set fill values
+
+% No outputs allowed
+if nargout>0
+    id = 'MATLAB:TooManyOutputs';
+    error(id, 'Too many output arguments.');
+end
 
 % Error check the valid range
 dash.assert.vectorTypeN(range, 'numeric', 2, 'range', header);
