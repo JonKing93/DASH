@@ -23,12 +23,11 @@ function[info] = info(obj, s)
 %               data in the source file.
 %           .size (numeric vector): The size of each dimension for the data
 %               in the source file.
-%           .data_adjustments (scalar struct): Has the following fields:
-%               .fill_value (numeric scalar): The fill value for the data source
-%               .valid_range (numeric vector [2]): The valid range for the data source
-%               .transform (string scalar): The data transformation for the data source
-%               .transform_parameters (numeric vector [2]): Any parameters needed to 
-%                   implement the data transformation.
+%           .fill_value (numeric scalar): The fill value for the data source
+%           .valid_range (numeric vector [2]): The valid range for the data source
+%           .transform (string scalar): The data transformation for the data source
+%           .transform_parameters (numeric vector [2]): Any parameters needed to 
+%               implement the data transformation.
 %           .uses_relative_path (scalar logical): True if the gridfile
 %               records the relative path to the data source. False if the
 %               gridfile records the absolute path.
@@ -41,7 +40,8 @@ function[info] = info(obj, s)
 nSource = numel(s);
 pre = cell(nSource, 1);
 info = struct('name', pre, 'variable', pre, 'index', pre, 'file', pre, 'data_type', pre, ...
-    'dimensions', pre, 'size', pre, 'data_adjustments', pre, ...
+    'dimensions', pre, 'size', pre, 'fill_value', pre, 'valid_range', pre,...
+    'transform', pre, 'transform_parameters', pre, ...
     'uses_relative_path', pre, 'import_options', pre);
 
 % Track optional fields
@@ -69,10 +69,10 @@ for k = 1:nSource
     siz = str2double(strsplit(obj.size(s(k)), ','));
     info(k).size = siz;
     
-    da = struct('fill_value', obj.fill(s(k)), 'valid_range', obj.range(s(k),:),...
-        'transform', obj.transform(s(k)), 'transform_parameters', ...
-        obj.transform_params(s(k),:));
-    info(k).data_adjustments = da;
+    info(k).fill_value = obj.fill(s(k));
+    info(k).valid_range = obj.range(s(k),:);
+    info(k).transform = obj.transform(s(k));
+    info(k).transform_parameters = obj.transform_params(s(k),:);
     
     if hasopts(k)
         info(k).import_options = obj.importOptions(loc(k));

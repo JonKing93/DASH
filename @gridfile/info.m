@@ -35,16 +35,16 @@ function[info] = info(obj, sources)
 %               dimension in the gridfile. Lengths are in the same order as
 %               the gridfile dimensions.
 %           .metadata (gridMetadata object): Metadata for the gridfile
-%           .data_adjustments (scalar struct): Has the following fields
-%               .fill_value (numeric scalar): The default fill value.
-%               .valid_range (numeric vector [2]): The default valid range
-%               .transform (string scalar): The default data transformation
-%               .transform_parameters (numeric vector [2]): Any parameters
-%                   needed to implement the default transformation.
 %           .nSources (numeric scalar): The number of data sources in the gridfile
 %           .prefer_relative_paths (scalar logical): True if the gridfile
 %               attempts to record the relative paths to data sources by default.
 %               False if it always records absolute paths.
+%           .fill_value (numeric scalar): The default fill value.
+%           .valid_range (numeric vector [2]): The default valid range
+%           .transform (string scalar): The default data transformation
+%           .transform_parameters (numeric vector [2]): Any parameters
+%               needed to implement the default transformation.
+
 %
 %       sourceInfo (struct vector): Information about the individual data
 %           sources in the gridfile. Includes the following fields:
@@ -59,17 +59,16 @@ function[info] = info(obj, sources)
 %               data in the source file.
 %           .size (numeric vector): The size of each dimension for the data
 %               in the source file.
-%           .data_adjustments (scalar struct): Has the following fields:
-%               .fill_value (numeric scalar): The fill value for the data source
-%               .valid_range (numeric vector [2]): The valid range for the data source
-%               .transform (string scalar): The data transformation for the data source
-%               .transform_parameters (numeric vector [2]): Any parameters needed to 
-%                   implement the data transformation.
 %           .uses_relative_path (scalar logical): True if the gridfile
 %               records the relative path to the data source. False if the
 %               gridfile records the absolute path.
 %           .import_options (cell scalar): Any import options provided for
 %               delimited text data sources. Empty for NetCDF and MAT-file sources
+%           .fill_value (numeric scalar): The fill value for the data source
+%           .valid_range (numeric vector [2]): The valid range for the data source
+%           .transform (string scalar): The data transformation for the data source
+%           .transform_parameters (numeric vector [2]): Any parameters needed to 
+%               implement the data transformation.
 %
 % <a href="matlab:dash.doc('gridfile.info')">Documentation Page</a>
 
@@ -84,12 +83,11 @@ end
 
 % Grid info
 if isnumeric(sources) && sources==0
-    da = struct('fill_value', obj.fill, 'valid_range', obj.range, 'transform', ...
-        obj.transform_, 'transform_parameters', obj.transform_params);
     info = struct('file', obj.file, 'dimensions', obj.dims, ...
         'dimension_sizes', obj.size, 'metadata', obj.meta, ...
-        'data_adjustments', da, 'nSources', obj.nSource, ...
-        'prefer_relative_paths', obj.relativePath);
+        'nSources', obj.nSource, 'prefer_relative_paths', obj.relativePath,...
+        'fill_value', obj.fill, 'valid_range', obj.range, 'transform', ...
+        obj.transform_, 'transform_parameters', obj.transform_params);
     return;
 end
 
