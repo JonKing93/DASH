@@ -41,13 +41,15 @@ end
 if ~isvector(input)
     id = sprintf('%s:inputNotVector', idHeader);
     error(id, '%s is not a vector', name);
+end
 
 % Type
-elseif ~isempty(type)
+if ~isempty(type)
     dash.assert.type(input, type, name, "vector", idHeader);
+end
     
 % Length
-elseif ~isempty(length) && numel(input)~=length
+if ~isempty(length) && numel(input)~=length
     id = sprintf('%s:inputWrongLength', idHeader);
     error(id, '%s must have %.f elements, but has %.f elements instead', ...
         name, length, numel(input));
