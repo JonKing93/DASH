@@ -58,10 +58,11 @@ end
 
 function[] = noUndefinedDimensionsError(obj, header)
 id = sprintf('%s:noUndefinedDimensions', header);
-link = '<a href="matlab:edit gridMetadata">edit the gridMetadata class file</a>';
+editLink = '<a href="matlab:edit gridMetadata">edit the gridMetadata class file</a>';
+docLink = '<a href="matlab:dash.doc(''gridMetadata.add-dimensions'')">this documentation</a>';
 error(id, ['The gridfile already defines every dimension recognized by ',...
     'the DASH toolbox. If you want to add more dimensions to DASH, you will ',...
-    'need to %s.\n\ngridfile: %s'], link, obj.file);
+    'need to %s. See %s for details.\n\ngridfile: %s'], editLink, docLink, obj.file);
 end
 function[] = metadataRowsError(dim, nRows, gridFile, header)
 id = sprintf('%s:wrongNumberOfMetadataRows', header);

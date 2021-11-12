@@ -47,19 +47,14 @@ for t = 1:nTypes
     types(t,2) = typeTest{t}(metadata);
 end
 
-% Check that types are compatible
+% Check that types are compatible and that columns match
 if ( any(types(1:2,1)) && ~any(types(1:2,2)) ) || ...  % numeric / logical
    ( any(types(3:5:1)) && ~any(types(3:5,2)) ) || ...  % char / string / cellstring
    (types(6,1) && ~types(6,2))                         % datetime
 
     typeError(dim, types, obj.name, header);
-
-% Check columns match
 elseif nNewCols ~= nOldCols
-    id = sprintf('%s:wrongNumberOfColumns', header);
-    error(id, ['The number of columns in the new "%s" metadata (%.f) ',...
-        'does not match the number of columns in the existing metadata ',...
-        'for the dimension (%.f) in gridfile "%s".'], dim, nNewCols, nOldCols, obj.name);
+    metadataColumnsError(dim, nNewCols, nOldCols, obj.file, header);
 end
 
 % Attempt to concatenate.
@@ -68,7 +63,7 @@ try
 catch
     id = sprintf('%s:couldNotAppend', header);
     error(id, ['Could not append the new "%s" metadata to the existing ',...
-        'metadata in gridfile "%s".'], dim, obj.name);
+        'metadata.\n\ngridfile: %s'], dim, obj.file);
 end
 
 % Error check / update metadata. Also update sizes
@@ -78,4 +73,34 @@ obj.size(d) = obj.size(d) + nNewRows;
 % Save
 obj.save;
 
+end
+
+% Complex error messages
+function[] = typeError(dim, types, file, header)
+
+% Get the type names
+typeNames = ["numeric","logical","char","string","cellstring","datetime"];
+oldType = typeNames(types(:,1));
+newType = typeNames(types(:,2));
+
+% Get the compatible types
+groups = {["numeric", "logical"], ["char","string","cellstring"], "datetime"};
+for g = 1:numel(groups)
+    if ismember(oldType, groups{g})
+        compatible = groups{g};
+    end
+end
+compatible = dash.string.list(compatible);
+
+% Throw error
+id = sprintf('%s:incompatibleDataTypes', header);
+error(id, ['Cannot append the new "%s" metadata because its data type (%s) ',...
+    'is not compatible with the existing metadata''s type (%s) in gridfile "%s". ',...
+    'Compatible types are: %s.'], dim, newType, oldType, file, compatible);
+end
+function[] = metadataColumnsError(dim, nNew, nOld, gridFile, header)
+id = sprintf('%s:wrongNumberOfColumns', header);
+error(id, ['The number of columns in the new "%s" metadata (%.f) ',...
+    'does not match the number of columns in the existing metadata ',...
+    'for the dimension (%.f) in the gridfile.\n\ngridfile: %s'], dim, nNew, nOld, gridFile);
 end
