@@ -32,9 +32,9 @@ function[] = plus(obj, grid2, filename, varargin)
 %
 %   <strong>obj.plus</strong>(..., 'attributes', attributes)
 %   Options for including metadata attributes in the new .grid file. If
-%   atts=1, copies the attributes from the current gridfile to the new
-%   file. If atts=2, copies the attributes from the second gridfile to the
-%   new file. If atts is a scalar struct, uses atts directly as the new
+%   attributes=1, copies the attributes from the current gridfile to the new
+%   file. If attributes=2, copies the attributes from the second gridfile to the
+%   new file. If attributes is a scalar struct, uses it directly as the new
 %   metadata attributes.
 %
 %   <strong>obj.plus</strong>(..., 'type', type)

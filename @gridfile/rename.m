@@ -113,7 +113,7 @@ for k = 1:numel(s)
     % Attempt to build the new data source. Give informative error if the
     % build fails.
     try
-        dataSource = obj.build(s(k), newfile);
+        dataSource = obj.sources_.build(s(k), newfile);
     catch cause
         invalidPathDataSourceError(obj, s(k), sourceName, newfile, cause, header);
     end
