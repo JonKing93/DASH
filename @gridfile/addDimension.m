@@ -26,7 +26,7 @@ header = "DASH:gridfile:addDimension";
 dims = gridMetadata.dimensions;
 undefined = ~ismember(dims, obj.dims);
 if ~any(undefined)
-    noUndefinedDimensionsError;
+    noUndefinedDimensionsError(obj, header);
 end
 
 % Check the dimension name is valid
@@ -38,8 +38,9 @@ end
 dash.assert.strsInList(dim, undefined, 'dimension', 'a valid dimension', header);
 
 % Metadata must have a single row
-if size(metadata,1)~=1
-    metadataRowError;
+nRows = size(metadata,1);
+if nRows~=1
+    metadataRowsError(dim, nRows, obj.file, header);
 end
 
 % Add the new dimension
@@ -53,4 +54,17 @@ obj.dimLimit = cat(1, obj.dimLimit, newRow);
 % Save
 obj.save;
 
+end
+
+function[] = noUndefinedDimensionsError(obj, header)
+id = sprintf('%s:noUndefinedDimensions', header);
+link = '<a href="matlab:edit gridMetadata">edit the gridMetadata class file</a>';
+error(id, ['The gridfile already defines every dimension recognized by ',...
+    'the DASH toolbox. If you want to add more dimensions to DASH, you will ',...
+    'need to %s.\n\ngridfile: %s'], link, obj.file);
+end
+function[] = metadataRowsError(dim, nRows, gridFile, header)
+id = sprintf('%s:wrongNumberOfMetadataRows', header);
+error(id, ['The metadata for the new "%s" dimension must have a single row, ',...
+    'but it has %.f rows instead.\n\ngridfile: %s'], dim, nRows, gridFile);
 end
