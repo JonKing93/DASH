@@ -15,9 +15,9 @@ function[dimensions, attributes] = dimensions
 % <a href="matlab:dash.doc('gridMetadata.dimensions')">Documentation Page</a>
 
 props = properties('gridMetadata');
-dimensions = string(props(1:end-1));
+dimensions = string(props(1:end-2));
 if nargout>1
-    attributes = string(props(end));
+    attributes = string(props(end-1));
 end
 
 end

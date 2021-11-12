@@ -18,7 +18,7 @@ end
 [~, uniqElements, locInX] = unique(X, rowsOption{:});
 
 % If the set is unique, it passes and there are no repeats
-if numel(uniqueElements) == nEls
+if numel(uniqElements) == nEls
     tf = true;
     repeat = [];
     

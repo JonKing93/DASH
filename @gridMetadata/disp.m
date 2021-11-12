@@ -28,11 +28,14 @@ if ~isscalar(obj)
 end
 
 % Collect the dimension and attribute names
-props = string(properties(obj));
-dims = props(1:end-1);
-atts = props(end);
+[~, atts] = obj.dimensions;
+if ~isempty(obj.order)
+    dims = obj.order;
+else
+    dims = obj.defined;
+end
 
-% Collect the dimensions with metadata in a structure
+% Collect the defined dimensions in a structure
 empty = true;
 display = struct();
 for d = 1:numel(dims)

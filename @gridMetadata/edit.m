@@ -36,6 +36,10 @@ valid = [dims; atts];
 d = dash.assert.strsInList(names, valid, 'Dimension name', 'recognized dimension', header);
 dash.assert.uniqueSet(names, 'Dimension name', header);
 
+% Track whether to reset the dimension order
+isdefined = ismember(names, obj.defined);
+resetOrder = false;
+
 % Cycle through input dimensions
 for k = 1:numel(names)
     index = d(k);
@@ -43,16 +47,29 @@ for k = 1:numel(names)
     
     % Check metadata is valid
     if index < numel(dims)
-        metadata{k} = gridMetadata.assertSomething(metadata{k}, dim, header);
+        metadata{k} = gridMetadata.assertField(metadata{k}, dim, header);
         if isrow(metadata{k}) && ~isscalar(metadata{k})
             metadataRowWarning(dim, header);
         end
+        
+        % Reset dimension order if defined dimensions change
+        empty = isempty(metadata{k});
+        if (~isdefined(k) && ~empty) || (isdefined(k) && empty)
+            resetOrder = true;
+        end
+        
+    % Check attributes are valid
     else
         metadata{k} = dash.assert.scalarType(metadata, 'struct', 'attributes', header);
     end
     
     % Update the dimension
     obj.(dim) = metadata{k};
+end
+
+% Optionally reset dimension order
+if resetOrder
+    obj = obj.setOrder(0);
 end
 
 end

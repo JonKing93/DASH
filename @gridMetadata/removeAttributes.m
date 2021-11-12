@@ -34,7 +34,7 @@ if numel(varargin)==0
 elseif numel(varargin)==1 && varargin{1}==0
     remove = fields;
 elseif numel(varargin)==1
-    remove = dash.assert.strlist(varargin{1});
+    remove = dash.assert.strlist(varargin{1}, 'fields', header);
 else
     remove = dash.parse.vararginFlags(varargin, 1, 0, header);
 end

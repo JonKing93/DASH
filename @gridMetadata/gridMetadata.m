@@ -28,12 +28,29 @@ classdef gridMetadata
         %% Non-dimensional properties
         
         attributes = struct();  % Non-dimensional metadata attributes
-        order;                  % The order of dimensions in a gridded array
+        order = strings(1,0);                  % The order of dimensions in a gridded array
     end
 
     methods       
         
         % Properties / dimensions
+        obj = edit(obj, varargin);
+        dims = defined(obj);
+        obj = setOrder(obj, varargin);
+        
+        % Console display
+        disp(obj);
+        dispAttributes(obj);
+        
+        % Attribute manipulation
+        obj = addAttributes(obj, varargin);
+        obj = removeAttributes(obj, varargin);
+        obj = editAttributes(obj, varargin);
+        
+        % Test uniqueness
+        assertUnique(obj, header);
+        
+        % Constructor
         function[obj] = gridMetadata(varargin)
         %% gridMetadata.gridMetadata  Creates a new gridMetadata object
         % ----------
@@ -73,30 +90,11 @@ classdef gridMetadata
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
         obj = obj.edit(varargin{:});
         end
-        
-        obj = edit(obj, varargin);
-        dims = defined(obj);
-        
-        % Console display
-        disp(obj);
-        dispAttributes(obj);
-        
-        % Attribute manipulation
-        obj = addAttributes(obj, varargin);
-        obj = removeAttributes(obj, varargin);
-        obj = editAttributes(obj, varargin);
-        
-        % Test uniqueness
-        assertUnique(obj, header);
-        
     end
     
-    methods (Static)
-        
-        % Dimension names (configuration)
+    % Configuration - Dimension names and valid metadata fields
+    methods (Static)        
         [dims, atts] = dimensions;
-        
-        % Input error checking
         meta = assertField(meta, dim, idHeader);
     end
     
