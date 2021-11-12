@@ -6,9 +6,10 @@ function[meta] = assertField(meta, dim, idHeader)
 %   custom message and identifier. If so and the metadata is cellstring, 
 %   returns the  metadata as a string matrix.
 %
-%   Valid metadata fields matrices, have no duplicate rows, and are one
-%   of the following data type: numeric, logical, char, string, cellstring,
-%   or datetime.
+%   Valid metadata fields are matrices of one of the following data type:
+%   numeric, logical, char, string, cellstring, or datetime. If numeric,
+%   the metadata cannot have NaN values. If datetime, the metadata cannot
+%   have NaT values.
 % ----------
 %   Inputs:
 %       meta: The metadata input being tested
@@ -56,12 +57,6 @@ end
 % Convert cellstring to string
 if iscellstr(meta) %#ok<ISCLSTR>
     meta = string(meta);
-end
-
-% Duplicate rows
-if gridMetadata.hasDuplicateRows(meta)
-    id = sprintf('%s:metadataHasDuplicateRows', idHeader);
-    error(id, 'The "%s" metadata contains duplicate rows', dim);
 end
 
 end

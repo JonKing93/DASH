@@ -25,9 +25,10 @@ classdef gridMetadata
         
         %  ----- Stop adding dimensions after this line -----
         
-        %% Non-dimensional metadata attributes
-        % This should always be the last listed property.
-        attributes = struct();
+        %% Non-dimensional properties
+        
+        attributes = struct();  % Non-dimensional metadata attributes
+        order;                  % The order of dimensions in a gridded array
     end
 
     methods       
@@ -85,6 +86,9 @@ classdef gridMetadata
         obj = removeAttributes(obj, varargin);
         obj = editAttributes(obj, varargin);
         
+        % Test uniqueness
+        assertUnique(obj, header);
+        
     end
     
     methods (Static)
@@ -94,7 +98,6 @@ classdef gridMetadata
         
         % Input error checking
         meta = assertField(meta, dim, idHeader);
-        tf = hasDuplicateRows(meta);
     end
     
 end

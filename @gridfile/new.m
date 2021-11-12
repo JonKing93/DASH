@@ -33,7 +33,8 @@ header = "DASH:gridfile:new";
 
 % Error check
 filename = dash.assert.strflag(filename, 'filename', header);
-dash.assert.scalarType(metadata, 'gridMetadata', 'meta', header);
+dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
+metadata.assertUnique(header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
 filename = dash.file.new(filename, ".grid", overwrite, header);
 
