@@ -47,7 +47,7 @@ classdef gridMetadata
         obj = removeAttributes(obj, varargin);
         obj = editAttributes(obj, varargin);
         
-        % Test uniqueness
+        % Test metadata uniqueness
         assertUnique(obj, header);
         
         % Constructor

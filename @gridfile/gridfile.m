@@ -2,19 +2,23 @@ classdef gridfile < handle
     
     properties (SetAccess = private)
         
-        % Overall gridfile
+        %% General gridfile
+        % (Used to define the N-dimensional grid and its location)
+        
         file = strings(0,1);            % The absolute path to the .grid file
         dims = strings(1,0);            % The gridfile dimensions
         size = NaN(1,0);                % The size of each gridfile dimension
         meta;                           % Dimensional metadata and attributes
         
-        % Default transformations 
+        %% Default data adjustments 
+        
         fill = NaN;                     % Default fill value
         range = [-Inf, Inf];            % Default valid range
         transform_ = "none";            % Default data transformation
-        transform_params = [NaN, NaN];  % Data transformation parameters
+        transform_params = [NaN, NaN];  % Default data transformation parameters
         
-        % Data sources
+        %% Data sources
+        
         nSource = 0;                     % The number of data sources in the gridfile
         dimLimit = NaN(0,2,0);           % The limits of each data source in the gridfile dimensions
         relativePath = true;             % Whether to save data source file paths relative to the gridfile
@@ -44,22 +48,17 @@ classdef gridfile < handle
         rename(obj, sources, newNames);
         absolutePath(obj, useAbsolute, sources);
         
-        % Data transformations
+        % Data adjustments
         fill = fillValue(obj, fill, sources);
         range = validRange(obj, range, sources);
         [transform, parameters] = transform(obj, type, params, sources);
         
         % Load
+        [X, meta] = load(obj, dimensions, indices)
         loadIndices = getLoadIndices(obj, userDims, userIndices);
         s = sourcesForLoad(obj, loadIndices);
         [dataSources, failed, causes] = buildSources(obj, s);
-        [X, meta] = load(obj, dimensions, indices);
-        [X, meta] = loadInternal(obj, userDims, loadIndices, dataSources);
-        
-        
-        
-        dataSources = review(obj);
-        [X, meta, sources] = repeatedLoad(obj, userDimOrder, userIndices, sources);
+        [X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources);        
         
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);

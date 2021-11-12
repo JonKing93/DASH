@@ -50,61 +50,55 @@ function[X, meta] = load(obj, dimensions, indices)
 %
 % <a href="matlab:dash.doc('gridfile.load')">Documentation Page</a>
 
+% Note: This function is mostly an error checker for user load requests.
+% The workhorse function for 
+
 % Setup
 obj.update;
 header = "DASH:gridfile:load";
 
-% Default is all dimensions
+% Parse and error check dimensions
 if ~exist('dimensions','var') || isempty(dimensions)
-    outputOrder = [];
-    
-% Otherwise, error check dimensions
+    userDimOrder = [];
 else
-    dims = dash.assert.strlist(dimensions, 'dimensions');
-    dimsName = sprintf('dimension in gridfile "%s"', obj.name);
-    [~, outputOrder] = dash.assert.strsInList(dims, obj.dims, 'dimensions', dimsName, header);
-    nDims = numel(dims);
+    dims = dash.assert.strlist(dimensions, 'dimensions', header);
+    listName = sprintf('dimension in gridfile "%s"', obj.name);
+    userDimOrder = dash.assert.strsInList(dims, obj.dims, 'Dimension name', listName, header);
+    dash.assert.uniqueSet(dims, 'Dimension name', header);
+end
+nDims = numel(userDimOrder);
     
-    % No duplicate names
-    if nDims < numel(unique(outputOrder))
-        duplicateDimensionError(obj, outputOrder, header);
+% Parse the overall collection of indices
+if ~exist('indices','var') || isempty(indices)
+    indices = cell(1, nDims);
+end
+name = 'indices';
+[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
+
+% Error check indices for each dimension
+for k = 1:nDims
+    d = userDimOrder(k);
+    dim = obj.dims(d);
+    
+    if wasCell
+        name = sprintf('Element %.f of indices', k);
     end
+    lengthName = sprintf('the length of the "%s" dimension', dim);
+    
+    indices{k} = dash.assert.indices(indices{k}, dim, name, lengthName, [], header);
 end
 
-% Default indices is an empty array
-if ~exist('indices','var') || isempty(indices)
-    indices = cell(nDims, 1);
-    
-% Otherwise, error check indices cell
-else
-    name = 'indices';
-    [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
-    
-    % Then check indices for each dimension
-    for k = 1:nDims
-        d = outputOrder(k);
-        dim = obj.dims(d);
-        if wasCell
-            name = sprintf('Element %.f of indices', k);
-        end
-        lengthName = sprintf('the length of the "%s" dimension', dim);
-        indices{k} = dash.assert.indices(indices{k}, obj.dims(d), ...
-            name, lengthName, [], header);
-    end
+% Get load indices and build required data sources
+loadIndices = obj.getLoadIndices(userDimOrder, indices);
+s = obj.sourcesForLoad(loadIndices);
+[dataSources, failed, cause] = obj.buildSources(s);
+
+% Informative error if any data sources failed
+if any(failed)
+    dataSourceFailedError(cause);
 end
 
 % Load the values
-[X, meta] = obj.repeatedLoad(outputOrder, indices);
+[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources);
 
-end
-
-% Error message
-function[] = duplicateDimensionError(obj, outputOrder, header)
-inputDims = 1:numel(outputOrder);
-[~, iUnique] = unique(outputOrder);
-repeated = find(~ismember(inputDims, iUnique), 1);
-repeated = obj.dims(outputOrder(repeated));
-
-id = sprintf('%s:repeatedDimension', header);
-error(id, 'Dimension name "%s" is provided multiple times', repeated);
 end
