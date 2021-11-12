@@ -44,8 +44,9 @@ else
             dim, newSize, oldSize, obj.name);
     end
     
-    % Update metadata
+    % Require unique metadata rows
     obj.meta = obj.meta.edit(dim, metadata);
+    obj.meta.assertUnique(dim, header);
 end
 
 % Save changes

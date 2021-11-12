@@ -35,7 +35,7 @@ d = dash.assert.strsInList(dim, obj.dims, 'dimension', dimsName, header);
 
 % Get the existing metadata and metadata field sizes
 oldMeta = obj.meta.(dim);
-nOldCols = size(oldMeta,2);
+[nOldRows, nOldCols] = size(oldMeta);
 [nNewRows, nNewCols] = size(metadata);
 
 % Test data types
@@ -61,9 +61,13 @@ end
 try
     metadata = cat(1, oldMeta, metadata);
 catch
-    id = sprintf('%s:couldNotAppend', header);
-    error(id, ['Could not append the new "%s" metadata to the existing ',...
-        'metadata.\n\ngridfile: %s'], dim, obj.file);
+    couldNotAppendError(dim, obj.file, header);
+end
+
+% Ensure the appended metadata has unique rows
+[areUnique, repeats] = dash.is.uniqueSet(metadata, true);
+if ~areUnique
+    duplicateRowsError(dim, repeats, nOldRows, obj.file, header);
 end
 
 % Error check / update metadata. Also update sizes
@@ -103,4 +107,31 @@ id = sprintf('%s:wrongNumberOfColumns', header);
 error(id, ['The number of columns in the new "%s" metadata (%.f) ',...
     'does not match the number of columns in the existing metadata ',...
     'for the dimension (%.f) in the gridfile.\n\ngridfile: %s'], dim, nNew, nOld, gridFile);
+end
+function[] = couldNotAppendError(dim, gridFile, header)
+id = sprintf('%s:couldNotAppend', header);
+error(id, ['Could not append the new "%s" metadata to the existing ',...
+    'metadata.\n\ngridfile: %s'], dim, gridFile);
+end
+function[] = duplicateRowsError(dim, repeats, nOldRows, gridFile, header)
+
+inold = any(repeats<=nOldRows);
+id = sprintf('%s:duplicateMetadataRows', header);
+
+% Duplicates are exclusively in new metadata
+if ~inold
+    repeats = repeats - nOldRows;
+    error(id, 'The new "%s" metadata has duplicate rows. (Rows %s)\n\ngridfile: %s',...
+        dim, dash.string.list(repeats), gridFile);
+    
+% New metadata duplicates old metadata
+else
+    oldRow = find( repeats<=nOldRows, 1);
+    oldRow = repeats(oldRow);
+    newRow = find(repeats>nOldRows, 1);
+    newRow = repeats(newRow) - nOldRows;
+    error(id, ['The new "%s" metadata duplicates rows in the existing metadata. ',...
+        '(New row %.f, Existing row %.f)\n\ngridfile: %s'], dim, newRow, oldRow, gridFile);
+end
+
 end
