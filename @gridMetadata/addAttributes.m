@@ -25,9 +25,10 @@ extraInfo = 'Inputs must be Attribute,Value pairs';
 dash.assert.uniqueSet(names, 'Attribute field', header);
 
 % Require valid field names
-isvalid = isvarname(names);
-if ~all(isvalid)
-    invalidFieldNameError(names, isvalid, header);
+for n = 1:numel(names)
+    if ~isvarname(names(n))
+        invalidFieldNameError(names(n), n, header);
+    end
 end
 
 % Get attributes structure
@@ -43,18 +44,17 @@ end
 
 % Add each new value to the attributes
 for n = 1:numel(names)
-    attributes.(name) = values{n};
+    attributes.(names(n)) = values{n};
 end
 obj.(atts) = attributes;
 
 end
 
-function[] = invalidFieldNameError(names, isvalid, header)
+function[] = invalidFieldNameError(name, index, header)
 id = sprintf('%s:invalidFieldName', header);
-invalid = find(~isvalid, 1);
-inputIndex = invalid*2-1;
+inputIndex = index*2-1;
 error(id, ['Input %.f ("%s") cannot be used as an attributes field because it ',...
-    'is not a valid Matlab variable name.'], inputIndex, names(invalid));
+    'is not a valid Matlab variable name.'], inputIndex, name);
 end
 function[] = repeatedFieldNameError(names, isfield, header)
 id = sprintf('%s:repeatedFieldName', header);

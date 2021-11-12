@@ -7,8 +7,7 @@ function[] = dispAttributes(obj)
 %
 % <a href="matlab:dash.doc('gridMetadata.dispAttributes')">Documentation Page</a>
 
-props = string(properties(obj));
-atts = props(end);
+[~, atts] = obj.dimensions;
 disp(obj.(atts));
 
 end
