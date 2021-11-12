@@ -5,6 +5,9 @@ function[obj] = removeAttributes(obj, varargin)
 %   obj = obj.removeAttributes(field1, field2, .., fieldN)
 %   Removes the listed fields from the metadata attributes of the current
 %   gridMetadata object.
+%
+%   obj = obj.removeAttributes(0)
+%   Removes all metadata attributes from the current gridMetadata object.
 % ----------
 %   Inputs:
 %       fields (string vector): A list of fields to remove from the
@@ -20,33 +23,27 @@ function[obj] = removeAttributes(obj, varargin)
 % Error ID header
 header = "DASH:gridMetadata:removeAttributes";
 
-% Get current field names
+% Get the attributes fields
 [~, atts] = gridMetadata.dimensions;
 attributes = obj.(atts);
 fields = string(fieldnames(attributes));
-listName = 'field in the attributes structure';
 
-% Require inputs
+% Parse the inputs
 if numel(varargin)==0
     error('MATLAB:minrhs', 'Not enough input arguments');
-
-% 1 input syntax
+elseif numel(varargin)==1 && varargin{1}==0
+    remove = fields;
 elseif numel(varargin)==1
     remove = dash.assert.strlist(varargin{1});
-    dash.assert.strsInList(remove, fields, 'fields', listName, header);
-    
-% Multiple inputs
 else
-    nArgs = numel(varargin);
-    remove = strings(nArgs, 1);
-    for v = 1:nArgs
-        inputName = sprintf('Input %.f', v);
-        remove(v) = dash.assert.strflag(varargin{v}, inputName, header);
-        dash.assert.strsInList(remove(v), fields, inputName, listName, header);
-    end
+    remove = dash.parse.vararginFlags(varargin, 1, 0, header);
 end
 
-% Remove the fields
+% Check the fields are in the attributes
+listName = 'field in the attributes structure';
+dash.assert.strsInList(remove, fields, 'Attribute name', listName, header);
+
+% Remove and update
 attributes = rmfield(attributes, remove);
 obj.(atts) = attributes;
 

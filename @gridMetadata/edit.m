@@ -23,52 +23,42 @@ function[obj] = edit(obj, varargin)
 %
 % <a href="matlab:dash.doc('gridMetadata.edit')">Documentation Page</a>
 
-% Header for error IDs
+% Error header
 header = "DASH:gridMetadata:edit";
 
-% Get the set of recognized dimensions and attributes. Track user input dimensions
+% Parse and error check dimension-value pairs
+extraInfo = 'Inputs must be Dimension,Metadata pairs.';
+[names, metadata] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+
+% Require recognized, non-duplicate dimension names
 [dims, atts] = gridMetadata.dimensions;
-recognized = [dims;atts];
-nNames = numel(recognized);
-isSet = false(nNames,1);
+valid = [dims; atts];
+d = dash.assert.strsInList(names, valid, 'Dimension name', 'recognized dimension', header);
+dash.assert.uniqueSet(names, 'Dimension name', header);
 
-% Require an even number of inputs
-nArgs = numel(varargin);
-if mod(nArgs, 2)~=0        
-    id = sprintf('%s:oddNumberOfInputs', header);
-    error(id, 'There must be an even number of inputs. (Inputs should be Name, Value pair arguments)');
-end
-
-% Check that the first argument in each pair is a valid dimension name
-for v = 1:2:nArgs-1
-    inputName = sprintf('Input %.f', v);
-    dim = dash.assert.strflag(varargin{v}, inputName, header);
-    n = dash.assert.strsInList(dim, recognized, inputName, 'recognized dimension name', header);
-
-    % Prevent duplicates
-    if isSet(n)
-        id = sprintf('%s:repeatedDimension', header);
-        error(id, 'Dimension name "%s" is listed multiple times', dim); 
-    end
-    isSet(n) = true;
+% Cycle through input dimensions
+for k = 1:numel(names)
+    index = d(k);
+    dim = dims(index);
     
-    % Require valid dimensional metadata. Warn about row vectors
-    metadata = varargin{v+1};
-    if n < numel(recognized)
-        metadata = gridMetadata.assertField(metadata, dim, header);
-        if isrow(metadata) && ~isscalar(metadata)
-            id = sprintf('%s:metadataFieldIsRow', header);
-            warning(id, ['The %s metadata is a row vector and will be used for ',...
-                'a single element along the dimension'], dim);
+    % Check metadata is valid
+    if index < numel(dims)
+        metadata{k} = gridMetadata.assertSomething(metadata{k}, dim, header);
+        if isrow(metadata{k}) && ~isscalar(metadata{k})
+            metadataRowWarning(dim, header);
         end
-
-    % Require valid non-dimensional attributes.
     else
-        dash.assert.scalarType(metadata, 'struct', 'attributes', header);
+        metadata{k} = dash.assert.scalarType(metadata, 'struct', 'attributes', header);
     end
-
-    % Update object
-    obj.(dim) = metadata;
+    
+    % Update the dimension
+    obj.(dim) = metadata{k};
 end
 
+end
+
+function[] = metadataRowWarning(dim, header)
+id = sprintf('%s:metadataFieldIsRow', header);
+warning(id, ['The %s metadata is a row vector and will be used for ',...
+    'a single element along the dimension'], dim);
 end

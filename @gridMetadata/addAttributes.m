@@ -19,41 +19,47 @@ function[obj] = addAttributes(obj, varargin)
 % Header for error IDs
 header = "DASH:gridMetadata:addAttributes";
 
-% Require an even number of inputs
-nArgs = numel(varargin);
-if mod(nArgs,2)~=0
-    id = sprintf('%s:oddNumberOfInputs', header);
-    error(id, 'There must be an even number of inputs. (Inputs should be fieldname, value pairs)');
+% Parse and error check input pairs
+extraInfo = 'Inputs must be Attribute,Value pairs';
+[names, values] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+dash.assert.uniqueSet(names, 'Attribute field', header);
+
+% Require valid field names
+isvalid = isvarname(names);
+if ~all(isvalid)
+    invalidFieldNameError(names, isvalid, header);
 end
 
-% Get the attributes structure and field names
+% Get attributes structure
 [~, atts] = gridMetadata.dimensions;
 attributes = obj.(atts);
-fields = string(fieldnames(attributes));
 
-% Get the new field name for each Name,Value pair
-for v = 1:2:nArgs-1
-    inputName = sprintf('Input %.f', v);
-    name = dash.assert.strflag(varargin{v}, inputName, header);
-    
-    % Require valid Matlab variable name
-    if ~isvarname(name)
-        id = sprintf('%s:invalidFieldName', header);
-        error(id, ['"%s" cannot be used as an attributes field ',...
-        'because it is not a valid Matlab variable name.'], name)
-    
-    % Prevent duplicate fields
-    elseif ismember(name, fields)
-        id = sprintf('%s:duplicateFieldName', header);
-        error(id, '"%s" is already a field in the attributes', name);
-    end
-    
-    % Add to the structure
-    attributes.(name) = varargin{v+1};
-    fields = cat(1, fields, name);
+% Prevent repeated fields
+fields = string(fieldnames(attributes));
+isfield = ismember(names, fields);
+if any(isfield)
+    repeatedFieldNameError(names, isfield, header);
+end
+
+% Add each new value to the attributes
+for n = 1:numel(names)
+    attributes.(name) = values{n};
 end
 obj.(atts) = attributes;
 
 end
-    
-    
+
+function[] = invalidFieldNameError(names, isvalid, header)
+id = sprintf('%s:invalidFieldName', header);
+invalid = find(~isvalid, 1);
+inputIndex = invalid*2-1;
+error(id, ['Input %.f ("%s") cannot be used as an attributes field because it ',...
+    'is not a valid Matlab variable name.'], inputIndex, names(invalid));
+end
+function[] = repeatedFieldNameError(names, isfield, header)
+id = sprintf('%s:repeatedFieldName', header);
+repeat = find(isfield, 1);
+inputIndex = repeat*2-1;
+error(id, 'Input %.f ("%s") is already a field in the attributes', ...
+    inputIndex, names(repeat));
+end
