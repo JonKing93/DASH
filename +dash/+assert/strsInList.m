@@ -48,18 +48,16 @@ end
 if ~all(inList)
     bad = find(~inList, 1);
     
-    % Reference the variable or element of strings by name
-    if numel(strings)==1
-        badName = name;
-    else
-        badName = sprintf('Element %.f in %s', bad, name);
+    % Include bad index if there are multiple elements
+    if numel(strings)>1
+        name = sprintf('%s %.f', name, bad);
     end
     
     % Error message
     id = sprintf('%s:stringNotInList', idHeader);
     allowed = dash.string.list(list);
     error(id, '%s ("%s") is not a(n) %s. Allowed values are %s.',...
-        badName, strings(bad), listName, allowed);
+        name, strings(bad), listName, allowed);
 end
 
 end

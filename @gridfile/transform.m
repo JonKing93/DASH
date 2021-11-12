@@ -121,7 +121,7 @@ assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
 type = dash.assert.strflag(type, 'First input (transformation type)', header);
 type = lower(type);
 validTypes = ["ln","log","exp","power","plus","times","linear","none"];
-dash.assert.strsInList(type, validTypes, 'The first input (transformation type)',...
+dash.assert.strsInList(type, validTypes, 'The first input',...
     'recognized transformation type', header);
 
 % Error check and parse parameters
