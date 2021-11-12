@@ -75,7 +75,7 @@ dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
 % Check dimensions are recognized
 valid = gridMetadata.dimensions;
 dimensions = dash.assert.strlist(dimensions);
-dash.assert.strsInList(dimensions, valid, 'dimensions', 'recognized dimension', header);
+dash.assert.strsInList(dimensions, valid, 'Dimension name', 'recognized dimension', header);
 
 % Get lists of dimensions and sizes
 listedDims = dimensions;                 % dimensions listed by user in function call

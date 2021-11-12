@@ -1,9 +1,12 @@
 function[varargout] = inputs( inputs, flags, defaults, nPrev )
 %% dash.parse.inputs  Parses inputs for flag-value input pairs. 
 % ----------
-%   values = dash.parse.inputs(inputs, flags, defaults, nPrev)
+%   values = dash.parse.inputs(inputs, flags, defaults)
 %   Parses a set of inputs given a set of input string flags. If a flag is
-%   not passed to a function, returns a default value.
+%   not passed to a function, returns a default value. Throw error if
+%   inputs are not recognized Name,Value pairs.
+%
+%   values = dash.parse.inputs(inputs, flags, defaults, 
 % ----------
 %   Inputs:
 %       inputs (cell vector [nInputs]): A set of Name-Value input paris.
