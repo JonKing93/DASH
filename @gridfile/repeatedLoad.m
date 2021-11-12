@@ -71,7 +71,6 @@ useSource = find( ~tooLow & ~tooHigh );
 for k = 1:numel(useSource)
     s = useSource(k);
     [sourceDims, siz, mergedDims, ~, mergeKey] = obj.sources_.unpack(s);
-    nSourceDims = numel(sourceDims);
     
     % Get a data source object to load data for each source. Build the
     % object if not provided.
