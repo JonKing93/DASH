@@ -1,7 +1,32 @@
 function[dataSources, failed, causes] = buildSources(obj, s)
+%% gridfile.buildSources  Build dataSources for a gridfile load
+% ----------
+%   [dataSources, failed, causes] = obj.buildSources(s)
+%   Builds the dataSource objects for the specified sources. Does not throw
+%   errors if a data source fails to build or does not match the gridfile's
+%   values for the source. Instead, reports which sources failed and
+%   returns the error stack for failed sources.
+% ----------
+%   Inputs:
+%       s (vector, linear indices): The indices of the data sources in the
+%           gridfile for which to build a dataSource object.
+%
+%   Outputs:
+%       dataSources (cell vector [nSources] {scalar dataSource object}):
+%           dataSource objects for the specified sources. If a data source
+%           fails to build, the corresponding element will be empty.
+%       failed (logical vector [nSources]): Indicates whether each data
+%           source failed to build/match gridfile values (true), or built
+%           successfully and matches recorded values (false)
+%       causes (cell vector [nSources] {scalar MException}): The error
+%           stack indicating the cause of the failed data source build. If
+%           a data source builds successfully, the corresponding element
+%           will be empty.
+%
+% <a href="matlab:dash.doc('gridfile.buildSources')">Documentation Page</a>
 
 %% Note!!
-% This should remain separate from "sourcesForLoad" so that can index to
+% This should remain separate from "sourcesForLoad" so that stateVector can index to
 % pre-built/failed sources without rebuilding sources on each level
 
 % Preallocate

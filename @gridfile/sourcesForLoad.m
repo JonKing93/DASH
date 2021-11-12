@@ -1,5 +1,22 @@
 function[s] = sourcesForLoad(obj, loadIndices)
-% loadIndices are in the order of the gridfile dimensions
+%% gridfile.sourcesForLoad  Return the indices of data sources needed to load requested data
+% ----------
+%   s = obj.sourcesForLoad(loadIndices)
+%   Returns the indices of the gridfile data sources that are required to
+%   implement a load operation.
+% ----------
+%   Inputs:
+%       loadIndices (cell vector [nDims] {linear indices}): The indices of
+%           data elements that are requested for a load operation. Should
+%           have one element per dimension in the gridfile. The order of
+%           dimensions should match the order of dimensions in the
+%           gridfile.
+%
+%   Outputs:
+%       s (vector, linear indices): The indices of data sources that are
+%           required in order to load the requested data.
+%
+% <a href="matlab:dash.doc('gridfile.sourcesForLoad')">Documentation Page</a>
 
 % Preallocate 
 nSource = obj.nSource;

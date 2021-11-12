@@ -51,7 +51,7 @@ function[X, meta] = load(obj, dimensions, indices)
 % <a href="matlab:dash.doc('gridfile.load')">Documentation Page</a>
 
 % Note: This function is mostly an error checker for user load requests.
-% The workhorse function for 
+% The workhorse function for actually loading data is loadInternal
 
 % Setup
 obj.update;

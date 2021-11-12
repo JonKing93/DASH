@@ -1,5 +1,29 @@
 function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources)
- 
+%% gridfile.loadInternal  Load gridfile data from pre-built dataSource objects
+% ----------
+%   [X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources)
+%   Returns a loaded output array and associated metadata given load
+%   parameters and pre-built dataSource objects.
+% ----------
+%   Inputs:
+%       userDimOrder (vector, linear indices [nUserDims]): The locations of the
+%           user-requested output dimensions in the full set of gridfile dimensions.
+%       loadIndices (cell vector [nGridDims] {vector, linear indices}): The
+%           elements along each gridfile dimension that are required to
+%           implement the load operation. Includes all gridfile dimensions
+%           in the gridfile's dimension order.
+%       s (vector, linear indices [nSource]): The indices of data sources that are
+%           required in order to load the requested data.
+%       dataSources (cell vector [nSources] {scalar dataSource object}):
+%           dataSource objects for the data sources at the specified
+%           indices.
+%
+%   Outputs:
+%       X: The loaded data array
+%       meta (scalar gridMetadata object): Metadata for the loaded array.
+%
+% <a href="matlab:dash.doc('gridfile.loadInternal')">Documentation Page</a>
+
 % Get the full output order
 nDims = numel(obj.dims);
 allDims = 1:nDims;
@@ -15,6 +39,7 @@ for k = 1:nDims
     metaValues = meta.(dim)(loadIndices{d}, :);
     meta = meta.edit(dim, metaValues);
 end
+meta = meta.setOrder(outputDims);
 
 % Get the size of the output array
 outputSize = NaN(1, nDims);
