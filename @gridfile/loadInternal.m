@@ -64,31 +64,66 @@ function[Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrde
 
 % Get values for the data source. Check whether output dimensions are
 % defined in the source's merged dimensions
-[~, sourceSize, mergedDims, ~, mergeKey] = obj.sources_.unpack(s);
+[unmergedDims, unmergedSize, mergedDims, ~, mergeKey] = obj.sources_.unpack(s);
 dimLimit = obj.dimLimit(:,:,s);
 [isMergedDim, indexInMergedDims] = ismember(outputDims, mergedDims);
 
-% Get 1. location of data in source, and 2. location of data in output array
-[sourceIndices, outputIndices] = sourceOutputIndices(...
-    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, loadIndices, sourceSize, mergeKey);
+% 1. Data elements to load from the source (a superset of requested data)
+% 2. Data elements to keep from the loaded data (requested within loaded superset)
+% 3. Location of kept elements within the output array
+[sourceIndices, keepIndices, outputIndices] = buildIndices(...
+    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, loadIndices, unmergedSize, mergeKey);
 
-% Load data. Apply fill, range, transform. Permute to match output array
+% Load data (superset) from source. Permute to match output dimensions.
+% Merge source dimensions. Remove unrequested data from the loaded superset
 Xsource = dataSource.load(sourceIndices);
+Xsource = permuteMergeSource(Xsource, unmergedDims, mergedDims, outputDims, ...
+                                 isMergedDim, indexInMergedDims, mergeKey);
+Xsource = Xsource(keepIndices{:});
+
+% Apply fill value, valid range, data transform
 Xsource = dataAdjustments(Xsource, obj, s);
-Xsource = permuteSource(Xsource, outputDims, mergedDims, isMergedDim, indexInMergedDims);
 
 end
-function[sourceIndices, outputIndices] = sourceOutputIndices(...
-    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, loadIndices, sourceSize, mergeKey)
+function[sourceIndices, keepIndices, outputIndices] = buildIndices(...
+    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, gridIndices, unmergedSourceSize, mergeKey)
 
-% Preallocate
-nSourceDims = numel(sourceSize);
+%% Preallocate / indices overview
+
+% gridIndices
+% These identify data elements within the overall gridfile. Each set of
+% indices specifies the data elements that need to be loaded along one
+% gridfile dimension. 
+... (Passed as an input)
+
+% sourceIndices
+% These identify data elements within the unmerged data source. Each set of
+% indices specifies which data elements should be loaded along an unmerged 
+% data source dimension. Because of merging, this loaded data will be a
+% superset of the requested data.
+nUnmerged = numel(unmergedSourceSize);
+sourceIndices = repmat({1}, 1, nUnmerged);
+
+% keepIndices
+% These identify data elements within the merged, loaded data from the
+% source. Each set of indices specifies which data elements to retain along
+% a merged dimension of loaded data. (The unmerged loaded data is a
+% superset of the requested merged data, and these indices isolate the
+% requested data within the superset.) Note that merging occurs after the
+% loaded data is permuted to match output dimensions. So keepIndices is in
+% the order of the output dimensions.
 nOutputDims = numel(outputDimOrder);
-sourceIndices = repmat({1}, 1, nSourceDims);
+keepIndices = repmat({':'}, 1, nOutputDims);
+
+% outputIndices
+% These identify data elements within the returned output array. Each set
+% of indices specifies the location of the final loaded data from a source
+% along a merged dimension in the output array.
+nOutputDims = numel(outputDimOrder);
 outputIndices = cell(1, nOutputDims);
 
-% In the next steps, we will fill the source and output indices.
-%
+%% Build indices
+
 % Notes:
 % 1. Every gridfile dimension is in the output array
 % 2. Some grid dimensions may not be in the merged data source
@@ -96,35 +131,94 @@ outputIndices = cell(1, nOutputDims);
 
 % Cycle through output dimensions. Get the source's indices along the
 % dimension within the overall gridfile
-for k = 1:ndims
+for k = 1:nOutputDims
     d = outputDimOrder(k);
     dimIndices = dimLimit(d,1):dimLimit(d,2);
     
     % If the dimension is not in the merge map, it is an undefined
-    % singleton. If defined, determine which elements to load.
+    % singleton. Otherwise, determine which elements to load.
     if ~isMergedDim(k)
-        locsInMergedSource = 1;            
+        requestedLocsInMergedSource = 1;            
     else
         m = indexInMergedDims(k);
-        [toload, locsInMergedSource] = ismember(loadIndices{k}, dimIndices);
-        locsInMergedSource = locsInMergedSource(toload);
+        [toload, requestedLocsInMergedSource] = ismember(gridIndices{d}, dimIndices);
+        requestedLocsInMergedSource = requestedLocsInMergedSource(toload);
         
-        % If the merged dimension consists of a single unmerged dimension,
-        % load it directly from the source. Otherwise, unmerge the output
-        % dimension to get unmerged source dimension indices.
-        merged = mergeKey==m;
-        if sum(merged)==1
-            sourceIndices{merged} = locsInMergedSource;                
+        % Check if the dimension consists of multiple unmerged source
+        % dimensions
+        unmergedDims = find(mergeKey==m);
+        nUnmerged = numel(unmergedDims);
+        
+        % If there are multiple unmerged dimensions, get the unmerged source dimension indices
+        if nUnmerged>1
+            unmergedSize = unmergedSourceSize(unmergedDims);
+            [sourceIndices{unmergedDims}] = ind2sub(unmergedSize, requestedLocsInMergedSource);
+            
+            % Only load unique unmerged indices. This may be a superset of
+            % the requested data. Note which elements to retain after merging
+            for u = 1:nUnmerged
+                sourceIndices{unmergedDims(u)} = unique(sourceIndices{unmergedDims(u)});
+            end
+            loadedSubsInMergedSource = cell(1, nUnmerged);
+            [loadedSubsInMergedSource{:}] = ndgrid(sourceIndices{unmergedDims});
+            loadedLocsInMergedSource = sub2ind(unmergedSize, loadedSubsInMergedSource{:});
+            [~, keepIndices{k}] = ismember(requestedLocsInMergedSource, loadedLocsInMergedSource);
+            
+        % If a single unmerged dimension, just load directly
         else
-            unmergedSize = sourceSize(merged);
-            [sourceIndices{merged}] = ind2sub(unmergedSize, locsInMergedSource);
+            sourceIndices{unmergedDims} = requestedLocsInMergedSource;
         end
     end
     
     % Locate source data in the output array
-    gridIndicesThatWereLoaded = dimIndices(locsInMergedSource);
-    [~, outputIndices{k}] = ismember(gridIndicesThatWereLoaded, loadIndices{k});
+    gridIndicesThatWereLoaded = dimIndices(requestedLocsInMergedSource);
+    [~, outputIndices{k}] = ismember(gridIndicesThatWereLoaded, gridIndices{d});
 end
+
+end
+function[Xsource] = permuteMergeSource(Xsource, unmergedDims, mergedDims, outputDims, isMergedDim, indexInMergedDims, mergeKey)
+
+% Track the order of all output dimensions in the source
+notInSource = ~ismember(outputDims, mergedDims);
+sourceDims = [unmergedDims, outputDims(notInSource)];
+nSourceDims = numel(sourceDims);
+order = 1:nSourceDims;
+
+% Also track the size of the source in all dimensions
+sizes = size(Xsource);
+sizes(nSourceDims+1:end)=[];
+sizes = [sizes, ones(1,nSourceDims-numel(sizes))];
+
+% Track how to reorder and merge the output dimensions
+reorder = [];
+resize = [];
+for k = 1:numel(outputDims)
+    
+    % If an output dimension is defined in the source's merged dimensions,
+    % it could consist of multiple unmerged dimensions. Use the merge key
+    % to locate the unmerged dimensions.
+    if isMergedDim(k)
+        m = indexInMergedDims(k);
+        dim = mergeKey==m;
+        
+    % If an output dimension is not defined in the source, it's a singleton
+    % dimension (trailing). Locate in the full list of source dimensions
+    else
+        dim = strcmp(outputDims(k), sourceDims);
+    end
+    
+    % Add to the order and size
+    reorder = [reorder, order(dim)]; %#ok<AGROW>
+    resize = [resize, prod(sizes(dim))]; %#ok<AGROW>
+end
+
+% Move undefined singleton dimensions to the end
+undefined = ~ismember(sourceDims, outputDims);
+reorder = [reorder, order(undefined)];
+
+% Permute to match output array. Reshape to merge dimensions
+Xsource = permute(Xsource, reorder);
+Xsource = reshape(Xsource, resize);
 
 end
 function[Xsource] = dataAdjustments(Xsource, obj, s)
@@ -164,46 +258,5 @@ if ~strcmp(transform, 'none')
         error('Unrecognized transformation');
     end
 end
-
-end
-function[Xsource] = permuteSource(Xsource, outputDims, mergedDims, isMergedDim, indexInMergedDims)
-
-% Track the order of all output dimensions in the source
-notInSource = ~ismember(outputDims, mergedDims);
-sourceDims = [mergedDims, outputDims(notInSource)];
-nSourceDims = numel(sourceDims);
-order = 1:nSourceDims;
-
-% Also track the size of the source in all dimensions
-sizes = size(Xsource);
-sizes(nSourceDims+1:end)=[];
-sizes = [sizes, ones(1,nSourceDims-numel(sizes))];
-
-% Track how to reshape and reorder to the output dimensions
-reorder = [];
-resize = [];
-for k = 1:nDims
-    
-    % Dimensions defined in the source are in the merge key. Anything
-    % else can be found in the source dimension list
-    if isMergedDim(k)
-        m = indexInMergedDims(k);
-        dim = mergeKey==m;
-    else
-        dim = strcmp(outputDims(k), sourceDims);
-    end
-    
-    % Add to the order and size
-    reorder = [reorder, order(dim)]; %#ok<AGROW>
-    resize = [resize, prod(sizes(dim))]; %#ok<AGROW>
-end
-
-% Move undefined singleton dimensions to the end
-undefined = ~ismember(sourceDims, outputDims);
-reorder = [reorder, order(undefined)];
-
-% Permute and reshape to match output array
-Xsource = permute(Xsource, reorder);
-Xsource = reshape(Xsource, resize);
 
 end

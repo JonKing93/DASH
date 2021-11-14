@@ -85,7 +85,7 @@ for k = 1:nDims
     end
     lengthName = sprintf('the length of the "%s" dimension', dim);
     
-    indices{k} = dash.assert.indices(indices{k}, dim, name, lengthName, [], header);
+    indices{k} = dash.assert.indices(indices{k}, obj.size(d), name, lengthName, [], header);
 end
 
 % Get load indices and build required data sources
