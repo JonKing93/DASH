@@ -37,6 +37,7 @@ classdef gridMetadata
         obj = edit(obj, varargin);
         dims = defined(obj);
         obj = setOrder(obj, varargin);
+        obj = index(obj, dimensions, indices, varargin);
         
         % Console display
         disp(obj);

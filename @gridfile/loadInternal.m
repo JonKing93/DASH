@@ -32,6 +32,9 @@ outputDimOrder = [userDimOrder, allDims(notInUserOrder)];
 outputDims = obj.dims(outputDimOrder);
 
 % Get the metadata for the output array
+meta = obj.meta.index(outputDims, loadIndices);
+meta = meta.setOrder(outputDims);
+
 meta = obj.meta;
 for k = 1:nDims
     d = outputDimOrder(k);

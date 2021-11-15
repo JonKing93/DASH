@@ -1,0 +1,79 @@
+function[obj] = index(obj, dimensions, indices, varargin)
+%% gridMetadata.index  Return dimensional metadata at specified indices
+% ----------
+%   obj = obj.index(dimensions, indices)
+%   Returns a gridMetadata object in which the metadata along the specified
+%   dimensions corresponds to the metadata at the associated indices.
+%   Indices are for the rows of metadata in the original gridMetadata
+%   object.
+%
+%   obj = obj.index(dimension1, indices1, dimension2, indices2, .., dimensionN, indicesN)
+%   Uses a Name,Value syntax to index dimensions.
+% ----------
+%   Inputs:
+%       dimensions (string vector [nDims]): The names of the dimensions
+%           that should be indexed. Can only include dimensions that are
+%           defined in the gridMetadata object.
+%       indices (cell vector [nDims] {vector, linear indices | logical vector [dimension length]}:
+%           The indices of metadata rows to return along the specified
+%           dimensions. Should be a cell vector with one cell per named
+%           dimension. Each cell holds a vector of indices for the
+%           associated dimension. Indices can either be a set of linear
+%           indices, or a logical vector the length of the dimension.
+%       dimensionN (string scalar): The name of a dimension to index
+%       indicesN (vector, linear indices | logical vector [dimension length]):
+%           The indices of the metadata rows to return along dimension N.
+%           Either a set of linear indices, or a logical vector the length
+%           of dimension N.
+% 
+%   Outputs:
+%       obj (gridMetadata object): The updated metadata. Has the indexed
+%           rows of metadata along the input dimensions.
+%
+% <a href="matlab:dash.doc('gridMetadata.index')">Documentation Page</a>
+
+% Error header
+header = "DASH:gridMetadata:index";
+
+% Parse and error check
+if numel(varargin)>0
+    varargin = [{dimensions}, {indices}, varargin];
+    extraInfo = 'Inputs must be Dimension-Name,Indices pairs.';
+    [dims, indices] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+else
+    dims = dash.assert.strflag(dimensions, 'dimensions', header);
+end
+
+% Require defined, non-duplicate dimensions
+defined = obj.defined;
+dash.assert.strsInList(dims, defined, 'Dimension name', 'dimension defined in the metadata', header);
+dash.assert.uniqueSet(dims, 'Dimension name', header);
+nDims = numel(dims);
+
+% Parse and error check indices
+name = 'indices';
+[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
+for d = 1:nDims
+    dim = dims(d);
+    if wasCell
+        name = sprintf('Indices for the "%s" dimension', dim);
+    end
+    lengthName = sprintf('the length of the "%s" dimension', dim);
+    length = size(obj.(dim),1);
+    indices{d} = dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+end
+
+% Build the collection of new metadata
+newMeta = cell(1, nDims);
+for d = 1:nDims
+    dim = dims(d);
+    meta = obj.(dim);
+    newMeta{d} = meta(indices{d},:);
+end
+
+% Update the object
+dims = cellstr(dims(:))';
+nameValue = [dims; newMeta];
+obj = obj.edit(nameValue{:});
+
+end
