@@ -1,7 +1,7 @@
 function[] = dispAttributes(obj)
 %% gridMetadata.dispAttributes  Display metadata attributes in the console
 % ----------
-%   obj.dispAttributes
+%   <strong>obj.dispAttributes</strong>
 %   Prints the metadata attributes to the console
 % ----------
 %

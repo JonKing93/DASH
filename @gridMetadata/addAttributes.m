@@ -1,7 +1,7 @@
 function[obj] = addAttributes(obj, varargin)
 %% gridMetadata.addAttributes  Add non-dimensional attributes to the metadata for a gridded dataset
 % ----------
-%   obj = obj.addAttributes(field1, value1, field2, value2, .., fieldN, valueN)
+%   obj = <strong>obj.addAttributes</strong>(field1, value1, field2, value2, .., fieldN, valueN)
 %   Adds the named fields and associated values to the attributes structure
 %   of a gridMetadata object.
 % ----------

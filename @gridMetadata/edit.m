@@ -1,10 +1,14 @@
 function[obj] = edit(obj, varargin)
 %% gridMetadata.edit  Edit the metadata for a gridded dataset
 % ----------
-%   obj = obj.edit(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
-%   Replace the metadata for the named dimensions with the specified values
+%   obj = <strong>obj.edit</strong>(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
+%   Replace the metadata for the named dimensions with the specified
+%   values. 
 %
-%   obj = obj.edit(..., 'attributes', attributes)
+%   If the gridMetadata has a set dimension order, and the defined
+%   dimensions change, also removes the dimension order from the object.
+%
+%   obj = <strong>obj.edit</strong>(..., 'attributes', attributes)
 %   Replace the non-dimensional attributes with the specified values
 % ----------
 %   Inputs:

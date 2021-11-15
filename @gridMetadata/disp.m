@@ -1,7 +1,7 @@
 function[] = disp(obj)
 %% gridMetadata.disp  Display gridMetadata object in console
 % ----------
-%   obj.disp
+%   <strong>obj.disp</strong>
 %   Displays the contents of a gridMetadata object to the console. Only
 %   lists dimensions with metadata. Only references attributes when
 %   attributes is not empty. If attributes has contents, creates a link to

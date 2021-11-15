@@ -1,13 +1,13 @@
 function[obj] = index(obj, dimensions, indices, varargin)
 %% gridMetadata.index  Return dimensional metadata at specified indices
 % ----------
-%   obj = obj.index(dimensions, indices)
+%   obj = <strong>obj.index</strong>(dimensions, indices)
 %   Returns a gridMetadata object in which the metadata along the specified
 %   dimensions corresponds to the metadata at the associated indices.
 %   Indices are for the rows of metadata in the original gridMetadata
 %   object.
 %
-%   obj = obj.index(dimension1, indices1, dimension2, indices2, .., dimensionN, indicesN)
+%   obj = <strong>obj.index</strong>(dimension1, indices1, dimension2, indices2, .., dimensionN, indicesN)
 %   Uses a Name,Value syntax to index dimensions.
 % ----------
 %   Inputs:

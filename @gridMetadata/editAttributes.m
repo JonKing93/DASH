@@ -1,7 +1,7 @@
 function[obj] = editAttributes(obj, varargin)
 %% gridMetadata.editAttributes  Replace non-dimensional attributes with new values
 % ----------
-%   obj = obj.editAttributes(attribute1, value1, attribute2, value2, .., attributeN, valueN)
+%   obj = <strong>obj.editAttributes</strong>(attribute1, value1, attribute2, value2, .., attributeN, valueN)
 %   Replaces the values of the named attributes with new values.
 % ----------
 %   Inputs:
