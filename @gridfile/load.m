@@ -67,26 +67,13 @@ else
     dash.assert.uniqueSet(dims, 'Dimension name', header);
 end
 nDims = numel(userDimOrder);
-    
-% Parse the overall collection of indices
+
+% Parse and error check indices
 if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
-name = 'indices';
-[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
-
-% Error check indices for each dimension
-for k = 1:nDims
-    d = userDimOrder(k);
-    dim = obj.dims(d);
-    
-    if wasCell
-        name = sprintf('Element %.f of indices', k);
-    end
-    lengthName = sprintf('the length of the "%s" dimension', dim);
-    
-    indices{k} = dash.assert.indices(indices{k}, obj.size(d), name, lengthName, [], header);
-end
+dimLengths = obj.size(userDimOrder);
+indices = dash.assert.indexCollection(indices, nDims, dimLengths, header);
 
 % Get load indices and build required data sources
 loadIndices = obj.getLoadIndices(userDimOrder, indices);

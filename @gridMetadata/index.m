@@ -51,24 +51,16 @@ dash.assert.uniqueSet(dims, 'Dimension name', header);
 nDims = numel(dims);
 
 % Parse and error check indices
-name = 'indices';
-[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
+dimLengths = NaN(1, nDims);
 for d = 1:nDims
-    dim = dims(d);
-    if wasCell
-        name = sprintf('Indices for the "%s" dimension', dim);
-    end
-    lengthName = sprintf('the length of the "%s" dimension', dim);
-    length = size(obj.(dim),1);
-    indices{d} = dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+    dimLengths(d) = size(obj.(dims(d)),1);
 end
+indices = dash.assert.indexCollection(indices, nDims, dimLengths, header);
 
-% Build the collection of new metadata
+% Build the indexed metadata
 newMeta = cell(1, nDims);
 for d = 1:nDims
-    dim = dims(d);
-    meta = obj.(dim);
-    newMeta{d} = meta(indices{d},:);
+    newMeta{d} = obj.(dims(d))(indices{d}, :);
 end
 
 % Update the object
