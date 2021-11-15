@@ -1,7 +1,7 @@
 function[dataSources, failed, causes] = buildSources(obj, s)
 %% gridfile.buildSources  Build dataSources for a gridfile load
 % ----------
-%   [dataSources, failed, causes] = obj.buildSources(s)
+%   [dataSources, failed, causes] = <strong>obj.buildSources</strong>(s)
 %   Builds the dataSource objects for the specified sources. Does not throw
 %   errors if a data source fails to build or does not match the gridfile's
 %   values for the source. Instead, reports which sources failed and

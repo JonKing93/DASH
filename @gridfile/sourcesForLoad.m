@@ -1,7 +1,7 @@
 function[s] = sourcesForLoad(obj, loadIndices)
 %% gridfile.sourcesForLoad  Return the indices of data sources needed to load requested data
 % ----------
-%   s = obj.sourcesForLoad(loadIndices)
+%   s = <strong>obj.sourcesForLoad</strong>(loadIndices)
 %   Returns the indices of the gridfile data sources that are required to
 %   implement a load operation.
 % ----------

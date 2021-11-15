@@ -1,7 +1,7 @@
 function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources)
 %% gridfile.loadInternal  Load requested data from pre-built dataSource objects
 % ----------
-%   [X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources)
+%   [X, meta] = <strong>obj.loadInternal</strong>(userDimOrder, loadIndices, s, dataSources)
 %   Returns a loaded output array and associated metadata given load
 %   parameters and pre-built dataSource objects.
 % ----------
@@ -35,15 +35,6 @@ outputDims = obj.dims(outputDimOrder);
 meta = obj.meta.index(outputDims, loadIndices);
 meta = meta.setOrder(outputDims);
 
-meta = obj.meta;
-for k = 1:nDims
-    d = outputDimOrder(k);
-    dim = obj.dims(d);
-    metaValues = meta.(dim)(loadIndices{d}, :);
-    meta = meta.edit(dim, metaValues);
-end
-meta = meta.setOrder(outputDims);
-
 % Get the size of the output array
 outputSize = NaN(1, nDims);
 for k = 1:nDims
@@ -62,8 +53,25 @@ end
 
 end
 
-% Utility subfunctions
+%% Utility subfunctions
+
 function[Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, s, dataSource)
+%% Loads data from a source
+%
+% Inputs:
+%   outputDims (string vector [nOutputDims): The ordered list of dimensions in the
+%       output array.
+%   outputDimOrder (vector, positive integers [nOutputDims]): The location
+%       of each output dimension in the set of gridfile dimensions
+%   loadIndices (cell vector [nGridDims] {vector, linear indices}): The
+%       indices to load along each gridfile dimension
+%   s (scalar positive integer): The index of the data source being loaded from
+%   dataSource (dataSource object): A dataSource object for the source file
+%
+% Outputs:
+%   Xsource: The data loaded from the source file
+%   outputIndices (cell vector [nOutputDims] {vector, linear indices}): The
+%       location of the loaded data in the output array.
 
 % Get values for the data source. Check whether output dimensions are
 % defined in the source's merged dimensions
@@ -90,6 +98,28 @@ Xsource = dataAdjustments(Xsource, obj, s);
 end
 function[sourceIndices, keepIndices, outputIndices] = buildIndices(...
     outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, gridIndices, unmergedSourceSize, mergeKey)
+%% Builds various sets of indices required to load data from a source
+%
+% Inputs:
+%   outputDimOrder (vector, positive integers [nOutputDims]): The location
+%       of each output dimension in the set of gridfile dimensions
+%   dimLimit (matrix, positive integers [nGridDims, 2]): The indices
+%       covered by the data source over each gridfile dimension
+%   isMergedDim (logical vector [nOutputDims]): Whether each output
+%       dimension is one of the data source's merged dimensions
+%   indexInMergedDims (vector, positive integers [nOutputDims]): The index
+%       of each output dimension in the data source's merged dimensions, or
+%       0 if the output dimension is not in the source's merged dimensions.
+%   gridIndices (cell vector [nGridDims] {vector, linear indices}): The
+%       requested indices along each gridfile dimension
+%   unmergedSourceSize (vector, positive integers [nUnmerged]): The size of
+%       each non-TS unmerged source dimension.
+%   mergeKey (vector, positive integers [nUnmerged]): Each element
+%       corresponds to an unmerged dimension. Each element holds the index
+%       of the merged dimension that contains the unmerged dimension.
+%
+% Outputs:
+%   See notes in overview
 
 %% Preallocate / indices overview
 
@@ -180,6 +210,24 @@ end
 
 end
 function[Xsource] = permuteMergeSource(Xsource, unmergedDims, mergedDims, outputDims, isMergedDim, indexInMergedDims, mergeKey)
+%% Permute source data to match output array and merge dimensions
+%
+% Inputs:
+%   Xsource: The loaded data
+%   unmergedDims (string vector): The list of the data source's unmerged dimensions
+%   mergedDims (string vector): List of merged dimensions
+%   outputDims (string vector): List of dimensions in the output array
+%   isMergedDim (logical vector [nOutputDims]): Whether each output
+%       dimension is in the list of data source merged dimensions
+%   indexInMergedDims (vector, positive integers [nOutputDims]): The index
+%       of each output dimension in the data source's merged dimensions, or
+%       0 if the output dimension is not in the source's merged dimensions.
+%   mergeKey (vector, positive integers [nUnmerged]): Each element
+%       corresponds to an unmerged dimension. Each element holds the index
+%       of the merged dimension that contains the unmerged dimension.
+%
+% Outputs:
+%   Xsource: The permuted, merged data
 
 % Track the order of all output dimensions in the source
 notInSource = ~ismember(outputDims, mergedDims);
@@ -225,6 +273,15 @@ Xsource = reshape(Xsource, resize);
 
 end
 function[Xsource] = dataAdjustments(Xsource, obj, s)
+%% Apply fill value, valid range, transform
+%
+% Inputs:
+%   Xsource: The loaded source data
+%   obj: gridfile object
+%   s: Index of the data souce
+%
+% Outputs:
+%   Xsource: Adjusted data
 
 % Fill value
 fill = obj.sources_.fill(s);
