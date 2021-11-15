@@ -1,4 +1,29 @@
 function[flags] = vararginFlags(inputs, spacing, nPrevious, header)
+%% dash.parse.vararginFlags  Parse flags from varargin
+% ----------
+%   flags = dash.parse.vararginFlags(inputs)
+%   Parses a cell vector of flags into a string vector. Throws error if any
+%   elements are not flags.
+%
+%   flags = dash.parse.vararginFlags(inputs, spacing)
+%   Parses a cell vector of values with flags beginning on the first
+%   element, and spaced with a given spacing.
+%
+%   flags = dash.parse.vararginFlags(inputs, spacing, nPrevious, header)
+%   Customize error messages and IDs.
+% ----------
+%   Inputs:
+%       inputs (cell vector): The varargin being parsed
+%       spacing (scalar positive integer): The spacing of flags along varargin
+%       nPrevious (scalar positive integer): The number of inputs before
+%           varargin in the calling function. (Ignoring object reference in
+%           class methods.
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       flags (string vector): The ordered list of flags.
+%
+% <a href="matlab:dash.doc('dash.parse.vararginFlags')">Documentation Page</a>
 
 % Defaults
 if ~exist('header','var') || isempty(header)

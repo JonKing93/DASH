@@ -1,4 +1,28 @@
 function[varargout] = nameValue(inputs, flags, defaults, nPrevious, header)
+%% dash.parse.nameValue  Parse flagged options from Name,Value pairs
+% ----------
+%   values = dash.parse.nameValue(inputs, flags, defaults)
+%   Parses a set of flagged options given Name,Value input pairs. If a flag
+%   is not provided, returns a specified default argument for the flag.
+%   Throws an error if any inputs are not Flag,Value pairs, or if any flags
+%   are repeated.
+%
+%   values = dash.parse.nameValue(inputs, flags, defaults, nPrevious, header)
+%   Customize error messages an IDs.
+% ----------
+%   Inputs:
+%       inputs (cell vector): A collection of name-value pairs. Usually
+%           varargin from a calling function
+%       flags (string vector [nFlags]): The list of recognized option flags
+%       defaults (cell vector [nFlags]): The default value for each flag
+%       nPrevious (scalar positive integer): The number of inputs before
+%           varargin in the calling function
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       values (cell vector [nFlags]): The parsed value for each flag
+%
+% <a href="matlab:dash.doc('dash.parse.nameValue')">Documentation Page</a>
 
 % Defaults
 if ~exist('nPrevious','var') || isempty(nPrevious)

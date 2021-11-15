@@ -1,4 +1,26 @@
 function[tf, repeat] = uniqueSet(X, rows)
+%% dash.is.uniqueSet  Test if input has repeated elements
+% ----------
+%   tf = dash.is.uniqueSet(X)
+%   Returns true if a vector contains repeated values. Otherwise, returns
+%   false.
+%
+%   tf = dash.is.uniqueSet(X, true)
+%   Returns true if a matrix contains repeated rows. Otherwise, returns
+%   false.
+%
+%   [tf, repeat] = dash.is.uniqueSet(...)
+%   Also returns the indices to the first set of repeated values.
+% ----------
+%   Inputs:
+%       X (vector | matrix): The input being tested
+%       
+%   Outputs:
+%       tf (scalar logical): True if X has repeated values. Otherwise, false
+%       repeat (vector, linear indices): The indices of the first set of
+%           repeated values.
+%
+% <a href="matlab:dash.doc('dash.is.uniqueSet')">Documentation Page</a>
 
 % Default
 if ~exist('rows','var') || isempty(rows)

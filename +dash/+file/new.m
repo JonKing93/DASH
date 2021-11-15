@@ -1,5 +1,5 @@
 function[filename] = new(filename, ext, overwrite, header)
-%% dash.file.new  Setup tasks for new files
+%% dash.file.new  Do setup tasks for new files
 % ----------
 %   filename = dash.file.new(filename, ext, overwrite)
 %   Gives the filename a default extension if it does not already have the

@@ -1,4 +1,18 @@
 function[] = uniqueSet(input, inputName, header)
+%% dash.assert.uniqueSet  Throw error if vector has repeated values
+% ----------
+%   dash.assert.uniqueSet(input)
+%   Tests if an input vector has repeated values. If so, throws an error.
+%
+%   dash.assert.uniqueSet(input, inputName, header)
+%   Customize error messages and IDs.
+% ----------
+%   Inputs:
+%       input: The input vector being tested
+%       inputName (string scalar): The name of the input
+%       header (string scalar): Header for thrown error IDs
+%
+% <a href="matlab:dash.doc('dash.assert.uniqueSet')">Documentation Page</a>
 
 if ~exist('header','var') || isempty(header)
     header = "DASH:assert:uniqueSet";

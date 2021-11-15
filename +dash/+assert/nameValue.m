@@ -1,4 +1,29 @@
 function[names, values] = nameValue(inputs, nPrevious, extraInfo, header)
+%% dash.assert.nameValue  Throw error if inputs are not Name,Value pairs
+% ----------
+%   [names, values] = dash.assert.nameValue(inputs)
+%   Checks if the contents of a cell vector are Name,Value pairs. If not,
+%   throws an error. If so, returns the names as a string vector, and the
+%   values as a cell vector.
+%
+%   [names, values] = dash.assert.nameValue(inputs, nPrevious, extraInfo, header)
+%   Customize error messages and IDs.
+% ----------
+%   Inputs:
+%       inputs (cell vector): Typically varargin from a calling function
+%       nPrevious (scalar positive integer): The number of inputs before
+%           varargin. Should exclude object reference in class methods.
+%       extraInfo (string scalar): Extra information about the Name,Value
+%           input pairs.
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       names (string vector [nPairs]): The ordered list of names in the
+%           Name,Value pairs
+%       values (cell vector [nPairs]): The ordered list of values for the
+%           Name,Value pairs
+%
+% <a href="matlab:dash.doc('dash.assert.nameValue')">Documentation Page</a>
 
 % Defaults
 if ~exist('nPrevious','var') || isempty(nPrevious)

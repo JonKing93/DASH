@@ -9,19 +9,26 @@
 %   consistent internal handling of different input types.
 % ----------
 % Strings:
-%   strflag     - Throw error if input is not a string flag.
-%   strlist     - Throw error if input is not a string vector, cellstring vector, or char row vector
-%   strsInList  - Throw error if strings are not in a list of allowed strings
+%   strflag         - Throw error if input is not a string flag.
+%   strlist         - Throw error if input is not a string vector, cellstring vector, or char row vector
+%   strsInList      - Throw error if strings are not in a list of allowed strings
 %
 % Size and Data Type:
-%   type        - Throw error if input is not required type
-%   scalarType  - Throw error if input is not a scalar of a required data type
-%   vectorTypeN - Throw error if input is not a vector of required data type and length
+%   type            - Throw error if input is not required type
+%   scalarType      - Throw error if input is not a scalar of a required data type
+%   vectorTypeN     - Throw error if input is not a vector of required data type and length
 %
 % Files:
-%   fileExists  - Throw error if a file does not exist
+%   fileExists      - Throw error if a file does not exist
+%
+% Indices:
+%   indices         - Throw error if inputs are neither logical indices nor linear indices
+%   indexCollection - Throw error if input is not a collection of indices
+%
+% Non-duplicate:
+%   uniqueSet       - Throw error if vector has repeated values
 %
 % Tests:
-%   tests       - Implement unit testing for the dash.assert subpackage
+%   tests           - Implement unit testing for the dash.assert subpackage
 %
 % <a href="matlab:dash.doc('dash.assert')">Documentation Page</a>

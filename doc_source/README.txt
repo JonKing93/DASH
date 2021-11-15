@@ -27,6 +27,9 @@ Resources needed for sphinx (v4.2.0) to build the documentation pages. This incl
         theme.css added collapsible accordion sections and improved formatting of example code blocks. Place in <python path>/Python/Lib/site-packages/sphinx-rtd-theme/static/css
         breadcrumbs.html hardcodes the DASH Github Page into the top-right Github link. Place in <python path>/Python/Lib/site-packages/sphinx-rtd-theme
 
+4. buildDocs.m
+Runs the documentation parsers, builds the sphinx .rst files, then runs sphinx to build html help pages.
+
 4. build
 Built documentation resources. Includes:
 

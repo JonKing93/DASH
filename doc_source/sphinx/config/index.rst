@@ -17,4 +17,6 @@ You can find the source code `on Github <https://github.com/JonKing93/DASH>`_.
     :caption: Reference
     :hidden:
 
+    gridMetadata
+    gridfile
     dash
