@@ -25,6 +25,11 @@ function[indices] = indexCollection(indices, nDims, dimLengths, header)
 %
 % <a href="matlab:dash.doc('dash.assert.indexCollection')">Documentation Page</a>
 
+% Default
+if ~exist('header','var') || isempty(header)
+    header = "DASH:assert:indexCollection";
+end
+
 % Parse cell vs single set of indices
 name = 'indices';
 [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
