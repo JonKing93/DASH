@@ -1,5 +1,5 @@
 function[] = edit(obj, dimension, metadata)
-%% gridfile.edit  Rewrite .grid file metadata
+%% gridfile.edit  Rewrite gridfile metadata
 % ----------
 %   <strong>obj.edit</strong>(dimension, metadata)
 %   Replace the metadata for the named dimension with new values. The new

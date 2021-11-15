@@ -1,5 +1,5 @@
 function[] = update(obj)
-%% gridfile.update  Updates a gridfile object to match the contents of its .grid file
+%% gridfile.update  Update a gridfile object to match the contents of its .grid file
 % ----------
 %   <strong>obj.update</strong>
 %   Updates the current object to match the content of its .grid file. This

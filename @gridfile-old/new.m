@@ -1,5 +1,5 @@
 function[grid] = new( filename, meta, attributes, overwrite )
-%% Initializes a new .grid file. Each .grid file organizes a collection of
+%% gridfile.new  Initialize a new, empty .grid file. Initializes a new .grid file. Each .grid file organizes a collection of
 % gridded data. The .grid file stores instructions on how to read data from
 % different sources (such as NetCDF and .mat files), and organizes metadata
 % for the values in each data source.

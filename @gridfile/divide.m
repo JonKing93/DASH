@@ -1,5 +1,5 @@
 function[] = divide(obj, grid2, filename, varargin)
-%% gridfile.divide  Divides the data in the current gridfile by a second gridfile
+%% gridfile.divide  Divide the data in the current gridfile by a second gridfile
 % ----------
 %   <strong>obj.divide</strong>(grid2, filename)
 %   Divides the data in the current gridfile with a second gridfile. Saves the

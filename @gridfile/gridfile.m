@@ -1,4 +1,99 @@
 classdef gridfile < handle
+    %% gridfile  Catalogue and load gridded data sets
+    % ----------
+        %   The gridfile class creates and manages gridfile objects. These
+    %   objects catalogue 1. metadata, and 2. data source files for a
+    %   gridded dataset. The catalogue is stored in a file with a ".grid"
+    %   extension.
+    %
+    %   A key function of gridfile is to provide an interface for loading
+    %   data from the source files. This interface allows the user to
+    %   efficiently:
+    %       1. Load subsets of the catalogued data
+    %       2. Order the dimensions of loaded data
+    %       3. Apply linear or log transforms to loaded data, and
+    %       4. Perform simple arithmetic on large gridded datasets
+    %
+    %   The other key function of gridfile is to associate all gridded data
+    %   with dimensional metadata. This allows data to be accessed using
+    %   human-readable metadata, rather than array indices.
+    % ----------
+    % gridfile methods:
+    %
+    % **KEY METHODS**
+    % The following methods are the most essential methods for users.
+    %
+    %   new             - Create a new, empty .grid file
+    %   gridfile        - Return a gridfile object for a .grid file.
+    %   add             - Catalogue a data source in a .grid file
+    %   metadata        - Return the metadata for a gridfile
+    %   load            - Load data from the sources catalogued in a .grid file
+    %
+    % **ALL USER METHODS**
+    % The complete list of gridfile methods for users.
+    %
+    % Create:
+    %   new              - Create a new, empty .grid file
+    %   gridfile         - Return a gridfile object for a .grid file.
+    %
+    % Metadata:
+    %   metadata         - Return the metadata for a gridfile
+    %   edit             - Rewrite gridfile metadata
+    %   expand           - Increase the length of a dimension in a .grid file
+    %   addDimension     - Add a new dimension to a .grid file
+    %
+    % Metadata attributes:
+    %   addAttributes    - Add attributes to gridfile metadata
+    %   removeAttributes - Remove attributes from the metadata of a gridded dataset
+    %   editAttributes   - Change existing metadata attributes
+    %
+    % Data sources:
+    %   add              - Catalogue a data source in a .grid file
+    %   remove           - Remove data sources from a .grid file's catalogue
+    %   rename           - Update paths to data sources catalogued in a gridfile
+    %   absolutePath     - Save data source file names as absolute or relative paths
+    %
+    % Data adjustments:
+    %   fillValue        - Specify a fill value for data catalogued in a .grid file
+    %   validRange       - Specify a valid range for data catalogued in a .grid file
+    %   transform        - Transform data loaded from a .grid file
+    %
+    % Load:
+    %   load             - Load data from the sources catalogued in a gridfile
+    %
+    % Arithmetic:
+    %   plus             - Sum the data in two gridfiles
+    %   minus            - Subtract the data in a gridfile from the current gridfile
+    %   times            - Multiply the data in two gridfiles
+    %   divide           - Divide the data in the current gridfile by a second gridfile
+    %
+    % Summary Information:
+    %   sources          - Return the ordered list of data sources in a gridfile
+    %   info             - Return information about a gridfile object
+    %   name             - Return the name of the .grid file, excluding path
+    %
+    % **UTILITY METHODS**
+    % Under-the-hood methods that help the class run. These are not intended
+    % for users.
+    %
+    % File interacttions:
+    %   update           - Update a gridfile object to match the contents of its .grid file
+    %   save             - Save a gridfile object to a .grid file
+    %
+    % Console Display:
+    %   disp             - Display gridfile object in console
+    %   dispSources      - List gridfile data sources in the console
+    %
+    % Load:
+    %   getLoadIndices   - Organize the dimension indices required to implement a load operation
+    %   sourcesForLoad   - Return the indices of data sources needed to load requested data
+    %   buildSources     - Build dataSources for a gridfile load
+    %   loadInternal     - Load requested data from pre-built dataSource objects
+    %
+    % Arithmetic:
+    %   arithmetic       - Arithmetic operations across two gridfiles
+    %
+    % <a href="matlab:dash.doc('gridfile')">Documentation Page</a>
     
     properties (SetAccess = private)
         
@@ -82,7 +177,7 @@ classdef gridfile < handle
     % Constructor
     methods
         function[obj] = gridfile(filename)
-        %% gridfile.gridfile  Create a gridfile object for a .grid file
+        %% gridfile.gridfile  Return a gridfile object for a .grid file
         % ----------
         %   obj = gridfile(file)
         %   Returns a gridfile object for the indicated file.

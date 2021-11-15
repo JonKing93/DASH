@@ -1,5 +1,5 @@
 function[meta] = metadata(obj, includeUndefined)
-%% Returns the metadata for a .grid file.
+%% Return the metadata for a .grid file
 %
 % meta = obj.metadata
 % Returns the metadata for a .grid file.

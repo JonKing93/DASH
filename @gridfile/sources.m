@@ -1,5 +1,5 @@
 function[sources] = sources(obj)
-%% gridfile.sources  Returns the ordered list of data sources in a gridfile
+%% gridfile.sources  Return the ordered list of data sources in a gridfile
 % ----------
 %   sources = <strong>obj.sources</strong>
 %   sources = <strong>obj.sources</strong>([])

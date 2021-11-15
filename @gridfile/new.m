@@ -1,5 +1,5 @@
 function[obj] = new(filename, metadata, overwrite)
-%% gridfile.new  Create a new (empty) .grid file
+%% gridfile.new  Create a new, empty .grid file
 % ----------
 %   obj = gridfile.new(filename, metadata)
 %   Initializes a new (empty) .grid file. The new file manages an

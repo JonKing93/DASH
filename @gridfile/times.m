@@ -1,5 +1,5 @@
 function[] = times(obj, grid2, filename, varargin)
-%% gridfile.times  Multiplies the data elements of two gridfiles
+%% gridfile.times  Multiply the data in two gridfiles
 % ----------
 %   <strong>obj.times</strong>(grid2, filename)
 %   Multiples the data in the current gridfile with a second gridfile. Saves the

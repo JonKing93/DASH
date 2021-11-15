@@ -1,5 +1,5 @@
 function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources)
-%% gridfile.loadInternal  Load gridfile data from pre-built dataSource objects
+%% gridfile.loadInternal  Load requested data from pre-built dataSource objects
 % ----------
 %   [X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources)
 %   Returns a loaded output array and associated metadata given load

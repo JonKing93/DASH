@@ -1,5 +1,5 @@
 function[loadIndices] = getLoadIndices(obj, userDimOrder, userIndices)
-%% gridfile.getLoadIndices  Organizes the dimension indices required to implement a load operation
+%% gridfile.getLoadIndices  Organize the dimension indices required to implement a load operation
 % ----------
 %   loadIndices = obj.getLoadIndices(userDimOrder, userIndices)
 %   Takes a user-defined dimension order and accompanying dimension indices
