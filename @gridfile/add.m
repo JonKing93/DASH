@@ -30,6 +30,9 @@ function[] = add(obj, type, source, varargin)
 %           all non-singleton dimensions in both the gridfile and data
 %           source. Metadata values for gridfile dimensions must exactly
 %           match a sequence of gridfile metadata for the dimension.
+%           If the metadata has non-dimensional attributes and/or a set
+%           dimension order, the attributes and/or dimension order will be
+%           ignored.
 %       opts (ImportOptions object): Additional options for importing data
 %           from delimited text files using the builtin "readmatrix" function.
 %       Name,Value: Additional import options for reading data from a

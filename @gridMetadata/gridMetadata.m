@@ -60,6 +60,11 @@ classdef gridMetadata
         %
         %   obj = gridMetadata(..., 'attributes', attributes)
         %   Include non-dimensional metadata attributes in the metadata object
+        %
+        %   obj = gridMetadata(s)
+        %   Creates a metadata object from a struct template. Fields of the
+        %   struct that match dimension names or 'attributes' are copied as
+        %   metadata.
         % ----------
         %   Inputs:
         %       dimensionN (string scalar): The name of a dimension of a gridded dataset.
@@ -71,6 +76,10 @@ classdef gridMetadata
         %       attributes (scalar struct): Non-dimensional metadata attributes for
         %           a gridded dataset. May contain any fields or contents useful
         %           for the user.
+        %       s (scalar struct): A template for a gridMetadata object.
+        %           May contain any fields, but fields that match dimension
+        %           names or 'attributes' are copied as metadata for the
+        %           new gridMetadata object.
         %
         %   Outputs:
         %       obj (gridMetadata object): The metadata object for a gridded
@@ -89,7 +98,30 @@ classdef gridMetadata
         %           field is a row vector%
         %
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
+        
+        % Build from struct
+        if numel(varargin)==1 && isscalar(varargin{1}) && isstruct(varargin{1})
+            s = varargin{1};
+            fields = string(fieldnames(s))';
+            
+            % Get fields to copy
+            [dims, atts] = obj.dimensions;
+            copyable = [dims;atts];
+            copy = ismember(fields, copyable);
+            fields = fields(copy);
+            nFields = numel(fields);
+            
+            % Get the values to copy
+            metadata = cell(1, nFields);
+            for f = 1:nFields
+                metadata{f} = s.(fields(f));
+            end
+            varargin = [cellstr(fields); metadata];
+        end 
+        
+        % Build the metadata
         obj = obj.edit(varargin{:});
+        
         end
     end
     

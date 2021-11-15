@@ -43,7 +43,7 @@ resetOrder = false;
 % Cycle through input dimensions
 for k = 1:numel(names)
     index = d(k);
-    dim = dims(index);
+    dim = names(k);
     
     % Check metadata is valid
     if index < numel(dims)
@@ -60,7 +60,7 @@ for k = 1:numel(names)
         
     % Check attributes are valid
     else
-        metadata{k} = dash.assert.scalarType(metadata, 'struct', 'attributes', header);
+        dash.assert.scalarType(metadata{k}, 'struct', 'attributes', header);
     end
     
     % Update the dimension
