@@ -1,5 +1,5 @@
 function[obj] = setOrder(obj, varargin)
-%% gridMetadata.setOrder  Specify an order for metadata dimensions
+%% gridMetadata.setOrder  Specify a dimension order for a gridded dataset
 % ----------
 %   obj = <strong>obj.setOrder</strong>(dimensions)
 %   Specifies an order of dimensions. Dimension order can be accessed via

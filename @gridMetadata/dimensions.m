@@ -1,5 +1,5 @@
 function[dimensions, attributes] = dimensions
-%% gridMetadata.dimensions  Return the list of gridMetadata dimensions
+%% gridMetadata.dimensions  Return the list of supported gridMetadata dimensions
 % ----------
 %   dimensions = gridMetadata.dimensions
 %   Returns the list of data dimensions recognized by gridMetadata.

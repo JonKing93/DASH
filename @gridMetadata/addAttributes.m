@@ -50,6 +50,7 @@ obj.(atts) = attributes;
 
 end
 
+% Long error messages
 function[] = invalidFieldNameError(name, index, header)
 id = sprintf('%s:invalidFieldName', header);
 inputIndex = index*2-1;

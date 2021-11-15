@@ -1,5 +1,5 @@
 function[dimensions] = defined(obj)
-%% gridMetadata.defined  Returns the list of dimensions with defined metadata
+%% gridMetadata.defined  Return a list of dimensions with defined metadata
 % ----------
 %   dimensions = <strong>obj.defined</strong>
 %   Returns the list of dimensions that have metadata in the current

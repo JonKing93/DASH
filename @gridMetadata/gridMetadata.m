@@ -1,6 +1,64 @@
 classdef gridMetadata
-    %% gridMetadata  Implements metadata for gridded datasets
+    %% gridMetadata  Organize metadata for gridded datasets
+    % ----------
+    % gridMetadata objects help define the metadata for an N-dimensional
+    % gridded dataset. Each object supports metadata for the following
+    % dimensions:
+    % 1. lon: longitude / x-coordinate
+    % 2. lat: latitude / y-coordinate
+    % 3. lev: level / height / z-coordinate
+    % 4. site: non-cartesian spatial coordinate
+    % 5. time: time
+    % 6. run: run / ensemble member
+    % 7. var: climate variable
+    % although datasets are not required to implement all 7 dimensions. 
     %
+    % The class can also be customized to include additional dimensions or
+    % to rename the default dimensions.
+    %
+    % gridMetadata objects also include support for non-dimensional
+    % metadata via an "attributes" field, which can include data of any
+    % type.
+    % ----------
+    % gridMetadata Methods:
+    %
+    % **KEY METHODS**
+    % The following are the most essential methods for users.
+    %
+    %   gridMetadata     - Create a new gridMetdata object
+    %   edit             - Edit the metadata for a gridded dataset
+    %   index            - Return metadata at specified indices
+    %   
+    % **ALL METHODS**
+    % The complete list of gridMetadata methods.
+    %
+    % Create / Edit:
+    %   gridMetadata     - Create a new gridMetdata object
+    %   edit             - Edit the metadata for a gridded dataset
+    %   index            - Return metadata at specified indices
+    %   setOrder         - Specify a dimension order for a gridded dataset
+    %
+    % Attribute Manipulation:
+    %   addAttributes    - Add non-dimensional attributes to the metadata for a gridded dataset
+    %   removeAttributes - Remove attributes from the metadata of a gridded dataset
+    %   editAttributes   - Replace non-dimensional attributes with new values
+    %
+    % List Dimensions:
+    %   dimensions       - Return the list of supported gridMetadata dimensions
+    %   defined          - Return a list of dimensions with defined metadata
+    %
+    % Console Display:
+    %   disp             - Display gridMetadata object in console
+    %   dispAttributes   - Display metadata attributes in the console
+    %
+    % Assertions:
+    %   assertField      - Throw error if input is not a valid metadata field
+    %   assertUnique     - Throw error if metadata rows are not unique
+    %
+    % Unit Tests:
+    %   tests            - Implement unit tests for the gridMetadata class
+    %
+    % <a href="matlab:dash.doc('gridMetadata')">Documentation Page</a>
     
     properties (SetAccess = private)
     
@@ -28,7 +86,7 @@ classdef gridMetadata
         %% Non-dimensional properties
         
         attributes = struct();  % Non-dimensional metadata attributes
-        order = strings(1,0);                  % The order of dimensions in a gridded array
+        order = strings(1,0);   % The order of dimensions in a gridded array
     end
 
     methods       
