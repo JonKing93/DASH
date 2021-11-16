@@ -11,6 +11,6 @@
 % 
 %
 % Tests:
-%   tests            - Implement unit tests for the package
+%   tests            - Unit tests for the dash.is package
 %
 % <a href="matlab:dash.doc('dash.is')">Documentation Page</a>

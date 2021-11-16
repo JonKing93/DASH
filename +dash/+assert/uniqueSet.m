@@ -14,6 +14,9 @@ function[] = uniqueSet(input, inputName, header)
 %
 % <a href="matlab:dash.doc('dash.assert.uniqueSet')">Documentation Page</a>
 
+if ~exist('inputName','var') || isempty(inputName)
+    inputName = 'Value';
+end
 if ~exist('header','var') || isempty(header)
     header = "DASH:assert:uniqueSet";
 end

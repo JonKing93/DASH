@@ -36,6 +36,9 @@ if ~exist('nPrevious','var') || isempty(nPrevious)
     nPrevious = 0;
 end
 
+% Isolate the flags
+inputs = inputs(1:spacing:end);
+
 % Preallocate
 nFlags = numel(inputs);
 flags = strings(nFlags, 1);

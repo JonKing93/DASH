@@ -6,7 +6,12 @@ function[] = tests
 %   If the tests fail, prints the first failed test to the console.
 % ----------
 
-%% strided
+strided;
+keep;
+
+end
+
+function[] = strided
 
 tests = {...
     5, 5, 'single index';...
@@ -21,7 +26,8 @@ for t = 1:size(tests,1)
     assert( isequal(dash.indices.strided(tests{t,1}), tests{t,2}), 'strided: %s', tests{t,3});
 end
 
-%% keep
+end
+function[] = keep
 
 tests = {...
     [1 3 4 6], 1:6, [1 3 4 6], 'standard case';...

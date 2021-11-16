@@ -2,7 +2,7 @@ function[path] = urlSeparators(path)
 %% dash.file.urlSeparators  Replace windows-style (\) file separators with url-style (/) separators
 % ----------
 %   path = dash.file.urlSeparators(path)
-%   Replaces (\) file separators with (/) separators in a file path.
+%   Replaces windows style (\) file separators with (/) separators in a file path.
 % ----------
 %   Inputs:
 %       path (string scalar): A file path to convert.

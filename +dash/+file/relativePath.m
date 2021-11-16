@@ -42,7 +42,8 @@ if branch==0
 else
     nUp = numel(from) - branch;
     toBranch = repmat({'..'}, [1 nUp]);
-    path = fullfile('.', toBranch{:}, to{branch+1:end});
+    folders = [{'.'}, toBranch, to(branch+1:end)];
+    path = strjoin(folders, '/');
     isrelative = true;
 end
 

@@ -18,14 +18,13 @@
 %   scalarType      - Throw error if input is not a scalar of a required data type
 %   vectorTypeN     - Throw error if input is not a vector of required data type and length
 %
-% Files:
-%   fileExists      - Throw error if a file does not exist
-%
 % Indices:
 %   indices         - Throw error if inputs are neither logical indices nor linear indices
 %   indexCollection - Throw error if input is not a collection of indices
 %
-% Non-duplicate:
+% Misc:
+%   fileExists      - Throw error if a file does not exist
+%   nameValue       - Throw error if inputs are not Name,Value pairs
 %   uniqueSet       - Throw error if vector has repeated values
 %
 % Tests:

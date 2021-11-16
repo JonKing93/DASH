@@ -8,4 +8,7 @@
 %   collapsePath  - Collapse . and .. entries in a file path
 %   urlSeparators -  Replace windows-style (\) file separators with url-style (/) separators
 %
+% Unit tests:
+%   tests         - Implement unit tests for the dash.file package
+%
 % <a href="matlab:dash.doc('dash.file')">Documentation Page</a>

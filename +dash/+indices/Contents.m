@@ -5,6 +5,6 @@
 %   keep    - Identify requested indices in superset of loaded indices
 %
 % Tests:
-%   tests   - Unit tests for the package
+%   tests   - Unit tests for the dash.indices package
 %
 % <a href="matlab:dash.doc('dash.indices')">Documentation Page</a>

@@ -8,9 +8,15 @@ function[] = tests
 %   The following are tested:
 %     Subpackages: is, indices, assert
 
-% Subpackages
+
+
+%% Subpackages
+
+% Inputs
 dash.is.tests;
+
+% Specific types
+dash.file.tests;
 dash.indices.tests;
-dash.assert.tests;
 
 end
