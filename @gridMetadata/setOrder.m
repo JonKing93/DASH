@@ -35,6 +35,7 @@ function[obj] = setOrder(obj, varargin)
 
 % Header
 header = "DASH:gridMetadata:setOrder";
+obj.assertScalar(header);
 
 % Parse dimension lists
 if numel(varargin)==0
@@ -64,4 +65,12 @@ end
 % Record the order
 obj.order = order;
 
+end
+
+% Error message
+function[] = missingDimensionError(dims, loc, header)
+id = sprintf('%s:missingDimension', header);
+missing = find(loc==0, 1);
+missing = dims(missing);
+error(id, 'The dimension order must include the "%s" dimension', missing);
 end

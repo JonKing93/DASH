@@ -16,6 +16,7 @@ function[obj] = editAttributes(obj, varargin)
 
 % Error header
 header = "DASH:gridMetadata:editAttributes";
+obj.assertScalar(header);
 
 % Parse and error check input pairs
 extraInfo = 'Inputs must be Attribute,Value pairs';
@@ -28,11 +29,11 @@ attributes = obj.(atts);
 
 % Require recognzied attribute fields
 fields = string(fieldnames(attributes));
-dash.assert.strInList(names, fields, 'Attribute name', 'existing attribute field', header);
+dash.assert.strsInList(names, fields, 'Attribute name', 'existing attribute field', header);
 
 % Replace each value in the attributes
 for n = 1:numel(names)
-    attributes.(name) = values{n};
+    attributes.(names(n)) = values{n};
 end
 obj.(atts) = attributes;
 

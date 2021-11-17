@@ -73,7 +73,7 @@ if ~exist('indices','var') || isempty(indices)
     indices = cell(1, nDims);
 end
 dimLengths = obj.size(userDimOrder);
-indices = dash.assert.indexCollection(indices, nDims, dimLengths, header);
+indices = dash.assert.indexCollection(indices, nDims, dimLengths, obj.dims(userDimOrder), header);
 
 % Get load indices and build required data sources
 loadIndices = obj.getLoadIndices(userDimOrder, indices);

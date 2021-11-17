@@ -22,6 +22,7 @@ function[obj] = removeAttributes(obj, varargin)
 
 % Error ID header
 header = "DASH:gridMetadata:removeAttributes";
+obj.assertScalar(header);
 
 % Get the attributes fields
 [~, atts] = gridMetadata.dimensions;
@@ -31,7 +32,7 @@ fields = string(fieldnames(attributes));
 % Parse the inputs
 if numel(varargin)==0
     error('MATLAB:minrhs', 'Not enough input arguments');
-elseif numel(varargin)==1 && varargin{1}==0
+elseif numel(varargin)==1 && isequal(varargin{1}, 0)
     remove = fields;
 elseif numel(varargin)==1
     remove = dash.assert.strlist(varargin{1}, 'fields', header);

@@ -34,6 +34,7 @@ function[obj] = index(obj, dimensions, indices, varargin)
 
 % Error header
 header = "DASH:gridMetadata:index";
+obj.assertScalar(header);
 
 % Parse and error check
 if numel(varargin)>0
@@ -41,7 +42,7 @@ if numel(varargin)>0
     extraInfo = 'Inputs must be Dimension-Name,Indices pairs.';
     [dims, indices] = dash.assert.nameValue(varargin, 0, extraInfo, header);
 else
-    dims = dash.assert.strflag(dimensions, 'dimensions', header);
+    dims = dash.assert.strlist(dimensions, 'dimensions', header);
 end
 
 % Require defined, non-duplicate dimensions
@@ -55,7 +56,7 @@ dimLengths = NaN(1, nDims);
 for d = 1:nDims
     dimLengths(d) = size(obj.(dims(d)),1);
 end
-indices = dash.assert.indexCollection(indices, nDims, dimLengths, header);
+indices = dash.assert.indexCollection(indices, nDims, dimLengths, dims, header);
 
 % Build the indexed metadata
 newMeta = cell(1, nDims);

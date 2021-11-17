@@ -18,6 +18,7 @@ function[obj] = addAttributes(obj, varargin)
 
 % Header for error IDs
 header = "DASH:gridMetadata:addAttributes";
+obj.assertScalar(header);
 
 % Parse and error check input pairs
 extraInfo = 'Inputs must be Attribute,Value pairs';

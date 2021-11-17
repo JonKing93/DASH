@@ -7,6 +7,7 @@ function[] = dispAttributes(obj)
 %
 % <a href="matlab:dash.doc('gridMetadata.dispAttributes')">Documentation Page</a>
 
+obj.assertScalar('DASH:gridMetadata:dispAttributes');
 [~, atts] = obj.dimensions;
 disp(obj.(atts));
 

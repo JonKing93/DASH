@@ -41,7 +41,9 @@ end
 % make sure the developer passed everything correctly.
 
 % Inputs: cell vector (varargin)
-dash.assert.vectorTypeN(inputs, 'cell', [], 'inputs', header);
+if ~isempty(inputs)
+    dash.assert.vectorTypeN(inputs, 'cell', [], 'inputs', header);
+end
 
 % Flags: Non-duplicate (case-insensitive) string list
 flags = dash.assert.strlist(flags, "flags", header);

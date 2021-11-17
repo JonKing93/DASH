@@ -50,7 +50,7 @@ if mod(numel(inputs),2)~=0
 end
 
 % Get the names and values
-names = dash.parse.vararginFlags(inputs(1:2:end-1), 2, nPrevious, header);
+names = dash.parse.vararginFlags(inputs, 2, nPrevious, header);
 values = inputs(2:2:end);
 
 end

@@ -51,9 +51,9 @@ end
 % Control flow is quite different for the no-names and user-names cases.
 % Process accordingly.
 if exist('newNames','var')
-    userRenameSubfxn(obj, s, newNames, header);
+    userRename(obj, s, newNames, header);
 else
-    pathRenameSubfxn(obj, s, header);
+    pathRename(obj, s, header);
 end
 
 % Save
@@ -62,7 +62,7 @@ obj.save;
 end
 
 % Helper subfunctions
-function[] = userRenameSubfxn(obj, s, newNames, header)
+function[] = userRename(obj, s, newNames, header)
 
 % Error check names
 newNames = dash.assert.strlist(newNames, 'newNames', header);
@@ -89,7 +89,7 @@ for k = 1:numel(s)
 end
 
 end
-function[] = pathRenameSubfxn(obj, s, header)
+function[] = pathRename(obj, s, header)
 
 % Get the absolute path to each data source
 for k = 1:numel(s)

@@ -67,4 +67,9 @@ classdef gridfileSources
         paths = absolutePaths(obj, gridFile);
         obj = savePath(obj, dataSource, tryRelative, s)
     end
+    
+    % Unit tests
+    methods (Static)
+        tests;
+    end
 end

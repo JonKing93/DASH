@@ -64,9 +64,33 @@ end
 end
 function[] = nameValue
 
+flags = ["flag1","flag2","flag3"];
+defaults = {1,2,3};
+
 tests = {
-    
+    'no inputs', {}, [], true, {1,2,3};
+    'some flags', {'flag2', 5}, [], true, {1,5,3};
+    'all flags, unordered', {'flag2', 5, 'flag3', 6, 'flag1', 4}, [], true, {4,5,6};
+    'repeated flags', {'flag2', 5, 'flag2', 5}, [], false, [];
+    'not Name,Value pairs', {1,2,3}, [], false, [];
+    'custom error', {1,2,3}, 5, false, [];
+    };
+testHeader = 'test:header';
 
+for t = 1:size(tests, 1)
+    shouldFail = ~tests{t,4};
+    if shouldFail
+        try
+            dash.parse.nameValue(tests{t,2}, flags, defaults, tests{t,3}, testHeader);
+        catch ME
+        end
+        assert(contains(ME.identifier, testHeader), tests{t,1});
+        
+    else
+        output = cell(1,3);
+        [output{:}] = dash.parse.nameValue(tests{t,2}, flags, defaults, tests{t,3}, testHeader);
+        assert(isequal(output, tests{t,5}), tests{t,1});
+    end
+end
 
-    
-    
+end   
