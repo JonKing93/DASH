@@ -31,16 +31,26 @@ if ~exist('idHeader','var') || isempty(idHeader)
     idHeader = "DASH:assert:fileExists";
 end
 
-% Get the file path if the file exists
-[path, missing] = getpath(filename);
+% Initialize filename without extension
+searchForFile = filename;
+addedExt = false;
 
-% Check default extension
-if missing && exist('ext','var') && ~isempty(ext)
+% Apply default extension
+if exist('ext','var') && ~isempty(ext)
     [~,~,currentExt] = fileparts(filename);
     if ~strcmpi(currentExt, ext)
-        newName = strcat(filename, ext);
-        [path, missing] = getpath(newName);
+        searchForFile = strcat(filename, ext);
+        addedExt = true;
     end
+end
+
+% Get file path if file exists
+[path, missing] = getpath(searchForFile);
+
+% Remove extension if file not found
+if missing && addedExt
+    searchForFile = filename;
+    [path, missing] = getpath(searchForFile);
 end
 
 % If the file is missing, throw an error

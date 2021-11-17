@@ -5,18 +5,16 @@ function[] = tests
 %   Runs the units tests. If the tests pass, exits silently.
 %   If the tests fail, prints the first failed test to the console.
 % ----------
-%   The following are tested:
-%     Subpackages: is, indices, assert
+%
+% <a href="matlab:dash.doc('dash.tests')">Documentation Page</a>
 
-
-
-%% Subpackages
-
-% Inputs
-dash.is.tests;
-
-% Specific types
+% dash.gridfileSources.tests;
+% dash.assert.tests;
+dash.dataSource.tests;
 dash.file.tests;
 dash.indices.tests;
+dash.is.tests;
+dash.parse.tests;
+dash.string.tests;
 
 end

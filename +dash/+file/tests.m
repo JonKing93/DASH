@@ -1,10 +1,12 @@
 function[] = tests
-%% dash.file.tests  Implement unit-tests for the dash.file package
+%% dash.file.tests  Unit tests for the dash.file package
 % ----------
 %   dash.file.tests
-%   Runs the tests
+%   Runs the tests. If successful, exits silently. Otherwise, throws error
+%   at the first failed test.
 % ----------
 %
+% <a href="matlab:dash.doc('dash.file.tests')">Documentation Page</a>
 
 % Locate test data
 here = mfilename('fullpath');
@@ -108,6 +110,7 @@ end
 function[] = urlSeparators
 
 tests = {
+    % input, output, description
     'a/url/char', 'a/url/char', 'char url';
     "a/string/url", "a/string/url", "string url";
     'a\windows\char', 'a/windows/char', 'windows char';

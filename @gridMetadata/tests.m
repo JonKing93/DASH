@@ -41,6 +41,7 @@ end
 function[] = assertField
 
 tests = {
+    % description, should succeed, field, input name
     'numeric', true, [1 2;3 4], []
     'logical', true, [true, false;false, true], []
     'char', true, ['abc';'123'], []
@@ -79,6 +80,7 @@ end
 function[] = constructor
 
 tests = {
+    % description, inputs
     'empty', {}
     'some dimensions', {'lat', 1, 'lon', 2}
     'dimensions and attributes', {'lev', 1, 'run', 5, 'attributes', struct('a',1)}
@@ -154,6 +156,7 @@ nh = find(lat>0);
 full = run<6;
 
 tests = {
+    % description, should succeed, inputs, compare to values
     'syntax 1', true, {["lat","run"], {nh, full}}, ["lat","run"], {lat(nh), run(full)}
     'syntax 2', true, {'lat', nh, 'run', full}, ["lat","run"], {lat(nh), run(full)}
     'mixed syntaxes', false, {["lat","run"], {nh, full}, 'lon', 1}, [], []
@@ -189,6 +192,7 @@ end
 function[] = setOrder
 
 tests = {
+    % description, should succeed, inputs, require output
     'syntax 1', true, {["time","lat","lon"]}, ["time","lat","lon"]
     'syntax 2', true, {'time','lat','lon'}, ["time","lat","lon"]
     'delete order', true, {0}, strings(1,0)
@@ -222,6 +226,7 @@ function[] = addAttributes
 s = struct('a',1,'b',2,'c',3);
 
 tests = {
+    % description, should succeed, inputs
     'add attributes', true, {'b',2,'c',3}
     'existing field',false, {'a',5}
     'invalid field name',false, {'?asdf', 5}
@@ -251,6 +256,7 @@ atts = struct('a',1,'b',2,'c',3);
 onlyc = struct('c',3);
 
 tests = {
+    % inputs, should succed, initial attributes, remove fields, match output
     'syntax 1', true, atts, {["a","b"]}, onlyc
     'syntax 2', true, atts, {'a','b'}, onlyc
     'remove all', true, atts, {0}, struct
@@ -283,6 +289,7 @@ atts = struct('a',1,'b',2,'c',3);
 edited = struct('a',1,'b',5,'c',6);
 
 tests = {
+    % description, should succeed, inputs
     'edit', true, {'c',6,'b',5}
     'not an attribute', false, {'d',5}
     'repeat dimension', false, {'b',5,'b',5}
@@ -311,6 +318,7 @@ function[] = defined
 start = {'lon', 1, 'lat', 1, 'time', 1};
 
 tests = {
+    % description, inputs, match outputs
     'list defined dimensions', {}, ["lon";"lat";"time"]
     'remove dimension', {'lat', []}, ["lon";"time"]
     'add new defined', {'lev', 1}, ["lon";"lat";"lev";"time"]
@@ -327,6 +335,7 @@ end
 function[] = disp
 
 tests = {
+    % description, callinb object
     'empty', gridMetadata
     'scalar', gridMetadata('lat',1)
     'array', [gridMetadata('lat',1), gridMetadata('lon',2)]
@@ -347,6 +356,7 @@ function[] = dispAttributes
 atts = struct('a',1,'b',2);
 
 tests = {
+    % description, calling object
     'empty', gridMetadata
     'attributes', gridMetadata('attributes', atts)
     'no attributes', gridMetadata('lat',1)
@@ -365,6 +375,7 @@ end
 function[] = assertUnique
 
 tests = {
+    % description, shouldSucceed, calling object
     'empty', true, gridMetadata
     'unique', true, gridMetadata('lat', [1 2;3 4], 'lon', [50 60;70 80;90 100]);
     'repeat rows in different dimensions', true, gridMetadata('lat', [1 2;3 4], 'lon', [1 2;3 4])
@@ -385,6 +396,7 @@ end
 function[] = assertScalar
 
 tests = {
+    % description, should pass, calling object
     'empty', true, gridMetadata
     'scalar', true, gridMetadata('lat',1)
     'array', false, [gridMetadata('lat',1), gridMetadata('lon',2)]
