@@ -3,7 +3,7 @@ classdef (Abstract) hdf < dash.dataSource.Interface
     % ----------
     %   dash.dataSource.hdf is abstract. It's primary function is to 
     %   check that the variable being read from the HDF file actually
-    %   exists in the file.
+    %   exists in the file. It also enables strided loading.
     % ----------
     % hdf Methods:
     %   setVariable - Ensure a variable exists in an HDF file

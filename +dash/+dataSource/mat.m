@@ -25,7 +25,6 @@ classdef mat < dash.dataSource.hdf
     end
     
     methods
-        % General dataSource methods
         function[obj] = mat(file, var)
         %% dash.dataSource.mat.mat  Create a new dash.dataSource.mat object
         % ----------
@@ -117,30 +116,6 @@ classdef mat < dash.dataSource.hdf
         X = obj.m.(obj.var)(indices{:});
         
         end
-        
-        % Warning manipulation methods
-        function[reset] = toggleWarning(obj, state)
-        %% dash.dataSource.mat.toggleWarning  Change the state of the v7.3 matfile warning.
-        % ----------
-        %   reset = <strong>obj.toggleWarning</strong>(state)  
-        %   Toggles the state of the Old-Format Mat-File warning to a
-        %   specified state. Returns a cleanup object that will reset the 
-        %   warning to its initial state when the object is destroyed.
-        % ----------
-        %   Inputs:
-        %       state ("on" | "off" | "error"): Desired state of the warning.
-        %
-        %   Outputs:
-        %       reset (onCleanup object): An object that resets the initial state
-        %           of warning when destroyed
-        %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.toggleWarning')">Documentation Page</a>
-        
-        warn = warning('query', obj.warnID);
-        warning(state, obj.warnID);
-        reset = onCleanup(  @()warning(warn.state, obj.warnID)  );
-        
-        end
         function[] = v73warning(obj)
         %% dash.dataSource.mat.v73warning  Issue informative warning if the .mat file for a dataSource is not version 7.3
         % ----------
@@ -164,6 +139,32 @@ classdef mat < dash.dataSource.hdf
             'flag. See the Matlab documentation on <a href="%s">save</a> ',...
             'and <a href="%s">MAT-File versions</a> for more information.'],...
             file, file, saveLink, versionsLink);
+        
+        end
+    end
+    
+    methods (Static)
+        function[reset] = toggleWarning(state)
+        %% dash.dataSource.mat.toggleWarning  Change the state of the v7.3 matfile warning.
+        % ----------
+        %   reset = dash.dataSource.mat.toggleWarning(state)  
+        %   Toggles the state of the Old-Format Mat-File warning to a
+        %   specified state. Returns a cleanup object that will reset the 
+        %   warning to its initial state when the object is destroyed.
+        % ----------
+        %   Inputs:
+        %       state ("on" | "off" | "error"): Desired state of the warning.
+        %
+        %   Outputs:
+        %       reset (onCleanup object): An object that resets the initial state
+        %           of warning when destroyed
+        %
+        %   <a href="matlab:dash.doc('dash.dataSource.mat.toggleWarning')">Documentation Page</a>
+        
+        warnID = dash.dataSource.mat.warnID;
+        warn = warning('query', warnID);
+        warning(state, warnID);
+        reset = onCleanup(  @()warning(warn.state, warnID)  );
         
         end
     end
