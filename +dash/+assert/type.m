@@ -29,7 +29,7 @@ function[] = type(input, type, name, descriptor, idHeader)
 if ~exist('name','var') || isempty(name)
     name = "input";
 end
-if ~exist('spec','var') || isempty(descriptor)
+if ~exist('descriptor','var') || isempty(descriptor)
     descriptor = "data type";
 end
 if ~exist('idHeader','var') || isempty(idHeader)

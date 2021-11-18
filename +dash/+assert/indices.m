@@ -59,7 +59,7 @@ dash.assert.vectorTypeN(indices, [], [], name, header);
 if islogical(indices)
     if numel(indices)~=length
         id = sprintf('%s:logicalIndicesWrongLength', header);
-        error(id, ['%s is a logical vector, so it must have %s (%.f), but it has ',...
+        error(id, ['%s is a logical vector, so it must be %s (%.f), but it has ',...
             '%.f elements instead.'], name, logicalLengthName, length, numel(indices));
     end
     indices = find(indices);

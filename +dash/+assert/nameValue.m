@@ -51,6 +51,6 @@ end
 
 % Get the names and values
 names = dash.parse.vararginFlags(inputs, 2, nPrevious, header);
-values = inputs(2:2:end);
+values = inputs(2:2:end)';
 
 end

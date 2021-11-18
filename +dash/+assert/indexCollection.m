@@ -40,8 +40,8 @@ name = 'indices';
 
 % Check the indices for each dimension
 for d = 1:nDims
-    hasdim = ~strcmp(dimNames(d), "");
-    if hasdim
+    noname = strcmp(dimNames(d), "");
+    if noname
         dim = sprintf("indexed dimension %.f", d);
     else
         dim = sprintf('the "%s" dimension', dimNames(d));

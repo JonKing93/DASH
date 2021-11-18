@@ -27,7 +27,7 @@
 %   nameValue       - Throw error if inputs are not Name,Value pairs
 %   uniqueSet       - Throw error if vector has repeated values
 %
-% Tests:
-%   tests           - Implement unit testing for the dash.assert subpackage
+% Unit tests:
+%   tests           - Unit testing for the dash.assert subpackage
 %
 % <a href="matlab:dash.doc('dash.assert')">Documentation Page</a>
