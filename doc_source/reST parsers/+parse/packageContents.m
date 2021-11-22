@@ -1,6 +1,10 @@
-function[sections, summaries, headings, files, h1] = packageContents(header)
+function[sections, sectsummaries, headings, files, h1] = packageContents(header)
 %%
 % sections: reST section headings. The first element is empty
+% sectionType: Section types
+%   1. ** - Do not add to toc, titlecase
+%   2.  * - Add section headings to toc
+%   3. == - Add methods to toc, ignore headings
 % summaries: reST section descriptions. The first element is empty
 % headings (cell vector of string vectors): html sub-headings placed in
 %   each reST section

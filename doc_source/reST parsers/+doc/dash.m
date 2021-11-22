@@ -5,7 +5,7 @@ function[] = dash(root, examplesRoot)
 % add to the title chain
 
 % Get the docs to include
-include = ["+dash", "@gridMetadata", "@gridfile"];
+include = ["+dash", "@gridMetadata"];
 
 % Get the contents
 contents = dir(root);
