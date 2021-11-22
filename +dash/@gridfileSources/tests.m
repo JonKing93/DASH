@@ -20,8 +20,8 @@ unpack(testpath);
 build(testpath);
 ismatch(testpath);
 absolutePaths(testpath);
-savePath;
-info;
+savePath(testpath);
+info(testpath);
 
 end
 
@@ -419,12 +419,94 @@ assert(isequal(paths, [nc;mat;dap;dap;text;mat]), 'indexed paths');
 end
 function[] = savePath(testpath)
 
+% Get files
+mat = fullfile(testpath, "test.mat");
+text = fullfile(testpath, "test.txt");
+nc = fullfile(testpath, "test.nc");
+dap = "https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.anom.nc";
+grid = fullfile(testpath, 'test.grid');
+
+% Use URL separators
+mat = dash.file.urlSeparators(mat);
+text = dash.file.urlSeparators(text);
+nc = dash.file.urlSeparators(nc);
+grid = dash.file.urlSeparators(grid);
+
+% Data sources
+matSource = dash.dataSource.mat(mat, 'a');
+textSource = dash.dataSource.text(text, 'NumHeaderLines', 3);
+dapSource = dash.dataSource.nc(dap, 'air');
+
+% Initialize sources
+sources = dash.gridfileSources;
+sources.gridfile = grid;
+
+% Run tests
 tests = {
-    'new path, absolute'
-    'new path, try relative, use absolute'
-    'new path, relative'
-    'update path, absolute'
-    'update path, try relative, use absolute'
-    'update path, relative'
+    % description, dataSource, try relative, index, match sources
+    'new path, absolute', matSource, false, [], mat
+    'new path, try relative, use absolute', dapSource, true, [], [mat;dap]
+    'new path, relative', textSource, true, [], [mat;dap;"./test.txt"]
+    'update path, absolute', textSource, false, 3, [mat;dap;text]
+    'update path, try relative, use absolute', dapSource, true, 2, [mat;dap;text]
+    'update path, relative', matSource, true, 1, ["./test.mat";dap;text]
     };
 
+try
+    for t = 1:size(tests,1)
+        if isempty(tests{t,4})
+            sources = sources.savePath(tests{t,2:3});
+        else
+            sources = sources.savePath(tests{t,2:4});
+        end
+        assert(isequal(sources.source, tests{t,5}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = info(testpath)
+
+ncfile = fullfile(testpath, 'test.nc');
+ncfile = dash.file.urlSeparators(ncfile);
+textfile = fullfile(testpath, 'test.txt');
+textfile = dash.file.urlSeparators(textfile);
+
+ncSource = dash.dataSource.nc(ncfile, 'a');
+textSource = dash.dataSource.text(textfile, "NumHeaderLines", 3);
+
+nc = struct('name', "test.nc", 'variable', "a", 'index', 1, 'file', ncfile, ...
+    'data_type',"single",'dimensions',"a",'size',1,'fill_value',5,'valid_range',[0 1000], ...
+    'transform', "linear", 'transform_parameters', [1 2], ...
+    'uses_relative_path', true, 'import_options', []);
+
+text = struct('name',"test.txt",'variable', [], 'index', 2, 'file', textfile, ...
+    'data_type', "double", 'dimensions', "a", 'size', 1, 'fill_value', 5, ...
+    'valid_range', [0 1000], 'transform', "linear", 'transform_parameters', [1 2],...
+    'uses_relative_path', true);
+text.import_options = {"NumHeaderLines", 3};
+
+grid = gridfile.new('test.grid',gridMetadata, true);
+grid.fillValue(5);
+grid.validRange([0 1000]);
+grid.transform('linear', [1 2]);
+
+args = {"a",1,"a",1,1};
+sources = dash.gridfileSources;
+sources.gridfile = grid.file;
+sources = sources.add(grid, ncSource, args{:});
+sources = sources.add(grid, textSource, args{:});
+
+info = sources.info([2 1 1]);
+assert(isequaln(info, [text;nc;nc]), 'indexed sources');
+
+info = sources.info(1);
+assert(isequaln(info, rmfield(nc, 'import_options')), 'no import options');
+
+info = sources.info(2);
+assert(isequaln(info, rmfield(text, 'variable')), 'no variable');
+
+end

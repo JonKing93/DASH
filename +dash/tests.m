@@ -8,7 +8,7 @@ function[] = tests
 %
 % <a href="matlab:dash.doc('dash.tests')">Documentation Page</a>
 
-% dash.gridfileSources.tests;
+dash.gridfileSources.tests;
 dash.assert.tests;
 dash.dataSource.tests;
 dash.file.tests;

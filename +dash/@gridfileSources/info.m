@@ -75,7 +75,7 @@ for k = 1:nSource
     info(k).transform_parameters = obj.transform_params(s(k),:);
     
     if hasopts(k)
-        info(k).import_options = obj.importOptions(loc(k));
+        info(k).import_options = obj.importOptions{loc(k)};
         hasImportOptions = true;
     end
 end
