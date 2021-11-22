@@ -18,6 +18,13 @@ remove = find(ismember(obj.importOptionSource, s));
 obj.importOptions(remove) = [];
 obj.importOptionSource(remove) = [];
 
+% Update import option source indices
+for k = 1:numel(obj.importOptionSource)
+    index = obj.importOptionSource(k);
+    lower = sum(s<index);
+    obj.importOptionSource(k) = index - lower;
+end
+
 % Remove everything else
 obj.type(s) = [];
 obj.source(s) = [];

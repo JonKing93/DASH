@@ -1,7 +1,7 @@
 classdef gridfile < handle
     %% gridfile  Catalogue and load gridded data sets
     % ----------
-        %   The gridfile class creates and manages gridfile objects. These
+    %   The gridfile class creates and manages gridfile objects. These
     %   objects catalogue 1. metadata, and 2. data source files for a
     %   gridded dataset. The catalogue is stored in a file with a ".grid"
     %   extension.
@@ -29,7 +29,8 @@ classdef gridfile < handle
     %   metadata        - Return the metadata for a gridfile
     %   load            - Load data from the sources catalogued in a .grid file
     %
-    % **ALL USER METHODS**
+    %
+    % *ALL USER METHODS*
     % The complete list of gridfile methods for users.
     %
     % Create:
@@ -51,7 +52,7 @@ classdef gridfile < handle
     %   add              - Catalogue a data source in a .grid file
     %   remove           - Remove data sources from a .grid file's catalogue
     %   rename           - Update paths to data sources catalogued in a gridfile
-    %   absolutePath     - Save data source file names as absolute or relative paths
+    %   absolutePaths    - Save data source file names as absolute or relative paths
     %
     % Data adjustments:
     %   fillValue        - Specify a fill value for data catalogued in a .grid file
@@ -72,7 +73,8 @@ classdef gridfile < handle
     %   info             - Return information about a gridfile object
     %   name             - Return the name of the .grid file, excluding path
     %
-    % **UTILITY METHODS**
+    %
+    % ==UTILITY METHODS==
     % Under-the-hood methods that help the class run. These are not intended
     % for users.
     %
@@ -141,7 +143,7 @@ classdef gridfile < handle
         add(obj, type, source, varargin);
         remove(obj, sources);
         rename(obj, sources, newNames);
-        absolutePath(obj, useAbsolute, sources);
+        absolutePaths(obj, useAbsolute, sources);
         
         % Data adjustments
         fill = fillValue(obj, fill, sources);

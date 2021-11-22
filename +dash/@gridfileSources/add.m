@@ -52,7 +52,7 @@ obj.var = [obj.var; varName];
 % down gridfile saves. Use source indexing to only record
 % import options when necessary.
 if isa(dataSource, 'dash.dataSource.text') && ~isempty(dataSource.importOptions)
-    obj.importOptions = [obj.importOptions; dataSource.importOptions];
+    obj.importOptions = [obj.importOptions; {dataSource.importOptions}];
     obj.importOptionSource = [obj.importOptionSource; numel(obj.source)];
 end            
 

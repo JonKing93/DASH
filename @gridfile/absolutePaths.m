@@ -1,7 +1,7 @@
-function[] = absolutePath(obj, useAbsolute, sources)
-%% gridfile.absolutePath  Save data source file names as absolute or relative paths
+function[] = absolutePaths(obj, useAbsolute, sources)
+%% gridfile.absolutePaths  Save data source file names as absolute or relative paths
 % ----------
-%   <strong>obj.absolutePath</strong>(useAbsolute)
+%   <strong>obj.absolutePaths</strong>(useAbsolute)
 %   Specify whether the .grid file should save data source locations as
 %   relative paths, or absolute paths. This syntax sets the preferred file
 %   path style for all data sources currently in the .grid, and applies the
@@ -23,8 +23,8 @@ function[] = absolutePath(obj, useAbsolute, sources)
 %   setting useAbsolute to false does not guarantee that all data sources
 %   use relative paths.
 %
-%   <strong>obj.absolutePath</strong>(useAbsolute, s)
-%   <strong>obj.absolutePath</strong>(useAbsolute, sources)
+%   <strong>obj.absolutePaths</strong>(useAbsolute, s)
+%   <strong>obj.absolutePaths</strong>(useAbsolute, sources)
 %   Implement a preferred path style for the indicated data sources. This
 %   syntax overrides any preferred path style previously set for the data
 %   sources.
@@ -41,11 +41,11 @@ function[] = absolutePath(obj, useAbsolute, sources)
 %       sourceName (string vector): The names of the data sources that
 %           should implement the preferred file path style.
 %
-% <a href="matlab:dash.doc('gridfile.useAbsolute')">Documentation Page</a>
+% <a href="matlab:dash.doc('gridfile.absolutePaths')">Documentation Page</a>
 
 % Setup
 obj.update;
-header = "DASH:gridfile:useAbsolute";
+header = "DASH:gridfile:absolutePaths";
 
 % Error check
 dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);

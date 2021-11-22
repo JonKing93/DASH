@@ -15,6 +15,7 @@ function[obj] = new(filename, metadata, overwrite)
 %           filename, relative path, or absolute path. If not an absolute
 %           path, saves the new file relative to the current directory.
 %       metadata (gridMetadata object): Metadata for the gridded dataset.
+%           Metadata rows must be unique for each dimension.
 %           If the metadata has a set dimension order, the order will be ignored.
 %       overwrite (scalar logical): Whether to overwrite existing files
 %           (true) or not (false). Default is false.
