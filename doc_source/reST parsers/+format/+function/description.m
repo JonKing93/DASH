@@ -5,7 +5,7 @@ function[rst] = description(links, signatures, details)
 % ----------
 %   Inputs:
 %       links (string vector): Link to each syntax
-%       signatures (string vector): Set of syntaxes / function signatures
+%       signatures (cell vector): Blocks of syntaxes / function signatures
 %       details (cell vector): Usage details for each syntax. Elements are
 %           paragraphs of the description.
 %
@@ -15,7 +15,7 @@ function[rst] = description(links, signatures, details)
 % Format each block
 blocks = [];
 for s = 1:numel(signatures)
-    nextblock = format.block.description(links(s), signatures(s), details{s});
+    nextblock = format.block.description(links(s), signatures{s}, details{s});
     blocks = strjoin([blocks, nextblock], "\n\n");
 end
 

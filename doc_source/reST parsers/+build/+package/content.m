@@ -1,7 +1,7 @@
 function[rst] = content(help)
 
 % Get contents and details
-[sections, summaries, headings, files, h1] = parse.packageContents(help);
+[sections, sectionTypes, summaries, headings, files, h1] = parse.packageContents(help);
 
 % Link the files in each section/heading
 subfolder = parse.name(help);
@@ -15,6 +15,6 @@ for s = 1:numel(sections)
 end
 
 % Format the rst
-rst = format.package.content(sections,summaries, headings, files, h1, links);
+rst = format.package.content(sections, sectionTypes, summaries, headings, files, h1, links);
 
 end

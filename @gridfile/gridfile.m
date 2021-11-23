@@ -78,7 +78,7 @@ classdef gridfile < handle
     % Under-the-hood methods that help the class run. These are not intended
     % for users.
     %
-    % File interacttions:
+    % File interactions:
     %   update           - Update a gridfile object to match the contents of its .grid file
     %   save             - Save a gridfile object to a .grid file
     %
@@ -182,7 +182,7 @@ classdef gridfile < handle
         %% gridfile.gridfile  Return a gridfile object for a .grid file
         % ----------
         %   obj = gridfile(file)
-        %   Returns a gridfile object for the indicated file.
+        %   Builds an object for the specified file.
         % ----------
         %   Inputs:
         %       filename (string scalar): The name of a .grid file.

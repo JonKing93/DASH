@@ -1,4 +1,4 @@
-function[sections, sectsummaries, headings, files, h1] = packageContents(header)
+function[sections, sectionTypes, summaries, headings, files, h1] = packageContents(header)
 %%
 % sections: reST section headings. The first element is empty
 % sectionType: Section types
@@ -20,6 +20,7 @@ details = [details, newline];
 % Preallocate reST sections
 sections = "";
 summaries = "";
+sectionTypes = 3;
 headings = {""};
 files = {{strings(0,1)}};
 h1 = {{strings(0,1)}};
@@ -39,10 +40,22 @@ for k = 2:numel(eol)
         % Do nothing
     
     % New reST section
-    elseif line(1)=='*' && line(2)=='*'
+    elseif line(1)=='*' || line(1)=='='        
         s = s+1;
         h = 1;
-        sections(s) = line(3:end-2);
+        
+        % Process types
+        if line(2)=='*'
+            sections(s) = line(3:end-2);
+            sectionTypes(s) = 1; %#ok<*AGROW>
+        elseif line(2)=='='
+            sections(s) = line(3:end-2);
+            sectionTypes(s) = 3;
+        else
+            sections(s) = line(2:end-1);
+            sectionTypes(s) = 2;
+        end   
+        
         summaries(s) = "";
         headings{s} = "";
         files{s} = {strings(0,1)};

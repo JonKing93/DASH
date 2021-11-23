@@ -3,7 +3,7 @@ function[rst] = content(header)
 
 % Get contents, details, title
 title = parse.h1(header);
-[sections, summaries, headings, methods, h1] = parse.packageContents(header);
+[sections, sectionTypes, summaries, headings, methods, h1] = parse.packageContents(header);
 
 % Initialize method links and inherited status
 links = methods;
@@ -29,6 +29,6 @@ for s = 1:numel(sections)
 end
 
 % Format the rst
-rst = format.class.content(sections, summaries, headings, methods, h1, links, inherited);
+rst = format.class.content(sections, sectionTypes, summaries, headings, methods, h1, links, inherited);
 
 end

@@ -4,7 +4,7 @@ function[rst] = syntax(signatures, links)
 %   rst = format.syntax(signatures, links)
 % ----------
 %   Inputs:
-%       signatures (string vector): List of function signatures/syntaxes
+%       signatures (cell vector): Blocks of function signatures
 %       links (string vector): Link to the usage details of each syntax
 %
 %   Outputs:
@@ -13,8 +13,10 @@ function[rst] = syntax(signatures, links)
 % Build each line
 syntaxText = [];
 for s = 1:numel(signatures)
-    line = sprintf("| :ref:`%s <%s>`\n", signatures{s}, links{s});
-    syntaxText = strcat(syntaxText, line);
+    for k = 1:numel(signatures{s})
+        line = sprintf("| :ref:`%s <%s>`\n", signatures{s}(k), links{s});
+        syntaxText = strcat(syntaxText, line);
+    end
 end
 
 % Format rst Section
