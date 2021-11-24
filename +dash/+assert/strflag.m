@@ -5,8 +5,6 @@ function[str] = strflag(input, name, idHeader)
 %   Checks if an input is either a string scalar or char row vector. If not, 
 %   throws an error. If so, returns the input as a string data type.
 %
-%   Here is a second paragraph with information about the function.
-%
 %   str = dash.assert.strflag(input, name)
 %   Refers to the input by a custom name in thrown error messages.
 %
