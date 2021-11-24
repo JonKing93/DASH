@@ -77,7 +77,7 @@ defaultRange = grid.validRange
 ```out
 defaultRange =
               -Inf  Inf
-``
+```
 
 Also examine the valid range for a data source. Note that the valid range for individual data sources can differ from the default range.
 

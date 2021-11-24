@@ -22,8 +22,8 @@ mkdir(source);
 % Move to the source folder and build .rst files
 cd(source);
 dashRoot = fullfile(folders{1:end-1});
-% examplesRoot = fullfile(docSource, 'examples');
-examplesRoot = 'ignore-the-examples';
+examplesRoot = fullfile(docSource, 'examples');
+% examplesRoot = 'ignore-the-examples';
 doc.dash(dashRoot, examplesRoot);
 
 % Add the sphinx config and index rst to the sphinx reST source
