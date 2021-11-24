@@ -18,6 +18,9 @@ classdef gridfileSources
     %   absolutePaths - Return the absolute paths to data sources in the catalogue
     %   savePath      - Record the path to a data source in the catalogue
     %
+    % Unit tests:
+    %   tests         - Unit tests for the dash.gridfileSources class
+    %
     % <a href="matlab:dash.doc('dash.gridfileSources')">Documentation Page</a>
     
     properties

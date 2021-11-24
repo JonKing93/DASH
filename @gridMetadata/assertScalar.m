@@ -1,10 +1,10 @@
 function[] = assertScalar(obj, header)
 %% gridMetadata.assertScalar  Throw error if gridMetadata object is not scalar
 % ----------
-%   obj.assertScalar
+%   <strong>obj.assertScalar</strong>
 %   Throws an error if the calling gridMetadata object is not scalar.
 %
-%   obj.assertScalar(header)
+%   <strong>obj.assertScalar</strong>(header)
 %   Customize thrown error IDs.
 % ----------
 %   Inputs:
