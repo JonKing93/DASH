@@ -4,6 +4,7 @@ classdef gridMetadata
 %   gridMetadata objects help define the metadata for an N-dimensional
 %   gridded dataset. Each object supports metadata for the following
 %   dimensions:
+%
 %   1. lon: longitude / x-coordinate
 %   2. lat: latitude / y-coordinate
 %   3. lev: level / height / z-coordinate
@@ -11,9 +12,9 @@ classdef gridMetadata
 %   5. time: time
 %   6. run: run / ensemble member
 %   7. var: climate variable
-%   although datasets are not required to implement all 7 dimensions. 
 %
-%   The class can also be customized to include additional dimensions or
+%   although datasets are not required to implement all 7 dimensions. The
+%   class can also be customized to include additional dimensions or
 %   to rename the default dimensions.
 %
 %   gridMetadata objects also include support for non-dimensional
