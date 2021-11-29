@@ -7,40 +7,72 @@ Throw error if strings are not in a list of allowed strings
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`k = dash.assert.strsInList(strings, list) <dash.assert.strsInList.syntax1>`
 | :ref:`k = dash.assert.strsInList(strings, list, name, listName) <dash.assert.strsInList.syntax2>`
 | :ref:`k = dash.assert.strsInList(strings, list, name, listName, idHeader) <dash.assert.strsInList.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.strsInList.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`)
+| :ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks if all elements in strings are members of list. If not, throws an error. If so, returns the indices of each string in the list.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strsInList.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`, :ref:`name <dash.assert.strsInList.input.name>`, :ref:`listName <dash.assert.strsInList.input.listName>`)
+| :ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`, :ref:`name <dash.assert.strsInList.input.name>`, :ref:`listName <dash.assert.strsInList.input.listName>`)
+
+.. raw:: html
+
+    </pre>
 
 Use custom names for the strings and list in the thrown error message.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strsInList.syntax3:
 
 .. rst-class:: syntax
 
-:ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`, :ref:`name <dash.assert.strsInList.input.name>`, :ref:`listName <dash.assert.strsInList.input.listName>`, :ref:`idHeader <dash.assert.strsInList.input.idHeader>`)
+| :ref:`k <dash.assert.strsInList.output.k>` = dash.assert.strsInList(:ref:`strings <dash.assert.strsInList.input.strings>`, :ref:`list <dash.assert.strsInList.input.list>`, :ref:`name <dash.assert.strsInList.input.name>`, :ref:`listName <dash.assert.strsInList.input.listName>`, :ref:`idHeader <dash.assert.strsInList.input.idHeader>`)
+
+.. raw:: html
+
+    </pre>
 
 Use a custom header in thrown error IDs.
 

@@ -1,0 +1,43 @@
+dash.string.tests
+=================
+Unit tests for the dash.string package
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.string.tests <dash.string.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.string.tests.syntax1:
+
+.. rst-class:: syntax
+
+| dash.string.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. If failed, throws error at first failed test.
+
+

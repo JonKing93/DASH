@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../dash.html">dash</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">doc</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
@@ -59,8 +61,9 @@
 <li class="toctree-l2"><a class="reference internal" href="parse.html">parse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="indices.html">indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="string.html">string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file.html">file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tests.html">tests</a></li>
 </ul>
 </li>
@@ -97,23 +100,31 @@
 <hr class="docutils" />
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<div class="syntax line-block">
+<pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-doc-syntax1"><span class="std std-ref">dash.doc(name)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-doc-syntax2"><span class="std std-ref">&gt;&gt; dash.doc( “dash.is.strflag” )</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-doc-syntax3"><span class="std std-ref">&gt;&gt; dash.doc( “kalmanFilter” )</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-doc-syntax4"><span class="std std-ref">&gt;&gt; dash.doc( “kalmanFilter.prior” )</span></a></div>
 </div>
-</section>
+</pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<p class="syntax" id="dash-doc-syntax1">dash.doc(<a class="reference internal" href="#dash-doc-input-name"><span class="std std-ref">name</span></a>)</p>
-<p>Opens the online reference page for a method, package, or class in the DASH toolbox.</p>
+<pre><div class="syntax line-block" id="dash-doc-syntax1">
+<div class="line">dash.doc(<a class="reference internal" href="#dash-doc-input-name"><span class="std std-ref">name</span></a>)</div>
+</div>
+</pre><p>Opens the online reference page for a method, package, or class in the DASH toolbox.</p>
 <p>The name of the method, package, or class should include all package/subpackage headers. For example:</p>
-<p class="syntax" id="dash-doc-syntax2">&gt;&gt; dash.doc( “dash.is.strflag” )</p>
-<p class="syntax" id="dash-doc-syntax3">&gt;&gt; dash.doc( “kalmanFilter” )</p>
-<p class="syntax" id="dash-doc-syntax4">&gt;&gt; dash.doc( “kalmanFilter.prior” )</p>
-</section>
+<pre><div class="syntax line-block" id="dash-doc-syntax2">
+<div class="line">&gt;&gt; dash.doc( “dash.is.strflag” )</div>
+</div>
+</pre><pre><div class="syntax line-block" id="dash-doc-syntax3">
+<div class="line">&gt;&gt; dash.doc( “kalmanFilter” )</div>
+</div>
+</pre><pre><div class="syntax line-block" id="dash-doc-syntax4">
+<div class="line">&gt;&gt; dash.doc( “kalmanFilter.prior” )</div>
+</div>
+</pre></section>
 <hr class="docutils" />
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>

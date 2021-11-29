@@ -7,40 +7,72 @@ Throw error if input is not required type
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.assert.type(input, type)  checks if input is the required data <dash.assert.type.syntax1>`
 | :ref:`dash.assert.type(input, type, name, descriptor)  uses a custom name and <dash.assert.type.syntax2>`
 | :ref:`dash.assert.type(input, type, name, descriptor, idHeader)  uses a custom <dash.assert.type.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.type.syntax1:
 
 .. rst-class:: syntax
 
-dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`)  checks if input is the required data
+| dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`)  checks if input is the required data
+
+.. raw:: html
+
+    </pre>
 
 type. If not, throws an error.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.type.syntax2:
 
 .. rst-class:: syntax
 
-dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`, :ref:`name <dash.assert.type.input.name>`, :ref:`descriptor <dash.assert.type.input.descriptor>`)  uses a custom name and
+| dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`, :ref:`name <dash.assert.type.input.name>`, :ref:`descriptor <dash.assert.type.input.descriptor>`)  uses a custom name and
+
+.. raw:: html
+
+    </pre>
 
 data type descriptor in thrown error messages.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.type.syntax3:
 
 .. rst-class:: syntax
 
-dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`, :ref:`name <dash.assert.type.input.name>`, :ref:`descriptor <dash.assert.type.input.descriptor>`, :ref:`idHeader <dash.assert.type.input.idHeader>`)  uses a custom
+| dash.assert.type(:ref:`input <dash.assert.type.input.input>`, :ref:`type <dash.assert.type.input.type>`, :ref:`name <dash.assert.type.input.name>`, :ref:`descriptor <dash.assert.type.input.descriptor>`, :ref:`idHeader <dash.assert.type.input.idHeader>`)  uses a custom
+
+.. raw:: html
+
+    </pre>
 
 header in thrown error IDs.
 

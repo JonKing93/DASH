@@ -7,20 +7,36 @@ Load data from a delimited text file
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`X = obj.load(indices) <dash.dataSource.text.load.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.text.load.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`X <dash.dataSource.text.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.text.load.input.indices>`)
+| :ref:`X <dash.dataSource.text.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.text.load.input.indices>`)
+
+.. raw:: html
+
+    </pre>
 
 Loads data from a delimited text at the specified linear indices.
 

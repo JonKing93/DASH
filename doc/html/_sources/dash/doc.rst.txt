@@ -7,6 +7,10 @@ Open online reference page in a web browser.
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.doc(name) <dash.doc.syntax1>`
@@ -14,45 +18,81 @@ Syntax
 | :ref:`>> dash.doc( "kalmanFilter" ) <dash.doc.syntax3>`
 | :ref:`>> dash.doc( "kalmanFilter.prior" ) <dash.doc.syntax4>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.doc.syntax1:
 
 .. rst-class:: syntax
 
-dash.doc(:ref:`name <dash.doc.input.name>`)
+| dash.doc(:ref:`name <dash.doc.input.name>`)
+
+.. raw:: html
+
+    </pre>
 
 Opens the online reference page for a method, package, or class in the DASH toolbox.
 
 The name of the method, package, or class should include all package/subpackage headers. For example:
 
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.doc.syntax2:
 
 .. rst-class:: syntax
 
->> dash.doc( "dash.is.strflag" )
+| >> dash.doc( "dash.is.strflag" )
+
+.. raw:: html
+
+    </pre>
 
 
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.doc.syntax3:
 
 .. rst-class:: syntax
 
->> dash.doc( "kalmanFilter" )
+| >> dash.doc( "kalmanFilter" )
+
+.. raw:: html
+
+    </pre>
 
 
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.doc.syntax4:
 
 .. rst-class:: syntax
 
->> dash.doc( "kalmanFilter.prior" )
+| >> dash.doc( "kalmanFilter.prior" )
+
+.. raw:: html
+
+    </pre>
 
 
 

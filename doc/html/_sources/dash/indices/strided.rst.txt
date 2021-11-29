@@ -7,20 +7,36 @@ Equally spaced indices that include all input indices
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`B = dash.indices.strided(A) <dash.indices.strided.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.indices.strided.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`B <dash.indices.strided.output.B>` = dash.indices.strided(:ref:`A <dash.indices.strided.input.A>`)
+| :ref:`B <dash.indices.strided.output.B>` = dash.indices.strided(:ref:`A <dash.indices.strided.input.A>`)
+
+.. raw:: html
+
+    </pre>
 
 Returns a set of equally spaced, monotonically increasing indices (B) that contain all linear indices specified in A.
 

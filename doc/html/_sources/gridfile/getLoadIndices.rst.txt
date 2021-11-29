@@ -1,0 +1,111 @@
+gridfile.getLoadIndices
+=======================
+Organize the dimension indices required to implement a load operation
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`loadIndices = obj.getLoadIndices(userDimOrder, userIndices) <gridfile.getLoadIndices.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.getLoadIndices.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`loadIndices <gridfile.getLoadIndices.output.loadIndices>` = obj.getLoadIndices(:ref:`userDimOrder <gridfile.getLoadIndices.input.userDimOrder>`, :ref:`userIndices <gridfile.getLoadIndices.input.userIndices>`)
+
+.. raw:: html
+
+    </pre>
+
+Takes a user-defined dimension order and accompanying dimension indices and determines the full set of indices needed for a load operation. The full set of indices includes indices for all gridfile dimensions in the order they appear in the gridfile.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.getLoadIndices.input.userDimOrder:
+
+userDimOrder
+++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>userDimOrder</strong></label><div class="content">
+
+| *vector*, *linear* *indices* [*nUserDims*]
+| The locations of the user-requested output dimensions in the full set of gridfile dimensions.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.getLoadIndices.input.userIndices:
+
+userIndices
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>userIndices</strong></label><div class="content">
+
+| *cell* *vector* [*nUserDims*] {*vector*, *linear* *indices* | *empty* *array*}
+| The user-specified indices to load along each dimension.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.getLoadIndices.output.loadIndices:
+
+loadIndices
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>loadIndices</strong></label><div class="content">
+
+| *cell* *vector* [*nGridDims*] {*vector*, *linear* *indices*}
+| The elements along each gridfile dimension that are required to implement the load operation. Includes all gridfile dimensions in the gridfile's dimension order.
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -1,0 +1,129 @@
+gridfile.save
+=============
+Save a gridfile object to a .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.save <gridfile.save.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.save.syntax1:
+
+.. rst-class:: syntax
+
+| obj.save
+
+.. raw:: html
+
+    </pre>
+
+Saves the contents of the current gridfile object to its associated
+.grid file.
+
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Save a gridfile object to file
+++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Save a gridfile object to file</strong></label><div class="content">
+
+
+Create a gridfile object:
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+
+
+Examine a property in the gridfile. (Here, we'll use the default fill value as an example):
+
+.. rst-class:: no-margin
+
+::
+
+    fill = grid.fill
+
+
+.. rst-class:: example-output
+
+::
+
+    fill = 
+          NaN
+
+
+Change the object property. Note that the value in the .grid file is no longer up-to-date.
+
+.. rst-class:: no-margin
+
+::
+
+    grid.fill = -999;
+    
+    savedValues = matfile(grid.file);
+    savedFill = savedValues.fill
+
+
+.. rst-class:: example-output
+
+::
+
+    savedFill =
+               NaN
+
+
+Save the new values to the file:
+
+.. rst-class:: no-margin
+
+::
+
+    grid.save;
+    
+    savedValues = matfile(grid.file);
+    savedFill = savedValues.fill
+
+
+.. rst-class:: example-output
+
+::
+
+    savedFill =
+               -999
+
+
+.. raw:: html
+
+    </div></section>
+
+

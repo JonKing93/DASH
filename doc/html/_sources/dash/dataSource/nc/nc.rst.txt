@@ -7,22 +7,56 @@ Create a new dash.dataSource.nc object
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`obj = dash.dataSource.nc(file, var) <dash.dataSource.nc.nc.syntax1>`
+| :ref:`obj = dash.dataSource.nc(opendapURL, var) <dash.dataSource.nc.nc.syntax2>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.nc.nc.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`obj <dash.dataSource.nc.nc.output.obj>` = dash.dataSource.nc(:ref:`file <dash.dataSource.nc.nc.input.file>`, :ref:`var <dash.dataSource.nc.nc.input.var>`)
+| :ref:`obj <dash.dataSource.nc.nc.output.obj>` = dash.dataSource.nc(:ref:`file <dash.dataSource.nc.nc.input.file>`, :ref:`var <dash.dataSource.nc.nc.input.var>`)
+
+.. raw:: html
+
+    </pre>
 
 Creates a nc object to read data from a variable in a NetCDF file
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.dataSource.nc.nc.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`obj <dash.dataSource.nc.nc.output.obj>` = dash.dataSource.nc(opendapURL, :ref:`var <dash.dataSource.nc.nc.input.var>`)
+
+.. raw:: html
+
+    </pre>
+
+Creates an nc object to read data from a variable stored in a NetCDF file accessed via an OPENDAP url.
 
 
 ----
@@ -52,6 +86,26 @@ file
 
 .. rst-class:: collapse-examples
 
+.. _dash.dataSource.nc.nc.input.url:
+
+url
++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>url</strong></label><div class="content">
+
+| *string* *scalar*
+| An OPENDAP url to a NetCDF file.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
 .. _dash.dataSource.nc.nc.input.var:
 
 var
@@ -59,7 +113,7 @@ var
 
 .. raw:: html
 
-    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>var</strong></label><div class="content">
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>var</strong></label><div class="content">
 
 | *string* *scalar*
 | The name of the variable in the file

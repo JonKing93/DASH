@@ -16,11 +16,6 @@ These classes are used by gridfile objects to load data from different files wit
 | :doc:`Interface <dataSource/Interface>` - Interface for objects that read data from a source file
 | :doc:`hdf <dataSource/hdf>` - Superclass for objects that read data from HDF5 files
 
-.. toctree::
-    :hidden:
-
-    Interface <dataSource/Interface>
-    hdf <dataSource/hdf>
 
 
 .. raw:: html
@@ -33,12 +28,6 @@ These classes are used by gridfile objects to load data from different files wit
 | :doc:`nc <dataSource/nc>` - Objects that read data from NetCDF files
 | :doc:`text <dataSource/text>` - Objects that read data from delimited text files
 
-.. toctree::
-    :hidden:
-
-    mat <dataSource/mat>
-    nc <dataSource/nc>
-    text <dataSource/text>
 
 
 .. raw:: html
@@ -52,4 +41,10 @@ These classes are used by gridfile objects to load data from different files wit
 .. toctree::
     :hidden:
 
+    Interface <dataSource/Interface>
+    hdf <dataSource/hdf>
+    mat <dataSource/mat>
+    nc <dataSource/nc>
+    text <dataSource/text>
     tests <dataSource/tests>
+

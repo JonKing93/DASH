@@ -7,40 +7,72 @@ Throw error if input is not a scalar of a required data type
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.assert.scalarType(input, type)  checks if input is scalar and the <dash.assert.scalarType.syntax1>`
 | :ref:`dash.assert.scalarType(input, type, name)  uses a custom name for the <dash.assert.scalarType.syntax2>`
 | :ref:`dash.assert.scalarType(input, type, name, idHeader)  uses a custom <dash.assert.scalarType.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.scalarType.syntax1:
 
 .. rst-class:: syntax
 
-dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`)  checks if input is scalar and the
+| dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`)  checks if input is scalar and the
+
+.. raw:: html
+
+    </pre>
 
 required data type. If not, throws an error.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.scalarType.syntax2:
 
 .. rst-class:: syntax
 
-dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`, :ref:`name <dash.assert.scalarType.input.name>`)  uses a custom name for the
+| dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`, :ref:`name <dash.assert.scalarType.input.name>`)  uses a custom name for the
+
+.. raw:: html
+
+    </pre>
 
 input in error messages
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.scalarType.syntax3:
 
 .. rst-class:: syntax
 
-dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`, :ref:`name <dash.assert.scalarType.input.name>`, :ref:`idHeader <dash.assert.scalarType.input.idHeader>`)  uses a custom
+| dash.assert.scalarType(:ref:`input <dash.assert.scalarType.input.input>`, :ref:`type <dash.assert.scalarType.input.type>`, :ref:`name <dash.assert.scalarType.input.name>`, :ref:`idHeader <dash.assert.scalarType.input.idHeader>`)  uses a custom
+
+.. raw:: html
+
+    </pre>
 
 header for thrown error IDs.
 

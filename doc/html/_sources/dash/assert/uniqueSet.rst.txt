@@ -1,0 +1,222 @@
+dash.assert.uniqueSet
+=====================
+Throw error if vector has repeated values
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.assert.uniqueSet(input) <dash.assert.uniqueSet.syntax1>`
+| :ref:`dash.assert.uniqueSet(input, inputName, header) <dash.assert.uniqueSet.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.uniqueSet.syntax1:
+
+.. rst-class:: syntax
+
+| dash.assert.uniqueSet(:ref:`input <dash.assert.uniqueSet.input.input>`)
+
+.. raw:: html
+
+    </pre>
+
+Tests if an input vector has repeated values. If so, throws an error.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.uniqueSet.syntax2:
+
+.. rst-class:: syntax
+
+| dash.assert.uniqueSet(:ref:`input <dash.assert.uniqueSet.input.input>`, :ref:`inputName <dash.assert.uniqueSet.input.inputName>`, :ref:`header <dash.assert.uniqueSet.input.header>`)
+
+.. raw:: html
+
+    </pre>
+
+Customize error messages and IDs.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Check vector has no repeated elements
++++++++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Check vector has no repeated elements</strong></label><div class="content">
+
+
+An example that passes the assertion:
+
+::
+
+    noRepeats = ["a","vector","with","no","repeated","elements"];
+    dash.assert.uniqueSet(noRepeats);
+
+
+An example that fails:
+
+.. rst-class:: no-margin
+
+::
+
+    hasRepeats = ["A","B","C","A"];
+    dash.assert.uniqueSet(hasRepeats);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Value "A" is repeated multiple times. (Elements 1 and 4)
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Customize error message
++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Customize error message</strong></label><div class="content">
+
+
+.. rst-class:: no-margin
+
+::
+
+    inputName = 'Option name';
+    header = "my:error:header";
+    hasRepeats = ["A","B","C","A"];
+    
+    dash.assert.uniqueSet(hasRepeats, inputName, header);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Option name "A" is repeated multiple times. (Elements 1 and 4)'
+
+
+Also examine the error ID:
+
+.. rst-class:: no-margin
+
+::
+
+    ME = lasterror;
+    ID = ME.identifier
+
+
+.. rst-class:: example-output
+
+::
+
+    ID =
+        'my:error:header'
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.uniqueSet.input.input:
+
+input
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>input</strong></label><div class="content">
+
+| The input vector being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.uniqueSet.input.inputName:
+
+inputName
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>inputName</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of the input
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.uniqueSet.input.header:
+
+header
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>header</strong></label><div class="content">
+
+| *string* *scalar*
+| Header for thrown error IDs
+
+.. raw:: html
+
+    </div></section>
+
+

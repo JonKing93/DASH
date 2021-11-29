@@ -18,7 +18,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="dash.metadata" href="../metadata.html" />
+    <link rel="next" title="dash.string.tests" href="tests.html" />
     <link rel="prev" title="dash.string" href="../string.html" /> 
 </head>
 
@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
@@ -65,10 +67,12 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
 </ul>
 </li>
@@ -106,15 +110,17 @@
 <hr class="docutils" />
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<div class="syntax line-block">
+<pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-string-list-syntax1"><span class="std std-ref">string = dash.string.list(list)</span></a></div>
 </div>
-</section>
+</pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<p class="syntax" id="dash-string-list-syntax1"><a class="reference internal" href="#dash-string-list-output-string"><span class="std std-ref">string</span></a> = dash.string.list(list)</p>
-<p>Rrints the elements of a vector in a string. In the returned string, elements are separated by commas and the word “and” is placed before the final element, if appropriate.</p>
+<pre><div class="syntax line-block" id="dash-string-list-syntax1">
+<div class="line"><a class="reference internal" href="#dash-string-list-output-string"><span class="std std-ref">string</span></a> = dash.string.list(list)</div>
+</div>
+</pre><p>Prints the elements of a vector in a string. In the returned string, elements are separated by commas and the word “and” is placed before the final element, if appropriate.</p>
 </section>
 <hr class="docutils" />
 <section id="examples">
@@ -174,8 +180,8 @@
 <section class="collapse-examples" id="string">
 <span id="dash-string-list-output-string"></span><h3>string<a class="headerlink" href="#string" title="Permalink to this headline"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>string</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>string</em> <em>scalar</em></div>
-<div class="line">The elements of the list formatted as a string</div>
+<div class="line"><em>char</em> <em>row</em> <em>vector</em></div>
+<div class="line">The elements of the list formatted as a single char string.</div>
 </div>
 </div></section></section>
 </section>
@@ -186,7 +192,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../string.html" class="btn btn-neutral float-left" title="dash.string" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../metadata.html" class="btn btn-neutral float-right" title="dash.metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="dash.string.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

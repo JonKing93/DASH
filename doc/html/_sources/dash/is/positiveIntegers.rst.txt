@@ -1,0 +1,90 @@
+dash.is.positiveInteger
+=======================
+Tests if values in a numeric array are positive integers
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`tf = dash.is.positiveIntegers(X) <dash.is.positiveInteger.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.positiveInteger.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`tf <dash.is.positiveInteger.output.tf>` = dash.is.positiveIntegers(:ref:`X <dash.is.positiveInteger.input.X>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if X is a numeric array of positive integers. Otherwise, returns false.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.positiveInteger.input.X:
+
+X
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>X</strong></label><div class="content">
+
+| The array being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.positiveInteger.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *scalar* *logical*
+| True if X is a numeric array that strictly consists of positive integers. False otherwise.
+
+.. raw:: html
+
+    </div></section>
+
+

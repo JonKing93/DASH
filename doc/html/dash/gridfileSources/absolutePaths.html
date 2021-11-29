@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.gridfileSources.absolutePaths &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.gridfileSources.savePath" href="savePath.html" />
+    <link rel="prev" title="dash.gridfileSources.ismatch" href="ismatch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assert.html">assert</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="add.html">add</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove.html">remove</a></li>
+<li class="toctree-l3"><a class="reference internal" href="indices.html">indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="unpack.html">unpack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="info.html">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build.html">build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ismatch.html">ismatch</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">absolutePaths</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#s">s</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#paths">paths</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="savePath.html">savePath</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../gridfileSources.html">dash.gridfileSources</a> &raquo;</li>
+      <li>dash.gridfileSources.absolutePaths</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-gridfilesources-absolutepaths">
+<h1>dash.gridfileSources.absolutePaths<a class="headerlink" href="#dash-gridfilesources-absolutepaths" title="Permalink to this headline"></a></h1>
+<p>Return the absolute paths to data sources in the catalogue</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-absolutepaths-syntax1"><span class="std std-ref">paths = obj.absolutePaths</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-absolutepaths-syntax2"><span class="std std-ref">paths = obj.absolutePaths(s)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-gridfilesources-absolutepaths-syntax1">
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-absolutepaths-output-paths"><span class="std std-ref">paths</span></a> = obj.absolutePaths</div>
+</div>
+</pre><p>Returns the absolute paths to all data sources. Paths are returned in the order that sources are stored in the object.</p>
+<pre><div class="syntax line-block" id="dash-gridfilesources-absolutepaths-syntax2">
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-absolutepaths-output-paths"><span class="std std-ref">paths</span></a> = obj.absolutePaths(<a class="reference internal" href="#dash-gridfilesources-absolutepaths-input-s"><span class="std std-ref">s</span></a>)</div>
+</div>
+</pre><p>Returns the absolute paths to the specified data sources. Paths are returned in the order of input indices.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="s">
+<span id="dash-gridfilesources-absolutepaths-input-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> [<em>nSources</em>] | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of the data sources for which to return absolute paths.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="paths">
+<span id="dash-gridfilesources-absolutepaths-output-paths"></span><h3>paths<a class="headerlink" href="#paths" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>paths</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The absolute paths to the data sources</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ismatch.html" class="btn btn-neutral float-left" title="dash.gridfileSources.ismatch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="savePath.html" class="btn btn-neutral float-right" title="dash.gridfileSources.savePath" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -7,40 +7,72 @@ Throw error if a file does not exist
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`abspath = dash.assert.fileExists(filename) <dash.assert.fileExists.syntax1>`
 | :ref:`abspath = dash.assert.fileExists(filename, ext) <dash.assert.fileExists.syntax2>`
 | :ref:`abspath = dash.assert.fileExists(filename, ext, idHeader) <dash.assert.fileExists.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.fileExists.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`)
+| :ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks if a file exists. If not, throws an error. If so, returns the absolute path to the file as a string.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.fileExists.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`, :ref:`ext <dash.assert.fileExists.input.ext>`)
+| :ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`, :ref:`ext <dash.assert.fileExists.input.ext>`)
+
+.. raw:: html
+
+    </pre>
 
 Also checks for files with the given extension.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.fileExists.syntax3:
 
 .. rst-class:: syntax
 
-:ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`, :ref:`ext <dash.assert.fileExists.input.ext>`, :ref:`idHeader <dash.assert.fileExists.input.idHeader>`)
+| :ref:`abspath <dash.assert.fileExists.output.abspath>` = dash.assert.fileExists(:ref:`filename <dash.assert.fileExists.input.filename>`, :ref:`ext <dash.assert.fileExists.input.ext>`, :ref:`idHeader <dash.assert.fileExists.input.idHeader>`)
+
+.. raw:: html
+
+    </pre>
 
 Uses a custom header in thrown error IDs.
 

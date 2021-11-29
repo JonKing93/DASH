@@ -1,0 +1,147 @@
+dash.is.uniqueSet
+=================
+Test if input has repeated elements
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`tf = dash.is.uniqueSet(X) <dash.is.uniqueSet.syntax1>`
+| :ref:`tf = dash.is.uniqueSet(X, true) <dash.is.uniqueSet.syntax2>`
+| :ref:`[tf, repeat] = dash.is.uniqueSet(...) <dash.is.uniqueSet.syntax3>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.uniqueSet.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`tf <dash.is.uniqueSet.output.tf>` = dash.is.uniqueSet(:ref:`X <dash.is.uniqueSet.input.X>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if a vector contains repeated values. Otherwise, returns false.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.uniqueSet.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`tf <dash.is.uniqueSet.output.tf>` = dash.is.uniqueSet(:ref:`X <dash.is.uniqueSet.input.X>`, true)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if a matrix contains repeated rows. Otherwise, returns false.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.uniqueSet.syntax3:
+
+.. rst-class:: syntax
+
+| [:ref:`tf <dash.is.uniqueSet.output.tf>`, :ref:`repeat <dash.is.uniqueSet.output.repeat>`] = dash.is.uniqueSet(...)
+
+.. raw:: html
+
+    </pre>
+
+Also returns the indices to the first set of repeated values.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.uniqueSet.input.X:
+
+X
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>X</strong></label><div class="content">
+
+| *vector* | *matrix*
+| The input being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.uniqueSet.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *scalar* *logical*
+| True if X has repeated values. Otherwise, false
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.uniqueSet.output.repeat:
+
+repeat
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>repeat</strong></label><div class="content">
+
+| *vector*, *linear* *indices*
+| The indices of the first set of repeated values.
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -7,20 +7,36 @@ Ensure variable exists in HDF file
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`obj = obj.setVariable(var, fileVars) <dash.dataSource.hdf.setVariable.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.hdf.setVariable.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`obj <dash.dataSource.hdf.setVariable.output.obj>` = obj.setVariable(:ref:`var <dash.dataSource.hdf.setVariable.input.var>`, :ref:`fileVars <dash.dataSource.hdf.setVariable.input.fileVars>`)
+| :ref:`obj <dash.dataSource.hdf.setVariable.output.obj>` = obj.setVariable(:ref:`var <dash.dataSource.hdf.setVariable.input.var>`, :ref:`fileVars <dash.dataSource.hdf.setVariable.input.fileVars>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks that a variable being loaded is in the list of variables in a HDF file. If not, throws an error. If so, saves the variable name.
 

@@ -7,22 +7,38 @@ List the elements of a vector in a formatted sting
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`string = dash.string.list(list) <dash.string.list.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.string.list.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`string <dash.string.list.output.string>` = dash.string.list(list)
+| :ref:`string <dash.string.list.output.string>` = dash.string.list(list)
 
-Rrints the elements of a vector in a string. In the returned string, elements are separated by commas and the word "and" is placed before the final element, if appropriate.
+.. raw:: html
+
+    </pre>
+
+Prints the elements of a vector in a string. In the returned string, elements are separated by commas and the word "and" is placed before the final element, if appropriate.
 
 
 ----
@@ -167,8 +183,8 @@ string
 
     <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>string</strong></label><div class="content">
 
-| *string* *scalar*
-| The elements of the list formatted as a string
+| *char* *row* *vector*
+| The elements of the list formatted as a single char string.
 
 .. raw:: html
 

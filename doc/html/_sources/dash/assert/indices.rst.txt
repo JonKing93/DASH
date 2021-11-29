@@ -1,0 +1,445 @@
+dash.assert.indices
+===================
+Throw error if inputs are neither logical indices nor linear indices
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`indices = dash.assert.indices(indices, length) <dash.assert.indices.syntax1>`
+| :ref:`indices = dash.assert.indices(indices, length, name, logicalLengthName, linearMaxName, header) <dash.assert.indices.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.indices.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`indices <dash.assert.indices.output.indices>` = dash.assert.indices(:ref:`indices <dash.assert.indices.input.indices>`, :ref:`length <dash.assert.indices.input.length>`)
+
+.. raw:: html
+
+    </pre>
+
+Checks if input is a valid vector of logical indices or linear indices for an array dimension. To be valid, logical indices must match the length of the array dimension, and linear indices must be positive integers that do not exceed the length of the dimension. If these criteria are not met, throws an error message. If so, returns the input as linear indices.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.indices.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`indices <dash.assert.indices.output.indices>` = dash.assert.indices(:ref:`indices <dash.assert.indices.input.indices>`, :ref:`length <dash.assert.indices.input.length>`, :ref:`name <dash.assert.indices.input.name>`, :ref:`logicalLengthName <dash.assert.indices.input.logicalLengthName>`, :ref:`linearMaxName <dash.assert.indices.input.linearMaxName>`, :ref:`header <dash.assert.indices.input.header>`)
+
+.. raw:: html
+
+    </pre>
+
+Customize the error message and error ID.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Linear indices
+++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Linear indices</strong></label><div class="content">
+
+
+Linear indices must be positive scalar integers that do not exceed the length of the indexed array dimension. They can contain repeated elements. An examples that passes the assertion:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [2 5 4 3 3];
+    indices = dash.assert.indices(indices, dimensionLength);
+
+
+.. rst-class:: example-output
+
+::
+
+    indices =
+             [2 5 4 3 3]
+
+
+Examples that fail the assertion:
+
+Values less than 1:
+
+.. rst-class:: no-margin
+
+::
+
+    indices = [1 2 0 3];
+    dash.assert.indices(indices, 5)
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Element 3 is not a positive integer
+
+
+Non-integer values:
+
+.. rst-class:: no-margin
+
+::
+
+    indices = [1 2 2.2 3]
+    dash.assert.indices(indices, 5)
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Element 3 is not a positive integer
+
+
+Values greater than the dimension length:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [1 2 5 6]
+    
+    dash.assert.indices(indices, dimensionLength)
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Element 4 is greater than the length of the dimension
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Logical indices
++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Logical indices</strong></label><div class="content">
+
+
+Logical indices must be the a vector the length of the dimension. If valid, they are returned as linear indices in the function output. An example that passes the assertion:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [true true false false true];
+    
+    indices = dash.assert.indices(indices, dimensionLength)
+
+
+.. rst-class:: example-output
+
+::
+
+    indices =
+             [1 2 5]
+
+
+
+An example that fails the assertion:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [true false];
+    
+    indices = dash.assert.indices(indices, dimensionLength)
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    input must have 5 elements, but it has 2 elements instead
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Customize error message
++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content">
+
+
+Customize the error message to enhance information about input requirements:
+
+.. rst-class:: no-margin
+
+::
+
+    % Set some phrases for use in error messages.
+    inputName = 'my variable';
+    logicalLengthName = 'one element per XYZ';
+    linearMaxName = 'the number of Ps in Q';
+    header = 'my:error:header';
+
+
+Failed logical indices:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [true false];
+    dash.assert.indices(indices, dimensionLength, inputName, ...
+        logicalLengthName, linearMaxName, header);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    my variable is a logical vector, so it must have one element per XYZ (5), but it has 2 elements instead
+
+
+Failed linear indices:
+
+.. rst-class:: no-margin
+
+::
+
+    dimensionLength = 5;
+    indices = [1 2 7]'
+    dash.assert.indices(indices, dimensionLength, inputName, ...
+        logicalLengthName, linearMaxName, header);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Element 3 of my variable is greater than the number of Ps in Q (5)
+
+
+Also examine the error ID:
+
+.. rst-class:: no-margin
+
+::
+
+    ME = lasterror;
+    ID = ME.identifier
+
+
+.. rst-class:: example-output
+
+::
+
+    ID =
+        'my:error:header'
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.indices:
+
+indices
++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>indices</strong></label><div class="content">
+
+| The input being tested.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.length:
+
+length
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>length</strong></label><div class="content">
+
+| *scalar* *positive* *integer*
+| The length of the array dimension that the indices are for. Logical indices must be a vector of this length, and linear indices cannot exceed this length.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.name:
+
+name
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>name</strong></label><div class="content">
+
+| *string* *scalar*
+| A name to use for the input in error messages Default is "input".
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.logicalLengthName:
+
+logicalLengthName
++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>logicalLengthName</strong></label><div class="content">
+
+| *string* *scalar*
+| A name to use for the length of logical index vectors in error messages. Default is "the length of the dimension"
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.linearMaxName:
+
+linearMaxName
++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>linearMaxName</strong></label><div class="content">
+
+| *string* *scalar* | []
+| A name to use for the maximum linear index. If an empty array, uses the same value as logicalLengthName. Default is an empty array.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.input.header:
+
+header
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input6" checked="checked"><label for="input6"><strong>header</strong></label><div class="content">
+
+| *string* *scalar*
+| Header for error IDs. Default is "DASH:assert:indices"
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.indices.output.indices:
+
+indices
++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>indices</strong></label><div class="content">
+
+| *vector*, *linear* *indices*
+| The input as linear indices.
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -7,20 +7,36 @@ Load data from a HDF source at strided indices
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`X = obj.loadStrided(stridedIndices) <dash.dataSource.hdf.loadStrided.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.hdf.loadStrided.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`X <dash.dataSource.hdf.loadStrided.output.X>` = obj.loadStrided(:ref:`stridedIndices <dash.dataSource.hdf.loadStrided.input.stridedIndices>`)
+| :ref:`X <dash.dataSource.hdf.loadStrided.output.X>` = obj.loadStrided(:ref:`stridedIndices <dash.dataSource.hdf.loadStrided.input.stridedIndices>`)
+
+.. raw:: html
+
+    </pre>
 
 Loads data from a HDF source at specified strided linear indices
 

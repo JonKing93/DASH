@@ -1,0 +1,169 @@
+gridMetadata.index
+==================
+Return dimensional metadata at specified indices
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj = obj.index(dimensions, indices) <gridMetadata.index.syntax1>`
+| :ref:`obj = obj.index(dimension1, indices1, dimension2, indices2, .., dimensionN, indicesN) <gridMetadata.index.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.index.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.index.output.obj>` = obj.index(:ref:`dimensions <gridMetadata.index.input.dimensions>`, :ref:`indices <gridMetadata.index.input.indices>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns a gridMetadata object in which the metadata along the specified dimensions corresponds to the metadata at the associated indices. Indices are for the rows of metadata in the original gridMetadata object.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.index.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.index.output.obj>` = obj.index(dimension1, indices1, dimension2, indices2, .., :ref:`dimensionN <gridMetadata.index.input.dimensionN>`, :ref:`indicesN <gridMetadata.index.input.indicesN>`)
+
+.. raw:: html
+
+    </pre>
+
+Uses a Name,Value syntax to index dimensions.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.index.input.dimensions:
+
+dimensions
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dimensions</strong></label><div class="content">
+
+| *string* *vector* [*nDims*]
+| The names of the dimensions that should be indexed. Can only include dimensions that are defined in the gridMetadata object.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.index.input.indices:
+
+indices
++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>indices</strong></label><div class="content">
+
+| *cell* *vector* [*nDims*] {*vector*, *linear* *indices* | *logical* *vector* [*dimension* *length*]
+| The indices of metadata rows to return along the specified dimensions. Should be a cell vector with one cell per named dimension. Each cell holds a vector of indices for the associated dimension. Indices can either be a set of linear indices, or a logical vector the length of the dimension.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.index.input.dimensionN:
+
+dimensionN
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>dimensionN</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of a dimension to index
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.index.input.indicesN:
+
+indicesN
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>indicesN</strong></label><div class="content">
+
+| *vector*, *linear* *indices* | *logical* *vector* [*dimension* *length*]
+| The indices of the metadata rows to return along dimension N. Either a set of linear indices, or a logical vector the length of dimension N.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.index.output.obj:
+
+obj
++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>obj</strong></label><div class="content">
+
+| *gridMetadata* *object*
+| The updated metadata. Has the indexed rows of metadata along the input dimensions.
+
+.. raw:: html
+
+    </div></section>
+
+

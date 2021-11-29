@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
@@ -47,7 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../dataSource.html">dataSource</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Interface.html">Interface</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">hdf</a><ul>
@@ -62,6 +64,7 @@
 <li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
 </ul>
 </li>
@@ -96,12 +99,10 @@
   <section id="dash-datasource-hdf">
 <h1>dash.dataSource.hdf<a class="headerlink" href="#dash-datasource-hdf" title="Permalink to this headline"></a></h1>
 <p>Superclass for objects that read data from HDF5 files</p>
-<p>dash.dataSource.hdf is abstract. It’s primary function is to check that the variable being read from the HDF file actually exists in the file.</p>
+<p>dash.dataSource.hdf is abstract. It’s primary function is to check that the variable being read from the HDF file actually exists in the file. It also enables strided loading.</p>
 <h3>hdf Methods</h3><div class="package-links line-block">
 <div class="line"><a class="reference internal" href="hdf/setVariable.html"><span class="doc">setVariable</span></a> - Ensure a variable exists in an HDF file</div>
 <div class="line"><a class="reference internal" href="hdf/load.html"><span class="doc">load</span></a> - Load data from a HDF5 source</div>
-</div>
-<div class="toctree-wrapper compound">
 </div>
 <h3>Abstract</h3><div class="package-links line-block">
 <div class="line"><a class="reference internal" href="hdf/loadStrided.html"><span class="doc">loadStrided</span></a> - Load data from a HDF source at strided indices</div>

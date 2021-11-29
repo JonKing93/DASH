@@ -12,11 +12,6 @@ Utilities for the DASH toolbox
 | :doc:`doc <dash/doc>` - Open online reference page in a web browser
 | :doc:`version <dash/version>` - Return the current version of the DASH toolbox
 
-.. toctree::
-    :hidden:
-
-    doc <dash/doc>
-    version <dash/version>
 
 
 .. raw:: html
@@ -29,12 +24,6 @@ Utilities for the DASH toolbox
 | :doc:`assert <dash/assert>` - Functions that throw errors when an input does not match required criteria
 | :doc:`parse <dash/parse>` - Functions that parse user inputs
 
-.. toctree::
-    :hidden:
-
-    is <dash/is>
-    assert <dash/assert>
-    parse <dash/parse>
 
 
 .. raw:: html
@@ -45,14 +34,8 @@ Utilities for the DASH toolbox
 
 | :doc:`indices <dash/indices>` - Functions that manipulate array indices
 | :doc:`string <dash/string>` - Functions that manipulate strings
-| :doc:`metadata <dash/metadata>` - Functions that implement gridded metadata
+| :doc:`file <dash/file>` - Functions that facilitate file manipulation
 
-.. toctree::
-    :hidden:
-
-    indices <dash/indices>
-    string <dash/string>
-    metadata <dash/metadata>
 
 
 .. raw:: html
@@ -62,11 +45,8 @@ Utilities for the DASH toolbox
 .. rst-class:: package-links
 
 | :doc:`dataSource <dash/dataSource>` - Classes that read data from source files
+| :doc:`gridfileSources <dash/gridfileSources>` - A class to manage gridfile data source catalogues
 
-.. toctree::
-    :hidden:
-
-    dataSource <dash/dataSource>
 
 
 .. raw:: html
@@ -80,4 +60,15 @@ Utilities for the DASH toolbox
 .. toctree::
     :hidden:
 
+    doc <dash/doc>
+    version <dash/version>
+    is <dash/is>
+    assert <dash/assert>
+    parse <dash/parse>
+    indices <dash/indices>
+    string <dash/string>
+    file <dash/file>
+    dataSource <dash/dataSource>
+    gridfileSources <dash/gridfileSources>
     tests <dash/tests>
+

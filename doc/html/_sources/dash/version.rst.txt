@@ -7,30 +7,54 @@ Return the current version of the DASH toolbox
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.version <dash.version.syntax1>`
 | :ref:`v = dash.version <dash.version.syntax2>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.version.syntax1:
 
 .. rst-class:: syntax
 
-dash.version
+| dash.version
+
+.. raw:: html
+
+    </pre>
 
 Prints the current version to the console
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.version.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`v <dash.version.output.v>` = dash.version
+| :ref:`v <dash.version.output.v>` = dash.version
+
+.. raw:: html
+
+    </pre>
 
 Returns the version as a string
 

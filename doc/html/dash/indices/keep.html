@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
@@ -69,8 +71,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
 </ul>
 </li>
@@ -108,15 +111,17 @@
 <hr class="docutils" />
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<div class="syntax line-block">
+<pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-indices-keep-syntax1"><span class="std std-ref">keep = dash.indices.keep(requested, loaded)</span></a></div>
 </div>
-</section>
+</pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<p class="syntax" id="dash-indices-keep-syntax1"><a class="reference internal" href="#dash-indices-keep-output-keep"><span class="std std-ref">keep</span></a> = dash.indices.keep(<a class="reference internal" href="#dash-indices-keep-input-requested"><span class="std std-ref">requested</span></a>, <a class="reference internal" href="#dash-indices-keep-input-loaded"><span class="std std-ref">loaded</span></a>)</p>
-<p>Takes the linear indices of requested data elements and compares them to the linear indices of loaded data elements. Returns the linear indices of the requested data elements within the loaded set of data.</p>
+<pre><div class="syntax line-block" id="dash-indices-keep-syntax1">
+<div class="line"><a class="reference internal" href="#dash-indices-keep-output-keep"><span class="std std-ref">keep</span></a> = dash.indices.keep(<a class="reference internal" href="#dash-indices-keep-input-requested"><span class="std std-ref">requested</span></a>, <a class="reference internal" href="#dash-indices-keep-input-loaded"><span class="std std-ref">loaded</span></a>)</div>
+</div>
+</pre><p>Takes the linear indices of requested data elements and compares them to the linear indices of loaded data elements. Returns the linear indices of the requested data elements within the loaded set of data.</p>
 </section>
 <hr class="docutils" />
 <section id="examples">

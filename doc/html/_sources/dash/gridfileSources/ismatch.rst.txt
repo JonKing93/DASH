@@ -1,0 +1,187 @@
+dash.gridfileSources.ismatch
+============================
+Test if a dataSource object matches an entry in the catalogue
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`tf = obj.ismatch(dataSource, s) <dash.gridfileSources.ismatch.syntax1>`
+| :ref:`[tf, property, objValue, catalogueValue] = obj.ismatch(dataSource, s) <dash.gridfileSources.ismatch.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.gridfileSources.ismatch.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`tf <dash.gridfileSources.ismatch.output.tf>` = obj.ismatch(:ref:`dataSource <dash.gridfileSources.ismatch.input.dataSource>`, :ref:`s <dash.gridfileSources.ismatch.input.s>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if a dataSource object matches the specified source in the catalogue. Otherwise, returns false.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.gridfileSources.ismatch.syntax2:
+
+.. rst-class:: syntax
+
+| [:ref:`tf <dash.gridfileSources.ismatch.output.tf>`, :ref:`property <dash.gridfileSources.ismatch.output.property>`, :ref:`objValue <dash.gridfileSources.ismatch.output.objValue>`, :ref:`catalogueValue <dash.gridfileSources.ismatch.output.catalogueValue>`] = obj.ismatch(:ref:`dataSource <dash.gridfileSources.ismatch.input.dataSource>`, :ref:`s <dash.gridfileSources.ismatch.input.s>`)
+
+.. raw:: html
+
+    </pre>
+
+If the dataSource is not a match, returns information about the properties that do not match the values in the catalogue. If a match, the additional outputs are empty.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.input.dataSource:
+
+dataSource
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dataSource</strong></label><div class="content">
+
+| *scalar* *dataSource* *object*
+| A dataSource object to compare with the catalogue.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>s</strong></label><div class="content">
+
+| *numeric* *scalar*
+| The index of a source in the catalogue to compare with the dataSource object.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *logical* *scalar*
+| True if the dataSource matches the catalogue entry. Otherwise, false.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.output.property:
+
+property
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>property</strong></label><div class="content">
+
+| *string* *scalar*
+| If not a match, the name of the property that did not match the catalogue. Otherwise, an empty char.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.output.objValue:
+
+objValue
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output3" checked="checked"><label for="output3"><strong>objValue</strong></label><div class="content">
+
+| If not a match, the value of the property in the dataSource object. Otherwise, an empty array.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.ismatch.output.catalogueValue:
+
+catalogueValue
+++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output4" checked="checked"><label for="output4"><strong>catalogueValue</strong></label><div class="content">
+
+| If not a match, the value of the property in the catalogue. Otherwise, an empty array.
+
+.. raw:: html
+
+    </div></section>
+
+

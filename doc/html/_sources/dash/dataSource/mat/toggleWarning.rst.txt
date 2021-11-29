@@ -7,20 +7,36 @@ Change the state of the v7.3 matfile warning.
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
-| :ref:`reset = obj.toggleWarning(state) <dash.dataSource.mat.toggleWarning.syntax1>`
+| :ref:`reset = dash.dataSource.mat.toggleWarning(state) <dash.dataSource.mat.toggleWarning.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.mat.toggleWarning.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`reset <dash.dataSource.mat.toggleWarning.output.reset>` = obj.toggleWarning(:ref:`state <dash.dataSource.mat.toggleWarning.input.state>`)
+| :ref:`reset <dash.dataSource.mat.toggleWarning.output.reset>` = dash.dataSource.mat.toggleWarning(:ref:`state <dash.dataSource.mat.toggleWarning.input.state>`)
+
+.. raw:: html
+
+    </pre>
 
 Toggles the state of the Old-Format Mat-File warning to a specified state. Returns a cleanup object that will reset the warning to its initial state when the object is destroyed.
 

@@ -7,40 +7,72 @@ Throw error if input is not a string vector, cellstring vector, or char row vect
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`list = dash.assert.strlist(input) <dash.assert.strlist.syntax1>`
 | :ref:`list = dash.assert.strlist(input, name) <dash.assert.strlist.syntax2>`
 | :ref:`list = dash.assert.strlist(input, name, idHeader) <dash.assert.strlist.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.strlist.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`)
+| :ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks if input is a string vector, cellstring vector, or char row vector. If so, returns the input as a string vector. If not, throws an error.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strlist.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`, :ref:`name <dash.assert.strlist.input.name>`)
+| :ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`, :ref:`name <dash.assert.strlist.input.name>`)
+
+.. raw:: html
+
+    </pre>
 
 Use a custom name to refer to variable in the error message.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strlist.syntax3:
 
 .. rst-class:: syntax
 
-:ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`, :ref:`name <dash.assert.strlist.input.name>`, :ref:`idHeader <dash.assert.strlist.input.idHeader>`)
+| :ref:`list <dash.assert.strlist.output.list>` = dash.assert.strlist(:ref:`input <dash.assert.strlist.input.input>`, :ref:`name <dash.assert.strlist.input.name>`, :ref:`idHeader <dash.assert.strlist.input.idHeader>`)
+
+.. raw:: html
+
+    </pre>
 
 Use a custom header for thrown error IDs.
 

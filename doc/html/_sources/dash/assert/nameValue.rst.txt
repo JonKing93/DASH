@@ -1,0 +1,332 @@
+dash.assert.nameValue
+=====================
+Throw error if inputs are not Name,Value pairs
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`[names, values] = dash.assert.nameValue(inputs) <dash.assert.nameValue.syntax1>`
+| :ref:`[names, values] = dash.assert.nameValue(inputs, nPrevious, extraInfo, header) <dash.assert.nameValue.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.nameValue.syntax1:
+
+.. rst-class:: syntax
+
+| [:ref:`names <dash.assert.nameValue.output.names>`, :ref:`values <dash.assert.nameValue.output.values>`] = dash.assert.nameValue(:ref:`inputs <dash.assert.nameValue.input.inputs>`)
+
+.. raw:: html
+
+    </pre>
+
+Checks if the contents of a cell vector are Name,Value pairs. If not, throws an error. If so, returns the names as a string vector, and the values as a cell vector.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.assert.nameValue.syntax2:
+
+.. rst-class:: syntax
+
+| [:ref:`names <dash.assert.nameValue.output.names>`, :ref:`values <dash.assert.nameValue.output.values>`] = dash.assert.nameValue(:ref:`inputs <dash.assert.nameValue.input.inputs>`, :ref:`nPrevious <dash.assert.nameValue.input.nPrevious>`, :ref:`extraInfo <dash.assert.nameValue.input.extraInfo>`, :ref:`header <dash.assert.nameValue.input.header>`)
+
+.. raw:: html
+
+    </pre>
+
+Customize error messages and IDs.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Assert cell vector is of Name,Value pairs
++++++++++++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert cell vector is of Name,Value pairs</strong></label><div class="content">
+
+
+An example that passes the assertion:
+
+::
+
+    inputs = {'name1', 5, "name2", rand(4,4), 'name3', [false;false;true]};
+    dash.assert.nameValue(inputs)
+
+
+An example that fails:
+
+.. rst-class:: no-margin
+
+::
+
+    inputs = {7, 5, false, true};
+    dash.assert.nameValue(inputs);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    Input 1 must be a string scalar or character row vector
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Return names and values
++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Return names and values</strong></label><div class="content">
+
+
+When the assertion passes, the function returns the names as a string vector, and the values as a cell vector:
+
+.. rst-class:: no-margin
+
+::
+
+    inputs = {'name1', 5, "name2", rand(4,4), 'name3', [false;false;true]};
+    [names, values] = dash.assert.nameValue(inputs)
+
+
+.. rst-class:: example-output
+
+::
+
+    names = 
+           "name1"
+           "name2"
+           "name3"
+           
+    values =
+            {[        5]}
+            {4×4 double }
+            {3×1 logical}
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Customize error messages
+++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error messages</strong></label><div class="content">
+
+
+.. rst-class:: no-margin
+
+::
+
+    nPrevious = 5;
+    extraInfo = 'Additional inputs must be option-name,option-value pairs';
+    header = 'my:error:header';
+    
+    notValid = {'option1', 5, 'option2'};
+    dash.assert.nameValue(notValid, nPrevious, extraInfo, header);
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    You must provide an even number of inputs after the first 5 inputs. (Additional inputs must be option-name,option-value pairs)
+
+
+Also examine the error ID:
+
+.. rst-class:: no-margin
+
+::
+
+    ME = lasterror;
+    ID = ME.identifier
+
+
+.. rst-class:: example-output
+
+::
+
+    ID = 
+        'my:error:header'
+
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.input.inputs:
+
+inputs
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>inputs</strong></label><div class="content">
+
+| *cell* *vector*
+| Typically varargin from a calling function
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.input.nPrevious:
+
+nPrevious
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>nPrevious</strong></label><div class="content">
+
+| *scalar* *positive* *integer*
+| The number of inputs before varargin. Should exclude object reference in class methods.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.input.extraInfo:
+
+extraInfo
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>extraInfo</strong></label><div class="content">
+
+| *string* *scalar*
+| Extra information about the Name,Value input pairs.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.input.header:
+
+header
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>header</strong></label><div class="content">
+
+| *string* *scalar*
+| Header for thrown error IDs
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.output.names:
+
+names
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>names</strong></label><div class="content">
+
+| *string* *vector* [*nPairs*]
+| The ordered list of names in the Name,Value pairs
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.assert.nameValue.output.values:
+
+values
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>values</strong></label><div class="content">
+
+| *cell* *vector* [*nPairs*]
+| The ordered list of values for the Name,Value pairs
+
+.. raw:: html
+
+    </div></section>
+
+

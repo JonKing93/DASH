@@ -11,7 +11,19 @@ Functions that manipulate strings
 
 | :doc:`list <string/list>` - List the elements of a vector in a formatted sting
 
+
+
+.. raw:: html
+
+    <h3>Unit Tests</h3>
+
+.. rst-class:: package-links
+
+| :doc:`tests <string/tests>` - Unit tests for the dash.string package
+
 .. toctree::
     :hidden:
 
     list <string/list>
+    tests <string/tests>
+

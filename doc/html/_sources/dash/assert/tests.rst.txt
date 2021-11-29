@@ -7,20 +7,36 @@ Implement unit testing for the dash.assert subpackage
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.assert.tests <dash.assert.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.tests.syntax1:
 
 .. rst-class:: syntax
 
-dash.assert.tests
+| dash.assert.tests
+
+.. raw:: html
+
+    </pre>
 
 Runs the units tests. If the tests pass, exits silently. If the tests fail, prints the first failed test to the console.
 

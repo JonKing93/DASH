@@ -1,0 +1,43 @@
+dash.file.tests
+===============
+Unit tests for the dash.file package
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.file.tests <dash.file.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.file.tests.syntax1:
+
+.. rst-class:: syntax
+
+| dash.file.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. Otherwise, throws error at the first failed test.
+
+

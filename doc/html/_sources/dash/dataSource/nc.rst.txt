@@ -12,11 +12,6 @@ Objects that read data from NetCDF files
 | :doc:`nc <nc/nc>` - Create a new dash.dataSource.nc object
 | :doc:`loadStrided <nc/loadStrided>` - Load data from a NetCDF file at strided indices
 
-.. toctree::
-    :hidden:
-
-    nc <nc/nc>
-    loadStrided <nc/loadStrided>
 
 
 .. raw:: html
@@ -27,4 +22,12 @@ Objects that read data from NetCDF files
 
 | :doc:`load <hdf/load>` - Load data from a HDF5 file
 | :doc:`setVariable <hdf/setVariable>` - Ensure the variable exists in the NetCDF file
+
+.. toctree::
+    :hidden:
+
+    nc <nc/nc>
+    loadStrided <nc/loadStrided>
+    load <hdf/load>
+    setVariable <hdf/setVariable>
 

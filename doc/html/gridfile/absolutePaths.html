@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.absolutePaths &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.fillValue" href="fillValue.html" />
+    <link rel="prev" title="gridfile.rename" href="rename.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata-attributes">Metadata attributes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#data-sources">Data sources</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="add.html">add</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remove.html">remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rename.html">rename</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">absolutePaths</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#useabsolute">useAbsolute</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#sourcename">sourceName</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-adjustments">Data adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#summary-information">Summary Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.absolutePaths</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-absolutepaths">
+<h1>gridfile.absolutePaths<a class="headerlink" href="#gridfile-absolutepaths" title="Permalink to this headline"></a></h1>
+<p>Save data source file names as absolute or relative paths</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-absolutepaths-syntax1"><span class="std std-ref">obj.absolutePaths(useAbsolute)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-absolutepaths-syntax2"><span class="std std-ref">obj.absolutePaths(useAbsolute, s)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-absolutepaths-syntax2"><span class="std std-ref">obj.absolutePaths(useAbsolute, sources)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-absolutepaths-syntax1">
+<div class="line">obj.absolutePaths(<a class="reference internal" href="#gridfile-absolutepaths-input-useabsolute"><span class="std std-ref">useAbsolute</span></a>)</div>
+</div>
+</pre><p>Specify whether the .grid file should save data source locations as relative paths, or absolute paths. This syntax sets the preferred file path style for all data sources currently in the .grid, and applies the style by default to any data sources added to the gridfile in the future.</p>
+<p>By default, a gridfile saves the relative path to data sources whenever possible (useAbsolute = false). Relative data source paths are relative to the folder holding the .grid file. Use this style when 1. moving project folders that hold both .grid files and data sources, or
+2. uploading a .grid file to a data repository (such as Zenodo).</p>
+<p>If useAbsolute is set to true, the .grid file will instead store the absolute path to data source files. Use this option if you anticipate moving the .grid file, but not the data source files.</p>
+<p>Note: Data source located on a different drive than the .grid file, or accessed via an OPENDAP url, always use an absolute file path. Thus, setting useAbsolute to false does not guarantee that all data sources use relative paths.</p>
+<pre><div class="syntax line-block" id="gridfile-absolutepaths-syntax2">
+<div class="line">obj.absolutePaths(<a class="reference internal" href="#gridfile-absolutepaths-input-useabsolute"><span class="std std-ref">useAbsolute</span></a>, <a class="reference internal" href="#gridfile-absolutepaths-input-s"><span class="std std-ref">s</span></a>)</div>
+<div class="line">obj.absolutePaths(<a class="reference internal" href="#gridfile-absolutepaths-input-useabsolute"><span class="std std-ref">useAbsolute</span></a>, sources)</div>
+</div>
+</pre><p>Implement a preferred path style for the indicated data sources. This syntax overrides any preferred path style previously set for the data sources.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="useabsolute">
+<span id="gridfile-absolutepaths-input-useabsolute"></span><h3>useAbsolute<a class="headerlink" href="#useabsolute" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>useAbsolute</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">Set to true to store the absolute path to data source files. Set to false to store relative paths whenever possible. Files located on a different drive, or accessed via an OPENDAP url, will always use an absolute path, regardless of the value of useAbsolute.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="s">
+<span id="gridfile-absolutepaths-input-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> [<em>nSources</em>] | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of the data sources that should be implement the preferred file path style.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sourcename">
+<span id="gridfile-absolutepaths-input-sourcename"></span><h3>sourceName<a class="headerlink" href="#sourcename" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>sourceName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of the data sources that should implement the preferred file path style.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="rename.html" class="btn btn-neutral float-left" title="gridfile.rename" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="fillValue.html" class="btn btn-neutral float-right" title="gridfile.fillValue" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

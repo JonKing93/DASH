@@ -1,0 +1,372 @@
+gridfile.metadata
+=================
+Return the metadata for a gridfile
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`metadata = obj.metadata <gridfile.metadata.syntax1>`
+| :ref:`metadata = obj.metadata(0) <gridfile.metadata.syntax1>`
+| :ref:`sourceMetadata = obj.metadata(-1) <gridfile.metadata.syntax2>`
+| :ref:`sourceMetadata = obj.metadata(s) <gridfile.metadata.syntax2>`
+| :ref:`sourceMetadata = obj.metadata(sourceNames) <gridfile.metadata.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.metadata.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`metadata <gridfile.metadata.output.metadata>` = obj.metadata
+| :ref:`metadata <gridfile.metadata.output.metadata>` = obj.metadata(0)
+
+.. raw:: html
+
+    </pre>
+
+Returns the gridMetadata object for a .grid file.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.metadata.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`sourceMetadata <gridfile.metadata.output.sourceMetadata>` = obj.metadata(-1)
+| :ref:`sourceMetadata <gridfile.metadata.output.sourceMetadata>` = obj.metadata(:ref:`s <gridfile.metadata.input.s>`)
+| :ref:`sourceMetadata <gridfile.metadata.output.sourceMetadata>` = obj.metadata(sourceNames)
+
+.. raw:: html
+
+    </pre>
+
+Returns the metadata for the specified data sources. If -1 is provided as input, returns the metadata for all data sources in the gridfile.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Return gridfile metadata
+++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Return gridfile metadata</strong></label><div class="content">
+
+
+Use the metadata command with no arguments to return metadata for the entire gridfile. For example:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    metadata = grid.metadata
+
+
+.. rst-class:: example-output
+
+::
+
+    metadata =
+      gridMetadata with metadata:
+         lat: [181x1 double]
+         lon: [360x1 double]
+        time: [1000x1 datetime]
+
+
+Alternatively, use 0 as an input for the same result:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    metadata = grid.metadata(0)
+
+
+.. rst-class:: example-output
+
+::
+
+    metadata =
+      gridMetadata with metadata:
+         lat: [181x1 double]
+         lon: [360x1 double]
+        time: [1000x1 datetime]
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Return metadata for all data sources
+++++++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Return metadata for all data sources</strong></label><div class="content">
+
+
+Provide -1 as the input to return metadata for all data sources in the gridfile. For example:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    nSource = numel(grid.sources)
+
+
+.. rst-class:: example-output
+
+::
+
+    nSource = 
+             5
+
+
+We can see this gridfile has 5 data sources. Then, the command:
+
+.. rst-class:: no-margin
+
+::
+
+    sourceMetadata = grid.metadata(-1)
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceMetadata =
+      5x1 gridMetadata array
+
+
+returns the metadata for all 5 data sources. You can examine the elements of the metadata vector to see the metadata for each data source. For example:
+
+.. rst-class:: no-margin
+
+::
+
+    meta1 = sourceMetadata(1)
+    meta2 = sourceMetadata(2)
+
+
+.. rst-class:: example-output
+
+::
+
+    meta1 =
+      gridMetadata with metadata:
+        time: [1000x1 datetime]
+         run: 1
+         
+     meta2 = 
+       gridMetadata with metadata:
+         time: [1000x1 datetime]
+          run: 2
+
+ 
+In this example, we can see that data sources 1 and 2 hold data from two different runs.
+
+Note that data source metadata will never include metadata attributes.
+ 
+ 
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Return metadata for specific data sources
++++++++++++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Return metadata for specific data sources</strong></label><div class="content">
+
+ 
+You can obtain the metadata for a specific set of data sources by providing either 1. the data source names, or 2. the data source indices as input. For example:
+ 
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    sources = grid.dispSources
+
+ 
+.. rst-class:: example-output
+
+::
+
+    1. my-source-1.mat
+    2. my-source-2.nc
+    3. my-source-3.mat
+    4. my-source-4.mat
+    5. my-source-5.nc
+
+
+we can see that the example gridfile has 5 data sources. Get metadata for data sources 3 and 5 by either providing their names as input:
+
+.. rst-class:: no-margin
+
+::
+
+    sourceNames = ["my-source-3.mat", "my-source-5.nc"];
+    sourceMeta = grid.metadata(sourceNames)
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceMeta =
+      2x1 gridMetadata array
+
+
+Alternatively, provide the data source indices:
+
+.. rst-class:: no-margin
+
+::
+
+    sourceIndices = [3 5];
+    sourceMeta = grid.metadata(sourceIndices)
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceMeta =
+      2x1 gridMetadata array
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.metadata.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>s</strong></label><div class="content">
+
+| *logical* *vector* [*nSources*] | *vector*, *linear* *indices*
+| The indices of the data sources for which to return metadata.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.metadata.input.sourceName:
+
+sourceName
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>sourceName</strong></label><div class="content">
+
+| *string* *vector*
+| The names of the data sources for which to return metadata.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.metadata.output.metadata:
+
+metadata
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>metadata</strong></label><div class="content">
+
+| *scalar* *gridMetadata* *object*
+| Metadata for the gridfile.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.metadata.output.sourceMetadata:
+
+sourceMetadata
+++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>sourceMetadata</strong></label><div class="content">
+
+| *gridMetadata* *vector* [*nSource*]
+| Metadata for each specified data source.
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../../dash.html">dash</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../doc.html">doc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../version.html">version</a></li>
@@ -47,10 +49,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../parse.html">parse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../indices.html">indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../string.html">string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../file.html">file</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../dataSource.html">dataSource</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../Interface.html">Interface</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="../hdf.html">hdf</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../hdf.html">hdf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mat.html">mat</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../nc.html">nc</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../nc/nc.html">nc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../nc/loadStrided.html">loadStrided</a></li>
+<li class="toctree-l4"><a class="reference internal" href="load.html">load</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">setVariable</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
@@ -65,16 +72,13 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="load.html">load</a></li>
-<li class="toctree-l4"><a class="reference internal" href="loadStrided.html">loadStrided</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../mat.html">mat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../nc.html">nc</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../text.html">text</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../tests.html">tests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tests.html">tests</a></li>
 </ul>
 </li>
@@ -113,15 +117,17 @@
 <hr class="docutils" />
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<div class="syntax line-block">
+<pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-datasource-hdf-setvariable-syntax1"><span class="std std-ref">obj = obj.setVariable(var, fileVars)</span></a></div>
 </div>
-</section>
+</pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<p class="syntax" id="dash-datasource-hdf-setvariable-syntax1"><a class="reference internal" href="#dash-datasource-hdf-setvariable-output-obj"><span class="std std-ref">obj</span></a> = obj.setVariable(<a class="reference internal" href="#dash-datasource-hdf-setvariable-input-var"><span class="std std-ref">var</span></a>, <a class="reference internal" href="#dash-datasource-hdf-setvariable-input-filevars"><span class="std std-ref">fileVars</span></a>)</p>
-<p>Checks that a variable being loaded is in the list of variables in a HDF file. If not, throws an error. If so, saves the variable name.</p>
+<pre><div class="syntax line-block" id="dash-datasource-hdf-setvariable-syntax1">
+<div class="line"><a class="reference internal" href="#dash-datasource-hdf-setvariable-output-obj"><span class="std std-ref">obj</span></a> = obj.setVariable(<a class="reference internal" href="#dash-datasource-hdf-setvariable-input-var"><span class="std std-ref">var</span></a>, <a class="reference internal" href="#dash-datasource-hdf-setvariable-input-filevars"><span class="std std-ref">fileVars</span></a>)</div>
+</div>
+</pre><p>Checks that a variable being loaded is in the list of variables in a HDF file. If not, throws an error. If so, saves the variable name.</p>
 </section>
 <hr class="docutils" />
 <section id="input-arguments">

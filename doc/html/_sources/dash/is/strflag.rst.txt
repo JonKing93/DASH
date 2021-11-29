@@ -7,20 +7,36 @@ True for string scalar or char row vector.
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.is.strflag(input) <dash.is.strflag.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.is.strflag.syntax1:
 
 .. rst-class:: syntax
 
-dash.is.strflag(:ref:`input <dash.is.strflag.input.input>`)
+| dash.is.strflag(:ref:`input <dash.is.strflag.input.input>`)
+
+.. raw:: html
+
+    </pre>
 
 Returns true if input is a string scalar or char row vector and false otherwise.
 

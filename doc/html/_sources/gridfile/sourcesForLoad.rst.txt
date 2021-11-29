@@ -1,0 +1,91 @@
+gridfile.sourcesForLoad
+=======================
+Return the indices of data sources needed to load requested data
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`s = obj.sourcesForLoad(loadIndices) <gridfile.sourcesForLoad.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.sourcesForLoad.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`s <gridfile.sourcesForLoad.output.s>` = obj.sourcesForLoad(:ref:`loadIndices <gridfile.sourcesForLoad.input.loadIndices>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns the indices of the gridfile data sources that are required to implement a load operation.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.sourcesForLoad.input.loadIndices:
+
+loadIndices
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>loadIndices</strong></label><div class="content">
+
+| *cell* *vector* [*nDims*] {*linear* *indices*}
+| The indices of data elements that are requested for a load operation. Should have one element per dimension in the gridfile. The order of dimensions should match the order of dimensions in the gridfile.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.sourcesForLoad.output.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>s</strong></label><div class="content">
+
+| *vector*, *linear* *indices*
+| The indices of data sources that are required in order to load the requested data.
+
+.. raw:: html
+
+    </div></section>
+
+

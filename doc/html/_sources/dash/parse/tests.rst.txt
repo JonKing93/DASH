@@ -1,0 +1,43 @@
+dash.parse.tests
+================
+Unit tests for the dash.parse package
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.parse.tests <dash.parse.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.parse.tests.syntax1:
+
+.. rst-class:: syntax
+
+| dash.parse.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. If failed, throws error at first failed test.
+
+

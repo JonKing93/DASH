@@ -7,42 +7,72 @@ Throw error if input is not a string flag.
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`str = dash.assert.strflag(input) <dash.assert.strflag.syntax1>`
 | :ref:`str = dash.assert.strflag(input, name) <dash.assert.strflag.syntax2>`
 | :ref:`str = dash.assert.strflag(input, name, idHeader) <dash.assert.strflag.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.strflag.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`)
+| :ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks if an input is either a string scalar or char row vector. If not, throws an error. If so, returns the input as a string data type.
 
-Here is a second paragraph with information about the function.
 
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strflag.syntax2:
 
 .. rst-class:: syntax
 
-:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`)
+| :ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`)
+
+.. raw:: html
+
+    </pre>
 
 Refers to the input by a custom name in thrown error messages.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.strflag.syntax3:
 
 .. rst-class:: syntax
 
-:ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`, :ref:`idHeader <dash.assert.strflag.input.idHeader>`)
+| :ref:`str <dash.assert.strflag.output.str>` = dash.assert.strflag(:ref:`input <dash.assert.strflag.input.input>`, :ref:`name <dash.assert.strflag.input.name>`, :ref:`idHeader <dash.assert.strflag.input.idHeader>`)
+
+.. raw:: html
+
+    </pre>
 
 Uses a custom header for thrown error IDs.
 

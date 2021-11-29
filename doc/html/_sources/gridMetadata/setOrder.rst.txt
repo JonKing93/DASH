@@ -1,0 +1,147 @@
+gridMetadata.setOrder
+=====================
+Specify a dimension order for a gridded dataset
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj = obj.setOrder(dimensions) <gridMetadata.setOrder.syntax1>`
+| :ref:`obj = obj.setOrder(dimension1, dimension2, .., dimensionN) <gridMetadata.setOrder.syntax2>`
+| :ref:`obj = obj.setOrder(0) <gridMetadata.setOrder.syntax3>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.setOrder.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.setOrder.output.obj>` = obj.setOrder(:ref:`dimensions <gridMetadata.setOrder.input.dimensions>`)
+
+.. raw:: html
+
+    </pre>
+
+Specifies an order of dimensions. Dimension order can be accessed via the .order property of a gridMetadata object. Dimensions are listed in this order when the gridMetadata object is displayed in the console. The dimension order will be deleted if the defined dimensions (dimension with metadata) change for the gridMetadata object.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.setOrder.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.setOrder.output.obj>` = obj.setOrder(dimension1, dimension2, .., :ref:`dimensionN <gridMetadata.setOrder.input.dimensionN>`)
+
+.. raw:: html
+
+    </pre>
+
+Specify dimension order by listing dimensions as inputs, rather than as a string list.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.setOrder.syntax3:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.setOrder.output.obj>` = obj.setOrder(0)
+
+.. raw:: html
+
+    </pre>
+
+Removes the dimension order (if it exists) from the current gridMetadata object.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.setOrder.input.dimensions:
+
+dimensions
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dimensions</strong></label><div class="content">
+
+| *string* *vector*
+| The order of dimensions for the gridMetadata object. Can only include the names of defined dimensions (those with metadata), and must list each defined dimension exactly once.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.setOrder.input.dimensionN:
+
+dimensionN
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>dimensionN</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of a defined dimension in the gridMetadata object. The input dimension names must list each defined dimension exactly once.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.setOrder.output.obj:
+
+obj
++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>obj</strong></label><div class="content">
+
+| *gridMetadata* *object*
+| The updated gridMetadata object. When displayed in the console, dimensions are listed in the specified order. The dimension order can also be returned via the .order property.
+
+.. raw:: html
+
+    </div></section>
+
+

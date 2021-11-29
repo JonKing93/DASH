@@ -7,20 +7,36 @@ Load data from a HDF5 source
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`X = obj.load(indices) <dash.dataSource.hdf.load.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.hdf.load.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`X <dash.dataSource.hdf.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.hdf.load.input.indices>`)
+| :ref:`X <dash.dataSource.hdf.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.hdf.load.input.indices>`)
+
+.. raw:: html
+
+    </pre>
 
 Loads data from a HDF source at the requested linear indices. Acquires data along strided intervals but only returns requested indices.
 

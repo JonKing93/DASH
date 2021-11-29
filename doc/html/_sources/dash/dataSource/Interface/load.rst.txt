@@ -7,20 +7,36 @@ Load data from a source file.
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`X = obj.load(indices) <dash.dataSource.Interface.load.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.Interface.load.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`X <dash.dataSource.Interface.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.Interface.load.input.indices>`)
+| :ref:`X <dash.dataSource.Interface.load.output.X>` = obj.load(:ref:`indices <dash.dataSource.Interface.load.input.indices>`)
+
+.. raw:: html
+
+    </pre>
 
 Loads data from a source at the specified LINEAR indices.
 

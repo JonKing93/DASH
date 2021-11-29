@@ -1,27 +1,43 @@
 dash.dataSource.tests
 =====================
-Implement unit tests for classes in the package
+Unit tests for classes in the dash.dataSource package
 
 ----
 
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.dataSource.tests <dash.dataSource.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.tests.syntax1:
 
 .. rst-class:: syntax
 
-dash.dataSource.tests
+| dash.dataSource.tests
 
-Runs the units tests. If the tests pass, exits silently. If the tests fail, prints the first failed test to the console.
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. Otherwise, throws an error message at the first failed test.
 
 

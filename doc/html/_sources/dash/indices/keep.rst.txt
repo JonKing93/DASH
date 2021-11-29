@@ -7,20 +7,36 @@ Identify requested indices in superset of loaded indices
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`keep = dash.indices.keep(requested, loaded) <dash.indices.keep.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.indices.keep.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`keep <dash.indices.keep.output.keep>` = dash.indices.keep(:ref:`requested <dash.indices.keep.input.requested>`, :ref:`loaded <dash.indices.keep.input.loaded>`)
+| :ref:`keep <dash.indices.keep.output.keep>` = dash.indices.keep(:ref:`requested <dash.indices.keep.input.requested>`, :ref:`loaded <dash.indices.keep.input.loaded>`)
+
+.. raw:: html
+
+    </pre>
 
 Takes the linear indices of requested data elements and compares them to the linear indices of loaded data elements. Returns the linear indices of the requested data elements within the loaded set of data.
 

@@ -7,20 +7,36 @@ True for a string vector, cellstring vector, or character row vector
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.is.strlist(input) <dash.is.strlist.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.is.strlist.syntax1:
 
 .. rst-class:: syntax
 
-dash.is.strlist(:ref:`input <dash.is.strlist.input.input>`)
+| dash.is.strlist(:ref:`input <dash.is.strlist.input.input>`)
+
+.. raw:: html
+
+    </pre>
 
 Returns true if input is a string vector, cellstring vector, or char row vector. Otherwise returns false.
 

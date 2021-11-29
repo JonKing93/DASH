@@ -7,40 +7,72 @@ Throws error if input is not a vector of a specified format
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`dash.assert.vectorTypeN(input, type, length) <dash.assert.vector.syntax1>`
 | :ref:`dash.assert.vectorTypeN(input, type, length, name) <dash.assert.vector.syntax2>`
 | :ref:`dash.assert.vectorTypeN(input, type, length, name, idHeader) <dash.assert.vector.syntax3>`
 
+.. raw:: html
+
+    </pre>
+
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.assert.vector.syntax1:
 
 .. rst-class:: syntax
 
-dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`)
+| dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`)
+
+.. raw:: html
+
+    </pre>
 
 Checks if an input is a vector of the required data type and length. If not, throws an error
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.vector.syntax2:
 
 .. rst-class:: syntax
 
-dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`, :ref:`name <dash.assert.vector.input.name>`)
+| dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`, :ref:`name <dash.assert.vector.input.name>`)
+
+.. raw:: html
+
+    </pre>
 
 Use a custom name to refer to the input in error messages.
 
+
+.. raw:: html
+
+    <pre>
 
 .. _dash.assert.vector.syntax3:
 
 .. rst-class:: syntax
 
-dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`, :ref:`name <dash.assert.vector.input.name>`, :ref:`idHeader <dash.assert.vector.input.idHeader>`)
+| dash.assert.vectorTypeN(:ref:`input <dash.assert.vector.input.input>`, :ref:`type <dash.assert.vector.input.type>`, :ref:`length <dash.assert.vector.input.length>`, :ref:`name <dash.assert.vector.input.name>`, :ref:`idHeader <dash.assert.vector.input.idHeader>`)
+
+.. raw:: html
+
+    </pre>
 
 Use a custom header for thrown error IDs.
 

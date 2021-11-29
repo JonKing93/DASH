@@ -7,20 +7,36 @@ Load data from a NetCDF file at strided indices
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`X = obj.loadStrided(stridedIndices) <dash.dataSource.nc.loadStrided.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.nc.loadStrided.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`X <dash.dataSource.nc.loadStrided.output.X>` = obj.loadStrided(:ref:`stridedIndices <dash.dataSource.nc.loadStrided.input.stridedIndices>`)
+| :ref:`X <dash.dataSource.nc.loadStrided.output.X>` = obj.loadStrided(:ref:`stridedIndices <dash.dataSource.nc.loadStrided.input.stridedIndices>`)
+
+.. raw:: html
+
+    </pre>
 
 Load data from the variable in the NetCDF file at the specified strided indices
 

@@ -39,6 +39,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
@@ -70,15 +72,20 @@
 <li class="toctree-l3"><a class="reference internal" href="type.html">type</a></li>
 <li class="toctree-l3"><a class="reference internal" href="scalarType.html">scalarType</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vectorTypeN.html">vectorTypeN</a></li>
+<li class="toctree-l3"><a class="reference internal" href="indices.html">indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="indexCollection.html">indexCollection</a></li>
 <li class="toctree-l3"><a class="reference internal" href="fileExists.html">fileExists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nameValue.html">nameValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniqueSet.html">uniqueSet</a></li>
 <li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../metadata.html">metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
 </ul>
 </li>
@@ -116,21 +123,27 @@
 <hr class="docutils" />
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<div class="syntax line-block">
+<pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-assert-strlist-syntax1"><span class="std std-ref">list = dash.assert.strlist(input)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-assert-strlist-syntax2"><span class="std std-ref">list = dash.assert.strlist(input, name)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-assert-strlist-syntax3"><span class="std std-ref">list = dash.assert.strlist(input, name, idHeader)</span></a></div>
 </div>
-</section>
+</pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<p class="syntax" id="dash-assert-strlist-syntax1"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>)</p>
-<p>Checks if input is a string vector, cellstring vector, or char row vector. If so, returns the input as a string vector. If not, throws an error.</p>
-<p class="syntax" id="dash-assert-strlist-syntax2"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-name"><span class="std std-ref">name</span></a>)</p>
-<p>Use a custom name to refer to variable in the error message.</p>
-<p class="syntax" id="dash-assert-strlist-syntax3"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-idheader"><span class="std std-ref">idHeader</span></a>)</p>
-<p>Use a custom header for thrown error IDs.</p>
+<pre><div class="syntax line-block" id="dash-assert-strlist-syntax1">
+<div class="line"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>)</div>
+</div>
+</pre><p>Checks if input is a string vector, cellstring vector, or char row vector. If so, returns the input as a string vector. If not, throws an error.</p>
+<pre><div class="syntax line-block" id="dash-assert-strlist-syntax2">
+<div class="line"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-name"><span class="std std-ref">name</span></a>)</div>
+</div>
+</pre><p>Use a custom name to refer to variable in the error message.</p>
+<pre><div class="syntax line-block" id="dash-assert-strlist-syntax3">
+<div class="line"><a class="reference internal" href="#dash-assert-strlist-output-list"><span class="std std-ref">list</span></a> = dash.assert.strlist(<a class="reference internal" href="#dash-assert-strlist-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-strlist-input-idheader"><span class="std std-ref">idHeader</span></a>)</div>
+</div>
+</pre><p>Use a custom header for thrown error IDs.</p>
 </section>
 <hr class="docutils" />
 <section id="examples">

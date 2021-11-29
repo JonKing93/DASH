@@ -1,0 +1,43 @@
+gridMetadata.disp
+=================
+Display gridMetadata object in console
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.disp <gridMetadata.disp.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.disp.syntax1:
+
+.. rst-class:: syntax
+
+| obj.disp
+
+.. raw:: html
+
+    </pre>
+
+Displays the contents of a gridMetadata object to the console. Only lists dimensions with metadata. Only references attributes when attributes is not empty. If attributes has contents, creates a link to optionally display the attributes.
+
+

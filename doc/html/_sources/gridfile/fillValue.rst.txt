@@ -1,0 +1,213 @@
+gridfile.fillValue
+==================
+Specify a fill value for data catalogued in a .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`fill = obj.fillValue <gridfile.fillValue.syntax1>`
+| :ref:`fill = obj.fillValue('default') <gridfile.fillValue.syntax1>`
+| :ref:`sourceFills = obj.fillValue('sources') <gridfile.fillValue.syntax2>`
+| :ref:`sourceFills = obj.fillValue('sources', s) <gridfile.fillValue.syntax2>`
+| :ref:`sourceFills = obj.fillValue('sources', sourceNames) <gridfile.fillValue.syntax2>`
+| :ref:`obj.fillValue(fill) <gridfile.fillValue.syntax3>`
+| :ref:`obj.fillValue(fill, s) <gridfile.fillValue.syntax4>`
+| :ref:`obj.fillValue(fill, sourceNames) <gridfile.fillValue.syntax4>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.fillValue.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`fill <gridfile.fillValue.output.fill>` = obj.fillValue
+| :ref:`fill <gridfile.fillValue.output.fill>` = obj.fillValue('default')
+
+.. raw:: html
+
+    </pre>
+
+Return the default fill value for a grid file.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.fillValue.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`sourceFills <gridfile.fillValue.output.sourceFills>` = obj.fillValue('sources')
+| :ref:`sourceFills <gridfile.fillValue.output.sourceFills>` = obj.fillValue('sources', :ref:`s <gridfile.fillValue.input.s>`)
+| :ref:`sourceFills <gridfile.fillValue.output.sourceFills>` = obj.fillValue('sources', sourceNames)
+
+.. raw:: html
+
+    </pre>
+
+Return the fill values for the specified data sources. If no sources are specified, returns the fill value for all data sources in the gridfile.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.fillValue.syntax3:
+
+.. rst-class:: syntax
+
+| obj.fillValue(:ref:`fill <gridfile.fillValue.input.fill>`)
+
+.. raw:: html
+
+    </pre>
+
+Set the default fill value for data loaded from a .grid file. Numeric data matching the fill value are converted to NaN when loading. This syntax sets the fill value for all data sources currently in the .grid file and applies the fill value by default to all data sources added in the future.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.fillValue.syntax4:
+
+.. rst-class:: syntax
+
+| obj.fillValue(:ref:`fill <gridfile.fillValue.input.fill>`, :ref:`s <gridfile.fillValue.input.s>`)
+| obj.fillValue(:ref:`fill <gridfile.fillValue.input.fill>`, sourceNames)
+
+.. raw:: html
+
+    </pre>
+
+Implements a fill value for the specified data sources. The fill value overrides any fill values previously applied to the data sources.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.fillValue.input.fill:
+
+fill
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>fill</strong></label><div class="content">
+
+| *numeric* *scalar*
+| The fill value. Data matching the fill value are converted to NaN when loaded from a data source.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.fillValue.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>s</strong></label><div class="content">
+
+| *logical* *vector* [*nSources*] | *vector*, *linear* *indices*
+| The indices of the data sources that should be assigned a fill value.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.fillValue.input.sourceName:
+
+sourceName
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>sourceName</strong></label><div class="content">
+
+| *string* *vector*
+| The names of the data sources that should be assigned a fill value. Names may either be just file names, or the full file path / opendap url to the source.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.fillValue.output.fill:
+
+fill
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>fill</strong></label><div class="content">
+
+| *numeric* *scalar*
+| The default fill value for the gridfile
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.fillValue.output.sourceFills:
+
+sourceFills
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>sourceFills</strong></label><div class="content">
+
+| *numeric* *vector*
+| The fill values for the specified data sources
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -7,20 +7,36 @@ Create a new dash.dataSource.mat object
 Syntax
 ------
 
+.. raw:: html
+
+    <pre>
+
 .. rst-class:: syntax
 
 | :ref:`obj = dash.dataSource.mat(file, var) <dash.dataSource.mat.mat.syntax1>`
+
+.. raw:: html
+
+    </pre>
 
 ----
 
 Description
 -----------
 
+.. raw:: html
+
+    <pre>
+
 .. _dash.dataSource.mat.mat.syntax1:
 
 .. rst-class:: syntax
 
-:ref:`obj <dash.dataSource.mat.mat.output.obj>` = dash.dataSource.mat(:ref:`file <dash.dataSource.mat.mat.input.file>`, :ref:`var <dash.dataSource.mat.mat.input.var>`)
+| :ref:`obj <dash.dataSource.mat.mat.output.obj>` = dash.dataSource.mat(:ref:`file <dash.dataSource.mat.mat.input.file>`, :ref:`var <dash.dataSource.mat.mat.input.var>`)
+
+.. raw:: html
+
+    </pre>
 
 Creates a mat object to read data from a variable in a MAT-file
 

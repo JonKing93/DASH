@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.remove &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.rename" href="rename.html" />
+    <link rel="prev" title="gridfile.add" href="add.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata-attributes">Metadata attributes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#data-sources">Data sources</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="add.html">add</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">remove</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#remove-data-sources-from-a-gridfile">Remove data sources from a gridfile</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#sourcenames">sourceNames</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="rename.html">rename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="absolutePaths.html">absolutePaths</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-adjustments">Data adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#summary-information">Summary Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.remove</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-remove">
+<h1>gridfile.remove<a class="headerlink" href="#gridfile-remove" title="Permalink to this headline"></a></h1>
+<p>Remove data sources from a .grid file’s catalogue</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-remove-syntax1"><span class="std std-ref">obj.remove(s)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-remove-syntax1"><span class="std std-ref">obj.remove(sourceNames)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-remove-syntax1">
+<div class="line">obj.remove(<a class="reference internal" href="#gridfile-remove-input-s"><span class="std std-ref">s</span></a>)</div>
+<div class="line">obj.remove(<a class="reference internal" href="#gridfile-remove-input-sourcenames"><span class="std std-ref">sourceNames</span></a>)</div>
+</div>
+</pre><p>Removes the specified data sources from the gridfile.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="remove-data-sources-from-a-gridfile">
+<h3>Remove data sources from a gridfile<a class="headerlink" href="#remove-data-sources-from-a-gridfile" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Remove data sources from a gridfile</strong></label><div class="content"><p>Create a gridfile:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;my-gridfile.grid&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">grid</span><span class="p">.</span><span class="n">dispSources</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="n">nc</span><span class="w"></span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">3</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
+<span class="mf">4.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">4</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
+<span class="mf">5.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">5</span><span class="p">.</span><span class="n">nc</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can see this gridfile manages 5 data sources.</p>
+<p>Let’s remove data sources 3 and 5 from the gridfile. To do so, either provide the names of the sources to remove, or their indices:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Either select sources by name</span><span class="w"></span>
+<span class="n">sourceNames</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;my-source-3.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my-source-5.nc&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="nb">grid</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sourceNames</span><span class="p">)</span><span class="w"></span>
+
+<span class="c">% Or select sources by index</span><span class="w"></span>
+<span class="n">sourceIndices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="w"> </span><span class="mi">5</span><span class="p">];</span><span class="w"></span>
+<span class="nb">grid</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">sourceIndices</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examine the updated gridfile:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sources</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">grid</span><span class="p">.</span><span class="n">dispSources</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mf">1.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
+<span class="mf">2.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="n">nc</span><span class="w"></span>
+<span class="mf">3.</span><span class="w"> </span><span class="n">my</span><span class="o">-</span><span class="n">source</span><span class="o">-</span><span class="mi">4</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="s">
+<span id="gridfile-remove-input-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> [<em>nSources</em>] | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of the data sources that should be removed.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sourcenames">
+<span id="gridfile-remove-input-sourcenames"></span><h3>sourceNames<a class="headerlink" href="#sourcenames" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>sourceNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of the data sources that should be removed.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="add.html" class="btn btn-neutral float-left" title="gridfile.add" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rename.html" class="btn btn-neutral float-right" title="gridfile.rename" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+dash.gridfileSources
+====================
+Implement a gridfile's catalogue of data sources
+
+
+.. raw:: html
+
+    <h3>Catalogue Management</h3>
+
+.. rst-class:: package-links
+
+| :doc:`add <gridfileSources/add>` - Add a new data source to the catalogue
+| :doc:`remove <gridfileSources/remove>` - Remove data sources from the catalogue
+| :doc:`indices <gridfileSources/indices>` - Parse the indices of data sources in the catalogue
+| :doc:`unpack <gridfileSources/unpack>` - Convert catalogued values to their original data types
+| :doc:`info <gridfileSources/info>` - Return information about data sources in the catalogue
+
+
+
+.. raw:: html
+
+    <h3>dataSource Objects</h3>
+
+.. rst-class:: package-links
+
+| :doc:`build <gridfileSources/build>` - Build the dataSource object for a data source in the catalogue
+| :doc:`ismatch <gridfileSources/ismatch>` - Test if a dataSource object matches an entry in the catalogue
+
+
+
+.. raw:: html
+
+    <h3>File Paths</h3>
+
+.. rst-class:: package-links
+
+| :doc:`absolutePaths <gridfileSources/absolutePaths>` - Return the absolute paths to data sources in the catalogue
+| :doc:`savePath <gridfileSources/savePath>` - Record the path to a data source in the catalogue
+
+
+
+.. raw:: html
+
+    <h3>Unit tests</h3>
+
+.. rst-class:: package-links
+
+| :doc:`tests <gridfileSources/tests>` - Unit tests for the dash.gridfileSources class
+
+.. toctree::
+    :hidden:
+
+    add <gridfileSources/add>
+    remove <gridfileSources/remove>
+    indices <gridfileSources/indices>
+    unpack <gridfileSources/unpack>
+    info <gridfileSources/info>
+    build <gridfileSources/build>
+    ismatch <gridfileSources/ismatch>
+    absolutePaths <gridfileSources/absolutePaths>
+    savePath <gridfileSources/savePath>
+    tests <gridfileSources/tests>
+
