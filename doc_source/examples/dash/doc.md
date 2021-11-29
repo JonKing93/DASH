@@ -15,6 +15,7 @@ dash.doc('gridfile.add')
 For a package:
 
 ```
+dash.doc('PSM')
 dash.doc('dash.math')
 ```
 
