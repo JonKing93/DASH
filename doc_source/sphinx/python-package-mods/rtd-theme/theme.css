@@ -104,7 +104,7 @@ details summary {
 }
 
 .accordion > input[name="collapse"]:checked ~ .content {
-  max-height: 1000px;
+  max-height: 10000px;
   height: auto;
   transition: max-height 0.3s ease-out;
   padding-top: 10px;

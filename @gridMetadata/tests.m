@@ -28,8 +28,6 @@ dispAttributes;
 assertUnique;
 assertScalar;
 
-fprintf('gridMetadata passed the tests\n');
-
 end
 
 function[] = dimensions

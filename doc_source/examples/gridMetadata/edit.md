@@ -150,8 +150,6 @@ recognized =
 
 to return the list of recognized dimensions.
 
-
-
 # Remove dimension from metadata
 
 You can remove a dimension from a gridMetadata object by editing the dimension's metadata to an empty array [].
