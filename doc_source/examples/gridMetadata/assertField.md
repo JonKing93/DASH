@@ -56,6 +56,24 @@ gridMetadata.assertField(meta)
 The metadata contains NaT elements.
 ```
 
+# Convert cellstring to string
+
+If the input passes the assertion, it is returned as output. If the input was a cellstring matrix, it is returned as a string matrix. This ensures that returned metadata can be indexed using parentheses, rather than braces:
+
+```in
+meta = { 'a',  'cellstring'
+         'metadata',  'matrix'};
+meta = gridMetadata.assertField(meta)
+```
+
+```out
+meta = 
+  2×2 string array
+    "a"           "cellstring"
+    "metadata"    "matrix"   
+```
+
+
 # Customize error message
 
 Customize the error message to include the name of the dimension and a custom error ID:

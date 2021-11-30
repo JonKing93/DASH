@@ -67,6 +67,7 @@ dir
 
 ```out
 .    ..   a-file.mat
+```
 
 This folder holds a file named "a-file.mat". If we try to create a new file by the same name, the method throws an error:
 
@@ -91,6 +92,7 @@ dir
 
 ```out
 .    ..   a-file.mat
+```
 
 This folder holds a file named "a-file.mat". We can overwrite this file by setting the third input to true:
 
