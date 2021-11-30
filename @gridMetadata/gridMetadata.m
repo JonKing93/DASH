@@ -28,7 +28,7 @@ classdef gridMetadata
 %
 %   gridMetadata     - Create a new gridMetdata object
 %   edit             - Edit the metadata for a gridded dataset
-%   index            - Return metadata at specified indices
+%   index            - Return metadata at indexed rows
 %
 %   
 % *ALL USER METHODS*
@@ -165,16 +165,6 @@ classdef gridMetadata
         %           dataset. The properties/fields of the object are the dimensions
         %           with metadata (dimN). Each field holds the associated metadata
         %           matrix (metaN). Cellstring metadata are converted to string.
-        %
-        %   Throws:
-        %       DASH:gridMetadata:oddNumberOfInputs  if an odd number of inputs
-        %           are passed to the function
-        %       DASH:gridMetadata:repeatedDimension  if a dimension name
-        %           repeated in the inputs
-        %       DASH:gridMetadata:invalidDimensionName  if a dimension name is
-        %           not a valid MATLAB variable name
-        %       (Warning) DASH:metadata:define:metadataFieldIsRow  if a metadata
-        %           field is a row vector%
         %
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
         

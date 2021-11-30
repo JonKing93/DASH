@@ -75,6 +75,6 @@ ID = ME.identifier
 
 ```out
 ID = 
-    'my:header'
+    'my:header:objectArrayNotSupported''
 ```
 

@@ -62,7 +62,7 @@ site = [30 50
 meta = gridMetadata('site', site);
 
 header = "my:header";
-meta.assertUnique
+meta.assertUnique(header)
 ```
 
 ```error
@@ -78,5 +78,5 @@ ID = ME.identifier
 
 ```out
 ID = 
-    'my:header'
+    'my:header:duplicateRows'
 ```
