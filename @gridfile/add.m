@@ -72,7 +72,7 @@ end
 
 % Error check the metadata
 dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
-metadata.assertUnique(header);
+metadata.assertUnique([], header);
 
 %% Dimensions - Check required dimensions are present, and get sizes
 

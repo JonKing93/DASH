@@ -50,6 +50,41 @@ meta.assertUnique
 ```
 
 
+# Check specific dimensions
+
+If you provide dimension names as the first input, the method only checks the metadata for the specified dimensions. For example:
+
+```in
+meta = gridMetadata('site', [1;1;2;2;3], 'time', (1900:2000)', 'run', (1:5)')
+```
+
+```out
+meta = 
+  gridMetadata with metadata:
+    site: [5×1 double]
+    time: [101×1 double]
+     run: [5×1 double]
+```
+
+In this example, the "site" dimension has repeated metadata rows, but the "time" and "run" dimensions do not. If we call the method on the "time" and "run" dimensions, the assertion still passes. For example:
+
+```
+dimensions = ["time","run"];
+meta.assertUnique(dimensions);
+```
+
+The assertion passes and does not throw an error. By contrast, if we include the "site" dimension in the dimensions list:
+
+```in
+dimensions = ["site","time"];
+meta.assertUnique(dimensions)
+```
+
+```error
+The "site" metadata has duplicate rows. (Rows 1 and 2)
+```
+
+
 # Customize error message
 
 Use the first input to provide a custom error ID. For example, create a metadata object with repeated metadata rows
@@ -62,7 +97,7 @@ site = [30 50
 meta = gridMetadata('site', site);
 
 header = "my:header";
-meta.assertUnique(header)
+meta.assertUnique([], header)
 ```
 
 ```error

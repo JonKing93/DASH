@@ -374,16 +374,18 @@ function[] = assertUnique
 
 tests = {
     % description, shouldSucceed, calling object
-    'empty', true, gridMetadata
-    'unique', true, gridMetadata('lat', [1 2;3 4], 'lon', [50 60;70 80;90 100]);
-    'repeat rows in different dimensions', true, gridMetadata('lat', [1 2;3 4], 'lon', [1 2;3 4])
-    'not unique', false, gridMetadata('lat', [1 2;3 4;1 2])
+    'empty', true, gridMetadata, []
+    'unique', true, gridMetadata('lat', [1 2;3 4], 'lon', [50 60;70 80;90 100]), [];
+    'repeat rows in different dimensions', true, gridMetadata('lat', [1 2;3 4], 'lon', [1 2;3 4]), []
+    'not unique', false, gridMetadata('lat', [1 2;3 4;1 2]), []
+    'single dimension', true, gridMetadata('lon', [1;1;1], 'lat', [1;2;3]), 'lat'
+    'undefined dimension', false, gridMetadata('site', [1;2;3]), 'time'
     };
 testHeader = 'test:header';
 
 for t = 1:size(tests,1)
     try
-        tests{t,3}.assertUnique(testHeader);
+        tests{t,3}.assertUnique(tests{t,4}, testHeader);
         assert(tests{t,2}, tests{t,1});
     catch ME
         assert(~tests{t,2} && contains(ME.identifier, testHeader), tests{t,1});

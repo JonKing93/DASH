@@ -39,7 +39,7 @@ filename = dash.assert.strflag(filename, 'filename', header);
 filename = dash.file.new(filename, ".grid", overwrite, header);
 
 dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
-metadata.assertUnique(header);
+metadata.assertUnique([], header);
 metadata = metadata.setOrder(0);
 
 % Initialize empty gridfile object

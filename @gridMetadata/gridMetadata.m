@@ -115,7 +115,7 @@ classdef gridMetadata
         obj = editAttributes(obj, varargin);
         
         % Assertions
-        assertUnique(obj, header);        
+        assertUnique(obj, dimensions, header);        
         assertScalar(obj, header);
     end
     
