@@ -95,6 +95,9 @@ classdef gridfile < handle
     % Arithmetic:
     %   arithmetic       - Arithmetic operations across two gridfiles
     %
+    % Unit tests:
+    %   tests            - Unit tests for the gridfile class
+    %
     % <a href="matlab:dash.doc('gridfile')">Documentation Page</a>
     
     properties (SetAccess = private)
@@ -174,6 +177,7 @@ classdef gridfile < handle
     
     methods (Static)        
         obj = new(file, meta, overwrite);
+        tests;
     end
     
     % Constructor

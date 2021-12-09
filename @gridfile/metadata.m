@@ -36,13 +36,13 @@ end
 % Otherwise, get data source indices
 header = "DASH:gridfile:metadata";
 if isequal(sources, -1)
-    s = 1:obj.nSource;
+    sources = 1:obj.nSource;
 else
-    s = obj.sources_.indices(sources, header);
+    sources = obj.sources_.indices(sources, header);
 end
 
 % Preallocate source metadata
-nSource = numel(s);
+nSource = numel(sources);
 sourceMetadata = repmat(gridMetadata, [nSource, 1]);
 
 % Get metadata for each dimension of each source
@@ -50,9 +50,10 @@ for d = 1:numel(obj.dims)
     dim = obj.dims(d);
     values = metadata.(dim);
     
-    for s = 1:nSource
+    for k = 1:nSource
+        s = sources(k);
         rows = obj.dimLimit(d,1,s):obj.dimLimit(d,2,s);
-        sourceMetadata(s) = sourceMetadata(s).edit(dim, values(rows,:));
+        sourceMetadata(k) = sourceMetadata(k).edit(dim, values(rows,:));
     end
 end
 metadata = sourceMetadata;

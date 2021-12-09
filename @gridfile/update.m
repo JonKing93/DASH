@@ -17,11 +17,12 @@ fields = properties('gridfile');
 fields(strcmp(fields, 'file')) = [];
 
 % Load the properties
+reset = dash.toggleWarning('off', "MATLAB:load:variableNotFound");
 try
     m = load(obj.file, '-mat', fields{:});
 catch
     id = sprintf('%s:couldNotLoad', header);
-    error(id, 'Could not load data from:\n    %s\nIt may not be a valid .grid file', obj.file);
+    error(id, 'Could not load data from:\n    %s\n\nIt may not be a valid .grid file', obj.file);
 end
 
 % Ensure every field is in the file
@@ -30,8 +31,8 @@ loadedFields = fieldnames(m);
 if ~all(loaded)
     bad = find(loc==0,1);
     id = sprintf('%s:missingField', header);
-    error(id, 'The file:\n    %s\n is missing the "%s" field. It may not be a valid .grid file.', ...
-        obj.file, fields(bad));
+    error(id, 'The file:\n    %s\n\n is missing the "%s" field. It may not be a valid .grid file.', ...
+        obj.file, fields{bad});
 end
 
 % Update properties
