@@ -10,7 +10,7 @@ function[dimensions] = defined(obj)
 %
 % <a href="matlab:dash.doc('gridMetadata.defined')">Documentation Page</a>
 
-obj.assertScalar('DASH:gridMetadata:defined');
+dash.assert.scalarObj(obj, 'DASH:gridMetadata:defined');
 
 dims = gridMetadata.dimensions;
 nDims = numel(dims);

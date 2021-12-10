@@ -34,7 +34,7 @@ function[obj] = index(obj, dimensions, indices, varargin)
 
 % Error header
 header = "DASH:gridMetadata:index";
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Parse and error check
 if numel(varargin)>0

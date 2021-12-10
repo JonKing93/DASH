@@ -26,7 +26,7 @@ function[] = assertUnique(obj, dimensions, header)
 if ~exist('header','var') || isempty(header)
     header = 'DASH:gridMetadata:assertUnique';
 end
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Dimensions
 defined = obj.defined;

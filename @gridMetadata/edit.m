@@ -29,7 +29,7 @@ function[obj] = edit(obj, varargin)
 
 % Error header
 header = "DASH:gridMetadata:edit";
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Parse and error check dimension-value pairs
 extraInfo = 'Inputs must be Dimension,Metadata pairs.';

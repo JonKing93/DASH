@@ -61,7 +61,6 @@ classdef gridMetadata
 % Assertions:
 %   assertField      - Throw error if input is not a valid metadata field
 %   assertUnique     - Throw error if metadata rows are not unique
-%   assertScalar     - Throw error if gridMetadata object is not scalar
 %
 % Unit Tests:
 %   tests            - Implement unit tests for the gridMetadata class
@@ -116,7 +115,6 @@ classdef gridMetadata
         
         % Assertions
         assertUnique(obj, dimensions, header);        
-        assertScalar(obj, header);
     end
     
     methods (Static)        

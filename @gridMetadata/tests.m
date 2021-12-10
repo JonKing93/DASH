@@ -26,7 +26,6 @@ disp;
 dispAttributes;
 
 assertUnique;
-assertScalar;
 
 end
 
@@ -386,26 +385,6 @@ testHeader = 'test:header';
 for t = 1:size(tests,1)
     try
         tests{t,3}.assertUnique(tests{t,4}, testHeader);
-        assert(tests{t,2}, tests{t,1});
-    catch ME
-        assert(~tests{t,2} && contains(ME.identifier, testHeader), tests{t,1});
-    end
-end
-
-end
-function[] = assertScalar
-
-tests = {
-    % description, should pass, calling object
-    'empty', true, gridMetadata
-    'scalar', true, gridMetadata('lat',1)
-    'array', false, [gridMetadata('lat',1), gridMetadata('lon',2)]
-    };
-testHeader = 'test:header';
-
-for t = 1:size(tests,1)
-    try
-        tests{t,3}.assertScalar(testHeader);
         assert(tests{t,2}, tests{t,1});
     catch ME
         assert(~tests{t,2} && contains(ME.identifier, testHeader), tests{t,1});

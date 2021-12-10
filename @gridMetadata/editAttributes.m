@@ -16,7 +16,7 @@ function[obj] = editAttributes(obj, varargin)
 
 % Error header
 header = "DASH:gridMetadata:editAttributes";
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Parse and error check input pairs
 extraInfo = 'Inputs must be Attribute,Value pairs';

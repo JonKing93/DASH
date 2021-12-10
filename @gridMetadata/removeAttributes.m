@@ -22,7 +22,7 @@ function[obj] = removeAttributes(obj, varargin)
 
 % Error ID header
 header = "DASH:gridMetadata:removeAttributes";
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Get the attributes fields
 [~, atts] = gridMetadata.dimensions;

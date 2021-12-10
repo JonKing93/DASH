@@ -35,7 +35,7 @@ function[obj] = setOrder(obj, varargin)
 
 % Header
 header = "DASH:gridMetadata:setOrder";
-obj.assertScalar(header);
+dash.assert.scalarObj(obj, header);
 
 % Parse dimension lists
 if numel(varargin)==0

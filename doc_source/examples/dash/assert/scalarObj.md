@@ -1,4 +1,4 @@
-# Assert gridMetadata is scalar
+# Assert class instance is scalar
 
 Examples that pass the assertion:
 
@@ -18,8 +18,8 @@ meta2 =
 ```
 
 ```
-meta1.assertScalar
-meta2.assertScalar
+dash.assert.scalarObj(meta1)
+dash.assert.scalarObj(meta2)
 ```
 
 Both metadata objects pass the assertion.
@@ -39,7 +39,7 @@ meta =
 ```
 
 ```
-meta.assertScalar
+dash.assert.scalarObj(meta)
 ```
 
 ```error
@@ -58,7 +58,7 @@ meta2 = gridMetadata('lon', (1:360)');
 meta = [meta1, meta2];
 
 header = "my:header";
-meta.assertScalar(header)
+dash.assert.scalarObj(meta, header)
 ```
 
 ```error
