@@ -24,11 +24,11 @@ addDimension;
 addAttributes;
 removeAttributes;
 editAttributes;
-% 
-% add
-% remove
-% rename
-% absolutePaths
+
+add
+remove
+rename
+absolutePaths
 
 fillValue  % these only check that gridfile properties are updated
 validRange % check the implementation in the "load" tests
@@ -748,4 +748,60 @@ catch cause
 end
 
 end
+
+function
+function[] = disp
+
+%% empty
+grid = gridfile.new('test',gridMetadata, true);
+try
+    grid.disp;
+catch
+    error('empty');
+end
+
+%% Scalar
+grid = gridfile.new('test', gridMetadata('lat',(1:10)'), true);
+try
+    grid.disp;
+catch
+    error('scalar');
+end
+
+%% array
+grids = [grid, grid];
+try
+    grids.disp;
+catch
+    error('array');
+end
+
+%% deleted
+delete(grid);
+try
+    grid.disp;
+catch
+    error('deleted');
+end
+
+end
+function[] = dispSources
+    
+% Scalar, No sources
+meta = gridMetadata('lat',(1:100)', 'lon', (1:20)', 'time', (1:5)');
+grid = gridfile.new('test.grid', grid, true);
+try
+    grid.dispSources;
+catch
+    error('no sources');
+end
+
+% Scalar, With sources
+grid.add('nc','test','a',["lon","lat","time"],
+
+
+
+
+meta = gridMetadata('lat',(1:100)', 'lon', (1:20)', 'time', (1:5)');
+grid.add('nc','test','a',["lon","lat","time"],
 
