@@ -26,13 +26,14 @@ function[transform, parameters] = transform(obj, type, params, sources)
 %   Overrides any data transformations previously applied to the data
 %   sources.
 %
+%   <strong>obj.transform</strong>('log')
 %   <strong>obj.transform</strong>('ln')
 %   <strong>obj.transform</strong>('ln', [], ...)
 %   Take the natural logarithm of loaded data.
 %
-%   <strong>obj.transform</strong>('log', base, ...)
-%   Takes the logarithm of loaded data. Supports base-10 and
-%   base-e (natural) logarithms.
+%   <strong>obj.transform</strong>('log10')
+%   <strong>obj.transform</strong>('log10', [])
+%   Takes the base-10 logarithm of loaded data
 %
 %   <strong>obj.transform</strong>('exp')
 %   <strong>obj.transform</strong>('exp', [], ...)
@@ -42,9 +43,13 @@ function[transform, parameters] = transform(obj, type, params, sources)
 %   Raise loaded data to the specified power.
 %
 %   <strong>obj.transform</strong>('plus', plus, ...)
+%   <strong>obj.transform</strong>('add', plus, ...)
+%   <strong>obj.transform</strong>('+', plus, ...)
 %   Add the indicated value to loaded data.
 %
 %   <strong>obj.transform</strong>('times', times, ...)
+%   <strong>obj.transform</strong>('multiply', times, ...)
+%   <strong>obj.transform</strong>('*', times, ...)
 %   Multiply loaded data by the specified value.
 %
 %   <strong>obj.transform</strong>('linear', coeffs, ...)
@@ -55,12 +60,19 @@ function[transform, parameters] = transform(obj, type, params, sources)
 %   Do not apply a transformation to loaded data.
 % ----------
 %   Inputs:
-%       type ('ln' | 'log' | 'exp' | 'power' | 'plus' | 'times' | 'linear' | 'none'): 
-%           The type of data transformation to apply to loaded data.
+%       type (string scalar): The type of transformation to apply to the data.
+%           Options are as follows:
+%           ['ln' | 'log']: Natural logarithm
+%           ['log10']: Base-10 logarithm
+%           ['exp']: Exponential e^x
+%           ['power']: Raise data to power
+%           ['plus' | 'add' | '+']: Add value to data
+%           ['times' | 'multiply' | '*']: Multiply data by value
+%           ['linear']: Linear transformation
+%           ['none']: No data transformation
 %       params: The parameters for the transformation. Use an empty array
-%           when applying transformation with no parameters (ln, exp, none) to
-%           specific data sources.
-%       base (10 | 'e'): A logarithm base. 'e' selects the natural logarithm
+%           when applying transformation with no parameters 
+%           (ln, log, log10, exp, none) to specific data sources.
 %       power (numeric scalar): The exponent that should be applied to data
 %       plus (numeric scalar): A value that should be added to data
 %       times (numeric scalar): A value that data should be multiplied by
@@ -105,7 +117,7 @@ elseif strcmpi(type, 'sources')
         s = 1:obj.nSource;
     else
         sources = params;
-        s = obj.source_.indices(sources, header);
+        s = obj.sources_.indices(sources, header);
     end
     transform = obj.sources_.transform(s);
     parameters = obj.sources_.transform_params(s,:);
@@ -120,23 +132,23 @@ assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
 % Error check the transformation type
 type = dash.assert.strflag(type, 'First input (transformation type)', header);
 type = lower(type);
-validTypes = ["ln","log","exp","power","plus","times","linear","none"];
+validTypes = ["ln","log","log10","exp","power","plus","add","+",...
+              "times","multiply","*","linear","none"];
 dash.assert.strsInList(type, validTypes, 'The first input',...
     'recognized transformation type', header);
 
 % Error check and parse parameters
 id = sprintf('%s:invalidParameter', header);
-if ismember(type, ["ln","exp","none"])
+if ismember(type, ["ln","log","log10","exp","none"])
     assert( ~exist('params','var') || isempty(params), id,...
         ['The "%s" transformation should not have parameters. Use an empty ',...
         'array as the second input to apply "%s" to specific data sources.'], ...
         type, type);
     params = [NaN NaN];
-elseif strcmp(type, 'log')
-    assert( isscalar(params) && (strcmp(params, 'e') || isequal(params, 10)), ...
-        id, 'The log base must either be 10 or ''e''.');
-    params = [char(params)+0, NaN];
-elseif ismember(type, ["power","plus","times"])
+elseif ~exist('params','var')
+    error(id, ['You must provide parameters for the "%s" transformation.\n\n',...
+        'gridfile: %s'], type, obj.file);
+elseif ismember(type, ["power","plus","add","+","times","multiply","*"])
     dash.assert.scalarType(params, 'numeric', type, header);
     params = [params, NaN];
 elseif strcmp(type, 'linear')
@@ -145,7 +157,7 @@ end
 
 % Set transformation for .grid file and data sources
 if exist('sources','var')
-    s = obj.source.indices(sources, obj.file, header);
+    s = obj.sources_.indices(sources, header);
 else
     obj.transform_ = type;
     obj.transform_params = params;

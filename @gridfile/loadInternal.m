@@ -300,17 +300,17 @@ end
 transform = obj.sources_.transform(s);
 if ~strcmp(transform, 'none')
     params = obj.sources_.transform_params(s,:);
-    if strcmp(transform, 'ln') || (strcmp(transform,'log') && strcmp(params(1), 'e'))
+    if ismember(transform, ["ln","log"])
         Xsource = log(Xsource);
+    elseif strcmp(transform, 'log10')
+        Xsource = log10(Xsource);        
     elseif strcmp(transform, 'exp')
         Xsource = exp(Xsource);
-    elseif strcmp(transform, 'log') && params(1)==10
-        Xsource = log10(Xsource);
     elseif strcmp(transform, 'power')
         Xsource = Xsource .^ params(1);
-    elseif strcmp(transform, 'plus')
+    elseif ismember(transform, ["plus","add","+"]) 
         Xsource = Xsource + params(1);
-    elseif strcmp(transform, 'times')
+    elseif ismember(transform, ["times","multiply","*"])
         Xsource = Xsource .* params(1);
     elseif strcmp(transform, 'linear')
         Xsource = params(1) + params(2) * Xsource;

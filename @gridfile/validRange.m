@@ -83,7 +83,7 @@ end
 
 % Set range for data sources and .grid file
 if exist('sources','var')
-    s = obj.sources_.indices(sources, obj.file, header);
+    s = obj.sources_.indices(sources, header);
 else
     obj.range = range;
     s = 1:obj.nSource;

@@ -24,21 +24,21 @@ addDimension;
 addAttributes;
 removeAttributes;
 editAttributes;
+% 
+% add
+% remove
+% rename
+% absolutePaths
 
-add
-remove
-rename
-absolutePaths
+fillValue  % these only check that gridfile properties are updated
+validRange % check the implementation in the "load" tests
+transform
 
 getLoadIndices
 sourcesForLoad
 buildSources
 loadInternal
-load
-
-fillValue
-validRange
-transform
+load_
 
 plus
 minus
@@ -530,6 +530,215 @@ try
         else
             grid.editAttributes(tests{t,3}{:});
             assert(isequal(grid.metadata.attributes, edited), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+function[] = fillValue
+
+tests = {
+    'return fill 1', true,                    {}, 5, []
+    'return fill 2', true,           {'default'}, 5, []
+    'return all sources', true,      {'sources'}, [5;20;30], []
+    'return indexed sources', true,    {'sources', [3 1 1]}, [30;5;5], []
+    
+    'set default fill', true,               {10}, [], [10 10 10 10]'  
+    'set source fill', true,         {17, [3;2]}, [], [5 5 17 17]'
+    'invalid default fill', false,         {'5'}, [], []
+    'invalid source fill', false, {[1;2], [1;2]}, [], []
+    };
+header = "DASH:gridfile:fillValue";
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+m1 = meta.edit('run', 1);
+m2 = meta.edit('run', 2);
+m3 = meta.edit('run', 3);
+args = {'nc', 'test','a',["lat","lon","time"]};
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+        grid.fillValue(5);
+        grid.add(args{:}, m1);
+        grid.add(args{:}, m2);
+        grid.add(args{:}, m3);
+        grid.fillValue(20, 2);
+        grid.fillValue(30, 3);
+        
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.fillValue(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            if ~isempty(tests{t,4})
+                output = grid.fillValue(tests{t,3}{:});
+                assert(isequal(output, tests{t,4}), 'output');
+            else
+                grid.fillValue(tests{t,3}{:});
+                grid2 = gridfile('test.grid');
+                
+                fills1 = [grid.fill; grid.sources_.fill];
+                fills2 = [grid2.fill; grid2.sources_.fill];
+                assert(isequal(fills1, tests{t,5}), 'fills 1');
+                assert(isequal(fills2, tests{t,5}), 'fills 2');
+            end
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = validRange
+
+tests = {
+    'return range 1', true, {}, [-1000 1000], []
+    'return range 2', true, {'default'}, [-1000 1000], []
+    'return all ranges', true, {'sources'}, [-1000 1000; 5 15; 25 35], []
+    'return indexed ranges', true, {'sources', [3 1 1]}, [25 35;-1000 1000;-1000 1000], []
+    
+    'set default range', true, {[0 100]}, [], repmat([0 100],4,1)
+    'set source range', true, {[0 100], [3 2]}, [], [-1000 1000;-1000 1000;0 100;0 100]
+    'invalid default range', false, {'invalid'}, [], []
+    'invalid source range', false, {[0 1;0 1], [1;2]}, [], []
+    };
+header = "DASH:gridfile:validRange";
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+m1 = meta.edit('run', 1);
+m2 = meta.edit('run', 2);
+m3 = meta.edit('run', 3);
+args = {'nc', 'test','a',["lat","lon","time"]};
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+        grid.validRange([-1000 1000]);
+        grid.add(args{:}, m1);
+        grid.add(args{:}, m2);
+        grid.add(args{:}, m3);
+        grid.validRange([5 15], 2);
+        grid.validRange([25 35], 3);
+        
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.validRange(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            if ~isempty(tests{t,4})
+                output = grid.validRange(tests{t,3}{:});
+                assert(isequal(output, tests{t,4}), 'output');
+            else
+                grid.validRange(tests{t,3}{:});
+                grid2 = gridfile('test.grid');
+                
+                range1 = [grid.range; grid.sources_.range];
+                range2 = [grid2.range; grid2.sources_.range];
+                assert(isequal(range1, tests{t,5}), 'range 1');
+                assert(isequal(range2, tests{t,5}), 'range 2');
+            end
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = transform
+
+tests = {
+    'return transform 1', true, {}, {"linear", [1 2]}, []
+    'return transform 2', true, {'default'}, {"linear", [1 2]}, []
+    'return all sources', true, {'sources'}, {["linear";"exp";"+"], [1 2;NaN NaN;5 NaN]}, []
+    'return indexed sources', true, {'sources', [3 1 1]}, {["+";"linear";"linear"], [5 NaN;1 2;1 2]}, []
+    'set default transform', true, {"plus", 5}, [], {repmat("plus",4,1), repmat([5 NaN],4,1)}
+    'set source transform', true, {"times", 3, [3;2]}, [], {["linear";"linear";"times";"times"],[1 2;1 2;3 NaN;3 NaN]}
+    
+    'ln', true, {'ln'}, [], {repmat("ln",4,1), NaN(4,2)}
+    'log', true, {'log'}, [], {repmat("log",4,1), NaN(4,2)}
+    'log10', true, {'log10'}, [], {repmat("log10",4,1), NaN(4,2)}
+    'exp', true, {'exp'}, [], {repmat("exp",4,1), NaN(4,2)}
+    'power', true, {'power', 2}, [], {repmat("power",4,1), repmat([2 NaN],4,1)}
+    'plus', true, {'plus', 5}, [], {repmat("plus",4,1), repmat([5 NaN],4,1)}
+    'add', true, {'add', 5}, [], {repmat("add",4,1), repmat([5 NaN],4,1)}
+    '+', true, {'+', 5}, [], {repmat("+",4,1), repmat([5 NaN],4,1)}
+    'times', true, {'times', 3}, [], {repmat("times",4,1), repmat([3 NaN],4,1)}
+    'multiply', true, {'multiply', 3}, [], {repmat("multiply",4,1), repmat([3 NaN],4,1)}
+    '*', true, {'*', 3}, [], {repmat("*",4,1), repmat([3 NaN],4,1)}
+    'linear', true, {'linear', [4 5]}, [], {repmat("linear",4,1), repmat([4 5],4,1)}
+    'none', true, {'none'}, [], {repmat("none",4,1), NaN(4,2)}
+    
+    'invalid transformation', false, {'invalid'}, [], []
+    '0 args, input 1', false, {'exp', 5}, [], []
+    '1 arg, input 0', false, {'plus'}, [], []
+    '1 arg, input 2', false, {'plus', [1 2]}, [], []
+    '2 args, input 1', false, {'linear', 5}, [], []
+    '2 args, input 3', false, {'linear', [1 2 3]}, [], []
+    };
+header = "DASH:gridfile:transform";
+
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+m1 = meta.edit('run', 1);
+m2 = meta.edit('run', 2);
+m3 = meta.edit('run', 3);
+args = {'nc', 'test','a',["lat","lon","time"]};
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+        grid.add(args{:}, m1);
+        grid.add(args{:}, m2);
+        grid.add(args{:}, m3);
+        grid.transform('linear', [1 2]);
+        grid.transform('exp', [], 2);
+        grid.transform('+', 5, 3);
+        
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.transform(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            if ~isempty(tests{t,4})
+                [type, params] = grid.transform(tests{t,3}{:});
+                assert(isequal(type, tests{t,4}{1}), 'output type');
+                assert(isequaln(params, tests{t,4}{2}), 'output params');
+            else
+                grid.transform(tests{t,3}{:});
+                grid2 = gridfile('test.grid');
+                
+                type1 = [grid.transform_; grid.sources_.transform];
+                type2 = [grid2.transform_; grid2.sources_.transform];
+                param1 = [grid.transform_params; grid.sources_.transform_params];
+                param2 = [grid2.transform_params; grid2.sources_.transform_params];
+                
+                assert(isequaln(type1, tests{t,5}{1}), 'type 1');
+                assert(isequaln(type2, tests{t,5}{1}), 'type 2');
+                assert(isequaln(param1, tests{t,5}{2}), 'param 1');
+                assert(isequaln(param2, tests{t,5}{2}), 'param 2');
+            end
         end
     end
 catch cause
