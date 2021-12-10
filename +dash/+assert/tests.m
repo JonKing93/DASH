@@ -21,6 +21,7 @@ strsInList;
 
 type;
 scalarType;
+scalarObj;
 vectorTypeN;
 
 indices;
@@ -211,6 +212,26 @@ for t = 1:size(tests,1)
         
     else
         dash.assert.scalarType(tests{t,3:5}, testHeader);
+    end
+end
+
+end
+function[] = scalarObj
+
+tests = {
+    % description, should pass, calling object
+    'empty', true, gridMetadata
+    'scalar', true, gridMetadata('lat',1)
+    'array', false, [gridMetadata('lat',1), gridMetadata('lon',2)]
+    };
+testHeader = 'test:header';
+
+for t = 1:size(tests,1)
+    try
+        dash.assert.scalarObj(tests{t,3}, testHeader);
+        assert(tests{t,2}, tests{t,1});
+    catch ME
+        assert(~tests{t,2} && contains(ME.identifier, testHeader), tests{t,1});
     end
 end
 

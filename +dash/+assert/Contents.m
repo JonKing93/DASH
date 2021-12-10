@@ -16,6 +16,7 @@
 % Size and Data Type:
 %   type            - Throw error if input is not required type
 %   scalarType      - Throw error if input is not a scalar of a required data type
+%   scalarObj       - Throw error if method object is not scalar
 %   vectorTypeN     - Throw error if input is not a vector of required data type and length
 %
 % Indices:
