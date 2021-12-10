@@ -1,5 +1,16 @@
 function[] = tests
 
+% Move to test folder
+here = mfilename('fullpath');
+folders = strsplit(here, filesep);
+dash = folders(1:end-2);
+testpath = fullfile(dash{:}, 'testdata', 'gridfile');
+
+home = pwd;
+gohome = onCleanup( @()cd(home) );
+cd(testpath);
+
+% Run the tests
 new;
 constructor;
 
@@ -196,7 +207,7 @@ tests = {
     'invalid attributes', false, 'attributes', 5, []
     'invalid metadata', false, 'site', {1,2,3,4,5,6,7,8,9,10}, []
     };
-header = "DASH:gridfile:edit";
+header = "DASH";
 
 try
     for t = 1:size(tests,1)
@@ -230,8 +241,48 @@ end
 end
 function[] = expand
 
-% tests = {
-    
+meta = gridMetadata('site', (1:10)', 'time', (1900:2000)');
+
+tests = {
+    'expand', true, 'site', (11:15)'
+    'undefined dimension', false, 'lat', (1:5)'
+    'different columns', false, 'site', [11 12]
+    'repeated rows', false, 'site', [11;12;1;14]
+    'unappendable type', false, 'site', "site 11"
+    };
+header = "DASH:gridfile:expand";
+
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.expand(tests{t,3:4});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            dim = tests{t,3};
+            meta2 = meta.edit(dim, cat(1, meta.(dim), tests{t,4}));
+            grid.expand(tests{t,3:4});
+            grid2 = gridfile('test.grid');
+            
+            assert(isequal(grid.metadata, meta2), 'metadata1');
+            assert(isequal(grid2.metadata, meta2), 'metadata2');
+            assert(isequal(grid.size(1), size(meta2.(dim),1)), 'size1');
+            assert(isequal(grid2.size(1), size(meta2.(dim),1)), 'size2');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 
 
@@ -240,6 +291,54 @@ function[] = expand
 
 
 
+end
+function[] = addDimension
+
+tests = {
+    'new dimension', true, 'run', 1
+    'existing dimension', false, 'time', 2001
+    'unsupported dimension', false, 'invalid', 5
+    'attributes', false, 'attributes', struct('a',1)
+    'invalid metadata', false, 'run', {1}
+    'metadata with multiple rows', false, 'run', [1;2]
+    };
+header = "DASH";
+
+meta = gridMetadata('lat', (-90:90)', 'lon', (1:360)', 'time', (1900:2000)');
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+        
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.addDimension(tests{t,3:4});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            grid.addDimension(tests{t,3:4});
+            grid2 = gridfile('test.grid');
+            meta2 = meta.edit(tests{t,3:4});
+
+            assert(isequal(grid.dims, ["lon","lat","time","run"]), 'dims1');
+            assert(isequal(grid2.dims, ["lon","lat","time","run"]), 'dims2');
+            assert(isequal(grid.size, [360 181 101 1]), 'size1');
+            assert(isequal(grid.size, [360 181 101 1]), 'size2');
+            assert(isequal(grid.metadata, meta2), 'metadata1');
+            assert(isequal(grid2.metadata, meta2), 'metadata2');
+            assert(isequal(grid.dimLimit, NaN(4,2,0)), 'dimLimit1');
+            assert(isequal(grid2.dimLimit, NaN(4,2,0)), 'dimLimit2');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 end
 

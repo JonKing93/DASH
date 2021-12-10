@@ -33,7 +33,7 @@ end
 dim = dash.assert.strflag(dimension, 'dimension', header);
 undefined = dims(undefined);
 if ismember(dim, obj.dims)
-    dimensionExistsError;
+    dimensionExistsError(dim, obj.file, header);
 end
 dash.assert.strsInList(dim, undefined, 'dimension', 'a valid dimension', header);
 
@@ -63,6 +63,9 @@ docLink = '<a href="matlab:dash.doc(''gridMetadata.add-dimensions'')">this docum
 error(id, ['The gridfile already defines every dimension recognized by ',...
     'the DASH toolbox. If you want to add more dimensions to DASH, you will ',...
     'need to %s. See %s for details.\n\ngridfile: %s'], editLink, docLink, obj.file);
+end
+function[] = dimensionExistsError(dim, file, header)
+error(header, 'The gridfile already has a "%s" dimension.\n\ngridfile: %s', dim, file);
 end
 function[] = metadataRowsError(dim, nRows, gridFile, header)
 id = sprintf('%s:wrongNumberOfMetadataRows', header);
