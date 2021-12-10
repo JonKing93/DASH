@@ -17,7 +17,7 @@ fields = properties('gridfile');
 fields(strcmp(fields, 'file')) = [];
 
 % Load the properties
-reset = dash.toggleWarning('off', "MATLAB:load:variableNotFound");
+reset = dash.toggleWarning('off', "MATLAB:load:variableNotFound"); %#ok<NASGU>
 try
     m = load(obj.file, '-mat', fields{:});
 catch

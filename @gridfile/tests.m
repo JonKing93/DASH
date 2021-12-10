@@ -13,6 +13,8 @@ cd(testpath);
 % Run the tests
 new;
 constructor;
+update;
+save_;
 
 metadata;
 edit;
@@ -23,7 +25,32 @@ addAttributes;
 removeAttributes;
 editAttributes;
 
+add
+remove
+rename
+absolutePaths
 
+getLoadIndices
+sourcesForLoad
+buildSources
+loadInternal
+load
+
+fillValue
+validRange
+transform
+
+plus
+minus
+times
+divide
+arithmetic
+
+sources
+info
+name
+disp;
+dispSources;
 
 end
 
@@ -143,6 +170,52 @@ catch cause
     ME = addCause(ME, cause);
     throw(ME);
 end
+
+end
+function[] = update
+
+%% Update property
+file = dash.file.urlSeparators(fullfile(pwd, 'test.grid'));
+meta = gridMetadata('lat', (-90:90)', 'lon', (1:360)');
+grid = gridfile.new('test.grid', meta, true);
+m = matfile('test.grid', 'Writable', true);
+m.dims = ["lon","lat","time"];
+grid.update;
+assert(isequal(grid.dims, ["lon","lat","time"]), 'update property');
+assert(isequal(grid.sources_.gridfile, file), 'copy filename to sources');
+
+%% Missing field
+s = struct(m);clc;
+s = rmfield(s, ["Properties", "dims"]);
+save('test.grid', '-struct', 's', '-mat'); 
+try
+    grid.update;
+    error('missing field did not fail');
+catch ME
+    assert(contains(ME.identifier, 'DASH'));
+end
+
+%% Invalid mat file
+grid.file = "test.mat";
+try
+    grid.update;
+    error('invalid file did not fail');
+catch ME
+    assert(contains(ME.identifier, 'DASH'));
+end
+
+end
+function[] = save_
+
+%% Save a changed property
+meta = gridMetadata('lat', (-90:90)', 'lon', (1:360)');
+grid = gridfile.new('test.grid', meta, true);
+grid.dims = ["lon","lat","time"];
+grid.save;
+m = matfile('test.grid');
+assert(isequal(m.dims, ["lon","lat","time"]), 'updated file');
+sources = m.sources_;
+assert(isequal(sources.gridfile, ""), 'strip path from sources');
 
 end
 
