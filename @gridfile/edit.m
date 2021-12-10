@@ -20,8 +20,9 @@ function[] = edit(obj, dimension, metadata)
 % <a href="matlab:dash.doc('gridfile.edit')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:edit";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 % Attributes
 if strcmp(dimension, 'attributes')

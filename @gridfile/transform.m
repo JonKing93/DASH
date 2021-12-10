@@ -98,8 +98,9 @@ function[transform, parameters] = transform(obj, type, params, sources)
 % <a href="matlab:dash.doc('gridfile.transform')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:transform";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 %% Return transformations
 

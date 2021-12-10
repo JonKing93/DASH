@@ -101,6 +101,7 @@ function[] = times(obj, grid2, filename, varargin)
     ["overwrite","attributes","type"], {[], [], []}, 2);
 
 % Implement gridfile arithmetic
+dash.assert.scalarObj(obj, 'DASH:gridfile:times');
 obj.arithmetic('times', grid2, filename, overwrite, atts, type);
 
 end

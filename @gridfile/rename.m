@@ -39,6 +39,7 @@ function[] = rename(obj, sources, newNames)
 
 % Setup
 header = "DASH:gridfile:rename";
+dash.assert.scalarObj(obj, header);
 obj.update;
 
 % Get the data sources that should be checked and/or renamed

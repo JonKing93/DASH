@@ -25,8 +25,9 @@ function[] = expand(obj, dimension, metadata)
 % <a href="matlab:dash.doc('gridfile.expand')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:expand";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 % Require defined dimension, do not include attributes
 dim = dash.assert.strflag(dimension, 'dimension', header);

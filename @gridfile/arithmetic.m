@@ -58,7 +58,7 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 
 %% Operation specific details
 
-% Header for errors
+% Setup
 header = sprintf('DASH:gridfile:%s', operation);
 
 % Arithmetic function and error strings

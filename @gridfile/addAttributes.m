@@ -13,6 +13,7 @@ function[] = addAttributes(obj, varargin)
 %
 % <a href="matlab:dash.doc('gridfile.addAttributes')">Documentation Page</a>
 
+dash.assert.scalarObj(obj, 'DASH:gridfile:addAttributes');
 obj.update
 obj.meta = obj.meta.addAttributes(varargin{:});
 obj.save;

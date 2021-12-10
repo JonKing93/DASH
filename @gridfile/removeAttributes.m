@@ -17,7 +17,9 @@ function[] = removeAttributes(obj, varargin)
 %
 % <a href="matlab:dash.doc('gridfile.removeAttributes')">Documentation Page</a>
 
+dash.assert.scalarObj(obj, "DASH:gridfile:removeAttributes");
 obj.update;
+
 obj.meta = obj.meta.removeAttributes(varargin{:});
 obj.save;
 

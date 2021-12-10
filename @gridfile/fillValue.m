@@ -40,8 +40,9 @@ function[fill] = fillValue(obj, fill, sources)
 % <a href="matlab:dash.doc('gridfile.fillValue')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:fillValue";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 %% Return fill values
 

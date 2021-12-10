@@ -24,17 +24,18 @@ function[metadata] = metadata(obj, sources)
 %       
 % <a href="matlab:dash.doc('gridfile.metadata')">Documentation Page</a>
 
-% Get up-to-date metadata for the full file
+% Setup
+header = "DASH:gridfile:metadata";
+dash.assert.scalarObj(obj, header);
 obj.update;
-metadata = obj.meta;
 
 % If no inputs, return metadata directly
+metadata = obj.metadata;
 if ~exist('sources','var') || isequal(sources, 0)
     return;
 end
 
 % Otherwise, get data source indices
-header = "DASH:gridfile:metadata";
 if isequal(sources, -1)
     sources = 1:obj.nSource;
 else

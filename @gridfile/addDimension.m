@@ -19,8 +19,9 @@ function[] = addDimension(obj, dimension, metadata)
 % <a href="matlab:dash.doc('gridfile.addDimension')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:addDimension";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 % Get valid dimension names, throw error if none are left
 dims = gridMetadata.dimensions;

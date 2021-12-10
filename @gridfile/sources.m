@@ -21,5 +21,7 @@ function[sources] = sources(obj)
 %       sources (string vector): The list of data sources.
 %
 % <a href="matlab:dash.doc('gridfile.sources')">Documentation Page</a>
+dash.assert.scalarObj(obj, "DASH:gridfile:sources");
+obj.update;
 sources = obj.sources_.absolutePaths;
 end

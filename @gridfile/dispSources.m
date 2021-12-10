@@ -7,6 +7,9 @@ function[] = dispSources(obj)
 % 
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>
 
+% Require scalar
+dash.assert.scalarObj(obj, 'DASH:gridfile:dispSources');
+
 % Format the numbered list
 nSource = size(obj.dimLimit, 3);
 countLength = strlength(string(nSource));

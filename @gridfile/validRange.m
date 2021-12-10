@@ -43,6 +43,7 @@ function[range] = validRange(obj, range, sources)
 
 % Setup
 header = "DASH:gridfile:validRange";
+dash.assert.scalarObj(obj, header);
 obj.update;
 
 %% Return valid ranges

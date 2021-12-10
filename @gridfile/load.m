@@ -54,8 +54,9 @@ function[X, meta] = load(obj, dimensions, indices)
 % The workhorse function for actually loading data is loadInternal
 
 % Setup
-obj.update;
 header = "DASH:gridfile:load";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 % Parse and error check dimensions
 if ~exist('dimensions','var') || isempty(dimensions)

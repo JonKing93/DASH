@@ -73,8 +73,9 @@ function[info] = info(obj, sources)
 % <a href="matlab:dash.doc('gridfile.info')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:info";
+dash.assert.scalarObj(obj, header);
+obj.update;
 
 % Default sources
 if ~exist('sources','var')
