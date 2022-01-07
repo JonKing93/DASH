@@ -83,7 +83,7 @@ if ~exist('sources','var')
 end
 
 % Grid info
-if isnumeric(sources) && sources==0
+if isnumeric(sources) && isequal(sources, 0)
     info = struct('file', obj.file, 'dimensions', obj.dims, ...
         'dimension_sizes', obj.size, 'metadata', obj.meta, ...
         'nSources', obj.nSource, 'prefer_relative_paths', obj.relativePath,...
@@ -93,7 +93,7 @@ if isnumeric(sources) && sources==0
 end
 
 % Otherwise, parse source indices
-if isempty(sources) || (isnumeric(sources) && sources==-1)
+if isempty(sources) || (isnumeric(sources) && isequal(sources, -1))
     s = 1:obj.nSource;
 else
     s = obj.sources_.indices(sources, header);

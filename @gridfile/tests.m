@@ -855,6 +855,7 @@ end
 
 function[] = sources
 
+
 name1 = string(fullfile(pwd, 'test.nc'));
 name2 = string(fullfile(pwd, 'test.mat'));
 name3 = string(fullfile(pwd, 'test.txt'));
@@ -900,6 +901,72 @@ try
         else
             sources = grid.sources(tests{t,4}{:});
             assert(isequal(sources, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = info
+
+gridfilename = dash.file.urlSeparators(fullfile(pwd, 'test.grid'));
+ncfile = dash.file.urlSeparators(fullfile(pwd, 'test.nc'));
+matfile = dash.file.urlSeparators(fullfile(pwd, 'test.mat'));
+textfile = dash.file.urlSeparators(fullfile(pwd, 'test.txt'));
+notfile = dash.file.urlSeparators(fullfile(pwd, 'not-a-file.mat'));
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+
+sgrid = struct('file', gridfilename, 'dimensions',["lon","lat","time","run"],...
+    'dimension_sizes', [20 100 5 3], 'metadata', meta, 'nSources', 3, ...
+    'prefer_relative_paths', 1, 'fill_value', NaN, 'valid_range', [-Inf Inf], ...
+    'transform', 'none', 'transform_parameters', [NaN NaN]);
+nc = struct('name', 'test.nc', 'variable', 'a', 'index', 1, 'file', ncfile,...
+    'data_type', 'single', 'dimensions', "lat,lon,time", 'size', [100 20 5], ...
+    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
+    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
+text = struct('name', 'test.txt', 'variable', [], 'index', 2, 'file', textfile,...
+    'data_type', 'double', 'dimensions', "lat,lon", 'size', [8 4], ...
+    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
+    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
+mat = struct('name', 'test.mat', 'variable', 'a', 'index', 3, 'file', matfile,...
+    'data_type', 'single', 'dimensions', "lat,lon,time", 'size', [100 20 5], ...
+    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
+    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
+
+tests = {
+    'no input', true, {}, sgrid
+    '0 input', true, {0}, sgrid
+    'empty array', true, {[]}, [nc;text;mat]
+    '-1 input', true, {-1}, [nc;text;mat]
+    'indexed sources', true, {[3 1 1]}, [mat;nc;nc]
+    'named sources', true, {["test.mat";"test.nc";"test.nc"]}, [mat;nc;nc]
+    'invalid index', false, {2.2}, []
+    'unrecognized name', false, {notfile}, []
+    'repeat name', false, {"test"}, []
+    };
+header = "DASH";
+grid = gridfile.new('test', meta, true);
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.info(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            output = grid.info(tests{t,3}{:});
+            assert(isequaln(output, tests{t,4}), 'output');
         end
     end
 catch cause
