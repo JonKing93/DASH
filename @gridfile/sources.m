@@ -1,4 +1,4 @@
-function[sources] = sources(obj)
+function[sources] = sources(obj, s)
 %% gridfile.sources  Return the ordered list of data sources in a gridfile
 % ----------
 %   sources = <strong>obj.sources</strong>
@@ -21,7 +21,23 @@ function[sources] = sources(obj)
 %       sources (string vector): The list of data sources.
 %
 % <a href="matlab:dash.doc('gridfile.sources')">Documentation Page</a>
-dash.assert.scalarObj(obj, "DASH:gridfile:sources");
+
+% Setup
+header = "DASH:gridfile:sources";
+dash.assert.scalarObj(obj, header);
 obj.update;
-sources = obj.sources_.absolutePaths;
+
+% Parse indices
+if ~exist('s','var') || isempty(s) || isequal(s,0)
+    input = {};
+else
+    logicalLength = 'one element per data source';
+    linearMax = 'the number of data sources';
+    s = dash.assert.indices(s, obj.nSource, 's', logicalLength, linearMax, header);
+    input = {obj.sources_.indices(s)};
+end
+
+% List sources
+sources = obj.sources_.absolutePaths( input{:} );
+
 end

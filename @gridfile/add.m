@@ -9,6 +9,7 @@ function[] = add(obj, type, source, varargin)
 %   <strong>obj.add</strong>('mat', file, variable, dimensions, metadata)
 %   Adds a variable saved in a MAT-file to the .grid file catalogue.
 %
+%   <strong>obj.add</strong>('txt', file, dimensions, metadata)
 %   <strong>obj.add</strong>('text', file, dimensions, metadata)
 %   <strong>obj.add</strong>(..., opts)
 %   <strong>obj.add</strong>(..., Name, Value)
@@ -57,7 +58,7 @@ if strcmpi(type, 'mat') || strcmpi(type, 'nc')
     source = dash.dataSource.(type)(source, variable);
         
 % Parse inputs for delimited text source
-elseif strcmpi(type, 'text')
+elseif strcmpi(type, 'text') || strcmpi(type, 'txt')
     if numel(varargin)<2
         wrongNumberTextInputsError(header);
     end

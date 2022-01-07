@@ -30,7 +30,7 @@ dash.assert.scalarObj(obj, header);
 obj.update;
 
 % If no inputs, return metadata directly
-metadata = obj.metadata;
+metadata = obj.meta;
 if ~exist('sources','var') || isequal(sources, 0)
     return;
 end

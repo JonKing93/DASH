@@ -169,7 +169,7 @@ classdef gridfile < handle
         
         % Summary information
         name = name(obj);
-        sources = sources(obj);
+        sources = sources(obj, s);
         info = info(obj, s)
         disp(obj);
         dispSources(obj);

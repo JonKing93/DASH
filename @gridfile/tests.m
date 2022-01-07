@@ -17,7 +17,7 @@ update;
 save_;
 
 metadata;
-edit;
+edit_;
 expand;
 addDimension;
 
@@ -31,7 +31,7 @@ rename
 absolutePaths
 
 fillValue  % these only check that gridfile properties are updated
-validRange % check the implementation in the "load" tests
+validRange % check the actual implementation in the tests for "load"
 transform
 
 getLoadIndices
@@ -259,7 +259,7 @@ catch cause
 end
 
 end
-function[] = edit
+function[] = edit_
 
 file = fullfile(pwd, 'test.grid');
 atts = struct('a',1,'b',2);
@@ -540,6 +540,110 @@ end
 
 end
 
+function[] = add
+
+tests = {
+    'netcdf', true
+    'opendap', true
+    'mat', true
+    'text', true
+    'text, options', true
+
+    'netcdf, missing variable', false
+    'netcdf, unnamed ts', true
+    'netcdf'
+    'mat, missing variable', false
+
+    'metadata, not unique', false
+    'metadata, array', false
+
+    'unsupported dimension', false
+    'undefined grid dimension', false
+
+    'unnamed source dimension', false
+    'unnamed singleton source dimension', false
+    'unnamed ts source dimension', true
+    'metadata, missing grid dimension', false
+    'metadata, missing singleton grid dimension', true
+    'metadata, missing source dimension', false
+    'metadata, missing singleton source dimension', true
+    'source dimension not in gridfile', false
+    'singleton source dimension not in gridfile', true
+
+    'netcdf, unnamed defined ts', true
+    'netcdf, named undefined ts', true
+    'netcdf, missing variable', false
+    'opendap', true
+    'mat', true
+    'mat, missing variable', false
+    'mat, named ts', true
+    'text', true
+    'text, import options', true
+    'missing file', false
+    'merged dimensions', true
+    'unsupported dimension', false
+    'metadata missing named dimension', 
+    'metadata missing named ts dimension'
+    'metadata missing grid dimension'
+    'metadata missing singleton grid dimension'
+    'metadata missing ts grid dimension'
+    'metadata missing source dimension'
+    'metadata missing singleton source dimension'
+    'metadata missing ts source dimension'
+    'metadata has attributes'
+    'metadata has dimension order'
+    'metadata has wrong length'
+
+    };
+end
+function[] = remove
+
+notfile = fullfile(pwd, 'not-a-file.mat');
+tests = {
+    'indexed sources', true, [1 3]
+    'repeated indices', true, [1 1 3]
+    'named sources', true, ["test.nc";"test.mat"]
+    'invalid index', false, 2.2
+    'unrecognized name', false, notfile
+    'repeat name', false, "test"
+    };
+header = "DASH:gridfile:remove";
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test', meta, true);
+        grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+        grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+        grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
+
+        grid2 = gridfile.new('test2', meta, true);
+        grid2.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+        grid2.file = grid.file;
+        grid2.sources_.gridfile = grid.file;
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.remove(tests{t,3});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            grid.remove(tests{t,3});
+            assert(isequaln(grid, grid2), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
 function[] = fillValue
 
 tests = {
@@ -749,7 +853,67 @@ end
 
 end
 
-function
+function[] = sources
+
+name1 = string(fullfile(pwd, 'test.nc'));
+name2 = string(fullfile(pwd, 'test.mat'));
+name3 = string(fullfile(pwd, 'test.txt'));
+
+name1 = dash.file.urlSeparators(name1);
+name2 = dash.file.urlSeparators(name2);
+name3 = dash.file.urlSeparators(name3);
+
+tests = {
+    % description, should succeed, has sources, input
+    'all sources, no input', true, true, {}, [name1;name2;name3]
+    'all sources, empty array', true, true, {[]}, [name1;name2;name3]
+    'all sources, 0', true, true, {0}, [name1;name2;name3]
+    'all sources, no sources', true, false, {}, strings(0,1)
+    'index sources', true, true, {[3 1 1]}, [name3;name1;name1]
+    'index sources, no sources', false, false, {1}, []
+    'invalid index', false, true, {2.2}, []
+    };
+header = "DASH";
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+source1 = {'nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run', 1)};
+source2 = {'mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',2)};
+source3 = {'text', 'test.txt', ["lat","lon"], meta.edit('run',3,'time',1,'lat',(1:8)','lon',(1:4)')};
+
+try
+    for t = 1:size(tests,1)
+        grid = gridfile.new('test.grid', meta, true);
+        if tests{t,3}
+            grid.add(source1{:});
+            grid.add(source2{:});
+            grid.add(source3{:});
+        end
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.sources(tests{t,4}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            sources = grid.sources(tests{t,4}{:});
+            assert(isequal(sources, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = name
+grid = gridfile.new('test', gridMetadata, true);
+output = grid.name;
+assert(isequal(output, "test"), 'output');
+end
 function[] = disp
 
 %% empty
@@ -788,8 +952,8 @@ end
 function[] = dispSources
     
 % Scalar, No sources
-meta = gridMetadata('lat',(1:100)', 'lon', (1:20)', 'time', (1:5)');
-grid = gridfile.new('test.grid', grid, true);
+meta = gridMetadata('lat',(1:100)', 'lon', (1:20)', 'time', (1:10)');
+grid = gridfile.new('test.grid', meta, true);
 try
     grid.dispSources;
 catch
@@ -797,11 +961,16 @@ catch
 end
 
 % Scalar, With sources
-grid.add('nc','test','a',["lon","lat","time"],
+meta1 = meta.index('time', 1:5);
+meta2 = meta.index('time', 6:10);
+grid.add('nc','test','a', ["lat","lon","time"], meta1);
+grid.add('nc','test','a', ["lat","lon","time"], meta2);
 
+try
+    grid.dispSources;
+catch
+    error('with sources');
+end
+clc;
 
-
-
-meta = gridMetadata('lat',(1:100)', 'lon', (1:20)', 'time', (1:5)');
-grid.add('nc','test','a',["lon","lat","time"],
-
+end
