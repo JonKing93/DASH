@@ -3,6 +3,7 @@ function[] = add(obj, type, source, varargin)
 % ----------
 %   <strong>obj.add</strong>('nc', file, variable, dimensions, metadata)
 %   <strong>obj.add</strong>('nc', opendapURL, variable, dimensions, metadata)
+%   <strong>obj.add</strong>('netcdf', ...)
 %   Adds a NetCDF variable to the .grid file catalogue. The NetCDF can be
 %   accessed either via a local file, or opendap URL.
 %
@@ -54,7 +55,11 @@ if strcmpi(type, 'mat') || strcmpi(type, 'nc')
         wrongNumberHDFInputsError(type, header);
     end
     [variable, dimensions, metadata] = varargin{:};
+
     type = lower(type);
+    if strcmp(type, 'netcdf')
+        type = 'nc';
+    end
     source = dash.dataSource.(type)(source, variable);
         
 % Parse inputs for delimited text source
