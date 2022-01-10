@@ -50,7 +50,7 @@ obj.update;
 header = "DASH:gridfile:add";
 
 % HDF source - parse inputs and build source
-if strcmpi(type, 'mat') || strcmpi(type, 'nc')
+if any(strcmpi(type, ["mat","nc","netcdf"]))
     if numel(varargin)~=3
         wrongNumberHDFInputsError(type, header);
     end
@@ -81,36 +81,43 @@ dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
 metadata.assertUnique([], header);
 
 %% Dimensions - Check required dimensions are present, and get sizes
+%
+% Require:
+% 1. Non-trailing source dimensions to have a name
+% 2. Non-singleton grid dimensions to be in the metadata
+% 3. Non-singleton source dimensions to be in the metadata
+% 4. Non-singleton source dimensions to be in the gridfile
 
 % Check dimensions are recognized
 valid = gridMetadata.dimensions;
 dimensions = dash.assert.strlist(dimensions);
 dash.assert.strsInList(dimensions, valid, 'Dimension name', 'recognized dimension', header);
 
-% Get lists of dimensions and sizes
-listedDims = dimensions;                 % dimensions listed by user in function call
+% Require:
+% 1. Non-trailing source dimensions to have a name
+listedDims = dimensions;
+nListed = numel(listedDims);
+nNontrailing = max([1, find(source.size>1, 1, 'last')]);
+if nListed < nNontrailing
+    unnamedDimensionError(nListed, nNontrailing, source.source, header);
+end
+
+% Get lists of dimensions
 sourceDims = listedDims(source.size>1);  % non-singleton listed dimensions
 gridDims = obj.dims(obj.size>1);         % non-singleton gridfile dimensions
 metaDims = metadata.defined;             % metadata dimensions
-
-nListed = numel(listedDims);
-nGridDims = numel(gridDims);
 nMetaDims = numel(metaDims);
 
 % Parameters for error checking
-nNontrailing = max([1, find(source.size>1, 1, 'last')]);
 [gridInMeta, gm] = ismember(gridDims, metaDims);
 [sourceInMeta, sm] = ismember(sourceDims, metaDims);
 [sourceInGrid, sg] = ismember(sourceDims, gridDims);
 
 % Require:
-% 1. Non-trailing source dimensions to have a name
 % 2. Non-singleton grid dimensions to be in the metadata
 % 3. Non-singleton source dimensions to be in the metadata
 % 4. Non-singleton source dimensions to be in the gridfile
-if nListed < nNontrailing
-    unnamedDimensionError(nListed, nNontrailing, source.source, header); 
-elseif ~all(gridInMeta)
+if ~all(gridInMeta)
     missingGridMetadataError(gridDims, gm, source.source, obj.name, header);
 elseif ~all(sourceInMeta)
     missingSourceMetadataError(sourceDims, sm, source.source, header);
@@ -137,7 +144,7 @@ end
 %% Metadata - Number of rows, gridfile sequence, dimension limits, overlap
 
 % Get values and sizes of dimensional metadata. Initialize dimensional limits
-dimLimit = ones(nGridDims, 2);
+dimLimit = ones(numel(obj.dims), 2);
 for d = 1:nMetaDims
     dim = metaDims(d);
     metaValues = metadata.(dim);
@@ -156,7 +163,7 @@ for d = 1:nMetaDims
     
     % If the metadata dimension is in the gridfile, it must exactly match a
     % sequence of gridfile metadata
-    [ingrid, g] = ismember(dim, gridDims);
+    [ingrid, g] = ismember(dim, obj.dims);
     if ingrid
         [inGridMetadata, order] = ismember(metaValues, obj.meta.(dim), 'rows');
         if ~all(inGridMetadata)

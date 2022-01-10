@@ -1,6 +1,3 @@
-# This is an example description
-# of a delimited text file
-Name--Site--Var
 1,2,3,5
 2,3,4,5
 6,7,8,5

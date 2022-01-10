@@ -26,13 +26,13 @@ removeAttributes;
 editAttributes;
 
 add
-remove
+remove;
 rename
 absolutePaths
 
-fillValue  % these only check that gridfile properties are updated
-validRange % check the actual implementation in the tests for "load"
-transform
+fillValue;  % these only check that gridfile properties are updated
+validRange; % check the actual implementation in the tests for "load"
+transform;
 
 getLoadIndices
 sourcesForLoad
@@ -46,9 +46,9 @@ times
 divide
 arithmetic
 
-sources
-info
-name
+sources;
+info;
+name;
 disp;
 dispSources;
 
@@ -547,95 +547,193 @@ notfile = fullfile(pwd, 'not-a-file.mat');
 
 % Metadata for tests
 dapMeta = gridMetadata('lon',(1:72)', 'lat', (1:36)', 'time', (1:2063)');
-standardMeta = gridMetadata('lat',(6:10)', 'lon', (2:16), 'time', (1:20)');
-singletonMeta = gridMetadata('time',5, 'lat', (6:10)', 'lon', (2:16));
-scalarMeta = gridMetadata('time', 5);
-vectorMeta = gridMetadata('time', (1:5)');
-textMeta = gridMetadata('lat',(1:7)', 'lon', (1:4)');
+standardMeta = gridMetadata('lat',(6:10)', 'lon', (2:16)', 'time', (1:20)');
+singletonMeta = gridMetadata('time',5, 'lat', (6:10)', 'lon', (2:16)');
+scalarMeta = gridMetadata('time', 5,'lat',1,'lon',1);
+vectorMeta = gridMetadata('time', (1:5)','lat',1,'lon',1);
+textMeta = gridMetadata('lat',(1:7)', 'lon', (1:4)','time',1);
 notInGrid = gridMetadata('site',(1:5)', 'lon',(1:15)', 'time', (1:20)');
 mergeMeta = gridMetadata('lat',(1:4)', 'lon',(1:18)', 'time', (1:3)');
 
+% Output of gridfile properties
+stanOut = {1, [2 16;6 10;1 20;1 1]};
+dapOut = {1, [1 72;1 36;1 2063;1 1]};
+singleOut = {1, [2 16;6 10;5 5;1 1]};
+textOut = {1, [1 4;1 7;1 1;1 1]};
+vectorOut = {1, [1 1;1 1;1 5;1 1]};
+mergeOut = {1, [1 18;1 4;1 3;1 1]};
+
+% gridfileSources output
+stanSourceOut = {'type','nc','dataType','double','var','standard',...
+    'importOptions', cell(0,1), 'importOptionSource', [], 'dims', "lat,lon,time", 'size', "5,15,20",...
+    'mergedDims', "lat,lon,time", 'mergedSize', "5,15,20", 'mergeMap', "1,2,3"};
+tsSourceOut = {'dims', "time,lat,lon", 'size', "1,5,15", 'mergedDims', "time,lat,lon", 'mergedSize', "1,5,15", 'mergeMap', "1,2,3"};
+singSourceOut = [{'type','nc','dataType','double','var','singletons',...
+    'importOptions', cell(0,1), 'importOptionSource', []}, tsSourceOut];
+
 tests = {
     % Standard operation
-    'netcdf', true, 1, {'netcdf','test-add','standard', ["lat","lon","time"], standardMeta}
-    'nc', true, 1, {'nc', 'test-add', 'standard', ["lat","lon","time"], standardMeta}
-    'opendap', true, 1, {'nc', opendap, 'air', ["lon","lat","time"], dapMeta}
-    'mat', true, 1, {'mat','test-add', 'standard', ["lat","lon","time"], standardMeta}
-    'txt', true, 1, {'txt', 'test-noheader', ["lat","lon"], textMeta}
-    'text', true, 1, {'text', 'test-noheader', ["lat","lon"], textMeta}
-    'text, options', true, 1, {'text', 'test', ["lat","lon"], textMeta, 'NumHeaderLines', 3}
-    'missing file', false, 1, {'mat',notfile,'A',["lat","lon","time"], standardMeta}
+    'netcdf', true, 1, {'netcdf','test-add','standard', ["lat","lon","time"], standardMeta}, stanOut, {'type', 'nc'}
+    'nc', true, 1, {'nc', 'test-add', 'standard', ["lat","lon","time"], standardMeta}, stanOut, stanSourceOut
+    'opendap', true, 1, {'nc', opendap, 'air', ["lon","lat","time"], dapMeta}, dapOut, {'type', 'nc'}
+    'mat', true, 1, {'mat','test-add', 'standard', ["lat","lon","time"], standardMeta}, stanOut, []
+    'txt', true, 1, {'txt', 'test-noheader.txt', ["lat","lon"], textMeta}, textOut, {'importOptions', cell(0,1), 'importOptionSource', []}
+    'text', true, 1, {'text', 'test-noheader.txt', ["lat","lon"], textMeta}, textOut, {'importOptions', cell(0,1), 'importOptionSource', []}
+    'text, options', true, 1, {'text', 'test.txt', ["lat","lon"], textMeta, 'NumHeaderLines', 3}, textOut, {'importOptions', {{'NumHeaderLines',3}}, 'importOptionSource', 1}
+    'missing file', false, 1, {'mat',notfile,'A',["lat","lon","time"], standardMeta}, [], []
 
     % NetCDF data sources
-    'netcdf, unnamed defined ts', true, 1, {'nc','test-add','singletons',["time","lat","lon"],singletonMeta}
-    'netcdf, named undefined ts', true, 1, {'nc', 'test-add','standard',["time","lat","lon","run"], standardMeta.edit('run',4)}
-    'netcdf, missing variable', false, 1, {'nc', 'test-add', 'missing', "time", vectorMeta}
+    'netcdf, unnamed defined ts', true, 1, {'nc','test-add','singletons',["time","lat","lon"],singletonMeta}, singleOut, singSourceOut
+    'netcdf, named undefined ts', true, 1, {'nc', 'test-add','standard',["lat","lon","time","run"], standardMeta.edit('run',4)}, stanOut, stanSourceOut
+    'netcdf, missing variable', false, 1, {'nc', 'test-add', 'missing', "time", vectorMeta}, [], []
 
     % MAT data sources
-    'mat, missing variable', false, 1, {'mat', 'test-add', 'missing', "time", vectorMeta}
-    'mat, named ts', true, 1, {'mat', 'test-add', 'standard', ["lat","lon","time","run"], standardMeta.edit('run',4)}
+    'mat, missing variable', false, 1, {'mat', 'test-add', 'missing', "time", vectorMeta}, [], []
+    'mat, named ts', true, 1, {'mat', 'test-add', 'standard', ["lat","lon","time","run"], standardMeta.edit('run',4)}, stanOut, []
 
     % Dimensions
-    'unsupported dimension', false, 1, {'mat', 'test-add', 'standard', ["foo","bar","baz"], standardMeta}
-    'supported dimension, but undefined in grid', false, 1, {'mat','test-add','standard',["site","lon","time"],notInGrid}
-    'singleton source dimension not in gridfile', true, 1, {'mat','test-add', 'singletons', ["site","lat","lon"], singletonMeta.edit('time',[])}
+    'unsupported dimension', false, 1, {'mat', 'test-add', 'standard', ["foo","bar","baz"], standardMeta}, [], []
+    'supported dimension, but undefined in grid', false, 1, {'mat','test-add','standard',["site","lon","time"],notInGrid}, [], []
+    'singleton source dimension not in gridfile', true, 1, {'mat','test-add', 'singletons', ["site","lat","lon"], singletonMeta}, singleOut, {'dims',"site,lat,lon",'size',"1,5,15",'mergedDims',"site,lat,lon",'mergedSize',"1,5,15",'mergeMap',"1,2,3"}
 
-    'unnamed source dimension', false, 1, {'mat', 'test-add','standard', ["lat","lon"], standardMeta.edit('time',[])}
-    'unnamed singleton source dimension', false, 1, {'mat','test-add','singletons',["lat","lon"], singletonMeta.edit('time',[])}
-    'unnamed trailing source dimension', true, 1, {'mat','test-add','vector',"time",vectorMeta}
+    'unnamed source dimension', false, 1, {'mat', 'test-add','standard', ["lat","lon"], standardMeta.edit('time',[])}, [], []
+    'unnamed singleton source dimension', false, 1, {'mat','test-add','singletons',["lat","lon"], singletonMeta.edit('time',[])}, [], []
+    'unnamed trailing source dimension', true, 1, {'nc', 'test-add', 'singletons', ["time","lat","lon"], singletonMeta}, singleOut, []
 
-    'metadata, missing grid dimension', false, 2, {'mat', 'test-add','standard',["lat","lon","time"],standardMeta}
-    'metadata, missing singleton grid dimension', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta}
-    'metadata, missing source dimension', false, 1, {'mat','test-add','singletons',["time","lat","lon"],singletonMeta.edit('lat',[])}
-    'metadata, missing singleton source dimension', true, 1, {'mat','test-add','singletons',["time","lat","lon"], singletonMeta.edit('time',[])}
-    'metadata, dimension not in source', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('site',(1:4)')}
-    'metadata, singleton dimension not in source', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.edit('site',18)}
+    'metadata, missing grid dimension', false, 2, {'mat', 'test-add','standard',["lat","lon","time"],standardMeta}, [], []
+    'metadata, missing singleton grid dimension', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta}, stanOut, []
+    'metadata, missing source dimension', false, 1, {'mat','test-add','singletons',["time","lat","lon"],singletonMeta.edit('lat',[])}, [], []
+    'metadata, missing singleton source (and grid) dimension', true, 1, {'nc','test-add','singletons',["run","lat","lon"], singletonMeta}, singleOut, []
+    'metadata, dimension not in source', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('site',(1:4)')}, [], []
+    'metadata, singleton dimension not in source', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.edit('site',18)}, stanOut, []
 
     % Metadata
-    'metadata has attributes', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.addAttributes('Units','Kelvin')}
-    'metadata has dimension order', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.setOrder(["time","lon","lat"])}
-    'metadata has wrong length', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',(1:4)')}
-    'metadata, not unique', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',[1;2;3;1;5])}
-    'metadata, array', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',cat(3,(1:5)',(6:10)'))}
+    'metadata has attributes', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.addAttributes('Units','Kelvin')}, stanOut, []
+    'metadata has dimension order', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.setOrder(["time","lon","lat"])}, stanOut, []
+    'metadata has wrong length', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',(1:4)')}, [], []
+    'metadata, not unique', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',[1;2;3;1;5])}, [], []
 
     % Merge
-    'two dimensions merged', true, 1, {'mat','test-add','singletons',["lat","lat","lon"],singletonMeta}
-    'three dimensions merged', true, 1, {'mat','test-add','singletons',["time","time","time"], vectorMeta.edit('time',(1:75)')}
-    'multiple merge sets', true, 1, {'mat', 'test-add', 'merge', ["lat","lon","lat","time","lon","lon"], mergeMeta}
+    'two dimensions merged', true, 1, {'mat','test-add','singletons',["lat","lat","lon"],singletonMeta}, singleOut, {'dims',"lat,lat,lon",'size',"1,5,15",'mergedDims',"lat,lon",'mergedSize',"5,15",'mergeMap',"1,1,2"}
+    '>2 dimensions merged', true, 1, {'mat','test-add','singletons',["time","time","time"], vectorMeta.edit('time',(1:75)','lat',1,'lon',1)}, {1, [1 1;1 1;1 75;1 1]}, {'dims',"time,time,time",'size',"1,5,15",'mergedDims',"time",'mergedSize',"75",'mergeMap',"1,1,1"}
+    'multiple merge sets', true, 1, {'mat', 'test-add', 'merge', ["lat","lon","lat","time","lon","lon"], mergeMeta}, mergeOut, {'dims',"lat,lon,lat,time,lon,lon",'size',"2,3,2,3,2,3",'mergedDims',"lat,lon,time",'mergedSize',"4,18,3",'mergeMap',"1,2,1,3,2,2"}
 
     % Low dimensionality
-    'empty', false, 1, {'mat','test-add','empty',"lat",gridMetadata}
-    'true scalar', true, 1, {'nc', 'test-add', 'scalar', 'time', scalarMeta}
-    'mat scalar', true, 1, {'mat', 'test-add', 'scalar', 'time', scalarMeta}
-    'true vector', true, 1, {'nc', 'test-add', 'vector', 'time', vectorMeta}
-    'mat column vector', true, 1, {'mat', 'test-add', 'vector', 'time', vectorMeta}
+    'empty', false, 1, {'mat','test-add','empty',"lat",gridMetadata}, [], []
+    'true scalar', true, 1, {'nc', 'test-add', 'scalar', 'time', scalarMeta}, {1, [1 1;1 1;5 5;1 1]}, {'dims','time','size',"1"}
+    'mat scalar', true, 1, {'mat', 'test-add', 'scalar', 'time', scalarMeta}, {1, [1 1;1 1;5 5;1 1]}, {'dims','time','size',"1"}
+    'true vector', true, 1, {'nc', 'test-add', 'vector', 'time', vectorMeta}, vectorOut, {'dims','time','size',"5"}
+    'mat column vector', true, 1, {'mat', 'test-add', 'vector', 'time', vectorMeta}, vectorOut, {'dims','time','size',"5"}
 
-    % Multiple sources
-    'mixed types', true, , 1, {{'nc','test-add','standard',["lat","lon","time"],standardMeta},...
-                          {'mat','test-add','vector','time',vectorMeta.edit('time',(21:25)')}}
-                          {'text','test',["lat","lon","time"],textMeta.edit('time',26)}}
-    'mixed with text options', true, 1, {{'nc','test-add',}}
-    'metadata, overlap', false, 1, 
+% %     % Multiple sources
+% %     'mixed types', true, 1, {{'nc','test-add','standard',["lat","lon","time"],standardMeta},...
+% %                           {'mat','test-add','vector','time',vectorMeta.edit('time',(21:25)')}}
+% %                           {'text','test',["lat","lon","time"],textMeta.edit('time',26)}}
+% %     'mixed with text options', true, 1, {{'nc','test-add',}}
+% %     'metadata, overlap', false, 1, 
 
 
     };
-
+header = "DASH";
 
 
 try
     for t = 1:size(tests,1)
+        meta = gridMetadata('lat',(1:50)', 'lon', (1:100)', 'time', (1:3000)', 'run', 4);
+        if tests{t,3} == 2
+            meta = meta.edit('run', (1:4)');
+        end
+        grid = gridfile.new('test.grid', meta, true);
+
         shouldFail = ~tests{t,2};
         if shouldFail
             try
-                %...
+                grid.add(tests{t,4}{:});
                 error('did not fail');
             catch ME
             end
             assert(contains(ME.identifier, header), 'invalid error');
             
         else
-            %...
+            grid.add(tests{t,4}{:})
+
+            assert(grid.nSource==tests{t,5}{1}, 'nSource');
+            assert(isequal(grid.dimLimit, tests{t,5}{2}), 'dimLimit');
+
+            if ~isempty(tests{t,6})
+                for k = 1:2:numel(tests{t,6})-1
+                    assert(isequaln(...
+                        tests{t,6}{k+1}, grid.sources_.(tests{t,6}{k})), 'sources %s', tests{t,6}{k});
+                end
+            end
+
             % assert(output)
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+
+%% Multiple sources
+tests = {
+    'multiple, mixed types', true,...
+    {{'nc','test-add','standard',["lat","lon","time"], standardMeta},...
+    {'mat','test-add','standard',["lat","lon","time"], standardMeta.edit('time',(21:40)')},...
+    {'text','test.txt',["lat","lon"], textMeta.edit('time',41)}},...
+    {3, cat(3,[2 16;6 10;1 20],[2 16;6 10;21 40],[1 4;1 7;41 41])},...
+    {...
+    'type',["nc";"mat";"text"],'var',["standard";"standard";""],'importOptions',cell(0,1),'importOptionSource',[],...
+    'dims', ["lat,lon,time";"lat,lon,time";"lat,lon"],'size',["5,15,20";"5,15,20";"7,4"],'mergedDims',["lat,lon,time";"lat,lon,time";"lat,lon"],...
+    'mergedSize', ["5,15,20";"5,15,20";"7,4"], 'mergeMap', ["1,2,3";"1,2,3";"1,2"]...
+    }
+
+    'multiple, text options', true,...
+    {...
+    {'nc','test-add','singletons',["time","lat","lon"], singletonMeta},...
+    {'text','test.txt',["lat","lon"], textMeta.edit('time',6), 'NumHeaderLines', 3},...
+    {'nc','test-add','singletons',["time","lat","lon"], singletonMeta.edit('time',7)},...
+    {'text','test.txt',["lat","lon"], textMeta.edit('time',8), 'NumHeaderLines', 3},...
+    {'nc','test-add','singletons',["time","lat","lon"], singletonMeta.edit('time',9)},...
+    },...
+    {5, cat(3,[2 16;6 10;5 5],[1 4;1 7;6 6],[2 16;6 10;7 7],[1 4;1 7;8 8],[2 16;6 10;9 9])},...
+    {'importOptions',{{'NumHeaderLines',3};{'NumHeaderLines',3}}, 'importOptionSource',[2;4]}
+
+    'metadata overlap', false, ...
+    {{'nc','test-add','standard',["lat","lon","time"], standardMeta},...
+    {'nc','test-add','standard',["lat","lon","time"], standardMeta}},...
+    [],[]
+    };
+
+try
+    for t = 1:size(tests,1)
+        meta = gridMetadata('lat',(1:50)', 'lon', (1:100)', 'time', (1:3000)');
+        grid = gridfile.new('test.grid', meta, true);
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                for k = 1:numel(tests{t,3})
+                    grid.add(tests{t,3}{k}{:})
+                end
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            for k = 1:numel(tests{t,3})
+                grid.add(tests{t,3}{k}{:})
+            end
+
+            assert(grid.nSource==tests{t,4}{1}, 'nSource');
+            assert(isequal(grid.dimLimit, tests{t,4}{2}), 'dimLimit');
+
+            for k = 1:2:numel(tests{t,5})-1
+                assert(isequaln(tests{t,5}{k+1}, grid.sources_.(tests{t,5}{k})), 'sources %s', tests{t,5}{k});
+            end
         end
     end
 catch cause
