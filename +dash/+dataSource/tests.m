@@ -37,11 +37,12 @@ warning('clear warnings');
 clc;
 
 tests = {
-    % deescription, fail, file, variable, check warning
+    % description, fail, file, variable, check warning
     'mat file', true, file, "a", false
     'old version matfile', true, oldmatfile, "a", true
     'not mat file', false, ncfile, "testVariable", false
     'missing variable', false, file, "b", false
+    'empty variable', false, file, 'empty', false
     };
 
 
@@ -195,6 +196,7 @@ function[] = textconstructor(testpath)
 
 file = fullfile(testpath, 'test.txt');
 notfile = fullfile(testpath, 'test-v7.mat');
+emptyfile = fullfile(testpath, 'empty.txt');
 
 tests = {
     % description, should succeed, file, import options
@@ -203,6 +205,7 @@ tests = {
     'import options', true, file, {delimitedTextImportOptions('Delimiter',',')}
     'invalid file', false, notfile, {}
     'invalid options', false, file, {5}
+    'empty', false, emptyfile, {}
     };
 
 for t = 1:size(tests,1)

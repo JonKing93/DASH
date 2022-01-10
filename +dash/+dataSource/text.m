@@ -61,7 +61,18 @@ classdef text < dash.dataSource.Interface
             obj.dataType = class(X);
             obj.size = size(X);
             obj.importOptions = varargin;
-            
+
+            % Prohibit empty data sources
+            if ismember(0, obj.size)
+                [~, name, ext] = fileparts(obj.source);
+                name = strcat(name, ext);
+                tail = '';
+                if ~isempty(obj.importOptions)
+                    tail = ' using the specified options';
+                end
+                error('DASH:dataSource:text:emptyArray', ['The readmatrix function returns an empty array ',...
+                    'when applied to data source file "%s"%s.\nFile path: %s'], name, tail, obj.source);
+            end
         end       
         function[X] = load(obj, indices)
         %% dash.dataSource.text.load  Load data from a delimited text file

@@ -33,7 +33,8 @@ classdef mat < dash.dataSource.hdf
         % ----------
         %   Inputs:
         %       file (string scalar): The name of a MAT-file
-        %       var (string scalar): The name of the variable to load from the file
+        %       var (string scalar): The name of the variable to load from
+        %          the file. The variable in the file must not be empty.
         %
         %   Outputs:
         %       obj: A new dash.dataSource.mat object
@@ -70,6 +71,14 @@ classdef mat < dash.dataSource.hdf
         obj = obj.setVariable(char(var), name);        
         obj.dataType = info.class;
         obj.size = info.size;
+
+        % Do not allow empty variables
+        if ismember(0, obj.size)
+            [~,name,ext] = fileparts(obj.source);
+            name = strcat(name, ext);
+            error('DASH:dataSource:mat:emptyArray', ['Variable "%s" in data source file "%s" is empty.\n',...
+                'File path: %s'], obj.var, name, obj.source);
+        end
 
         % Warn user if not v7.3 MAT-file. Convert the warning message
         % to error so it is catchable, then give descriptive message.
