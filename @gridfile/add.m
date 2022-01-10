@@ -98,7 +98,7 @@ nGridDims = numel(gridDims);
 nMetaDims = numel(metaDims);
 
 % Parameters for error checking
-nNontrailing = max(1, find(source.size>1, 1, 'last'));
+nNontrailing = max([1, find(source.size>1, 1, 'last')]);
 [gridInMeta, gm] = ismember(gridDims, metaDims);
 [sourceInMeta, sm] = ismember(sourceDims, metaDims);
 [sourceInGrid, sg] = ismember(sourceDims, gridDims);

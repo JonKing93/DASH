@@ -542,59 +542,112 @@ end
 
 function[] = add
 
+opendap = 'https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.anom.nc';
+notfile = fullfile(pwd, 'not-a-file.mat');
+
+% Metadata for tests
+dapMeta = gridMetadata('lon',(1:72)', 'lat', (1:36)', 'time', (1:2063)');
+standardMeta = gridMetadata('lat',(6:10)', 'lon', (2:16), 'time', (1:20)');
+singletonMeta = gridMetadata('time',5, 'lat', (6:10)', 'lon', (2:16));
+scalarMeta = gridMetadata('time', 5);
+vectorMeta = gridMetadata('time', (1:5)');
+textMeta = gridMetadata('lat',(1:7)', 'lon', (1:4)');
+notInGrid = gridMetadata('site',(1:5)', 'lon',(1:15)', 'time', (1:20)');
+mergeMeta = gridMetadata('lat',(1:4)', 'lon',(1:18)', 'time', (1:3)');
+
 tests = {
-    'netcdf', true
-    'opendap', true
-    'mat', true
-    'text', true
-    'text, options', true
+    % Standard operation
+    'netcdf', true, 1, {'netcdf','test-add','standard', ["lat","lon","time"], standardMeta}
+    'nc', true, 1, {'nc', 'test-add', 'standard', ["lat","lon","time"], standardMeta}
+    'opendap', true, 1, {'nc', opendap, 'air', ["lon","lat","time"], dapMeta}
+    'mat', true, 1, {'mat','test-add', 'standard', ["lat","lon","time"], standardMeta}
+    'txt', true, 1, {'txt', 'test-noheader', ["lat","lon"], textMeta}
+    'text', true, 1, {'text', 'test-noheader', ["lat","lon"], textMeta}
+    'text, options', true, 1, {'text', 'test', ["lat","lon"], textMeta, 'NumHeaderLines', 3}
+    'missing file', false, 1, {'mat',notfile,'A',["lat","lon","time"], standardMeta}
 
-    'netcdf, missing variable', false
-    'netcdf, unnamed ts', true
-    'netcdf'
-    'mat, missing variable', false
+    % NetCDF data sources
+    'netcdf, unnamed defined ts', true, 1, {'nc','test-add','singletons',["time","lat","lon"],singletonMeta}
+    'netcdf, named undefined ts', true, 1, {'nc', 'test-add','standard',["time","lat","lon","run"], standardMeta.edit('run',4)}
+    'netcdf, missing variable', false, 1, {'nc', 'test-add', 'missing', "time", vectorMeta}
 
-    'metadata, not unique', false
-    'metadata, array', false
+    % MAT data sources
+    'mat, missing variable', false, 1, {'mat', 'test-add', 'missing', "time", vectorMeta}
+    'mat, named ts', true, 1, {'mat', 'test-add', 'standard', ["lat","lon","time","run"], standardMeta.edit('run',4)}
 
-    'unsupported dimension', false
-    'undefined grid dimension', false
+    % Dimensions
+    'unsupported dimension', false, 1, {'mat', 'test-add', 'standard', ["foo","bar","baz"], standardMeta}
+    'supported dimension, but undefined in grid', false, 1, {'mat','test-add','standard',["site","lon","time"],notInGrid}
+    'singleton source dimension not in gridfile', true, 1, {'mat','test-add', 'singletons', ["site","lat","lon"], singletonMeta.edit('time',[])}
 
-    'unnamed source dimension', false
-    'unnamed singleton source dimension', false
-    'unnamed ts source dimension', true
-    'metadata, missing grid dimension', false
-    'metadata, missing singleton grid dimension', true
-    'metadata, missing source dimension', false
-    'metadata, missing singleton source dimension', true
-    'source dimension not in gridfile', false
-    'singleton source dimension not in gridfile', true
+    'unnamed source dimension', false, 1, {'mat', 'test-add','standard', ["lat","lon"], standardMeta.edit('time',[])}
+    'unnamed singleton source dimension', false, 1, {'mat','test-add','singletons',["lat","lon"], singletonMeta.edit('time',[])}
+    'unnamed trailing source dimension', true, 1, {'mat','test-add','vector',"time",vectorMeta}
 
-    'netcdf, unnamed defined ts', true
-    'netcdf, named undefined ts', true
-    'netcdf, missing variable', false
-    'opendap', true
-    'mat', true
-    'mat, missing variable', false
-    'mat, named ts', true
-    'text', true
-    'text, import options', true
-    'missing file', false
-    'merged dimensions', true
-    'unsupported dimension', false
-    'metadata missing named dimension', 
-    'metadata missing named ts dimension'
-    'metadata missing grid dimension'
-    'metadata missing singleton grid dimension'
-    'metadata missing ts grid dimension'
-    'metadata missing source dimension'
-    'metadata missing singleton source dimension'
-    'metadata missing ts source dimension'
-    'metadata has attributes'
-    'metadata has dimension order'
-    'metadata has wrong length'
+    'metadata, missing grid dimension', false, 2, {'mat', 'test-add','standard',["lat","lon","time"],standardMeta}
+    'metadata, missing singleton grid dimension', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta}
+    'metadata, missing source dimension', false, 1, {'mat','test-add','singletons',["time","lat","lon"],singletonMeta.edit('lat',[])}
+    'metadata, missing singleton source dimension', true, 1, {'mat','test-add','singletons',["time","lat","lon"], singletonMeta.edit('time',[])}
+    'metadata, dimension not in source', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('site',(1:4)')}
+    'metadata, singleton dimension not in source', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.edit('site',18)}
+
+    % Metadata
+    'metadata has attributes', true, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.addAttributes('Units','Kelvin')}
+    'metadata has dimension order', true, 1, {'mat','test-add','standard',["lat","lon","time"], standardMeta.setOrder(["time","lon","lat"])}
+    'metadata has wrong length', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',(1:4)')}
+    'metadata, not unique', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',[1;2;3;1;5])}
+    'metadata, array', false, 1, {'mat','test-add','standard',["lat","lon","time"],standardMeta.edit('lat',cat(3,(1:5)',(6:10)'))}
+
+    % Merge
+    'two dimensions merged', true, 1, {'mat','test-add','singletons',["lat","lat","lon"],singletonMeta}
+    'three dimensions merged', true, 1, {'mat','test-add','singletons',["time","time","time"], vectorMeta.edit('time',(1:75)')}
+    'multiple merge sets', true, 1, {'mat', 'test-add', 'merge', ["lat","lon","lat","time","lon","lon"], mergeMeta}
+
+    % Low dimensionality
+    'empty', false, 1, {'mat','test-add','empty',"lat",gridMetadata}
+    'true scalar', true, 1, {'nc', 'test-add', 'scalar', 'time', scalarMeta}
+    'mat scalar', true, 1, {'mat', 'test-add', 'scalar', 'time', scalarMeta}
+    'true vector', true, 1, {'nc', 'test-add', 'vector', 'time', vectorMeta}
+    'mat column vector', true, 1, {'mat', 'test-add', 'vector', 'time', vectorMeta}
+
+    % Multiple sources
+    'mixed types', true, , 1, {{'nc','test-add','standard',["lat","lon","time"],standardMeta},...
+                          {'mat','test-add','vector','time',vectorMeta.edit('time',(21:25)')}}
+                          {'text','test',["lat","lon","time"],textMeta.edit('time',26)}}
+    'mixed with text options', true, 1, {{'nc','test-add',}}
+    'metadata, overlap', false, 1, 
+
 
     };
+
+
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                %...
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            %...
+            % assert(output)
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+
+
+
+
 end
 function[] = remove
 
