@@ -1316,6 +1316,42 @@ end
 
 end
 
+function[] = getLoadIndices
+
+% Test indices
+lon = [1;5;3;7;8];
+lat = [4;4;7;6;6];
+lev = [6;3;2];
+time = (1:60)';
+run = [1;4;5;8];
+all = (1:100)';
+
+tests = {
+    % description, inputs, outputs
+    'all dims', {1:5, {lon,lat,lev,time,run}}, {lon,lat,lev,time,run}
+    'all dims, changed order', {[3 4 1 5 2], {lev,time,lon,run,lat}}, {lon,lat,lev,time,run}
+    'incomplete dims, ordered', {[1 3 4], {lon, lev, time}}, {lon,all,lev,time,all}
+    'incomplete dims, changed order', {[3 1 4], {lev,lon,time}}, {lon,all,lev,time,all}
+    };
+
+% Initialize grid
+meta = (1:100)';
+meta = gridMetadata('lon',meta,'lat',meta,'lev',meta,'time',meta,'run',meta);
+grid = gridfile.new('test',meta,true);
+
+try
+    for t = 1:size(tests,1)
+        output = grid.getLoadIndices(tests{t,2}{:});
+        assert(isequal(output, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
 function[] = sources
 
 
