@@ -24,7 +24,7 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %   use relative paths.
 %
 %   <strong>obj.absolutePaths</strong>(useAbsolute, s)
-%   <strong>obj.absolutePaths</strong>(useAbsolute, sources)
+%   <strong>obj.absolutePaths</strong>(useAbsolute, sourceNames)
 %   Implement a preferred path style for the indicated data sources. This
 %   syntax overrides any preferred path style previously set for the data
 %   sources.
@@ -38,7 +38,7 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be implement the preferred file
 %           path style.
-%       sourceName (string vector): The names of the data sources that
+%       sourceNames (string vector): The names of the data sources that
 %           should implement the preferred file path style.
 %
 % <a href="matlab:dash.doc('gridfile.absolutePaths')">Documentation Page</a>
@@ -53,7 +53,7 @@ tryRelative = ~useAbsolute;
 
 % Get data source indices, set gridfile default
 if exist('sources','var')
-    s = obj.sources_.indices(sources, obj.file, header);
+    s = obj.sources_.indices(sources, header);
 else
     obj.relativePath = tryRelative;
     s = 1:obj.nSource;

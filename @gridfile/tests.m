@@ -922,6 +922,15 @@ assert(isequal(paths, grid.sources_.source));
 delete(return1);
 delete(return2);
 
+% Invalid indices
+grid = setupGrid;
+try
+    grid.rename(17);
+    error('did not fail');
+catch
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+
 % Move named files
 grid = setupGrid;
 return1 = onCleanup( @()movefile(fullfile(onpath,  'test.mat'), home));
@@ -1027,6 +1036,74 @@ end
 assert(isequal(paths, grid.sources_.source));
 delete(return1);
 delete(return2);
+
+end
+function[] = absolutePaths
+
+% File paths
+path1 = dash.file.urlSeparators(fullfile(pwd, "test.nc"));
+path2 = dash.file.urlSeparators(fullfile(pwd, "test.mat"));
+path3 = dash.file.urlSeparators(fullfile(pwd, "test-2.mat"));
+opendap = "https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.anom.nc";
+
+rel1 = "./test.nc";
+rel2 = "./test.mat";
+rel3 = "./test-2.mat";
+
+tests = {
+    % description, should fail, data sources, initial absolute path state,
+    % inputs, grid relativePath, source path/relativePath
+    'switch from relative to absolute', true, 'standard', false, {true}, false, {[path1;path2;path3], [false;false;false]}
+    'switch from absolute to relative', true, 'standard', true, {false}, true, {[rel1;rel2;rel3],[true;true;true]}
+    'opendap to absolute', true, 'opendap', false, {true}, false, {opendap, false}
+    'opendap to relative', true, 'opendap', true, {false}, true, {opendap, false}
+    'indexed sources to absolute', true, 'standard', false, {true, [3 1]}, true, {[path1;rel2;path3],[false;true;false]}
+    'indexed sources to relative', true, 'standard', true, {false, ["test-2.mat";"test.nc"]}, false, {[rel1;path2;rel3],[true;false;true]}
+    'invalid sources', false, 'standard', false, {true, 17}, [], []
+    };
+header = "DASH:gridfile:absolutePaths";
+
+try
+    for t = 1:size(tests,1)
+        % Build grid
+        if strcmp(tests{t,3}, 'standard')
+            meta = gridMetadata('time', (1:100)', 'lon', (1:20)', 'lat', (1:5)', 'run', (1:4)');
+            grid = gridfile.new('test',meta,true);
+            grid.add('nc', 'test', 'a', ["time","lon","lat"], meta.edit('run', 1));
+            grid.add('mat', 'test', 'a', ["time","lon","lat"], meta.edit('run', 2));
+            grid.add('mat', 'test-2', 'a', ["time","lon","lat"], meta.edit('run', 3));
+        elseif strcmp(tests{t,3}, 'opendap')
+            meta = gridMetadata('lon',(1:72)','lat',(1:36)', 'time',(1:2063)');
+            grid = gridfile.new('test',meta,true);
+            grid.add('nc', opendap, 'air', ["lon","lat","time"], meta);
+        end
+
+        % Set initial state
+        if tests{t,4}
+            grid.absolutePaths(true);
+        end
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.absolutePaths(tests{t,5}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            grid.absolutePaths(tests{t,5}{:});
+            assert(grid.relativePath==tests{t,6}, 'grid relative path');
+            assert(isequal(grid.sources_.source, tests{t,7}{1}), 'source path');
+            assert(isequal(grid.sources_.relativePath, tests{t,7}{2}), 'source relative path');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 end
 
