@@ -10,6 +10,12 @@ home = pwd;
 gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
+
+%%% Current test
+loadInternal;
+
+
+
 % Run the tests
 new;
 constructor;
@@ -36,15 +42,14 @@ transform;
 
 getLoadIndices;
 sourcesForLoad;
-buildSources
-loadInternal
-load_
+buildSources;
+load_;
 
-plus
-minus
-times
-divide
-arithmetic
+plusl
+minus;
+times;
+divide;
+arithmetic;
 
 sources;
 info;
@@ -1451,6 +1456,141 @@ catch cause
 end
 
 end
+function[] = loadInternal
+
+% data sources
+s1 = dash.dataSource.mat('test-load.mat','a');
+s2 = dash.dataSource.text('test-load-A.txt', 'NumHeaderLines', 1);
+s3 = dash.dataSource.text('test-load-B.txt');
+s4 = dash.dataSource.nc('test-load', 'a');
+s5 = dash.dataSource.mat('test-load-merge2.mat','a');
+s6 = dash.dataSource.mat('test-load-merges.mat','a');
+sources = {s1;s2;s3;s4;s5;s6};
+
+% Raw output arrays
+Xmat = load('test-load.mat','a').a;
+Xnc = ncread('test-load.nc','a');
+XtextA = readmatrix('test-load-A.txt');
+XtextB = readmatrix('test-load-B.txt');
+Xtext = cat(3,XtextA,XtextB,NaN(size(XtextA)));
+
+Xmerge2 = load('test-load-merge2.mat','a').a;
+Xmerge2 = reshape(Xmerge2, [8 4 3]);
+Xmerge = load('test-load-merges.mat','a').a;
+Xmerge = permute(Xmerge, [2 5 6 1 3 4]);
+Xmerge = reshape(Xmerge, [8 4 3]);
+
+Xraw = cat(4, Xmat, Xtext, Xnc, Xmerge2, Xmerge);
+
+% Data transformations
+Xfill = Xraw; 
+Xfill(ismember(Xfill, [62, 20062])) = NaN;
+
+Xmatrange = Xmat;
+Xmatrange(Xmatrange<62 | Xmatrange>163) = NaN;
+Xncrange = Xnc;
+Xncrange(Xncrange<20062 | Xncrange>20163) = NaN;
+Xrange = cat(4, Xmatrange, Xtext, Xncrange);
+
+Xtransform = cat(4, Xmat+2.2, 2+Xtext*3, log(Xnc));
+
+% Sets of indices
+matindex = {1:8,1:4,1:3,1};
+textindex = {[1 2 5 6],1:4,1:2,2};
+allindex = {1:8,1:4,1:2,1:3};
+missingindex = {1:8,1:4,2:3,2};
+ordered = {[1 3 4 5 8],[1 3],2:3,1:3};
+unordered = {[1 4 3 7 2 8],[3 1 4 2],[3 1],1};
+unorderedSources = {[1 4 3 7 2 8],[3 1 4 2],[3 1],[3 1]};
+complex = {[1 4 4 2 6 3 3 8],[3 1 1 1],[2 3 1 2],[3 1 1 2 3]};
+merge2 = {[1 4 4 2 6 3 3 8],[3 1 1 1],[2 3 1 2],4};
+merge = {[1 4 4 2 6 3 3 8],[3 1 1 1],[2 3 1 2],[5 4 4]};
+
+tests = {
+    % description, inputs, adjustment type, adjustment args, output
+    'data from single source', {1:4, matindex, 1}, [], [], Xraw(matindex{:})
+    'data from multiple sources', {1:4, textindex, [2 3]}, [], [], Xraw(textindex{:})
+    'data from multiple source types', {1:4, allindex, [1 2 3 4]}, [], [], Xraw(allindex{:})
+    'data not in any source', {1:4, missingindex, 3}, [], [], Xraw(missingindex{:})
+    
+    'data subset, ordered', {1:4, ordered, [1 3 4]}, [], [], Xraw(ordered{:})
+    'data subset, unordered', {1:4, unordered, 1}, [], [], Xraw(unordered{:})
+    'data subset, unordered across sources', {1:4, unorderedSources, [1 4]}, [], [], Xraw(unorderedSources{:})
+    'data subset, repeated unordered elements', {1:4, complex, 1:4}, [], [], Xraw(complex{:})
+
+    'custom dimension order, all dims', {[3 1 4 2], complex, 1:4}, [], [], permute(Xraw(complex{:}),[3 1 4 2])
+    'custom dimension order, subset of dims', {[3 1], complex, 1:4}, [], [], permute(Xraw(complex{:}), [3 1 2 4])
+    'no dimension order', {[], complex, 1:4}, [], [], Xraw(complex{:})
+
+    'merge 2', {1:4, merge2, 5}, [], [], Xraw(merge2{:})
+    'multiple merge', {1:4, merge, 5:6}, [], [], Xraw(merge{:})
+    'multiple merge, custom order', {[3 1 4 2], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 4 2])
+    'multiple merge, custom subset order', {[3 1], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 2 4])
+    'multiple merge, no order', {[], merge, 5:6}, [], [], Xraw(merge{:})
+
+    'fill value', {1:4, matindex, 1}, 1, {{62}}, Xfill(matindex{:})
+    'fill value, sources', {1:4, allindex, 1:4}, 1, {{1 62},{4 20062}}, Xfill(allindex{:})
+    'range', {1:4, matindex, 1}, 2, {{[62 163]}}, Xrange(matindex{:})
+    'range, sources', {1:4, allindex, 1:4}, 2, {{1, [62 163]}, {4, [20062 20163]}}, Xrange(allindex{:})
+
+    'none', {1:4, matindex, 1}, 3, {{'none'}}, Xraw(matindex{:})
+    'ln', {1:4, matindex, 1}, 3, {{'ln'}}, log(Xraw(matindex{:}))
+    'log', {1:4, matindex, 1}, 3, {{'log'}}, log(Xraw(matindex{:}))
+    'log10', {1:4, matindex, 1}, 3, {{'log10'}}, log10(Xraw(matindex{:}))
+    'exp', {1:4, matindex, 1}, 3, {{'exp'}}, exp(Xraw(matindex{:}))
+    'power', {1:4, matindex, 1}, 3, {{'power',2}}, Xraw(matindex{:}).^2
+    'plus', {1:4, matindex, 1}, 3, {{'plus', 17.5}}, Xraw(matindex{:})+17.5
+    'add', {1:4, matindex, 1}, 3, {{'add', 17.5}}, Xraw(matindex{:})+17.5
+    '+', {1:4, matindex, 1}, 3, {{'+', 17.5}}, Xraw(matindex{:})+17.5
+    'times', {1:4, matindex, 1}, 3, {{'times', 6.3}}, Xraw(matindex{:})*6.3
+    'multiply', {1:4, matindex, 1}, 3, {{'multiply', 6.3}}, Xraw(matindex{:})*6.3
+    '*', {1:4, matindex, 1}, 3, {{'*', 6.3}}, Xraw(matindex{:})*6.3
+    'linear', {1:4, matindex, 1}, 3, {{'linear', [1.2 8.6]}}, 1.2 + 8.6*Xraw(matindex{:})
+    'transform, sources', {1:4, allindex, 1:4}, 3, {{'plus', 2.2, 1},{'ln',[],4},{'linear',[2 3],2}}, Xtransform(allindex{:})
+    };
+
+try
+    for t = 1:size(tests,1)
+        % Build grid
+        meta = gridMetadata('lon', (1:8)', 'lat', (1:4)', 'time', (1:3)', 'run', (1:5)');
+        grid = gridfile.new('test', meta, true);
+        grid.add('mat', 'test-load', 'a', ["lon","lat","time"], meta.edit('run',1));
+        grid.add('text', 'test-load-A.txt', ["lon","lat"], meta.edit('run',2,'time',1));
+        grid.add('txt', 'test-load-B.txt', ["lon","lat"], meta.edit('run',2,'time',2));
+        grid.add('nc', 'test-load', 'a', ["lon","lat","time"], meta.edit('run',3));
+        grid.add('mat', 'test-load-merge2', 'a', ["lon","lat","lat","time"], meta.edit('run',4));
+        grid.add('mat', 'test-load-merges', 'a', ["lat","lon","lat","time","lon","lon"], meta.edit('run',5));
+
+        % Data transformations
+        if isempty(tests{t,3})
+        elseif tests{t,3}==1
+            for k = 1:numel(tests{t,4})
+                grid.fillValue(tests{t,4}{k}{:});
+            end
+        elseif tests{t,3}==2
+            for k = 1:numel(tests{t,4})
+                grid.validRange(tests{t,4}{k}{:});
+            end
+        elseif tests{t,3}==3
+            for k = 1:numel(tests{t,4})
+                grid.transform(tests{t,4}{k}{:});
+            end
+        end
+
+        % Load, test output
+        inputs = [tests{t,2}, {sources(tests{t,2}{3})}];
+        Xout = grid.loadInternal(inputs{:});
+        assert(isequaln(Xout, tests{t,5}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+error('add metadata checks!!!!!!!!!!!');
+
+end    
 
 function[] = sources
 
