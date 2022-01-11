@@ -34,8 +34,8 @@ fillValue;  % these only check that gridfile properties are updated
 validRange; % check the actual implementation in the tests for "load"
 transform;
 
-getLoadIndices
-sourcesForLoad
+getLoadIndices;
+sourcesForLoad;
 buildSources
 loadInternal
 load_
@@ -1343,6 +1343,106 @@ try
     for t = 1:size(tests,1)
         output = grid.getLoadIndices(tests{t,2}{:});
         assert(isequal(output, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = sourcesForLoad
+
+tests = {
+    'indices for all sources', {(1:20)', (1:5)', (1:200)', (1:3)'}, [1;2;3;4]
+    'not all sources', {(1:20)', (1:5)', (1:200)', 1}, [1;2]
+    'partial source coverage', {(1:20)', (1:3)', 101, (1:3)'}, [2;4]
+    'repeated indices', {(1:20)',[1;1;3;3], 101, (1:3)'}, [2;4]
+    'unordered indices', {(1:20)',[1;3;3;1], 101, (1:3)'}, [2;4]
+    'indices not in any source',  {(1:20)',(1:5)',(1:100)',3}, NaN(0,1)
+    };
+
+% Initialize grid
+meta = gridMetadata('lon',(1:20)','lat',(1:5)','time',(1:200)','run',(1:3)');
+grid = gridfile.new('test',meta,true);
+grid.add('mat','test','a',["time","lon","lat"], meta.edit('run',1,'time',(1:100)'));
+grid.add('mat','test-1','a',["time","lon","lat"], meta.edit('run',1,'time',(101:200)'));
+grid.add('mat','test-2','a',["time","lon","lat"], meta.edit('run',2,'time',(1:100)'));
+grid.add('mat','test-3','a',["time","lon","lat"], meta.edit('run',3,'time',(101:200)'));
+
+try
+    for t = 1:size(tests,1)
+        output = grid.sourcesForLoad(tests{t,2});
+        assert(isequal(output, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = buildSources
+
+% file paths
+invalid = dash.file.urlSeparators(fullfile(pwd,'invalid','test.mat'));
+diffSize = dash.file.urlSeparators(fullfile(pwd,'different-size', 'test.mat'));
+double = dash.file.urlSeparators(fullfile(pwd,'double','test.mat'));
+
+% Data sources
+s1 = dash.dataSource.mat('test', 'a');
+s2 = dash.dataSource.mat('test-1', 'a');
+s3 = dash.dataSource.mat('test-2', 'a');
+s4 = dash.dataSource.mat('test-3', 'a');
+props = string(properties(s1));
+props(strcmp(props,'m')) = [];
+
+tests = {
+    % Description, all succeed, altered filepath, inputs, output (datasource/failed/causes)
+    'build single source', true, [], 1, {s1}, false
+    'build multiple sources', true, [], 1:4, {s1;s2;s3;s4}, [false;false;false;false]
+    'failed build', false, invalid, 1, {[]}, true
+    'different data size', false, diffSize, 1, {[]}, true
+    'different data type', false, double, 1, {[]}, true
+    'some failed, some succeed', false, invalid, 1:4, {[];s2;s3;s4}, [true;false;false;false]
+    };
+
+try
+    for t = 1:size(tests,1)
+
+        % Build grid
+        meta = gridMetadata('lon',(1:20)','lat',(1:5)', 'time',(1:100)', 'run', (1:4)');
+        grid = gridfile.new('test',meta,true);
+        grid.add('mat',  'test','a',["time","lon","lat"], meta.edit('run',1));
+        grid.add('mat','test-1','a',["time","lon","lat"], meta.edit('run',2));
+        grid.add('mat','test-2','a',["time","lon","lat"], meta.edit('run',3));
+        grid.add('mat','test-3','a',["time","lon","lat"], meta.edit('run',4));
+        if ~isempty(tests{t,3})
+            grid.sources_.source(1) = tests{t,3};
+        end
+   
+        [sources, failed, causes] = grid.buildSources(tests{t,4});
+
+        nSource = numel(tests{t,4});
+        dash.assert.vectorTypeN(sources, 'cell', nSource);
+        assert(isequal(failed, tests{t,6}), 'output failed report');
+        dash.assert.vectorTypeN(causes, 'cell', numel(tests{t,4}));
+
+        for s = 1:nSource
+            if ~failed(s)
+                dash.assert.scalarType(sources{s}, 'dash.dataSource.mat');
+                for p = 1:numel(props)
+                    prop = props(p);
+                    assert(isequaln(sources{s}.(prop), tests{t,5}{s}.(prop)), 'output source props');
+                end
+                assert(isequal(causes{s}, []), 'incorrect cause');
+
+            else
+                dash.assert.scalarType(causes{s}, 'MException');
+                assert(contains(causes{s}.identifier, 'DASH'), 'invalid error');
+                assert(isequal(sources{s}, []), 'incorrect source');
+            end
+        end
     end
 catch cause
     ME = MException('test:failed', tests{t,1});
