@@ -44,7 +44,7 @@ obj.update;
 
 % Get the data sources that should be checked and/or renamed
 if exist('sources','var')
-    s = obj.sources_.indices(sources, obj.file, header);
+    s = obj.sources_.indices(sources, header);
 else
     s = 1:obj.nSource;
 end
@@ -66,12 +66,13 @@ end
 function[] = userRename(obj, s, newNames, header)
 
 % Error check names
+nSources = numel(s);
 newNames = dash.assert.strlist(newNames, 'newNames', header);
 dash.assert.vectorTypeN(newNames, [], nSources, 'newNames', header);
 
 % Build the data source for each new name, throw informative error if the 
 % build fails.
-for k = 1:numel(s)
+for k = 1:nSources
     try
         dataSource = obj.sources_.build(s(k), newNames(k));
     catch cause
@@ -122,7 +123,7 @@ for k = 1:numel(s)
     % Check the saved data matches the size and type recorded in the gridfile.
     [ismatch, prop, sval, gval] = obj.sources_.ismatch(dataSource, s(k));
     if ~ismatch
-        pathSourceDoesNotMatchError(newfile, s, obj, prop, sval, gval, header);
+        pathSourceDoesNotMatchError(newfile, s(k), obj, prop, sval, gval, header);
     end
     
     % Update path
@@ -136,7 +137,7 @@ end
 function[] = invalidUserDataSourceError(obj, s, nInput, newName, cause, header)
 id = sprintf('%s:invalidUserDataSource', header);
 currentPath = obj.sources_.absolutePaths(s);
-base = error(id, ['New filename %.f is either not a valid data source, or is not ',...
+base = MException(id, ['New filename %.f is either not a valid data source, or is not ',...
     'a valid replacement for data source %.f in the gridfile.\n\n',...
     '    New data source: %s\n',...
     'Current data source: %s\n',...
@@ -180,10 +181,10 @@ function[] = pathSourceDoesNotMatchError(newName, s, obj, prop, sval, gval, head
 id = sprintf('%s:sourceDoesNotMatch', header);
 oldpath = obj.sources_.absolutePaths(s);
 error(id, ['Data source %.f cannot be found. A file of the same name was ',...
-    'located on the active path, but the %s of the new file (%s) does not ',...
-    'match the %s of data source %.f (%s) recorded in the gridfile.\n\n',...
+    'located on the active path, but the data %s in the new file (%s) does not ',...
+    'match the data %s recorded in the gridfile (%s) for data source %.f.\n\n',...
     'New Data source: %s\n',...
     'Old Data source: %s\n',...
     '       gridfile: %s'],...
-    s, prop, sval, prop, s, gval, newName, oldpath, obj.file);
+    s, prop, sval, prop, gval, s, newName, oldpath, obj.file);
 end

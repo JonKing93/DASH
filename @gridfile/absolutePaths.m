@@ -18,7 +18,7 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %   absolute path to data source files. Use this option if you anticipate
 %   moving the .grid file, but not the data source files.
 %
-%   Note: Data source located on a different drive than the .grid file, or
+%   Note: Data sources located on a different drive than the .grid file, or
 %   accessed via an OPENDAP url, always use an absolute file path. Thus,
 %   setting useAbsolute to false does not guarantee that all data sources
 %   use relative paths.
@@ -64,5 +64,8 @@ absPaths = obj.sources_.absolutePaths(s);
 for p = 1:numel(s)
     obj.sources_ = obj.sources_.savePath(absPaths(p), tryRelative, s(p));
 end
+
+% Save
+obj.save;
 
 end

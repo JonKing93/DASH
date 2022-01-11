@@ -25,7 +25,7 @@ addAttributes;
 removeAttributes;
 editAttributes;
 
-add
+add;
 remove;
 rename
 absolutePaths
@@ -765,11 +765,11 @@ try
     for t = 1:size(tests,1)
         grid = gridfile.new('test', meta, true);
         grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
-        grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+        grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
         grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
 
         grid2 = gridfile.new('test2', meta, true);
-        grid2.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+        grid2.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
         grid2.file = grid.file;
         grid2.sources_.gridfile = grid.file;
 
@@ -792,6 +792,241 @@ catch cause
     ME = addCause(ME, cause);
     throw(ME);
 end
+
+end
+function[] = rename
+
+% Subfolder paths
+onpath = fullfile(pwd, 'on-path');
+offpath = fullfile(pwd, 'off-path');
+double = fullfile(pwd, 'double');
+diffSize = fullfile(pwd, 'different-size');
+home = pwd;
+header = "DASH:gridfile:rename";
+
+% Set up gridfile
+function[grid] = setupGrid
+    meta = gridMetadata('time',(1:100)','lon',(1:20)','lat',(1:5)','run',(0:3)');
+    grid = gridfile.new('test', meta, true);
+    grid.add('mat', 'test', 'a', ["time","lon","lat"], meta.edit('run',0));
+    grid.add('mat', 'test-1', 'a', ["time","lon","lat"], meta.edit('run',1));
+    grid.add('mat', 'test-2', 'a', ["time","lon","lat"], meta.edit('run',2));
+    grid.add('mat', 'test-3', 'a', ["time","lon","lat"], meta.edit('run',3));
+end
+
+% Manage file paths
+reset1 = onCleanup( @()rmpath(onpath) );
+addpath(onpath);
+
+% Move files
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(onpath,  'test.mat'), home));
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-2.mat'), home));
+movefile(fullfile(home,'test.mat'), onpath);
+movefile(fullfile(home,'test-2.mat'), onpath);
+paths = ["./on-path/test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
+try
+    grid.rename;
+catch
+    error('move files');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Files in same location
+grid = setupGrid;
+paths = ["./test.mat";"./test-1.mat";"./test-2.mat";"./test-3.mat"];
+try
+    grid.rename;
+catch
+    error('files in same location');
+end
+assert(isequal(paths, grid.sources_.source));
+
+% Different type
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
+return2 = onCleanup( @()movefile(fullfile(onpath,'test.mat'), double) );
+movefile(fullfile(home,'test.mat'), offpath);
+movefile(fullfile(double,'test.mat'), onpath);
+try
+    grid.rename;
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+delete(return1);
+delete(return2);
+
+% Different size
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
+return2 = onCleanup( @()movefile(fullfile(onpath,'test.mat'), diffSize) );
+movefile(fullfile(home,'test.mat'), offpath);
+movefile(fullfile(diffSize,'test.mat'), onpath);
+try
+    grid.rename;
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+delete(return1);
+delete(return2);
+
+% Missing file
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
+movefile(fullfile(home,'test.mat'), offpath);
+try
+    grid.rename;
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+delete(return1);
+
+% Move absolute path
+grid = setupGrid;
+grid.absolutePaths(true);
+return1 = onCleanup( @()movefile(fullfile(onpath,  'test.mat'), home));
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-2.mat'), home));
+movefile(fullfile(home,'test.mat'), onpath);
+movefile(fullfile(home,'test-2.mat'), onpath);
+paths = [fullfile(onpath,"test.mat");fullfile(home,"test-1.mat");fullfile(onpath,"test-2.mat");fullfile(home,"test-3.mat")];
+for p = 1:numel(paths)
+    paths(p) = dash.file.urlSeparators(paths(p));
+end
+try
+    grid.rename;
+catch
+    error('move absolute paths');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Move indexed files
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(onpath,  'test.mat'), home));
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-2.mat'), home));
+movefile(fullfile(home,'test.mat'), onpath);
+movefile(fullfile(home,'test-2.mat'), onpath);
+paths = ["./test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
+try
+    grid.rename(3);
+catch
+    error('move indexed files');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Move named files
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(onpath,  'test.mat'), home));
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-2.mat'), home));
+movefile(fullfile(home,'test.mat'), onpath);
+movefile(fullfile(home,'test-2.mat'), onpath);
+paths = ["./on-path/test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
+try
+    grid.rename(["test-2.mat","test.mat"]);
+catch
+    error('move indexed files');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Specify new name
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(home,  'test-A.mat'), 'test.mat'));
+return2 = onCleanup( @()movefile(fullfile(home,'test-B.mat'), 'test-2.mat'));
+movefile(fullfile(home,'test.mat'), 'test-A.mat');
+movefile(fullfile(home,'test-2.mat'), 'test-B.mat');
+paths = ["./test-A.mat";"./test-1.mat";"./test-B.mat";"./test-3.mat"];
+try
+    grid.rename([1 3], ["test-A.mat", "test-B.mat"]);
+catch
+    error('set new name');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Set new absolute path name
+grid = setupGrid;
+grid.absolutePaths(true);
+return1 = onCleanup( @()movefile(fullfile(home,  'test-A.mat'), 'test.mat'));
+return2 = onCleanup( @()movefile(fullfile(home,'test-B.mat'), 'test-2.mat'));
+movefile(fullfile(home,'test.mat'), 'test-A.mat');
+movefile(fullfile(home,'test-2.mat'), 'test-B.mat');
+paths = [fullfile(home,"test-A.mat");fullfile(home,"test-1.mat");fullfile(home,"test-B.mat");fullfile(home,"test-3.mat")];
+for p = 1:numel(paths)
+    paths(p) = dash.file.urlSeparators(paths(p));
+end
+try
+    grid.rename([1 3], ["test-A.mat", "test-B.mat"]);
+catch
+    error('set new absolute path name');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
+
+% Set name, different data type
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-A.mat'), fullfile(double,'test.mat')) );
+movefile(fullfile(home,'test.mat'), offpath);
+movefile(fullfile(double,'test.mat'), fullfile(onpath,'test-A.mat'));
+try
+    grid.rename(1, "test-A.mat");
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+delete(return1);
+delete(return2);
+
+% Set name, different size
+grid = setupGrid;
+return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
+return2 = onCleanup( @()movefile(fullfile(onpath,'test-A.mat'), fullfile(diffSize,'test.mat')) );
+movefile(fullfile(home,'test.mat'), offpath);
+movefile(fullfile(diffSize,'test.mat'), fullfile(onpath,'test-A.mat'));
+try
+    grid.rename(1, "test-A.mat");
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+delete(return1);
+delete(return2);
+
+% Set name, missing file
+grid = setupGrid;
+try
+    grid.rename(1, fullfile(home,'test-A.mat'));
+    error('did not fail');
+catch ME
+    assert(contains(ME.identifier, header), 'invalid error');
+end
+
+% Set name, provide full path to file off active path
+grid = setupGrid;
+fullpath = fullfile(offpath, 'test-A.mat');
+return1 = onCleanup( @()movefile(fullpath, fullfile(home,'test.mat')) );
+movefile(fullfile(home,'test.mat'), fullpath);
+paths = ["./off-path/test-A.mat";"./test-1.mat";"./test-2.mat";"./test-3.mat"];
+try
+    grid.rename(1, fullpath);
+catch
+    error('set new name');
+end
+assert(isequal(paths, grid.sources_.source));
+delete(return1);
+delete(return2);
 
 end
 
@@ -1097,7 +1332,7 @@ tests = {
     'invalid index', false, {2.2}, []
     'unrecognized name', false, {notfile}, []
     'repeat name', false, {"test"}, []
-    };
+    }; %#ok<STRSCALR> 
 header = "DASH";
 grid = gridfile.new('test', meta, true);
 grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
