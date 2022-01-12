@@ -96,14 +96,47 @@ end
 % Get load indices and build required data sources
 loadIndices = obj.getLoadIndices(userDimOrder, indices);
 s = obj.sourcesForLoad(loadIndices);
-[dataSources, failed, cause] = obj.buildSources(s);
+[dataSources, failed, cause] = obj.buildSources(s, true);
 
 % Informative error if any data sources failed
-if any(failed)
-    dataSourceFailedError(cause);
+if failed
+    s = s(failed);
+    dataSourceFailedError(obj, s, cause, header);
 end
 
 % Load the values
 [X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources, precision);
+
+end
+
+% Error message
+function[] = dataSourceFailedError(obj, s, cause, header)
+
+% File short name
+[~, name, ext] = fileparts(obj.sources(s));
+name = strcat(name, ext);
+
+% Message when source does not match record
+if strcmp(cause.identifier, 'DASH:gridfile:buildSources:sourceDoesNotMatchRecord')
+    message = sprintf(['Cannot load the requested data because the characteristics ',...
+        'of the data in data source %.f (%s) do not match the characteristics ',...
+        'recorded in the gridfile.\n\n',...
+        'Data source: %s\n',...
+        '   gridfile: %s\n'],...
+        s, name, obj.sources(s), obj.file);
+
+% Message when source fails
+else
+    message = sprintf(['Cannot load the requested data because data source %.f (%s)',...
+        'is no longer a valid data source file.\n\n',...
+        'Data source: %s\n',...
+        '   gridfile: %s\n'],...
+        s, name, obj.sources(s), obj.file);
+end
+
+% Create base error, add cause, throw
+base = MException(header, message);
+base = addCause(base, cause);
+throw(base);
 
 end

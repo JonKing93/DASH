@@ -12,7 +12,7 @@ cd(testpath);
 
 
 %%% Current test
-buildSources
+load_
 
 
 % Run the tests
@@ -1607,6 +1607,171 @@ catch cause
 end
 
 end    
+function[] = load_
+
+% Raw output arrays
+Xmat = load('test-load-single.mat','a').a;
+Xnc = ncread('test-load.nc','a');
+
+XtextA = readmatrix('test-load-A.txt');
+XtextB = readmatrix('test-load-B.txt');
+Xtext = cat(3,XtextA,XtextB,NaN(size(XtextA)));
+
+Xraw = cat(4, double(Xmat), Xtext, Xnc);
+
+% File paths
+invalid = fullfile(pwd, 'invalid','test.mat');
+diffSize=  fullfile(pwd, 'different-size', 'test.mat');
+diffType = fullfile(pwd, 'test-load.mat');
+
+% Indices
+lon = [1 3 4 7 8];
+lon2 = [3 1 5 6 2];
+lon3 = [3 1 1 5 2 6 6 8];
+lat = [true;false;false;true];
+time = [2 3];
+run = 1:3;
+
+% Metadata and dimension orders
+meta = gridMetadata('lon', (1:8)', 'lat', [(1:4)',(11:14)'], 'time', (1:3)', 'run', (1:3)');
+custom = ["time","lon","run","lat"];
+partial = ["time","lon"];
+latfirst = ["lat","lon","time","run"];
+ordered = ["lon","lat","time","run"];
+partialForMeta = ["time","lon","lat","run"];
+
+% Permuted output
+Xlat = permute(Xraw, [2 1 3 4]);
+Xcustom = permute(Xraw, [3 1 4 2]);
+Xpartial = permute(Xraw, [3 1 2 4]);
+
+tests = {
+    'load all', true, {}, [], Xraw, meta.setOrder(ordered), []
+    
+    'custom order, no dimensions', true, {[]}, [], Xraw, meta.setOrder(ordered), []
+    'custom order, all dimensions', true, {custom}, [], Xcustom, meta.setOrder(custom), []
+    'custom order, some dimensions', true, {partial}, [], Xpartial, meta.setOrder(partialForMeta), []
+    
+    'index, single dimension logical', true, {"lat",lat}, [], Xlat(lat,:,:,:), meta.index('lat',lat).setOrder(latfirst), []
+    'index, single dimension linear', true, {"lon",lon}, [], Xraw(lon,:,:,:), meta.index('lon',lon).setOrder(ordered), []
+    'index, single cell logical', true, {"lat",{lat}}, [], Xlat(lat,:,:,:), meta.index('lat',lat).setOrder(latfirst), []
+    'index, single cell linear', true, {"lon",{lon}}, [], Xraw(lon,:,:,:), meta.index('lon',lon).setOrder(ordered), []
+    'index, all dimensions mixed type', true, {custom, {time,lon,run,lat}}, [], Xcustom(time,lon,run,lat), meta.index(custom, {time,lon,run,lat}).setOrder(custom), []
+    'index, empty array', true, {custom, {[],lon,[],lat}}, [], Xcustom(:,lon,:,lat), meta.index(["lon","lat"],{lon,lat}).setOrder(custom), []
+    'index, unordered linear', true, {partial, {[],lon2}}, [], Xpartial(:,lon2,:,:), meta.index('lon',lon2).setOrder(partialForMeta), []
+    'index, unordered repeated', true, {partial, {[],lon3}}, [], Xpartial(:,lon3,:,:), meta.index('lon',lon3).setOrder(partialForMeta), []
+    'index, custom order', true, {custom, {time,lon,run,lat}}, [], Xcustom(time,lon,run,lat), meta.index(custom, {time,lon,run,lat}).setOrder(custom), []
+
+    'unsupported dimension', false, {'foo', 1}, [], [], [], []
+    'supported dimension not in gridfile', false, {'site', 1}, [], [], [], []
+    'repeated dimension', false, {["lon","lat","lon"], {1 1 1}}, [], [], [], []
+    'invalid linear indices', false, {"lon", 9}, [], [], [], []
+    'logical indices wrong length', false, {"lat", true(5,1)}, [], [], [], []
+    'array indices', false, {"lat", true(2,2)}, [], [], [], []
+    'multiple index, not in cell', false, {["lon","lat"], 1, 1}, [], [], [], []
+
+    'auto double', true, {"lon", 1}, [], Xraw(1,:,:,:), meta.index('lon',1).setOrder(ordered), 'double'
+    'auto single', true, {["lon","lat","time","run"],{[],[],[],1}}, [], Xmat, meta.index('run',1).setOrder(ordered), 'single'
+    'set single to double', true, {["lon","lat","time","run"],{[],[],[],1},"double"}, [], double(Xmat), meta.index('run',1).setOrder(ordered), 'double'
+    'set double to single', true, {"lon",1,"single"}, [], single(Xraw(1,:,:,:)), meta.index('lon',1).setOrder(ordered), 'single'
+    'invalid precision', false, {'lon', 1, 'int64'}, [], [], [], []
+    };
+header = "DASH:gridfile";
+
+try
+    for t = 1:size(tests,1)
+        % Build grid
+        grid = gridfile.new('test', meta, true);
+        grid.add('mat', 'test-load-single', 'a', ["lon","lat","time"], meta.edit('run',1));
+        grid.add('text', 'test-load-A.txt', ["lon","lat"], meta.edit('run',2,'time',1));
+        grid.add('txt', 'test-load-B.txt', ["lon","lat"], meta.edit('run',2,'time',2));
+        grid.add('nc', 'test-load', 'a', ["lon","lat","time"], meta.edit('run',3));
+
+        % Optionally alter source path
+        if ~isempty(tests{t,4})
+            grid.sources_.source(1) = tests{t,4};
+            grid.sources_.relativePath(1) = false;
+        end
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.load(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            [Xout, metaOut] = grid.load(tests{t,3}{:});
+
+            assert(isequaln(Xout, tests{t,5}), 'output array');
+            assert(isequaln(metaOut, tests{t,6}), 'output metadata');
+            if ~isempty(tests{t,7})
+                assert(isa(Xout, tests{t,7}), 'output precision');
+            end
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+% Build gridfile for altered data sources
+meta = gridMetadata('lon',(1:100)','lat',(1:20)','time',(1:5)');
+grid = gridfile.new('test', meta, true);
+grid.add('mat', 'test', 'a', ["lon","lat","time"], meta);
+
+% Invalid data source
+function[] = resetinvalid
+    movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'invalid','test.mat'));
+    movefile(fullfile(pwd,'off-path','test.mat'), pwd);
+end
+reset = onCleanup(@()resetinvalid);
+movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'off-path'));
+movefile(fullfile(pwd,'invalid','test.mat'), fullfile(pwd,'test.mat'));
+try
+    grid.load;
+    error('did not fail');
+catch ME
+end
+assert(contains(ME.identifier,'DASH:gridfile'), 'invalid error');
+delete(reset);
+
+% Data source wrong size
+function[] = resetsize
+    movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'different-size','test.mat'));
+    movefile(fullfile(pwd,'off-path','test.mat'), pwd);
+end
+reset = onCleanup(@()resetsize);
+movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'off-path'));
+movefile(fullfile(pwd,'different-size','test.mat'), fullfile(pwd,'test.mat'));
+try
+    grid.load;
+    error('did not fail');
+catch ME
+end
+assert(contains(ME.identifier,'DASH:gridfile'), 'invalid error');
+delete(reset);
+
+% Data source changed type
+function[] = resettype
+    movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'double','test.mat'));
+    movefile(fullfile(pwd,'off-path','test.mat'), pwd);
+end
+reset = onCleanup(@()resettype);
+movefile(fullfile(pwd,'test.mat'), fullfile(pwd,'off-path'));
+movefile(fullfile(pwd,'double','test.mat'), fullfile(pwd,'test.mat'));
+try
+    grid.load;
+    error('did not fail');
+catch ME
+end
+assert(contains(ME.identifier,'DASH:gridfile'), 'invalid error');
+delete(reset);
+
+end
 
 function[] = sources
 

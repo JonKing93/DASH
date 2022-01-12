@@ -48,50 +48,44 @@ if exist('sources','var')
 else
     s = 1:obj.nSource;
 end
+nSources = numel(s);
 
-% Control flow is quite different for the no-names and user-names cases.
-% Process accordingly.
+% Note whether this is an automatic or user-specified rename
+userRename = false;
 if exist('newNames','var')
-    userRename(obj, s, newNames, header);
-else
-    pathRename(obj, s, header);
+    userRename = true;
 end
 
-% Save
+% Error check user names or apply automatic renaming
+if userRename
+    newNames = dash.assert.strlist(newNames, 'newNames', header);
+    dash.assert.vectorTypeN(newNames, [], nSources, 'newNames', header);
+else
+    newNames = autoRename(obj, s, header);
+end
+
+% Build the new data sources, throw error if any build fails
+[dataSources, failed, cause] = obj.buildSources(s, true, newNames);
+if failed
+    s = s(failed);
+    invalidDataSourceError(s, newNames(failed), obj.sources_.source(s), cause, userRename, obj.file, header);
+end
+
+% Update paths and save
+for k = 1:nSources
+    tryRelative = obj.sources_.relativePath(s(k));
+    obj.sources_ = obj.sources_.savePath(dataSources{k}, tryRelative, s(k));
+end
 obj.save;
 
 end
 
-% Helper subfunctions
-function[] = userRename(obj, s, newNames, header)
+% Utility function
+function[newNames] = autoRename(obj, s, header)
 
-% Error check names
+% Preallocate names
 nSources = numel(s);
-newNames = dash.assert.strlist(newNames, 'newNames', header);
-dash.assert.vectorTypeN(newNames, [], nSources, 'newNames', header);
-
-% Build the data source for each new name, throw informative error if the 
-% build fails.
-for k = 1:nSources
-    try
-        dataSource = obj.sources_.build(s(k), newNames(k));
-    catch cause
-        invalidUserDataSourceError(obj, s, k, newNames(k), cause, header);
-    end
-    
-    % Check the saved data array matches the type and size recorded in the gridfile
-    [ismatch, prop, sval, gval] = obj.sources_.ismatch(dataSource, s(k));
-    if ~ismatch
-        userSourceDoesNotMatchError(k, newNames(k), s, obj, prop, sval, gval, header);
-    end
-    
-    % Update path
-    tryRelative = obj.sources_.relativePath(s(k));
-    obj.sources_ = obj.sources_.savePath(dataSource, tryRelative, s(k));
-end
-
-end
-function[] = pathRename(obj, s, header)
+newNames = strings(1, nSources);
 
 % Get the absolute path to each data source
 for k = 1:numel(s)
@@ -99,6 +93,7 @@ for k = 1:numel(s)
 
     % Only update if the file cannot be found. Do not check opendap URLs
     if dash.is.url(sourceName) || isfile(sourceName)
+        newNames(k) = sourceName;
         continue;
     end
 
@@ -107,55 +102,16 @@ for k = 1:numel(s)
     [~, name, ext] = fileparts(sourceName);
     filename = strcat(name, ext);
     newfile = which(filename);
-
+    
     if isempty(newfile)
         noMatchingFileError(sourceName, s(k), obj.file, header);
     end
-    
-    % Attempt to build the new data source. Give informative error if the
-    % build fails.
-    try
-        dataSource = obj.sources_.build(s(k), newfile);
-    catch cause
-        invalidPathDataSourceError(obj, s(k), sourceName, newfile, cause, header);
-    end
-
-    % Check the saved data matches the size and type recorded in the gridfile.
-    [ismatch, prop, sval, gval] = obj.sources_.ismatch(dataSource, s(k));
-    if ~ismatch
-        pathSourceDoesNotMatchError(newfile, s(k), obj, prop, sval, gval, header);
-    end
-    
-    % Update path
-    tryRelative = obj.sources_.relativePath(s(k));
-    obj.sources_ = obj.sources_.savePath(dataSource, tryRelative, s(k));
+    newNames(k) = newfile;
 end
 
 end
 
 % Error messages
-function[] = invalidUserDataSourceError(obj, s, nInput, newName, cause, header)
-id = sprintf('%s:invalidUserDataSource', header);
-currentPath = obj.sources_.absolutePaths(s);
-base = MException(id, ['New filename %.f is either not a valid data source, or is not ',...
-    'a valid replacement for data source %.f in the gridfile.\n\n',...
-    '    New data source: %s\n',...
-    'Current data source: %s\n',...
-    '           gridfile: %s'],...
-    nInput, s, newName, currentPath, obj.file);
-base = addCause(base, cause);
-throw(base);
-end
-function[] = userSourceDoesNotMatchError(k, newName, s, obj, prop, sval, gval, header)
-id = sprintf('%s:sourceDoesNotMatch', header);
-oldpath = obj.sources_.absolutePaths(s);
-error(id, ['The %s of the data in new file %.f (%s) does not match the %s ',...
-    'of data source %.f (%s) recorded in the gridfile.\n\n',...
-    'New Data Source: %s\n',...
-    'Old Data Source: %s\n',...
-    '       gridfile: %s'],...
-    prop, k, sval, prop, s, gval, newName, oldpath, obj.file);
-end
 function[] = noMatchingFileError(sourceName, s, gridFile, header)
 id = sprintf('%s:noMatchingFile', header);
 error(id, ['Data source %.f cannot be found and there are no matching ',...
@@ -164,27 +120,37 @@ error(id, ['Data source %.f cannot be found and there are no matching ',...
     '   gridfile: %s'],...
     s, sourceName, gridFile);
 end
-function[] = invalidPathDataSourceError(obj, s, oldfile, newfile, cause, header)
-id = sprintf('%s:invalidPathDataSource', header);
-base = MException(id, ['Data source %.f cannot be found. A file with the ',...
-    'same name was located on the active path, but this new file is either ',...
-    '1. not a valid data source, or 2. not a valid replacement for data source ',...
-    '%.f in the gridfile.\n\n',...
-    'Missing Data source: %s\n',...
-    '      Matching File: %s\n',...
-    '           gridfile: %s'],...
-    s, s, oldfile, newfile, obj.file);
+function[] = invalidDataSourceError(s, newfile, oldfile, cause, userRename, gridpath, header)
+
+% Get the file short name
+[~, name, ext] = fileparts(string(newfile));
+name = strcat(name, ext);
+
+% Different headers for automatic vs user rename
+if userRename
+    head = sprintf('New data source file "%s"', name);
+else
+    head = sprintf(['Cannot find data source %.f. A file with the same name (%s) ',...
+        'was located on the active path, but it'], s, name);
+end
+
+% Detect if source does not match record or if the data source failed
+if strcmp(cause.identifier, 'DASH:gridfile:buildSources:sourceDoesNotMatchRecord')
+    problem = sprintf([' does not match the values recorded in the gridfile ',...
+        'for data source %.f.'], s);
+else
+    problem = ' is not a valid data source file.';
+end
+
+% Base error
+base = MException(header, '%s %s\n\n',...
+        '    New data source: %s\n',...
+        'Current data source: %s\n',...
+        '           gridfile: %s\n',...
+        head, problem, newfile, oldfile, gridpath);
+
+% Add cause information and throw
 base = addCause(base, cause);
 throw(base);
-end
-function[] = pathSourceDoesNotMatchError(newName, s, obj, prop, sval, gval, header)
-id = sprintf('%s:sourceDoesNotMatch', header);
-oldpath = obj.sources_.absolutePaths(s);
-error(id, ['Data source %.f cannot be found. A file of the same name was ',...
-    'located on the active path, but the data %s in the new file (%s) does not ',...
-    'match the data %s recorded in the gridfile (%s) for data source %.f.\n\n',...
-    'New Data source: %s\n',...
-    'Old Data source: %s\n',...
-    '       gridfile: %s'],...
-    s, prop, sval, prop, gval, s, newName, oldpath, obj.file);
+
 end

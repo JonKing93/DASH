@@ -156,7 +156,7 @@ classdef gridfile < handle
         % Load
         loadIndices = getLoadIndices(obj, userDims, userIndices);
         s = sourcesForLoad(obj, loadIndices);
-        [dataSources, failed, causes] = buildSources(obj, s);
+        [dataSources, failed, causes] = buildSources(obj, s, fatal, filepaths);
         [X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources, precision);      
         [X, meta] = load(obj, dimensions, indices, precision)
         
