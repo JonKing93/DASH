@@ -1492,7 +1492,11 @@ Xncrange = Xnc;
 Xncrange(Xncrange<20062 | Xncrange>20163) = NaN;
 Xrange = cat(4, Xmatrange, Xtext, Xncrange);
 
-Xtransform = cat(4, Xmat+2.2, 2+Xtext*3, log(Xnc));
+Xtransform = cat(4, Xmat+2.2, 2+3*Xtext, log(Xnc));
+
+% Grid metadata
+meta = gridMetadata('lon', (1:8)', 'lat', (1:4)', 'time', (1:3)', 'run', (1:5)');
+dims = ["lon","lat","time","run"];
 
 % Sets of indices
 matindex = {1:8,1:4,1:3,1};
@@ -1507,52 +1511,51 @@ merge2 = {[1 4 4 2 6 3 3 8],[3 1 1 1],[2 3 1 2],4};
 merge = {[1 4 4 2 6 3 3 8],[3 1 1 1],[2 3 1 2],[5 4 4]};
 
 tests = {
-    % description, inputs, adjustment type, adjustment args, output
-    'data from single source', {1:4, matindex, 1}, [], [], Xraw(matindex{:})
-    'data from multiple sources', {1:4, textindex, [2 3]}, [], [], Xraw(textindex{:})
-    'data from multiple source types', {1:4, allindex, [1 2 3 4]}, [], [], Xraw(allindex{:})
-    'data not in any source', {1:4, missingindex, 3}, [], [], Xraw(missingindex{:})
+    % description, inputs, adjustment type, adjustment args, output array, output metadata
+    'data from single source', {1:4, matindex, 1}, [], [], Xraw(matindex{:}), meta.index(dims, matindex).setOrder(dims)
+    'data from multiple sources', {1:4, textindex, [2 3]}, [], [], Xraw(textindex{:}), meta.index(dims, textindex).setOrder(dims)
+    'data from multiple source types', {1:4, allindex, [1 2 3 4]}, [], [], Xraw(allindex{:}), meta.index(dims, allindex).setOrder(dims)
+    'data not in any source', {1:4, missingindex, 3}, [], [], Xraw(missingindex{:}), meta.index(dims, missingindex).setOrder(dims)
     
-    'data subset, ordered', {1:4, ordered, [1 3 4]}, [], [], Xraw(ordered{:})
-    'data subset, unordered', {1:4, unordered, 1}, [], [], Xraw(unordered{:})
-    'data subset, unordered across sources', {1:4, unorderedSources, [1 4]}, [], [], Xraw(unorderedSources{:})
-    'data subset, repeated unordered elements', {1:4, complex, 1:4}, [], [], Xraw(complex{:})
+    'data subset, ordered', {1:4, ordered, [1 3 4]}, [], [], Xraw(ordered{:}), meta.index(dims, ordered).setOrder(dims)
+    'data subset, unordered', {1:4, unordered, 1}, [], [], Xraw(unordered{:}), meta.index(dims, unordered).setOrder(dims)
+    'data subset, unordered across sources', {1:4, unorderedSources, [1 4]}, [], [], Xraw(unorderedSources{:}), meta.index(dims, unorderedSources).setOrder(dims)
+    'data subset, repeated unordered elements', {1:4, complex, 1:4}, [], [], Xraw(complex{:}), meta.index(dims, complex).setOrder(dims)
 
-    'custom dimension order, all dims', {[3 1 4 2], complex, 1:4}, [], [], permute(Xraw(complex{:}),[3 1 4 2])
-    'custom dimension order, subset of dims', {[3 1], complex, 1:4}, [], [], permute(Xraw(complex{:}), [3 1 2 4])
-    'no dimension order', {[], complex, 1:4}, [], [], Xraw(complex{:})
+    'custom dimension order, all dims', {[3 1 4 2], complex, 1:4}, [], [], permute(Xraw(complex{:}),[3 1 4 2]), meta.index(dims,complex).setOrder(["time","lon","run","lat"])
+    'custom dimension order, subset of dims', {[3 1], complex, 1:4}, [], [], permute(Xraw(complex{:}), [3 1 2 4]), meta.index(dims,complex).setOrder(["time","lon","lat","run"])
+    'no dimension order', {[], complex, 1:4}, [], [], Xraw(complex{:}), meta.index(dims,complex).setOrder(dims)
 
-    'merge 2', {1:4, merge2, 5}, [], [], Xraw(merge2{:})
-    'multiple merge', {1:4, merge, 5:6}, [], [], Xraw(merge{:})
-    'multiple merge, custom order', {[3 1 4 2], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 4 2])
-    'multiple merge, custom subset order', {[3 1], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 2 4])
-    'multiple merge, no order', {[], merge, 5:6}, [], [], Xraw(merge{:})
+    'merge 2', {1:4, merge2, 5}, [], [], Xraw(merge2{:}), meta.index(dims,merge2).setOrder(dims)
+    'multiple merge', {1:4, merge, 5:6}, [], [], Xraw(merge{:}), meta.index(dims,merge).setOrder(dims)
+    'multiple merge, custom order', {[3 1 4 2], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 4 2]), meta.index(dims,merge).setOrder(["time","lon","run","lat"])
+    'multiple merge, custom subset order', {[3 1], merge, 5:6}, [], [], permute(Xraw(merge{:}), [3 1 2 4]), meta.index(dims,merge).setOrder(["time","lon","lat","run"])
+    'multiple merge, no order', {[], merge, 5:6}, [], [], Xraw(merge{:}), meta.index(dims,merge).setOrder(dims)
 
-    'fill value', {1:4, matindex, 1}, 1, {{62}}, Xfill(matindex{:})
-    'fill value, sources', {1:4, allindex, 1:4}, 1, {{1 62},{4 20062}}, Xfill(allindex{:})
-    'range', {1:4, matindex, 1}, 2, {{[62 163]}}, Xrange(matindex{:})
-    'range, sources', {1:4, allindex, 1:4}, 2, {{1, [62 163]}, {4, [20062 20163]}}, Xrange(allindex{:})
+    'fill value', {1:4, matindex, 1}, 1, {{62}}, Xfill(matindex{:}), meta.index(dims,matindex).setOrder(dims)
+    'fill value, sources', {1:4, allindex, 1:4}, 1, {{62 1},{20062 4}}, Xfill(allindex{:}), meta.index(dims,allindex).setOrder(dims)
+    'range', {1:4, matindex, 1}, 2, {{[62 163]}}, Xrange(matindex{:}), meta.index(dims,matindex).setOrder(dims)
+    'range, sources', {1:4, allindex, 1:4}, 2, {{[62 163] 1}, {[20062 20163] 4}}, Xrange(allindex{:}), meta.index(dims,allindex).setOrder(dims)
 
-    'none', {1:4, matindex, 1}, 3, {{'none'}}, Xraw(matindex{:})
-    'ln', {1:4, matindex, 1}, 3, {{'ln'}}, log(Xraw(matindex{:}))
-    'log', {1:4, matindex, 1}, 3, {{'log'}}, log(Xraw(matindex{:}))
-    'log10', {1:4, matindex, 1}, 3, {{'log10'}}, log10(Xraw(matindex{:}))
-    'exp', {1:4, matindex, 1}, 3, {{'exp'}}, exp(Xraw(matindex{:}))
-    'power', {1:4, matindex, 1}, 3, {{'power',2}}, Xraw(matindex{:}).^2
-    'plus', {1:4, matindex, 1}, 3, {{'plus', 17.5}}, Xraw(matindex{:})+17.5
-    'add', {1:4, matindex, 1}, 3, {{'add', 17.5}}, Xraw(matindex{:})+17.5
-    '+', {1:4, matindex, 1}, 3, {{'+', 17.5}}, Xraw(matindex{:})+17.5
-    'times', {1:4, matindex, 1}, 3, {{'times', 6.3}}, Xraw(matindex{:})*6.3
-    'multiply', {1:4, matindex, 1}, 3, {{'multiply', 6.3}}, Xraw(matindex{:})*6.3
-    '*', {1:4, matindex, 1}, 3, {{'*', 6.3}}, Xraw(matindex{:})*6.3
-    'linear', {1:4, matindex, 1}, 3, {{'linear', [1.2 8.6]}}, 1.2 + 8.6*Xraw(matindex{:})
-    'transform, sources', {1:4, allindex, 1:4}, 3, {{'plus', 2.2, 1},{'ln',[],4},{'linear',[2 3],2}}, Xtransform(allindex{:})
+    'none', {1:4, matindex, 1}, 3, {{'none'}}, Xraw(matindex{:}), meta.index(dims,matindex).setOrder(dims)
+    'ln', {1:4, matindex, 1}, 3, {{'ln'}}, log(Xraw(matindex{:})), meta.index(dims,matindex).setOrder(dims)
+    'log', {1:4, matindex, 1}, 3, {{'log'}}, log(Xraw(matindex{:})), meta.index(dims,matindex).setOrder(dims)
+    'log10', {1:4, matindex, 1}, 3, {{'log10'}}, log10(Xraw(matindex{:})), meta.index(dims,matindex).setOrder(dims)
+    'exp', {1:4, matindex, 1}, 3, {{'exp'}}, exp(Xraw(matindex{:})), meta.index(dims,matindex).setOrder(dims)
+    'power', {1:4, matindex, 1}, 3, {{'power',2}}, Xraw(matindex{:}).^2, meta.index(dims,matindex).setOrder(dims)
+    'plus', {1:4, matindex, 1}, 3, {{'plus', 17.5}}, Xraw(matindex{:})+17.5, meta.index(dims,matindex).setOrder(dims)
+    'add', {1:4, matindex, 1}, 3, {{'add', 17.5}}, Xraw(matindex{:})+17.5, meta.index(dims,matindex).setOrder(dims)
+    '+', {1:4, matindex, 1}, 3, {{'+', 17.5}}, Xraw(matindex{:})+17.5, meta.index(dims,matindex).setOrder(dims)
+    'times', {1:4, matindex, 1}, 3, {{'times', 6.3}}, Xraw(matindex{:})*6.3, meta.index(dims,matindex).setOrder(dims)
+    'multiply', {1:4, matindex, 1}, 3, {{'multiply', 6.3}}, Xraw(matindex{:})*6.3, meta.index(dims,matindex).setOrder(dims)
+    '*', {1:4, matindex, 1}, 3, {{'*', 6.3}}, Xraw(matindex{:})*6.3, meta.index(dims,matindex).setOrder(dims)
+    'linear', {1:4, matindex, 1}, 3, {{'linear', [1.2 8.6]}}, 1.2 + 8.6*Xraw(matindex{:}), meta.index(dims,matindex).setOrder(dims)
+    'transform, sources', {1:4, allindex, 1:4}, 3, {{'plus', 2.2, 1},{'ln',[],4},{'linear',[2 3],[2 3]}}, Xtransform(allindex{:}), meta.index(dims,allindex).setOrder(dims)
     };
 
 try
     for t = 1:size(tests,1)
         % Build grid
-        meta = gridMetadata('lon', (1:8)', 'lat', (1:4)', 'time', (1:3)', 'run', (1:5)');
         grid = gridfile.new('test', meta, true);
         grid.add('mat', 'test-load', 'a', ["lon","lat","time"], meta.edit('run',1));
         grid.add('text', 'test-load-A.txt', ["lon","lat"], meta.edit('run',2,'time',1));
@@ -1579,16 +1582,15 @@ try
 
         % Load, test output
         inputs = [tests{t,2}, {sources(tests{t,2}{3})}];
-        Xout = grid.loadInternal(inputs{:});
-        assert(isequaln(Xout, tests{t,5}), 'output');
+        [Xout, metaOut] = grid.loadInternal(inputs{:});
+        assert(isequaln(Xout, tests{t,5}), 'output array');
+        assert(isequaln(metaOut, tests{t,6}), 'output metadata');
     end
 catch cause
-    ME = MException('test:failed', tests{t,1});
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
     ME = addCause(ME, cause);
     throw(ME);
 end
-
-error('add metadata checks!!!!!!!!!!!');
 
 end    
 
