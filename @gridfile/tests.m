@@ -12,7 +12,7 @@ cd(testpath);
 
 
 %%% Current test
-loadInternal;
+buildSources
 
 
 % Run the tests
@@ -1417,6 +1417,7 @@ try
         grid.add('mat','test-3','a',["time","lon","lat"], meta.edit('run',4));
         if ~isempty(tests{t,3})
             grid.sources_.source(1) = tests{t,3};
+            grid.sources_.relativePath(1) = false;
         end
    
         [sources, failed, causes] = grid.buildSources(tests{t,4});

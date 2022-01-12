@@ -44,8 +44,8 @@ for k = 1:nSource
         % Require each dataSource to match the recorded values
         [ismatch, type, sourceValue, gridValue] = obj.sources_.ismatch(source, s(k));
         if ~ismatch
-            sourceDoesNotMatchError(s(k), type, sourceValue, gridValue, ...
-                source.file, obj.file, header);
+            dataSources{k} = [];
+            sourceDoesNotMatchError(s(k), type, sourceValue, gridValue, source.source, obj.file);
         end
         
     % Catch, note, and record failed builds
@@ -58,8 +58,8 @@ end
 end
 
 % Error message
-function[] = sourceDoesNotMatchError(s, type, sourceValue, gridValue, sourceFile, gridFile, header)
-id = sprintf('%s:sourceDoesNotMatchRecord', header);
+function[] = sourceDoesNotMatchError(s, type, sourceValue, gridValue, sourceFile, gridFile)
+id = 'DASH:gridfile:buildSources:sourceDoesNotMatchRecord';
 error(id, ...
     ['The %s of the data in data source %.f (%s) does not match the ',...
     '%s of the data source recorded in the gridfile (%s). The data source ',...
