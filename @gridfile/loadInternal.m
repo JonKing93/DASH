@@ -37,9 +37,13 @@ meta = meta.setOrder(outputDims);
 
 % Get the size of the output array
 outputSize = NaN(1, nDims);
+uniqueIndices = cell(1, nDims);
 for k = 1:nDims
     d = outputDimOrder(k);
     outputSize(k) = numel(loadIndices{d});
+
+    % Get the unique set of indices being loaded.
+    uniqueIndices{d} = unique(loadIndices{d});
 end
 
 % Preallocate the output array
@@ -47,7 +51,7 @@ X = NaN([outputSize, 1, 1]);
 
 % Load the data from each source
 for k = 1:numel(s)
-    [Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, s(k), dataSources{k});
+    [Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, uniqueIndices, s(k), dataSources{k});
     X(outputIndices{:}) = Xsource;
 end
 
@@ -55,7 +59,7 @@ end
 
 %% Utility subfunctions
 
-function[Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, s, dataSource)
+function[Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, uniqueIndices, s, dataSource)
 %% Loads data from a source
 %
 % Inputs:
@@ -79,12 +83,19 @@ function[Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrde
 dimLimit = obj.dimLimit(:,:,s);
 [isMergedDim, indexInMergedDims] = ismember(outputDims, mergedDims);
 
-% 1. Data elements to load from the source (a superset of requested data)
-% 2. Data elements to keep from the loaded data (requested within loaded superset)
-% 3. Location of kept elements within the output array
-[sourceIndices, keepIndices, outputIndices] = buildIndices(...
-    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, loadIndices, unmergedSize, mergeKey);
+% Build indices
+% 1. sourceIndices: Data elements to load from the source (unique/sorted
+%    indices, but may be a superset of requested merged data)
+% 2. keepIndices: Data elements to keep from the loaded data (requested
+%    within loaded unmerged superset)
+% 3. shapeIndices: Reordering of unique/sorted loaded indices to match
+%    requested output
+% 4. outputIndices: Location of reordered elements within the output array
+[sourceIndices, keepIndices, shapeIndices, outputIndices] = buildIndices(...
+    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, loadIndices, ...
+    uniqueIndices, unmergedSize, mergeKey);
 
+% Merge dimensions
 % Load data (superset) from source. Permute to match output dimensions.
 % Merge source dimensions. Remove unrequested data from the loaded superset
 Xsource = dataSource.load(sourceIndices);
@@ -95,9 +106,12 @@ Xsource = Xsource(keepIndices{:});
 % Apply fill value, valid range, data transform
 Xsource = dataAdjustments(Xsource, obj, s);
 
+% Reorder the loaded data to match the requested order of data elements
+Xsource = Xsource(shapeIndices{:});
+
 end
-function[sourceIndices, keepIndices, outputIndices] = buildIndices(...
-    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, gridIndices, unmergedSourceSize, mergeKey)
+function[sourceIndices, keepIndices, shapeIndices, outputIndices] = buildIndices(...
+    outputDimOrder, dimLimit, isMergedDim, indexInMergedDims, gridIndices, uniqueIndices, unmergedSourceSize, mergeKey)
 %% Builds various sets of indices required to load data from a source
 %
 % Inputs:
@@ -119,7 +133,7 @@ function[sourceIndices, keepIndices, outputIndices] = buildIndices(...
 %       of the merged dimension that contains the unmerged dimension.
 %
 % Outputs:
-%   See notes in overview
+%   See notes in the indices overview
 
 %% Preallocate / indices overview
 
@@ -128,6 +142,12 @@ function[sourceIndices, keepIndices, outputIndices] = buildIndices(...
 % indices specifies the data elements that need to be loaded along one
 % gridfile dimension. 
 ... (Passed as an input)
+
+% uniqueIndices
+% These identify the unique data elements in the gridfile needed to
+% implement the load operation. These indices are passed to the data source
+% so that the source only loads repeated indices once.
+... (Passed as input)
 
 % sourceIndices
 % These identify data elements within the unmerged data source. Each set of
@@ -148,6 +168,15 @@ sourceIndices = repmat({1}, 1, nUnmerged);
 nOutputDims = numel(outputDimOrder);
 keepIndices = repmat({':'}, 1, nOutputDims);
 
+% shapeIndices
+% These reorder the loaded data (which consists of unique, sorted indices)
+% to the order of indices requested for the load operation. These ordered
+% indices are not necessarily sorted, and may contain repeated elements.
+% The shape indices cannot be applied until dimensions are merged, so
+% shapeIndices is in the order of the output dimensions
+nOutputDims = numel(outputDimOrder);
+shapeIndices = cell(1, nOutputDims);
+
 % outputIndices
 % These identify data elements within the returned output array. Each set
 % of indices specifies the location of the final loaded data from a source
@@ -165,7 +194,7 @@ outputIndices = cell(1, nOutputDims);
 % Cycle through output dimensions. Get the source's indices along the
 % dimension within the overall gridfile
 for k = 1:nOutputDims
-    d = outputDimOrder(k);
+    d = outputDimOrder(k);   % location of the output dimension within the gridfile dimensions
     dimIndices = dimLimit(d,1):dimLimit(d,2);
     
     % If the dimension is not in the merge map, it is an undefined
@@ -174,7 +203,7 @@ for k = 1:nOutputDims
         requestedLocsInMergedSource = 1;            
     else
         m = indexInMergedDims(k);
-        [toload, requestedLocsInMergedSource] = ismember(gridIndices{d}, dimIndices);
+        [toload, requestedLocsInMergedSource] = ismember(uniqueIndices, dimIndices);
         requestedLocsInMergedSource = requestedLocsInMergedSource(toload);
         
         % Check if the dimension consists of multiple unmerged source
@@ -182,7 +211,8 @@ for k = 1:nOutputDims
         unmergedDims = find(mergeKey==m);
         nUnmerged = numel(unmergedDims);
         
-        % If there are multiple unmerged dimensions, get the unmerged source dimension indices
+        % If there are multiple unmerged dimensions, this is a merged set.
+        % Get the unmerged source dimension indices
         if nUnmerged>1
             unmergedSize = unmergedSourceSize(unmergedDims);
             [sourceIndices{unmergedDims}] = ind2sub(unmergedSize, requestedLocsInMergedSource);
@@ -197,15 +227,19 @@ for k = 1:nOutputDims
             loadedLocsInMergedSource = sub2ind(unmergedSize, loadedSubsInMergedSource{:});
             [~, keepIndices{k}] = ismember(requestedLocsInMergedSource, loadedLocsInMergedSource);
             
-        % If a single unmerged dimension, just load directly
+        % If there is a single unmerged dimension, this is not a merged
+        % set. Just load the dimension directly.
         else
             sourceIndices{unmergedDims} = requestedLocsInMergedSource;
         end
     end
     
-    % Locate source data in the output array
+    % Locate source data in the output array. Shape the unique/sorted
+    % loaded data elements to the requested order
     gridIndicesThatWereLoaded = dimIndices(requestedLocsInMergedSource);
-    [~, outputIndices{k}] = ismember(gridIndicesThatWereLoaded, gridIndices{d});
+    [inSource, shapeIndices{k}] = ismember(gridIndices{d}, gridIndicesThatWereLoaded);
+    shapeIndices{k} = shapeIndices{k}(inSource);
+    outputIndices{k} = find(inSource);
 end
 
 end
