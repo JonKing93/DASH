@@ -68,7 +68,7 @@ end
 [dataSources, failed, cause] = obj.buildSources(s, true, newNames);
 if failed
     s = s(failed);
-    invalidDataSourceError(s, newNames(failed), obj.sources_.source(s), cause, userRename, obj.file, header);
+    invalidDataSourceError(obj, s, newNames(failed), userRename, cause, header);
 end
 
 % Update paths and save
@@ -120,7 +120,7 @@ error(id, ['Data source %.f cannot be found and there are no matching ',...
     '   gridfile: %s'],...
     s, sourceName, gridFile);
 end
-function[] = invalidDataSourceError(s, newfile, oldfile, cause, userRename, gridpath, header)
+function[] = invalidDataSourceError(obj, s, newfile, userRename, cause, header)
 
 % Get the file short name
 [~, name, ext] = fileparts(string(newfile));
@@ -136,18 +136,18 @@ end
 
 % Detect if source does not match record or if the data source failed
 if strcmp(cause.identifier, 'DASH:gridfile:buildSources:sourceDoesNotMatchRecord')
-    problem = sprintf([' does not match the values recorded in the gridfile ',...
+    problem = sprintf(['does not match the values recorded in the gridfile ',...
         'for data source %.f.'], s);
 else
     problem = ' is not a valid data source file.';
 end
 
 % Base error
-base = MException(header, '%s %s\n\n',...
+base = MException(header, ['%s %s\n\n',...
         '    New data source: %s\n',...
         'Current data source: %s\n',...
-        '           gridfile: %s\n',...
-        head, problem, newfile, oldfile, gridpath);
+        '           gridfile: %s\n'],...
+        head, problem, newfile, obj.sources(s), obj.file);
 
 % Add cause information and throw
 base = addCause(base, cause);
