@@ -1,6 +1,14 @@
 function[] = add(obj, type, source, varargin)
 %% gridfile.add  Catalogue a data source in a .grid file
 % ----------
+%   <strong>obj.add</strong>(type, file, ...)
+%   Adds a data source file to the .grid file catalogue. Supported data
+%   sources include NetCDF variables, MAT-file variables, and delimited
+%   text files. The syntaxes for different data source types are detailed
+%   below. Data stored in a data source must be compatible with numeric
+%   data types. Compatible types include double, single, char, logical,
+%   int* and uint* data types.  
+%
 %   <strong>obj.add</strong>('nc', file, variable, dimensions, metadata)
 %   <strong>obj.add</strong>('nc', opendapURL, variable, dimensions, metadata)
 %   <strong>obj.add</strong>('netcdf', ...)
@@ -17,6 +25,10 @@ function[] = add(obj, type, source, varargin)
 %   Adds data stored in a delimited text file to the .grid file catalogue.
 % ----------
 %   Inputs:
+%       type (string scalar): The type of data source file. Options are:
+%           ['nc' | 'netcdf']: NetCDF file
+%           ['mat']: MAT-file
+%           ['txt' | 'text']: Delimited text file
 %       file (string scalar): The name of a data source file. Name may
 %           either be an absolute file path, or the name of a file on the
 %           active path.
@@ -74,6 +86,12 @@ elseif strcmpi(type, 'text') || strcmpi(type, 'txt')
 % Throw error for any other type
 else
     unrecognizedTypeError(header);
+end
+
+% Require numeric-compatible data type
+compatible = ["double","single","char","logical","int64","uint64","int32","uint32","int16","uint16","int8","uint8"];
+if ~ismember(source.dataType, compatible)
+    incompatibleDataTypeError(source, compatible);
 end
 
 % Error check the metadata
@@ -201,6 +219,20 @@ end
 
 
 % Long error messages
+function[] = incompatibleDataTypeError(source, compatible, header)
+
+var = '';
+if isa(source, 'dash.dataSource.hdf')
+    var = sprintf('variable "%s" of ', source.var);
+end
+id = sprintf('%s:incompatibleDataType', header);
+[~,name,ext] = fileparts(source.source);
+name = strcat(name, ext);
+
+error(id, ['The data type stored in %sdata source "%s" (%s) is not compatible ',...
+    'with numeric data types. Allowed data types are: %s.\n\nData source path: %s'], ...
+    var, name, source.dataType, dash.string.list(compatible), source.source);
+end
 function[] = wrongNumberHDFInputsError(type, header)
 id = sprintf('%s:wrongNumberOfInputs', header);
 error(id, ['The must be exactly 4 inputs after the "%s" flag. (file/opendap, ',...

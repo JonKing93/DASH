@@ -154,11 +154,11 @@ classdef gridfile < handle
         [transform, parameters] = transform(obj, type, params, sources);
         
         % Load
-        [X, meta] = load(obj, dimensions, indices)
         loadIndices = getLoadIndices(obj, userDims, userIndices);
         s = sourcesForLoad(obj, loadIndices);
         [dataSources, failed, causes] = buildSources(obj, s);
-        [X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources);        
+        [X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources, precision);      
+        [X, meta] = load(obj, dimensions, indices, precision)
         
         % Arithmetic
         arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);

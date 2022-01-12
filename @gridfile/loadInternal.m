@@ -1,9 +1,16 @@
-function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources)
+function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources, precision)
 %% gridfile.loadInternal  Load requested data from pre-built dataSource objects
 % ----------
 %   [X, meta] = <strong>obj.loadInternal</strong>(userDimOrder, loadIndices, s, dataSources)
 %   Returns a loaded output array and associated metadata given load
 %   parameters and pre-built dataSource objects.
+%
+%   ... = <strong>obj.loadInternal</strong>(..., precision)
+%   Specify whether the loaded array should be single or double precision.
+%   If unspecified, uses a double array when either 1. Requested data is
+%   not in any data source, or 2. Requested data includes double, (u)int32,
+%   or (u)int64 data types. Uses a single array if all requested data is a
+%   of single, char, logical, (u)int8, or (u)int16 data types.
 % ----------
 %   Inputs:
 %       userDimOrder (vector, linear indices [nUserDims]): The locations of the
@@ -17,12 +24,17 @@ function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources)
 %       dataSources (cell vector [nSources] {scalar dataSource object}):
 %           dataSource objects for the data sources at the specified
 %           indices.
+%       precision (string scalar): Indicates the required numeric precision
+%           of the loaded data. Options are "single" or "double".
 %
 %   Outputs:
 %       X: The loaded data array
 %       meta (scalar gridMetadata object): Metadata for the loaded array.
 %
 % <a href="matlab:dash.doc('gridfile.loadInternal')">Documentation Page</a>
+
+% Sizes
+nSource = numel(s);
 
 % Get the full output order
 nDims = numel(obj.dims);
@@ -46,11 +58,24 @@ for k = 1:nDims
     uniqueIndices{d} = unique(loadIndices{d});
 end
 
+% Get the numeric precision of output array
+if ~exist('precision','var') || isempty(precision)
+    types = strings(nSource, 1);
+    for s = 1:nSource
+        types(s) = dataSources{s}.dataType;
+    end
+    if isempty(types) || any(ismember(types, ["double","int32","uint32","int64","uint64"]))
+        precision = 'double';
+    else
+        precision = 'single';
+    end
+end
+
 % Preallocate the output array
-X = NaN([outputSize, 1, 1]);
+X = NaN([outputSize, 1, 1], precision);
 
 % Load the data from each source
-for k = 1:numel(s)
+for k = 1:nSource
     [Xsource, outputIndices] = loadFromSource(obj, outputDims, outputDimOrder, loadIndices, uniqueIndices, s(k), dataSources{k});
     X(outputIndices{:}) = Xsource;
 end

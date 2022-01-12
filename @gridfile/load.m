@@ -1,4 +1,4 @@
-function[X, meta] = load(obj, dimensions, indices)
+function[X, meta] = load(obj, dimensions, indices, precision)
 %% gridfile.load  Load data from the sources catalogued in a gridfile.
 % ----------
 %   [X, meta] = <strong>obj.load</strong>
@@ -19,6 +19,13 @@ function[X, meta] = load(obj, dimensions, indices)
 %   indices, and the rows of the metadata will match the order of the
 %   indices. If indices are not specified for a dimension, the method loads
 %   all data elements along that dimension.
+%
+%   [X, meta] = <strong>obj.load</strong>(dimensions, indices, precision)
+%   Specify the numeric precision of the loaded array. By default, uses
+%   double precision when either 1. Requested data includes double, (u)int32,
+%   or (u)int64 data types, or 2. Requested data is not in any data source.
+%   Uses single precision if all requested data is of single, char, 
+%   logical, (u)int8, or (u)int16 data types.
 % ----------
 %   Inputs:
 %       dimensions (string vector [nDims]): The requested order of
@@ -39,11 +46,13 @@ function[X, meta] = load(obj, dimensions, indices)
 %
 %           Note: Any dimensions not listed in the dimension order will be
 %           loaded in full.
+%       precision (string scalar): Indicates the required numeric precision
+%           of the loaded data. Options are "single" or "double".
 %
 %   Outputs:
-%       X: The loaded data. If specified, dimensions are in the requested
-%           order. Will only include specified elements along each
-%           dimension if dimension indices are provided.
+%       X (double array | single array): The loaded data. If specified, 
+%           dimensions are in the requested order. Will only include specified
+%           elements along each dimension if dimension indices are provided.
 %       meta (gridMetadata object): Metadata for the loaded array. The
 %           metadata for each dimension will only include values for loaded
 %           data elements.
@@ -76,6 +85,14 @@ end
 dimLengths = obj.size(userDimOrder);
 indices = dash.assert.indexCollection(indices, nDims, dimLengths, obj.dims(userDimOrder), header);
 
+% Parse and error check precision
+if ~exist('precision','var') || isempty(precision)
+    precision = [];
+else
+    dash.assert.strflag(precision, 'precision', header);
+    dash.assert.strsInList(precision, ["single","double"], 'precision', 'numeric precision', header);
+end
+
 % Get load indices and build required data sources
 loadIndices = obj.getLoadIndices(userDimOrder, indices);
 s = obj.sourcesForLoad(loadIndices);
@@ -87,6 +104,6 @@ if any(failed)
 end
 
 % Load the values
-[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources);
+[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources, precision);
 
 end
