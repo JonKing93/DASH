@@ -12,7 +12,7 @@ cd(testpath);
 
 
 %%% Current test
-load_
+rename
 
 
 % Run the tests
@@ -1618,11 +1618,6 @@ XtextB = readmatrix('test-load-B.txt');
 Xtext = cat(3,XtextA,XtextB,NaN(size(XtextA)));
 
 Xraw = cat(4, double(Xmat), Xtext, Xnc);
-
-% File paths
-invalid = fullfile(pwd, 'invalid','test.mat');
-diffSize=  fullfile(pwd, 'different-size', 'test.mat');
-diffType = fullfile(pwd, 'test-load.mat');
 
 % Indices
 lon = [1 3 4 7 8];
