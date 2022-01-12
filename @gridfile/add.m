@@ -91,7 +91,7 @@ end
 % Require numeric-compatible data type
 compatible = ["double","single","char","logical","int64","uint64","int32","uint32","int16","uint16","int8","uint8"];
 if ~ismember(source.dataType, compatible)
-    incompatibleDataTypeError(source, compatible);
+    incompatibleDataTypeError(obj, source, compatible, header);
 end
 
 % Error check the metadata
@@ -219,19 +219,19 @@ end
 
 
 % Long error messages
-function[] = incompatibleDataTypeError(source, compatible, header)
+function[] = incompatibleDataTypeError(obj, source, compatible, header)
 
 var = '';
 if isa(source, 'dash.dataSource.hdf')
-    var = sprintf('variable "%s" of ', source.var);
+    var = sprintf('the "%s" variable of ', source.var);
 end
 id = sprintf('%s:incompatibleDataType', header);
 [~,name,ext] = fileparts(source.source);
 name = strcat(name, ext);
 
-error(id, ['The data type stored in %sdata source "%s" (%s) is not compatible ',...
-    'with numeric data types. Allowed data types are: %s.\n\nData source path: %s'], ...
-    var, name, source.dataType, dash.string.list(compatible), source.source);
+error(id, ['The data type (%s) stored in %sdata source "%s" is not allowed. ',...
+    'Allowed data types are: %s.\n\nData source path: %s\ngridfile: %s'], ...
+    source.dataType, var, name, dash.string.list(compatible), source.source, obj.file);
 end
 function[] = wrongNumberHDFInputsError(type, header)
 id = sprintf('%s:wrongNumberOfInputs', header);

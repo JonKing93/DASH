@@ -21,7 +21,7 @@ function[X, meta] = loadInternal(obj, userDimOrder, loadIndices, s, dataSources,
 %           in the gridfile's dimension order.
 %       s (vector, linear indices [nSource]): The indices of data sources that are
 %           required in order to load the requested data.
-%       dataSources (cell vector [nSources] {scalar dataSource object}):
+%       dataSources (cell vector [nSource] {scalar dataSource object}):
 %           dataSource objects for the data sources at the specified
 %           indices.
 %       precision (string scalar): Indicates the required numeric precision
@@ -61,8 +61,8 @@ end
 % Get the numeric precision of output array
 if ~exist('precision','var') || isempty(precision)
     types = strings(nSource, 1);
-    for s = 1:nSource
-        types(s) = dataSources{s}.dataType;
+    for k = 1:nSource
+        types(k) = dataSources{k}.dataType;
     end
     if isempty(types) || any(ismember(types, ["double","int32","uint32","int64","uint64"]))
         precision = 'double';
