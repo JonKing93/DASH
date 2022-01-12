@@ -15,7 +15,7 @@ try
         end
     end
 catch cause
-    ME = MException('test:failed', tests{t,1});
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
     ME = addCause(ME, cause);
     throw(ME);
 end
