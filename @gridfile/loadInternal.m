@@ -32,7 +32,7 @@ outputDimOrder = [userDimOrder, allDims(notInUserOrder)];
 outputDims = obj.dims(outputDimOrder);
 
 % Get the metadata for the output array
-meta = obj.meta.index(outputDims, loadIndices);
+meta = obj.meta.index(obj.dims, loadIndices);
 meta = meta.setOrder(outputDims);
 
 % Get the size of the output array
@@ -140,13 +140,14 @@ function[sourceIndices, keepIndices, shapeIndices, outputIndices] = buildIndices
 % gridIndices
 % These identify data elements within the overall gridfile. Each set of
 % indices specifies the data elements that need to be loaded along one
-% gridfile dimension. 
+% gridfile dimension. These are in the order of the gridfile dimensions.
 ... (Passed as an input)
 
 % uniqueIndices
 % These identify the unique data elements in the gridfile needed to
 % implement the load operation. These indices are passed to the data source
-% so that the source only loads repeated indices once.
+% so that the source only loads repeated indices once. These are in the
+% order of the gridfile dimensions
 ... (Passed as input)
 
 % sourceIndices
@@ -203,7 +204,7 @@ for k = 1:nOutputDims
         requestedLocsInMergedSource = 1;            
     else
         m = indexInMergedDims(k);
-        [toload, requestedLocsInMergedSource] = ismember(uniqueIndices, dimIndices);
+        [toload, requestedLocsInMergedSource] = ismember(uniqueIndices{d}, dimIndices);
         requestedLocsInMergedSource = requestedLocsInMergedSource(toload);
         
         % Check if the dimension consists of multiple unmerged source
@@ -320,7 +321,7 @@ function[Xsource] = dataAdjustments(Xsource, obj, s)
 % Fill value
 fill = obj.sources_.fill(s);
 if ~isnan(fill)
-    Xsource(fill) = NaN;
+    Xsource(Xsource==fill) = NaN;
 end
 
 % Valid Range
