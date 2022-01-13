@@ -129,7 +129,7 @@ nMetaDims = numel(metaDims);
 % Parameters for error checking
 [gridInMeta, gm] = ismember(gridDims, metaDims);
 [sourceInMeta, sm] = ismember(sourceDims, metaDims);
-[sourceInGrid, sg] = ismember(sourceDims, gridDims);
+[sourceInGrid, sg] = ismember(sourceDims, obj.dims);
 
 % Require:
 % 2. Non-singleton grid dimensions to be in the metadata
