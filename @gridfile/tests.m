@@ -10,10 +10,6 @@ home = pwd;
 gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
-
-%%% Current test
-arithmetic;
-
 % Run the tests
 new;
 constructor;
@@ -44,10 +40,10 @@ buildSources;
 loadInternal;
 load_;
 
-plus;
-minus;
-times;
-divide;
+plus_;
+minus_;
+times_;
+divide_;
 arithmetic;
 
 sources;
@@ -1973,6 +1969,256 @@ catch cause
 end
 
 end
+function[] = plus_
+
+% File paths
+newmat = fullfile(pwd, 'math.mat');
+newgrid = fullfile(pwd, 'math.grid');
+
+% Metadata
+dims = ["lat","lon","run","time"];
+dims2 = ["run","lat","time","lon"];
+meta = gridMetadata('lat',[(1:3)',(4:6)'],'lon',(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+metaAtts = meta.addAttributes('Units','Kelvin');
+meta2 = gridMetadata('lat', string(1:3)', 'lon', string(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+
+% Output array
+X1 = load('math-1.mat','double').double;
+X2 = load('math-2.mat','double').double;
+Xout = X1 + permute(X2, [2 4 1 3]);
+Xsingle = single(X1) + single(permute(X2, [2 4 1 3]));
+
+% Delete extra files
+if isfile(newmat)
+    delete(newmat);
+end
+if isfile(newgrid)
+    delete(newgrid);
+end
+
+% Verify wrapper handles no extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta);
+
+grid1.plus(grid2, 'math');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xout), 'matfile array');
+assert(isequaln(m.meta, meta), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xout, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, meta), 'gridfile array');
+
+% Check wrapper handles extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta2, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta2);
+
+grid1.plus(grid2, 'math', 'overwrite', true, 'type', 3, 'attributes', 1, 'precision', 'single');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xsingle), 'matfile array');
+assert(isequaln(m.meta, metaAtts), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xsingle, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, metaAtts), 'gridfile array');
+
+end
+function[] = minus_
+
+% File paths
+newmat = fullfile(pwd, 'math.mat');
+newgrid = fullfile(pwd, 'math.grid');
+
+% Metadata
+dims = ["lat","lon","run","time"];
+dims2 = ["run","lat","time","lon"];
+meta = gridMetadata('lat',[(1:3)',(4:6)'],'lon',(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+metaAtts = meta.addAttributes('Units','Kelvin');
+meta2 = gridMetadata('lat', string(1:3)', 'lon', string(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+
+% Output array
+X1 = load('math-1.mat','double').double;
+X2 = load('math-2.mat','double').double;
+Xout = X1 - permute(X2, [2 4 1 3]);
+Xsingle = single(X1) - single(permute(X2, [2 4 1 3]));
+
+% Delete extra files
+if isfile(newmat)
+    delete(newmat);
+end
+if isfile(newgrid)
+    delete(newgrid);
+end
+
+% Verify wrapper handles no extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta);
+
+grid1.minus(grid2, 'math');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xout), 'matfile array');
+assert(isequaln(m.meta, meta), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xout, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, meta), 'gridfile array');
+
+% Check wrapper handles extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta2, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta2);
+
+grid1.minus(grid2, 'math', 'overwrite', true, 'type', 3, 'attributes', 1, 'precision', 'single');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xsingle), 'matfile array');
+assert(isequaln(m.meta, metaAtts), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xsingle, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, metaAtts), 'gridfile array');
+
+end
+function[] = times_
+
+% File paths
+newmat = fullfile(pwd, 'math.mat');
+newgrid = fullfile(pwd, 'math.grid');
+
+% Metadata
+dims = ["lat","lon","run","time"];
+dims2 = ["run","lat","time","lon"];
+meta = gridMetadata('lat',[(1:3)',(4:6)'],'lon',(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+metaAtts = meta.addAttributes('Units','Kelvin');
+meta2 = gridMetadata('lat', string(1:3)', 'lon', string(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+
+% Output array
+X1 = load('math-1.mat','double').double;
+X2 = load('math-2.mat','double').double;
+Xout = X1 .* permute(X2, [2 4 1 3]);
+Xsingle = single(X1) .* single(permute(X2, [2 4 1 3]));
+
+% Delete extra files
+if isfile(newmat)
+    delete(newmat);
+end
+if isfile(newgrid)
+    delete(newgrid);
+end
+
+% Verify wrapper handles no extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta);
+
+grid1.times(grid2, 'math');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xout), 'matfile array');
+assert(isequaln(m.meta, meta), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xout, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, meta), 'gridfile array');
+
+% Check wrapper handles extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta2, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta2);
+
+grid1.times(grid2, 'math', 'overwrite', true, 'type', 3, 'attributes', 1, 'precision', 'single');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xsingle), 'matfile array');
+assert(isequaln(m.meta, metaAtts), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xsingle, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, metaAtts), 'gridfile array');
+
+end
+function[] = divide_
+
+% File paths
+newmat = fullfile(pwd, 'math.mat');
+newgrid = fullfile(pwd, 'math.grid');
+
+% Metadata
+dims = ["lat","lon","run","time"];
+dims2 = ["run","lat","time","lon"];
+meta = gridMetadata('lat',[(1:3)',(4:6)'],'lon',(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+metaAtts = meta.addAttributes('Units','Kelvin');
+meta2 = gridMetadata('lat', string(1:3)', 'lon', string(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+
+% Output array
+X1 = load('math-1.mat','double').double;
+X2 = load('math-2.mat','double').double;
+Xout = X1 ./ permute(X2, [2 4 1 3]);
+Xsingle = single(X1) ./ single(permute(X2, [2 4 1 3]));
+
+% Delete extra files
+if isfile(newmat)
+    delete(newmat);
+end
+if isfile(newgrid)
+    delete(newgrid);
+end
+
+% Verify wrapper handles no extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta);
+
+grid1.divide(grid2, 'math');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xout), 'matfile array');
+assert(isequaln(m.meta, meta), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xout, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, meta), 'gridfile array');
+
+% Check wrapper handles extra args
+grid1 = gridfile.new('math-1', metaAtts, true);
+grid1.add('mat', 'math-1', 'double', dims, meta);
+grid2 = gridfile.new('math-2', meta2, true);
+grid2.add('mat', 'math-2', 'double', dims2, meta2);
+
+grid1.divide(grid2, 'math', 'overwrite', true, 'type', 3, 'attributes', 1, 'precision', 'single');
+
+m = matfile('math.mat');
+Xmat = permute(m.X, [2 1 4 3]);
+assert(isequaln(Xmat, Xsingle), 'matfile array');
+assert(isequaln(m.meta, metaAtts), 'matfile metadata');
+
+g = gridfile('math.grid');
+assert(isequaln(Xsingle, g.load(dims)), 'gridfile array');
+assert(isequaln(g.metadata, metaAtts), 'gridfile array');
+
+end
+
+
 
 function[] = sources
 
