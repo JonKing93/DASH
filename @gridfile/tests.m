@@ -31,7 +31,7 @@ rename
 absolutePaths
 
 fillValue;  % these only check that gridfile properties are updated
-validRange; % check the actual implementation in the tests for "load"
+validRange; % check the actual implementation in the tests for "loadInternal"
 transform;
 
 getLoadIndices;
@@ -40,11 +40,11 @@ buildSources;
 loadInternal;
 load_;
 
+arithmetic;
 plus_;
 minus_;
 times_;
 divide_;
-arithmetic;
 
 sources;
 info;
