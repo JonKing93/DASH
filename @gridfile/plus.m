@@ -94,7 +94,7 @@ function[] = plus(obj, grid2, filename, varargin)
 % <a href="matlab:dash.doc('gridfile.plus')">Documentation Page</a>
 
 % Parse optional inputs
-[overwrite, atts, type, precision] = dash.parse.inputs(varargin, ...
+[overwrite, atts, type, precision] = dash.parse.nameValue(varargin, ...
     ["overwrite","attributes","type","precision"], {[], [], [], []}, 2);
 
 % Implement gridfile arithmetic

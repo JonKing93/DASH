@@ -108,7 +108,7 @@ function[] = divide(obj, grid2, filename, varargin)
 % <a href="matlab:dash.doc('gridfile.divide')">Online Documentation</a>
 
 % Parse optional inputs
-[overwrite, atts, type, precision] = dash.parse.inputs(varargin, ...
+[overwrite, atts, type, precision] = dash.parse.nameValue(varargin, ...
     ["overwrite","attributes","type","precision"], {[], [], [], []}, 2);
 
 % Implement gridfile arithmetic
