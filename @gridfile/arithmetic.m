@@ -30,7 +30,7 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 %           [1 (default)]: requires data dimensions to have compatible sizes
 %           AND have the same metadata along each non-singleton dimension.
 %           Does arithmetic on all data elements.
-%           [2]: Searches for data elements with matching elements in
+%           [2]: Searches for data elements with matching metadata in
 %           non-singleton dimensions. Only does arithmetic at these elements.
 %           Does not require data dimensions to have compatible sizes.
 %           [3]: Does not compare dimensional metadata. Loads all data elements
@@ -101,9 +101,9 @@ end
 [~, atts] = gridMetadata.dimensions;
 if ~exist('attributes','var') || isempty(attributes)
     attributes = struct();
-elseif attributes==1
+elseif isequal(attributes, 1)
     attributes = obj.meta.(atts);
-elseif attributes==2
+elseif isequal(attributes, 2)
     attributes = grid2.meta.(atts);
 elseif ~(isscalar(attributes) && isstruct(attributes))
     id = sprintf('%s:invalidAttributes', header);
@@ -160,35 +160,38 @@ for d = 1:numel(xdims)
     if ismember(type, [1 3]) && length1~=length2 && length1~=1 && length2~=1
         dimensionLengthError(strs, obj.name, grid2.name, dim, length1, length2, header);
     end
-    
-    % NON-BROADCAST DIMENSIONS
-    % Type 1: Require same metadata, order grid2 to match grid1
-    % Type 2: Get metadata intersection, order both grids to intersect
-    % Type 3: Use grid1 metadata
-    if length1==length2 && length1~=1
-        if type==2
-            [dimMetadata, order1{d1(d)}, order2{d2(d)}] = ...
-            intersect(meta1.(dim), meta2.(dim), 'rows', 'stable');
-            if isempty(dimMetadata)
-                noMatchingMetadataError(strs, obj.name, grid2.name, dim, header);
-            end
-        else
-            if type==1
-                [~, loc] = ismember(meta1.(dim), meta2.(dim), 'rows');
-                if any(loc==0)
-                    bad = find(loc==0,1);
-                    differentMetadataError(strs, obj.name, grid2.name, dim, bad, header);
-                end
-                order2{d2(d)} = loc;
-            end
-            dimMetadata = meta1.(dim);
-        end
 
     % BROADCAST DIMENSIONS
-    elseif length2==1
+    % Use metadata from non-singleton dimension. No index order needed
+    % because loading all elements from one dataset and all-1 element
+    % from the other
+    if length2==1
         dimMetadata = meta1.(dim);
-    else
+    elseif length1==1
         dimMetadata = meta2.(dim);
+
+    % NON-BROADCAST DIMENSIONS
+    % Type 1: Require same metadata, order grid2 to match grid1
+    elseif type==1
+        [~, loc] = ismember(meta1.(dim), meta2.(dim), 'rows');
+        if any(loc==0)
+            bad = find(loc==0,1);
+            differentMetadataError(strs, obj.name, grid2.name, dim, bad, header);
+        end
+        order2{d2(d)} = loc;
+        dimMetadata = meta1.(dim);
+
+    % Type 2: Get metadata intersect, order both grids to intersect
+    elseif type==2
+        [dimMetadata, order1{d1(d)}, order2{d2(d)}] = ...
+            intersect(meta1.(dim), meta2.(dim), 'rows', 'stable');
+        if isempty(dimMetadata)
+            noMatchingMetadataError(strs, obj.name, grid2.name, dim, header);
+        end
+
+    % Type 3: No metadata checks. Use grid1 metadata and default order
+    elseif type==3
+        dimMetadata = meta1.(dim);
     end
     
     % Update metadata
@@ -216,8 +219,11 @@ X2 = grid2.load(dims2, order2, precision);
 
 % Permute to align dimensions
 allDims = [dims1, udims2];
-[~, index] = ismember(dims2, allDims);
-X2 = dash.permuteDimensions(X2, index, false);
+[~, X2dims] = ismember(dims2, allDims);
+dims = 1:numel(allDims);
+X2order = [X2dims, dims(~ismember(dims, X2dims))];
+[~, newOrder] = sort(X2order);
+X2 = permute(X2, newOrder);
 
 % Require same numerical precision
 types = {class(X1), class(X2)};
@@ -235,7 +241,7 @@ save(matName, 'meta', 'X', '-v7.3');
 
 % Build new .grid file
 grid = gridfile.new(gridName, meta, true);
-grid.add("mat", matName, "X", alldims, meta);
+grid.add("mat", matName, "X", allDims, meta);
 
 end
 
@@ -256,8 +262,8 @@ end
 function[] = differentMetadataError(strs, name1, name2, dim, index, header)
 id = sprintf('%s:differentMetadata', header);
 error(id, ['Cannot %s %s %s %s because the files have different metadata along ',...
-    'the %s dimension. (Element %.f in %2$s is not in %1$s)'],...
-    strs(1), name1, strs(2), name2, dim, index);
+    'the %s dimension. (Element %.f in %s is not in %s)'],...
+    strs(1), name1, strs(2), name2, dim, index, name1, name2);
 end
 function[] = noMatchingMetadataError(strs, name1, name2, dim, header)
 id = sprintf('%s:noMatchingMetadata', header);
