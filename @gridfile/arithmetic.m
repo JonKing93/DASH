@@ -1,7 +1,7 @@
-function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, type)
+function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, type, precision)
 %% gridfile.arithmetic  Arithmetic operations across two gridfiles
 % ----------
-%   <strong>obj.arithmetic</strong>(operation, grid2, filename, overwrite, atts, type)
+%   <strong>obj.arithmetic</strong>(operation, grid2, filename, overwrite, atts, type, precision)
 %   Implement an arithmetic operation on the data in two .grid files. Saves
 %   the result of the operation to a .mat file and catalogues the result in
 %   a new .grid file.
@@ -36,23 +36,13 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 %           [3]: Does not compare dimensional metadata. Loads all data elements
 %           from both files and applies arithmetic directly. Requires data
 %           dimensions to have compatible sizes.
+%       precision ([] | 'single' | 'double'): The required numerical
+%           precision of the final data. If 'single' or 'double', uses the
+%           specified type. If an empty array, uses double unless all
+%           data used for arithmetic is loaded as single by default.
 %
 %   Saves:
 %       A .mat and .grid file with the specified names.
-%
-%   Throws:
-%       DASH:gridfile:<operation>:invalidGridfile  when grid2 is not a
-%           valid gridfile
-%       DASH:gridfile:<operation>:invalidAttributes  when attributes is not
-%           a recognized option
-%       DASH:gridfile:<operation>:invalidType  when type is not a
-%           recognized option
-%       DASH:gridfile:<operation>:dimensionLengthMismatch  when type is 1
-%           or 3 and the data dimensions do not have compatible sizes
-%       DASH:gridfile:<operation>:differentMetadata  when type is 1 and
-%           there is different metadata along a non-singleton dimension
-%       DASH:gridfile:<operation>:noMatchingMetadata  when type is 2 and
-%           there is no matching metadata along a non-singleton dimension
 %
 % <a href="matlab:dash.doc('gridfile.arithmetic')">Online Documentation</a>
 
@@ -221,13 +211,20 @@ end
 %% Arithmetic, Save, Create .grid file
 
 % Load data
-X1 = obj.load(dims1);
-X2 = grid2.load(dims2, order);
+X1 = obj.load(dims1, order1, precision);
+X2 = grid2.load(dims2, order2, precision);
 
 % Permute to align dimensions
 allDims = [dims1, udims2];
 [~, index] = ismember(dims2, allDims);
 X2 = dash.permuteDimensions(X2, index, false);
+
+% Require same numerical precision
+types = {class(X1), class(X2)};
+if ismember('single',types) && ismember('double',types)
+    X1 = double(X1);
+    X2 = double(X2);
+end
 
 % Do arithmetic operation
 X = math(X1, X2);

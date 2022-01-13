@@ -46,8 +46,10 @@ function[X, meta] = load(obj, dimensions, indices, precision)
 %
 %           Note: Any dimensions not listed in the dimension order will be
 %           loaded in full.
-%       precision (string scalar): Indicates the required numeric precision
-%           of the loaded data. Options are "single" or "double".
+%       precision ([] | 'single' | 'double'): Indicates the required numeric precision
+%           of the loaded data. If 'single' or 'double', uses the specified
+%           type. If unset or an empty array, uses double unless all requested data
+%           has a single, char, logical, (u)int8, or (u)int16 data type.
 %
 %   Outputs:
 %       X (double array | single array): The loaded data. If specified, 

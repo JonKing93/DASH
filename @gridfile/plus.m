@@ -2,11 +2,13 @@ function[] = plus(obj, grid2, filename, varargin)
 %% gridfile.plus  Sum the data in two gridfiles
 % ----------
 %   <strong>obj.plus</strong>(grid2, filename)
-%   Sums the data in the current gridfile with a second gridfile. Saves the
-%   sum to a .mat file and organizes the sum in a new .grid file. The names
-%   of the new files are specified by filename. Provide a single name to
-%   use the same name for both files. Provide two names to use different
-%   names for each file.
+%   Sums the data in the current gridfile with a second gridfile, such that:
+%       New Data = Current gridfile + second gridfile
+% 
+%   Saves the sum to a .mat file and catalogues it in a new .grid file. 
+%   The names of the new files are specified by filename. Provide a single 
+%   name to use the same name for both files. Provide two names to use
+%   different names for each file.
 %
 %   By default, each data dimension must have either the same length in
 %   both gridfiles, or a length of 1 in at least one file. If a dimension
@@ -47,6 +49,11 @@ function[] = plus(obj, grid2, filename, varargin)
 %   The two gridfiles are again required to have compatible sizes. The
 %   dimensional metadata of the new gridfile will match that of the current
 %   gridfile except when broadcasting over grid2.
+%
+%   <strong>obj.plus</strong>(..., 'precision', precision)
+%   Specify the numerical precision of the data used for addition. 
+%   If 'single' or 'double', uses the specified type. If unset or empty, 
+%   uses double unless all loaded data is single by default.
 % ----------
 %   Inputs:
 %       grid2 (string scalar | gridfile object): The second gridfile to sum
@@ -76,31 +83,21 @@ function[] = plus(obj, grid2, filename, varargin)
 %           [3]: Does not compare dimensional metadata. Loads all data elements
 %               from both files and applies arithmetic directly. Requires data
 %               dimensions to have compatible sizes.
+%       precision ([] | 'single' | 'double'): The required numerical
+%           precision of the data used for addition. If 'single' or 'double', 
+%           uses the specified type. If an empty array, uses double unless all
+%           data used for addition is loaded as single by default.
 %
 %   Saves:
 %       A .mat and .grid file with the specified names
 %
-%   Throws:
-%       DASH:gridfile:plus:invalidGridfile - when grid2 is not a
-%           valid gridfile
-%       DASH:gridfile:plus:invalidAttributes - when attributes is not
-%           a recognized option
-%       DASH:gridfile:plus:invalidType - when type is not a
-%           recognized option
-%       DASH:gridfile:plus:dimensionLengthMismatch - when type is 1
-%           or 3 and the data dimensions do not have compatible sizes
-%       DASH:gridfile:plus:differentMetadata - when type is 1 and
-%           there is different metadata along a non-singleton dimension
-%       DASH:gridfile:plus:noMatchingMetadata - when type is 2 and
-%           there is no matching metadata along a non-singleton dimension
-%
 % <a href="matlab:dash.doc('gridfile.plus')">Documentation Page</a>
 
 % Parse optional inputs
-[overwrite, atts, type] = dash.parse.inputs(varargin, ...
-    ["overwrite","attributes","type"], {[], [], []}, 2);
+[overwrite, atts, type, precision] = dash.parse.inputs(varargin, ...
+    ["overwrite","attributes","type","precision"], {[], [], [], []}, 2);
 
 % Implement gridfile arithmetic
-obj.arithmetic('plus', grid2, filename, overwrite, atts, type);
+obj.arithmetic('plus', grid2, filename, overwrite, atts, type, precision);
 
 end

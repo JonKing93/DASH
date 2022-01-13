@@ -161,7 +161,7 @@ classdef gridfile < handle
         [X, meta] = load(obj, dimensions, indices, precision)
         
         % Arithmetic
-        arithmetic(obj, operation, grid2, filename, overwrite, attributes, type);
+        arithmetic(obj, operation, grid2, filename, overwrite, attributes, type, precision);
         plus(obj, grid2, filename, varargin);
         minus(obj, grid2, filename, varargin);
         times(obj, grid2, filename, varargin);

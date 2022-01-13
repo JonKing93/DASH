@@ -2,11 +2,13 @@ function[] = divide(obj, grid2, filename, varargin)
 %% gridfile.divide  Divide the data in the current gridfile by a second gridfile
 % ----------
 %   <strong>obj.divide</strong>(grid2, filename)
-%   Divides the data in the current gridfile with a second gridfile. Saves the
-%   result to a .mat file and organizes the result in a new .grid file. The names
-%   of the new files are specified by filename. Provide a single name to
-%   use the same name for both files. Provide two names to use different
-%   names for each file.
+%   Divides the data in the current gridfile by a second gridfile, such that:
+%       New data = Current gridfile ./ second gridfile
+% 
+%   Saves the result to a .mat file and catalogues it in a new .grid file. 
+%   The names of the new files are specified by filename. Provide a single 
+%   name to use the same name for both files. Provide two names to use
+%   different names for each file.
 %
 %   By default, each data dimension must have either the same length in
 %   both gridfiles, or a length of 1 in at least one file. If a dimension
@@ -47,6 +49,11 @@ function[] = divide(obj, grid2, filename, varargin)
 %   The two gridfiles are again required to have compatible sizes. The
 %   dimensional metadata of the new gridfile will match that of the current
 %   gridfile except when broadcasting over grid2.
+%
+%   <strong>obj.divide</strong>(..., 'precision', precision)
+%   Specify the numerical precision of the data used for addition. 
+%   If 'single' or 'double', uses the specified type. If unset or empty, 
+%   uses double unless all loaded data is single by default.
 % ----------
 %   Inputs:
 %       grid2 (string scalar | gridfile object): The gridfile that the
@@ -76,6 +83,10 @@ function[] = divide(obj, grid2, filename, varargin)
 %           [3]: Does not compare dimensional metadata. Loads all data elements
 %           from both files and applies arithmetic directly. Requires data
 %           dimensions to have compatible sizes.
+%       precision ([] | 'single' | 'double'): The required numerical
+%           precision of the data used for division. If 'single' or 'double', 
+%           uses the specified type. If an empty array, uses double unless all
+%           data used for addition is loaded as single by default.
 %
 %   Saves:
 %       A .mat and .grid file with the specified names
@@ -97,10 +108,10 @@ function[] = divide(obj, grid2, filename, varargin)
 % <a href="matlab:dash.doc('gridfile.divide')">Online Documentation</a>
 
 % Parse optional inputs
-[overwrite, atts, type] = dash.parse.inputs(varargin, ...
-    ["overwrite","attributes","type"], {[], [], []}, 2);
+[overwrite, atts, type, precision] = dash.parse.inputs(varargin, ...
+    ["overwrite","attributes","type","precision"], {[], [], [], []}, 2);
 
 % Implement gridfile arithmetic
-obj.arithmetic('divide', grid2, filename, overwrite, atts, type);
+obj.arithmetic('divide', grid2, filename, overwrite, atts, type, precision);
 
 end
