@@ -77,7 +77,7 @@ function[] = times(obj, grid2, filename, varargin)
 %           [1 (default)]: requires data dimensions to have compatible sizes
 %           AND have the same metadata along each non-singleton dimension.
 %           Does arithmetic on all data elements.
-%           [2]: Searches for data elements with matching elements in
+%           [2]: Searches for data elements with matching metadata in
 %           non-singleton dimensions. Only does arithmetic at these elements.
 %           Does not require data dimensions to have compatible sizes.
 %           [3]: Does not compare dimensional metadata. Loads all data elements

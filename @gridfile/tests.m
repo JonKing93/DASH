@@ -12,7 +12,7 @@ cd(testpath);
 
 
 %%% Current test
-
+arithmetic;
 
 % Run the tests
 new;
@@ -44,11 +44,11 @@ buildSources;
 loadInternal;
 load_;
 
-% plus;
-% minus;
-% times;
-% divide;
-% arithmetic;
+plus;
+minus;
+times;
+divide;
+arithmetic;
 
 sources;
 info;
@@ -1777,6 +1777,200 @@ catch ME
 end
 assert(contains(ME.identifier,'DASH:gridfile'), 'invalid error');
 delete(reset);
+
+end
+
+function[] = arithmetic
+
+% gridfile metadata
+meta = gridMetadata('lat',[(1:3)',(4:6)'],'lon',(1:6)','run',["runa";"runb"], 'time',(1:20)' );
+metaBroadcast1 = meta.edit('run', 7);
+metaBroadcast2 = meta.edit('lat', [], 'run', ["A";"B"]);
+
+metaDiffSize = gridMetadata('lat',[(2:3)',(5:6)'], 'lon',(-1:7)', 'run',["runa";"runb";"runc"], 'time', (-4:5)');
+metaDSB = metaDiffSize.edit('time',[]);
+metaNoOverlap = metaDiffSize.edit('time',(21:30)');
+
+metaDiffMeta = gridMetadata('lat', [(1:3)',(14:16)'], 'lon',(11:16)', 'time',string(1:20)', 'run', ["A";"B"]);
+meta2BDM = gridMetadata('lat', "other", 'lon',(11:16)', 'time',string(1:20)', 'run', ["A";"B"]);
+
+% Dimension orders
+dims = ["lat","lon","run","time"];
+dims2 = ["run","lat","time","lon"];
+dimsBroad = ["time","run","lon"];
+
+% Gridfile inputs
+double1 = {'mat', 'math-1', 'double', dims, meta};
+single1 = {'mat','math-1','single', dims, meta};
+double2 = {'mat','math-2','double', dims2, meta};
+single2 = {'mat','math-2','single', dims2, meta};
+double1Broadcast = {'mat', 'math-1', 'doubleBroadcast', dims, metaBroadcast1};
+double2Broadcast = {'mat', 'math-2', 'doubleBroadcast', dimsBroad, metaBroadcast2};
+
+diffSize = {'mat','math-2', 'diffSize', dims2, metaDiffSize};
+diffSizeNoMeta = {'mat', 'math-2', 'diffSize', dims2, metaNoOverlap};
+diffSizeBroadcast = {'mat', 'math-2', 'diffSizeBroadcast', dims2, metaDSB};
+
+diffMeta = {'mat','math-2','double', dims2, metaDiffMeta};
+double2BroadcastDiffMeta = {'mat', 'math-2', 'doubleBroadcast', dimsBroad, meta2BDM};
+
+
+% File paths
+notgrid = fullfile(pwd, 'not-grid.grid');
+newmat = fullfile(pwd, 'math.mat');
+newgrid = fullfile(pwd, 'math.grid');
+altmat = fullfile(pwd, 'math-alt.mat');
+
+% Attributes
+atts1 = struct('Units','Kelvin');
+atts2 = struct('timestamp', datetime(1,1,1));
+attsAlt = struct('alternate','values');
+
+% Output arrays
+math1 = load('math-1.mat');
+math2 = load('math-2.mat');
+
+Xplus = math1.double + permute(math2.double,[2 4 1 3]);
+Xminus = math1.double - permute(math2.double,[2 4 1 3]);
+Xtimes = math1.double .* permute(math2.double,[2 4 1 3]);
+Xdivide = math1.double ./ permute(math2.double,[2 4 1 3]);
+
+X1broad = math1.doubleBroadcast + permute(math2.doubleBroadcast, [4 3 2 1]);
+X2 = math1.double(2:3,:,:,1:5) + permute(math2.diffSize(1:2,:,6:10,3:8), [2 4 1 3]);
+X2broad = math1.double(2:3,:,:,:) + permute(math2.diffSizeBroadcast(1:2,:,1,3:8), [2 4 1 3]);
+
+Xsingle = math1.single + permute(math2.single,[2 4 1 3]);
+Xmixed = math1.double + permute(double(math2.single), [2 4 1 3]);
+Xcastsingle = single(math1.double) + permute(single(math2.double), [2 4 1 3]);
+Xcastdouble = double(math1.single) + permute(double(math2.single), [2 4 1 3]);
+
+
+tests = {
+    % description, should succeed, grid1 inputs, grid2 inputs, create files, inputs, output array, output gridfile metadata
+    'plus', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'minus', true, double1, double2, [false false], {'minus','math-2.grid','math',true,[],1,[]}, Xminus, meta
+    'times', true, double1, double2, [false false], {'times','math-2.grid','math',true,[],1,[]}, Xtimes, meta
+    'divide', true, double1, double2, [false false], {'divide','math-2.grid','math',true,[],1,[]}, Xdivide, meta
+
+    'grid2 string', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'grid2 string without extension', true, double1, double2, [false false], {'plus','math-2','math',true,[],1,[]}, Xplus, meta
+    'grid2 object', true, double1, double2, [false false], {'plus',2,'math',true,[],1,[]}, Xplus, meta
+    'invalid grid2', false, double1, double2, [false false], {'plus',notgrid,'math',true,[],1,[]}, [], []
+
+    'single file name', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'different mat/grid names', true, double1, double2, [false false], {'plus','math-2.grid',["math-alt";"math"],true,[],1,[]}, Xplus, meta
+    'invalid filenames', false, double1, double2, [false false], {'plus','math-2.grid',[4 5],true,[],1,[]}, [], []
+
+    'no overwrite, files do not exist', true, double1, double2, [false false], {'plus','math-2.grid','math',false,[],1,[]}, Xplus, meta
+    'no overwrite, mat file exists', false, double1, double2, [true false], {'plus','math-2.grid','math',false,[],1,[]}, [], []
+    'no overwrite, grid file exists', false, double1, double2, [false true], {'plus','math-2.grid','math',false,[],1,[]}, [], []
+    'overwrite both', true, double1, double2, [true true], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'overwrite mat only', true, double1, double2, [true false], {'plus','math-2.grid','math',[true false],[],1,[]}, Xplus, meta
+    'overwrite grid only', true, double1, double2, [false true], {'plus','math-2.grid','math',[false,true],[],1,[]}, Xplus, meta
+    'overwrite mat only, grid exists', false, double1, double2, [true true], {'plus','math-2.grid','math',[true false],[],1,[]}, [], []
+    'overwrite grid only, mat exists', false, double1, double2, [true true], {'plus','math-2.grid','math',[false true],[],1,[]}, [], []
+
+    'attributes 1', true, double1, double2, [false false], {'plus','math-2.grid','math',true,1,1,[]}, Xplus, meta.edit('attributes',atts1)
+    'attributes 2', true, double1, double2, [false false], {'plus','math-2.grid','math',true,2,1,[]}, Xplus, meta.edit('attributes',atts2)
+    'attributes struct', true, double1, double2, [false false], {'plus','math-2.grid','math',true,attsAlt,1,[]}, Xplus, meta.edit('attributes',attsAlt)
+    'attributes empty', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'invalid attributes', false, double1, double2, [false false], {'plus','math-2.grid','math',true,7,1,[]}, [], []
+
+    'type 1', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'type 1 incompatible sizes', false, double1, diffSize, [false false], {'plus','math-2.grid','math',true,[],1,[]}, [], []
+    'type 1 different metadata', false, double1, diffMeta, [false false], {'plus','math-2.grid','math',true,[],1,[]}, [], []
+    'type 1 broadcast', true, double1Broadcast, double2Broadcast, [false false], {'plus','math-2.grid','math',true,[],1,[]}, X1broad, meta.edit('run',["A";"B"])
+    'type 2', true, double1, diffSize, [false false], {'plus','math-2.grid','math',true,[],2,[]}, X2, meta.index('lat',2:3,'time',1:5);
+    'type 2 no overlapping metadata', false, double1, diffSizeNoMeta, [false false], {'plus','math-2.grid','math',true,[],2,[]}, [], []
+    'type 2 broadcast', true, double1, diffSizeBroadcast, [false false], {'plus','math-2.grid','math',true,[],2,[]}, X2broad, meta.index('lat',2:3)
+    'type 3', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],3,[]}, Xplus, meta
+    'type 3 different metadata compatible size', true, double1, diffMeta, [false false], {'plus','math-2.grid','math',true,[],3,[]}, Xplus, meta
+    'type 3 incompatible size', false, double1, diffSize, [false false], {'plus','math-2.grid','math',true,[],3,[]}, [], []
+    'type 3 broadcast', true, double1Broadcast, double2BroadcastDiffMeta, [false false], {'plus','math-2.grid','math',true,[],3,[]}, X1broad, meta.edit('run',["A";"B"])
+    'invalid type', false, double1, double2, [false false], {'plus','math-2.grid','math',true,[],4,[]}, [], []
+
+    'precision unset, all single', true, single1, single2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xsingle, meta
+    'precision unset, all double', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xplus, meta
+    'precision unset, mixed', true, double1, single2, [false false], {'plus','math-2.grid','math',true,[],1,[]}, Xmixed, meta
+    'precision, cast double to single', true, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,'single'}, Xcastsingle, meta
+    'precision, cast single to double', true, single1, single2, [false false], {'plus','math-2.grid','math',true,[],1,'double'}, Xcastdouble, meta
+    'invalid precision', false, double1, double2, [false false], {'plus','math-2.grid','math',true,[],1,'int16'}, [], []
+    };
+header = "DASH";
+
+% Testing framework
+try
+    for t = 1:size(tests,1)
+
+        % Build grids for each test
+        meta1 = tests{t,3}{5}.edit('attributes', atts1);
+        grid1 = gridfile.new('math-1', meta1, true);
+        grid1.add(tests{t,3}{:});
+        
+        meta2 = tests{t,4}{5}.edit('attributes', atts2);
+        grid2 = gridfile.new('math-2', meta2, true);
+        grid2.add(tests{t,4}{:});
+
+        % Delete existing files
+        if isfile(newmat)
+            delete(newmat);
+        end
+        if isfile(newgrid)
+            delete(newgrid);
+        end
+        if isfile(altmat)
+            delete(altmat);
+        end
+
+        % Optionally create new files
+        if tests{t,5}(1)
+            a = [];
+            save('math.mat','a');
+        end
+        if tests{t,5}(2)
+            a = [];
+            save('math.grid','a');
+        end
+
+        % Optionally use grid2 as input
+        inputs = tests{t,6};
+        if isequal(tests{t,6}{2}, 2)
+            inputs{2} = grid2;
+        end
+
+        % Failure case
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid1.arithmetic(inputs{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+
+        % Success case
+        else
+            grid1.arithmetic(inputs{:});
+
+            % Check matfile contents
+            files = string(tests{t,6}{3});
+            m = matfile(files(1));
+            Xmat = permute(m.X, [2 1 4 3]);
+            assert(isequaln(Xmat, tests{t,7}), 'matfile array');
+            assert(isequaln(m.meta, tests{t,8}), 'matfile metadata');
+
+            % Check gridfile contents
+            g = gridfile('math.grid');
+            assert(isequaln(g.load(dims), tests{t,7}), 'gridfile array');
+            assert(isequaln(g.metadata, tests{t,8}), 'gridfile metadata');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 end
 
