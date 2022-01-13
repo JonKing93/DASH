@@ -12,7 +12,6 @@ cd(testpath);
 
 
 %%% Current test
-rename
 
 
 % Run the tests
@@ -45,11 +44,11 @@ buildSources;
 loadInternal;
 load_;
 
-plus;
-minus;
-times;
-divide;
-arithmetic;
+% plus;
+% minus;
+% times;
+% divide;
+% arithmetic;
 
 sources;
 info;
@@ -1392,17 +1391,24 @@ s1 = dash.dataSource.mat('test', 'a');
 s2 = dash.dataSource.mat('test-1', 'a');
 s3 = dash.dataSource.mat('test-2', 'a');
 s4 = dash.dataSource.mat('test-3', 'a');
-props = string(properties(s1));
-props(strcmp(props,'m')) = [];
 
 tests = {
-    % Description, all succeed, altered filepath, inputs, output (datasource/failed/causes)
-    'build single source', true, [], 1, {s1}, false
-    'build multiple sources', true, [], 1:4, {s1;s2;s3;s4}, [false;false;false;false]
-    'failed build', false, invalid, 1, {[]}, true
-    'different data size', false, diffSize, 1, {[]}, true
-    'different data type', false, double, 1, {[]}, true
-    'some failed, some succeed', false, invalid, 1:4, {[];s2;s3;s4}, [true;false;false;false]
+    % Description, all succeed, altered filepath, inputs, output sources, output failed
+    'single success, fatal', true, [], {1}, {s1}, false
+    'single success, nonfatal', true, [], {1,false}, {s1}, false
+    'single failure, fatal', false, invalid, {1}, [], 1
+    'single failure, nonfatal', false, invalid, {1,false}, {[]}, true
+
+    'multiple success, fatal', true, [], {1:4}, {s1;s2;s3;s4}, false
+    'multiple success, nonfatal', true, [], {1:4, false}, {s1;s2;s3;s4}, false(4,1)
+    'multiple, 1 fail, fatal', false, invalid, {[2 1 3 4]}, [], 2
+    'multiple, 1 fail, nonfatal', false, invalid {[2 1 3 4],false}, {s2;[];s3;s3}, [false;true;false;false]
+    'multiple, plural fail, fatal', false, invalid, {[2 1 1 4]}, [], 2
+    'multiple, plural fail, nonfatal', false, invalid, {[2 1 3 1 4],false}, {s2;[];s3;[];s4}, [false;true;false;true;false]
+
+    'failed build', false, invalid, {1}, [], true
+    'different data size', false, diffSize, {1}, [], true
+    'different data type', false, double, {1}, [], true
     };
 
 try
@@ -1420,26 +1426,32 @@ try
             grid.sources_.relativePath(1) = false;
         end
    
-        [sources, failed, causes] = grid.buildSources(tests{t,4});
+        [sources, failed, causes] = grid.buildSources(tests{t,4}{:});
 
-        nSource = numel(tests{t,4});
-        dash.assert.vectorTypeN(sources, 'cell', nSource);
-        assert(isequal(failed, tests{t,6}), 'output failed report');
-        dash.assert.vectorTypeN(causes, 'cell', numel(tests{t,4}));
-
-        for s = 1:nSource
-            if ~failed(s)
-                dash.assert.scalarType(sources{s}, 'dash.dataSource.mat');
-                for p = 1:numel(props)
-                    prop = props(p);
-                    assert(isequaln(sources{s}.(prop), tests{t,5}{s}.(prop)), 'output source props');
+        % check output
+        if isnumeric(tests{t,5}) && isempty(tests{t,5})
+            assert(isequaln(tests{t,5}, sources), 'output empty sources');
+        else
+            nSource = numel(tests{t,5});
+            dash.assert.vectorTypeN(sources, 'cell', nSource);
+            for k = 1:nSource
+                if isempty(tests{t,5}{k})
+                    assert(isempty(sources{k}), 'empty element');
+                else
+                    assert(isa(sources{k}, 'dash.dataSource.Interface'), 'datasource element');
                 end
-                assert(isequal(causes{s}, []), 'incorrect cause');
-
-            else
-                dash.assert.scalarType(causes{s}, 'MException');
-                assert(contains(causes{s}.identifier, 'DASH'), 'invalid error');
-                assert(isequal(sources{s}, []), 'incorrect source');
+            end
+        end
+        assert(isequaln(failed, tests{t,6}), 'output failed');
+        
+        if ~iscell(causes) && ~isempty(causes)
+            assert(isa(causes, 'MException'), 'not exception');
+            assert(contains(causes.identifier, 'DASH'), 'invalid error');
+        elseif iscell(causes)
+            for k = 1:numel(causes)
+                if ~isempty(causes{k})
+                    assert(contains(causes{k}.identifier, 'DASH'), 'invalid error');
+                end
             end
         end
     end
@@ -1793,7 +1805,7 @@ header = "DASH";
 meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
 source1 = {'nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run', 1)};
 source2 = {'mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',2)};
-source3 = {'text', 'test.txt', ["lat","lon"], meta.edit('run',3,'time',1,'lat',(1:8)','lon',(1:4)')};
+source3 = {'text', 'test.txt', ["lat","lon"], meta.edit('run',3,'time',1,'lat',(1:7)','lon',(1:4)')};
 
 try
     for t = 1:size(tests,1)
@@ -1843,7 +1855,7 @@ nc = struct('name', 'test.nc', 'variable', 'a', 'index', 1, 'file', ncfile,...
     'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
     'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
 text = struct('name', 'test.txt', 'variable', [], 'index', 2, 'file', textfile,...
-    'data_type', 'double', 'dimensions', "lat,lon", 'size', [8 4], ...
+    'data_type', 'double', 'dimensions', "lat,lon", 'size', [7 4], ...
     'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
     'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
 mat = struct('name', 'test.mat', 'variable', 'a', 'index', 3, 'file', matfile,...
@@ -1865,7 +1877,7 @@ tests = {
 header = "DASH";
 grid = gridfile.new('test', meta, true);
 grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
-grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:8)','lon',(1:4)'));
+grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
 grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
 
 try

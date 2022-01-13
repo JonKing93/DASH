@@ -31,8 +31,8 @@ function[dataSources, failed, causes] = buildSources(obj, s, fatal, filepaths)
 %           dataSource objects for the specified sources. If fatal is true,
 %           and a dataSource fails, dataSources is an empty array. If not
 %           fatal, the elements for failed sources are empty arrays.
-%       failed (scalar integer | logical vector [nSources]): Indicates whether any data
-%           sources failed. If fatal, failed is index of the failed source. If not
+%       failed (false | scalar integer | logical vector [nSources]): Indicates whether any data
+%           sources failed. If fatal, failed is false or the index of the failed source. If not
 %           fatal, failed is a logical vector with one element per data source.
 %       causes ([] | scalar MException | cell vector [nSources] {scalar MException}): 
 %           If fatal and all sources succeeded, returns an empty array. If
@@ -88,6 +88,12 @@ for k = 1:nSource
         failed(k) = true;
         causes{k} = ME;
     end
+end
+
+% Adjust output for successful fatal builds
+if fatal
+    failed = false;
+    causes = [];
 end
 
 end
