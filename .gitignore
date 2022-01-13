@@ -1,19 +1,29 @@
 # Files that github should not upload
 
-# For mac users
-**.DS_Store
-
 # To prevent uploading giant data files
 **.mat
 **.nc
-
-# Matlab autosaves
-**.asv
 
 # Dash data file extensions
 **.grid
 **.ens
 
+# But enable the small data files in testdata
+!/testdata/gridfile/**
+
 # Documentation builds
 doc_source/sphinx/source/**
 doc_source/build/html/**
+
+# For mac users
+**.DS_Store
+
+# Matlab autosaves
+**.asv
+
+
+
+
+
+
+
