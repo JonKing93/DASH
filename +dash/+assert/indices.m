@@ -1,22 +1,25 @@
 function[indices] = indices(indices, length, name, logicalLengthName, linearMaxName, header)
 %% dash.assert.indices  Throw error if inputs are neither logical indices nor linear indices
 % ----------
+%   indices = dash.assert.indices(indices)
+%   Checks if input is a vector of logical or linear indices. If not throws
+%   an error message. If so, returns the input as linear indices.
+%
 %   indices = dash.assert.indices(indices, length)
-%   Checks if input is a valid vector of logical indices or linear indices
-%   for an array dimension. To be valid, logical indices must match the
-%   length of the array dimension, and linear indices must be positive
-%   integers that do not exceed the length of the dimension. If these
-%   criteria are not met, throws an error message. If so, returns the
-%   input as linear indices.
+%   Also requires indices to be compatible with a specified dimension
+%   length. To be valid, a vector logical indices must match the length of
+%   the array. For linear indices, the values of individual elements cannot
+%   exceed the length of the dimension.
 %
 %   indices = dash.assert.indices(indices, length, name, logicalLengthName, linearMaxName, header)
 %   Customize the error message and error ID.
 % ----------
 %   Inputs:
 %       indices: The input being tested.
-%       length (scalar positive integer): The length of the array dimension
+%       length (scalar positive integer | []): The length of the array dimension
 %           that the indices are for. Logical indices must be a vector of
-%           this length, and linear indices cannot exceed this length.
+%           this length, and linear indices cannot exceed this length. If
+%           an empty array, does not check indices against a dimension length
 %       name (string scalar): A name to use for the input in error messages
 %           Default is "input".
 %       logicalLengthName (string scalar): A name to use for the length of
@@ -34,6 +37,9 @@ function[indices] = indices(indices, length, name, logicalLengthName, linearMaxN
 % <a href="matlab:dash.doc('dash.assert.indices')">Documentation Page</a>
 
 % Defaults
+if ~exist('length','var') || isempty(length)
+    length = [];
+end
 if ~exist('name','var') || isempty(name)
     name = "input";
 end
@@ -62,7 +68,11 @@ if islogical(indices)
         error(id, ['%s is a logical vector, so it must be %s (%.f), but it has ',...
             '%.f elements instead.'], name, logicalLengthName, length, numel(indices));
     end
-    indices = find(indices);
+
+    % Convert to linear if providing output
+    if nargout>0
+        indices = find(indices);
+    end
         
 % Numeric indices
 elseif isnumeric(indices)
