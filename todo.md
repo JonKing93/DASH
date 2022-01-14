@@ -14,8 +14,5 @@ TODO:
 
 FINISH GRIDFILE:
 
-Write Tests
-    gridfile
-
 Write examples
     gridfile
