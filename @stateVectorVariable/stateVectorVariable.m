@@ -49,71 +49,67 @@ properties
     % Sequences
     sequenceIndices = cell(1,0);
     sequenceMetadata = cell(1,0);
+
+    % Mean
+    takeMean = false(1,0);
+    meanSize = NaN(1,0);
+    meanIndices = cell(1,0);
+    omitnan = strings(1,0);
+
+    % Weighted mean
+    hasWeights = false(1,0);
+    weights = cell(1,0);
+
+    % Metadata
+
+end
+
+methods
+
+    % Design
+    obj = stateDimension(d, indices);
+    obj = ensembleDimension(d, indices);
+
+
+
 end
 
 % Constructor
 methods
-    function[obj] = stateVectorVariable(grid, header)
+    function[obj] = stateVectorVariable(grid)
     %% dash.stateVectorVariable.stateVectorVariable  Create a new stateVectorVariable object
     % ----------
     %   obj = dash.stateVectorVariable(grid)
-    %   Creates a new stateVectorVariable object linked to a .grid file. By
+    %   Creates a new stateVectorVariable object linked to a gridfile. By
     %   default, all dimensions are set as state dimensions, and all indices
     %   are selected for inclusion in the state vector.
-    %
-    %   obj = dash.stateVectorVariable(grid, svName, header)
-    %   Customize thrown error messages.
     % ----------
     %   Inputs:
-    %       grid (scalar string | scalar gridfile object): The gridfile that
-    %           contains the variable's data.
+    %       grid (scalar gridfile object): The gridfile that contains the variable's data.
     %
     %   Outputs:
     %       obj (scalar stateVectorVariable): The new stateVectorVariable object
     %
     % <a href="matlab:dash.doc('dash.stateVectorVariable.stateVectorVariable
     
-    % Get the gridfile object. 
-    if isa(grid, 'gridfile')
-        dash.assert.scalarType(grid, [], header);
-        grid.update;
-    elseif dash.is.strflag(grid)
-        grid = gridfile(grid);
-    else
-        invalidGridfileError(svName, header);
-    end
-    
-    % Update the gridfile fields
+    % Update and record the gridfile fields
+    grid.update;
     obj.gridfile = grid.file;
     obj.dims = grid.dims;
     obj.gridSize = grid.size;
     
-    % Preallocate other fields
+    % Preallocate
     nDims = numel(obj.dims);
 
-    isState = true(1, nDims);
-    indices = cell(1, nDims);
-    stateSize = NaN(1, nDims);
-    ensSize = NaN(1, nDims);
+    obj.isState = true(1, nDims);
+    obj.indices = cell(1, nDims);
+    obj.stateSize = NaN(1, nDims);
+    obj.ensSize = NaN(1, nDims);
 
-    sequenceIndices = cell(1, nDims);
-    sequenceMetadata = cell(1, nDims);
+    obj.sequenceIndices = cell(1, nDims);
+    obj.sequenceMetadata = cell(1, nDims);
 
     end
+end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+end

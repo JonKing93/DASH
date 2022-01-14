@@ -66,7 +66,12 @@ for d = 1:nDims
         length = dimLengths(d);
     end
 
-    indices{d} = dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+    % Check the indices, optionally return linear indices as output
+    if nargout==0
+        dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+    else
+        indices{d} = dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+    end
 end
 
 end

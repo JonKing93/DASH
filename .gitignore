@@ -3,6 +3,7 @@
 # To prevent uploading giant data files
 **.mat
 **.nc
+old/**
 
 # Dash data file extensions
 **.grid
