@@ -146,11 +146,16 @@ end
 base = MException(header, ['%s %s\n\n',...
         '    New data source: %s\n',...
         'Current data source: %s\n',...
-        '           gridfile: %s\n'],...
+        '           gridfile: %s'],...
         head, problem, newfile, obj.sources(s), obj.file);
+
+% Strip nested causes
+if ~isempty(cause.cause)
+    cause = MException(cause.identifier, '%s', cause.message);
+end
 
 % Add cause information and throw
 base = addCause(base, cause);
-throw(base);
+throwAsCaller(base);
 
 end
