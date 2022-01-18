@@ -99,20 +99,23 @@ compatible = dash.string.list(compatible);
 
 % Throw error
 id = sprintf('%s:incompatibleDataTypes', header);
-error(id, ['Cannot append the new "%s" metadata because its data type (%s) ',...
+ME = MException(id, ['Cannot append the new "%s" metadata because its data type (%s) ',...
     'is not compatible with the existing metadata''s type (%s) in gridfile "%s". ',...
     'Compatible types are: %s.'], dim, newType, oldType, file, compatible);
+throwAsCaller(ME);
 end
 function[] = metadataColumnsError(dim, nNew, nOld, gridFile, header)
 id = sprintf('%s:wrongNumberOfColumns', header);
-error(id, ['The number of columns in the new "%s" metadata (%.f) ',...
+ME = MException(id, ['The number of columns in the new "%s" metadata (%.f) ',...
     'does not match the number of columns in the existing metadata ',...
     'for the dimension (%.f) in the gridfile.\n\ngridfile: %s'], dim, nNew, nOld, gridFile);
+throwAsCaller(ME);
 end
 function[] = couldNotAppendError(dim, gridFile, header)
 id = sprintf('%s:couldNotAppend', header);
-error(id, ['Could not append the new "%s" metadata to the existing ',...
+ME = MException(id, ['Could not append the new "%s" metadata to the existing ',...
     'metadata.\n\ngridfile: %s'], dim, gridFile);
+throwAsCaller(ME);
 end
 function[] = duplicateRowsError(dim, repeats, nOldRows, gridFile, header)
 
@@ -122,7 +125,7 @@ id = sprintf('%s:duplicateMetadataRows', header);
 % Duplicates are exclusively in new metadata
 if ~inold
     repeats = repeats - nOldRows;
-    error(id, 'The new "%s" metadata has duplicate rows. (Rows %s)\n\ngridfile: %s',...
+    ME = MException(id, 'The new "%s" metadata has duplicate rows. (Rows %s)\n\ngridfile: %s',...
         dim, dash.string.list(repeats), gridFile);
     
 % New metadata duplicates old metadata
@@ -131,8 +134,9 @@ else
     oldRow = repeats(oldRow);
     newRow = find(repeats>nOldRows, 1);
     newRow = repeats(newRow) - nOldRows;
-    error(id, ['The new "%s" metadata duplicates rows in the existing metadata. ',...
+    ME = MException(id, ['The new "%s" metadata duplicates rows in the existing metadata. ',...
         '(New row %.f, Existing row %.f)\n\ngridfile: %s'], dim, newRow, oldRow, gridFile);
 end
+throwAsCaller(ME);
 
 end

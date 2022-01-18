@@ -229,91 +229,105 @@ id = sprintf('%s:incompatibleDataType', header);
 [~,name,ext] = fileparts(source.source);
 name = strcat(name, ext);
 
-error(id, ['The data type (%s) stored in %sdata source "%s" is not allowed. ',...
+ME = MException(id, ['The data type (%s) stored in %sdata source "%s" is not allowed. ',...
     'Allowed data types are: %s.\n\nData source path: %s\ngridfile: %s'], ...
     source.dataType, var, name, dash.string.list(compatible), source.source, obj.file);
+throwAsCaller(ME);
 end
 function[] = wrongNumberHDFInputsError(type, header)
 id = sprintf('%s:wrongNumberOfInputs', header);
-error(id, ['The must be exactly 4 inputs after the "%s" flag. (file/opendap, ',...
+ME = MException(id, ['The must be exactly 4 inputs after the "%s" flag. (file/opendap, ',...
     'variable, dimensions, and metadata)'], lower(type));
+throwAsCaller(ME);
 end
 function[] = wrongNumberTextInputsError(header)
 id = sprintf('%s:wrongNumberOfInputs', header);
-error(id, ['There must be at least 3 inputs after the "text" flag. ',...
+ME = MException(id, ['There must be at least 3 inputs after the "text" flag. ',...
     '(file, dimensions, and metadata)']);
+throwAsCaller(ME);
 end
 function[] = unrecognizedTypeError(header)
 id = sprintf('%s:unrecognizedType', header);
-error(id, 'The first input (the data source type) must either be "mat", "nc", or "text".');
+ME = MException(id, 'The first input (the data source type) must either be "mat", "nc", or "text".');
+throwAsCaller(ME);
 end
 function[] = unnamedDimensionError(nListed, nNontrailing, sourceName, header)
 id = sprintf('%s:unnamedDimension', header);
-error(id, ['The number of listed dimensions (%.f) is smaller than the number ',...
+ME = MException(id, ['The number of listed dimensions (%.f) is smaller than the number ',...
     'of non-trailing dimensions (%.f) in data source "%s".'], ...
     nListed, nNontrailing, sourceName);
+throwAsCaller(ME);
 end
 function[] = missingGridMetadataError(gridDims, loc, sourceName, gridName, header)
 id = sprintf('%s:missingGridMetadata', header);
 missing = find(loc==0, 1);
 missing = gridDims(missing);
-error(id, ['The data source metadata is missing the "%s" dimension, which ',...
+ME = MException(id, ['The data source metadata is missing the "%s" dimension, which ',...
     'is required by this gridfile.\nData source: %s\ngridfile: %s'],...
     missing, sourceName, gridName);
+throwAsCaller(ME);
 end  
 function[] = missingSourceMetadataError(sourceDims, loc, sourceName, header)
 id = sprintf('%s:missingSourceMetadata', header);
 missing = find(loc==0, 1);
 missing = sourceDims(missing);
 
-error(id, 'The "%s" dimension is not in the metadata for data source "%s".',...
+ME = MException(id, 'The "%s" dimension is not in the metadata for data source "%s".',...
     missing, sourceName);
+throwAsCaller(ME);
 end
 function[] = undefinedSourceDimensionError(sourceDims, loc, sourceName, gridName, header)
 id = sprintf('%s:undefinedSourceDimension', header);
 undefined = find(loc==0, 1);
 undefined = sourceDims(undefined);
 
-error(id, ['The "%s" data source dimension is not in the gridfile. Consider ',...
+ME = MException(id, ['The "%s" data source dimension is not in the gridfile. Consider ',...
     'adding "%s" metadata to the gridfile. (See gridfile.expand)\n',...
     'Data source: %s\ngridfile: %s'], undefined, undefined, sourceName, gridName);
+throwAsCaller(ME);
 end
 function[] = missingMetadataDimensionError(dim, sourceName, header)
 id = sprintf('%s:missingMetadataDimension', header);
-error(id, ['The "%s" dimension in the metadata is not included ',...
+ME = MException(id, ['The "%s" dimension in the metadata is not included ',...
     'in the dimensions list for data source "%s".'], dim, sourceName);
+throwAsCaller(ME);
 end
 function[] = wrongMetadataRowsError(dim, nRows, dimLength, sourceName, header)
 id = sprintf('%s:wrongNumberOfMetadataRows', header);
-error(id, ['The number of metadata rows for the "%s" dimension (%.f) ',...
+ME = MException(id, ['The number of metadata rows for the "%s" dimension (%.f) ',...
     'does not match the length of the dimension (%.f) in data source "%s".'],...
     dim, nRows, dimLength, sourceName);
+throwAsCaller(ME);
 end
 function[] = differentMetadataError(dim, loc, sourceName, gridName, header)
 id = sprintf('%s:differentMetadata', header);
 row = find(loc==0, 1);
 
-error(id, ['Row %.f of the "%s" metadata for the data source ',...
+ME = MException(id, ['Row %.f of the "%s" metadata for the data source ',...
     'does not match any rows of "%s" metadata in the gridfile.\n',...
     'Data source: %s\ngridfile: %s'], row, dim, dim, sourceName, gridName);
+throwAsCaller(ME);
 end
 function[] = metadataOrderError(dim, sourceName, gridName, header)
 id = sprintf('%s:invalidMetadataOrder', header);
-error(id, ['The "%s" metadata for the data source is in a different ',...
+ME = MException(id, ['The "%s" metadata for the data source is in a different ',...
     'order than the "%s" metadata for the gridfile.\n ',...
     'Data source: %s\ngridfile: %s'], dim, dim, sourceName, gridName);
+throwAsCaller(ME);
 end
 function[] = skippedMetadataError(dim, sourceName, gridName, header)
 id = sprintf('%s:skippedMetadata', header);
-error(id, ['The "%s" metadata for the data source skips elements ',...
+ME = MException(id, ['The "%s" metadata for the data source skips elements ',...
     'of the "%s" metadata in the gridfile.\nData source: %s\n',...
     'gridfile: %s'], dim, dim, sourceName, gridName);
+throwAsCaller(ME);
 end
 function[] = overlappingDataSourceError(sourceName, overlap, obj, header)
 id = sprintf('%s:overlappingDataSource', header);
 alreadyExists = find(overlap, 1);
 alreadyExists = obj.sources_.source(alreadyExists);
-error(id, ['The new data source overlaps a data source already in the gridfile.\n\n',...
+ME = MException(id, ['The new data source overlaps a data source already in the gridfile.\n\n',...
     '     New Data Source: %s\nExisting Data Source: %s\n            gridfile: %s'],...
     sourceName, alreadyExists, obj.name);
+throwAsCaller(ME);
 end

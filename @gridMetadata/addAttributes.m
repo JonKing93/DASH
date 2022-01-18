@@ -55,13 +55,15 @@ end
 function[] = invalidFieldNameError(name, index, header)
 id = sprintf('%s:invalidFieldName', header);
 inputIndex = index*2-1;
-error(id, ['Input %.f ("%s") cannot be used as an attributes field because it ',...
+ME = MException(id, ['Input %.f ("%s") cannot be used as an attributes field because it ',...
     'is not a valid Matlab variable name.'], inputIndex, name);
+throwAsCaller(ME);
 end
 function[] = repeatedFieldNameError(names, isfield, header)
 id = sprintf('%s:repeatedFieldName', header);
 repeat = find(isfield, 1);
 inputIndex = repeat*2-1;
-error(id, 'Input %.f ("%s") is already a field in the attributes', ...
+ME = MException(id, 'Input %.f ("%s") is already a field in the attributes', ...
     inputIndex, names(repeat));
+throwAsCaller(ME);
 end

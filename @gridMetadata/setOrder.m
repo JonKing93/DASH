@@ -72,5 +72,6 @@ function[] = missingDimensionError(dims, loc, header)
 id = sprintf('%s:missingDimension', header);
 missing = find(loc==0, 1);
 missing = dims(missing);
-error(id, 'The dimension order must include the "%s" dimension', missing);
+ME = MException(id, 'The dimension order must include the "%s" dimension', missing);
+throwAsCaller(ME);
 end

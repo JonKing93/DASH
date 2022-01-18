@@ -144,6 +144,6 @@ end
 % Create base error, add cause, throw
 base = MException(header, message);
 base = addCause(base, cause);
-throw(base);
+throwAsCaller(base);
 
 end

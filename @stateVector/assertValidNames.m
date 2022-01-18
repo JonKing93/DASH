@@ -1,8 +1,8 @@
 function[] = assertValidNames(obj, names, header)
 
 % Require a vector of unique strings
-names = dash.assert.strlist(names, 'variableNames', header);
-dash.assert.uniqueSet(names, 'variableNames', header);
+names = dash.assert.strlist(names, 'Variable names', header);
+dash.assert.uniqueSet(names, 'Variable name', header);
 nNames = numel(names);
 
 % Check that each new name is a valid matlab variable name
@@ -16,7 +16,7 @@ end
 allNames = [names(:); obj.variableNames];
 [valid, repeats] = dash.is.uniqueSet(allNames);
 if ~valid
-    duplicateNameError(repeats, allNames, header);
+    duplicateNameError(obj, repeats, allNames, nNames, header);
 end
 
 end
@@ -33,13 +33,13 @@ error(id, ['%s ("%s") is not a valid variable name. Valid names must: 1. begin '
     'cannot be a MATLAB keyord. See the %s for additional details.'],...
     inputName, badName, link);
 end
-function[] = duplicateNameError(repeats, allNames, header)
+function[] = duplicateNameError(obj, repeats, allNames, nNames, header)
 
 inputName = dash.string.elementName(repeats(1), 'Variable name', nNames);
 badName = allNames(repeats(1));
 link = '<a href="matlab:dash.doc(''stateVector.rename'')">rename the existing variable</a>';
 
 id = sprintf('%s:duplicateVariableName', header);
-error(id, ['%s ("%s") is already the name of a variable in the state vector. ',...
-    'Either use a different name, or %s.'], inputName, badName, link);
+error(id, ['%s ("%s") is already the name of a variable in %s. ',...
+    'Either use a different name, or %s.'], inputName, badName, obj.name, link);
 end
