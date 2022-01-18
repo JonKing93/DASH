@@ -9,7 +9,6 @@ function[] = tests
 % <a href="matlab:dash.doc('dash.string.tests')">Documentation Page</a>
 
 list;
-elementName;
 
 end
 
