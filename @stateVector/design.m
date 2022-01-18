@@ -38,9 +38,6 @@ end
 
 % Utility subfunctions
 function[] = checkIndices(obj, v, d, indices, header)
-% var: The stateVectorVariable being checked
-% indices: The indices being checked
-% d: The dimension indices for the indices
 
 % Get the variable
 var = obj.variables(v);

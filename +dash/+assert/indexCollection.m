@@ -47,17 +47,15 @@ end
 name = 'indices';
 [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, name, header);
 
-% Check the indices for each dimension
+% Get the name of each dimension
 for d = 1:nDims
-    if wasCell
-        name = sprintf('Indices for %s', dim);
-    end
-
-    % Get the dimension name
     if strcmp(dimNames(d), "")
         dim = sprintf("indexed dimension %.f", d);
     else
         dim = sprintf('the "%s" dimension', dimNames(d));
+    end
+    if wasCell
+        name = sprintf('Indices for %s', dim);
     end
 
     % Get the dimension length

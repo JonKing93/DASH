@@ -20,6 +20,7 @@ function[obj] = rename(obj, variables, newNames)
 % Setup
 header = "DASH:stateVector:rename";
 dash.assert.scalarObj(obj, header);
+obj.assertEditable;
 
 % Error check variables, get indices
 v = obj.variableIndices(variables, false, header);

@@ -4,7 +4,8 @@ classdef stateVector
         %% General settings
 
         label_ = "";                    % The label for the state vector
-        verbose_ = false;               % The verbosity of the state vector
+        verbose_ = false;               % Whether the state vector should be verbose
+        iseditable = true;              % Whether the state vector is editable
 
         %% Variables
 
@@ -15,7 +16,6 @@ classdef stateVector
 
         %% Coupling
 
-        autoCouple = true(0,1);         % Whether a variable should be automatically coupled to new variables
         coupled = true(0,0);            % Which variables are coupled to each other
 
     end
@@ -26,9 +26,10 @@ classdef stateVector
         varargout = label(obj, label);
         varargout = verbose(obj, verbose);
         name = name(obj);
+        assertEditable(obj);
 
         % Variables
-        add;
+        obj = add(obj, variableNames, grids);
         remove;
         overlap;
         v = variableIndices(obj, variables, allowRepeats, header);
@@ -36,7 +37,7 @@ classdef stateVector
         % Variable names
         variables = variables(obj, v);
         obj = rename(obj, variables, newNames);
-        assertValidNames(obj, newNames, v, header);
+        assertValidNames(obj, newNames, header);
 
         % Coupling
         couple;

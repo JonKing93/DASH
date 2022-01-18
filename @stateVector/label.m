@@ -20,6 +20,7 @@ function[varargout] = label(obj, label)
 % Setup
 header = "DASH:stateVector:label";
 dash.assert.scalarObj(obj, header);
+obj.assertEditable;
 
 % Return current label
 if ~exist('label','var')
