@@ -47,11 +47,7 @@ end
 % Throw error if any strings are not in list
 if ~all(inList)
     bad = find(~inList, 1);
-    
-    % Include bad index if there are multiple elements
-    if numel(strings)>1
-        name = sprintf('%s %.f', name, bad);
-    end
+    name = dash.string.elementName(bad, name, numel(strings));
     
     % Error message
     id = sprintf('%s:stringNotInList', idHeader);
