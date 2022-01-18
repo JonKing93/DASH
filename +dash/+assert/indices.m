@@ -1,4 +1,4 @@
-function[indices] = indices(indices, length, name, logicalLengthName, linearMaxName, header)
+function[indices] = indices(indices, length, name, logicalRequirement, linearMaxName, header)
 %% dash.assert.indices  Throw error if inputs are neither logical indices nor linear indices
 % ----------
 %   indices = dash.assert.indices(indices)
@@ -11,7 +11,7 @@ function[indices] = indices(indices, length, name, logicalLengthName, linearMaxN
 %   the array. For linear indices, the values of individual elements cannot
 %   exceed the length of the dimension.
 %
-%   indices = dash.assert.indices(indices, length, name, logicalLengthName, linearMaxName, header)
+%   indices = dash.assert.indices(indices, length, name, logicalRequirement, linearMaxName, header)
 %   Customize the error message and error ID.
 % ----------
 %   Inputs:
@@ -22,12 +22,12 @@ function[indices] = indices(indices, length, name, logicalLengthName, linearMaxN
 %           an empty array, does not check indices against a dimension length
 %       name (string scalar): A name to use for the input in error messages
 %           Default is "input".
-%       logicalLengthName (string scalar): A name to use for the length of
-%           logical index vectors in error messages. Default is 
-%           "the length of the dimension"
-%       linearMaxName (string scalar | []): A name to use for the
-%           maximum linear index. If an empty array, uses the same value as
-%           logicalLengthName. Default is an empty array.
+%       logicalRequirement (string scalar): A name to use for the length 
+%           requirement of logical index vectors in error messages. Default
+%           is "be the length of the dimension".
+%       linearMaxName (string scalar): A name to use for the
+%           maximum allowed linear index. Default is "the length of the
+%           dimension".
 %       header (string scalar): Header for error IDs. Default is
 %           "DASH:assert:indices"
 %
@@ -43,11 +43,11 @@ end
 if ~exist('name','var') || isempty(name)
     name = "input";
 end
-if ~exist('logicalLengthName','var') || isempty(logicalLengthName)
-    logicalLengthName = "the length of the dimension";
+if ~exist('logicalRequirement','var') || isempty(logicalRequirement)
+    logicalRequirement = "be the length of the dimension";
 end
 if ~exist('linearMaxName','var') || isempty(linearMaxName)
-    linearMaxName = logicalLengthName;
+    linearMaxName = "the length of the dimension";
 end
 if ~exist('header','var') || isempty(header)
     header = "DASH:assert:indices";
@@ -65,8 +65,8 @@ dash.assert.vectorTypeN(indices, [], [], name, header);
 if islogical(indices)
     if numel(indices)~=length
         id = sprintf('%s:logicalIndicesWrongLength', header);
-        error(id, ['%s is a logical vector, so it must be %s (%.f), but it has ',...
-            '%.f elements instead.'], name, logicalLengthName, length, numel(indices));
+        error(id, ['%s is a logical vector, so it must %s (%.f), but it has ',...
+            '%.f elements instead.'], name, logicalRequirement, length, numel(indices));
     end
 
     % Convert to linear if providing output
