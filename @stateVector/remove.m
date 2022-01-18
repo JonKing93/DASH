@@ -1,4 +1,4 @@
-function[] = remove(obj, variables)
+function[obj] = remove(obj, variables)
 %% stateVector.remove  Remove variables from a state vector
 % ----------
 %   obj = obj.remove(v)
@@ -24,13 +24,12 @@ obj.assertEditable;
 
 % Error check variables, get indices
 v = obj.variableIndices(variables, true, header);
-nRemoved = numel(v);
 
 % Remove variables
 obj.variables_(v) = [];
 obj.variableNames(v) = [];
 obj.allowOverlap(v) = [];
-obj.nVariables = obj.nVariables - nRemoved;
+obj.nVariables = numel(obj.variables);
 
 obj.coupled(v,:) = [];
 obj.coupled(:,v) = [];

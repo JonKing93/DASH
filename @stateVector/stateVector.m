@@ -30,8 +30,8 @@ classdef stateVector
 
         % Variables
         obj = add(obj, variableNames, grids);
-        remove;
-        overlap;
+        obj = remove(obj, variables);
+        varargout = overlap(obj, variables, allowOverlap);
         v = variableIndices(obj, variables, allowRepeats, header);
 
         % Variable names

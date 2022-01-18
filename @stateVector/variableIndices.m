@@ -42,7 +42,7 @@ collectionName = obj.name;
 listType = 'variable names';
 
 % Parse the inputs
-v = dash.assert.stringsOrIndices(variables, obj.variableNames, name, elementName, ...
+v = dash.parse.stringsOrIndices(variables, obj.variableNames, name, elementName, ...
         collectionName,  listType,  header);
 
 % Check for repeats
