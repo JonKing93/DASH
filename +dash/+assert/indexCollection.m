@@ -49,28 +49,33 @@ name = 'indices';
 
 % Check the indices for each dimension
 for d = 1:nDims
-    noname = strcmp(dimNames(d), "");
-    if noname
+    if wasCell
+        name = sprintf('Indices for %s', dim);
+    end
+
+    % Get the dimension name
+    if strcmp(dimNames(d), "")
         dim = sprintf("indexed dimension %.f", d);
     else
         dim = sprintf('the "%s" dimension', dimNames(d));
     end
-    if wasCell
-        name = sprintf('Indices for %s', dim);
-    end
-    lengthName = sprintf('the length of %s', dim);
 
-    % Get the length
+    % Get the dimension length
     length = [];
     if ~isempty(dimLengths)
         length = dimLengths(d);
     end
 
+    % Dimension length error strings
+    logicalRequirement = sprintf('be the length of %s', dim);
+    linearMax = sprintf('the length of %s', dim);
+
     % Check the indices, optionally return linear indices as output
-    if nargout==0
-        dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+    inputs = {indices{d}, length, name, logicalRequirement, linearMax, header};
+    if nargout == 0
+        dash.assert.indices(inputs{:});
     else
-        indices{d} = dash.assert.indices(indices{d}, length, name, lengthName, [], header);
+        indices{d} = dash.assert.indices(inputs{:});
     end
 end
 

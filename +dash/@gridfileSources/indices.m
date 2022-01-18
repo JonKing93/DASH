@@ -26,9 +26,9 @@ nSources = numel(obj.source);
 
 % Error check direct indices
 if isnumeric(sources) || islogical(sources)
-    logicalLength = 'one element per data source';
+    logicalRequirement = 'have one element per data source';
     linearMax = 'the number of data sources';
-    indices = dash.assert.indices(sources, nSources, 'sources', logicalLength, linearMax, header);
+    indices = dash.assert.indices(sources, nSources, 'sources', logicalRequirement, linearMax, header);
     
 % File name input - start by getting absolute paths to sources
 elseif dash.is.strlist(sources)

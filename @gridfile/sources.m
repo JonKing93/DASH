@@ -31,9 +31,9 @@ obj.update;
 if ~exist('s','var') || isempty(s) || isequal(s,0)
     input = {};
 else
-    logicalLength = 'one element per data source';
+    logicalRequirement = 'have one element per data source';
     linearMax = 'the number of data sources';
-    s = dash.assert.indices(s, obj.nSource, 's', logicalLength, linearMax, header);
+    s = dash.assert.indices(s, obj.nSource, 's', logicalRequirement, linearMax, header);
     input = {obj.sources_.indices(s)};
 end
 
