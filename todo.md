@@ -12,7 +12,16 @@ TODO:
     -Or treat throws in a more consistent way through the docs
 
 
+STATE VECTOR
+1. Verbosity toggle
+2. Constructor documentation
+    - Add link once "label" method is complete
+    - Add verbosity details
+
+
 FINISH GRIDFILE:
+
+Combine dash.gridfile.indices with dash.parse.stringsOrIndices
 
 Write examples
     gridfile
