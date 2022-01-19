@@ -1,17 +1,18 @@
 function[obj] = design(obj, variables, dimensions, types, indices)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
-%   obj = obj.design(variables, dimensions, "s"/"state")
-%   obj = obj.design(variables, dimensions, true)
-%   Sets the indicated dimensions as state dimensions of the specified
+%   obj = obj.design(v, dimensions, "s" | "state" | true)
+%   obj = obj.design(variableNames, dimensions, "s" | "state" | true)
+%   Sets the indicated dimensions as state dimensions for the specified
 %   variables.
 %
-%   obj = obj.design(variables, dimensions, "e"/"ens"/"ensemble")
-%   obj = obj.design(variables, dimensions, false)
-%   Sets the indicated dimensions as ensemble dimensions of the specified
+%   obj = obj.design(v, dimensions, "e" | "ens" | "ensemble" | false)
+%   obj = obj.design(variableNames, dimensions, "e" | "ens" | "ensemble" | false)
+%   Sets the indicated dimensions as ensemble dimensions for the specified
 %   variables.
 %
-%   obj = obj.design(variables, dimensions, types)
+%   obj = obj.design(v, dimensions, types)
+%   obj = obj.design(variableNames, dimensions, types)
 %   Specify the type of each indicated dimension. Allows dimensions to be a
 %   mix of state and ensemble dimensions.
 %
@@ -20,10 +21,17 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %   dimensions.
 % ----------
 %   Inputs:
-%       variables (string vector [nVariables]): The names of variables in the state
-%           vector whose dimensions should be designed.
+%       v (logical vector | linear indices): The indices of variables in
+%           the state vector that should be designed. Either a logical
+%           vector with one element per state vector variable, or a vector
+%           of linear indices. If linear indices, may not contain repeated
+%           indices.
+%       variableNames (string vector): The names of variables in the state
+%           vector whose dimensions should be designed. May not contain
+%           repeated variable names.
 %       dimensions (string vector [nDimensions]): The names of dimensions
-%           that should be designed.
+%           that should be designed. Each dimension must occur in all
+%           listed variables. Cannot have repeated dimension names.
 %       types (vector [1 | nDimensions], string | logical): Whether each
 %           named dimension is a state or an ensemble dimension. If a
 %           scalar, applies the same setting to all named dimensions. If a
@@ -63,13 +71,10 @@ header = "DASH:stateVector:design";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
-% Error check variables and get indices.
+% Error check variables and dimensions. Get indices.
 vars = obj.variableIndices(variables, false, header);
-
-% Error check dimensions.
-dimensions = dash.assert.strlist(dimensions);
-dash.assert.uniqueSet(dimensions, 'dimensions', header);
-nDims = numel(dimensions);
+d = obj.dimensionIndices(vars, dimensions, header);
+nDims = numel(d);
 
 % Parse dimension types
 isstate = dash.parse.stringsOrLogicals(types, ["s","state"],["e","ens","ensemble"],...
@@ -87,7 +92,7 @@ end
 for k = 1:numel(vars)
     v = vars(k);
     try
-        obj.variables_(v) = obj.variables_(v).design(dimensions, isstate, indices, header);
+        obj.variables_(v) = obj.variables_(v).design(d{v}, isstate, indices, header);
 
     % Provide informative error message if failed
     catch ME

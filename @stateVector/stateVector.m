@@ -39,6 +39,10 @@ classdef stateVector
         obj = rename(obj, variables, newNames);
         assertValidNames(obj, newNames, header);
 
+        % Variable dimensions
+        dimensions = dimensions(obj, v, cellOutput);
+        indices = dimensionIndices(obj, v, dimensions, header);
+
         % Coupling
         couple;
         uncouple;

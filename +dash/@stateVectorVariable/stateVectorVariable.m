@@ -39,7 +39,6 @@ properties
 end
 
 methods
-    d = dimensionIndices(obj, dimensions, header);
     obj = design(obj, dimensions, isstate, indices, header);
 end
 

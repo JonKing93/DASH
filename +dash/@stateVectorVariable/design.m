@@ -1,12 +1,13 @@
-function[obj] = design(obj, dimensions, isstate, indices, header)
+function[obj] = design(obj, d, isstate, indices, header)
 %% dash.stateVectorVariable.design  Design the dimensions of a state vector variable
 % ----------
-%   obj = obj.design(dimensions, isstate, indices)
+%   obj = obj.design(d, isstate, indices)
 %   Designs the specified dimensions given the dimension types and
 %   state/reference indices for the dimensions.
 % ----------
 %   Inputs:
-%       dimensions (string vector [nDimensions]): The list of dimenions to design
+%       d (vector, linear indices [nDimensions]): The indices of the
+%           dimensions to design.
 %       isstate (logical vector [nDimensions]): True if a dimension is a
 %           state dimension. False if the dimension is an ensemble dimension.
 %       indices (cell vector [nDimensions] {[] | logical vector | vector, linear indices}:
@@ -24,25 +25,23 @@ if ~exist('header','var') || isempty(header)
     header = "DASH:stateVectorVariable:design";
 end
 
-% Error check dimensions, get dimension indices. Error check state and
-% reference indices
-dims = obj.dimensionIndices(dimensions, header);
-dash.assert.indexCollection(indices, numel(dims), obj.gridSize(dims), dimensions, header);
+% Error check state and reference indices
+nDims = numel(d);
+dash.assert.indexCollection(indices, nDimes, obj.gridSize(d), obj.dims(d), header);
 
 % Update each dimension
-for k = 1:numel(dims)
-    d = dims(k);
+for k = 1:nDims
     if isstate(k)
-        obj = stateDimension(obj, d, indices{k});
+        obj = stateDimension(obj, d(k), indices{k}, header);
     else
-        obj = ensembleDimension(obj, d, indices{k});
+        obj = ensembleDimension(obj, d(k), indices{k}, header);
     end
 end
 
 end
 
 % Utility functions
-function[obj] = stateDimension(obj, d, indices)
+function[obj] = stateDimension(obj, d, indices, header)
 
 % Update design
 obj.stateSize(d) = obj.gridSize(d);
@@ -64,7 +63,7 @@ obj.convertArgs{d} = [];
 
 % Check for size conflict with mean weights
 if obj.meanType(d)==3 && obj.meanSize(d)~=obj.stateSize(d)
-    weightsSizeConflictError(obj, d);
+    weightsSizeConflictError(obj, d, header);
 end
 
 % Reset mean properties
@@ -75,11 +74,11 @@ if obj.meanType~=0
 end
 
 end
-function[obj] = ensembleDimension(obj, d, indices)
+function[obj] = ensembleDimension(obj, d, indices, header)
 
 % Check for a conflict with mean indices if converting from state
 if obj.isState(d) && obj.meanType(d)~=0
-    noMeanIndicesError;
+    noMeanIndicesError(obj, d, header);
 end
 
 % If converting from state, set sequence indices
@@ -99,7 +98,7 @@ end
 
 % Check for metadata size conflict
 if obj.metadataType(d)==1 && size(obj.metadata{d},1)~=obj.ensSize
-    metadataSizeConflictError;
+    metadataSizeConflictError(obj, d, header);
 end
 
 end
