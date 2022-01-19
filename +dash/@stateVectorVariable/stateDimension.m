@@ -26,15 +26,19 @@ obj.sequenceIndices{d} = [];
 obj.sequenceMetadata{d} = [];
 
 % Reset metadata options
-obj.hasMetadata(d) = false;
+obj.metadataType(d) = 0;
 obj.metadata{d} = [];
-obj.convertMetadata(d) = false;
 obj.convertFunction{d} = [];
 obj.convertArgs{d} = [];
 
-% Update mean properties.
+% Check for size conflict with mean weights
+if obj.meanType(D)==3 && obj.meanSize(d)~=obj.stateSize(d)
+    weightsSizeConflictError;
+end
+
+% Reset mean properties
 obj.meanIndices{d} = [];
-if obj.takeMean(d)
+if obj.meanType~=0
     obj.meanSize(d) = obj.stateSize(d);
     obj.stateSize(d) = 1;
 end
