@@ -1,18 +1,18 @@
-function[] = type(input, type, name, descriptor, idHeader)
-%% dash.assert.type  Throw error if input is not required type
+function[] = type(input, types, name, descriptor, idHeader)
+%% dash.assert.type  Throw error if input is not an allowed data type
 % ----------
-%   dash.assert.type(input, type)  checks if input is the required data
+%   dash.assert.type(input, types)  checks if input is the required data
 %   type. If not, throws an error.
 %
-%   dash.assert.type(input, type, name, descriptor)  uses a custom name and
+%   dash.assert.type(input, types, name, descriptor)  uses a custom name and
 %   data type descriptor in thrown error messages.
 %
-%   dash.assert.type(input, type, name, descriptor, idHeader)  uses a custom
+%   dash.assert.type(input, types, name, descriptor, idHeader)  uses a custom
 %   header in thrown error IDs.
 % ----------
 %   Inputs:
 %       input: The input being tested
-%       type (string scalar): The required data type
+%       types (string vector): The allowed data types
 %       name (string scalar): The name of the input in the calling
 %           function for use in error messages. Default is "input"
 %       descriptor (string scalar): Descriptor for data type in error
@@ -36,11 +36,17 @@ if ~exist('idHeader','var') || isempty(idHeader)
     idHeader = "DASH:assert:type";
 end
 
-% Throw error if incorrect type
-if ~isa(input, type)
-    id = sprintf('%s:inputWrongType', idHeader);
-    error(id, '%s must be a %s %s, but it is a %s %s instead',...
-        name, type, descriptor, class(input), descriptor);
+% Exit if input matches any type category
+for t = 1:numel(types)
+    if isa(input, types(t))
+        return;
+    end
 end
+
+% Throw error if no matches
+types = dash.string.list(types, "or");
+id = sprintf('%s:inputWrongType', idHeader);
+error(id, '%s must be a %s %s, but it is a "%s" %s instead',...
+    name, types, descriptor, class(input), descriptor);
 
 end

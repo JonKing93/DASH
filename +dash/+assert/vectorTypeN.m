@@ -1,21 +1,21 @@
-function[] = vectorTypeN(input, type, length, name, idHeader)
+function[] = vectorTypeN(input, types, length, name, idHeader)
 %% dash.assert.vector  Throws error if input is not a vector of a specified format
 % ----------
-%   dash.assert.vectorTypeN(input, type, length)
+%   dash.assert.vectorTypeN(input, types, length)
 %   Checks if an input is a vector of the required data type and length. If
 %   not, throws an error
 %
-%   dash.assert.vectorTypeN(input, type, length, name)
+%   dash.assert.vectorTypeN(input, types, length, name)
 %   Use a custom name to refer to the input in error messages.
 %
-%   dash.assert.vectorTypeN(input, type, length, name, idHeader)
+%   dash.assert.vectorTypeN(input, types, length, name, idHeader)
 %   Use a custom header for thrown error IDs.
 % ----------
 %   Inputs:
 %       input: The input being tested
-%       type (string scalar | empty array): The required data type of the
+%       types (string vector | []): The allowed data types of the
 %           input. Use an empty array to allow any type
-%       length (scalar positive integer | empty array): The required length
+%       length (scalar positive integer | []): The required length
 %           of the vector. Use an empty array to allow any length
 %       name (string scalar): The name of the input in the calling
 %           function for use in error messages. Default is "input"
@@ -44,8 +44,8 @@ if ~isvector(input)
 end
 
 % Type
-if ~isempty(type)
-    dash.assert.type(input, type, name, "vector", idHeader);
+if ~isempty(types)
+    dash.assert.type(input, types, name, "vector", idHeader);
 end
     
 % Length

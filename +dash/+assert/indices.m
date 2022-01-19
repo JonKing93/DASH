@@ -58,8 +58,8 @@ if isequal(indices, [])
     return;
 end
 
-% Vector
-dash.assert.vectorTypeN(indices, [], [], name, header);
+% Linear or numeric vector
+dash.assert.vectorTypeN(indices, ["logical","numeric"], [], name, header);
 
 % Logical indices
 if islogical(indices)
@@ -75,7 +75,7 @@ if islogical(indices)
     end
         
 % Numeric indices
-elseif isnumeric(indices)
+else
     if ~dash.is.positiveIntegers(indices)
         id = sprintf('%s:invalidLinearIndices', header);
         bad = find(indices<1 | mod(indices,1)~=0, 1);
@@ -90,12 +90,6 @@ elseif isnumeric(indices)
         error(id, 'Element %.f of %s (%.f) is greater than %s (%.f).',...
             loc, name, maxIndex, linearMaxName, length);
     end
-   
-% Anything else
-else
-    id = sprintf('%s:inputNotIndices', header);
-    error(id, ['%s must either be a vector of logical indices, or a vector ',...
-        'of linear indices'], name);
 end
 
 end

@@ -10,6 +10,7 @@ function[] = tests
 
 list;
 elementName;
+error('list conjunction');
 
 end
 

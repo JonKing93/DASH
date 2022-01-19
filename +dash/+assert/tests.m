@@ -32,6 +32,8 @@ nameValue;
 uniqueSet;
 logicalSwitches;
 
+error('multiple types: type, scalarType, vectorTypeN');
+
 end
 
 

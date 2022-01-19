@@ -17,10 +17,12 @@ function[] = logicalSwitches(input, nSwitches, name, header)
 %
 % <a href="matlab:dash.doc('dash.assert.logicalSwitches')">Documentation Page</a>
 
-if isscalar(switches)
-    dash.assert.scalarType(switches, 'logical', name, header);
-else
-    dash.assert.vectorTypeN(switches, 'logical', nSwitches, name, header);
+% Require logical
+dash.assert.type(switches, 'logical', name, [], header);
+
+% If not scalar, check vector length
+if ~isscalar(switches)
+    dash.assert.vectorTypeN(switches, [], nSwitches, name, header);
 end
 
 end
