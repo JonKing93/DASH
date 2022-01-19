@@ -2,23 +2,36 @@ function[obj] = design(obj, dimensions, isstate, indices, header)
 %% dash.stateVectorVariable.design  Design the dimensions of a state vector variable
 % ----------
 %   obj = obj.design(dimensions, isstate, indices)
+%   Designs the specified dimensions given the dimension types and
+%   state/reference indices for the dimensions.
 % ----------
+%   Inputs:
+%       dimensions (string vector [nDimensions]): The list of dimenions to design
+%       isstate (logical vector [nDimensions]): True if a dimension is a
+%           state dimension. False if the dimension is an ensemble dimension.
+%       indices (cell vector [nDimensions] {[] | logical vector | vector, linear indices}:
+%           State or reference indices for each dimension.
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       obj (scalar dash.stateVectorVariable object): The variable updated
+%           with the new design parameters.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.design')">Documentation Page</a>
 
-% Error check dimensions, get indices
+% Default
+if ~exist('header','var') || isempty(header)
+    header = "DASH:stateVectorVariable:design";
+end
+
+% Error check dimensions, get dimension indices. Error check state and
+% reference indices
 dims = obj.dimensionIndices(dimensions, header);
+dash.assert.indexCollection(indices, numel(dims), obj.gridSize(dims), dimensions, header);
 
-% Cycle through dimensions
+% Update each dimension
 for k = 1:numel(dims)
     d = dims(k);
-    
-    % Error check indices
-    dimName = sprintf('the "%s" dimension', obj.dims(d));
-    indicesName = sprintf('Indices for %s', dimName);
-    logicalRequirement = sprintf('be the length of %s', dimName);
-    linearMax = sprintf('the length of %s', dimName);
-    indices{k} = dash.assert.indices(indices{k}, obj.gridSize(d), indicesName, logicalRequirement, linearMax, header);
-
-    % Design state or ensemble dimensions
     if isstate(k)
         obj = stateDimension(obj, d, indices{k});
     else
@@ -65,7 +78,7 @@ end
 function[obj] = ensembleDimension(obj, d, indices)
 
 % Check for a conflict with mean indices if converting from state
-if obj.isState(d) && obj.meanType~=0
+if obj.isState(d) && obj.meanType(d)~=0
     noMeanIndicesError;
 end
 

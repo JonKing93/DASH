@@ -1,35 +1,93 @@
-function[obj] = design(obj, variables, dimensions, type, indices)
+function[obj] = design(obj, variables, dimensions, types, indices)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
+%   obj = obj.design(variables, dimensions, "s"/"state")
+%   obj = obj.design(variables, dimensions, true)
+%   Sets the indicated dimensions as state dimensions of the specified
+%   variables.
+%
+%   obj = obj.design(variables, dimensions, "e"/"ens"/"ensemble")
+%   obj = obj.design(variables, dimensions, false)
+%   Sets the indicated dimensions as ensemble dimensions of the specified
+%   variables.
+%
+%   obj = obj.design(variables, dimensions, types)
+%   Specify the type of each indicated dimension. Allows dimensions to be a
+%   mix of state and ensemble dimensions.
+%
+%   obj = obj.design(..., indices)
+%   Also specifies state and/or reference indices for the indicated
+%   dimensions.
+% ----------
+%   Inputs:
+%       variables (string vector [nVariables]): The names of variables in the state
+%           vector whose dimensions should be designed.
+%       dimensions (string vector [nDimensions]): The names of dimensions
+%           that should be designed.
+%       types (vector [1 | nDimensions], string | logical): Whether each
+%           named dimension is a state or an ensemble dimension. If a
+%           scalar, applies the same setting to all named dimensions. If a
+%           vector, must have one element per named dimension.
+%
+%           If types is logical, use true to indicate a state dimension and
+%           false to indicate an ensemble dimension. If a string vector,
+%           use "s" or "state" to indicate state dimensions and "e", "ens",
+%           or "ensemble" to indicate ensemble dimensions.
+%       indices (cell vector [nDimensions] {[] | logical vector [dimension length] | vector, linear indices}):
+%           State and reference indices for the designed dimensions. State
+%           indices are used for state dimensions; they indicate which
+%           elements along the dimension should be included in the state
+%           vector. Reference indices are used for ensemble dimensions;
+%           they indicate the elements along the dimension that can be used
+%           as reference elements for ensemble members.% 
+% 
+%           In most cases, indices should be a vector with a set of indices
+%           for each listed dimension. Each set of indices must either be a
+%           logical vector the length of the dimension, a set of linear
+%           indices, or an empty array. If the indices for a dimension are
+%           an empty array, selects all elements along the dimension as
+%           state/reference dimensions.
+%
+%           If only a single dimension is listed, the dimension's indices
+%           may be provided directly, instead of in a scalar cell. However,
+%           the scalar cell syntax is also permitted.
+%
+%   Outputs:
+%       obj (scalar stateVector object): The state vector updated with the
+%           designed variables and dimensions.
+%
+% <a href="matlab:dash.doc('stateVector.design')">Documentation Page</a>
 
 % Setup
 header = "DASH:stateVector:design";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
-% Error check variables and get indices. Also check dimensions
+% Error check variables and get indices.
 vars = obj.variableIndices(variables, false, header);
-dimensions = dash.assert.strlist(dimensions);
 
-% Error check the dimensions
-dimensionErrorCheck;
+% Error check dimensions.
+dimensions = dash.assert.strlist(dimensions);
+dash.assert.uniqueSet(dimensions, 'dimensions', header);
+nDims = numel(dimensions);
 
 % Parse dimension types
-nDims = numel(dimensions);
-isState = dash.assert.switches(dimensions, ["s","state"], ["e","ens","ensemble"], numel(v));
+isstate = dash.parse.stringsOrLogicals(types, ["s","state"],["e","ens","ensemble"],...
+    'Dimension type', 'recognized dimension type', header);
+dash.assert.logicalSwitches(isstate, nDims, 'dimension types', header);
 
 % Parse indices
 if ~exist('indices','var')
     indices = cell(1, nDims);
 else
-    dash.assert.indexCollection(indices, nDims, [], dimNames, header);
+    dash.assert.indexCollection(indices, nDims, [], dimensions, header);
 end
 
 % Update each variable
 for k = 1:numel(vars)
     v = vars(k);
     try
-        obj.variables_(v) = obj.variables_(v).design(dimensions, isState, indices);
+        obj.variables_(v) = obj.variables_(v).design(dimensions, isstate, indices, header);
 
     % Provide informative error message if failed
     catch ME
@@ -43,8 +101,8 @@ end
 function[] = designError(obj, v, cause)
 
 % If not a DASH error, just rethrow
-if ~contains(ME.identifier, "DASH")
-    rethrow(ME);
+if ~contains(cause.identifier, "DASH")
+    rethrow(cause);
 end
 
 % Check if the state vector has a label and if the error has an associated dimension
@@ -62,24 +120,13 @@ if haslabel
     vector = sprintf(' in %s', obj.name);
 end
 
-header = sprintf('Cannot design %sthe "%s" variable%s. Cause of error:', ...
+header = sprintf('Cannot design %sthe "%s" variable%s.', ...
     dim, obj.variableNames(v), vector);
 
-% Build the tail
-dim = '';
-if hasDimension
-    dim = sprintf('Dimension: %s\n', cause.cause);
-end
-
-vector = '';
-if haslabel
-    vector = sprintf('\nState vector: %s', obj.label);
-end
-
-tail = sprintf('%sVariable: %s%s', dim, obj.variableNames(v), vector);
-
-% Build the full error
+% Build the error
 id = cause.identifier;
-error(id, '%s\n\n%s\n\n%s', header, cause.message, tail);
+ME = MException(id, '%s', header);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 
 end

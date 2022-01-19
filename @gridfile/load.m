@@ -32,7 +32,7 @@ function[X, meta] = load(obj, dimensions, indices, precision)
 %           dimensions in the loaded data. Each element must be the name of
 %           a dimension in the gridfile. Dimension names cannot be
 %           repeated.
-%       indices (cell vector [nDims] {empty array | logical vector [dimension length] | vector, linear indices}):
+%       indices (cell vector [nDims] {[] | logical vector [dimension length] | vector, linear indices}):
 %           The indices of data elements to load. A cell vector with a
 %           set of indices for each dimension listed in the dimension order.
 %           Each set of indices must either be a logical vector the length

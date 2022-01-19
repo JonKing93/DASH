@@ -55,7 +55,7 @@ for d = 1:nDims
         dim = sprintf('the "%s" dimension', dimNames(d));
     end
     if wasCell
-        name = sprintf('Indices for %s', dim);
+        name = sprintf('the indices for %s', dim);
     end
 
     % Get the dimension length
