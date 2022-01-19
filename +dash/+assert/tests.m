@@ -30,6 +30,7 @@ indexCollection;
 fileExists(testpath);
 nameValue;
 uniqueSet;
+logicalSwitches;
 
 end
 

@@ -27,6 +27,7 @@
 %   fileExists      - Throw error if a file does not exist
 %   nameValue       - Throw error if inputs are not Name,Value pairs
 %   uniqueSet       - Throw error if vector has repeated values
+%   logicalSwitches - Throw error if input is neither a scalar logical, nor a logical vector
 %
 % Unit tests:
 %   tests           - Unit testing for the dash.assert subpackage
