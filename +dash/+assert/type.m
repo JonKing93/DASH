@@ -37,6 +37,7 @@ if ~exist('idHeader','var') || isempty(idHeader)
 end
 
 % Exit if input matches any type category
+types = string(types);
 for t = 1:numel(types)
     if isa(input, types(t))
         return;

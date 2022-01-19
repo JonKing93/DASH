@@ -38,6 +38,10 @@ properties
 
 end
 
+methods
+    d = dimensionIndices(obj, dimensions, variableName, header);
+end
+
 
 % Constructor
 methods

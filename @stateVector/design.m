@@ -4,16 +4,19 @@ function[obj] = design(obj, variables, dimensions, type, indices)
 
 % Setup
 header = "DASH:stateVector:design";
+dash.assert.scalarObj(obj, header);
 obj.assertEditable;
-vars = obj.variableIndices(variables);
 
-% Error check dimensions, get index in each variable
-dimensions = dash.assert.strlist(dimensions, 'dimensions', header);
-dims = obj.dimensionIndices(dimensions, vars);
+% Error check variables and get indices. Also check dimensions
+vars = obj.variableIndices(variables, false, header);
+dimensions = dash.assert.strlist(dimensions);
+
+% Error check the dimensions
+dimensionErrorCheck;
 
 % Parse dimension types
 nDims = numel(dimensions);
-isState = dash.parse.logicalOrString(type, nDims, otherArgs);
+isState = dash.assert.switches(dimensions, ["s","state"], ["e","ens","ensemble"], numel(v));
 
 % Parse indices
 if ~exist('indices','var')
@@ -22,127 +25,61 @@ else
     dash.assert.indexCollection(indices, nDims, [], dimNames, header);
 end
 
-% Error check the indices for each variable
-for v = 1:numel(vars)
-    checkIndices(obj, v, dims(v,:), indices, header)
-
-    % Update the variable's dimensions. Skip dimensions not in the variable
-    for d = 1:nDims
-        if dims(v,d)~=0
-            obj.variables(v) = updateDimension(obj, v, dims(v,d), isState(d), indices{d}, header);
-        end
-    end
-end
-
-end
-
-% Utility subfunctions
-function[] = checkIndices(obj, v, d, indices, header)
-
-% Get the variable
-var = obj.variables(v);
-
-% Ignore indices for dimensions that are not in the variable
-ignore = d==0;
-d(ignore) = [];
-indices(ignore) = [];
-
-% Get the dimensions, and lengths
-dims = var.dims(d);
-dimLengths = var.gridSize(d);
-
-% Check that each set of indices is compatible with the grid dimensions
-for d = 1:numel(dims)
-    lengthName = sprintf('the length of the "%s" dimension', dims(d));
+% Update each variable
+for k = 1:numel(vars)
+    v = vars(k);
     try
-        indices{d} = dash.assert.indices(indices{d}, dimLengths(d), dims(d), lengthName(d), header);
+        obj.variables_(v) = obj.variables_(v).design(dimensions, isState, indices);
 
-    % Supplement error messages if not
+    % Provide informative error message if failed
     catch ME
-        designError(obj, v, dims(d), ME);
+        designError(obj, v, ME);
     end
-end
-
-end
-function[var] = updateDimension(obj, v, d, indices, header)
-
-% Get the variable
-var = obj.variables(v);
-
-% Get the size of the new dimension
-newSize = var.gridSize(d);
-if ~isempty(indices)
-    newSize = numel(indices);
-end
-
-% State dimension: Check for size conflicts with weights, then update
-if isState
-    if var.hasWeights(d) && newSize~=var.meanSize(d)
-        weightsSizeConflictError(newSize, var.meanSize(d), obj, v, d, header);
-    end
-    var = var.stateDimension(d, indices);
-
-% Ensemble dimension: Check for size conflicts with mean indices and
-% metadata, then update
-else
-    if var.isState(d) && var.takeMean(d)
-        noMeanIndicesError(obj, v, d, header);
-    elseif var.hasMetadata(d) && newSize~=size(var.metadata{d},1)
-        metadataSizeConflictError(newSize, size(var.metadata{d},1), obj, v, d, header);
-    end
-    var = var.ensembleDimension(d, indices);
 end
 
 end
 
 % Error messages
-function[] = designError(obj, v, d, cause)
+function[] = designError(obj, v, cause)
 
-
-varName = obj.variableNames(v);
-dimName = obj.variables(v).dims(d);
-
-% Optionally include state vector name in the error message
-tail = '';
-name = obj.name;
-if ~strcmp(name,"") && ~isempty(name)
-    tail = sprintf('\nState Vector: %s',name);
+% If not a DASH error, just rethrow
+if ~contains(ME.identifier, "DASH")
+    rethrow(ME);
 end
 
-message = sprintf([...
-    'Cannot design the "%s" dimension of the "%s" variable',...
-    '\n\n',...
-    '%s',...
-    '\n\n',...
-    '   Dimension: %s\n',...
-    '    Variable: %s',...
-    '%s'],...
-    dimName, varName, cause.message, dimName, varName, tail);
+% Check if the state vector has a label and if the error has an associated dimension
+haslabel = ~strcmp(obj.label, "");
+hasDimension = ~isempty(cause.cause);
 
-error(cause.identifier, '%s', message);
+% Build the header
+dim = '';
+if hasDimension
+    dim = sprintf('the "%s" dimension of ', cause.cause);
+end
 
+vector = '';
+if haslabel
+    vector = sprintf(' in %s', obj.name);
 end
-function[] = weightsSizeConflictError(stateSize, nWeights, obj, v, d, header)
-id = sprintf('%s:weightsSizeConflict', header);
-ME = MException(id, ['Cannot convert the "%s" dimension to a state dimension',...
-    'because %s is being used in a weighted mean, and the number of state ',...
-    'indices (%.f) does not match the number of weights (%.f). Either specify ',...
-    '%.f state indices or reset the options for the weighted mean.'],...
-    obj.variables(v).dims(d), stateSize, nWeights, nWeights);
-designError(obj, v, d, ME);
+
+header = sprintf('Cannot design %sthe "%s" variable%s. Cause of error:', ...
+    dim, obj.variableNames(v), vector);
+
+% Build the tail
+dim = '';
+if hasDimension
+    dim = sprintf('Dimension: %s\n', cause.cause);
 end
-function[] = noMeanIndicesError(obj, v, d, header)
-id = sprintf('%s:noMeanIndices', header);
-ME = MException(id, ['Cannot convert dimension "%s" to an ensemble dimension ',...
-    'because it is being used in a mean and there are no mean indices. You may ',...
-    'want to reset the options for the mean.'], obj.variables(v).dims(d));
-designError(obj, v, d, ME);
+
+vector = '';
+if haslabel
+    vector = sprintf('\nState vector: %s', obj.label);
 end
-function[] = metadataSizeConflictError(ensSize, metaSize, obj, v, d, header)
-id = sprintf('%s:metadataSizeConflict', header);
-ME = MException(id, ['The number of reference indices (%.f) for dimension "%s"',...
-    'does not match the number of rows of the user-specified metadata (%.f rows).',...
-    'Either use %.f reference indices or reset the metadata options.'],...
-    ensSize, obj.variables(v).dims(d), metaSize, ensSize);
-designError(obj, v, d, ME);
+
+tail = sprintf('%sVariable: %s%s', dim, obj.variableNames(v), vector);
+
+% Build the full error
+id = cause.identifier;
+error(id, '%s\n\n%s\n\n%s', header, cause.message, tail);
+
 end

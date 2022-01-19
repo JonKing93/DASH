@@ -52,6 +52,7 @@ end
 
 % List of strings
 if dash.is.strlist(input)
+    input = string(input);
     listName = sprintf('%s in %s', elementName, collectionName);
     indices = dash.assert.strsInList(input, strings, name, listName, header);
 
