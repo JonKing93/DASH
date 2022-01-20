@@ -48,11 +48,13 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %           metadata should be a cell vector with one element per listed
 %           dimension. Each element holds the sequence metadata for the
 %           correpsonding dimension. Each set of metadata must be a matrix
-%           with one row per associated sequence index. Metadata matrices
-%           may have a numeric, logical, char, string, cellstring, or
-%           datetime data type. They cannot contain NaN or NaT elements.
-%           Cellstring metadata will be converted to string. If there are no
-%           sequence indices for a dimension, then the sequence metadata
+%           with one row per associated sequence index. Each metadata
+%           matrix should have unique rows.
+% 
+%           Metadata matrices may have a numeric, logical, char, string, 
+%           cellstring, or datetime data type. They cannot contain NaN or NaT 
+%           elements. Cellstring metadata will be converted to string. If there
+%           are no sequence indices for a dimension, then the sequence metadata
 %           for the dimension should be an empty array. 
 %
 %           If only a single dimension is listed, you may provide sequence

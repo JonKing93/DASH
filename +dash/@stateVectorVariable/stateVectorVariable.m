@@ -32,7 +32,7 @@ properties
     %% Metadata
 
     metadataType = zeros(1,0);      % 0: gridfile metadata, 1: user provided metadata, 2: convert metadata
-    metadata = cell(1,0);           % User specified metadata
+    metadata_ = cell(1,0);           % User specified metadata
     convertFunction;                % Metadata conversion function handle
     convertArgs;                    % Metadata conversion function arguments
 
@@ -41,6 +41,7 @@ end
 methods
     obj = design(obj, dims, isstate, indices, header);
     obj = sequence(obj, dims, indices, metadata, header);
+    obj = metadata(obj, dims, type, arg1, arg2, header);
 end
 
 
@@ -86,7 +87,7 @@ methods
     obj.weights = cell(1, nDims);
 
     obj.metadataType = zeros(1, nDims);
-    obj.metadata = cell(1, nDims);
+    obj.metadata_ = cell(1, nDims);
     obj.convertFunction = cell(1, nDims);
     obj.convertArgs = cell(1, nDims);
 

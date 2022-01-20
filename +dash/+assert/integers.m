@@ -31,7 +31,7 @@ notinteger = mod(input,1)~=0;
 if any(notinteger,'all')
     bad = find(notinteger, 1);
     id = sprintf('%s:inputNotIntegers', header);
-    error(id, 'Element %.f of %s (%s) is not an integer.', bad, name, input(bad));
+    error(id, 'Element %.f of %s (%f) is not an integer.', bad, name, input(bad));
 end
 
 end

@@ -43,15 +43,23 @@ end
 % Utility functions
 function[obj] = stateDimension(obj, d, indices, header)
 
-% Update design
-obj.stateSize(d) = obj.gridSize(d);
+% Get the new size
+newSize = obj.gridSize(d);
 if ~isempty(indices)
-    obj.stateSize(d) = numel(indices);
+    newSize = numel(indices);
 end
+
+% Check for size conflict with mean weights
+if obj.meanType(d)==3 && objmeanSize(d)~=newSize
+    weightsSizeConflictError(obj, d, header);
+end
+
+% Update design
+obj.stateSize(d) = newSize;
 obj.ensSize(d) = 1;
 obj.isState(d) = true;
 
-% Use column indices
+% Record indices as column vectors
 if isrow(indices)
     indices = indices';
 end
@@ -63,16 +71,11 @@ obj.sequenceMetadata{d} = [];
 
 % Reset metadata options
 obj.metadataType(d) = 0;
-obj.metadata{d} = [];
+obj.metadata_{d} = [];
 obj.convertFunction{d} = [];
 obj.convertArgs{d} = [];
 
-% Check for size conflict with mean weights
-if obj.meanType(d)==3 && obj.meanSize(d)~=obj.stateSize(d)
-    weightsSizeConflictError(obj, d, header);
-end
-
-% Reset mean properties
+% Update mean properties, remove mean indices
 obj.meanIndices{d} = [];
 if obj.meanType~=0
     obj.meanSize(d) = obj.stateSize(d);
@@ -82,36 +85,36 @@ end
 end
 function[obj] = ensembleDimension(obj, d, indices, header)
 
-% Check for a conflict with mean indices if converting from state
-if obj.isState(d) && obj.meanType(d)~=0
-    noMeanIndicesError(obj, d, header);
+% Get the new size
+newSize = obj.gridSize(d);
+if ~isempty(indices)
+    newSize = numel(indices);
 end
 
-% If converting from state, set sequence indices
+% Check for metadata size conflict
+if obj.metadataType(d)==1 && newSize~=obj.ensSize(d)
+    metadataSizeConflictError(obj, d, header);
+end
+
+% If converting from a state dimension, check for conflict with mean
+% indices and initialize sequence indices
 if obj.isState(d)
+    if obj.meanType(d)~=0
+        noMeanIndicesError(obj, d, header);
+    end
     obj.sequenceIndices{d} = 0;
-    obj.sequenceMetadata{d} = [];
 end
 
 % Update design
 obj.stateSize(d) = numel(obj.sequenceIndices{d});
+obj.ensSize(d) = newSize;
 obj.isState(d) = false;
 
-obj.ensSize(d) = obj.gridSize(d);
-if ~isempty(indices)
-    obj.ensSize(d) = numel(indices);
-end
-
-% Use column indices
+% Record indices as column
 if isrow(indices)
     indices = indices';
 end
 obj.indices{d} = indices;
-
-% Check for metadata size conflict
-if obj.metadataType(d)==1 && size(obj.metadata{d},1)~=obj.ensSize
-    metadataSizeConflictError(obj, d, header);
-end
 
 end
 
@@ -135,7 +138,7 @@ ME = MException(id, ...
 throwAsCaller(ME);
 end
 function[] = metadataSizeConflictError(obj, d, header)
-nMeta = size(obj.metadata{d},1);
+nMeta = size(obj.metadata_{d},1);
 id = sprintf('%s:metadataSizeConflict', header);
 ME = MException(id, ...
     ['The number of reference indices (%.f) for dimension "%s" does not\n',...

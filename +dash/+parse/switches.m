@@ -1,4 +1,8 @@
 function[switches] = switches(input, typeStrings, nSwitches, name, listName, header)
+%% dash.parse.switches  Throw error if input is neither a set of logical/numeric switches, nor a set of strings associated with switches
+% ----------
+%   switches = dash.assert.switches(input, typeStrings, nSwitches)
+%   
 
 % Defaults
 if ~exist('name','var') || isempty(name)
@@ -12,7 +16,9 @@ if ~exist('header','var') || isempty(header)
 end
 
 % Check size
-if ~isscalar(input)
+if isequal(nSwitches,1)
+    dash.assert.scalarType(input, [], name, header);
+elseif ~isscalar(input)
     vectorName = sprintf('Since it is not scalar, %s', name);
     dash.assert.vectorTypeN(input, [], nSwitches, vectorName, header);
 end
