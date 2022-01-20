@@ -41,7 +41,7 @@ classdef stateVector
 
         % Variable dimensions
         dimensions = dimensions(obj, v, cellOutput);
-        indices = dimensionIndices(obj, v, dimensions, header);
+        [indices, dimensions] = dimensionIndices(obj, v, dimensions, header);
 
         % Coupling
         couple;
@@ -49,6 +49,10 @@ classdef stateVector
 
         % Design
         obj = design(obj, variables, dimensions, types, indices);
+        obj = sequence(obj, variables, dimensions, indices, metadata);
+        obj = metadata(obj, type, varargin);
+        mean;
+        obj = editVariables(obj, vars, d, method, inputs, task);
     end
 
     % Constructor
