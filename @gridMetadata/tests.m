@@ -26,6 +26,8 @@ disp;
 dispAttributes;
 
 assertUnique;
+error('collection syntax: edit, addAttributes, editAttributes');
+error('parser: edit, addAttributes, editAttributes, index');
 
 end
 

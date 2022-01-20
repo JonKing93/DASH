@@ -99,7 +99,7 @@ classdef gridMetadata
     methods       
         
         % Properties / dimensions
-        obj = edit(obj, varargin);
+        obj = edit(obj, dimensions, metadata, varargin);
         dims = defined(obj);
         obj = setOrder(obj, varargin);
         obj = index(obj, dimensions, indices, varargin);
@@ -109,9 +109,9 @@ classdef gridMetadata
         dispAttributes(obj);
         
         % Attribute manipulation
-        obj = addAttributes(obj, varargin);
+        obj = addAttributes(obj, fields, values, varargin);
         obj = removeAttributes(obj, varargin);
-        obj = editAttributes(obj, varargin);
+        obj = editAttributes(obj, fields, values, varargin);
         
         % Assertions
         assertUnique(obj, dimensions, header);        
