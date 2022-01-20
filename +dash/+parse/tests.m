@@ -11,7 +11,10 @@ function[] = tests
 vararginFlags;
 inputOrCell;
 nameValue;
+
 stringsOrIndices;
+stringsOrLogicals;
+nameValueOrCollection;
 
 end
 
