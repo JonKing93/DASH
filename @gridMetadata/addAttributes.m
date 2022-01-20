@@ -27,14 +27,10 @@ function[obj] = addAttributes(obj, fields, values, varargin)
 header = "DASH:gridMetadata:addAttributes";
 dash.assert.scalarObj(obj, header);
 
-% Parse and error check
-if numel(varargin)>0
-    varargin = [{fields}, {values}, varargin];
-    extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
-    [names, values] = dash.assert.nameValue(varargin, 0, extraInfo, header);
-else
-    names = dash.assert.strlist(fields, 'fields', header);
-end
+% Parse inputs
+extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
+[names, values] = dash.parse.nameValueOrCollection(fields, values, varargin, ...
+    'fields', 'values', extraInfo, header);
 
 % Require valid, unique field names
 dash.assert.uniqueSet(names, 'Attributes field name', header);
@@ -54,10 +50,6 @@ isfield = ismember(names, fields);
 if any(isfield)
     repeatedFieldNameError(names, isfield, header);
 end
-
-% Parse the field values
-nNew = numel(names);
-values = dash.parse.inputOrCell(values, nNew, 'values', header);
 
 % Add each new value to the attributes
 for n = 1:numel(names)

@@ -49,23 +49,15 @@ header = "DASH:gridMetadata:edit";
 dash.assert.scalarObj(obj, header);
 
 % Parse
-if numel(varargin)>0
-    varargin = [{dimensions}, {metadata}, varargin];
-    extraInfo = 'Inputs must be Dimension,Metadata pairs.';
-    [names, metadata] = dash.assert.nameValue(varargin, 0, extraInfo, header);
-else
-    names = dash.assert.strlist(dimensions, 'dimensions', header);
-end
+extraInfo = 'Inputs must be Dimension,Metadata pairs.';
+[names, metadata] = dash.parse.nameValueOrCollection(dimensions, metadata, varargin, ...
+    'dimensions', 'metadata', extraInfo, header);
 
 % Require recognized, non-duplicate dimension names
 [dims, atts] = gridMetadata.dimensions;
 valid = [dims; atts];
 d = dash.assert.strsInList(names, valid, 'Dimension name', 'recognized dimension', header);
 dash.assert.uniqueSet(names, 'Dimension name', header);
-
-% Parse the new metadata
-nEdit = numel(names);
-metadata = dash.parse.inputOrCell(metadata, nEdit, 'metadata', header);
 
 % Track whether to reset the dimension order
 isdefined = ismember(names, obj.defined);

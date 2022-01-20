@@ -36,14 +36,10 @@ function[obj] = index(obj, dimensions, indices, varargin)
 header = "DASH:gridMetadata:index";
 dash.assert.scalarObj(obj, header);
 
-% Parse and error check
-if numel(varargin)>0
-    varargin = [{dimensions}, {indices}, varargin];
-    extraInfo = 'Inputs must be Dimension-Name,Indices pairs.';
-    [dims, indices] = dash.assert.nameValue(varargin, 0, extraInfo, header);
-else
-    dims = dash.assert.strlist(dimensions, 'dimensions', header);
-end
+% Parse
+extraInfo = 'Inputs must be Dimension-Name,Indices pairs.';
+[dims, indices] = dash.parse.nameValueOrCollection(dimensions, indices, varargin, ...
+    'dimensions', 'indices', extraInfo, header);
 
 % Require defined, non-duplicate dimensions
 defined = obj.defined;
@@ -51,7 +47,7 @@ dash.assert.strsInList(dims, defined, 'Dimension name', 'dimension defined in th
 dash.assert.uniqueSet(dims, 'Dimension name', header);
 nDims = numel(dims);
 
-% Parse and error check indices
+% Error check indices
 dimLengths = NaN(1, nDims);
 for d = 1:nDims
     dimLengths(d) = size(obj.(dims(d)),1);

@@ -25,14 +25,10 @@ function[obj] = editAttributes(obj, fields, values, varargin)
 header = "DASH:gridMetadata:editAttributes";
 dash.assert.scalarObj(obj, header);
 
-% Parse and error check inputs
-if numel(varargin)>0
-    varargin = [{fields}, {values}, varargin];
-    extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
-    [names, values] = dash.assert.nameValue(varargin, 0, extraInfo, header);
-else
-    names = dash.assert.strlist(fields, 'fields', header);
-end
+% Parse
+extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
+[names, values] = dash.parse.nameValueOrCollection(fields, values, varargin, ...
+    'fields', 'values', extraInfo, header);
 
 % Get the attributes structure
 [~, atts] = gridMetadata.dimensions;
@@ -42,10 +38,6 @@ attributes = obj.(atts);
 dash.assert.uniqueSet(names, 'Attributes field name', header);
 fields = string(fieldnames(attributes));
 dash.assert.strsInList(names, fields, 'Attributes field name', 'existing attribute field', header);
-
-% Parse the field values
-nEdit = numel(names);
-values = dash.parse.inputOrCell(values, nEdit, 'values', header);
 
 % Replace each value in the attributes
 for n = 1:numel(names)
