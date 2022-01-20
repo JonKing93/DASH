@@ -26,11 +26,13 @@ vectorTypeN;
 
 indices;
 indexCollection;
+additiveIndexCollection;
 
 fileExists(testpath);
 nameValue;
 uniqueSet;
 logicalSwitches;
+integers;
 
 error('multiple types: type, scalarType, vectorTypeN');
 
