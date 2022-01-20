@@ -1,25 +1,42 @@
-function[obj] = edit(obj, varargin)
+function[obj] = edit(obj, dimensions, metadata, varargin)
 %% gridMetadata.edit  Edit the metadata for a gridded dataset
 % ----------
+%   obj = <strong>obj.edit</strong>(dimensions, metadata)
+%   Replace the metadata for the named dimensions with the specified new
+%   metadata values. For grid dimensions, the new metadata should be a
+%   matrix with a supported data type, and cannot contain NaN or NaT
+%   elements. If the gridMetadata object has a set dimension order, and the
+%   defined dimensions change, also removes the dimension order from the
+%   object.
+%
+%   You may also include "attributes" in the dimension list to edit the
+%   non-dimensional attributes. If doing so, the metadata for the
+%   "attributes" entry should be a scalar struct, which can contain any
+%   fields and values.
+%
 %   obj = <strong>obj.edit</strong>(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
-%   Replace the metadata for the named dimensions with the specified
-%   values. 
-%
-%   If the gridMetadata has a set dimension order, and the defined
-%   dimensions change, also removes the dimension order from the object.
-%
 %   obj = <strong>obj.edit</strong>(..., 'attributes', attributes)
-%   Replace the non-dimensional attributes with the specified values
+%   Uses a Name,Value syntax to edit the dimensions and/or non-dimensional
+%   attributes.
 % ----------
 %   Inputs:
+%       dimensions (string vector [nDimensions]): The names of the dimensions whose
+%           metadata should be edited. May also include "attributes" in
+%           order to edit the non-dimensional attributes.
+%       metadata (cell vector [nDimensions] {metadata matrix | scalar struct}):
+%           The new metadata values for each edited dimension. A cell
+%           vector with one element per edited dimension. Metadata for
+%           dimensions should follow the format specified for the
+%           "metadataN" input listed below. The new metadata for
+%           non-dimensional attributes should be a scalar struct, which may
+%           contain any fields or values.
 %       dimensionN (string scalar): The name of a dimension of a gridded dataset.
 %           Must be a recognized grid dimension. 
 %           (See gridMetadata.dimensions for a list of available dimensions)
 %       metadataN (matrix, numeric | logical | char | string | cellstring | datetime): 
 %           The metadata for the dimension. Cannot have NaN or NaT elements.
-%           All rows must be unique.
 %       attributes (scalar struct): Non-dimensional metadata attributes for
-%           a gridded dataset. May contain any fields or contents useful
+%           a gridded dataset. May contain any fields or values useful
 %           for the user.
 %
 %   Outputs:
@@ -31,15 +48,24 @@ function[obj] = edit(obj, varargin)
 header = "DASH:gridMetadata:edit";
 dash.assert.scalarObj(obj, header);
 
-% Parse and error check dimension-value pairs
-extraInfo = 'Inputs must be Dimension,Metadata pairs.';
-[names, metadata] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+% Parse
+if numel(varargin)>0
+    varargin = [{dimensions}, {metadata}, varargin];
+    extraInfo = 'Inputs must be Dimension,Metadata pairs.';
+    [names, metadata] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+else
+    names = dash.assert.strlist(dimensions, 'dimensions', header);
+end
 
 % Require recognized, non-duplicate dimension names
 [dims, atts] = gridMetadata.dimensions;
 valid = [dims; atts];
 d = dash.assert.strsInList(names, valid, 'Dimension name', 'recognized dimension', header);
 dash.assert.uniqueSet(names, 'Dimension name', header);
+
+% Parse the new metadata
+nEdit = numel(names);
+metadata = dash.parse.inputOrCell(metadata, nEdit, 'metadata', header);
 
 % Track whether to reset the dimension order
 isdefined = ismember(names, obj.defined);

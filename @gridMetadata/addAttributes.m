@@ -1,11 +1,18 @@
-function[obj] = addAttributes(obj, varargin)
+function[obj] = addAttributes(obj, fields, values, varargin)
 %% gridMetadata.addAttributes  Add non-dimensional attributes to the metadata for a gridded dataset
 % ----------
-%   obj = <strong>obj.addAttributes</strong>(field1, value1, field2, value2, .., fieldN, valueN)
+%   obj = <strong>obj.addAttributes</strong>(fields, values)
 %   Adds the named fields and associated values to the attributes structure
 %   of a gridMetadata object.
+%
+%   obj = <strong>obj.addAttributes</strong>(field1, value1, field2, value2, .., fieldN, valueN)
+%   Uses a Name,Value syntax to add attributes
 % ----------
 %   Inputs:
+%       fields (string vector [nFields]): A list of fields to add to the
+%           attributes structure.
+%       values (cell vector [nFields]): The values associated with each
+%           new attributes field.
 %       fieldN (string scalar): The name of a new field for the attributes
 %           structure. Must be a valid Matlab variable name and cannot
 %           duplicate any fields already in the attributes.
@@ -20,12 +27,17 @@ function[obj] = addAttributes(obj, varargin)
 header = "DASH:gridMetadata:addAttributes";
 dash.assert.scalarObj(obj, header);
 
-% Parse and error check input pairs
-extraInfo = 'Inputs must be Attribute,Value pairs';
-[names, values] = dash.assert.nameValue(varargin, 0, extraInfo, header);
-dash.assert.uniqueSet(names, 'Attribute field', header);
+% Parse and error check
+if numel(varargin)>0
+    varargin = [{fields}, {values}, varargin];
+    extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
+    [names, values] = dash.assert.nameValue(varargin, 0, extraInfo, header);
+else
+    names = dash.assert.strlist(fields, 'fields', header);
+end
 
-% Require valid field names
+% Require valid, unique field names
+dash.assert.uniqueSet(names, 'Attributes field name', header);
 for n = 1:numel(names)
     if ~isvarname(names(n))
         invalidFieldNameError(names(n), n, header);
@@ -43,6 +55,10 @@ if any(isfield)
     repeatedFieldNameError(names, isfield, header);
 end
 
+% Parse the field values
+nNew = numel(names);
+values = dash.parse.inputOrCell(values, nNew, 'values', header);
+
 % Add each new value to the attributes
 for n = 1:numel(names)
     attributes.(names(n)) = values{n};
@@ -55,7 +71,7 @@ end
 function[] = invalidFieldNameError(name, index, header)
 id = sprintf('%s:invalidFieldName', header);
 inputIndex = index*2-1;
-ME = MException(id, ['Input %.f ("%s") cannot be used as an attributes field because it ',...
+ME = MException(id, ['Attributes field name %.f ("%s") cannot be used as an attributes field because it ',...
     'is not a valid Matlab variable name.'], inputIndex, name);
 throwAsCaller(ME);
 end
@@ -63,7 +79,7 @@ function[] = repeatedFieldNameError(names, isfield, header)
 id = sprintf('%s:repeatedFieldName', header);
 repeat = find(isfield, 1);
 inputIndex = repeat*2-1;
-ME = MException(id, 'Input %.f ("%s") is already a field in the attributes', ...
+ME = MException(id, 'Attributes field name %.f ("%s") is already a field in the attributes', ...
     inputIndex, names(repeat));
 throwAsCaller(ME);
 end

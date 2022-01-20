@@ -138,6 +138,11 @@ classdef gridMetadata
         %   obj = gridMetadata(..., 'attributes', attributes)
         %   Include non-dimensional metadata attributes in the metadata object
         %
+        %   obj = gridMetadata(dimensions, metadata)
+        %   Uses an alternate syntax to create a metadata object. In this
+        %   syntax, collect all dimension names into a string vector, and
+        %   corresponding metadata/attributes in a cell vector.
+        %
         %   obj = gridMetadata(s)
         %   Creates a metadata object from a struct template. Fields of the
         %   struct that match dimension names or 'attributes' are copied as
@@ -149,10 +154,18 @@ classdef gridMetadata
         %           (See gridMetadata.dimensions for a list of available dimensions)
         %       metadataN (matrix, numeric | logical | char | string | cellstring | datetime): 
         %           The metadata for the dimension. Cannot have NaN or NaT elements.
-        %           All rows must be unique.
         %       attributes (scalar struct): Non-dimensional metadata attributes for
         %           a gridded dataset. May contain any fields or contents useful
         %           for the user.
+        %       dimensions (string vector [nDimensions]): The list of all
+        %           dimensions to create in the metadata object. May also
+        %           include the string "attributes" in order to create
+        %           non-dimensional attributes.
+        %       metadata (cell vector [nDimensions] {metadata matrix | scalar struct}):
+        %           The metadata for each dimension listed in the "dimensions" input.
+        %           Each metadata value should follow the format described for the
+        %           "metadataN" input above. Metadata for  non-dimensional attributes
+        %           should be a scalar struct, which may contain any fields or values.
         %       s (scalar struct): A template for a gridMetadata object.
         %           May contain any fields, but fields that match dimension
         %           names or 'attributes' are copied as metadata for the
@@ -166,7 +179,7 @@ classdef gridMetadata
         %
         % <a href="matlab:dash.doc('gridMetadata.gridMetadata')">Documentation Page</a>
         
-        % Build from struct
+        % Parse struct fields
         if numel(varargin)==1 && isscalar(varargin{1}) && isstruct(varargin{1})
             s = varargin{1};
             fields = string(fieldnames(s))';

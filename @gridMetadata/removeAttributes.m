@@ -42,7 +42,7 @@ end
 
 % Check the fields are in the attributes
 listName = 'field in the attributes structure';
-dash.assert.strsInList(remove, fields, 'Attribute name', listName, header);
+dash.assert.strsInList(remove, fields, 'Attributes field name', listName, header);
 
 % Remove and update
 attributes = rmfield(attributes, remove);
