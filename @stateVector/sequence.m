@@ -32,16 +32,15 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %           dimension. Each element contains the sequence indices for the
 %           corresponding dimension or an empty array. Sequence indices are
 %           0-indexed from the reference element for each ensemble member 
-%           and may include negative values. The magnitude of sequence
-%           indices may not exceed the length of the associated dimension.
-%           If an element of indices contains an empty array, then any
-%           pre-existing sequences are removed for that dimension. Sequence
-%           metadata for the metadata must also be an empty array.
+%           and may include negative values. If an element of indices contains
+%           an empty array, then any pre-existing sequences are removed for 
+%           that dimension. Sequence metadata for the metadata must also be
+%           an empty array.
 %
 %           If only a single dimension is listed, you may provide the
 %           sequence indices directly, instead of in a scalar cell.
 %           However, the scalar cell syntax is also permitted.
-%       metadata (cell vector [nDimensions] {matrix, numeric | logical | char | string | cellstring | datetime | []}):
+%       metadata (cell vector [nDimensions] {metadata matrix [nSequenceIndices x ?]}):
 %           Sequence metadata for each listed dimension. Sequence metadata
 %           is used as the unique metadata marker for each sequence element
 %           along the state vector.
@@ -49,10 +48,12 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %           metadata should be a cell vector with one element per listed
 %           dimension. Each element holds the sequence metadata for the
 %           correpsonding dimension. Each set of metadata must be a matrix
-%           with one row per associated sequence index. Metadata cannot
-%           include NaN or NaT elements. If there are no sequence indices
-%           for a dimension, then the sequence metadata for the dimension
-%           should be an empty array.
+%           with one row per associated sequence index. Metadata matrices
+%           may have a numeric, logical, char, string, cellstring, or
+%           datetime data type. They cannot contain NaN or NaT elements.
+%           Cellstring metadata will be converted to string. If there are no
+%           sequence indices for a dimension, then the sequence metadata
+%           for the dimension should be an empty array. 
 %
 %           If only a single dimension is listed, you may provide sequence
 %           metadata directly, instead of in a scalar cell. However, the
@@ -69,12 +70,42 @@ header = "DASH:stateVector:sequence";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
-% Error check variables and get indices
-vars = obj.variableIndices(variables, false, header);
-
-% Error check dimensions
-dimensions = dash.assert.strlist(dimensions);
-dash.assert.uniqueSet(dimensions, 'dimensions', header);
+% Error check variables and dimensions. Get indices
+v = obj.variableIndices(variables, false, header);
+[d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 
-% Error check 
+% Error check indices
+indices = dash.assert.additiveIndexCollection(indices, nDims, dimensions, header);
+
+% Check metadata is valid and unique. Convert cellstring
+metadata = dash.parse.inputOrCell(metadata, nDims, "metadata", header);
+for k = 1:nDims
+    meta = gridMetadata(dimensions(k), metadata{k});
+    meta.assertUnique(dimensions(k), header);
+    metadata{k} = meta.(dimensions(k));
+
+    % Check metadata matches the number of sequence indices
+    nRows = size(metadata{k},1);
+    nIndices = numel(indices{k});
+    if nRows ~= nIndices
+        metadataSizeConflictError(nRows, nIndices, dimensions(k), header);
+    end
+end
+
+% Update the variables
+method = 'sequence';
+inputs = {indices, metadata, header};
+task = 'design a sequence for';
+obj = obj.editVariables(v, d, method, inputs, task);
+
+end
+
+% Error message
+function[] = metadataSizeConflictError(nRows, nIndices, dimension, header)
+id = sprintf('%s:metadataWrongSize', header);
+ME = MException(id, ['The number of rows in the sequence metadata for the "%s" dimension ',...
+    '(%.f) does not match the number of sequence indices for the dimension (%.f).'],...
+    dimension, nRows, nIndices);
+throwAsCaller(ME);
+end

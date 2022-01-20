@@ -27,7 +27,7 @@ end
 
 % Error check state and reference indices
 nDims = numel(d);
-dash.assert.indexCollection(indices, nDimes, obj.gridSize(d), obj.dims(d), header);
+dash.assert.indexCollection(indices, nDims, obj.gridSize(d), obj.dims(d), header);
 
 % Update each dimension
 for k = 1:nDims
@@ -48,8 +48,14 @@ obj.stateSize(d) = obj.gridSize(d);
 if ~isempty(indices)
     obj.stateSize(d) = numel(indices);
 end
-obj.indices{d} = indices;
 obj.ensSize(d) = 1;
+obj.isState(d) = true;
+
+% Use column indices
+if isrow(indices)
+    indices = indices';
+end
+obj.indices{d} = indices;
 
 % Reset sequences
 obj.sequenceIndices{d} = [];
@@ -87,14 +93,20 @@ if obj.isState(d)
     obj.sequenceMetadata{d} = [];
 end
 
-% Update indices and sizes
-obj.indices{d} = indices;
+% Update design
 obj.stateSize(d) = numel(obj.sequenceIndices{d});
+obj.isState(d) = false;
 
 obj.ensSize(d) = obj.gridSize(d);
 if ~isempty(indices)
     obj.ensSize(d) = numel(indices);
 end
+
+% Use column indices
+if isrow(indices)
+    indices = indices';
+end
+obj.indices{d} = indices;
 
 % Check for metadata size conflict
 if obj.metadataType(d)==1 && size(obj.metadata{d},1)~=obj.ensSize
@@ -106,25 +118,28 @@ end
 % Error messages
 function[] = weightsSizeConflictError(obj, d, header)
 id = sprintf('%s:weightsSizeConflict', header);
-ME = MException(id, ['Cannot convert the "%s" dimension to a state dimension ',...
-    'because %s is being used in a weighted mean, and the number of state ',...
-    'indices (%.f) does not match the number of weights (%.f). Either specify ',...
-    '%.f state indices or reset the options for the weighted mean.'],...
+ME = MException(id, ...
+    ['Cannot convert the "%s" dimension to a state dimension because %s is\n',...
+    'being used in a weighted mean, and the number of state indices (%.f)\n',...
+    'does not match the number of weights (%.f). Either specify %.f state indices\n',...
+    'or reset the options for the weighted mean.'],...
     obj.dims(d), obj.stateSize(d), obj.meanSize(d), obj.meanSize(d));
 throwAsCaller(ME);
 end
 function[] = noMeanIndicesError(obj, d, header)
 id = sprintf('%s:noMeanIndices', header);
-ME = MException(id, ['Cannot convert dimension "%s" to an ensemble dimension ',...
-    'because it is being used in a mean and there are no mean indices. You may ',...
-    'want to reset the options for the mean.'], obj.dims(d));
+ME = MException(id, ...
+    ['Cannot convert dimension "%s" to an ensemble dimension because it is\n',...
+    'being used in a mean and there are no mean indices. You may want to\n',...
+    'reset the options for the mean.'], obj.dims(d));
 throwAsCaller(ME);
 end
 function[] = metadataSizeConflictError(obj, d, header)
 nMeta = size(obj.metadata{d},1);
 id = sprintf('%s:metadataSizeConflict', header);
-ME = MException(id, ['The number of reference indices (%.f) for dimension "%s"',...
-    'does not match the number of rows of the user-specified metadata (%.f rows).',...
+ME = MException(id, ...
+    ['The number of reference indices (%.f) for dimension "%s" does not\n',...
+    'match the number of rows of the user-specified metadata (%.f rows).\n',...
     'Either use %.f reference indices or reset the metadata options.'],...
     obj.ensSize(d), obj.dims(d), nMeta, nMeta);
 throwAsCaller(ME);

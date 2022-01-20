@@ -39,7 +39,8 @@ properties
 end
 
 methods
-    obj = design(obj, dimensions, isstate, indices, header);
+    obj = design(obj, dims, isstate, indices, header);
+    obj = sequence(obj, dims, indices, metadata, header);
 end
 
 
