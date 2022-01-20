@@ -1,10 +1,13 @@
-function[indices] = dimensionIndices(obj, v, dimensions, header)
+function[indices, dimensions] = dimensionIndices(obj, v, dimensions, header)
 %% stateVector.dimensionIndices  Return the indices of named dimensions in state vector variables
 % ----------
 %   indices = obj.dimensionIndices(v, dimensions)
 %   Return the indices of the named dimensions in the specified state
 %   vector variables. Throws an error if a named dimension is not associated
 %   with a specified variable.
+%
+%   [indices, dimensions] = obj.dimensionIndices(v, dimensions)
+%   Also return the dimension names as a "string" data type.
 %
 %   indices = obj.dimensionIndices(v, dimensions, header)
 %   Customize thrown error IDs.
@@ -19,6 +22,8 @@ function[indices] = dimensionIndices(obj, v, dimensions, header)
 %   Outputs:
 %       indices (cell vector [nVariables], {vector [nDimensions], linear indices}):
 %           The indices of the named dimensions in the specified variables.
+%       dimensions (string vector [nDimensions]): The names of dimensions
+%           converted to a "string" data type.
 %
 % <a href="matlab:dash.doc('stateVector.dimensionIndices')">Documentation Page</a>
 
