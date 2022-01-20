@@ -8,9 +8,13 @@ function[obj] = editAttributes(obj, fields, values, varargin)
 %   Uses a Name,Value syntax to edit attributes.
 % ----------
 %   Inputs:
-%       attributeN (string scalar): The name of a field in the current
+%       fields (string vector [nFields]): A list of fields to edit to the
+%           attributes structure.
+%       values (cell vector [nFields]): The new values associated with each
+%           edited attributes field.
+%       fieldN (string scalar): The name of a field in the current
 %           gridMetadata object's attributes structure.
-%       valueN: The new value to use for the attribute.
+%       valueN: The new value to use for the attributes field.
 %
 %   Outputs:
 %       obj (gridMetadata object): The updated gridMetadata object
