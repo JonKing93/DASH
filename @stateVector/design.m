@@ -72,14 +72,14 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Error check variables and dimensions. Get indices.
-vars = obj.variableIndices(variables, false, header);
-d = obj.dimensionIndices(vars, dimensions, header);
-nDims = numel(d);
+v = obj.variableIndices(variables, false, header);
+[d, dimensions] = obj.dimensionIndices(v, dimensions, header);
+nDims = numel(dimensions);
 
 % Parse dimension types
-isstate = dash.parse.stringsOrLogicals(types, ["s","state"],["e","ens","ensemble"],...
-    'Dimension type', 'recognized dimension type', header);
-dash.assert.logicalSwitches(isstate, nDims, 'dimension types', header);
+options = {["e","ens","ensemble"], ["s","state"]};
+isstate = dash.assert.switches(types, options, nDims, ...
+                    'Dimension type', 'recognized dimension type', header);
 
 % Parse indices
 if ~exist('indices','var')
@@ -89,49 +89,8 @@ else
 end
 
 % Update each variable
-for k = 1:numel(vars)
-    v = vars(k);
-    try
-        obj.variables_(v) = obj.variables_(v).design(d{v}, isstate, indices, header);
-
-    % Provide informative error message if failed
-    catch ME
-        designError(obj, v, ME);
-    end
-end
-
-end
-
-% Error messages
-function[] = designError(obj, v, cause)
-
-% If not a DASH error, just rethrow
-if ~contains(cause.identifier, "DASH")
-    rethrow(cause);
-end
-
-% Check if the state vector has a label and if the error has an associated dimension
-haslabel = ~strcmp(obj.label, "");
-hasDimension = ~isempty(cause.cause);
-
-% Build the header
-dim = '';
-if hasDimension
-    dim = sprintf('the "%s" dimension of ', cause.cause);
-end
-
-vector = '';
-if haslabel
-    vector = sprintf(' in %s', obj.name);
-end
-
-header = sprintf('Cannot design %sthe "%s" variable%s.', ...
-    dim, obj.variableNames(v), vector);
-
-% Build the error
-id = cause.identifier;
-ME = MException(id, '%s', header);
-ME = addCause(ME, cause);
-throwAsCaller(ME);
+method = 'design';
+inputs = {isstate, indices, header};
+obj = obj.editVariables(v, d, method, inputs, method);
 
 end
