@@ -2,8 +2,13 @@ function[obj] = mean(obj, d, indices, omitnan, header)
 
 %% Discard settings
 
-% Fully disable mean
+% If fully disabling mean, restore state dimension size
 if isequal(indices, "none")
+    restore = obj.isState(d) && obj.meanType(d)~=0;
+    restore = d(restore);
+    obj.stateSize(restore) = obj.meanSize(restore);
+
+    % Discard settings
     obj.meanType(d) = 0;
     obj.meanSize(d) = NaN;
     obj.meanIndices(d) = {[]};
