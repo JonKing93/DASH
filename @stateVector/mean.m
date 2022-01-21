@@ -53,7 +53,7 @@ function[obj] = mean(obj, variables, dimensions, indices, NaNoptions)
 %           over which to take a mean. Cannot have repeated dimension names.
 %       indices (cell vector [nDimensions] {[] | mean indices}): Mean
 %           indices for ensemble dimensions. A cell vector with one element
-%           per listed dimension. Each element should hold an empty array
+%           per listed dimension. Each element should hold either an empty array
 %           (if the dimension is a state dimension), or a vector of mean
 %           indices (if the dimension is an ensemble dimension). Mean
 %           indices are 0-indexed from the reference elements of each

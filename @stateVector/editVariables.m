@@ -8,7 +8,7 @@ function[obj] = editVariables(obj, vars, d, method, inputs, task)
 %   Inputs:
 %       vars (vector, linear indices [nVars]): The indices of the variables
 %           being edited
-%       d (cell vector [nVars]{dimension indices [nDims]}): The indices of
+%       d (matrix, dimension indices [nVars x nDims]): The indices of
 %           the dimensions being edited for each variable.
 %       method (string scalar): The name of the method to apply to the variables
 %       inputs (cell vector): Inputs to the method after the dimension indices
@@ -24,7 +24,7 @@ function[obj] = editVariables(obj, vars, d, method, inputs, task)
 for k = 1:numel(vars)
     v = vars(k);
     try
-        obj.variables_(v) = obj.variables_(v).(method)(d{v}, inputs{:});
+        obj.variables_(v) = obj.variables_(v).(method)(d(v,:), inputs{:});
 
     % Rethrow errors outside of DASH error handling
     catch cause

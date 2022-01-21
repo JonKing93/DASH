@@ -60,7 +60,6 @@ if obj.meanType(d)==0
     obj.meanSize(d) = obj.stateSize(d);
     obj.stateSize(d) = 1;
 end
-obj.omitnan(d) = omitnan;
 
 end
 function[obj] = ensembleDimension(obj, d, indices, header)

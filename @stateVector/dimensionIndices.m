@@ -35,17 +35,18 @@ end
 % Initial error check
 dimensions = dash.assert.strlist(dimensions);
 dash.assert.uniqueSet(dimensions, 'dimensions', header);
+nDims = numel(dimensions);
 
 % Preallocate dimension indices for each variable
 nVars = numel(v);
-indices = cell(nVars, 1);
+indices = cell(nVars, nDims);
 
 % Get the dimensions for each variable. Get the index for each variable
 variableDimensions = obj.dimensions(v, true);
 for k = 1:nVars
     variableName = obj.variableNames(v(k));
     listName = sprintf('dimension of the "%s" variable', variableName);
-    indices{v} = dash.assert.strsInList(dimensions, variableDimensions{v}, ...
+    indices(v,:) = dash.assert.strsInList(dimensions, variableDimensions{v}, ...
         'Dimension', listName, header);
 end
 

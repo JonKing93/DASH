@@ -43,6 +43,7 @@ methods
     obj = sequence(obj, dims, indices, metadata, header);
     obj = metadata(obj, dims, type, arg1, arg2, header);
     obj = mean(obj, dims, indices, omitnan, header);
+    obj = weightedMean(obj, dims, weights, header);
 end
 
 

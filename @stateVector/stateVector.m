@@ -52,6 +52,7 @@ classdef stateVector
         obj = sequence(obj, variables, dimensions, indices, metadata);
         obj = metadata(obj, variables, dimensions, metadataType, varargin);
         obj = mean(obj, variables, dimensions, indices, NaNoptions);
+        obj = weightedMean(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
     end
 
