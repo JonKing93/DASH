@@ -50,8 +50,8 @@ classdef stateVector
         % Design
         obj = design(obj, variables, dimensions, types, indices);
         obj = sequence(obj, variables, dimensions, indices, metadata);
-        obj = metadata(obj, type, varargin);
-        mean;
+        obj = metadata(obj, variables, dimensions, metadataType, varargin);
+        obj = mean(obj, variables, dimensions, indices, NaNoptions);
         obj = editVariables(obj, vars, d, method, inputs, task);
     end
 

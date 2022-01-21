@@ -57,8 +57,8 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %           state/reference dimensions.
 %
 %           If only a single dimension is listed, the dimension's indices
-%           may be provided directly, instead of in a scalar cell. However,
-%           the scalar cell syntax is also permitted.
+%           may be provided directly as a vector, instead of in a scalar cell.
+%           However, the scalar cell syntax is also permitted.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the

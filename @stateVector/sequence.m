@@ -16,7 +16,7 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %       variableNames (string vector): The names of variables in the state
 %           vector that should be given a sequence. May not contain
 %           repeated variable names.
-%       dimensions (string vector): The names of the ensemble dimmensions
+%       dimensions (string vector): The names of the ensemble dimensions
 %           that should be given a sequence. Each dimension must be an
 %           ensemble dimension in all listed variables. Cannot have
 %           repeated dimension names.
@@ -34,11 +34,11 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %           0-indexed from the reference element for each ensemble member 
 %           and may include negative values. If an element of indices contains
 %           an empty array, then any pre-existing sequences are removed for 
-%           that dimension. Sequence metadata for the metadata must also be
+%           that dimension. The sequence metadata for that dimension must also be
 %           an empty array.
 %
 %           If only a single dimension is listed, you may provide the
-%           sequence indices directly, instead of in a scalar cell.
+%           sequence indices directly as a vector, instead of in a scalar cell.
 %           However, the scalar cell syntax is also permitted.
 %       metadata (cell vector [nDimensions] {metadata matrix [nSequenceIndices x ?]}):
 %           Sequence metadata for each listed dimension. Sequence metadata
@@ -58,8 +58,8 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %           for the dimension should be an empty array. 
 %
 %           If only a single dimension is listed, you may provide sequence
-%           metadata directly, instead of in a scalar cell. However, the
-%           scalar cell syntax is also permitted.
+%           metadata directly as a matrix, instead of in a scalar cell. However,
+%           the scalar cell syntax is also permitted.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the

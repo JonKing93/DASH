@@ -50,7 +50,7 @@ if ~isempty(indices)
 end
 
 % Check for size conflict with mean weights
-if obj.meanType(d)==3 && objmeanSize(d)~=newSize
+if obj.meanType(d)==2 && obj.meanSize(d)~=newSize
     weightsSizeConflictError(obj, d, header);
 end
 
