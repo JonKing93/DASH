@@ -59,7 +59,7 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %       variableNames (string vector): The names of variables in the state
 %           vector that should have metadata updated. May not contain
 %           repeated variable names.
-%       dimensions (string vector [nDimensions]): The names of the ensemble dimmensions
+%       dimensions (string vector [nDimensions]): The names of the ensemble dimensions
 %           that should have their metadata updated. Each dimension must be an
 %           ensemble dimension in all listed variables. Cannot have
 %           repeated dimension names.
@@ -87,7 +87,8 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %           dimensions. A cell vector with one element per listed
 %           dimension. Each element holds a function handle for the conversion
 %           function to use for the dimension. If only a single dimension
-%           is listed, you may also provide the function handle directly.
+%           is listed, you may also provide the function handle directly,
+%           instead of in a scalar cell.
 %       conversionArgs (cell vector [nDimensions, {cell vector {function args}}):
 %           Additional arguments to each conversion function. A cell vector
 %           with one element per conversion function handle. Each element
@@ -95,7 +96,8 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %           conversion function has no additional arguments, the corresponding
 %           element of conversionArgs should hold an empty cell. If only a
 %           single dimension is listed, you may provide the additional
-%           arguments for the conversion function directly as a cell vector.
+%           arguments for the conversion function directly as a cell
+%           vector, instead of in a scalar cell.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector with updated
@@ -184,8 +186,7 @@ convertFunction = varargs{1};
 convertFunction = dash.parse.inputOrcell(convertFunction, nDims, 'conversionFunction', header);
 for d = 1:nDims
     if ~isa(convertFunction{d}, 'function_handle')
-        ME = notFunctionHandleError(dimensions, d, header);
-        throwAsCaller(ME);
+        notFunctionHandleError(dimensions, d, header);
     end
 end
 
@@ -200,7 +201,7 @@ end
 convertArgs = varargs{2};
 convertArgs = dash.parse.inputOrCell(convertArgs, nDims, 'conversionArgs', header);
 for d = 1:nDims
-    name = dash.string.elementName(d, 'Conversion function input arguments (conversionArgs)', nDims);
+    name = dash.string.elementName(d, 'conversionArgs', nDims);
     dash.assert.vectorTypeN(convertArgs{d}, 'cell', [], name, header);
 end
 
@@ -216,7 +217,7 @@ end
 function[ME] = tooManyArgs
 ME = MException('MATLAB:TooManyInputs', 'Too many input arguments.');
 end
-function[ME] = notFunctionHandleError(dimensions, d, header)
+function[] = notFunctionHandleError(dimensions, d, header)
 nDims = numel(dimensions);
 if nDims>1
     extraInfo = sprintf('(Element %.f of conversionFunction). ', d);
@@ -227,4 +228,5 @@ id = sprintf('%s:elementNotFunctionHandle', header);
 ME = MException(id, ['The conversion function input for the "%s" dimension is not a function ',...
     'handle. %sFor additional help with function handles, check out the %s.'],...
     dimensions(d), extraInfo, link);
+throwAsCaller(ME);
 end

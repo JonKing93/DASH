@@ -37,8 +37,7 @@ for k = 1:numel(dims)
     % Check that metadata rows match the number of reference indices
     nRows = size(metadata{k}, 1);
     if nRows ~= obj.ensSize(d)
-        ME = metadataSizeConflictError(d, nRows, obj.ensSize(d), header);
-        throwAsCaller(ME);
+        metadataSizeConflictError(d, nRows, obj.ensSize(d), header);
     end
 end
 
@@ -52,4 +51,5 @@ ME = MException(id, ...
     ['The alternate metadata for the "%s" dimension must have one row per\n',...
     'reference index (%.f), but it has %.f rows instead.'],...
     dim, nIndex, nRows);
+throwAsCaller(ME);
 end
