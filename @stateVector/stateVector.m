@@ -54,6 +54,12 @@ classdef stateVector
         obj = mean(obj, variables, dimensions, indices, NaNoptions);
         obj = weightedMean(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
+
+        % Vector workflow
+        obj = extract(obj, variables);
+        obj = reorder(obj, variables);
+        append;
+        copy;
     end
 
     % Constructor

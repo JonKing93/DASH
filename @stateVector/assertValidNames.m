@@ -39,7 +39,7 @@ inputName = dash.string.elementName(repeats(1), 'Variable name', nNames);
 badName = allNames(repeats(1));
 link = '<a href="matlab:dash.doc(''stateVector.rename'')">rename the existing variable</a>';
 
-id = sprintf('%s:duplicateVariableName', header);
+id = sprintf('%s:duplicateVariableName', header);z
 error(id, ['%s ("%s") is already the name of a variable in %s. ',...
     'Either use a different name, or %s.'], inputName, badName, obj.name, link);
 end
