@@ -1,4 +1,21 @@
 function[obj] = weightedMean(obj, dims, weights, header)
+%% dash.stateVectorVariable.weightedMean  Apply a weighted mean to dimensions of a state vector variable
+% ----------
+%   obj = <strong>obj.weightedMean</strong>(dims, weights, header)
+%   Takes a weighted mean over the indicated dimensions.
+% ----------
+%   Inputs:
+%       dims (vector, linear indices [nDimensions]): The indices of the
+%           ensemble dimensions to update.
+%       weights (cell vector [nDimensions] {numeric vector}): Weights to
+%           use for each dimension.
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       obj (scalar dash.stateVectorVariable object): The variable with
+%           updated weighted mean parameters.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.weightedMean')">Documentation Page</a>
 
 % Cycle through dimensions
 for k = 1:numel(dims)

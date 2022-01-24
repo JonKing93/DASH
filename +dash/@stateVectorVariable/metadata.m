@@ -1,4 +1,32 @@
 function[obj] = metadata(obj, d, type, arg1, arg2, header)
+%% dash.stateVectorVariable.metadata  Sets metadata options for ensemble dimensions of a state vector variable
+% ----------
+%   obj = <strong>obj.metadata</strong>(d, 0, [], [], header)
+%   Use raw metadata for the indicated dimensions.
+%
+%   obj = <strong>obj.metadata</strong>(d, 1, metadata, [], header)
+%   Use user-provided metadata for the indicated dimensions.
+%
+%   obj = <strong>obj.metadata</strong>(d, 2, conversionFunctions, conversionArgs, header)
+%   Convert metadata for the indicated dimensions using the specified
+%   functions and inputs.
+% ----------
+%   Inputs:
+%       d (vector, linear indices [nDimensions]): The ensemble dimensions
+%           that should be updated.
+%       metadata (cell vector [nDimensions] {metadata matrix}): Alternate
+%           metadata to use for each dimension.
+%       conversionFunctions (cell vector [nDimensions] {function_handle}):
+%           Handle to the conversion function to use for each dimension.
+%       conversionArgs (cell vector [nDimensions] {cell vector}):
+%           Additional input arguments to the conversion function for each dimension.
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       obj (scalar dash.stateVectorVariable object): The variable with
+%           updated metadata parameters.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.metadata')">Documentation Page</a>
 
 % Only allow ensemble dimensions
 if any(obj.isState(d))

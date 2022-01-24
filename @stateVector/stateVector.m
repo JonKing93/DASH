@@ -24,8 +24,8 @@ classdef stateVector
 
         % General settings
         varargout = label(obj, label);
-        varargout = verbose(obj, verbose);
         name = name(obj);
+        varargout = verbose(obj, verbose);
         assertEditable(obj);
 
         % Variables

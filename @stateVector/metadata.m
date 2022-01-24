@@ -1,27 +1,29 @@
 function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %% stateVector.metadata  Specify how to process metadata along dimensions of state vector variables
 % ----------
+%   metadata = 
+%
 %   obj = obj.metadata(v, dimensions, metadataType, ...)
 %   obj = obj.metadata(variableNames, dimensions, metadataType, ...)
 %   Specify how to process metadata for the indicated dimensions of the
 %   listed variables. This metadata is used when building ensemble members
-%   of a state vector ensemble. The metadata is used to ensure that the
-%   different variables within an ensemble member all correspond to the
-%   same point. This check proceeds by requiring all variables to have the
-%   same metadata in all ensemble dimensions. In the default case, this
-%   metadata is extracted from the gridfile metadata for each ensemble
-%   dimension.
+%   of a state vector ensemble. The metadata is used to ensure that coupled
+%   variables within an ensemble member all correspond to the same point. 
+%   This check proceeds by searching for matching metadata along the
+%   ensemble dimensions of coupled variables, and pinning the variables at
+%   matching metadata points. In the default case, this metadata is
+%   extracted from the gridfile metadata for each ensemble dimension.
 %
 %   However, different variables can use different metadata formats within
-%   their gridfiles, which can prevent the metadata check from completing.
-%   This metadata allows you to specify alternate metadata, or a metadata
-%   conversion method, to facilitate the comparison of metadata in
-%   different formats.
+%   their gridfiles, which can prevent the metadata check from finding
+%   matching metadata. This method allows you to specify alternate metadata, 
+%   or a metadata conversion method, to facilitate the comparison of
+%   metadata in different formats.
 %
-%   This method is perhaps most commonly when combining variables on an
-%   annual time step with variables on a monthly or seasonal timestep. If
-%   this describes your scenario, check out the HOW-TO page on combining
-%   annual and seasonal data, which is located in the documentation.
+%   This method is perhaps most commonly used to combine variables on
+%   different time steps. If this describes your scenario, check out the
+%   HOW-TO page on combining annual and seasonal data, which is located in
+%   the documentation.
 %
 %   obj = obj.metadata(variables, dimensions, 0|"r"|"raw")
 %   Use raw gridfile metadata for the indicated dimensions of the

@@ -1,7 +1,7 @@
 function[obj] = design(obj, d, isstate, indices, header)
 %% dash.stateVectorVariable.design  Design the dimensions of a state vector variable
 % ----------
-%   obj = obj.design(d, isstate, indices)
+%   obj = <strong>obj.design</strong>(d, isstate, indices)
 %   Designs the specified dimensions given the dimension types and
 %   state/reference indices for the dimensions.
 % ----------

@@ -1,4 +1,23 @@
 function[obj] = sequence(obj, dims, indices, metadata, header)
+%% dash.stateVectorVariable.sequence  Apply a sequence to ensemble dimensions of a state vector variable
+% ----------
+%   obj = <strong>obj.sequence</strong>(dims, indices, metadata, header)
+%   Applies sequences to the indicated ensemble dimensions.
+% ----------
+%   Inputs:
+%       dims (vector, linear indices [nDimensions]): The indices of the
+%           ensemble dimensions to update.
+%       indices (cell vector [nDimensions] {additive indices [nIndices]}): The
+%           sequence indices to use for each dimension.
+%       metadata (cell vector [nDimensions] {metadata matrix [nIndices x ?]}):
+%           The sequence metadata to use for each dimension
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       obj (scalar dash.stateVectorVariable object): The variable with
+%           updated sequence parameters.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.sequence')">Documentation Page</a>
 
 % Only allow ensemble dimensions
 if any(obj.isState(dims))

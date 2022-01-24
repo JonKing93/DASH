@@ -1,4 +1,25 @@
 function[obj] = mean(obj, d, indices, omitnan, header)
+%% dash.stateVectorVariable.mean  Take a mean over dimensions of a state vector variable
+% ----------
+%   obj = <strong>obj.mean</strong>(d, indices, omitnan, header)
+%   Takes a mean over the specified dimensions given mean indices and NaN
+%   options.
+% ----------
+%   Inputs:
+%       d (vector, linear indices [nDimensions]): The indices of the
+%           dimensions over which to take a mean.
+%       indices (cell vector [nDimensions] {[] | mean indices}): Mean
+%           indices for the dimensions. An empty array for state
+%           dimensions, and additive indices for ensemble dimensions.
+%       omitnan (logical vector [nDimensions]): Whether to omit NaN
+%           elements along a mean (true) or whether to include NaN (false)
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       obj (scalar dash.stateVectorVariable object): The variable updated
+%           with the new mean parameters.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.mean')">Documentation Page</a>
 
 %% Discard settings
 
