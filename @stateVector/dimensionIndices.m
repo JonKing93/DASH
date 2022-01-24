@@ -44,7 +44,7 @@ indices = NaN(nVars, nDims);
 % Get the dimensions and index for each variable
 variableDimensions = obj.dimensions(v, true);
 for k = 1:nVars
-    [~, indices(v,:)] = ismember(dimensions, variableDimensions{v});
+    [~, indices(k,:)] = ismember(dimensions, variableDimensions{k});
 end
 
 % Throw error if a dimension isn't in any variable

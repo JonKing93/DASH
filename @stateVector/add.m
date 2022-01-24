@@ -47,6 +47,11 @@ vars = vars(:);
 obj.assertValidNames(vars, header);
 nVariables = numel(vars);
 
+% Parse string grids
+if dash.is.strlist(grids)
+    grids = string(grids);
+end
+
 % If not scalar, grids must be a vector with one element per variable. If
 % scalar, use the single grid for all variables
 nGrids = numel(grids);
