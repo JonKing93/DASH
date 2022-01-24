@@ -4,7 +4,7 @@ function[indices, dimensions] = dimensionIndices(obj, v, dimensions, header)
 %   indices = obj.dimensionIndices(v, dimensions)
 %   Return the indices of the named dimensions in the specified state
 %   vector variables. Throws an error if a named dimension is not associated
-%   with a specified variable.
+%   with any of the listed variables.
 %
 %   [indices, dimensions] = obj.dimensionIndices(v, dimensions)
 %   Also return the dimension names as a "string" data type.
@@ -35,19 +35,26 @@ end
 % Initial error check
 dimensions = dash.assert.strlist(dimensions);
 dash.assert.uniqueSet(dimensions, 'dimensions', header);
-nDims = numel(dimensions);
 
 % Preallocate dimension indices for each variable
+nDims = numel(dimensions);
 nVars = numel(v);
-indices = cell(nVars, nDims);
+indices = NaN(nVars, nDims);
 
-% Get the dimensions for each variable. Get the index for each variable
+% Get the dimensions and index for each variable
 variableDimensions = obj.dimensions(v, true);
 for k = 1:nVars
-    variableName = obj.variableNames(v(k));
-    listName = sprintf('dimension of the "%s" variable', variableName);
-    indices(v,:) = dash.assert.strsInList(dimensions, variableDimensions{v}, ...
-        'Dimension', listName, header);
+    [~, indices(v,:)] = ismember(dimensions, variableDimensions{v});
+end
+
+% Throw error if a dimension isn't in any variable
+missing = all(indices==0, 1);
+if any(missing)
+    bad = find(missing,1);
+    badName = dimensions(bad);
+    id = sprintf('%s:dimensionNotInVariables', header);
+    error(id, ['Dimension %.f (%s) is not associated with any of the listed ',...
+        'variables.'], bad, badName);
 end
 
 end
