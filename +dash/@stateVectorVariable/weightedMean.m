@@ -17,9 +17,12 @@ function[obj] = weightedMean(obj, dims, weights, header)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.weightedMean')">Documentation Page</a>
 
-% Cycle through dimensions
+% Cycle through dimensions, skip missing dimensions
 for k = 1:numel(dims)
     d = dims(k);
+    if d==0
+        continue;
+    end
 
     % Remove a weighted mean
     if isempty(weights{k})
@@ -84,12 +87,4 @@ ME = MException(id, ...
     dim, nWeights, indexType, obj.meanSize(d), link, indexType);
 throwAsCaller(ME);
 end
-
-
-
-
-
-
-
-
 

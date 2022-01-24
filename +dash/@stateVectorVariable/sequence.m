@@ -19,14 +19,17 @@ function[obj] = sequence(obj, dims, indices, metadata, header)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.sequence')">Documentation Page</a>
 
-% Only allow ensemble dimensions
-if any(obj.isState(dims))
-    stateDimensionError(obj, dims, header);
-end
-
-% Cycle through dimensions.
+% Cycle through dimensions. Skip missing dimensions
 for k = 1:numel(dims)
     d = dims(k);
+    if d==0
+        continue;
+    end
+
+    % Only allow ensemble dimensions
+    if obj.isState(d)
+        stateDimensionError(obj, d, header);
+    end
 
     % Remove sequences from a dimension
     if isempty(indices{k})
@@ -45,10 +48,8 @@ end
 end
 
 % Error messages
-function[] = stateDimensionError(obj, dims, header)
-isState = obj.isState(dims);
-bad = find(isState, 1);
-d = dims(bad);
+function[] = stateDimensionError(obj, d, header)
+
 dim = obj.dims(d);
 link = '<a href="matlab:dash.doc(''stateVector.design'')">stateVector.design</a>';
 

@@ -1,12 +1,12 @@
-function[obj] = mean(obj, d, indices, omitnan, header)
+function[obj] = mean(obj, dims, indices, omitnan, header)
 %% dash.stateVectorVariable.mean  Take a mean over dimensions of a state vector variable
 % ----------
-%   obj = <strong>obj.mean</strong>(d, indices, omitnan, header)
+%   obj = <strong>obj.mean</strong>(dims, indices, omitnan, header)
 %   Takes a mean over the specified dimensions given mean indices and NaN
 %   options.
 % ----------
 %   Inputs:
-%       d (vector, linear indices [nDimensions]): The indices of the
+%       dims (vector, linear indices [nDimensions]): The indices of the
 %           dimensions over which to take a mean.
 %       indices (cell vector [nDimensions] {[] | mean indices}): Mean
 %           indices for the dimensions. An empty array for state
@@ -21,99 +21,98 @@ function[obj] = mean(obj, d, indices, omitnan, header)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.mean')">Documentation Page</a>
 
-%% Discard settings
-
-% If fully disabling mean, restore state dimension size
-if isequal(indices, "none")
-    restore = obj.isState(d) && obj.meanType(d)~=0;
-    restore = d(restore);
-    obj.stateSize(restore) = obj.meanSize(restore);
-
-    % Discard settings
-    obj.meanType(d) = 0;
-    obj.meanSize(d) = NaN;
-    obj.meanIndices(d) = {[]};
-    obj.omitnan(d) = false;
-    obj.weights(d) = {[]};
-    return;
-
-% Disable weighted mean. Check dimensions are all taking a mean
-elseif isequal(indices, "unweighted")
-    noMean = obj.meanType(d)==0;
-    if any(noMean)
-        noMeanToUnweightError(dims, noMean, header);
-    end
-
-    % Remove weights
-    obj.meanType(d) = 1;
-    obj.weights(d) = {[]};
-    return;
-end
-
-%% Set a mean
-
-% Cycle through dimensions. Update state vs ensemble
+% Cycle through dimensions, skip missing dimensions
 for k = 1:numel(dims)
     d = dims(k);
+    if d==0
+        continue;
+    end
 
-    % Process state vs ensemble dimensions
-    inputs = {obj, d, indices{k}, header};
-    if obj.isState(d)
-        obj = stateDimension(inputs{:});
+    % Either disable mean, or set new values
+    if isequal(indices, "none")
+        obj = disableMean(obj, d);
+    elseif isequal(indices, "unweighted")
+        obj = disableWeights(obj, d, header);
     else
-        obj = ensembleDimension(inputs{:});
+        obj = setMean(obj, d, indices{k}, omitnan, header);
     end
-
-    % Update type and omitnan
-    if obj.meanType(d)==0
-        obj.meanType(d) = 1;
-    end
-    obj.omitnan(d) = omitnan(k);
 end
 
 end
 
 % Utility functions
-function[obj] = stateDimension(obj, d, indices, header)
+function[obj] = disableMean(obj, d)
 
-% Prohibit indices
-if ~isempty(indices)
-    meanIndicesNotAllowedError(d, header);
+% Restore state dimension size
+if obj.isState(d) && obj.meanType(d)~=0
+    obj.stateSize(d) = obj.meanSize(d);
 end
 
-% Update
-if obj.meanType(d)==0
-    obj.meanSize(d) = obj.stateSize(d);
-    obj.stateSize(d) = 1;
-end
+% Reset all settings
+obj.meanType(d) = 0;
+obj.meanSize(d) = NaN;
+obj.meanIndices{d} = [];
+obj.omitnan(d) = false;
+obj.weights{d} = [];
 
 end
-function[obj] = ensembleDimension(obj, d, indices, header)
+function[obj] = disableWeights(obj, d, header)
 
-% Require indices
-if isempty(indices)
-    missingMeanIndicesError(d, header);
-end
-nIndices = numel(indices);
-
-% Check for size conflict with weights
-if obj.meanType(d)==2 && nIndices~=obj.meanSize(d)
-    weightsSizeConflictError(d, nIndices, header);
+% Check the dimension has a mean
+if obj.meanType(d) == 0
+    noMeanToUnweightError(d, header);
 end
 
-% Update
+% Discard weights
+obj.meanType(d) = 1;
+obj.weights{d} = [];
+
+end
+function[obj] = setMean(obj, d, indices, header)
+
+% State dimension - prohibit indices
+if obj.isState(d)
+    if ~isempty(indices)
+        meanIndicesNotAllowedError(d, header);
+    end
+
+    % Update size
+    if obj.meanType(d)==0
+        obj.meanSize(d) = obj.stateSize(d);
+        obj.stateSize(d) = 1;
+    end
+
+% Ensemble dimension - require indices
+else
+    if isempty(indices)
+        missingMeanIndicesError(d, header);
+    end
+    nIndices = numel(indices);
+
+    % Check for size conflict with weights
+    if obj.meanType(d)==2 && nIndices~=obj.meanSize(d)
+        weightsSizeConflictError(d, nIndices, header);
+    end
+
+    % Update size
+    if obj.meanType(d)==0
+        obj.meanType(d) = 1;
+    end
+    obj.meanSize(d) = nIndices;
+    obj.meanIndices{d} = indices(:);
+end
+
+% Update type and omitnan
 if obj.meanType(d)==0
     obj.meanType(d) = 1;
 end
-obj.meanSize(d) = nIndices;
-obj.meanIndices{d} = indices(:);
+obj.omitnan(d) = omitnan(k);
 
 end
 
 % Error messages
-function[] = noMeanToUnweightError(d, noMean, header)
-bad = find(noMean, 1);
-dim = obj.dims(d(bad));
+function[] = noMeanToUnweightError(d, header)
+dim = obj.dims(d);
 id = sprintf('%s:noMeanToUnweight', header);
 ME = MException(id, ...
     ['Cannot unweight the mean for the "%s" dimension because there is no\n',...

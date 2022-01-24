@@ -1,12 +1,12 @@
-function[obj] = design(obj, d, isstate, indices, header)
+function[obj] = design(obj, dims, isstate, indices, header)
 %% dash.stateVectorVariable.design  Design the dimensions of a state vector variable
 % ----------
-%   obj = <strong>obj.design</strong>(d, isstate, indices)
+%   obj = <strong>obj.design</strong>(dims, isstate, indices, header)
 %   Designs the specified dimensions given the dimension types and
 %   state/reference indices for the dimensions.
 % ----------
 %   Inputs:
-%       d (vector, linear indices [nDimensions]): The indices of the
+%       dims (vector, linear indices [nDimensions]): The indices of the
 %           dimensions to design.
 %       isstate (logical vector [nDimensions]): True if a dimension is a
 %           state dimension. False if the dimension is an ensemble dimension.
@@ -20,21 +20,23 @@ function[obj] = design(obj, d, isstate, indices, header)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.design')">Documentation Page</a>
 
-% Default
-if ~exist('header','var') || isempty(header)
-    header = "DASH:stateVectorVariable:design";
-end
+% Cycle through dimensions. Skip missing dimensions
+for k = 1:numel(dims)
+    d = dims(k);
+    if d==0
+        continue;
+    end
 
-% Error check state and reference indices
-nDims = numel(d);
-dash.assert.indexCollection(indices, nDims, obj.gridSize(d), obj.dims(d), header);
+    % Error check state and reference indices
+    linearMax = sprintf('the length of the "%s" dimension', obj.dims(d));
+    logicalRequirement = sprintf('be %s', linearMax);
+    dash.assert.indices(indices{k}, obj.gridSize(d), logicalRequirement, linearMax, header);
 
-% Update each dimension
-for k = 1:nDims
+    % Update the dimension
     if isstate(k)
-        obj = stateDimension(obj, d(k), indices{k}, header);
+        stateDimension(obj, d, indices{k}, header);
     else
-        obj = ensembleDimension(obj, d(k), indices{k}, header);
+        ensembleDimension(obj, d, indices{k}, header);
     end
 end
 
