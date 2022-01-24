@@ -57,8 +57,7 @@ classdef stateVector
 
         % Vector workflow
         obj = extract(obj, variables);
-        obj = reorder(obj, variables);
-        append;
+        obj = append(obj, vector2, responseToRepeats)
         copy;
     end
 
