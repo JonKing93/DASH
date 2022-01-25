@@ -87,18 +87,69 @@ obj.nVariables = numel(obj.variables_);
 obj.coupled = blkdiag(obj.coupled, vector2.coupled);
 obj.autocouple_ = [obj.autocouple_; vector2.autocouple_];
 
-% Autocouple variables
-autoVars = obj.variables(obj.autocouple_);
-obj = obj.couple(autoVars);
-
 % Notify user of autocoupling
 if verbose
     notifyAutocoupling;
 end
 
+% Autocouple variables
+autoVars = obj.variables(obj.autocouple_);
+obj = obj.couple(autoVars, verbose);
+
 end
 
-% Error message
+% Error and notifications
+function[] = notifyAutocoupling(obj, vector2)
+
+% Get the existing and new autocoupled variables
+nNew = vector2.nVariables;
+
+existing = 1:obj.nVariables-nNew;
+existing = find(obj.autocouple_(existing));
+existing = obj.variables(existing);
+nExist = numel(existing);
+
+new = obj.nVariables-nNew+1:obj.nVariables;
+new = find(obj.autocouple_(new));
+new = obj.variables(new);
+nNew = numel(new);
+
+% Exit if there is no autocoupling
+if nNew==0 || (nNew==1 && nExist==0)
+    return;
+end
+
+% Singular/plural
+newStr = 'variable';
+if nNew>1
+    newStr = 'variables';
+end
+existStr = 'variable';
+if nExist>1
+    existStr = 'variables';
+end
+
+% Additional info
+if nNew==1
+    info = sprintf('existing %s', existStr);
+elseif nExist==0
+    info = 'each other';
+else
+    info = sprintf('each other and existing %s', existStr);
+end
+
+% Build message
+message = sprintf('\nAuto-coupling appended %s to %s.\n\tAppended %s: %s',...
+    newStr, info, newStr, dash.string.list(new));
+if nExist>0
+    message = sprintf('%s\n\tExisting %s: %s', message, existStr, dash.string.list(existing));
+end
+message = sprintf('%s\n\n', message);
+
+% Print
+fprintf(message);
+
+end
 function[] = repeatedVariablesError(obj, vector2, repeats, header)
 
 name1 = 'the current state vector';

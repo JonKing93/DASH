@@ -133,8 +133,6 @@ for g = 1:nGrids
     end
 end
 
-
-
 % Add each new state vector variable
 for v = 1:nVariables
     g = gridIndices(v);
@@ -148,26 +146,75 @@ obj.variableNames(v) = vars;
 obj.allowOverlap(v) = false;
 obj.nVariables = v(end);
 
-% Add self coupling to new variables
+% Initialize coupling
 obj.coupled(v,:) = false;
 obj.coupled(:,v) = false;
 obj.coupled(1:obj.nVariables+1:end) = true;
+obj.autocouple_(v) = autocouple;
+
+% Notify user of autocoupling
+if verbose
+    notifyAutocoupling(nVariables);
+end
 
 % Update autocoupling and couple variables
-obj.autocouple_(v) = autocouple;
 if any(autocouple)
     autoVars = obj.variables(obj.autocouple_);
-    obj = obj.couple(autoVars);
-end
-
-% Notify autocoupling
-if verbose
-    notifyAutocoupling;
+    obj = obj.couple(autoVars, verbose);
 end
 
 end
 
-% Error messages
+% Errors and notifications
+function[] = notifyAutocoupling(obj, nNew)
+
+% Get the new and existing autocoupled variables
+existing = 1:obj.nVariables-nNew;
+existing = find(obj.autocouple_(existing));
+existing = obj.variables(existing);
+nExist = numel(existing);
+
+new = obj.nVariables-nNew+1:obj.nVariables;
+new = find(obj.autocouple_(new));
+new = obj.variables(new);
+nNew = numel(new);
+
+% Exit if there is no autocoupling
+if nNew==0 || (nNew==1 && nExist==0)
+    return;
+end
+
+% Singular/plural
+newStr = 'variable';
+if nNew>1
+    newStr = 'variables';
+end
+existStr = 'variable';
+if nExist>1
+    existStr = 'variables';
+end
+
+% Additional info
+if nNew==1
+    info = sprintf('existing %s', existStr);
+elseif nExist==0
+    info = 'each other';
+else
+    info = sprintf('each other and existing %s', existStr);
+end
+
+% Build message
+message = sprintf('\nAuto-coupling new %s to %s.\n\tNew %s: %s',...
+    newStr, info, newStr, dash.string.list(new));
+if nExist>0
+    message = sprintf('%s\n\tExisting %s: %s', message, existStr, dash.string.list(existing));
+end
+message = sprintf('%s\n\n', message);
+
+% Print
+fprintf(message);
+
+end
 function[] = gridfileFailedError(obj, vars, grids, g, cause, header)
 
 var = vars(g);
