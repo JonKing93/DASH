@@ -59,7 +59,7 @@ else
 end
 
 % Get the dimension names
-dimensions = {obj.variables_(v).dims}';
+dimensions = {obj.variables_(v).dimensions}';
 
 % Optionally remove single variable output from cell
 if numel(dimensions)==1 && ~cellOutput
