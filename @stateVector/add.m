@@ -145,6 +145,11 @@ end
 % Errors
 function[] = gridfileFailedError(obj, vars, grids, g, cause, header)
 
+% Rethrow any non-DASH error handling
+if ~contains(cause.identifier, 'DASH')
+    rethrow(cause);
+end
+
 var = vars(g);
 file = grids{g};
 
