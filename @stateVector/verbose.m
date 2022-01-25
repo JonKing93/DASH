@@ -31,7 +31,8 @@ if ~exist('verbose','var')
     
 % Set verbosity
 else
-    obj.verbose_ = dash.assert.scalarType(verbose, 'logical', 'verbose', header);
+    dash.assert.scalarType(verbose, 'logical', 'verbose', header);
+    obj.verbose_ = verbose;
     varargout = {obj};
 end
 
