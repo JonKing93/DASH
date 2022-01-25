@@ -1,4 +1,48 @@
 classdef stateVector
+    %
+    % *ALL USER METHODS*
+    %
+    %
+    % Create / General Settings:
+    %   stateVector
+    %   label
+    %   verbose
+    %
+    % Variables:
+    %   add
+    %   remove
+    %   variables
+    %   rename
+    %   relocate
+    %
+    % Coupling
+    %   couple
+    %   uncouple
+    %   autocouple
+    %
+    % Design
+    %   design
+    %   sequence
+    %   metadata
+    %   mean
+    %   weightedMean
+    %   overlap
+    %
+    % Workflow:
+    %   copy
+    %   append
+    %   extract
+    %
+    % Build
+    %   build
+    %   addMembers
+    %
+    % Summary
+    %   info
+    %   dimensions
+    %   getMetadata
+    %
+    % 
 
     properties
         %% General settings
@@ -17,6 +61,7 @@ classdef stateVector
         %% Coupling
 
         coupled = true(0,0);            % Which variables are coupled to each other
+        autocouple_ = true(0,1);         % Whether variables should be automatically coupled to new variables
 
     end
 
@@ -29,10 +74,11 @@ classdef stateVector
         assertEditable(obj);
 
         % Variables
-        obj = add(obj, variableNames, grids);
+        obj = add(obj, variableNames, grids, autocouple, verbose);
         obj = remove(obj, variables);
         varargout = overlap(obj, variables, allowOverlap);
         v = variableIndices(obj, variables, allowRepeats, header);
+        relocate;
 
         % Variable names
         variables = variables(obj, v);
@@ -44,10 +90,11 @@ classdef stateVector
         [indices, dimensions] = dimensionIndices(obj, v, dimensions, header);
 
         % Coupling
-        couple;
-        uncouple;
+        couple(obj, variables, verbose);
+        uncouple(obj, variables, verbose);
+        autocouple(obj, variables, setting, verbose);
 
-        % Design
+        % Design parameters
         obj = design(obj, variables, dimensions, types, indices);
         obj = sequence(obj, variables, dimensions, indices, metadata);
         obj = metadata(obj, variables, dimensions, metadataType, varargin);
@@ -59,6 +106,15 @@ classdef stateVector
         obj = extract(obj, variables);
         obj = append(obj, vector2, responseToRepeats)
         copy;
+
+        % Build
+        build;
+        addMembers;
+
+        % Summary information
+        info;
+%         disp;
+%         dispVariables;
     end
 
     % Constructor
@@ -75,11 +131,19 @@ classdef stateVector
             %   set to an empty string.
             %
             %   obj = stateVector(label, verbose)
-            %   .......WRITE THIS!!!!!
+            %   Sets the verbosity of the new state vector. This is most useful when 
+            %   troubleshooting coupled variables. By default, state vectors
+            %   are not verbose. If a state vector is made verbose, it will print
+            %   notifications to the console when a command alters variables that are
+            %   not included in its inputs. This usually occurs because the altered
+            %   variables are coupled to variables included in the command's inputs.
             % ----------
             %   Inputs:
             %       label (string scalar | []): A label for the state vector.
-            %       verbose (scalar logical): !!!!!!!!!!!
+            %       verbose (scalar logical): Use true if the state vector
+            %           should notify the console when secondary coupled
+            %           variables are altered by a command. Use false
+            %           (default) if not.
             %
             %   Outputs:
             %       obj (scalar stateVector object): A new, empty stateVector object.

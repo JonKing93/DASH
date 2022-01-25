@@ -1,4 +1,4 @@
-function[obj] = append(obj, vector2, responseToRepeats)
+function[obj] = append(obj, vector2, responseToRepeats, verbose)
 %% stateVector.append  Appends a second state vector to the end of the current state vector
 % ----------
 %   obj = obj.append(vector2)
@@ -8,6 +8,11 @@ function[obj] = append(obj, vector2, responseToRepeats)
 %   obj = obj.append(vector2, responseToRepeats)
 %   Specify how to respond when variable names are repeated across the two
 %   state vectors.
+%
+%   obj = obj.append(..., verbose)
+%   Indicate whether the method should print a list of auto-coupled
+%   variables to the console. If unset, follows the verbosity setting of
+%   the current state vector.
 % ----------
 %   Inputs:
 %       vector2 (scalar stateVector object): The state vector to append to
@@ -19,6 +24,10 @@ function[obj] = append(obj, vector2, responseToRepeats)
 %                discard the variable in the second state vector.
 %           [2]: Keep the variable in the second state vector and discard
 %                the variable in the current state vector.
+%       verbose (scalar logical | string scalar): Indicates whether the method
+%           should print a list of auto-coupled variables to the console.
+%           [true | "v" | "verbose"]: Print the list
+%           [false | "q" | "quiet"]: Do not print the list
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated to
@@ -45,6 +54,15 @@ else
     end
 end
 
+% Default, error check verbosity
+if ~exist('verbose','var') || isempty(verbose)
+    verbose = obj.verbose;
+else
+    offOn = {["q","quiet"], ["v","verbose"]};
+    verbose = dash.parse.switches(verbose, offOn, 1, ...
+        'verbose', 'recognized verbosity setting', header);
+end
+
 % Check for repeats
 vars2 = vector2.variables;
 repeats = ismember(vars2, obj.variables);
@@ -66,9 +84,21 @@ obj.variables_ = [obj.variables_; vector2.variables_];
 obj.allowOverlap = [obj.allowOverlap; vector2.allowOverlap];
 obj.nVariables = numel(obj.variables_);
 
-error('coupled variables');
+obj.coupled = blkdiag(obj.coupled, vector2.coupled);
+obj.autocouple_ = [obj.autocouple_; vector2.autocouple_];
+
+% Autocouple variables
+autoVars = obj.variables(obj.autocouple_);
+obj = obj.couple(autoVars);
+
+% Notify user of autocoupling
+if verbose
+    notifyAutocoupling;
 end
 
+end
+
+% Error message
 function[] = repeatedVariablesError(obj, vector2, repeats, header)
 
 name1 = 'the current state vector';

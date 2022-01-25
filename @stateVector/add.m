@@ -1,15 +1,34 @@
-function[obj] = add(obj, variableNames, grids)
+function[obj] = add(obj, variableNames, grids, autocouple, verbose)
 %% stateVector.add  Adds variables to a stateVector
 % ----------
 %   obj = obj.add(variableNames, grid)
 %   Adds variables to a state vector and specifies a single .grid file that
-%   contains the data for all the variables.
+%   contains the data for all the different variables.
 %
 %   obj = obj.add(variableNames, grids)
 %   Specify different .grid files for the variables being added to the
 %   state vector. Each .grid file should contain the data for the
 %   corresponding new variable. You may repeat .grid files when several
 %   state vector variables are derived from the same .grid file.
+%
+%   obj = obj.add(..., autocouple)
+%   Specify auto-coupling settings for the new variables. Use true, "a",
+%   "auto", or "automatic" to automatically couple the new variables to
+%   existing variables in the state vector (default); note that the new
+%   variables will not be coupled to existing variables that have
+%   autocoupling disabled. Use false, "m", "man", or "manual" to disable
+%   autocoupling.
+%
+%   If autocouple has a single element, applies the same setting to all of
+%   the new variables. Otherwise, autocouple should have one element per
+%   new variable. Each element indicates the desired setting for the
+%   correpsonding variable. This vector syntax allows you to use different
+%   settings for different variables.
+%
+%   obj = obj.add(..., autocouple, verbose)
+%   Specify whether the method should print a list of auto-coupled
+%   variables to the console when auto-coupling occurs. If unset, follows
+%   uses the verbosity setting of the state vector.
 % ----------
 %   Inputs:
 %       variableNames (string vector [nVariables]): The names of the new
@@ -29,6 +48,17 @@ function[obj] = add(obj, variableNames, grids)
 %           Must have one element per new variable. May either be a vector
 %           of gridfile objects, .grid filepaths, or a cell vector with
 %           elements of either type.
+%       autocouple (vector [nVariables], logical | string): Indicates the
+%           autocoupling setting to use for each new variable. If
+%           autocouple has a single element, applies the same setting to
+%           all the new variables.
+%           [true|"a"|"auto"|"automatic" (Default)]: Automatically couple new variable
+%               to existing, auto-couple enabled variables.
+%           [false|"m"|"man"|"manual"]: Disable autocoupling for the new variable
+%       verbose (scalar logical | string scalar): Indicates whether the method
+%           should print a list of auto-coupled variables to the console.
+%           [true | "v" | "verbose"]: Print the list
+%           [false | "q" | "quiet"]: Do not print the list
 %
 %   Outputs:
 %       obj (scalar stateVector object): The stateVector object updated to
@@ -46,6 +76,23 @@ vars = dash.assert.strlist(variableNames, 'variableNames', header);
 vars = vars(:);
 obj.assertValidNames(vars, header);
 nVariables = numel(vars);
+
+% Default, error check autocoupling options
+if ~exist('autocouple','var') || isempty(autocouple)
+    autocouple = true;
+end
+offOn = {["m","man","manual"], ["a","auto","autocouple"]};
+autocouple = dash.parse.switches(autocouple, offOn, nVariables, ...
+    'autocouple', 'recognized auto-coupling option', header);
+
+% Default, error check verbosity
+if ~exist('verbose','var') || isempty(verbose)
+    verbose = obj.verbose;
+else
+    offOn = {["q","quiet"], ["v","verbose"]};
+    verbose = dash.parse.switches(verbose, offOn, 1, ...
+        'verbose', 'recognized verbosity setting', header);
+end
 
 % Parse string grids
 if dash.is.strlist(grids)
@@ -75,12 +122,18 @@ if ~isa(grids, 'cell')
     grids = mat2cell(grids, ones(nGrids,1), 1); %#ok<MMTC> 
 end
 
-% Convert filepaths to gridfile objects
+% Convert filepaths to gridfile objects. Informative error if failed.
 for g = 1:nGrids
     if dash.is.strflag(grids{g})
-        grids{g} = gridfile(grids{g});
+        try
+            grids{g} = gridfile(grids{g});
+        catch ME
+            gridfileFailedError(obj, vars, grids, g, ME, header);
+        end
     end
 end
+
+
 
 % Add each new state vector variable
 for v = 1:nVariables
@@ -91,12 +144,40 @@ end
 
 % Update variable properties
 v = obj.nVariables + (1:nVariables);
+obj.variableNames(v) = vars;
 obj.allowOverlap(v) = false;
-
-obj.coupled(v,:) = true;
-obj.coupled(:,v) = true;
-
 obj.nVariables = v(end);
-obj.variableNames = [obj.variableNames; vars];
+
+% Add self coupling to new variables
+obj.coupled(v,:) = false;
+obj.coupled(:,v) = false;
+obj.coupled(1:obj.nVariables+1:end) = true;
+
+% Update autocoupling and couple variables
+obj.autocouple_(v) = autocouple;
+if any(autocouple)
+    autoVars = obj.variables(obj.autocouple_);
+    obj = obj.couple(autoVars);
+end
+
+% Notify autocoupling
+if verbose
+    notifyAutocoupling;
+end
+
+end
+
+% Error messages
+function[] = gridfileFailedError(obj, vars, grids, g, cause, header)
+
+var = vars(g);
+file = grids{g};
+
+id = sprintf('%s:couldNotBuildGridfile', header);
+ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
+    'for the variable could not be built.\nFile: %s'], ...
+    var, obj.name, file);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 
 end
