@@ -1,4 +1,4 @@
-function[obj] = append(obj, vector2, responseToRepeats, verbose)
+function[obj] = append(obj, vector2, responseToRepeats)
 %% stateVector.append  Appends a second state vector to the end of the current state vector
 % ----------
 %   obj = obj.append(vector2)
@@ -8,11 +8,6 @@ function[obj] = append(obj, vector2, responseToRepeats, verbose)
 %   obj = obj.append(vector2, responseToRepeats)
 %   Specify how to respond when variable names are repeated across the two
 %   state vectors.
-%
-%   obj = obj.append(..., verbose)
-%   Indicate whether the method should print a list of auto-coupled
-%   variables to the console. If unset, follows the verbosity setting of
-%   the current state vector.
 % ----------
 %   Inputs:
 %       vector2 (scalar stateVector object): The state vector to append to
@@ -24,10 +19,6 @@ function[obj] = append(obj, vector2, responseToRepeats, verbose)
 %                discard the variable in the second state vector.
 %           [2]: Keep the variable in the second state vector and discard
 %                the variable in the current state vector.
-%       verbose (scalar logical | string scalar): Indicates whether the method
-%           should print a list of auto-coupled variables to the console.
-%           [true | "v" | "verbose"]: Print the list
-%           [false | "q" | "quiet"]: Do not print the list
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated to
@@ -54,15 +45,6 @@ else
     end
 end
 
-% Default, error check verbosity
-if ~exist('verbose','var') || isempty(verbose)
-    verbose = obj.verbose;
-else
-    offOn = {["q","quiet"], ["v","verbose"]};
-    verbose = dash.parse.switches(verbose, offOn, 1, ...
-        'verbose', 'recognized verbosity setting', header);
-end
-
 % Check for repeats
 vars2 = vector2.variables;
 repeats = ismember(vars2, obj.variables);
@@ -87,11 +69,6 @@ obj.nVariables = numel(obj.variables_);
 obj.coupled = blkdiag(obj.coupled, vector2.coupled);
 obj.autocouple_ = [obj.autocouple_; vector2.autocouple_];
 
-% Notify user of autocoupling
-if verbose
-    notifyAutocoupling;
-end
-
 % Autocouple variables
 autoVars = obj.variables(obj.autocouple_);
 obj = obj.couple(autoVars, verbose);
@@ -99,57 +76,6 @@ obj = obj.couple(autoVars, verbose);
 end
 
 % Error and notifications
-function[] = notifyAutocoupling(obj, vector2)
-
-% Get the existing and new autocoupled variables
-nNew = vector2.nVariables;
-
-existing = 1:obj.nVariables-nNew;
-existing = find(obj.autocouple_(existing));
-existing = obj.variables(existing);
-nExist = numel(existing);
-
-new = obj.nVariables-nNew+1:obj.nVariables;
-new = find(obj.autocouple_(new));
-new = obj.variables(new);
-nNew = numel(new);
-
-% Exit if there is no autocoupling
-if nNew==0 || (nNew==1 && nExist==0)
-    return;
-end
-
-% Singular/plural
-newStr = 'variable';
-if nNew>1
-    newStr = 'variables';
-end
-existStr = 'variable';
-if nExist>1
-    existStr = 'variables';
-end
-
-% Additional info
-if nNew==1
-    info = sprintf('existing %s', existStr);
-elseif nExist==0
-    info = 'each other';
-else
-    info = sprintf('each other and existing %s', existStr);
-end
-
-% Build message
-message = sprintf('\nAuto-coupling appended %s to %s.\n\tAppended %s: %s',...
-    newStr, info, newStr, dash.string.list(new));
-if nExist>0
-    message = sprintf('%s\n\tExisting %s: %s', message, existStr, dash.string.list(existing));
-end
-message = sprintf('%s\n\n', message);
-
-% Print
-fprintf(message);
-
-end
 function[] = repeatedVariablesError(obj, vector2, repeats, header)
 
 name1 = 'the current state vector';

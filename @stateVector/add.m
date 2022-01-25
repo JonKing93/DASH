@@ -1,4 +1,4 @@
-function[obj] = add(obj, variableNames, grids, autocouple, verbose)
+function[obj] = add(obj, variableNames, grids, autocouple)
 %% stateVector.add  Adds variables to a stateVector
 % ----------
 %   obj = obj.add(variableNames, grid)
@@ -24,11 +24,6 @@ function[obj] = add(obj, variableNames, grids, autocouple, verbose)
 %   new variable. Each element indicates the desired setting for the
 %   correpsonding variable. This vector syntax allows you to use different
 %   settings for different variables.
-%
-%   obj = obj.add(..., autocouple, verbose)
-%   Specify whether the method should print a list of auto-coupled
-%   variables to the console when auto-coupling occurs. If unset, follows
-%   uses the verbosity setting of the state vector.
 % ----------
 %   Inputs:
 %       variableNames (string vector [nVariables]): The names of the new
@@ -55,10 +50,6 @@ function[obj] = add(obj, variableNames, grids, autocouple, verbose)
 %           [true|"a"|"auto"|"automatic" (Default)]: Automatically couple new variable
 %               to existing, auto-couple enabled variables.
 %           [false|"m"|"man"|"manual"]: Disable autocoupling for the new variable
-%       verbose (scalar logical | string scalar): Indicates whether the method
-%           should print a list of auto-coupled variables to the console.
-%           [true | "v" | "verbose"]: Print the list
-%           [false | "q" | "quiet"]: Do not print the list
 %
 %   Outputs:
 %       obj (scalar stateVector object): The stateVector object updated to
@@ -84,15 +75,6 @@ end
 offOn = {["m","man","manual"], ["a","auto","autocouple"]};
 autocouple = dash.parse.switches(autocouple, offOn, nVariables, ...
     'autocouple', 'recognized auto-coupling option', header);
-
-% Default, error check verbosity
-if ~exist('verbose','var') || isempty(verbose)
-    verbose = obj.verbose;
-else
-    offOn = {["q","quiet"], ["v","verbose"]};
-    verbose = dash.parse.switches(verbose, offOn, 1, ...
-        'verbose', 'recognized verbosity setting', header);
-end
 
 % Parse string grids
 if dash.is.strlist(grids)
@@ -152,11 +134,6 @@ obj.coupled(:,v) = false;
 obj.coupled(1:obj.nVariables+1:end) = true;
 obj.autocouple_(v) = autocouple;
 
-% Notify user of autocoupling
-if verbose
-    notifyAutocoupling(nVariables);
-end
-
 % Update autocoupling and couple variables
 if any(autocouple)
     autoVars = obj.variables(obj.autocouple_);
@@ -165,56 +142,7 @@ end
 
 end
 
-% Errors and notifications
-function[] = notifyAutocoupling(obj, nNew)
-
-% Get the new and existing autocoupled variables
-existing = 1:obj.nVariables-nNew;
-existing = find(obj.autocouple_(existing));
-existing = obj.variables(existing);
-nExist = numel(existing);
-
-new = obj.nVariables-nNew+1:obj.nVariables;
-new = find(obj.autocouple_(new));
-new = obj.variables(new);
-nNew = numel(new);
-
-% Exit if there is no autocoupling
-if nNew==0 || (nNew==1 && nExist==0)
-    return;
-end
-
-% Singular/plural
-newStr = 'variable';
-if nNew>1
-    newStr = 'variables';
-end
-existStr = 'variable';
-if nExist>1
-    existStr = 'variables';
-end
-
-% Additional info
-if nNew==1
-    info = sprintf('existing %s', existStr);
-elseif nExist==0
-    info = 'each other';
-else
-    info = sprintf('each other and existing %s', existStr);
-end
-
-% Build message
-message = sprintf('\nAuto-coupling new %s to %s.\n\tNew %s: %s',...
-    newStr, info, newStr, dash.string.list(new));
-if nExist>0
-    message = sprintf('%s\n\tExisting %s: %s', message, existStr, dash.string.list(existing));
-end
-message = sprintf('%s\n\n', message);
-
-% Print
-fprintf(message);
-
-end
+% Errors
 function[] = gridfileFailedError(obj, vars, grids, g, cause, header)
 
 var = vars(g);
