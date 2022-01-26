@@ -47,6 +47,7 @@ times_;
 divide_;
 
 sources;
+dimensions;
 info;
 name;
 disp;

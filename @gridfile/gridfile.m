@@ -70,6 +70,7 @@ classdef gridfile < handle
     %
     % Summary Information:
     %   sources          - Return the ordered list of data sources in a gridfile
+    %   dimensions       - Return the dimensions in a gridfile and their sizes
     %   info             - Return information about a gridfile object
     %   name             - Return the name of the .grid file, excluding path
     %
@@ -170,6 +171,7 @@ classdef gridfile < handle
         % Summary information
         name = name(obj);
         sources = sources(obj, s);
+        [dimensions, sizes] = dimensions(obj);
         info = info(obj, s)
         disp(obj);
         dispSources(obj);
