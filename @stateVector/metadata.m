@@ -1,8 +1,6 @@
 function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %% stateVector.metadata  Specify how to process metadata along dimensions of state vector variables
 % ----------
-%   metadata = 
-%
 %   obj = obj.metadata(v, dimensions, metadataType, ...)
 %   obj = obj.metadata(variableNames, dimensions, metadataType, ...)
 %   Specify how to process metadata for the indicated dimensions of the
