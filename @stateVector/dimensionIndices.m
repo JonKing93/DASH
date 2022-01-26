@@ -50,11 +50,23 @@ end
 % Throw error if a dimension isn't in any variable
 missing = all(indices==0, 1);
 if any(missing)
+    missingDimensionError(dimensions, missing, nVars, header);
+end
+
+end
+
+function[] = missingDimensionError(dimensions, missing, nVars, header)
     bad = find(missing,1);
     badName = dimensions(bad);
+    eltName = dash.string.elementName(bad, 'Dimension', numel(missing));
+
+    vars = 'any of the listed variables';
+    if nVars==1
+        vars = 'the listed variable';
+    end
+
     id = sprintf('%s:dimensionNotInVariables', header);
-    error(id, ['Dimension %.f (%s) is not associated with any of the listed ',...
-        'variables.'], bad, badName);
-end
+    ME = MException(id, '%s (%s) is not associated with %s.', eltName, badName, vars);
+    throwAsCaller(ME);
 
 end
