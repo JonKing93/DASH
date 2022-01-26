@@ -47,7 +47,7 @@ obj = gridfile;
 
 % Set the metadata, dimensions, initialize dimLimit
 obj.meta = metadata;
-obj.dims = metadata.defined';
+obj.dims = metadata.defined;
 nDims = numel(obj.dims);
 obj.dimLimit = NaN(nDims, 2, 0);
 
