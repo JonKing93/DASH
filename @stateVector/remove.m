@@ -33,5 +33,6 @@ obj.nVariables = numel(obj.variables);
 
 obj.coupled(v,:) = [];
 obj.coupled(:,v) = [];
+obj.autocouple_(v) = [];
 
 end
