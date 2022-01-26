@@ -13,6 +13,14 @@ function[dimensions, sizes] = dimensions(obj)
 %           the gridfile.
 %
 % <a href="matlab:dash.doc('gridfile.dimensions')">Documentation Page</a>
+
+% Setup
+header = "DASH:gridfile:dimensions";
+dash.assert.scalarObj(obj, header);
+obj.update;
+
+% Get values
 dimensions = obj.dims;
 sizes = obj.size;
+
 end
