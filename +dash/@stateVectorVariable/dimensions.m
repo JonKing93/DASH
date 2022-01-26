@@ -17,6 +17,11 @@ function[dimensions] = dimensions(obj, type)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.dimensions')">Documentation Page</a>
 
+% Default type
+if ~exist('type','var') || isempty(type)
+    type = 'all';
+end
+
 % Get dimensions
 dimensions = obj.dims;
 

@@ -60,7 +60,7 @@ av = unique(col);
 
 % Update coupled variables to match the template
 tv = uv(1);
-obj = obj.updateCoupledVariables(tv, av);
+obj = obj.updateCoupledVariables(tv, av, header);
 
 % Couple the variables
 for k = 1:numel(av)

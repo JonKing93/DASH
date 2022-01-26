@@ -136,8 +136,7 @@ obj.autocouple_(v) = autocouple;
 
 % Update autocoupling and couple variables
 if any(autocouple)
-    autoVars = obj.variables(obj.autocouple_);
-    obj = obj.couple(autoVars, verbose);
+    obj = obj.couple(obj.autocouple_);
 end
 
 end
