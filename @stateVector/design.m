@@ -93,4 +93,28 @@ method = 'design';
 inputs = {isstate, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 
+% Get the sets of coupled variables
+coupledSets = unique(obj.coupled, 'rows');
+nSets = size(coupledSets, 1);
+
+% Cycle through coupling sets, get linear indices. Check for user-specified
+% variables in the set
+for s = 1:nSets
+    cv = find(coupledSets(s,:));
+    isUserVar = ismember(cv, uv);
+
+    % If there are user variables, check for secondary variables and update
+    if sum(isUserVar)>0
+        sv = cv(~ismember(cv, uv));
+        tv = cv(find(isUserVar,1));
+        try
+            obj = obj.updateCoupledVariables(tv, sv, header);
+
+        % Informative error if update failed
+        catch ME
+            secondaryVariableError;
+        end
+    end
+end
+
 end
