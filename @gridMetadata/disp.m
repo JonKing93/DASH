@@ -15,15 +15,8 @@ link = '<a href="matlab:dash.doc(''gridMetadata'')">gridMetadata</a>';
 
 % If not scalar, display array size and exit
 if ~isscalar(obj)
-    N = ndims(obj);
-    if N < 5
-        siz = size(obj);
-        siz = sprintf('%.fx', siz);
-        siz(end) = [];
-    else
-        siz = sprintf('%.f-D', N);
-    end
-    fprintf('  %s %s array\n\n', siz, link);
+    info = dash.string.nonscalarObj(obj, link);
+    fprintf(info);
     return;
 end
 

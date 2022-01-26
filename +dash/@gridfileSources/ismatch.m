@@ -64,6 +64,5 @@ if isempty(siz)
 elseif isscalar(siz)
     siz = [siz, 1];
 end
-siz = sprintf('%.fx', siz);
-siz(end) = [];
+siz = dash.string.size(siz);
 end

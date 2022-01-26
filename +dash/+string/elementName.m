@@ -12,7 +12,7 @@ function[name] = elementName(index, listName, listLength)
 %       listLength (scalar positive integer): The number of elements in the list
 %
 %   Outputs:
-%       name (string scalar): An identifying name for the indicated element
+%       name (char row vector): An identifying name for the indicated element
 %
 % <a href="matlab:dash.doc('dash.string.elementName')">Documentation Page</a>
 

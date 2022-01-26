@@ -11,6 +11,8 @@ function[] = tests
 list;
 elementName;
 error('list conjunction');
+size;
+indexedDimension;
 
 end
 
