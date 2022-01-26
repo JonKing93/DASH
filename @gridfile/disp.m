@@ -19,11 +19,32 @@ if ~obj.isvalid
 end
 
 % If not scalar, display array size and exit
-if ~isscalar(obj)
-    info = dash.string.nonscalarObj(obj, link);
-    fprintf(info);
-    return
+if isscalar(obj)
+    displayScalar(obj, link);
+else
+    displayArray(obj, link);
 end
+
+end
+
+% Utilities
+function[] = displayArray(obj, link)
+
+% Get dimensions size
+info = dash.string.nonscalarObj(obj, link);
+
+% Also get name string for each grid
+names = strings(size(obj));
+for k = 1:numel(obj)
+    names(k) = obj(k).name;
+end
+
+% Print info, then display names
+fprintf(info);
+disp(names);
+
+end
+function[] = displayScalar(obj, link)
 
 % Link header
 fprintf('  %s with properties:\n\n', link);
