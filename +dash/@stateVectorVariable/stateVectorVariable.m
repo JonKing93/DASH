@@ -5,7 +5,6 @@ properties
 
     %% Gridfile
 
-    gridfile = "";                  % The absolute path to the .grid file for the variable
     dims = strings(1,0);            % The names of the defined dimensions in the .grid file
     gridSize = NaN(1,0);            % The size of each dimension in the .grid file
 
@@ -39,11 +38,17 @@ properties
 end
 
 methods
+
+    % Design
     obj = design(obj, dims, isstate, indices, header);
     obj = sequence(obj, dims, indices, metadata, header);
     obj = metadata(obj, dims, type, arg1, arg2, header);
     obj = mean(obj, dims, indices, omitnan, header);
     obj = weightedMean(obj, dims, weights, header);
+
+    % Misc
+    metadata = getMetadata(obj, d, grid, header);
+    [isvalid, cause] = validateGrid(obj, grid, header);
 end
 
 
@@ -64,12 +69,9 @@ methods
     %       obj (scalar stateVectorVariable): The new stateVectorVariable object
     %
     % <a href="matlab:dash.doc('dash.stateVectorVariable.stateVectorVariable
-    
-    % Update and record the gridfile fields
-    grid.update;
-    obj.gridfile = grid.file;
-    obj.dims = grid.dims;
-    obj.gridSize = grid.size;
+
+    % Record the gridfile fields
+    [obj.dims, obj.gridSize] = grid.dimensions;
     
     % Preallocate and initialize as state dimensions
     nDims = numel(obj.dims);

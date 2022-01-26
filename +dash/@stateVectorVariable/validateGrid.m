@@ -1,4 +1,4 @@
-function[] = validateGrid(obj, grid, header)
+function[isvalid, cause] = validateGrid(obj, grid, header)
 %% dash.stateVectorVariable.validateGrid  Check that a gridfile object matches a variable's recorded gridfile parameters
 % ----------
 %   obj.validateGrid(grid)
@@ -17,21 +17,27 @@ if ~exist('header','var')
     header = "DASH:stateVectorVariable:verifyGrid";
 end
 
+% Initialize
+isvalid = true;
+cause = [];
+
 % Check dimensions are the same
 if ~isequal(obj.dims, grid.dims)
     id = sprintf('%s:changedGridfileDimensions', header);
-    error(id, ['The recorded gridfile dimensions (%s) do not match the dimensions ',...
-        'of the current gridfile (%s). The gridfile may have been altered ',...
-        'after the variable was added to the state vector.\n\ngridfile: %s'], ...
-        dash.string.list(obj.dims), dash.string.list(grid.dims), obj.file);
+    cause = MException(id, ...
+        ['The recorded gridfile dimensions (%s) do not match\n' ...
+        'the dimensions of the new gridfile (%s).'], ...
+        dash.string.list(obj.dims), dash.string.list(grid.dims));
+    isvalid = false;
 
 % Check sizes are the same
 elseif ~isequal(obj.gridSize, grid.size)
     id = sprintf('%s:changedGridfileSize', header);
-    error(id, ['The recorded gridfile size (%s) does not match the size of ',...
-        'the current gridfile (%s). The gridfile may have been altered after ',...
-        'the variable was added to the state vector.\n\ngridfile: %s'], ...
-        dash.string.size(obj.gridSize), dash.string.size(grid.size), grid.file);
+    cause = MException(id, ...
+        ['The recorded gridfile size (%s) does not match\n' ...
+        'the size of the new gridfile (%s).'], ...
+        dash.string.size(obj.gridSize), dash.string.size(grid.size));
+    isvalid = false;
 end
 
 end

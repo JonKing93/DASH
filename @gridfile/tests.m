@@ -52,6 +52,7 @@ info;
 name;
 disp;
 dispSources;
+error('array display in disp');
 
 end
 
