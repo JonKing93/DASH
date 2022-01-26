@@ -37,12 +37,12 @@ function[obj] = add(obj, variableNames, grids, autocouple)
 %           and underscores, and 3. cannot match a MATLAB keyword.
 %       grid (string scalar | scalar gridfile object): A .grid file that
 %           contains the data for all the newly added variables. Either a
-%           gridfile object, or the filepath to a .grid file.
-%       grids (vector [nVariables], string | gridfile | cell {string | gridfile}):
+%           gridfile object, or the filepath to a .grid file. The .grid file
+%           must have at least one dimension.
+%       grids (vector [nVariables], string | gridfile):
 %           The collection of .grid files that contain the data for the new variables.
 %           Must have one element per new variable. May either be a vector
-%           of gridfile objects, .grid filepaths, or a cell vector with
-%           elements of either type.
+%           of gridfile objects, or .grid filepaths.
 %       autocouple (vector [nVariables], logical | string): Indicates the
 %           autocoupling setting to use for each new variable. If
 %           autocouple has a single element, applies the same setting to
@@ -76,50 +76,27 @@ offOn = {["m","man","manual"], ["a","auto","autocouple"]};
 autocouple = dash.parse.switches(autocouple, offOn, nVariables, ...
     'autocouple', 'recognized auto-coupling option', header);
 
-% Parse string grids
-if dash.is.strlist(grids)
-    grids = string(grids);
+% Parse and build gridfiles. Informative error if failed
+[grids, gridIndices, failed, cause] = obj.parseGrids(grids, nVariables, header);
+if failed
+    gridfileFailedError(obj, vars, failed, cause);
 end
 
-% If not scalar, grids must be a vector with one element per variable. If
-% scalar, use the single grid for all variables
-nGrids = numel(grids);
-if nGrids > 1
-    dash.assert.vectorTypeN(grids, [], nVariables, 'grids', header);
-    gridIndices = (1:nVariables)';
-else
-    gridIndices = ones(nVariables, 1);
-end
-
-% If not a cell, require string list or gridfile vector.
-if ~isa(grids, 'cell')
-    if ~isa(grids, 'gridfile') && ~dash.is.strlist(grids)
-        invalidGridsTypeError;
-    end
-
-    % Convert to cell column vector
-    if nGrids>1 && isrow(grids)
-        grids = grids';
-    end
-    grids = mat2cell(grids, ones(nGrids,1), 1); %#ok<MMTC> 
-end
-
-% Convert filepaths to gridfile objects. Informative error if failed.
-for g = 1:nGrids
-    if dash.is.strflag(grids{g})
-        try
-            grids{g} = gridfile(grids{g});
-        catch ME
-            gridfileFailedError(obj, vars, grids, g, ME, header);
-        end
+% Require each gridfile to have dimensions
+for g = 1:numel(grids)
+    if isempty(grids(g).dimensions)
+        noDimensionsError(obj, vars, g, grids, header);
     end
 end
 
-% Add each new state vector variable
+% Build each new state vector variable
 for v = 1:nVariables
     g = gridIndices(v);
-    newVariable = dash.stateVectorVariable(grids{g});
+    newVariable = dash.stateVectorVariable(grids(g));
+
+    % Add to the state vector
     obj.variables_ = [obj.variables_; newVariable];
+    obj.gridfiles = [obj.gridfiles; grids(g).file];
 end
 
 % Update variable properties
@@ -142,20 +119,23 @@ end
 end
 
 % Errors
-function[] = gridfileFailedError(obj, vars, grids, g, cause, header)
-
-% Rethrow any non-DASH error handling
-if ~contains(cause.identifier, 'DASH')
-    rethrow(cause);
-end
-
+function[] = noDimensionsError(obj, vars, g, grids, header)
 var = vars(g);
-file = grids{g};
-
-id = sprintf('%s:couldNotBuildGridfile', header);
+grid = grids(g);
+id = sprintf('%s:noDimensionsInGridfile', header);
 ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
-    'for the variable could not be built.\nFile: %s'], ...
-    var, obj.name, file);
+    'for the variable (%s) has no dimensions.\n\ngridfile: %s'], ...
+    var, obj.name, grid.name, grid.file);
+throwAsCaller(ME);
+end
+function[] = gridfileFailedError(obj, vars, g, cause)
+
+% Supplement failed build
+var = vars(g);
+id = cause.identifier;
+ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
+    'for the variable failed.'], ...
+    var, obj.name);
 ME = addCause(ME, cause);
 throwAsCaller(ME);
 
