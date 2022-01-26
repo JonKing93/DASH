@@ -1,4 +1,4 @@
-function[obj] = addAttributes(obj, fields, values, varargin)
+function[obj] = addAttributes(obj, varargin)
 %% gridMetadata.addAttributes  Add non-dimensional attributes to the metadata for a gridded dataset
 % ----------
 %   obj = <strong>obj.addAttributes</strong>(fields, values)
@@ -29,7 +29,7 @@ dash.assert.scalarObj(obj, header);
 
 % Parse inputs
 extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
-[names, values] = dash.parse.nameValueOrCollection(fields, values, varargin, ...
+[names, values] = dash.parse.nameValueOrCollection(varargin, ...
     'fields', 'values', extraInfo, header);
 
 % Require valid, unique field names

@@ -1,4 +1,4 @@
-function[obj] = edit(obj, dimensions, metadata, varargin)
+function[obj] = edit(obj, varargin)
 %% gridMetadata.edit  Edit the metadata for a gridded dataset
 % ----------
 %   obj = <strong>obj.edit</strong>(dimensions, metadata)
@@ -48,9 +48,9 @@ function[obj] = edit(obj, dimensions, metadata, varargin)
 header = "DASH:gridMetadata:edit";
 dash.assert.scalarObj(obj, header);
 
-% Parse
+% Parse inputs
 extraInfo = 'Inputs must be Dimension,Metadata pairs.';
-[names, metadata] = dash.parse.nameValueOrCollection(dimensions, metadata, varargin, ...
+[names, metadata] = dash.parse.nameValueOrCollection(varargin, ...
     'dimensions', 'metadata', extraInfo, header);
 
 % Require recognized, non-duplicate dimension names

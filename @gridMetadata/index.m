@@ -1,4 +1,4 @@
-function[obj] = index(obj, dimensions, indices, varargin)
+function[obj] = index(obj, varargin)
 %% gridMetadata.index  Return dimensional metadata at specified indices
 % ----------
 %   obj = <strong>obj.index</strong>(dimensions, indices)
@@ -38,7 +38,7 @@ dash.assert.scalarObj(obj, header);
 
 % Parse
 extraInfo = 'Inputs must be Dimension-Name,Indices pairs.';
-[dims, indices] = dash.parse.nameValueOrCollection(dimensions, indices, varargin, ...
+[dims, indices] = dash.parse.nameValueOrCollection(varargin, ...
     'dimensions', 'indices', extraInfo, header);
 
 % Require defined, non-duplicate dimensions

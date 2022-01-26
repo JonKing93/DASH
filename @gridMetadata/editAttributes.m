@@ -1,4 +1,4 @@
-function[obj] = editAttributes(obj, fields, values, varargin)
+function[obj] = editAttributes(obj, varargin)
 %% gridMetadata.editAttributes  Replace non-dimensional attributes with new values
 % ----------
 %   obj = <strong>obj.editAttributes</strong>(fields, values)
@@ -27,7 +27,7 @@ dash.assert.scalarObj(obj, header);
 
 % Parse
 extraInfo = 'Inputs must be Attributes-Field-Name,Value pairs';
-[names, values] = dash.parse.nameValueOrCollection(fields, values, varargin, ...
+[names, values] = dash.parse.nameValueOrCollection(varargin, ...
     'fields', 'values', extraInfo, header);
 
 % Get the attributes structure
