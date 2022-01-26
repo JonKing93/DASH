@@ -100,9 +100,9 @@ classdef gridMetadata
         
         % Properties / dimensions
         obj = edit(obj, dimensions, metadata, varargin);
-        dims = defined(obj);
         obj = setOrder(obj, varargin);
         obj = index(obj, dimensions, indices, varargin);
+        [dims, size] = defined(obj);
         
         % Console display
         disp(obj);

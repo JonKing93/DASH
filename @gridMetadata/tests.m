@@ -21,6 +21,7 @@ removeAttributes;
 editAttributes;
 
 defined;
+error('size outputs for defined')
 
 disp;
 dispAttributes;
