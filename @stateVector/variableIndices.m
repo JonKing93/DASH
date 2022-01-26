@@ -47,7 +47,7 @@ v = dash.parse.stringsOrIndices(variables, obj.variableNames, name, elementName,
 
 % Check for repeats
 if ~allowRepeats
-    dash.assert.uniqueSet(variables, 'variables', header);
+    dash.assert.uniqueSet(variables, 'Variable', header);
 end
 
 end
