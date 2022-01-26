@@ -10,7 +10,7 @@ end
 % Build gridfile if not provided
 if dash.is.strflag(grid)
     grid = gridfile(grid);
-    obj.validateGrid(grid);
+    obj.validateGrid(grid, header);
 end
 
 % Extract metadata from gridfile
