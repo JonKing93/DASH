@@ -187,11 +187,20 @@ classdef gridfile < handle
         function[obj] = gridfile(filename)
         %% gridfile.gridfile  Return a gridfile object for a .grid file
         % ----------
-        %   obj = gridfile(file)
-        %   Builds an object for the specified file.
+        %   obj = gridfile(filename)
+        %   Builds a gridfile object for the specified file.
+        %
+        %   obj = gridfile(filenames)
+        %   Builds an array of gridfiles for the specified files. The
+        %   output array will have the same size as the "filenames" input,
+        %   and each element will be the gridfile object for the
+        %   corresponding file.
         % ----------
         %   Inputs:
-        %       filename (string scalar): The name of a .grid file.
+        %       filenames (string array | cellstring array | character row vector): 
+        %           The name of the .grid files for which to build gridfile
+        %           objects. The output gridfile array will have the same
+        %           size as this input.
         %  
         %   Outputs:
         %       obj (gridfile object): A gridfile object for the file.
@@ -232,14 +241,50 @@ classdef gridfile < handle
         
         % Header for error IDs
         header = "DASH:gridfile";
+        
+        % Require strings array with at least one element
+        if ~isstring(filename) && ~iscellstr(filename) && (~ischar(filename) && ~isrow(filename))
+            id = sprintf('%s:invalidType', header);
+            error(id, 'filenames must be either a string array, cellstring array, or character row vector');
+        end
+        filename = string(filename);
+        if isempty(filename)
+            id = sprintf('%s:emptyFilenames', header);
+            error(id, 'filenames cannot be empty');
+        end
 
-        % Get the absolute file path
-        file = dash.assert.strflag(filename, 'filename', header);
-        file = dash.assert.fileExists(file, '.grid', header);
-        obj.file = dash.file.urlSeparators(file);
+        % If scalar, build the gridfile
+        if isscalar(filename)
+            file = dash.assert.strflag(filename, 'filename', header);
+            file = dash.assert.fileExists(file, '.grid', header);
+            obj.file = dash.file.urlSeparators(file);
+        
+            % Fill the object fields with values from the file
+            obj.update;
+        
+        % If not scalar, preallocate gridfile array
+        else
+            nFiles = numel(filename);
+            obj = cell(nFiles, 1);
+        
+            % Get object for each file
+            try
+                for k = 1:nFiles
+                    obj{k} = gridfile(filename(k));
+                end
 
-        % Fill the object fields with values from the file
-        obj.update;
+            % If failed, note which file caused the error
+            catch cause
+                id = sprintf('%s:couldNotBuildGridfile', header);
+                ME = MException(id, 'Could not build the gridfile object for filename %.f (%s).', k, filename(k));
+                ME = addCause(ME, cause);
+                throw(ME);
+            end
+        
+            % Convert cell array to gridfile array
+            obj = [obj{:}];
+            obj = reshape(obj, size(filename));
+        end
 
         end
     end
