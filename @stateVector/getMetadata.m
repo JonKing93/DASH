@@ -48,12 +48,11 @@ dimension = dash.assert.strflag(dimension, 'dimension', header);
 d = obj.dimensionIndices(v, dimension, header);
 
 % Extract metadata. Let variable build gridfile if necessary. Informative
-% error if gridfile fails.
+% error if loading fails
 grid = obj.gridfile(v);
-try
-    metadata = obj.variables_(v).getMetadata(d, grid, header);
-catch ME
-    couldNotLoadMetadataError(obj, v, dimension, ME, header);
+[metadata, failed, cause] = obj.variables_(v).getMetadata(d, grid, header);
+if failed
+    couldNotLoadMetadataError(obj, v, dimension, grid, cause, header)
 end
 
 end
@@ -61,20 +60,44 @@ end
 % Error
 function[] = couldNotLoadMetadataError(obj, v, dimension, cause, header)
 
+% Rethrow non-DASH error handling
 if ~contains(cause.identifier, 'DASH')
     rethrow(cause);
 end
 
+% Dimension, variable, vector names
 vector = '';
 if ~strcmp(obj.label)
     vector = sprintf('in %s', obj.name);
 end
+var = obj.variables(v);
 
+% Information about failure
+id = cause.identifier;
+if contains(id, 'couldNotBuildGridfile')
+    [~,name] = fileparts(grid);
+    info = sprintf([', because the gridfile for the variable (%s) failed to ',...
+        'build.\n\ngridfile: %s'], name, grid);
+elseif contains(id, 'invalidGridfile')
+    [~,name] = fileparts(grid);
+    info = sprintf([', because the gridfile for the variable (%s) does not ',...
+        'match the gridfile used to create the variable.\n\ngridfile: %s'], name, grid);
+elseif contains(id, 'conversionFunctionFailed')
+    info = ', because the conversion function for the metadata failed to run.';
+elseif contains(id, 'invalidConversion')
+    info = [', because the conversion function for the metadata did not produce ',...
+        'a valid metadata matrix.'];
+elseif contains(id, 'metadataSizeConflict')
+    info = ', because the output of the metadata conversion function has the wrong number of rows.';
+else
+    info = '.';
+end
+
+% Throw error
 id = sprintf('%s:couldNotLoadMetadata', header);
-
 ME = MException(id, ['Could not load metadata for the "%s" dimension of the ',...
-    '"%s" variable%s.'], dimension, obj.variables(v), vector);
-ME = addCause(ME, cause);
+    '"%s" variable%s%s'], dimension, var, vector, info);
+ME = addCause(ME, cause.cause{1});
 throwAsCaller(ME);
 
 end
