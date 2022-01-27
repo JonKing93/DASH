@@ -58,7 +58,7 @@ end
 end
 
 % Error
-function[] = couldNotLoadMetadataError(obj, v, dimension, cause, header)
+function[] = couldNotLoadMetadataError(obj, v, dimension, grid, cause, header)
 
 % Rethrow non-DASH error handling
 if ~contains(cause.identifier, 'DASH')

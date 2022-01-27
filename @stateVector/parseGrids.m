@@ -1,7 +1,7 @@
 function[grids, gridIndices, failed, cause] = parseGrids(grids, nVariables, header)
 
 % Convert strings
-if dash.is.strlist(grids)
+if dash.is.string(grids)
     grids = string(grids);
 end
 
