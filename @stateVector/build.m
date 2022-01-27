@@ -178,13 +178,14 @@ for s = 1:nSets
             varMetadata = getMetadata(vars(v), dims(v,d), varGrids(v), ensDims(d), header);
             try
                 metadata = intersect(metadata, varMetadata, 'rows', 'stable');
-            catch ME
-                incompatibleMetadataFormatsError;
+            catch
+                incompatibleMetadataFormatsError(...
+                    obj, vars, v, ensDims(d), metadata, varMetadata, header);
             end
 
             % Throw error if there is no overlapping metadata
             if isempty(metadata)
-                noMatchingMetadataError;
+                noMatchingMetadataError(obj, vars, ensDims(d), header);
             end
         end
 
@@ -365,7 +366,49 @@ ME = MException(id, ['Cannot build an ensemble for %s because metadata ',...
 ME = addCause(ME, cause.cause{1});
 
 end
+function[] = incompatibleMetadataFormatsError(obj, vars, v, dim, metadata, varMetadata, header)
 
+v1 = vars(1);
+v2 = vars(v);
+
+if size(metadata,2)~=size(varMetadata,2)
+    info = sprintf(['The metadata is not compatible because the metadata for "%s" ',...
+        'has %.f columns, while the metadata for "%s" has %.f columns.'],...
+        obj.variables(v1), size(metadata,2), obj.variables(v2), size(varMetadata,2));
+else
+    info = sprintf(['The metadata is not compatible because the metadata for "%s" ',...
+        'is a "%s" data type, while the metadata for "%s" is a "%s" data type. ',...
+        'Compatible data types are (numeric/logical), (char/string/cellstring), and (datetime).'],...
+        obj.variables(v1), class(metadata), obj.variables(2), class(varMetadata));
+end
+
+link1 = '<a href="matlab:dash.doc(''stateVector.getMetadata'')">stateVector.getMetadata</a>';
+link2 = '<a href="matlab:dash.doc(''stateVector.metadata'')">stateVector.metadata</a>';
+
+id = sprintf('%s:incompatibleMetadata', header);
+ME = MException(id, ['Cannot build an ensemble for %s because variables "%s" and "%s" ',...
+    'are coupled, but do not have compatible metadata along the "%s" ',...
+    'dimension. %s\n\nYou may need to adjust the metadata for the variables. ',...
+    'You can use the %s method to return the metadata for a variable, and the ',...
+    '%s method to adjust a variable''s metadata.'],...
+    obj.name, obj.variables(v1), obj.variables(v2), dim, info, link1, link2);
+throwAsCaller(ME);
+end
+function[] = noMatchingMetadataError(obj, vars, dim, header)
+
+link1 = '<a href="matlab:dash.doc(''stateVector.getMetadata'')">stateVector.getMetadata</a>';
+link2 = '<a href="matlab:dash.doc(''stateVector.metadata'')">stateVector.metadata</a>';
+
+vars = obj.variables(vars);
+id = sprintf('%s:noMatchingMetadata', header);
+ME = MException(id, ['Cannot build an ensemble for %s. The variables %s are ',...
+    'coupled, but there is no matching metadata across all the variables over ',...
+    'the "%s" dimension.\n\nYou may need to adjust the metadata for some of ',...
+    'the variables. See the %s method to return the metadata for a variable ',...
+    'and the %s method to adjust a variable''s metadata.'],...
+    obj.name, dash.string.list(vars), dim, link1, link2);
+throwAsCaller(ME);
+end
 function[] = tooBigToLoadWarning(file)
 link = '<a href="matlab:dash.doc(''ensemble'')">ensemble class</a>';
 [~,name] = fileparts(file);
