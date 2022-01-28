@@ -36,6 +36,19 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   obj.build(...,  'showprogress', showprogress)
 %   Specify whether to display a progress bar. Default is to not display a
 %   progress bar.
+%
+%   obj.build(..., 'strict', true | false)
+%   obj.build(..., 'strict', strict)
+%   Specify how the method should respond if it cannot build the requested
+%   number of ensemble members. If true (default), throws an error when the
+%   requested number of ensemble members cannot be built. If false, issues
+%   a warning, but does not fail, when the requested number of ensemble
+%   members cannot be built. If this occurs, the output ensemble will have
+%   fewer columns than the requested number of ensemble members.
+%
+%   obj.build(..., 'precision', precision)
+%   Specify what numerical precision to use for the built state vector
+%   ensemble.
 % ----------
 %   Inputs:
 %       nMembers (scalar positive integer | 'all'): The number of ensemble
@@ -54,6 +67,11 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %       showprogress (scalar logical): Set to true if the method should
 %           display a progress bar. Set to false (default) to not display a
 %           progress bar.
+%       strict (scalar logical): Specify how the method should respond if
+%           the requested number of ensemble members cannot be built. If
+%           true (default), throws an error. If false, issues a warning and
+%           returns an ensemble with however many ensemble members did
+%           successfully build.
 %
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The built state vector
@@ -100,6 +118,7 @@ defaults = {    false,        [],     false,        false    };
 dash.assert.scalarType(sequential, 'logical', 'buildSequentially', header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
 dash.assert.scalarType(showprogress, 'logical', 'showprogress', header);
+dash.assert.scalarType(strict, 'logical', 'strict', header);
 
 % Check file if writing. Get path, set extension, check overwrite
 writeFile = ~isempty(filename);
@@ -144,7 +163,7 @@ for v = 1:obj.nVariables
 end
 
 
-%% Select ensemble members
+%% Match metadata
 
 % Trim ensemble dimensions to only allow complete sequences and means
 for v = 1:obj.nVariables
@@ -232,7 +251,7 @@ end
 
 % Build the ensemble.
 obj.editable = false;
-[X, meta, obj] = obj.buildEnsemble(nMembers, grids, ens, showprogress);
+[X, meta, obj] = obj.buildEnsemble(nMembers, strict, grids, whichGrid, ens, showprogress);
 
 % If writing, optionally return output array
 if writeFile

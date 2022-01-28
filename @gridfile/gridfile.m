@@ -243,7 +243,7 @@ classdef gridfile < handle
         header = "DASH:gridfile";
         
         % Require strings array with at least one element
-        if ~dash.is.string(filenames)
+        if ~dash.is.string(filename)
             id = sprintf('%s:invalidType', header);
             error(id, 'filenames must be either a string array, cellstring array, or character row vector');
         end

@@ -1,4 +1,5 @@
 function[obj] = updateCoupledVariables(obj, t, vars, header)
+% ? maybe use uv instead of t to improve error messages
 
 % Get the template variable and its ensemble dimensions
 template = obj.variables_(t);

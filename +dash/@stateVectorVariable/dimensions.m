@@ -10,6 +10,13 @@ function[dimensions] = dimensions(obj, type)
 %
 %   dimensions = obj.dimensions('ensemble')
 %   Return the list of ensemble dimensions.
+%
+%
+% !!!
+%   [dims, sizes] = obj.dimensions('ensemble')
+%   Returns ensemble dimensions and their ensSizes
+%
+%
 % ----------
 %   Outputs:
 %       dimensions (string list): The list of dimensions of the requested
