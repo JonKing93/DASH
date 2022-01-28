@@ -234,17 +234,11 @@ end
 
 %% Build / Write ensemble
 
-% Use an empty array if not writing file
+% If writing, use a temporary file to hold the incomplete ensemble
 ens = [];
-
-% Otherwise, use a temporary file to hold the incomplete ensemble
 if writeFile
     tmpFile = strcat(filename, ".tmp");
-
-    % Always delete the .tmp file 
     cleanup = onCleanup(@()removeTmpFile(tmpFile));
-
-    % Intialize the new matfile
     removeTmpFile(tmpFile);
     ens = matfile(tmpFile);
 end

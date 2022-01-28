@@ -1,26 +1,33 @@
 function[] = buildEnsemble(obj, nMembers, strict, grids, whichGrid, ens, showprogress)
 
 
-% Select the new ensemble members. Informative error if enough ensemble
-% members are not found
-[obj, newMembers, failed, cause] = selectMembers(obj, nMembers, strict);
+% Select the new ensemble members.
+[newMembers, obj] = selectMembers(obj, nMembers, strict);
+
+% Get gridfile sources. These can either be loaded data or dataSource objects
+[whichGrid, sources, failed, cause] = gridSources(obj, grids, newMembers);
 if failed
     throwAsCaller(cause);
 end
 
-% Either load the data, or build the data source objects for each gridfile
-sources = gridSources(obj, newMembers, grids, whichGrid);
+% Load ensemble directly
+metadata = ensembleMetadata(obj);
+if isempty(ens)
+    X = loadEnsemble(obj, newMembers, grids, sources, whichGrid);
+
+% Or write to file
+else
+    writeEnsemble(obj, newMembers, grids, sources, whichGrid);
+    X = [];
+    ens.metadata = metadata.serialize;
+    ens.stateVector = obj.serialize;
+end
 
 end
 
 
-
-
-
-
-
-
-function[obj, newMembers, failed, cause] = selectMembers(obj, nMembers, strict)
+%% Select ensemble members
+function[obj, newMembers] = selectMembers(obj, nMembers, strict)
 %% Selects the new ensemble members to be built
 %
 % Inputs:
@@ -37,7 +44,7 @@ function[obj, newMembers, failed, cause] = selectMembers(obj, nMembers, strict)
 %       The new, dimensionally-subscripted ensemble members for each set of
 %       coupled variables.
 
-% Preallocate new members for sets of coupled variables
+% Preallocate new members for each set of coupled variables
 sets = unique(obj.coupled, 'rows');
 nSets = size(sets,1);
 newMembers = cell(nSets,1);
@@ -57,8 +64,11 @@ for s = 1:nSets
     whichSet(vars) = s;
 
     % Select new ensemble members for the set
-    [subMembers, unused, status] = selectCoupledMembers(...
-        obj, vars, nMembers, strict, obj.unused{s}, obj.subMembers{s});
+    [newMembers{s}, obj.unused{s}, status] = selectCoupledMembers(...
+             obj, vars, nMembers, strict, obj.unused{s}, obj.subMembers{s});
+
+
+
 
     % Provide error details if failed
     if strcmp(status, 'failed')
@@ -97,19 +107,15 @@ end
 
 end
 function[subMembers, unused, status, cause] = selectCoupledMembers(...
-                        obj, vars, nMembers, strict, unused, savedMembers)
+                        obj, vars, nMembers, strict, unused, existingMembers)
 
 % Get ensemble dimensions and sizes.
 variable1 = obj.variables_(vars(1));
 [ensDims, ensSize] = variable1.dimensions('ensemble');
 nDims = numel(ensDims);
 
-% Initialize dimensionally-subscripted ensemble members
-subIndices = cell(1, nDims);
-subMembers = savedMembers;
-
 % Initalize ensemble member selection
-nInitial = size(subMembers,1);
+subIndices = cell(1, nDims);
 nNeeded = nMembers;
 nRemaining = numel(unused);
 
@@ -138,14 +144,15 @@ while nNeeded > 0
 
     % Subscript members over ensemble dimensions.
     [subIndices{:}] = ind2sub(ensSize, members);
-    subMembers = cat(1, subMembers, cell2mat(subIndices)); 
+    subMembers = cell2mat(subIndices);
 
     % Remove overlapping ensemble members from variables that don't allow overlap
     for k = 1:numel(vars)
         v = vars(k);
         if ~obj.allowOverlap(v)
             variable = obj.variables_(v);
-            subMembers = variable.removeOverlap(subMembers, ensDims);
+            allMembers = [existingMembers; subMembers];
+            subMembers = variable.removeOverlap(allMembers, ensDims);
         end
     end
     nTotal = size(subMembers, 1);
@@ -170,8 +177,7 @@ end
 end
 
 
-
-
+%% Gridfile sources
 function[] = gridSources(obj, newMembers, grids, whichGrid)
 
 
@@ -195,79 +201,67 @@ for g = 1:nGrids
     dimensions = grids(g).dimensions;
     nDims = numel(dimensions);
 
-    % Find all variables that use the gridfile. Preallocate index limits
+    % Find all variables that use the gridfile. Get their coupling sets
     vars = find(whichGrid==g);
+    variables = obj.variables_(vars);
+    set = whichSet(vars);
     nVars = numel(vars);
-    limits = NaN(nDims, 2, nVars);
 
-    % Get index limits needed to load new ensemble members for each variable
-    for k = 1:nVars
-        v = vars(k);
-        s = whichSet(v);
-        variable = obj.variables_(v);
-        limits(:,:,k) = variable.indexLimits(newMembers{s}, obj.ensDims{s});
+    % Get index limits needed to load all new ensemble members for each variable
+    limits = NaN(nDims, 2, nVars);
+    for v = 1:nVars
+        limits(:,:,v) = variables(v).indexLimits(newMembers{set(v)}, ensDims{set(v)});
     end
 
-    % Get the limits of indices needed to load the full set of variables
+    % Get indices needed to load the full set of variables
     minIndex = min(limits(:,1,:), [], 3);
     maxIndex = max(limits(:,2,:), [], 3);
     fullLimits = [minIndex, maxIndex];
+    indices = dash.indices.fromLimits(fullLimits);
 
-    % Get indices that could load the full set of variables
-    indices = cell(nDims,1);
-    for d = 1:nDims
-        indices{d} = min(limits(d,1,:)) : max(limits(d,1,:));
-    end
-
-    % Build sources for all variables
+    % Build sources for these indices
     s = grids(g).sourcesForLoad(indices);
     [sources, failed] = grids(g).buildSources(s, false);
-    failedSources = s(failed);
 
-    % If successful, attempt to load the full data set and organize as the
-    % source for any loads.
-    if ~any(failed)
-        try
-            gridData = grids(g).loadInternal([], indices, s, sources, precision);
-            sources(g) = {1, fullLimits, gridData};
-        catch
-            failed = true;
+    % If any failed, check each variable individually
+    if any(failed)
+        failedSources = s(failed);
+        for v = 1:nVars
+            checkVariable(variables(v), grids(g), limits(:,:,v), ...
+                failedSources, ensDims{set(v)}, newMembers{set(v)});
         end
     end
+end
 
-    % If any failed, process the variables individually
+end
+function[] = checkVariable(variable, grid, limits, failedSources, newMembers)
 
+% Find sources needed to load all ensemble members at once
+indices = dash.indices.fromLimits(limits);
+s = grid.sourcesForLoad(indices);
 
+% If any sources failed, check each ensemble member
+if any(ismember(s, failedSources))
+    checkMembers
+    nMembers = size(newMembers,1);
+    for m = 1:nMembers
 
+        % Get index limits and load indices for each ensemble member
+        limits = variable.indexLimits(newMembers(m,:), ensDims);
+        for d = 1:nDims
+            indices{d} = limits(d,1):limits(d,2);
+        end
 
+        % Get sources for ensemble member, throw error if failed
+        s = grid.sourcesForLoad(indices);
+        if any(ismember(s, failedSources))
+            failedDatasourceError;
+        end
+    end
+end
 
-
-
-    %%%%%% Process variables individually %%%%%%
-    if any(failed)
-
-        % Cycle through variables. Track whether variables
-        for v = 1:nVars
-            indices = cell(1, nDims);
-            for d = 1:nDims
-                indices{d} = limits(d,1,v):limits(d,2,v);
-            end
-
-            % Determine sources needed to load the variable.
-            sVar = grids(g).sourcesForLoad(indices);
-
-            % If all of the sources were succesful, organize the sources
-            % for later loads
-            if ~any(ismember(sVar, failedSources))
-                sources(g) = {2, s(~failed), sources(~failed)};
-
-            % 
-
-
-
-
+end
 
 
-
-
+%% Load/write
 

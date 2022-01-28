@@ -62,12 +62,10 @@ classdef stateVector
         coupled = true(0,0);            % Which variables are coupled to each other
         autocouple_ = true(0,1);         % Whether variables should be automatically coupled to new variables
 
-        %% Ensemble members / coupled sets
+        %% Ensemble members
 
         unused;
         subMembers;
-        ensDims;
-        whichSet;
 
     end
 
