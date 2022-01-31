@@ -1,4 +1,4 @@
-function[obj, nNew] = selectMembers(obj, nMembers, strict)
+function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
 
 % Adjust for "all" option. Get the initial number of ensemble members
 if strcmp(nMembers, 'all')
@@ -6,23 +6,25 @@ if strcmp(nMembers, 'all')
 end
 nInitial = size(obj.subMembers{1}, 1);
 
-% Get sets of coupled variables. Preallocate number of new ensemble members
-sets = unique(obj.coupled, 'rows');
-nSets = size(sets,1);
+% Preallocate new ensemble members for sets of coupled variables
+nSets = numel(coupling.sets);
 nNew = NaN(nSets, 1);
 incomplete = false(nSets, 1);
 
-% Cycle through sets
+% Cycle through sets of coupled variables.
 for s = 1:nSets
-    vars = find(sets(s,:));
+    set = coupling.sets(s);
+    vars = set.vars;
 
-    % Get ensemble dimensions and sizes
+    % Get size of ensemble dimensions
     variable1 = obj.variables_(vars(1));
-    [ensDims, ensSize] = variable1.dimensions('ensemble');
-    nDims = numel(ensDims);
+    ensSize = variable1.sizes(set.dims(1,:));
+
+    % Initialize indices for dimensionally-subscripted ensemble members
+    nDims = size(set.dims, 2);
+    subIndices = cell(1, nDims);
 
     % Initialize ensemble member selection
-    subIndices = cell(1, nDims);
     subMembers = obj.subMembers{s};
     unused = obj.unused{s};
     nRemaining = numel(unused);
@@ -60,7 +62,7 @@ for s = 1:nSets
             v = vars(k);
             if ~obj.allowOverlap(v)
                 variable = obj.variables_(v);
-                subMembers = variable.removeOverlap(subMembers, ensDims);
+                subMembers = variable.removeOverlap(set.dims(k,:), subMembers);
             end
         end
         
@@ -88,7 +90,7 @@ end
 % with the smallest number of new ensemble members
 if any(incomplete)
     [nNew, s] = min(nNew);
-    vars = find(sets(s,:));
+    vars = coupling.sets(s).vars;
 
     % Trim each set of ensemble members to match this smaller number and
     % notify user of incomplete ensemble.

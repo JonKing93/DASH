@@ -144,23 +144,25 @@ end
 
 %% Build gridfiles
 
-% Get the unique set of gridfiles. Note which grid is used by each variable
-[grids, ~, whichGrid] = unique(obj.gridfiles);
+% % Get the unique set of gridfiles. Note which grid is used by each variable
+% [grids, ~, whichGrid] = unique(obj.gridfiles);
+% 
+% % Build each gridfile, informative error if failed
+% [grids, failed, cause] = obj.buildGrids(grids);
+% if failed
+%     couldNotBuildGridfileError(obj, grids, whichGrid, failed, cause)
+% end
+% 
+% % Validate the grids against each variable
+% for v = 1:obj.nVariables
+%     grid = grids( whichGrid(v) );
+%     [isvalid, cause] = obj.variables_(v).validateGrid(grid);
+%     if ~isvalid
+%         invalidGridfileError(obj, v, grid, cause);
+%     end
+% end
 
-% Build each gridfile, informative error if failed
-[grids, failed, cause] = obj.buildGrids(grids);
-if failed
-    couldNotBuildGridfileError(obj, grids, whichGrid, failed, cause)
-end
-
-% Validate the grids against each variable
-for v = 1:obj.nVariables
-    grid = grids( whichGrid(v) );
-    [isvalid, cause] = obj.variables_(v).validateGrid(grid);
-    if ~isvalid
-        invalidGridfileError(obj, v, grid, cause);
-    end
-end
+grids = obj.buildGrids;
 
 
 %% Match metadata
@@ -170,19 +172,19 @@ for v = 1:obj.nVariables
     obj.variables_(v) = obj.variables_(v).trim;
 end
 
-% Get sets of coupled variables
-coupledSets = unique(obj.coupled, 'rows');
-nSets = size(coupledSets, 1);
+% Get coupling info
+coupling = obj.couplingInfo;
+nSets = numel(coupling.sets);
 
 % Preallocate unused, and selected ensemble members
 obj.unused = cell(nSets, 1);
-obj.members = cell(nSets, 1);
+obj.subMembers = cell(nSets, 1);
 
 % Cycle through sets of coupled variables
 for s = 1:nSets
-    vars = find(coupledSets(s,:));
-    varGrids = grids(whichGrid(vars));
+    vars = coupling.sets(s).vars;
     nCoupledVars = numel(vars);
+    varGrids = grids.whichGrid(vars);
 
     % Get a reference variable and the indices of ensemble dimensions
     variable1 = obj.variables_(vars(1));

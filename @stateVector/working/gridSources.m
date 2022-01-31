@@ -1,6 +1,30 @@
-function[sources, isloaded, limits, loadAllMembers] = gridSources(obj, newMembers, ensDims, grids, whichGrid, precision)
+function[sources, isloaded, limits, loadAllMembers] = gridSources(obj, nMembers, grids, coupling, precision
 %% Builds and error checks gridfile sources before loading data.
 % Returns parameters needed to 
+%
+%
+%   Inputs:
+%       nMembers (scalar integer): The number of new members
+%       grids (scalar struct):
+%           .whichGrid (numeric vector [nVariables])
+%           .gridfiles (gridfile vector [nGrids])
+%       coupling (scalar struct)
+%           .whichSet (numeric vector [nVariables]):
+%           .sets (scalar struct)
+%               .vars (numeric vector): Variable indices
+%               .ensDims (string vector): Ensemble dimensions
+%               .dims (matrix [nVars x nDims]): Ensemble dimension indices
+%       precision
+%
+%   Outputs:
+%       sources (struct vector [nGrids]):
+%           .isloaded (scalar logical)
+%           .data (numeric array)
+%           .limits ([nDims x 2])
+%           .dataSources (cell vector)
+%           .indices: Data source indices
+%       loadAllMembers (logical vector [nVariables])
+
 %
 %   sources (cell vector [nGrids x 2])
 %       [Case 1]: {loaded data, limits}
