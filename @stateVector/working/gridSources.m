@@ -52,13 +52,14 @@ for g = 1:nGrids
 
     % Attempt to build sources
     s = grids(g).sourcesForLoad(indices);
-    [dataSources, failed] = grids(g).buildSources(s, false);
+    [dataSources, failed, causes] = grids(g).buildSources(s, false);
 
     % Note if sources built successfully, record failed sources
     allBuilt = true;
     if any(failed)
         allBuilt = false;
         failedSources = s(failed);
+        failureCauses = causes(failed);
     end
 
     % Begin designing output
@@ -105,7 +106,8 @@ for g = 1:nGrids
 
             % If source failed, cannot build. Throw error
             if any(ismember(sMember, failedSources))
-                failedDataSourceError;
+                failedDataSourceError(obj, grids(g), vars(v), m, sMember, ...
+                    failedSources, failureCauses, header);
             end
         end
     end
