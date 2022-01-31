@@ -1,10 +1,10 @@
-function[sources, isloaded, limits, loadAllMembers] = gridSources(obj, nMembers, grids, coupling, precision
+function[sources, loadAllMembers] = gridSources(obj, grids, coupling, nNew, precision)
 %% Builds and error checks gridfile sources before loading data.
 % Returns parameters needed to 
 %
 %
 %   Inputs:
-%       nMembers (scalar integer): The number of new members
+%       nNew (scalar integer): The number of new members
 %       grids (scalar struct):
 %           .whichGrid (numeric vector [nVariables])
 %           .gridfiles (gridfile vector [nGrids])
@@ -36,37 +36,46 @@ function[sources, isloaded, limits, loadAllMembers] = gridSources(obj, nMembers,
 %       [Case B]: {[]}
 %   loadAllMembers (logical vector [nVars]): True if case A, false if case B
 
+% Get the indices of new ensemble members
+nMembers = size(obj.subMembers{1},1);
+newIndices = nMembers-nNew+1:nMembers;
+
+% Unpack gridfile info
+whichGrid = grids.whichGrid;
+grids = grids.gridfiles;
+
 % Preallocate
 nGrids = numel(grids);
-sources = cell(nGrids, 2);
-isloaded = false(nGrids, 1);
+sources = struct('isloaded',false, 'data', [], 'limits', [], 'dataSources', [], 'indices', []);
+sources = repmat(sources, [nGrids 1]);
 
 nVars = obj.nVariables;
-varLimits = cell(nVars, 1);
 loadAllMembers = false(nVars, 1);
-
-% Get the coupling set for each variable
-coupledVars = unique(obj.coupled, 'rows');
-[whichSet, ~] = find(coupledVars);
+dims = cell(nVars, 1);
 
 % Cycle through gridfiles and get dimensions
 for g = 1:nGrids
     dimensions = grids(g).dimensions;
     nDims = numel(dimensions);
 
-    % Find all variables that use the gridfile. Get each coupling set
+    % Find all variables that use the gridfile. Get the coupling set for
+    % each variable
     vars = find(whichGrid==g);
-    variables = obj.variables_(vars);
-    sets = whichSet(vars);
     nVars = numel(vars);
+    sets = coupling.whichSet(vars);
 
-    % Get index limits for each variable
+    % Get index limits needed to load the new ensemble members for each variable
     limits = NaN(nDims, 2, nVars);
-    for v = 1:nVars
-        cs = sets(v);
-        limits(:,:,v) = variables(v).indexLimits(newMembers{cs}, ensDims{cs});
+    for k = 1:nVars
+        v = vars(k);
+        cs = sets(k);
+
+        row = v == coupling.sets(cs).vars;
+        dims{v} = coupling.sets(cs).dims(row,:);
+        newMembers = obj.subMembers{cs}(newIndices, :);
+
+        limits(:,:,k) = obj.variables_(v).indexLimits(dims{v}, newMembers);
     end
-    varLimits(vars) = mat2cell(limits, nDims, 2, ones(nVars,1));
 
     % Get index limits for full set of variables
     minIndex = min(limits(:,1,:), [], 3);
@@ -86,16 +95,22 @@ for g = 1:nGrids
         failureCauses = causes(failed);
     end
 
-    % Begin designing output
-    sources = {dataSources(~failed), s(~failed)};
+    % Record successful sources
+    sources(g).dataSources = dataSources(~failed);
+    sources(g).indices = s(~failed);
 
     % If dataSources built, and there are 2+ variables, attempt to load
     if allBuilt
         if nVars > 1
             try
                 X = grids(g).loadInternal([], indices, s, dataSources, precision);
-                isloaded(g) = true;
-                sources(g,:) = {X, fullLimits};
+
+                % Record if successful
+                sources(g).isloaded = true;
+                sources(g).data = X;
+                sources(g).limits = fullLimits;
+                sources(g).dataSources = [];
+                sources(g).indices = [];
             catch
             end
         end
@@ -106,31 +121,33 @@ for g = 1:nGrids
         continue;
     end
 
-    % If sources failed, need to check each variable individually. 
-    for v = 1:nVars
-        indices = dash.indices.fromLimits(limits(:,:,v));
+    % If any sources failed, need to check each variable individually. 
+    for k = 1:nVars
+        v = vars(k);
+        variable = obj.variables_(v);
+        indices = dash.indices.fromLimits(limits(:,:,k));
         sVar = grids(g).sourcesForLoad(indices);
 
         % If successful, note the variable is good and move on to the next
         % variable
         if ~any(ismember(sVar, failedSources))
-            loadAllMembers(vars(v)) = true;
+            loadAllMembers(v) = true;
             continue
         end
 
         % If not successful, need to check individual ensemble members
-        cs = sets(v);
-        nMembers = size(newMembers{cs},1);
-        for m = 1:nMembers
+        cs = sets(k);
+        newMembers = obj.subMembers{cs}(newIndices, :);
+        for m = 1:nNew
 
             % Get index limits, indices, sources for each ensemble member.
-            limits = variables(v).indexLimits(newMembers{cs}(m,:), ensDims{cs});
+            limits = variable.indexLimits(dims{v}, newMembers(m,:));
             indices = dash.indices.fromLimits(limits);
             sMember = grids(g).sourcesForLoad(indices);
 
             % If source failed, cannot build. Throw error
             if any(ismember(sMember, failedSources))
-                failedDataSourceError(obj, grids(g), vars(v), m, sMember, ...
+                failedDataSourceError(obj, grids(g), v, m, sMember, ...
                     failedSources, failureCauses, header);
             end
         end

@@ -1,4 +1,12 @@
 function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
+%
+%   Inputs:
+%       nMembers ('all' | scalar positive integer)
+%       strict (scalar logical)
+%       coupling (scalar struct)
+%           .sets (struct vector [nSets])
+%               .vars: Variable indices
+%               .dims [nVars x nDims]: Dimension indices of ensemble dimensions
 
 % Adjust for "all" option. Get the initial number of ensemble members
 if strcmp(nMembers, 'all')

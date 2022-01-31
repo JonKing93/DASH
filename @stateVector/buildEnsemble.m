@@ -1,9 +1,14 @@
 function[] = buildEnsemble(obj, nMembers, grids, coupling, strict, precision) 
 
-% Structure the information on different sets of coupled 
-
-% Select the new ensemble members.
+% Select the new ensemble members. Record the new members in the
+% stateVector object and note the number of new members.
 [obj, nMembers] = selectMembers(obj, nMembers, strict, coupling);
+
+% Get gridfile sources. Check that data sources can be loaded for all
+% required data. Pre-load data from gridfiles with multiple variables.
+[sources, loadAllMembers] = gridSources(obj, grids, coupling, nMembers, precision)
+
+
 
 % Get gridfile sources. These can either be loaded data or dataSource objects
 [sources, isloaded, varLimits, loadAllMembers] = gridSources(obj, grids, nMembers, precision);
