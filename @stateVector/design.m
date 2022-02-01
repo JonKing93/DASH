@@ -119,10 +119,15 @@ function[] = secondaryVariableError(obj, vTemplate, vFailed, cause, header)
 tName = obj.variables(vTemplate);
 vName = obj.variables(vFailed);
 
+vector = '';
+if ~strcmp(obj.label, "")
+    vector = sprintf('in %s ', obj.name);
+end
+
 id = sprintf('%s:couldNotUpdateCoupledVariable', header);
-ME = MException(id, ['Cannot design the "%s" variable because the dimensions ',...
+ME = MException(id, ['Cannot design the "%s" variable %sbecause the dimensions ',...
     'of coupled variable "%s" could not be updated to match "%s".'],...
-    tName, vName, tName);
+    tName, vector, vName, tName);
 ME = addCause(ME, cause);
 throwAsCaller(ME);
 

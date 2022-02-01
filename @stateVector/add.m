@@ -109,11 +109,24 @@ obj.nVariables = v(end);
 obj.coupled(v,:) = false;
 obj.coupled(:,v) = false;
 obj.coupled(1:obj.nVariables+1:end) = true;
-obj.autocouple_(v) = autocouple;
 
-% Update autocoupling and couple variables
+% Autocouple dimensions to existing variables
+if any(autocouple) && any(obj.autocouple_)
+    vTemplate = find(obj.autocouple_, 1);
+    vUpdate = v(autocouple);
+    [obj, failed, cause] = obj.coupleDimensions(vTemplate, vUpdate, header);
+
+    % Informative error if autocoupling failed
+    if failed
+        couldNotAutocoupleError(obj, vTemplate, failed, cause, header);
+    end
+end
+
+% Update autocouple and coupling status of autocoupled variables
+obj.autocouple_(v) = autocouple;
 if any(autocouple)
-    obj = obj.couple(obj.autocouple_);
+    vCouple = find(obj.autocouple_);
+    obj.coupled(vCouple, vCouple) = true;
 end
 
 end
@@ -136,6 +149,20 @@ id = cause.identifier;
 ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
     'for the variable failed.'], ...
     var, obj.name);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
+
+end
+function[] = couldNotAutocoupleError(obj, vTemplate, vFailed, cause, header)
+
+tName = obj.variables(vTemplate);
+vName = obj.variables(vFailed);
+
+id = sprintf('%s:couldNotAutocoupleVariable', header);
+ME = MException(id, ['Cannot add the "%s" variable to %s because the dimensions ',...
+    'of "%s" cannot be automatically coupled to match the "%s" variable. ',...
+    'You may want to disable autocoupling for "%s".'], ...
+    vName, obj.name, vName, tName, vName);
 ME = addCause(ME, cause);
 throwAsCaller(ME);
 

@@ -52,10 +52,7 @@ if failed
 end
 
 % Record coupling status
-for k = 1:numel(vAll)
-    obj.coupled(vAll, vAll(k)) = true;
-    obj.coupled(vAll(k), vAll) = true;
-end
+obj.coupled(vAll, vAll) = true;
 
 end
 
@@ -64,10 +61,15 @@ function[] = couplingFailedError(obj, vTemplate, vFailed, cause, header)
 tName = obj.variables(vTemplate);
 vName = obj.variables(vFailed);
 
+vector = '';
+if ~strcmp(obj.label, "")
+    vector = sprintf('in %s ', obj.name);
+end
+
 id = sprintf('%s:couldNotCoupleVariable', header);
-ME = MException(id, ['Could not couple the "%s" variable to the "%s" variable ',...
+ME = MException(id, ['Could not couple the "%s" variable to the "%s" variable %s',...
     'because the dimensions of "%s" could not be updated to match "%s".'],...
-    vName, tName, vName, tName);
+    vName, tName, vector, vName, tName);
 
 ME = addCause(ME, cause);
 throwAsCaller(ME);
