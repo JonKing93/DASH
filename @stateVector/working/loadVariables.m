@@ -1,10 +1,10 @@
-function[X] = loadVariables(vLimit, members)
+function[X] = loadVariables(vLimit, members, coupling, grids, loadAllMembers)
 
 % Get the variables to load
 vars = vLimit(1):vLimit(2);
 nVars = numel(vars);
 
-% Get the number of state vector elements covered each the variables
+% Get the number of state vector elements in each variable
 nState = NaN(nVars, 1);
 for k = 1:nVars
     v = vars(k);
@@ -29,13 +29,17 @@ for k = 1:nVars
     rows = limits(k,1):limits(k,2);
 
     % Get the ensemble members to load
-    s = coupledVars.whichSet(v);
+    s = coupling.whichSet(v);
     subMembers = obj.subMembers{s}(members, :);
 
-    % Load each variable
-    variable = obj.variables_(v);
+    % Get the gridfile and sources for each the variable
     g = grids.whichGrid(v);
-    X(rows,:) = variable.loadMembers(subMembers, grids.grids(g), varSettings(v));
+    grid = grids.gridfiles(g);
+    source = grids.sources(g);
+
+    % Load the data
+    variable = obj.variables_(v);
+    X(rows,:) = variable.loadMembers(subMembers, grid, source, loadAllMembers(v));
 end
 
 end
