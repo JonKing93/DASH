@@ -32,40 +32,44 @@ function[obj] = couple(obj, variables)
 %
 % <a href="matlab:dash.doc('stateVector.couple')">Documentation Page</a>
 
-% Glossary of indices
-%   uv: User specified variables
-%   
-%   sv: Secondary variables
-%   Variables coupled to user variables, but not specified by the user.
-%   Because coupling is transitive, these will also be coupled.
-%
-%   av: All variables being coupled
-%   Includes both uv and sv.
-%
-%   tv: Template variable
-%   This is the first user-specified variable. The ensemble dimensions of
-%   the other variables will be updated to match this variable.
-
 % Setup
 header = "DASH:stateVector:couple";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Check user variables, get indices
-uv = obj.variableIndices(variables, true, header);
+vUser = obj.variableIndices(variables, true, header);
 
 % Get the full set of variables being coupled.
-[~, col] = find(obj.coupled(uv,:));
-av = unique(col);
+[~, col] = find(obj.coupled(vUser,:));
+vAll = unique(col);
 
 % Update coupled variables to match the template
-tv = uv(1);
-obj = obj.coupleDimensions(tv, av, header);
-
-% Couple the variables
-for k = 1:numel(av)
-    obj.coupled(av, av(k)) = true;
-    obj.coupled(av(k), av) = true;
+vTemplate = vUser(1);
+[obj, failed, cause] = obj.coupleDimensions(vTemplate, vAll, header);
+if failed
+    couplingFailedError(obj, vTemplate, failed, cause, header);
 end
+
+% Record coupling status
+for k = 1:numel(vAll)
+    obj.coupled(vAll, vAll(k)) = true;
+    obj.coupled(vAll(k), vAll) = true;
+end
+
+end
+
+function[] = couplingFailedError(obj, vTemplate, vFailed, cause, header)
+
+tName = obj.variables(vTemplate);
+vName = obj.variables(vFailed);
+
+id = sprintf('%s:couldNotCoupleVariable', header);
+ME = MException(id, ['Could not couple the "%s" variable to the "%s" variable ',...
+    'because the dimensions of "%s" could not be updated to match "%s".'],...
+    vName, tName, vName, tName);
+
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 
 end
