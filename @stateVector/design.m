@@ -78,7 +78,7 @@ nDims = numel(dimensions);
 
 % Parse dimension types
 options = {["e","ens","ensemble"], ["s","state"]};
-isstate = dash.assert.switches(types, options, nDims, ...
+isstate = dash.parse.switches(types, options, nDims, ...
                     'Dimension type', 'recognized dimension type', header);
 
 % Parse indices
@@ -93,28 +93,37 @@ method = 'design';
 inputs = {isstate, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 
-% Get the sets of coupled variables
-coupledSets = unique(obj.coupled, 'rows');
-nSets = size(coupledSets, 1);
+% Cycle through sets of coupled variables, and check for user-specified variables
+sets = obj.couplingInfo.sets;
+for s = 1:numel(sets)
+    vCoupled = sets(s).vars;
+    isUserVar = ismember(vCoupled, v);
 
-% Cycle through coupling sets, get linear indices. Check for user-specified
-% variables in the set
-for s = 1:nSets
-    cv = find(coupledSets(s,:));
-    isUserVar = ismember(cv, uv);
+    % If there are user variables, check for secondary coupled variables
+    if any(isUserVar) && ~all(isUserVar)
+        vSecondary = vCoupled(~isUserVar);
+        vTemplate = vCoupled(find(isUserVar,1));
 
-    % If there are user variables, check for secondary variables and update
-    if sum(isUserVar)>0
-        sv = cv(~ismember(cv, uv));
-        tv = cv(find(isUserVar,1));
-        try
-            obj = obj.updateCoupledVariables(tv, sv, header);
-
-        % Informative error if update failed
-        catch ME
-            secondaryVariableError;
+        % Update secondary variables, informative error if failed
+        [obj, failed, cause] = obj.coupleDimensions(vTemplate, vSecondary, header);
+        if failed
+            secondaryVariableError(obj, vTemplate, failed, cause, header);
         end
     end
 end
+
+end
+
+function[] = secondaryVariableError(obj, vTemplate, vFailed, cause, header)
+
+tName = obj.variables(vTemplate);
+vName = obj.variables(vFailed);
+
+id = sprintf('%s:couldNotUpdateCoupledVariable', header);
+ME = MException(id, ['Cannot design the "%s" variable because the dimensions ',...
+    'of coupled variable "%s" could not be updated to match "%s".'],...
+    tName, vName, tName);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 
 end

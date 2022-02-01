@@ -31,7 +31,7 @@ loadedFields = fieldnames(m);
 if ~all(loaded)
     bad = find(loc==0,1);
     id = sprintf('%s:missingField', header);
-    error(id, 'The file:\n    %s\n\n is missing the "%s" field. It may not be a valid .grid file.', ...
+    error(id, 'The file:\n\t%s\nis missing the "%s" field. It may not be a valid .grid file.', ...
         obj.file, fields{bad});
 end
 

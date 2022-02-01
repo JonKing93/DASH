@@ -24,7 +24,8 @@ function[obj] = editVariables(obj, vars, d, method, inputs, task)
 for k = 1:numel(vars)
     v = vars(k);
     try
-        obj.variables_(v) = obj.variables_(v).(method)(d(v,:), inputs{:});
+        dims = d(k,:);
+        obj.variables_(v) = obj.variables_(v).(method)(dims, inputs{:});
 
     % Rethrow errors outside of DASH error handling
     catch cause

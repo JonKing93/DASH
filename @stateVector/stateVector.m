@@ -71,6 +71,9 @@ classdef stateVector
 
     methods
 
+        %%% Trial methods
+        info = couplingInfo(obj);
+
         % General settings
         varargout = label(obj, label);
         name = name(obj);
@@ -98,7 +101,7 @@ classdef stateVector
         obj = couple(obj, variables);
         obj = uncouple(obj, variables);
         obj = autocouple(obj, variables, setting);
-        obj = updateCoupledVariables(obj, t, vars, header);
+        [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
 
         % Design parameters
         obj = design(obj, variables, dimensions, types, indices);

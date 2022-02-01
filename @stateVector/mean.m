@@ -102,7 +102,7 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Error check dimensions and variables, get indices
-v = obj.variableIndices(variables, header);
+v = obj.variableIndices(variables, false, header);
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 
@@ -122,10 +122,13 @@ else
     omitnan = dash.parse.switches(NaNoptions, {"includenan","omitnan"}, nDims, ...
         'NaN option', 'recognized NaN option', header); %#ok<CLARRSTR> 
 end
+if isscalar(omitnan)
+    omitnan = repmat(omitnan, [numel(v),1]);
+end
 
 % Update the variables
 method = 'mean';
-inputs = {indices, omitnan};
+inputs = {indices, omitnan, header};
 task = 'take a mean over';
 obj = obj.editVariables(v, d, method, inputs, task);
 
