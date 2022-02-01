@@ -39,13 +39,13 @@ setting = dash.parse.switches(setting, offOn, 1, 'setting', ...
     'recognized auto-coupling setting', header);
 
 % Check variables, get indices
-uv = obj.variableIndices(variables, true, header);
+vUser = obj.variableIndices(variables, true, header);
 
 % Get the full set of coupled variables
-[~, col] = find(obj.coupled(uv,:));
-av = unique(col);
+[~, col] = find(obj.coupled(vUser,:));
+vCouple = unique(col);
 
 % Update
-obj.autocouple_(av) = setting;
+obj.autocouple_(vCouple) = setting;
 
 end

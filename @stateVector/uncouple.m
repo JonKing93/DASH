@@ -28,22 +28,18 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Check user variables, get indices
-uv = obj.variableIndices(variables, true, header);
+vUser = obj.variableIndices(variables, true, header);
 
-% Get the sets of coupled variables
-coupledSets = unique(obj.coupled, 'rows');
-nSets = size(coupledSets, 1);
-
-% Cycle through the coupling sets, get linear variable indices. Count the
-% number of user-specified variables in the set.
-for s = 1:nSets
-    cv = find(coupledSets(s,:));
-    isUserVar = ismember(cv, uv);
+% Cycle through sets of coupled variables, check for user variables
+sets = obj.couplingInfo.sets;
+for s = 1:numel(sets)
+    vCoupled = sets(s).vars;
+    isUserVar = ismember(vCoupled, vUser);
 
     % If there are 2+ user variables in the set, uncouple the entire set
     % (but maintain self coupling)
     if sum(isUserVar)>1
-        obj.coupled(cv,:) = false;
+        obj.coupled(vCoupled,:) = false;
         obj.coupled(1:obj.nVariables+1:end) = true;
     end
 end
