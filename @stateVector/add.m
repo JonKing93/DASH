@@ -63,10 +63,10 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Error check the names of the new variables
-vars = dash.assert.strlist(variableNames, 'variableNames', header);
-vars = vars(:);
-obj.assertValidNames(vars, header);
-nVariables = numel(vars);
+varNames = dash.assert.strlist(variableNames, 'variableNames', header);
+varNames = varNames(:);
+obj.assertValidNames(varNames, header);
+nVariables = numel(varNames);
 
 % Default, error check autocoupling options
 if ~exist('autocouple','var') || isempty(autocouple)
@@ -77,22 +77,24 @@ autocouple = dash.parse.switches(autocouple, offOn, nVariables, ...
     'autocouple', 'recognized auto-coupling option', header);
 
 % Parse and build gridfiles. Informative error if failed
-[grids, gridIndices, failed, cause] = obj.parseGrids(grids, nVariables, header);
+[grids, failed, cause] = obj.parseGrids(grids, nVariables, header);
 if failed
-    gridfileFailedError(obj, vars, failed, cause);
+    gridfileFailedError(obj, varNames, failed, cause, header);
 end
 
 % Require each gridfile to have dimensions
-for g = 1:numel(grids)
-    if isempty(grids(g).dimensions)
-        noDimensionsError(obj, vars, g, grids, header);
+for g = 1:numel(grids.gridfiles)
+    grid = grids.gridfiles(g);
+    if isempty(grid.dimensions)
+        noDimensionsError(obj, varNames, grids, g, header);
     end
 end
 
 % Build each new state vector variable
 for v = 1:nVariables
-    g = gridIndices(v);
-    newVariable = dash.stateVectorVariable(grids(g));
+    g = grids.whichGrid(v);
+    grid = grids.gridfiles(g);
+    newVariable = dash.stateVectorVariable(grid);
 
     % Add to the state vector
     obj.variables_ = [obj.variables_; newVariable];
@@ -101,7 +103,7 @@ end
 
 % Update variable properties
 v = obj.nVariables + (1:nVariables);
-obj.variableNames(v) = vars;
+obj.variableNames(v) = varNames;
 obj.allowOverlap(v) = false;
 obj.nVariables = v(end);
 
@@ -132,20 +134,21 @@ end
 end
 
 % Errors
-function[] = noDimensionsError(obj, vars, g, grids, header)
-var = vars(g);
-grid = grids(g);
+function[] = noDimensionsError(obj, varNames, grids, g, header)
+v = find(grids.whichGrid==g,1);
+var = varNames(v);
+grid = grids.gridfiles(g);
 id = sprintf('%s:noDimensionsInGridfile', header);
 ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
     'for the variable (%s) has no dimensions.\n\ngridfile: %s'], ...
     var, obj.name, grid.name, grid.file);
 throwAsCaller(ME);
 end
-function[] = gridfileFailedError(obj, vars, g, cause)
+function[] = gridfileFailedError(obj, vars, g, cause, header)
 
 % Supplement failed build
 var = vars(g);
-id = cause.identifier;
+id = sprintf('%s:gridfileFailed', header);
 ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
     'for the variable failed.'], ...
     var, obj.name);

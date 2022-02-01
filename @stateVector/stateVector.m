@@ -71,9 +71,6 @@ classdef stateVector
 
     methods
 
-        %%% Trial methods
-        info = couplingInfo(obj);
-
         % General settings
         varargout = label(obj, label);
         name = name(obj);
@@ -86,6 +83,7 @@ classdef stateVector
         v = variableIndices(obj, variables, allowRepeats, header);
 
         % Gridfiles
+        [failed, cause] = validateGrids(obj, grids, vars);
         obj = relocate(obj, variables, grids);
 
         % Variable names
@@ -102,6 +100,7 @@ classdef stateVector
         obj = uncouple(obj, variables);
         obj = autocouple(obj, variables, setting);
         [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
+        info = couplingInfo(obj);
 
         % Design parameters
         obj = design(obj, variables, dimensions, types, indices);
@@ -112,9 +111,9 @@ classdef stateVector
         obj = editVariables(obj, vars, d, method, inputs, task);
 
         % Vector workflow
-        obj = extract(obj, variables);
-        obj = append(obj, vector2, responseToRepeats)
-        copy;
+%         obj = extract(obj, variables);
+%         obj = append(obj, vector2, responseToRepeats)
+%         copy;
 
         % Build
         build;
@@ -131,7 +130,8 @@ classdef stateVector
     end
 
     methods (Static)
-        [grids, gridIndices, failed, cause] = parseGrids(grids, nVariables, header);
+        [grids, failed, cause] = parseGrids(grids, nVariables, header);
+        [grids, failed, cause] = buildGrids(files, nVariables);
     end
 
     % Constructor

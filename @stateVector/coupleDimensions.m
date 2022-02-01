@@ -6,7 +6,21 @@ function[obj, failed, cause] = coupleDimensions(obj, t, vars, header)
 %   variable. If unsuccessful, indicates that the operation failed and
 %   returns the cause of the failure.
 % ----------
-% ? maybe use uv instead of t to improve error messages
+%   Inputs:
+%       t (scalar, linear index): The index of the template variable
+%       vars (vector, linear indices): The indices of the variables whose
+%           dimensions should be coupled to the template variable
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       obj (scalar stateVector object): The state vector updated with the
+%           coupled dimensions
+%       failed (0 | scalar linear index): Set to 0 if the state vector
+%           updated successfully. If unsuccessful returns the index of the
+%           variable that failed
+%       cause (scalar MException): The cause of the failed update
+%
+% <a href="matlab: dash.doc('stateVector.coupleDimensions')">Documentation Page</a>
 
 % Initialize error handling
 failed = 0;

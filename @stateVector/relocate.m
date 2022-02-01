@@ -9,58 +9,48 @@ obj.assertEditable;
 vars = obj.variableIndices(variables, false, header);
 nVariables = numel(vars);
 
-% Parse and build gridfiles. 
-[grids, gridIndices, failed, cause] = obj.parseGrids(grids, nVariables, header);
+% Parse and build gridfiles
+[grids, failed, cause] = obj.parseGrids(grids, nVariables, header);
 if failed
-    gridfileFailedError(obj, vars, failed, cause);
+    gridfileFailedError(obj, vars, g, cause, header);
 end
 
-% Cycle through variables.
-for k = 1:nVariables
-    v = vars(k);
-    g = gridIndices(k);
-
-    % Validate new grid
-    [isvalid, cause] = obj.variables_(v).validateGrid(grids(g));
-    if ~isvalid
-        invalidReplacementError(obj, vars, g, grids, cause);
-    end
-
-    % Update file
-    obj.gridfiles(v) = grids{g}.file;
+% Validate grids against values recorded in variables
+[failed, cause] = obj.validateGrids(grids, vars, header);
+if failed
+    invalidReplacementError(failed, grids, g, cause, header);
 end
+
+% Update file paths
+files = [grids.gridfiles.file];
+obj.gridfiles(vars) = files(grids.whichGrid);
 
 end
 
 % Errors
-function[] = gridfileFailedError(obj, vars, g, cause)
+function[] = gridfileFailedError(obj, vars, g, cause, header)
 v = vars(g);
 var = obj.variables(v);
 vector = '';
 if ~strcmp(obj.label,"")
     vector = sprintf(' in %s', obj.name);
 end
-id = cause.identifier;
+id = sprintf('%s:gridfileFailed', header);
 ME = MException(id, ['Could not relocate the "%s" variable%s because the ',...
     'new gridfile for the variable failed.'], var, vector);
 ME = addCause(ME, cause);
 throwAsCaller(ME);
 end
-function[] = invalidReplacementError(obj, vars, g, grids, cause)
-if ~contains(cause.identifier, 'DASH')
-    rethrow(cause);
-end
-
-v = vars(g);
+function[] = invalidReplacementError(obj, v, grids, g, cause, header)
 var = obj.variables(v);
-grid = grids(g);
+grid = grids.gridfiles(g);
 vector = '';
 if ~strcmp(obj.label,"")
     vector = sprintf(' in %s', obj.name);
 end
 badname = dash.string.elementName(g, 'New gridfile', numel(grids));
 
-id = cause.identifier;
+id = sprintf('%s:invalidReplacement', header);
 ME = MException(id, ['%s (%s) cannot be used for the "%s" variable%s.',...
     '\n\nNew gridfile: %s\nOld gridfile: %s'], badname, grid.name, ...
     var, vector, grid.file, obj.gridfiles(v));
