@@ -1,41 +1,60 @@
 function[info] = couplingInfo(obj)
-%% Organize information about coupled variables
+%% stateVector.couplingInfo  Return organized information about coupled variables
+% ----------
+%   info = obj.couplingInfo
+%   Returns a struct with information about coupled variables in the
+%   current state vector
+% ----------
+%   Outputs:
+%       info (scalar struct): Information about coupling
+%           .sets (struct vector [nSets]): Information about each set of coupled variables
+%               .vars (vector, linear indices [nVariables]): The indices of
+%                       variables in a set of coupled variables
+%               .ensDims (string vector [nDimensions]): The names of the
+%                       ensemble dimensions in the coupling set
+%           .variables (struct vector [nVariables]): Coupling information for each variable
+%               .whichSet (scalar, linear index): The index of the coupling
+%                       set to which the variable belongs
+%               .dims (vector, linear indices [nDimensions]): The indices
+%                       of the ensemble dimensions in the variable
 %
+% <a href="matlab:dash.doc('stateVector.couplingInfo')">Documentation Page</a>
 
 % Get the sets of coupled variables
 coupledVars = unique(obj.coupled, 'rows', 'stable');
-nSets = numel(coupledVars);
+nSets = size(coupledVars, 1);
 
-% Preallocate
-whichSet = NaN(obj.nVariables,1);
-sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0), 'dims', NaN(0,0));
+% Preallocate sets and variables
+sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0));
 sets = repmat(sets, [nSets, 1]);
+variables = struct('whichSet', NaN, 'dims', NaN(0,1));
+variables = repmat(variables, [obj.nVariables, 1]);
 
 % Get the variables in each coupled set
 for s = 1:nSets
     vars = find(coupledVars(s,:))';
     nVars = numel(vars);
-    whichSet(vars) = s;
 
     % Get ensemble dimensions
     variable1 = obj.variables_(vars(1));
     ensDims = variable1.dimensions('ensemble');
-    nDims = numel(ensDims);
 
-    % Get dimension index of the ensemble dimensions in each coupled variable
-    dims = NaN(nVars, nDims);
-    for k = 1:nVars
-        v = vars(k);
-        dims(k,:) = obj.variables_(v).dimensionIndices(ensDims);
-    end
-
-    % Record info for each set
+    % Record information for the set
     sets(s).vars = vars;
     sets(s).ensDims = ensDims;
-    sets(s).dims = dims;
+
+    % Get dimension indices for each variable
+    for k = 1:nVars
+        v = vars(k);
+        dims = obj.variables_(v).dimensionIndices(ensDims);
+
+        % Record info for each variable
+        variables(v).whichSet = s;
+        variables(v).dims = dims;
+    end
 end
 
-% Combine with whichSet for overall information
-info = struct('whichSet', whichSet, 'sets', sets);
+% Combine sets and variables
+info = struct('sets', sets, 'variables', variables);
 
 end
