@@ -20,7 +20,7 @@ end
 
 % If not scalar, display array size and exit
 if isscalar(obj)
-    displayScalar(obj, link);
+    displayScalar(obj, link, inputname(1));
 else
     displayArray(obj, link);
 end
@@ -44,7 +44,7 @@ fprintf(info);
 disp(names);
 
 end
-function[] = displayScalar(obj, link)
+function[] = displayScalar(obj, link, name)
 
 % Link header
 fprintf('  %s with properties:\n\n', link);
@@ -119,7 +119,7 @@ end
 % Data sources
 if obj.nSource>0
     fprintf('    Data Sources: %.f\n\n', obj.nSource);
-    listLink = sprintf('<a href="matlab:%s.dispSources">data sources</a>', inputname(1));
+    listLink = sprintf('<a href="matlab:%s.dispSources">data sources</a>', name);
     fprintf('  Show %s\n\n', listLink);
 end
 
