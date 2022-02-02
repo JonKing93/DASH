@@ -292,7 +292,7 @@ for g = 1:nGrids
     if allBuilt
         if nVars > 1
             try
-                X = grids(g).loadInternal([], indices, s, dataSources, precision);
+                X = grids(g).loadInternal([], indices, s, dataSources);
 
                 % Record if successful
                 sources(g).isloaded = true;

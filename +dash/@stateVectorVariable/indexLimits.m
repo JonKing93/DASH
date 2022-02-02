@@ -23,16 +23,22 @@ function[limits] = indexLimits(obj, dims, subMembers)
 nDims = numel(obj.dims);
 limits = NaN(nDims, 2);
 
-% Cycle through dimensions. For state dimensions, use direct index limits
+% Cycle through dimensions. Get indices
 for d = 1:nDims
+    indices = obj.indices{d};
+    if isempty(indices)
+        indices = 1:obj.gridSize(d);
+    end
+
+    % For state dimensions, get direct index limits
     if obj.isState(d)
-        minIndex = min(obj.indices{d});
-        maxIndex = max(obj.indices{d});
+        minIndex = min(indices);
+        maxIndex = max(indices);
 
     % For ensemble dimensions, get the indices for the ensemble members
     else
         k = d==dims;
-        indices = obj.indices{d}(subMembers(:,k));
+        indices = indices(subMembers(:,k));
 
         % Then extract limits
         minIndex = min(indices);

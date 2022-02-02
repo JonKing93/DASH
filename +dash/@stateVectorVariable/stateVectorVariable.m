@@ -11,6 +11,7 @@ classdef stateVectorVariable
 %   ensembleSizes   - Return the sizes and names of ensemble dimensions
 %   matchMetadata   - Order reference indices so that ensemble metadata matches an ordering set
 %   removeOverlap   - Remove ensemble members that overlap previous members
+%   indexLimits     - Return limits of indices along gridfile dimensions required to load ensemble members
 %   
 %
 
@@ -73,6 +74,7 @@ methods
     [sizes, dimNames] = ensembleSizes(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
     subMembers = removeOverlap(obj, dims, subMembers);
+    limits = indexLimits(obj, dims, subMembers);
 
 end
 

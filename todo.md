@@ -19,6 +19,7 @@ STATE VECTOR
     - Add verbosity details
 3. Informational methods for variables
 4. Add precision options into build methods
+5. buildEnsemble.gridSources should handle empty sources case
 
 
 Write tests
