@@ -50,14 +50,10 @@ function[] = displayScalar(obj, link, name)
 fprintf('  %s with properties:\n\n', link);
 
 % File and dimensions list
-fileIndent = '';
-dimsList = '';
-if ~isempty(obj.dims)
-    fileIndent = '      ';
-    dims = sprintf('%s, ', obj.dims);
-    dims(end-1:end) = [];
-    dimsList = sprintf('Dimensions: %s\n', dims);
-end
+fileIndent = '      ';
+dims = sprintf('%s, ', obj.dims);
+dims(end-1:end) = [];
+dimsList = sprintf('Dimensions: %s\n', dims);
 fprintf('    %sfile: %s\n', fileIndent, obj.file);
 fprintf('    %s\n', dimsList);
 
