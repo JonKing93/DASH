@@ -8,8 +8,8 @@ classdef stateVectorVariable
 % Build:
 %   addIndices      - Propagate mean indices over sequence indices
 %   trim            - Remove reference indices that would cause an incomplete sequence or incomplete mean
+%   ensembleSizes   - Return the sizes and names of ensemble dimensions
 %   matchMetadata   - Order reference indices so that ensemble metadata matches an ordering set
-%   nMembers        - Return the number of possible ensemble members
 %   
 %
 
@@ -69,6 +69,7 @@ methods
     % Build
     indices = addIndices(obj, d);
     obj = trim(obj);
+    [sizes, dimNames] = ensembleSizes(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
 
 end
