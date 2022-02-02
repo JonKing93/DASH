@@ -37,8 +37,14 @@ for k = 1:numel(dims)
         obj.sequenceIndices{d} = 0;
         obj.sequenceMetadata{d} = [];
 
-    % Add sequence to a dimension
+    % Error check sequence indices before adding to a dimension
     else
+        [maxMagnitude, loc] = max(abs(indices{k}));
+        if maxMagnitude >= obj.gridSize(d)
+            indexMagnitudeTooLargeError(obj, d, maxMagnitude, loc, header);
+        end
+
+        % Add sequence
         obj.stateSize(d) = numel(indices{k});
         obj.sequenceIndices{d} = indices{k}(:);
         obj.sequenceMetadata{d} = metadata{k};
@@ -59,5 +65,15 @@ ME = MException(id, ...
     'ensemble dimension. Either remove "%s" from the list of sequenced\n',...
     'dimensions, or convert it to an ensemble dimension using %s.'],...
     dim, dim, dim, link);
+throwAsCaller(ME);
+end
+function[] = indexMagnitudeTooLargeError(obj, d, maxMagnitude, loc, header)
+
+id = sprintf('%s:sequenceIndexMagnitudeTooLarge', header);
+ME = MException(id, [...
+    'Cannot apply a sequence to the "%s" dimension because the\n', ...
+    'magnitude of sequence index %.f (%.f) is not smaller than\n',...
+    'the length of the dimension (%.f).'],...
+    obj.dims(d), loc, maxMagnitude, obj.gridSize(d));
 throwAsCaller(ME);
 end

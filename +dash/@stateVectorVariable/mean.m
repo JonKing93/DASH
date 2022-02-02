@@ -89,6 +89,12 @@ else
     end
     nIndices = numel(indices);
 
+    % Require index magnitude to be smaller than the dimension length
+    [maxMagnitude, loc] = max(abs(indices));
+    if maxMagnitude >= obj.gridSize(d)
+        indexMagnitudeTooLargeError(obj, d, maxMagnitude, loc, header);
+    end
+
     % Check for size conflict with weights
     if obj.meanType(d)==2 && nIndices~=obj.meanSize(d)
         weightsSizeConflictError(d, nIndices, header);
@@ -146,6 +152,15 @@ ME = MException(id, ...
     'updated the weights.'], dim, nIndices, nWeights);
 throwAsCaller(ME);
 end
+function[] = indexMagnitudeTooLargeError(obj, d, maxMagnitude, loc, header)
 
+id = sprintf('%s:meanIndexMagnitudeTooLarge', header);
+ME = MException(id, [...
+    'Cannot take a mean over the "%s" dimension because the\n', ...
+    'magnitude of mean index %.f (%.f) is not smaller than\n',...
+    'the length of the dimension (%.f).'],...
+    obj.dims(d), loc, maxMagnitude, obj.gridSize(d));
+throwAsCaller(ME);
+end
 
 
