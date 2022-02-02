@@ -29,7 +29,7 @@ dash.assert.scalarObj(obj, header);
 
 % Parse indices
 if ~exist('v','var') || isempty(v) || isequal(v,0)
-    indices = [];
+    indices = 1:obj.nVariables;
 else
     logicalLength = sprintf('one element per variable in %s', obj.name);
     linearMax = sprintf('the number of variables in %s', obj.name);

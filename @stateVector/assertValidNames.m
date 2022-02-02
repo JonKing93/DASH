@@ -28,10 +28,11 @@ inputName = dash.string.elementName(index, 'Variable name', nNames);
 link = '<a href="matlab:doc isvarname">isvarname function</a>';
 
 id = sprintf('%s:invalidVariableName', header);
-error(id, ['%s ("%s") is not a valid variable name. Valid names must: 1. begin ',...
+ME = MException(id, ['%s ("%s") is not a valid variable name. Valid names must: 1. begin ',...
     'with a letter, 2. contain only letters, numbers, and underscores, and 3. ',...
     'cannot be a MATLAB keyord. See the %s for additional details.'],...
     inputName, badName, link);
+throwAsCaller(ME);
 end
 function[] = duplicateNameError(obj, repeats, allNames, nNames, header)
 
@@ -40,6 +41,7 @@ badName = allNames(repeats(1));
 link = '<a href="matlab:dash.doc(''stateVector.rename'')">rename the existing variable</a>';
 
 id = sprintf('%s:duplicateVariableName', header);
-error(id, ['%s ("%s") is already the name of a variable in %s. ',...
+ME = MException(id, ['%s ("%s") is already the name of a variable in %s. ',...
     'Either use a different name, or %s.'], inputName, badName, obj.name, link);
+throwAsCaller(ME);
 end
