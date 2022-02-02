@@ -31,8 +31,11 @@ end
 
 % Informative error if failed
 if ~isvalid
+    if ~isscalar(name)
+        name = sprintf('Element %.f of %s', bad, name);
+    end
     id = sprintf('%s:inputNotPositiveIntegers', header);
-    error(id, 'Element %.f of %s (%f) is not a positive integer.', bad, name, X(bad));
+    error(id, '%s (%f) is not a positive integer.', name, X(bad));
 end
 
 end

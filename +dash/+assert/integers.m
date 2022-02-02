@@ -31,8 +31,11 @@ end
 
 % Informative error if not integers
 if ~isintegers
+    if ~isscalar(name)
+        name = sprintf('Element %.f of %s', bad, name);
+    end
     id = sprintf('%s:inputNotIntegers', header);
-    error(id, 'Element %.f of %s (%f) is not an integer.', bad, name, X(bad));
+    error(id, '%s (%f) is not an integer.', name, X(bad));
 end
 
 end
