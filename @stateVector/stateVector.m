@@ -101,6 +101,7 @@ classdef stateVector
         obj = autocouple(obj, variables, setting);
         [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
         info = couplingInfo(obj);
+        [names, indices] = coupledVariables(obj);
 
         % Design parameters
         obj = design(obj, variables, dimensions, types, indices);
