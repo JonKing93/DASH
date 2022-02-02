@@ -34,7 +34,7 @@ for k = 1:numel(dims)
     elseif isequal(indices, "unweighted")
         obj = disableWeights(obj, d, header);
     else
-        obj = setMean(obj, d, indices{k}, omitnan, header);
+        obj = setMean(obj, d, indices{k}, omitnan(k), header);
     end
 end
 
@@ -68,7 +68,7 @@ obj.meanType(d) = 1;
 obj.weights{d} = [];
 
 end
-function[obj] = setMean(obj, d, indices, header)
+function[obj] = setMean(obj, d, indices, omitnan, header)
 
 % State dimension - prohibit indices
 if obj.isState(d)
@@ -106,7 +106,7 @@ end
 if obj.meanType(d)==0
     obj.meanType(d) = 1;
 end
-obj.omitnan(d) = omitnan(k);
+obj.omitnan(d) = omitnan;
 
 end
 
