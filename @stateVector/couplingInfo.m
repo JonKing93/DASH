@@ -25,7 +25,7 @@ coupledVars = unique(obj.coupled, 'rows', 'stable');
 nSets = size(coupledVars, 1);
 
 % Preallocate sets and variables
-sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0));
+sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0),'indices', NaN(0,0));
 sets = repmat(sets, [nSets, 1]);
 variables = struct('whichSet', NaN, 'dims', NaN(0,1));
 variables = repmat(variables, [obj.nVariables, 1]);
@@ -35,22 +35,21 @@ for s = 1:nSets
     vars = find(coupledVars(s,:))';
     nVars = numel(vars);
 
-    % Get ensemble dimensions
+    % Get ensemble dimensions and indices
     variable1 = obj.variables_(vars(1));
     ensDims = variable1.dimensions('ensemble');
+    dims = obj.dimensionIndices(vars, ensDims);
 
     % Record information for the set
     sets(s).vars = vars;
     sets(s).ensDims = ensDims;
+    sets(s).dims = dims;
 
-    % Get dimension indices for each variable
+    % Also organize info for each variable
     for k = 1:nVars
         v = vars(k);
-        dims = obj.variables_(v).dimensionIndices(ensDims);
-
-        % Record info for each variable
         variables(v).whichSet = s;
-        variables(v).dims = dims;
+        variables(v).dims = dims(k,:);
     end
 end
 
