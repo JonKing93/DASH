@@ -17,17 +17,14 @@ STATE VECTOR
 2. Constructor documentation
     - Add link once "label" method is complete
     - Add verbosity details
+3. Informational methods for variables
+4. Add precision options into build methods
 
-3. Method to return metadata along a dimension
-    - Wrap as getter into "metadata" method
-4. Update coupled variables in design
-5. Treat variables with different dimensions
-    -For update coupled variables -- possibly ignore dimensions?
-    -Otherwise, add option to ignore dimensions in dimensionIndices, likely coupled with check that name is at least 1 dimension
-6. Should probably add getter options to all designs
-7. Informational methods for variables
-8. Update sv.metadata documentation on what the metadata is actually used for
-9. Auto couple?...
+
+Write tests
+
+Write examples
+
 
 
 FINISH GRIDFILE:

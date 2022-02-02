@@ -10,6 +10,7 @@ classdef stateVectorVariable
 %   trim            - Remove reference indices that would cause an incomplete sequence or incomplete mean
 %   ensembleSizes   - Return the sizes and names of ensemble dimensions
 %   matchMetadata   - Order reference indices so that ensemble metadata matches an ordering set
+%   removeOverlap   - Remove ensemble members that overlap previous members
 %   
 %
 
@@ -58,8 +59,8 @@ methods
     obj = mean(obj, dims, indices, omitnan, header);
     obj = weightedMean(obj, dims, weights, header);
 
-    % Gridfiles
-    metadata = getMetadata(obj, d, grid, header);
+    % Gridfile interactions
+    [metadata, failed, cause] = getMetadata(obj, d, grid, header);
     [isvalid, cause] = validateGrid(obj, grid, header);
 
     % Dimensions
@@ -71,6 +72,7 @@ methods
     obj = trim(obj);
     [sizes, dimNames] = ensembleSizes(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
+    subMembers = removeOverlap(obj, dims, subMembers);
 
 end
 
