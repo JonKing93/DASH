@@ -45,10 +45,6 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   a warning, but does not fail, when the requested number of ensemble
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
-%
-%   obj.build(..., 'precision', precision)
-%   Specify what numerical precision to use for the built state vector
-%   ensemble.
 % ----------
 %   Inputs:
 %       nMembers (scalar positive integer | 'all'): The number of ensemble
@@ -97,28 +93,25 @@ if ~obj.iseditable
 end
 
 % Error check members
-if dash.is.string(nMembers)
-    nMembers = string(nMembers);
-end
-dash.assert.scalarType(nMembers, ["string","numeric"], 'nMembers', header);
 if isnumeric(nMembers)
-    dash.assert.positiveIntegers(nMembers, 'Since it is numeric, nMembers', header);
-elseif ~strcmp(nMembers, "all")
+    dash.assert.scalarType(nMembers, [], 'nMembers', header);
+    dash.assert.positiveIntegers(nMembers, 'nMembers', header);
+elseif ~strcmp(nMembers, 'all')
     id = sprintf("%s:invalidMembers", header);
     error(id, 'nMembers must either be a scalar positive integer, or "all".');
 end
 
 % Parse the other variables
-flags =    ["sequential","file","overwrite","showprogress"];
-defaults = {    false,        [],     false,        false    };
-[sequential, filename, overwrite, showprogress] = dash.parse.nameValue(...
+flags =    ["sequential","strict","file","overwrite","showprogress"];
+defaults = {    false,     true,    [],     false,        false    };
+[sequential, strict, filename, overwrite, showprogress] = dash.parse.nameValue(...
     varargin, flags, defaults, 1, header);
 
 % Error check logical switches
 dash.assert.scalarType(sequential, 'logical', 'buildSequentially', header);
+dash.assert.scalarType(strict, 'logical', 'strict', header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
 dash.assert.scalarType(showprogress, 'logical', 'showprogress', header);
-dash.assert.scalarType(strict, 'logical', 'strict', header);
 
 % Check file if writing. Get path, set extension, check overwrite
 writeFile = ~isempty(filename);
@@ -142,37 +135,39 @@ for v = 1:obj.nVariables
 end
 
 
-%% Build gridfiles
+%% Finalize reference indices
 
-% % Get the unique set of gridfiles. Note which grid is used by each variable
-% [grids, ~, whichGrid] = unique(obj.gridfiles);
-% 
-% % Build each gridfile, informative error if failed
-% [grids, failed, cause] = obj.buildGrids(grids);
-% if failed
-%     couldNotBuildGridfileError(obj, grids, whichGrid, failed, cause)
-% end
-% 
-% % Validate the grids against each variable
-% for v = 1:obj.nVariables
-%     grid = grids( whichGrid(v) );
-%     [isvalid, cause] = obj.variables_(v).validateGrid(grid);
-%     if ~isvalid
-%         invalidGridfileError(obj, v, grid, cause);
-%     end
-% end
+% Trim reference indices to only allow complete sequences and means
+for v = 1:obj.nVariables
+    obj.variables_(v) = obj.variables_(v).trim;
 
-grids = obj.buildGrids;
+    % Informative error if no members are possible
+    [siz, dims] = obj.variables_(v).ensembleSizes;
+    if any(siz==0)
+        noCompleteEnsembleMembersError(obj, v, siz, dims, header);
+    end
+end
+
+
+%% Gridfiles
+
+% Build gridfiles
+[grids, failed, cause] = obj.buildGrids(obj.gridfiles);
+if failed
+    gridfileFailedError;
+end
+
+% Check gridfiles match recorded values
+vars = 1:obj.nVariables;
+[failed, cause] = obj.validateGrids(grids, vars, header);
+if failed
+    invalidGridfileError;
+end
 
 
 %% Match metadata
 
-% Trim ensemble dimensions to only allow complete sequences and means
-for v = 1:obj.nVariables
-    obj.variables_(v) = obj.variables_(v).trim;
-end
-
-% Get coupling info
+% Get coupling sets
 coupling = obj.couplingInfo;
 nSets = numel(coupling.sets);
 
@@ -182,31 +177,32 @@ obj.subMembers = cell(nSets, 1);
 
 % Cycle through sets of coupled variables
 for s = 1:nSets
-    vars = coupling.sets(s).vars;
+    set = coupling.sets(s);
+    vars = set.vars;
     nCoupledVars = numel(vars);
-    varGrids = grids.whichGrid(vars);
 
-    % Get a reference variable and the indices of ensemble dimensions
-    variable1 = obj.variables_(vars(1));
-    ensDims = variable1.dimensions('ensemble');
-    dims = obj.dimensionIndices(v, ensDims, header);
+    % Get the gridfile for each variable
+    g = grids.whichGrid(vars);
+    varGrids = grids.gridfiles(g);
 
-    % Cycle through ensemble dimensions. Get the metadata intersect over
-    % all the coupled variables
-    for d = 1:numel(ensDims)
-        metadata = getMetadata(vars(1), dims(1,d), varGrids(1), header);
+    % Cycle through ensemble dimensions. Initialize metadata
+    dims = set.dims;
+    for d = 1:size(dims,2)
+        metadata = getMetadata(obj, vars(1), dims(1,d), varGrids(1), header);
+
+        % Get metadata intersect over all the coupled variables
         for v = 2:nCoupledVars
-            varMetadata = getMetadata(vars(v), dims(v,d), varGrids(v), ensDims(d), header);
+            varMetadata = getMetadata(obj, vars(v), dims(v,d), varGrids(v), header);
             try
                 metadata = intersect(metadata, varMetadata, 'rows', 'stable');
             catch
                 incompatibleMetadataFormatsError(...
-                    obj, vars, v, ensDims(d), metadata, varMetadata, header);
+                    obj, vars, v, set.ensDims(d), metadata, varMetadata, header);
             end
 
             % Throw error if there is no overlapping metadata
             if isempty(metadata)
-                noMatchingMetadataError(obj, vars, ensDims(d), header);
+                noMatchingMetadataError(obj, vars, set.ensDims(d), header);
             end
         end
 
@@ -224,11 +220,12 @@ for s = 1:nSets
     end
 
     % Initialize the unused ensemble members
-    nUnused = obj.variables_(vars(1)).nMembers;
+    ensSize = obj.variables_(vars(1)).ensembleSizes;
+    nInitial = prod(ensSize);
     if sequential
-        unused = (1:nUnused)';
+        unused = (1:nInitial)';
     else
-        unused = randperm(nUnused)';
+        unused = randperm(nInitial)';
     end
     obj.unused{s} = unused;
 end
@@ -246,8 +243,8 @@ if writeFile
 end
 
 % Build the ensemble.
-obj.editable = false;
-[X, meta, obj] = obj.buildEnsemble(nMembers, strict, grids, whichGrid, ens, showprogress);
+obj.iseditable = false;
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, showprogress);
 
 % If writing, optionally return output array
 if writeFile
@@ -268,7 +265,7 @@ end
 
 
 % Utility functions
-function[metadata] = getMetadata(obj, v, d, grid, dim, header)
+function[metadata] = getMetadata(obj, v, d, grid, header)
 
 % Get the metadata for the dimension
 variable = obj.variables_(v);
@@ -276,6 +273,7 @@ variable = obj.variables_(v);
 
 % Informative error if failed
 if failed
+    dim = variable.dimensions(d);
     ME = couldNotLoadMetadataError(obj, v, dim, grid, cause);
     throwAsCaller(ME);
 end
@@ -313,11 +311,33 @@ function[] = noEnsembleDimensionsError(obj, v, header)
 link = '<a href="matlab:dash.doc(''stateVector.design'')">stateVector.design</a>';
 var = obj.variables(v);
 id = sprintf('%s:noEnsembleDimensions', header);
-ME = MException(id, ['You cannot build an ensemble for %s because the "%s" variable ',...
+ME = MException(id, ['Cannot build an ensemble for %s because the "%s" variable ',...
     'does not have any ensemble dimensions. See %s to set ensemble dimensions ',...
     'for the variable.'], obj.name, var, link);
 throwAsCaller(ME);
 end
+function[] = noCompleteEnsembleMembersError(obj, v, siz, dims, header)
+
+mean = '<a href="matlab:dash.doc(''stateVector.mean'')">mean</a>';
+sequence = '<a href="matlab:dash.doc(''stateVector.sequence'')">sequence</a>';
+design = '<a href="matlab:dash.doc(''stateVector.design'')">design</a>';
+
+var = obj.variables(v);
+bad = find(siz==0,1);
+dim = dims(bad);
+
+id = sprintf('%s:noCompleteEnsembleMembers', header);
+ME = MException(id,[...
+    'Cannot build an ensemble for %s because the "%s" variable cannot ',...
+    'complete any ensemble members along the "%s" dimension. This can occur ',...
+    'if 1. A mean or sequence index for the dimension has a very large ',...
+    'magnitude, or 2. There are very few reference indices for the dimension. ',...
+    'Consider using the %s, %s, and/or %s methods to adjust these indices.'],...
+    obj.name, var, dim, mean, sequence, design);
+throwAsCaller(ME);
+
+end
+    
 function[] = couldNotBuildGridfileError(obj, grids, whichGrid, g, cause)
 link = '<a href="matlab:dash.doc(''stateVector.relocate'')">stateVector.relocate</a>';
 id = cause.identifier;
