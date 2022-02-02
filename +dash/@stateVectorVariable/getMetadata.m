@@ -1,17 +1,37 @@
 function[metadata, failed, cause] = getMetadata(obj, d, grid, header)
-%% Returns the metadata for a dimension of a state vector variable
+%% dash.stateVectorVariable.getMetadata  Return metadata along a dimension of a state vector variable
+% ----------
+%   [metadata, failed, cause] = obj.getMetadata(d, grid, header)
+%   Returns final metadata along the indexed dimension. Selects metadata
+%   from a gridfile, user-specified alternate metadata, or from the output
+%   of a conversion function, as appropriate.
 %
+%   In some cases, the method can fail to return the metadata. This can
+%   occur if a gridfile fails to build, or if a metadata conversion
+%   function fails. In this case, the method notes the failure and returns
+%   the cause of the failure.
+% ----------
+%   Inputs:
+%       d (scalar linear index): The index of a dimension in the variable
+%       grid ([] | string scalar | scalar gridfile object): The gridfile
+%           object required to load the metadata. An empty array is
+%           permitted if the user specified alternate metadata. If grid is
+%           a string scalar, attempts to build the gridfile when gridfile
+%           metadata is required. If grid is a gridfile object, extracts
+%           metadata directly.
+%       header (string scalar): Header for thrown error IDs.
 %
-%   Throws:
-%       couldNotBuildGridfile
-%       invalidGridfile
-%       conversionFunctionFailed
-%       invalidConversion
-%       metadataSizeConflict
-%       
+%   Outputs:
+%       metadata ([] | metadata matrix): Metadata for the dimension. If the
+%           method failed to obtain the metadata, returns an empty array.
+%       failed (scalar logical): True if the method failed to return the
+%           metadata. Otherwise false
+%       cause ([] | scalar MException): The cause of the metadata failure.
+%           If the metadata was returned successfully, an empty array.
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.getMetadata')">Documentation Page</a>
 
 % Initialize output for error handling
-metadata = [];
 failed = false;
 cause = [];
 
@@ -26,14 +46,14 @@ if dash.is.strflag(grid)
     try
         grid = gridfile(grid);
     catch ME
-        [failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
+        [metadata, failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
         return
     end
 
     % Validate the gridfile object
     [isvalid, cause] = obj.validateGrid(grid, header);
     if ~isvalid
-        [failed, cause] = labelError(cause, 'invalidGridfile', header);
+        [metadata, failed, cause] = labelError(cause, 'invalidGridfile', header);
         return
     end
 end
@@ -51,7 +71,7 @@ end
 try
     metadata = obj.convertFunction{d}(metadata, obj.convertArgs{d}{:});
 catch ME
-    [failed, cause] = labelError(ME, 'conversionFunctionFailed', header);
+    [metadata, failed, cause] = labelError(ME, 'conversionFunctionFailed', header);
     return
 end
 
@@ -61,7 +81,7 @@ try
     metadata.assertUnique(dim, header);
     metadata = metadata.(dim);
 catch ME
-    [failed, cause] = labelError(ME, 'invalidConversion', header);
+    [metadata, failed, cause] = labelError(ME, 'invalidConversion', header);
     return
 end
 
@@ -69,13 +89,14 @@ end
 nRows = size(metadata, 1);
 if nRows ~= obj.ensSize(d)
     ME = metadataSizeConflict(obj, d, nRows, header);
-    [failed, cause] = labelError(ME, 'metadataSizeConflict', header);
+    [metadata, failed, cause] = labelError(ME, 'metadataSizeConflict', header);
 end
 
 end
 
 % Error messages
-function[failed, ME] = labelError(cause, label, header)
+function[metadata, failed, ME] = labelError(cause, label, header)
+metadata = [];
 failed = true;
 id = sprintf('%s:%s', header, label);
 ME = MException(id, '');
