@@ -48,12 +48,14 @@ elseif ~ismatrix(meta)
     error(id, '%s is not a matrix', name);
     
 % Illegal elements
-elseif isnumeric(meta) && any(isnan(meta(:)))
+elseif isnumeric(meta) && any(isnan(meta),'all')
+    bad = find(isnan(meta),1);
     id = sprintf('%s:metadataHasNaN', idHeader);
-    error(id, '%s contains NaN elements.', name);
-elseif isdatetime(meta) && any(isnat(meta(:)))
+    error(id, '%s contains NaN elements. (Element %.f is NaN).', name, bad);
+elseif isdatetime(meta) && any(isnat(meta),'all')
+    bad = find(isnat(meta),1);
     id = sprintf('%s:metadataHasNaT', idHeader);
-    error(id, '%s contains NaT elements.', name);
+    error(id, '%s contains NaT elements. (Element %.f is NaT).', name, bad);
 end
 
 % Convert cellstring to string
