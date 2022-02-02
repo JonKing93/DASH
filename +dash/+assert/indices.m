@@ -76,12 +76,12 @@ if islogical(indices)
         
 % Numeric indices
 else
-    if ~dash.is.positiveIntegers(indices)
+    [isvalid, bad] = dash.is.positiveIntegers(indices);
+    if ~isvalid
         id = sprintf('%s:invalidLinearIndices', header);
-        bad = find(indices<1 | mod(indices,1)~=0, 1);
         error(id, ['%s is a numeric vector, so it must consist of linear ',...
-            'indices (positive integers). However, element %.f is not a ',...
-            'positive integer.'], name, bad);
+            'indices (positive integers). However, element %.f (%f) is not a ',...
+            'positive integer.'], name, bad, indices(bad));
     end
     
     [maxIndex, loc] = max(indices);

@@ -9,7 +9,7 @@
 %   consistent internal handling of different input types.
 % ----------
 % Strings:
-%   strflag         - Throw error if input is not a string flag.
+%   strflag         - Throw error if input is not a string scalar, cellstring scalar, or character row vector
 %   strlist         - Throw error if input is not a string vector, cellstring vector, or char row vector
 %   strsInList      - Throw error if strings are not in a list of allowed strings
 %
@@ -19,15 +19,20 @@
 %   scalarObj       - Throw error if method object is not scalar
 %   vectorTypeN     - Throw error if input is not a vector of required data type and length
 %
+% Numeric:
+%   integers        - Throw error if numeric array does not consist entirely of integers
+%   positiveIntegers    - Throw error if numeric array does not consist entirely of positive integers
+%   defined             - Throw error if numeric array contains NaN, Inf, or complex values
+%
 % Indices:
 %   indices         - Throw error if inputs are neither logical indices nor linear indices
 %   indexCollection - Throw error if input is not a collection of indices
+%   additiveIndexCollection   - Throw error if input is not a collection of additive indices
 %
 % Misc:
 %   fileExists      - Throw error if a file does not exist
 %   nameValue       - Throw error if inputs are not Name,Value pairs
 %   uniqueSet       - Throw error if vector has repeated values
-%   logicalSwitches - Throw error if input is neither a scalar logical, nor a logical vector
 %
 % Unit tests:
 %   tests           - Unit testing for the dash.assert subpackage
