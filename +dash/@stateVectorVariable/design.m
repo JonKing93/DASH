@@ -34,9 +34,9 @@ for k = 1:numel(dims)
 
     % Update the dimension
     if isstate(k)
-        stateDimension(obj, d, indices{k}, header);
+        obj = stateDimension(obj, d, indices{k}, header);
     else
-        ensembleDimension(obj, d, indices{k}, header);
+        obj = ensembleDimension(obj, d, indices{k}, header);
     end
 end
 

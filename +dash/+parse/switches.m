@@ -15,6 +15,11 @@ if ~exist('header','var') || isempty(header)
     header = "DASH:assert:switches";
 end
 
+% Convert strings
+if dash.is.string(input)
+    input = string(input);
+end
+
 % Check size
 if isequal(nSwitches,1)
     dash.assert.scalarType(input, [], name, header);
