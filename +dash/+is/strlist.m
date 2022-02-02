@@ -14,10 +14,9 @@ function[tf] = strlist( input )
 %
 %   <a href="matlab:dash.doc('dash.is.strlist')">Documentation Page</a>
 
-if isvector(input) && ( (ischar(input) && isrow(input)) || isstring(input) || iscellstr(input) )
+tf = false;
+if (isvector(input) && dash.is.str(input)) || dash.is.charrow(input)
     tf = true;
-else
-    tf = false;
 end
 
 end

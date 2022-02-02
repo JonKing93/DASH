@@ -1,8 +1,10 @@
 function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
+%% Selects new ensemble members
 %
 %   Inputs:
-%       nMembers ('all' | scalar positive integer)
-%       strict (scalar logical)
+%       nMembers ('all' | scalar positive integer): The number of new
+%           members to select
+%       strict (scalar logical): 
 %       coupling (scalar struct)
 %           .sets (struct vector [nSets])
 %               .vars: Variable indices
@@ -26,10 +28,10 @@ for s = 1:nSets
 
     % Get size of ensemble dimensions
     variable1 = obj.variables_(vars(1));
-    ensSize = variable1.sizes(set.dims(1,:));
+    ensSize = variable1.sizes(set.ensDims);
 
     % Initialize indices for dimensionally-subscripted ensemble members
-    nDims = size(set.dims, 2);
+    nDims = numel(set.ensDims);
     subIndices = cell(1, nDims);
 
     % Initialize ensemble member selection
@@ -70,7 +72,8 @@ for s = 1:nSets
             v = vars(k);
             if ~obj.allowOverlap(v)
                 variable = obj.variables_(v);
-                subMembers = variable.removeOverlap(set.dims(k,:), subMembers);
+                dims = coupling.variables(v).dims;
+                subMembers = variable.removeOverlap(dims, subMembers);
             end
         end
         

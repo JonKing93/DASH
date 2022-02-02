@@ -12,10 +12,9 @@ function[tf] = strflag(input)
 %
 %    <a href="matlab: dash.doc('dash.is.strflag')">Documentation Page</a>
 
-if (ischar(input) && isrow(input)) || (isstring(input) && isscalar(input))
+tf = false;
+if (isscalar(input) && dash.is.str(input)) || dash.is.charrow(input)
     tf = true;
-else
-    tf = false;
 end
 
 end

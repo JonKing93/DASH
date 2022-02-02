@@ -1,8 +1,18 @@
-%% dash.is  Functions that test th data type of inputs
+%% dash.is  Functions that test if inputs meet a condition
 % ----------
 % Strings:
+%   charrow
+%   str
+%   string
 %   strflag          - True for string scalar or char row vector.
 %   strlist          - True for a string vector, cellstring vector, or character row vector
+%
+% Numeric:
+%   integers
+%   postiveIntegers
+%   defined
+%   real
+%   finite
 %
 % Misc:
 %   url              - True if string begins with http:// or https://

@@ -83,7 +83,7 @@ classdef stateVector
         v = variableIndices(obj, variables, allowRepeats, header);
 
         % Gridfiles
-        [failed, cause] = validateGrids(obj, grids, vars);
+        [failed, cause] = validateGrids(obj, grids, vars, header);
         obj = relocate(obj, variables, grids);
 
         % Variable names
@@ -116,7 +116,7 @@ classdef stateVector
 %         copy;
 
         % Build
-        build;
+        [X, meta, obj] = build(obj, nMembers, varargin);
         addMembers;
 
         % Serialize

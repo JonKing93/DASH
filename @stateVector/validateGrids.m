@@ -15,6 +15,7 @@ function[failed, cause] = validateGrids(obj, grids, vars, header)
 %               variable. Indices are on the interval 1:nGrids
 %       vars (vector, linear indices [nVariables]): The index of the variables
 %           for the gridfile objects within the set of state vector variables
+%       header (string scalar): Header for thrown error IDs
 %
 %   Outputs:
 %       failed (0 | scalar linear index): Set to 0 if the gridfile objects
