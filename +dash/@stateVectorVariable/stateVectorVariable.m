@@ -1,5 +1,17 @@
 classdef stateVectorVariable
 %% stateVectorVariable  Design a variable in a state vector
+%
+%
+%
+%
+%
+% Build:
+%   addIndices      - Propagate mean indices over sequence indices
+%   trim            - Remove reference indices that would cause an incomplete sequence or incomplete mean
+%   matchMetadata   - Order reference indices so that ensemble metadata matches an ordering set
+%   nMembers        - Return the number of possible ensemble members
+%   
+%
 
 properties
 
@@ -46,9 +58,19 @@ methods
     obj = mean(obj, dims, indices, omitnan, header);
     obj = weightedMean(obj, dims, weights, header);
 
-    % Misc
+    % Gridfiles
     metadata = getMetadata(obj, d, grid, header);
     [isvalid, cause] = validateGrid(obj, grid, header);
+
+    % Dimensions
+    dimensions = dimensions(obj, type);
+    d = dimensionIndices(obj, dimensions);
+
+    % Build
+    indices = addIndices(obj, d);
+    obj = trim(obj);
+    obj = matchMetadata(obj, dims, metadata, grid);
+
 end
 
 
