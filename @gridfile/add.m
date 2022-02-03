@@ -108,7 +108,7 @@ metadata.assertUnique([], header);
 
 % Check dimensions are recognized
 valid = gridMetadata.dimensions;
-dimensions = dash.assert.strlist(dimensions);
+dimensions = dash.assert.strlist(dimensions, 'dimensions');
 dash.assert.strsInList(dimensions, valid, 'Dimension name', 'recognized dimension', header);
 
 % Require:

@@ -17,6 +17,8 @@ function[obj] = new(filename, metadata, overwrite)
 %       metadata (gridMetadata object): Metadata for the gridded dataset.
 %           Metadata rows must be unique for each dimension.
 %           If the metadata has a set dimension order, the order will be ignored.
+%           The metadata object must have at least one dimension with
+%           metadata (at least 1 defined dimension).
 %       overwrite (scalar logical): Whether to overwrite existing files
 %           (true) or not (false). Default is false.
 %
@@ -41,6 +43,11 @@ filename = dash.file.new(filename, ".grid", overwrite, header);
 dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
 metadata.assertUnique([], header);
 metadata = metadata.setOrder(0);
+if numel(metadata.defined)==0
+    id = sprintf('%s:metadataHasNoDimensions', header);
+    error(id, ['The metadata has no dimensions. The gridMetadata object for a new ',...
+        'gridfile must have at least 1 dimension with metadata.']);
+end
 
 % Initialize empty gridfile object
 obj = gridfile;
