@@ -18,8 +18,11 @@ STATE VECTOR
     - Add link once "label" method is complete
     - Add verbosity details
 3. Informational methods for variables
+
 4. Add precision options into build methods
 5. buildEnsemble.gridSources should handle empty sources case
+6. Consider leaving sequence indices empty and adding a "hasSequence" marker
+7. When writing to .ens file, make first output the ensemble object, rather than the loaded array.
 
 
 Write tests

@@ -1,29 +1,44 @@
 function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress)
 %% 
 
-% Select the new ensemble members:
+%% Select the new ensemble members:
 % 1. Select members and remove overlap
 % 2. Record saved / unused members in the state vector object
 % 3. Note the number of new members
 [obj, nMembers] = selectMembers(obj, nMembers, strict, coupling);
 
-% gridfile data sources:
+
+%% gridfile data sources:
 % 1. Check data sources can be loaded for required data
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
 [sources, loadAllMembers] = gridSources(obj, nMembers, grids, coupling);
 
-% Variable build-parameters:
-% 1. Size of loaded ensemble members (accounting for sequence elements)
-% 2. Location of dimensions with means
-% 3. Whether variables can load all ensemble members simultaneously
+
+%% Variable build-parameters
+
+% Get build parameters for each variable
 parameters = cell(obj.nVariables, 1);
 for v = 1:obj.nVariables
-    parameters{v} = obj.variables_(v).parametersForBuild(loadAllMembers(v));
+    parameters{v} = obj.variables_(v).parametersForBuild;
 end
 parameters = [parameters{:}]';
 
-% Check single ensemble members are not too large
+% Get the limits of each variable in the state vector
+nState = [parameters.nState];
+limits = dash.indices.limits(nState);
+
+% Add vector values to variable parameters
+for v = 1:obj.nVariables
+    parameters(v).limits = limits(v,:);
+    parameters(v).loadAllMembers = loadAllMembers(v);
+    parameters(v).whichSet = coupling.variables(v).whichSet;
+end
+
+
+%% Load / write
+
+% Check single ensemble members can fit in memory
 try
     for v = 1:obj.nVariables
         siz = [parameters(v).loadedSize, 1, 1];
@@ -36,7 +51,7 @@ end
 % Load ensemble directly
 metadata = ensembleMetadata(obj);
 if isempty(ens)
-    X = loadEnsemble(obj, nMembers, grids, coupling, parameters);
+    X = loadEnsemble(obj, nMembers, grids, sources, parameters);
 
 % Or write to file
 else
@@ -48,7 +63,7 @@ end
 
 end
 
-% Utility functions
+% Sub-functions
 function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
 %% Selects new ensemble members
 % ----------
@@ -134,7 +149,7 @@ for s = 1:nSets
         newMembers = cell2mat(subIndices);
         subMembers = cat(1, subMembers, newMembers);
 
-        % Remove overlapping ensemble members from variables that do no
+        % Remove overlapping ensemble members from variables that do not
         % allow overlap. (Remove new members when overlap occurs)
         for k = 1:numel(vars)
             v = vars(k);
@@ -344,6 +359,101 @@ for g = 1:nGrids
 end
 
 end
+function[X] = loadEnsemble(obj, nMembers, grids, sources, parameters, header)
+%% Load an entire state vector ensemble directly into memory
+% ----------
+%   Attempts to load all new ensemble members of all variables directly
+%   into memory. Throws an error if unsuccessful.
+% ----------
+%   Inputs:
+%       nMembers (scalar positive integer): The number of new ensemble
+%           members to load
+%       grids (scalar struct): Gridfiles and whichGrid
+%       sources (scalar struct): Gridfile data sources
+%       parameters (struct vector [nVariables]): Build parameters for each variable
+%
+%   Outputs:
+%       X (numeric matrix [nState x nMembers]): The loaded state vector ensemble
+
+% Select all variables and all new members
+vLimit = [1, obj.nVariables];
+nTotal = size(obj.subMembers{1},1);
+members = nTotal-nMembers+1:nTotal;
+
+% Load everything
+try
+    X = load(vLimit, members, grids, sources, parameters, header);
+
+% Suggest using .ens file if too large to load directly
+catch ME
+    if contains(ME, 'arrayTooLarge')
+        tooLargeToLoadError(obj, header);
+    else
+        rethrow(ME);
+    end
+end
+
+end
+function[X] = load(vLimit, members, grids, sources, parameters, header)
+%% Loads indicated ensemble members for a continuous set of variables in a state vector
+%
+% Inputs:
+%   vLimit (vector, linear indices [2]): The index limits of the continuous
+%       set of variables that should be loaded
+%   members (vector, linear indices): The indices of the ensemble members
+%       that should be loaded.
+%   grids (scalar struct): Gridfiles and whichGrid
+%   sources (struct vector [nGrids]): Gridfile data sources
+%   parameters (struct vector [nVariables]): Build parameters for the
+%       variables being loaded.
+%
+% Outputs:
+%   X (numeric matrix [nState x nMembers]): The loaded ensemble members
+
+% Get limits of each variable in the loaded set
+nState = [parameters.nState];
+limits = dash.indices.limits(nState);
+
+% Preallocate Tag error if too large
+nRows = sum(nState);
+nMembers = numel(members);
+try
+    X = NaN(nRows, nMembers);
+catch
+    id = sprintf('DASH:arrayTooLarge', header);
+    error(id, '');
+end
+
+% Cycle through contiguous variables
+vars = vLimit(1):vLimit(2);
+for k = 1:numel(vars)
+    v = vars(k);
+
+    % Get the gridfile and sources for each variable
+    g = grids.whichGrid(v);
+    grid = grids.gridfiles(g);
+    source = sources(g);
+
+    % Load ensemble members for each set
+    rows = limits(k,1):limits(k,2);
+    s = parameters(k).whichSet;
+    subMembers = obj.subMembers{s}(members,:);
+    X(rows,:) = obj.variables_(v).loadMembers(...
+        subMembers, grid, source, parameters(k));
+end
+
+end
+
+
+
+
+
+
+
+
+
+
+
 
 % Error messages
 function[] = notEnoughMembersError(obj, vars, nMembers, nNew, nRemaining, header)
@@ -417,4 +527,21 @@ ME = addCause(ME, cause);
 throwAsCaller(ME);
 
 end
+function[] = tooLargeToLoadError(obj)
 
+vector = '';
+if ~strcmp(obj.label,"")
+    vector = sprintf('for %s ', obj.name);
+end
+
+design = '<a href="matlab:dash.doc(''stateVector.design'')">stateVector.design</a>';
+
+id = sprintf('%s:ensembleTooLargeToLoad', header);
+ME = MException(id, ['The state vector ensemble %sis too large to be loaded into ',...
+    'active memory, so cannot be returned directly as output. Consider ',...
+    '1. Using the "file" option to save the ensemble to a .ens file instead, ',...
+    '2. Building fewer ensemble members, or 3. Using %s to select fewer ',...
+    'state vector elements.'],...
+    vector, design);
+throwAsCaller(ME);
+end

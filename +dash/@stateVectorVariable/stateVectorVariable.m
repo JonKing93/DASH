@@ -6,12 +6,13 @@ classdef stateVectorVariable
 %
 %
 % Build:
-%   addIndices      - Propagate mean indices over sequence indices
-%   trim            - Remove reference indices that would cause an incomplete sequence or incomplete mean
-%   ensembleSizes   - Return the sizes and names of ensemble dimensions
-%   matchMetadata   - Order reference indices so that ensemble metadata matches an ordering set
-%   removeOverlap   - Remove ensemble members that overlap previous members
-%   indexLimits     - Return limits of indices along gridfile dimensions required to load ensemble members
+%   addIndices          - Propagate mean indices over sequence indices
+%   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
+%   ensembleSizes       - Return the sizes and names of ensemble dimensions
+%   matchMetadata       - Order reference indices so that ensemble metadata matches an ordering set
+%   removeOverlap       - Remove ensemble members that overlap previous members
+%   indexLimits         - Return limits of indices along gridfile dimensions required to load ensemble members
+%   parametersForBuild  - Return parameters used for building ensemble members
 %   
 %
 
@@ -75,6 +76,7 @@ methods
     obj = matchMetadata(obj, dims, metadata, grid);
     subMembers = removeOverlap(obj, dims, subMembers);
     limits = indexLimits(obj, dims, subMembers);
+    parameters = parametersForBuild(obj);
 
 end
 
