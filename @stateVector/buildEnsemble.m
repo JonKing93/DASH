@@ -386,11 +386,10 @@ try
 
 % Suggest using .ens file if too large to load directly
 catch ME
-    if contains(ME, 'arrayTooLarge')
-        tooLargeToLoadError(obj, header);
-    else
+    if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
         rethrow(ME);
     end
+    tooLargeToLoadError(obj, header);
 end
 
 end
@@ -420,7 +419,7 @@ nMembers = numel(members);
 try
     X = NaN(nRows, nMembers);
 catch
-    id = sprintf('DASH:arrayTooLarge', header);
+    id = 'DASH:stateVector:buildEnsemble:arrayTooBig';
     error(id, '');
 end
 
