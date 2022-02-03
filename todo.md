@@ -23,6 +23,21 @@ STATE VECTOR
 5. buildEnsemble.gridSources should handle empty sources case
 6. Consider leaving sequence indices empty and adding a "hasSequence" marker
 7. When writing to .ens file, make first output the ensemble object, rather than the loaded array.
+8. Restore removed ensemble members when a coupling set is incomplete
+9. Should state and reference indices be a unique set?
+    -No, that way the user can use a custom order when building sequentially
+
+
+**
+Need to design loadIndices
+Can directly copy state indices. No need to bother with index limits
+Ensemble dimensions are the only time you need to bother with index limits
+    And you only need index limits when loading multiple ensemble members simultaneously
+    If loading a single ensemble member, you can use (reference index + addIndices) directly
+
+--You should finished updating svv.indexLimits to reflect these needs
+**
+
 
 
 Write tests
@@ -32,6 +47,10 @@ Write examples
 
 
 FINISH GRIDFILE:
+
+1. Add handling for no dimensions case
+    - Maybe just prohibit 0 dimensions?
+    - Otherwise, need to look at grid.add and grid.loadInternal
 
 Combine dash.gridfile.indices with dash.parse.stringsOrIndices
 
