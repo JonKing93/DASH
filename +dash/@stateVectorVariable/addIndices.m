@@ -24,20 +24,7 @@ function[indices] = addIndices(obj, d)
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.addIndices')">Documentation Page</a>
 
-% Get the mean indices
-meanIndices = obj.meanIndices{d};
-if isempty(meanIndices)
-    meanIndices = 0;
-end
-
-% Get the sequence indices
-sequenceIndices = obj.sequenceIndices{d};
-if isempty(sequenceIndices)
-    sequenceIndices = 0;
-end
-
-% Propagate
-indices = meanIndices + sequenceIndices';
+indices = obj.meanIndices{d} + obj.sequenceIndices{d}';
 indices = indices(:);
 
 end

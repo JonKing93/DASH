@@ -16,11 +16,6 @@ dims = find(~obj.isState);
 for k = 1:numel(dims)
     d = dims(k);
 
-    % Use all reference indices if none are selected
-    if isempty(obj.indices{d})
-        obj.indices{d} = (1:obj.gridSize(d))';
-    end
-
     % Get maximum and minimum add indices
     addIndices = obj.addIndices(d);
     maxAdd = max(addIndices);
