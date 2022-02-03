@@ -34,7 +34,8 @@ for k = 1:numel(dims)
     % Remove sequences from a dimension
     if isempty(indices{k})
         obj.stateSize(d) = 1;
-        obj.sequenceIndices{d} = 0;
+        obj.hasSequence(d) = false;
+        obj.sequenceIndices{d} = [];
         obj.sequenceMetadata{d} = [];
 
     % Error check sequence indices before adding to a dimension
@@ -46,6 +47,7 @@ for k = 1:numel(dims)
 
         % Add sequence
         obj.stateSize(d) = numel(indices{k});
+        obj.hasSequence(d) = true;
         obj.sequenceIndices{d} = indices{k}(:);
         obj.sequenceMetadata{d} = metadata{k};
     end

@@ -69,6 +69,7 @@ end
 obj.indices{d} = indices;
 
 % Reset sequences
+obj.hasSequence(d) = false;
 obj.sequenceIndices{d} = [];
 obj.sequenceMetadata{d} = [];
 
@@ -105,11 +106,14 @@ if obj.isState(d)
     if obj.meanType(d)~=0
         noMeanIndicesError(obj, d, header);
     end
-    obj.sequenceIndices{d} = 0;
 end
 
 % Update design
-obj.stateSize(d) = numel(obj.sequenceIndices{d});
+if obj.hasSequence(d)
+    obj.stateSize(d) = numel(obj.sequenceIndices{d});
+else
+    obj.stateSize(d) = 1;
+end
 obj.ensSize(d) = newSize;
 obj.isState(d) = false;
 

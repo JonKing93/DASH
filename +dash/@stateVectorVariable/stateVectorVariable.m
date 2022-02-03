@@ -3,16 +3,18 @@ classdef stateVectorVariable
 %
 %
 %
-%
-%
-% Build:
-%   addIndices          - Propagate mean indices over sequence indices
-%   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
+% Select members:
 %   ensembleSizes       - Return the sizes and names of ensemble dimensions
+%   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
 %   matchMetadata       - Order reference indices so that ensemble metadata matches an ordering set
 %   removeOverlap       - Remove ensemble members that overlap previous members
-%   indexLimits         - Return limits of indices along gridfile dimensions required to load ensemble members
+%
+% Build members:
+%   finalize
+%   addIndices          - Propagate mean indices over sequence indices
+%   indexLimits         - Return limits of gridfile dimension indices required to load ensemble members
 %   parametersForBuild  - Return parameters used for building ensemble members
+%   buildMembers        - Build a set of ensemble ensemble
 %   
 %
 
@@ -32,6 +34,7 @@ properties
 
     %% Sequences
 
+    hasSequence = false(1,0);       % Whether a dimension has a sequence
     sequenceIndices = cell(1,0);    % Sequence indices for ensemble dimensions
     sequenceMetadata = cell(1,0);   % Sequence metadata for each dimension
 
@@ -70,12 +73,13 @@ methods
     d = dimensionIndices(obj, dimensions);
 
     % Build
+    obj = finalize(obj);
     indices = addIndices(obj, d);
     obj = trim(obj);
     [sizes, dimNames] = ensembleSizes(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
     subMembers = removeOverlap(obj, dims, subMembers);
-    limits = indexLimits(obj, dims, subMembers);
+    limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
 
 end
@@ -110,6 +114,7 @@ methods
     obj.stateSize = obj.gridSize;   % state dimension size is grid size
     obj.ensSize = ones(1, nDims);   % ens size of state dimensions is 1
 
+    obj.hasSequence = false(1, nDims);
     obj.sequenceIndices = cell(1, nDims);
     obj.sequenceMetadata = cell(1, nDims);
 
