@@ -33,7 +33,9 @@ function[dataSources, failed, causes] = buildSources(obj, s, fatal, filepaths)
 %           fatal, the elements for failed sources are empty arrays.
 %       failed (false | scalar integer | logical vector [nSources]): Indicates whether any data
 %           sources failed. If fatal, failed is false or the index of the failed source. If not
-%           fatal, failed is a logical vector with one element per data source.
+%           fatal, failed is a logical vector with one element per data
+%           source. If not fatal and there are no requested data sources,
+%           then failed will be false.
 %       causes ([] | scalar MException | cell vector [nSources] {scalar MException}): 
 %           If fatal and all sources succeeded, returns an empty array. If
 %           fatal and failed, a scalar MException. If not fatal, has one
@@ -55,7 +57,7 @@ end
 % Preallocate
 nSource = numel(s);
 dataSources = cell(nSource, 1);
-failed = false(nSource, 1);
+failed = false(max(1,nSource), 1);
 causes = cell(nSource, 1);
 
 % Attempt to build each source
