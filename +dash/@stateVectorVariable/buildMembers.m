@@ -1,4 +1,4 @@
-function[X] = buildMembers(dims, subMembers, grid, source, parameters)
+function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters)
 %% dash.stateVectorVariable.buildMembers  Builds a set of ensemble members for a state vector variable
 % ----------
 %   X = obj.buildMembers(dims, subMembers, grid, source, parameters)
@@ -35,6 +35,7 @@ function[X] = buildMembers(dims, subMembers, grid, source, parameters)
 % Get sizes
 [nMembers, nEnsDims] = size(subMembers);
 nState = parameters.nState;
+nDims = numel(obj.dims);
 
 % Preallocate. Tag error if array is too large
 try
@@ -69,7 +70,7 @@ if parameters.loadAllMembers
 end
 
 
-%% Extract raw ensemble members
+%% Setup tasks
 
 % Get the add indices for each ensemble dimension
 addIndices = cell(1, nEnsDims);
@@ -77,6 +78,51 @@ for k = 1:nEnsDims
     d = dims(k);
     addIndices{k} = obj.addIndices(d);
 end
+
+% Identify standard omitnan and includenan dimensions
+includenan = obj.meanType==1 & ~obj.omitnan;
+includenan = parameters.meanDims(includenan);
+omitnan = obj.meanType==1 & obj.omitnan;
+omitnan = parameters.meanDims(omitnan);
+
+% Identify weighted omitnan and includenan dimensions
+weightinclude = obj.meanType==2 & ~obj.omitnan;
+weightinclude = parameters.meanDims(weightinclude);
+weightomit = obj.meanType==2 & obj.omitnan;
+weightomit = parameters.meanDims(weightomit);
+
+% Initialize parameters for processing weighted means.
+weightParameters = cell(1, nDims);
+wSize = parameters.rawSize;
+wSize(includenan) = 1;
+wSize(omitnan) = 1;
+wSize(weightinclude) = 1;
+
+% Cycle through dimensions with weighted means
+for d = 1:nDims
+    if obj.meanType(d)==2
+        md = parameters.meanDims(d);
+
+        % If including NaN, get weight sum for denominator
+        if ~obj.omitnan(d)
+            weightParameters{d} = sum(obj.weights{d}, 'includenan');
+
+        % If omitting NaN, get size for propagating over array. (This will
+        % also update weight size for later weighted mean omitnans).
+        else
+            wSize(md) = 1;
+            weightParameters{d} = wSize;
+        end
+
+        % Reshape weights for singleton expansion
+        nWeights = numel(obj.weights{d});
+        siz = [ones(1,md-1), nWeights, 1];
+        obj.weights{d} = reshape(obj.weights{d}, siz);
+    end
+end
+
+
+%% Extract raw ensemble members
 
 % Initialize load indices. Adjust state indices if all data was loaded.
 % (State dimension index limits are used when pre-loading data).
@@ -121,6 +167,53 @@ for m = 1:nMembers
 
     %% Process ensemble member
 
+    % Separate means from sequences
+    Xm = reshape(Xm, parameters.rawSize);
 
+    % *** Notes on means ***
+    % 1. Take includenan means before omitnan means (if you took omitnan
+    %    first, there would be no NaNs to include)
+    % 2. Taking includenan first also helps minimize size of weight
+    %    propagation for weighted omitnan means
 
-    
+    % Take standard includenan means
+    if ~isempty(includenan)
+        Xm = mean(Xm, includenan, "includenan");
+    end
+
+    % Take weighted includenan
+    for k = 1:numel(weightinclude)
+        d = weightinclude(k);
+        md = parameters.meanDims(d);
+        
+        w = obj.weights{d};
+        denominator = weightParameters{d};
+        Xm = sum(w.*Xm, md, "includenan") ./ denominator;
+    end
+
+    % Take standard omitnan
+    if ~isempty(omitnan)
+        Xm = mean(Xm, omitnan, "omitnan");
+    end
+
+    % Take weighted omitnan. Only propagate over array if necessary
+    for k = 1:numel(weightomit)
+        d = weightomit(k);
+        md = parameters.meanDims(d);
+        w = obj.weights{d};
+
+        nans = isnan(Xm);
+        if any(nans, 'all')
+            siz = obj.weightParameters{d};
+            w = repmat(w, siz);
+            w(nans) = NaN;
+        end
+
+        Xm = sum(w.*Xm, md, "omitnan") ./ sum(w, md, "omitnan");
+    end
+
+    % Record state vector
+    X(:,m) = Xm(:);
+end
+
+end

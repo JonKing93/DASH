@@ -11,7 +11,7 @@ function[parameters] = parametersForBuild(obj)
 %
 %   Outputs:
 %       parameters (scalar struct):
-%           .loadedSize (vector, positive integers): The size of a raw ensemble
+%           .rawSize (vector, positive integers): The size of a raw ensemble
 %               member. This is the size of the ensemble member before any
 %               means are taken. Mean and sequence elements are separated
 %               from one another.
@@ -28,7 +28,7 @@ function[parameters] = parametersForBuild(obj)
 % Get the size of a loaded ensemble members
 meanSize = obj.meanSize;
 meanSize(isnan(meanSize)) = 1;
-loadedSize = obj.stateSize .* meanSize;
+rawSize = obj.stateSize .* meanSize;
 
 % Record location of dimensions for means
 nDims = numel(obj.dims);
@@ -37,7 +37,7 @@ meanDims = 1:nDims;
 % Adjust size and mean dimensions for multiple sequence elements
 for d = nDims:-1:1
     if ~obj.isState(d) && obj.stateSize(d)>1
-        loadedSize = [loadedSize(1:d-1), obj.meanSize(d), obj.stateSize(d), loadedSize(d+1:end)];
+        rawSize = [rawSize(1:d-1), obj.meanSize(d), obj.stateSize(d), rawSize(d+1:end)];
         meanDims(d+1:end) = meanDims(d+1:end)+1;
     end
 end
@@ -46,7 +46,7 @@ end
 nState = prod(obj.stateSize);
 
 % Organize output
-parameters = struct('loadedSize', loadedSize, 'meanDims', meanDims, ...
+parameters = struct('rawSize', rawSize, 'meanDims', meanDims, ...
     'nState', nState);
 
 end

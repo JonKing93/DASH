@@ -12,7 +12,8 @@ function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupli
 % 1. Check data sources can be loaded for required data
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
-[sources, loadAllMembers] = gridSources(obj, nMembers, grids, coupling);
+[sources, loadAllMembers, indexLimits] = ...
+                              gridSources(obj, nMembers, grids, coupling);
 
 
 %% Variable build-parameters
@@ -28,11 +29,13 @@ parameters = [parameters{:}]';
 nState = [parameters.nState];
 limits = dash.indices.limits(nState);
 
-% Add vector values to variable parameters
+% Add variable parameters that are determined by the full state vector
 for v = 1:obj.nVariables
-    parameters(v).limits = limits(v,:);
+    parameters(v).vectorLimits = limits(v,:);
+    parameters(v).indexLimits = indexLimits{v};
     parameters(v).loadAllMembers = loadAllMembers(v);
     parameters(v).whichSet = coupling.variables(v).whichSet;
+    parameters(v).dims = coupling.variables(v).dims;
 end
 
 
@@ -41,7 +44,7 @@ end
 % Check single ensemble members can fit in memory
 try
     for v = 1:obj.nVariables
-        siz = [parameters(v).loadedSize, 1, 1];
+        siz = [parameters(v).rawSize, 1, 1];
         NaN(siz);
     end
 catch ME
@@ -62,6 +65,7 @@ else
 end
 
 end
+
 
 % Sub-functions
 function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
@@ -194,11 +198,15 @@ if any(incomplete)
     incompleteEnsembleWarning(obj, vars, nMembers, nNew, header);
 end
 
-% Return the total number of new ensemble members
+% Return the total number of new ensemble members. Report this number if
+% the user selected the "all" option
 nNew = nNew(1);
+if isinf(nMembers)
+    fprintf('Building ensemble with %.f members.\n', nNew);
+end
 
 end
-function[sources, loadAllMembers] = gridSources(obj, nNew, grids, coupling)
+function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, coupling)
 %% Builds and error checks gridfile sources before loading data.
 % ----------
 % Builds gridfile dataSources required to load new members. If a gridfile
@@ -239,6 +247,9 @@ function[sources, loadAllMembers] = gridSources(obj, nNew, grids, coupling)
 %           Note that this does not guarantee that a variable *actually
 %           will* load all members at once, only that a variable should
 %           attempt the load.
+%       indexLimits (cell vector [nVariables] {index limits [nDims x 2]}):
+%           The index limits along each gridfile dimension required to load
+%           all ensemble members for a variable.
 
 % Get the indices of new ensemble members
 nMembers = size(obj.subMembers{1},1);
@@ -255,101 +266,118 @@ sources = repmat(sources, [nGrids 1]);
 
 nVars = obj.nVariables;
 loadAllMembers = false(nVars, 1);
-dims = cell(nVars, 1);
+indexLimits = cell(nVars, 1);
 
-% Cycle through gridfiles and get dimensions
+% Cycle through gridfiles. Get variables that use the file and get coupling sets
 for g = 1:nGrids
-    dimensions = grids(g).dimensions;
-    nDims = numel(dimensions);
-
-    % Find all variables that use the gridfile. Get the coupling set for
-    % each variable
     vars = find(whichGrid==g);
     nVars = numel(vars);
-    sets = [coupling.variables(vars).whichSet];
+    whichSets = [coupling.variables(vars).whichSet];
 
     % Get index limits needed to load the new ensemble members for each variable
-    limits = NaN(nDims, 2, nVars);
     for k = 1:nVars
         v = vars(k);
-        cs = sets(k);
+        cs = whichSets(k);
 
-        row = v == coupling.sets(cs).vars;
-        dims{v} = coupling.sets(cs).dims(row,:);
-        newMembers = obj.subMembers{cs}(newIndices, :);
-
-        limits(:,:,k) = obj.variables_(v).indexLimits(dims{v}, newMembers);
+        dims = coupling.variables(v).dims;
+        newMembers = obj.subMembers{cs}(newIndices,:);
+        indexLimits{k} = obj.variables_(v).indexLimits(dims, newMembers, nVars>1);
     end
 
-    % Get index limits for full set of variables
-    minIndex = min(limits(:,1,:), [], 3);
-    maxIndex = max(limits(:,2,:), [], 3);
-    fullLimits = [minIndex, maxIndex];
-    indices = dash.indices.fromLimits(fullLimits);        
+    % If there are multiple variables, get index limits for the full set
+    if nVars>1
+        limits = reshape(indexLimits(vars), [1 1 nVars]);
+        limits = cell2mat(limits);
+        
+        minIndex = min(limits(:,1,:), [], 3);
+        maxIndex = max(limits(:,2,:), [], 3);
+        fullLimits = [minIndex, maxIndex];
+        indices = dash.indices.fromLimits(fullLimits);
+
+    % Otherwise, get index limits for ensemble dimensions, but use state
+    % indices directly for state dimensions
+    else
+        indices = obj.variables_(v).indices;
+        indices(dims) = dash.indices.fromLimits(indexLimits{v});
+    end
 
     % Attempt to build sources
     s = grids(g).sourcesForLoad(indices);
     [dataSources, failed, causes] = grids(g).buildSources(s, false);
 
-    % Note if sources built successfully, record failed sources
+    % Note if sources built successfully, separate failed sources from
+    % successful sources
     allBuilt = true;
     if any(failed)
         allBuilt = false;
         failedSources = s(failed);
         failureCauses = causes(failed);
+        s = s(~failed);
+        dataSources = dataSources(~failed);
     end
 
     % Record successful sources
-    sources(g).dataSources = dataSources(~failed);
-    sources(g).indices = s(~failed);
+    sources(g).dataSources = dataSources;
+    sources(g).indices = s;
 
-    % If dataSources built, and there are 2+ variables, attempt to load
+    % If all sources built, and there are 2+ variables, attempt to load
     if allBuilt
         if nVars > 1
+            sources(g).isloaded = true;
             try
                 X = grids(g).loadInternal([], indices, s, dataSources);
+            catch
+                sources(g).isloaded = false;
+            end
 
-                % Record if successful
-                sources(g).isloaded = true;
+            % Record successful load. Variable should not attempt to load members
+            if sources(g).isloaded
                 sources(g).data = X;
                 sources(g).limits = fullLimits;
                 sources(g).dataSources = [];
                 sources(g).indices = [];
-            catch
             end
-        end
-
-        % Even if too big to load, can load individual variables. Move on
-        % to the next grid
-        loadAllMembers(vars) = true;
-        continue;
-    end
-
-    % If any sources failed, need to check each variable individually. 
-    for k = 1:nVars
-        v = vars(k);
-        variable = obj.variables_(v);
-        indices = dash.indices.fromLimits(limits(:,:,k));
-        sVar = grids(g).sourcesForLoad(indices);
-
-        % If successful, note the variable is good and move on to the next
-        % variable
-        if ~any(ismember(sVar, failedSources))
-            loadAllMembers(v) = true;
             continue
         end
 
-        % If not successful, need to check individual ensemble members
-        cs = sets(k);
-        newMembers = obj.subMembers{cs}(newIndices, :);
+        % If too big to load, the arrays for individual variables might be
+        % smalle. All necessary sources built, so move on to the next grid
+        loadAllMembers(vars) = true;
+        continue
+    end
+
+    % If sources failed, need to check each variable individually
+    for k = 1:nVars
+        v = vars(k);
+        variable = obj.variables_(v);
+        indices = variable.indices;
+
+        % Get coupling set and ensemble members
+        dims = coupling.variables(v).dims;
+        cs = whichSets(k);
+        newMembers = obj.subMembers{cs}(newIndices,:);
+
+        % If there were 2+ variables, check if all members can be loaded
+        if nVars>1
+            limits = variable.indexLimits(dims, newMembers, false);
+            indices(dims) = dash.indices.fromLimits(limits);
+            sVar = grids(g).sourcesForLoad(indices);
+
+            % If successful, mark the variable as good and move to the next variable
+            if ~any(ismember(sVar, failedSources))
+                loadAllMembers(v) = true;
+                continue
+            end
+        end
+
+        % If can't load all members, need to check individual ensemble
+        % members. Get index limits and indices for each member
         for m = 1:nNew
+            limits = variable.indexLimits(dims, newMembers(m,:), false);
+            indices(dims) = dash.indices.fromLimits(limits);
 
-            % Get index limits, indices, sources for each ensemble member.
-            limits = variable.indexLimits(dims{v}, newMembers(m,:));
-            indices = dash.indices.fromLimits(limits);
+            % If any sources failed, cannot build. Throw error
             sMember = grids(g).sourcesForLoad(indices);
-
-            % If source failed, cannot build. Throw error
             if any(ismember(sMember, failedSources))
                 failedDataSourceError(obj, grids(g), v, m, sMember, ...
                     failedSources, failureCauses, header);
@@ -413,7 +441,7 @@ function[X] = load(vLimit, members, grids, sources, parameters, header)
 nState = [parameters.nState];
 limits = dash.indices.limits(nState);
 
-% Preallocate Tag error if too large
+% Preallocate. Tag error if too large
 nRows = sum(nState);
 nMembers = numel(members);
 try
@@ -433,25 +461,18 @@ for k = 1:numel(vars)
     grid = grids.gridfiles(g);
     source = sources(g);
 
-    % Load ensemble members for each set
-    rows = limits(k,1):limits(k,2);
+    % Get the ensemble members to build
     s = parameters(k).whichSet;
-    subMembers = obj.subMembers{s}(members,:);
-    X(rows,:) = obj.variables_(v).loadMembers(...
-        subMembers, grid, source, parameters(k));
+    subMembers = obj.subMembers{s}(members, :);
+    dims = parameters(k).dims;
+
+    % Load the ensemble members for each variable
+    rows = limits(k,1):limits(k,2);
+    X(rows,:) = obj.variables_(v).buildMembers(...,
+        dims, subMembers, grid, source, parameters(k));
 end
 
 end
-
-
-
-
-
-
-
-
-
-
 
 
 % Error messages

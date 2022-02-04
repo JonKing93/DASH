@@ -3,16 +3,20 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 % ----------
 %   [X, metadata, obj] = obj.build(nMembers)
 %   Builds a state vector ensemble with the specified number of ensemble
-%   members and returns the ensemble as output. The built ensemble is a
-%   matrix with one column per ensemble member. As the second output, the
-%   method returns an ensembleMetadata object, which organizes metadata
-%   along the rows and columns of the ensemble. The final output is the
-%   state vector object for the built ensemble, which can be used to add
-%   additional members to the ensemble if necessary.
+%   members and returns the ensemble as output. If the state vector
+%   includes sequences or means, the method ensures that only ensemble
+%   members with complete sequences and means are built.
+%
+%   The built ensemble is a matrix with one column per ensemble member. As
+%   the second output, the method returns an ensembleMeatdata object, which
+%   organizes metadata along the rows and columns of the ensemble. The
+%   final output is the state vector object for the built ensemble, which
+%   can be used to add more members to the ensemble if necessary.
 %
 %   ... = obj.build('all')
 %   Builds a state vector ensemble with as many ensemble members as
-%   possible.
+%   possible. Reports the number of ensemble members being built to the
+%   console.
 %
 %   obj.build(..., 'sequential', true | false)
 %   obj.build(..., 'sequential', buildSequentially)
@@ -135,10 +139,13 @@ for v = 1:obj.nVariables
 end
 
 
-%% Finalize reference indices
+%% Finalize variables
 
-% Trim reference indices to only allow complete sequences and means
+% Cycle through variables, fill in placeholder values
 for v = 1:obj.nVariables
+    obj.variables_(v) = obj.variables_(v).finalize;
+
+    % Trim reference indices to only allow complete sequences and means
     obj.variables_(v) = obj.variables_(v).trim;
 
     % Informative error if no members are possible
