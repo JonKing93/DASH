@@ -20,8 +20,9 @@ STATE VECTOR
 3. Informational methods for variables
 
 4. Add precision options into build methods
-7. When writing to .ens file, make first output the ensemble object, rather than the loaded array.
 8. Restore removed ensemble members when a coupling set is incomplete
+    - No need to do this because no more ensemble members can be added
+9. Smart nMembers for incomplete or "all" options - decrease the size of nMembers as finite numbers of members are selected
 
 
 
