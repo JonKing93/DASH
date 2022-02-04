@@ -20,12 +20,9 @@ STATE VECTOR
 3. Informational methods for variables
 
 4. Add precision options into build methods
-5. buildEnsemble.gridSources should handle empty sources case
-6. Consider leaving sequence indices empty and adding a "hasSequence" marker
 7. When writing to .ens file, make first output the ensemble object, rather than the loaded array.
 8. Restore removed ensemble members when a coupling set is incomplete
-9. Should state and reference indices be a unique set?
-    -No, that way the user can use a custom order when building sequentially
+
 
 
 **
