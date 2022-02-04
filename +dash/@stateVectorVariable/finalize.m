@@ -28,7 +28,7 @@ for d = 1:numel(obj.dims)
         if obj.meanType(d)==0
             obj.meanIndices{d} = 0;
         end
-        if obj.hasSequence(d) = false;
+        if ~obj.hasSequence(d)
             obj.sequenceIndices{d} = 0;
         end
     end
