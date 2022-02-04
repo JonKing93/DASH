@@ -61,11 +61,11 @@ if parameters.loadAllMembers
 
     % Attempt to load data for all members. Note if failed. (Failure could
     % occur if the data for all members is too large for memory).
-    allLoaded = true;
+    allLoaded = false;
     try
         Xall = grid.loadInternal([], indices, s, dataSources);
+        allLoaded = true;
     catch
-        allLoaded = false;
     end
 end
 

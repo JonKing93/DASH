@@ -25,13 +25,8 @@ for v = 1:obj.nVariables
 end
 parameters = [parameters{:}]';
 
-% Get the limits of each variable in the state vector
-nState = [parameters.nState];
-limits = dash.indices.limits(nState);
-
-% Add variable parameters that are determined by the full state vector
+% Add variable parameters that are determined by the state vector
 for v = 1:obj.nVariables
-    parameters(v).vectorLimits = limits(v,:);
     parameters(v).indexLimits = indexLimits{v};
     parameters(v).loadAllMembers = loadAllMembers(v);
     parameters(v).whichSet = coupling.variables(v).whichSet;
@@ -51,17 +46,21 @@ catch ME
     singleMemberTooLargeError(ME);
 end
 
+% Get the indices of the ensemble members
+nTotal = size(obj.subMembers{1}, 1);
+members = nTotal-nMembers+1:nTotal;
+
 % Load ensemble directly
 metadata = ensembleMetadata(obj);
 if isempty(ens)
-    X = loadEnsemble(obj, nMembers, grids, sources, parameters);
+    X = loadEnsemble(obj, members, grids, sources, parameters);
 
 % Or write to file
 else
-    writeEnsemble(obj, newMembers, grids, sources, whichGrid);
-    X = [];
+    writeEnsemble(obj, members, grids, sources, parameters);
     ens.metadata = metadata.serialize;
     ens.stateVector = obj.serialize;
+    X = [];
 end
 
 end
@@ -323,11 +322,10 @@ for g = 1:nGrids
     % If all sources built, and there are 2+ variables, attempt to load
     if allBuilt
         if nVars > 1
-            sources(g).isloaded = true;
             try
                 X = grids(g).loadInternal([], indices, s, dataSources);
+                sources(g).isloaded = true;
             catch
-                sources(g).isloaded = false;
             end
 
             % Record successful load. Variable should not attempt to load members
@@ -341,7 +339,7 @@ for g = 1:nGrids
         end
 
         % If too big to load, the arrays for individual variables might be
-        % smalle. All necessary sources built, so move on to the next grid
+        % smaller. All necessary sources built, so move on to the next grid
         loadAllMembers(vars) = true;
         continue
     end
@@ -387,15 +385,15 @@ for g = 1:nGrids
 end
 
 end
-function[X] = loadEnsemble(obj, nMembers, grids, sources, parameters, header)
+function[X] = loadEnsemble(obj, members, grids, sources, parameters, header)
 %% Load an entire state vector ensemble directly into memory
 % ----------
 %   Attempts to load all new ensemble members of all variables directly
 %   into memory. Throws an error if unsuccessful.
 % ----------
 %   Inputs:
-%       nMembers (scalar positive integer): The number of new ensemble
-%           members to load
+%       members (scalar positive integer): The indices of the new members
+%           in the set of subscripted ensemble members.
 %       grids (scalar struct): Gridfiles and whichGrid
 %       sources (scalar struct): Gridfile data sources
 %       parameters (struct vector [nVariables]): Build parameters for each variable
@@ -403,14 +401,10 @@ function[X] = loadEnsemble(obj, nMembers, grids, sources, parameters, header)
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The loaded state vector ensemble
 
-% Select all variables and all new members
+% Attempt to load all variables
 vLimit = [1, obj.nVariables];
-nTotal = size(obj.subMembers{1},1);
-members = nTotal-nMembers+1:nTotal;
-
-% Load everything
 try
-    X = load(vLimit, members, grids, sources, parameters, header);
+    X = load(vLimit, members, grids, sources, parameters);
 
 % Suggest using .ens file if too large to load directly
 catch ME
@@ -421,7 +415,124 @@ catch ME
 end
 
 end
-function[X] = load(vLimit, members, grids, sources, parameters, header)
+function[] = writeEnsemble(obj, members, grids, sources, parameters, header)
+
+%%%%% Parameter for reducing chunk sizes
+ORDER = 10;
+%%%%%
+
+% Get sizes
+nMembers = numel(members);
+nVars = obj.nVariables;
+
+% Get the limits of each variable in the state vector
+nState = [parameters.nState];
+limits = dash.indices.limits(nState);
+
+% Preallocate the ens file
+nRows = sum(nState);
+ens.X(nRows, members(end)) = NaN;
+
+% Loop through sets of contiguous variables until all variables are loaded
+first = 1;
+while first <= nVars
+    last = nVars;
+    tooBig = true;
+
+    % Get a set of contiguous variables
+    while last>=first
+        vLimit = [first, last];
+        rows = limits(first,1):limits(last,2);
+        setParameters = parameters(first:last);
+
+        % Attempt to load the set into memory
+        isloaded = false;
+        try
+            X = obj.load(vLimit, members, grids, sources, setParameters);
+            isloaded = true;
+        catch ME
+            if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
+                rethrow(ME);
+            end
+        end
+
+        % If loaded, write to ens file. Move to next contiguous set of variables
+        if isloaded
+            ens.X(rows, members) = X;
+            tooBig = false;
+            break
+        end
+
+        % Otherwise, remove 1 variable and try again
+        last = last-1;
+    end
+
+    % If even a single variable is too large to load, try loading fewer
+    % ensemble members at a time.
+    if tooBig
+        v = first;
+
+        % Find a set of contiguous ensemble members that fits in memory.
+        % This is a "chunk". Decrease chunk size by an order of magnitude
+        % for each attempt.
+        chunkSize = nMembers;
+        while chunkSize>1
+            chunkSize = ceil(chunkSize/ORDER);
+            nChunks = ceil(nMembers/chunkSize);
+            allChunksLoaded = false;
+
+            % Get the members to load for each chunk
+            for k = 1:nChunks
+                use = chunkSize*(k-1) + (1:chunkSize);
+                use(use>nMembers) = [];
+                chunkMembers = members(use);
+
+                % Attempt to load the chunk
+                isloaded = false;
+                try
+                    X = obj.load([v v], chunkMembers, grids, sources, parameters(v));
+                    isloaded = true;
+                catch ME
+                    if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
+                        rethrow(ME);
+                    end
+                end
+
+                % If loaded, write to file and continue to the next chunk
+                if isloaded
+                    ens.X(rows, chunkMembers) = X;
+                    if k==nChunks
+                        allChunksLoaded = true;
+                    end
+
+                % Otherwise, the chunk is too large. Exit the loop to try a
+                % smaller chunk size
+                else
+                    break
+                end
+            end
+
+            % If all the chunks loaded, the variable is complete. Exit the
+            % loop and stop testing chunk sizes
+            if allChunksLoaded
+                tooBig = false;
+                break
+            end
+        end
+
+        % If still not loaded, cannot load a single ensemble member, so
+        % cannot continue. Throw error.
+        if tooBig
+            cannotLoadSingleMemberError(obj, chunkMembers, v, header);
+        end
+    end
+
+    % Once the variables are written, move to the next set of variables
+    first = last+1;
+end
+
+end
+function[X] = load(vLimit, members, grids, sources, parameters)
 %% Loads indicated ensemble members for a continuous set of variables in a state vector
 %
 % Inputs:
@@ -564,4 +675,26 @@ ME = MException(id, ['The state vector ensemble %sis too large to be loaded into
     'state vector elements.'],...
     vector, design);
 throwAsCaller(ME);
+end
+function[] = cannotLoadSingleMemberError(obj, m, v, header)
+
+design = '<a href="matlab:dash.doc(''stateVector.design'')">design</a>';
+sequence = '<a href="matlab:dash.doc(''stateVector.sequence'')">sequence</a>';
+mean = '<a href="matlab:dash.doc(''stateVector.mean'')">mean</a>';
+
+var = obj.variables(v);
+vector = '';
+if ~strcmp(obj.label, "")
+    vector = sprintf('for %s ', obj.name);
+end
+
+id = sprintf('%s:cannotLoadSingleMember', header);
+ME = MException(id,['Cannot build the ensemble %sbecause ensemble member ',...
+    '%.f of variable "%s" is too large to fit in memory. Consider using ',...
+    '1. The "%s" method to reduce the number of state vector elements, ',...
+    '2. The "%s" method to reduce the number of sequence indices, or ',...
+    '3. The "%s" method to reduce the number of mean indices.'],...
+    vector, m, var, design, sequence, mean);
+throwAsCaller(ME);
+
 end
