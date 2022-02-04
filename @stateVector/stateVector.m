@@ -111,18 +111,18 @@ classdef stateVector
         obj = weightedMean(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
 
-        % Vector workflow
+%         % Vector workflow
 %         obj = extract(obj, variables);
 %         obj = append(obj, vector2, responseToRepeats)
 %         copy;
 
-        % Build
+        % Build / write
         [X, meta, obj] = build(obj, nMembers, varargin);
         [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress);
         addMembers;
+        s = serialize(obj);
 
         % Serialize
-        serialize;
         deserialize;
 
         % Summary information

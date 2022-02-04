@@ -49,9 +49,9 @@ properties
     %% Metadata
 
     metadataType = zeros(1,0);      % 0: gridfile metadata, 1: user provided metadata, 2: convert metadata
-    metadata_ = cell(1,0);           % User specified metadata
-    convertFunction;                % Metadata conversion function handle
-    convertArgs;                    % Metadata conversion function arguments
+    metadata_ = cell(1,0);          % User specified metadata
+    convertFunction = cell(1,0)     % Metadata conversion function handle
+    convertArgs = cell(1,0);        % Metadata conversion function arguments
 
 end
 
@@ -72,17 +72,26 @@ methods
     dimensions = dimensions(obj, type);
     d = dimensionIndices(obj, dimensions);
 
-    % Build
-    obj = finalize(obj);
-    indices = addIndices(obj, d);
-    obj = trim(obj);
+    % Select ensemble members
     [sizes, dimNames] = ensembleSizes(obj);
+    obj = trim(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
     subMembers = removeOverlap(obj, dims, subMembers);
+
+    % Build members
+    obj = finalize(obj);
+    indices = addIndices(obj, d);
     limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
+    X = buildMembers(obj, dims, subMembers, grid, source, parameters);
 
+    % Serialization
+    s = serialize(obj);
 end
+methods (Static)
+    obj = deserialize(s);
+end
+
 
 
 % Constructor
@@ -90,6 +99,10 @@ methods
     function[obj] = stateVectorVariable(grid)
     %% dash.stateVectorVariable.stateVectorVariable  Create a new stateVectorVariable object
     % ----------
+    %   obj = dash.stateVectorVariable
+    %   Returns a new, empty stateVectorVariable object. The object is not
+    %   linked to a gridfile, so has no dimensions.
+    %
     %   obj = dash.stateVectorVariable(grid)
     %   Creates a new stateVectorVariable object linked to a gridfile. By
     %   default, all dimensions are set as state dimensions, and all indices
@@ -102,6 +115,11 @@ methods
     %       obj (scalar stateVectorVariable): The new stateVectorVariable object
     %
     % <a href="matlab:dash.doc('dash.stateVectorVariable.stateVectorVariable
+
+    % Empty call syntax
+    if nargin==0
+        return
+    end
 
     % Record the gridfile fields
     [obj.dims, obj.gridSize] = grid.dimensions;
