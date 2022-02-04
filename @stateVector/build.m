@@ -25,11 +25,13 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   selection. Use this option if, for example, you want the ensemble
 %   members to remain ordered in time.
 %
-%   obj.build(..., 'file', filename)
+%   [ens, metadata, obj] = obj.build(..., 'file', filename)
 %   Saves the state vector ensemble to a .ens file of the specified name.
 %   The saved ensemble can then be accessed at any time using the
 %   "ensemble" class. This option allows you to build ensembles that are
-%   too large to fit in active memory.
+%   too large to fit in active memory. When writing the ensemble to file,
+%   the first output is an ensemble object, which can be used to interact
+%   with the ensemble saved in the file.
 %
 %   obj.build(..., 'file', filename, 'overwrite', true | false)
 %   obj.build(..., 'file', filename, 'overwrite', overwrite)
@@ -46,7 +48,7 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   Specify how the method should respond if it cannot build the requested
 %   number of ensemble members. If true (default), throws an error when the
 %   requested number of ensemble members cannot be built. If false, issues
-%   a warning, but does not fail, when the requested number of ensemble
+%   a warning (but does not fail) when the requested number of ensemble
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
 % ----------
@@ -77,6 +79,9 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %       X (numeric matrix [nState x nMembers]): The built state vector
 %           ensemble. Has one row per state vector element. Each column is
 %           an ensemble member.
+%       ens (scalar ensemble object): An ensemble object that can be used
+%           to interact with the ensemble written to file. See >> dash.doc('ensemble')
+%           for more details.
 %       metadata (scalar ensembleMetadata object): An ensemble metadata
 %           object for the ensemble. Organizes metadata along the rows and
 %           columns of the ensemble. See >> dash.doc('ensembleMetadata')
@@ -253,19 +258,13 @@ end
 obj.iseditable = false;
 [X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, showprogress);
 
-% If writing, optionally return output array
+% After writing, move data from .tmp to .ens. Optionally get ensemble
+% object as output
 if writeFile
-    if nargout>0
-        try
-            X = ens.X;   
-        catch
-            tooBigToLoadWarning(filename);
-        end
-    end
-
-    % Move data from .tmp to .ens - Do this *after* attempting to load so
-    % that the matfile (ens) remains valid.
     movefile(tmpFile, filename);
+    if nargout>0
+        X = ensemble(filename);
+    end
 end
 
 end
