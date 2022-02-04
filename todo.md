@@ -19,23 +19,6 @@ STATE VECTOR
     - Add verbosity details
 3. Informational methods for variables
 
-4. Add precision options into build methods
-8. Restore removed ensemble members when a coupling set is incomplete
-    - No need to do this because no more ensemble members can be added
-9. Smart nMembers for incomplete or "all" options - decrease the size of nMembers as finite numbers of members are selected
-
-
-
-**
-Need to design loadIndices
-Can directly copy state indices. No need to bother with index limits
-Ensemble dimensions are the only time you need to bother with index limits
-    And you only need index limits when loading multiple ensemble members simultaneously
-    If loading a single ensemble member, you can use (reference index + addIndices) directly
-
---You should finished updating svv.indexLimits to reflect these needs
-**
-
 
 
 Write tests

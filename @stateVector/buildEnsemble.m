@@ -96,11 +96,17 @@ function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
 %           members, and updated set of unused ensemble members.
 %       nMembers (scalar integer): The number of new ensemble members selected
 
-% Adjust for "all" option. Get the initial number of ensemble members
+% Adjust settings for "all" option
+all = false;
 if strcmp(nMembers, 'all')
     nMembers = Inf;
+    strict = false;
+    all = true;
 end
+
+% Get initial number of saved and requested ensemble members
 nInitial = size(obj.subMembers{1}, 1);
+nRequested = nMembers;
 
 % Preallocate new ensemble members for sets of coupled variables
 nSets = numel(coupling.sets);
@@ -128,7 +134,7 @@ for s = 1:nSets
 
     % Select ensemble members until the ensemble is complete
     while nNew(s) < nMembers
-        if nNew(s)+nRemaining<nMembers && ~isinf(nMembers)
+        if nNew(s)+nRemaining<nMembers && ~all
             incomplete(s) = true;
         end
 
@@ -167,8 +173,13 @@ for s = 1:nSets
         nNew(s) = size(subMembers,1) - nInitial;
         nRemaining = numel(unused);
 
-        % If all members were selected, exit loop
+        % If all members were selected, update maximum members and exit
+        % loop. Note incomplete sets of variables.
         if incomplete(s) || isinf(nMembers)
+            nMembers = nNew(s);
+            if incomplete(s)
+                incompleteVars = vars;
+            end
             break
         end
     end
@@ -183,24 +194,22 @@ for s = 1:nSets
     obj.subMembers{s} = subMembers;
 end
 
-% If there were incomplete ensembles, find the set of coupled variables
-% with the smallest number of new ensemble members
+% If there were incomplete ensembles, trim each set of ensemble members to
+% match the minimum number of members.
 if any(incomplete)
-    [nNew, s] = min(nNew);
-    vars = coupling.sets(s).vars;
-
-    % Trim each set of ensemble members to match this smaller number and
-    % notify user of incomplete ensemble.
+    nNew = nNew(end);
     for s = 1:nSets
         obj.subMembers{s} = obj.subMembers{s}(1:nInitial+nNew, :);
     end
-    incompleteEnsembleWarning(obj, vars, nMembers, nNew, header);
+
+    % Notify user of incomplete ensemble
+    incompleteEnsembleWarning(obj, incompleteVars, nRequested, nNew, header);
 end
 
 % Return the total number of new ensemble members. Report this number if
 % the user selected the "all" option
 nNew = nNew(1);
-if isinf(nMembers)
+if all
     fprintf('Building ensemble with %.f members.\n', nNew);
 end
 
