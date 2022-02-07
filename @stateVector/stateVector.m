@@ -120,18 +120,19 @@ classdef stateVector
         [X, meta, obj] = build(obj, nMembers, varargin);
         [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress);
         addMembers;
-        s = serialize(obj);
-
-        % Serialize
-        deserialize;
 
         % Summary information
         info;
 %         disp;
 %         dispVariables;
-    end
 
+        % Serialization
+        s = serialize(obj);
+    end
     methods (Static)
+        obj = deserialize(s);
+
+        % Build gridfile objects
         [grids, failed, cause] = parseGrids(grids, nVariables, header);
         [grids, failed, cause] = buildGrids(files, nVariables);
     end

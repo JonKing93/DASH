@@ -25,172 +25,141 @@ function[s] = serialize(obj)
 nVars = numel(obj);
 s = struct();
 
-%% String delimited properties
-
-% Get properties to convert to string, and to comma delimit
-convertProps = ["gridSize","isState","stateSize","ensSize","hasSequence",...
-    "meanType","meanSize","omitnan","metadataType"];
-nConvert = numel(convertProps);
-
-delimitProps = ["dims", convertProps];
-nDelimit = nConvert+1;
-
-% Cycle through variables, convert properties to string
-for v = 1:nVars
-    for p = 1:nConvert
-        field = convertProps(p);
-        obj(v).(field) = string(obj(v).(field));
-    end
-
-    % Comma delimit properties
-    for p = 1:nDelimit
-        field = delimitProps(p);
-        obj(v).(field) = strjoin(obj(v).(field), ',');
-    end
-end
-
-% Add comma delimited properties to string
-for p = 1:nDelimit
-    field = delimitProps(p);
-    s.(field) = [obj.(field)]';
-end
-
-%% Cell vector properties
-
-% Initialize sizes
+% Get the number of dimensions in each variable
 nDims = NaN(nVars, 1);
-nIndices = strings(nVars, 1);
-nSequence = strings(nVars, 1);
-nMean = strings(nVars, 1);
-nWeights = strings(nVars, 1);
-
-% Cycle through variable dimensions. Get sizes and stack indices
 for v = 1:nVars
     nDims(v) = numel(obj(v).dims);
-    index = NaN(1, nDims(v));
-    sequence = NaN(1, nDims(v));
-    mean = NaN(1, nDims(v));
-    weights = NaN(1, nDims(v));
-
-    % Get size in each dimension
-    for d = 1:nDims(v)
-        index(d) = numel(obj(v).indices{d});
-        sequence(d) = numel(obj(v).sequenceIndices{d});
-        mean(d) = numel(obj(v).meanIndices{d});
-        weights(d) = numel(obj(v).weights{d});
-    end
-
-    % Convert sizes to comma delimited strings
-    nIndices(v) = strjoin(string(index),',');
-    nSequence(v) = strjoin(string(sequence),',');
-    nMean(v) = strjoin(string(mean),',');
-    nWeights(v) = strjoin(string(weights),',');
-
-    % Convert cell vectors to column vector stack
-    obj(v).indices = cell2mat(obj(v).indices');
-    obj(v).sequenceIndices = cell2mat(obj(v).sequenceIndices');
-    obj(v).meanIndices = cell2mat(obj(v).meanIndices');
-    obj(v).weights = cell2mat(obj(v).weights');
 end
-
-% Stack indices in saved structure
-s.indices = cell2mat({obj.indices}');
-s.sequenceIndices = cell2mat({obj.sequenceIndices}');
-s.meanIndices = cell2mat({obj.meanIndices}');
-s.weights = cell2mat({obj.weights}');
-
-% Record sizes
 s.nDims = nDims;
-s.nIndices = nIndices;
-s.nSequence = nSequence;
-s.nMean = nMean;
-s.nWeights = nWeights;
 
+%% String delimited properties
 
-%% Conversion function handle
-
-convertFunction = strings(nVars, 1);
+% Convert function handles to char
 for v = 1:nVars
-    convert = strings(1, nDims(v));
     for d = 1:nDims(v)
-        convert(d) = string(char(obj(v).convertFunction{d}));
+        obj(v).convertFunction{d} = char(obj(v).convertFunction{d});
     end
-    convertFunction(v) = strjoin(convert, ',');
 end
+
+% Convert fields to comma delimited string
+logicalFields = ["isState","hasSequence","omitnan"];
+numericFields = ["gridSize","stateSize","ensSize","meanSize","meanType","metadataType"];
+
+s = convertJoin(obj, s, nVars, logicalFields, {@single, @string});
+s = convertJoin(obj, s, nVars, [numericFields, "convertFunction"], {@string});
+s = convertJoin(obj, s, nVars, "dims", {});
+
+
+%% Cell vector properties
+% indices, sequence indices, mean indices, weights
+
+s = stackVectors(obj, s, nVars, nDims, 'indices', 'nIndices');
+s = stackVectors(obj, s, nVars, nDims, 'meanIndices', 'nMean');
+s = stackVectors(obj, s, nVars, nDims, 'sequenceIndices', 'nSequence');
+s = stackVectors(obj, s, nVars, nDims, 'weights', 'nWeights');
 
 
 %% Cells with unpredictable elements
 
-% Initialize counts of sequence metadata, metadata, or conversion args
-nSeqMeta = 0;
-nMetadata = 0;
-nArgs = 0;
+% Extract and stack cell elements
+s = extractCells(obj, s, nVars, nDims, 'sequenceMetadata', 'vdSequenceMetadata');
+s = extractCells(obj, s, nVars, nDims, 'metadata_', 'vdMetadata');
+s = extractCells(obj, s, nVars, nDims, 'convertArgs', 'vdConvertArgs');
 
-% Cycle through variables and dimensions. Count cell elements
+end
+
+% Utility functions
+function[str] = join(strs)
+str = strjoin(strs, ',');
+end
+function[s] = convertJoin(obj, s, nVars, fields, convert)
+nConvert = numel(convert);
+for f = 1:numel(fields)
+    field = fields(f);
+
+    for v = 1:nVars
+        values = obj(v).(field);
+        for k = 1:nConvert
+            values = convert{k}(values);
+        end
+        values = join(values);
+        obj(v).(field) = values;
+    end
+    s.(field) = [obj.(field)]';
+end
+end
+function[s] = stackVectors(obj, s, nVars, nDims, field, countName)
+
+% Initialize sizes
+count = strings(nVars, 1);
+for v = 1:nVars
+    sizes = NaN(1, nDims(v));
+
+    % Get size in each dimension as comma delimited string
+    for d = 1:nDims(v)
+        sizes(d) = numel(obj(v).(field){d});
+    end
+    count(v) = join(string(sizes));
+
+    % Convert vectors to column vector stack
+    obj(v).(field) = cell2mat(obj(v).(field)');
+end
+
+% Stack values for all variables in structure. Record sizes
+s.(field) = cell2mat({obj.(field)}');
+s.(countName) = count;
+
+end
+function[s] = extractCells(obj, s, nVars, nDims, field, vdName)
+
+% Count cells with elements
+nCells = 0;
 for v = 1:nVars
     for d = 1:nDims(v)
-        if ~isempty(obj(v).sequenceMetadata{d})
-            nSeqMeta = nSeqMeta+1;
-        end
-        if ~isempty(obj(v).metadata_{d})
-            nMetadata = nMetadata+1;
-        end
-        if ~isempty(obj(v).convertArgs{d})
-            nArgs = nArgs + numel(obj(v).convertArgs{d});
+        contents = obj(v).(field){d};
+        if ~isempty(contents)
+
+            % Cell vector vs array
+            if iscell(contents)
+                nCells = nCells + numel(contents);
+            else
+                nCells = nCells + 1;
+            end
         end
     end
 end
 
-% Preallocate cell elements
-sequenceMetadata = cell(nSeqMeta,1);
-metadata = cell(nMetadata, 1);
-convertArgs = cell(nArgs, 1);
+% Preallocate cell stack and indices
+values = cell(nCells, 1);
+vdIndices = NaN(nCells, 2);
 
-% Also record the variable and dimension associated with each cell element
-vdSequenceMetadata = NaN(nSeqMeta, 2);
-vdMetadata = NaN(nMetadata, 2);
-vdConvertArgs = NaN(nArgs, 2);
-
-% Count current elements
-kSeq = 0;
-kMeta = 0;
-kArgs = 0;
-
-% Cycle through variables and dimensions
+% Fill cells
+k = 0;
 for v = 1:nVars
     for d = 1:nDims(v)
+        contents = obj(v).(field){d};
+        if ~isempty(contents)
 
-        % Sequence meetadata
-        if ~isempty(obj(v).sequenceMetadata{d})
-            kSeq = kSeq+1;
-            sequenceMetadata{kSeq} = obj(v).sequenceMetadata{d};
-            vdSequenceMetadata(kSeq,:) = [v d];
-        end
+            % Cell vector
+            if iscell(contents)
+                nArgs = numel(contents);
+                rows = k + (1:nArgs);
+                k = rows(end);
+                values(rows) = obj(v).(field){d};
+                vdIndices(rows,:) = repmat([v,d], numel(rows), 1);
 
-        % Alternate metadata
-        if ~isempty(obj(v).metadata_{d})
-            kMeta = kMeta+1;
-            metadata{kMeta} = obj(v).metadata_{d};
-            vdMetadata(kMeta,:) = [v d];
-        end
-
-        % Conversion args
-        if ~isempty(obj(v).convertArgs{d})
-            nArgs = numel(obj(v).convertArgs{d});
-            kArgs = kArgs + (1:nArgs);
-            convertArgs(kArgs) = obj(v).convertArgs{d};
-            vdConvertArgs(kArgs,:) = [v d];
+            % Array
+            else
+                k = k+1;
+                values(k) = obj(v).(field)(d);
+                vdIndices(k,:) = [v d];
+            end
         end
     end
 end
 
-% Record cells and variable-dimension indices
-s.metadata_ = metadata;
-s.sequenceMetadata = sequenceMetadata;
-s.convertArgs = convertArgs;
-
-s.vdMetadata = vdMetadata;
-s.vdSequenceMetadata = vdSequenceMetadata;
-s.vdConvertArgs = vdConvertArgs;
+% Record cells and indices
+s.(field) = values;
+s.(vdName) = vdIndices;
 
 end

@@ -14,7 +14,7 @@ function[s] = serialize(obj)
 
 % Get directly copyable save properties
 props = string(properties(obj));
-nocopy = ismember(props, ["nVariables","variables_","unused","subMembers"]);
+nocopy = ismember(props, ["variables_","unused","subMembers"]);
 props(nocopy) = [];
 
 % Build a struct with copyable values
@@ -29,7 +29,7 @@ nSets = numel(obj.unused);
 % Unused ensemble members
 nUnused = NaN(nSets, 1);
 for k = 1:nSets
-    nUnused = numel(obj.unused{k});
+    nUnused(k) = numel(obj.unused{k});
 end
 
 s.unused = cell2mat(obj.unused');

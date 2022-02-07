@@ -57,6 +57,9 @@ for k = 1:numel(dims)
     elseif type==2
         convertFunction = arg1{k};
         convertArgs = arg2{k};
+        if ~isrow(convertArgs)
+            convertArgs = convertArgs';
+        end
     end
     
     % Update properties
