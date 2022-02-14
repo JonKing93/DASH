@@ -1,22 +1,73 @@
 classdef stateVectorVariable
-%% stateVectorVariable  Design a variable in a state vector
+%% dash.stateVectorVariable  Implement a variable in a state vector
+% ----------
+%   The stateVectorVariable class implements an object that describes a
+%   variable in a state vector. Each object holds the design parameters for
+%   a single variable. These design parameters include:
 %
+%       1. State and ensemble dimensions
+%       2. Sequences
+%       3. Means, and
+%       4. Metadata options.
 %
+%   The class also implements a number of utilities for building state
+%   vector ensembles; these include removing ensemble members with incomplete
+%   sequences/means, removing ensemble members that overlap previously
+%   built members, and processing metadata options.
 %
-% Select members:
+%   The stateVectorVariable class is designed to build variables from data
+%   catalogued in a gridfile. However, methods that update the variable's
+%   design parameters do not require gridfile access. The gridfile is only
+%   required to initially create a variable, and when building a state
+%   vector ensemble.
+%
+%   The class framework allows multiple stateVectorVariable objects to be 
+%   stored as a vector, which is utilized by the stateVector class.
+%   However, such vectors are highly nested and are slow to save directly.
+%   Instead, vectors of stateVectorVariables should be serialized before
+%   saving, and deserialized upon load.
+% ----------
+% dash.stateVectorVariable methods:
+%
+% Create:
+%   stateVectorVariable - Create a new stateVectorVariable object
+%
+% Design:
+%   design              - Design the dimensions of a state vector variable
+%   sequence            - Apply a sequence over ensemble dimensions of a variable
+%   mean                - Take a mean over dimensions of a variable
+%   weightedMean        - Apply a weighted mean over dimensions of a variable
+%   metadata            - Set metadata options for ensemble dimensions of a variable
+%
+% Dimensions:
+%   dimensions          - List the dimensions of a variable
+%   dimensionIndices    - Return the indices of dimensions within a variable
+%
+% gridfile interactions:
+%   validateGrid        - Check that a gridfile matches a variable's recorded gridfile parameters
+%   getMetadata         - Process and return metadata along a dimension
+%
+% Select ensemble members:
 %   ensembleSizes       - Return the sizes and names of ensemble dimensions
 %   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
 %   matchMetadata       - Order reference indices so that ensemble metadata matches an ordering set
 %   removeOverlap       - Remove ensemble members that overlap previous members
 %
 % Build members:
-%   finalize
+%   finalize            - Fill placeholder values in a variable
 %   addIndices          - Propagate mean indices over sequence indices
 %   indexLimits         - Return limits of gridfile dimension indices required to load ensemble members
 %   parametersForBuild  - Return parameters used for building ensemble members
-%   buildMembers        - Build a set of ensemble ensemble
-%   
+%   buildMembers        - Build a set of ensemble members
 %
+% Serialization:
+%   serialize           - Convert variables to a struct that supports fast saving/loading
+%   deserialize         - Rebuild a vector of stateVectorVariable objects from a serialized struct
+%
+% Unit tests:
+%   tests               - Unit tests for the dash.stateVectorVariable class
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable')">Documentation Page</a>
 
 properties
 
@@ -90,6 +141,7 @@ methods
 end
 methods (Static)
     obj = deserialize(s);
+    tests;
 end
 
 

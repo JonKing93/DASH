@@ -9,14 +9,7 @@ function[dimensions] = dimensions(obj, type)
 %   Return the list of state dimensions.
 %
 %   dimensions = obj.dimensions('ensemble')
-%   Return the list of ensemble dimensions.
-%
-%
-% !!!
-%   [dims, sizes] = obj.dimensions('ensemble')
-%   Returns ensemble dimensions and their ensSizes
-%
-%
+%   Return the list of ensemble dimensions.   
 % ----------
 %   Outputs:
 %       dimensions (string list): The list of dimensions of the requested
