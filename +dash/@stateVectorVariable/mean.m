@@ -60,7 +60,7 @@ function[obj] = disableWeights(obj, d, header)
 
 % Check the dimension has a mean
 if obj.meanType(d) == 0
-    noMeanToUnweightError(d, header);
+    noMeanToUnweightError(obj, d, header);
 end
 
 % Discard weights
@@ -73,7 +73,7 @@ function[obj] = setMean(obj, d, indices, omitnan, header)
 % State dimension - prohibit indices
 if obj.isState(d)
     if ~isempty(indices)
-        meanIndicesNotAllowedError(d, header);
+        meanIndicesNotAllowedError(obj, d, header);
     end
 
     % Update size
@@ -85,7 +85,7 @@ if obj.isState(d)
 % Ensemble dimension - require indices
 else
     if isempty(indices)
-        missingMeanIndicesError(d, header);
+        missingMeanIndicesError(obj, d, header);
     end
     nIndices = numel(indices);
 
@@ -97,7 +97,7 @@ else
 
     % Check for size conflict with weights
     if obj.meanType(d)==2 && nIndices~=obj.meanSize(d)
-        weightsSizeConflictError(d, nIndices, header);
+        weightsSizeConflictError(obj, d, nIndices, header);
     end
 
     % Update size
@@ -117,7 +117,7 @@ obj.omitnan(d) = omitnan;
 end
 
 % Error messages
-function[] = noMeanToUnweightError(d, header)
+function[] = noMeanToUnweightError(obj, d, header)
 dim = obj.dims(d);
 id = sprintf('%s:noMeanToUnweight', header);
 ME = MException(id, ...
@@ -125,7 +125,7 @@ ME = MException(id, ...
     'mean over the "%s" dimension.'], dim, dim);
 throwAsCaller(ME);
 end
-function[] = meanIndicesNotAllowedError(d, header)
+function[] = meanIndicesNotAllowedError(obj, d, header)
 dim = obj.dims(d);
 id = sprintf('%s:meanIndicesNotAllowed', header);
 ME = MException(id, ...
@@ -133,7 +133,7 @@ ME = MException(id, ...
     'a state dimension.'], dim);
 throwAsCaller(ME);
 end
-function[] = missingMeanIndicesError(d, header)
+function[] = missingMeanIndicesError(obj, d, header)
 dim = obj.dims(d);
 id = sprintf('%s:missingMeanIndices', header);
 ME = MException(id, ...
@@ -141,7 +141,7 @@ ME = MException(id, ...
     'an ensemble dimension.'], dim);
 throwAsCaller(ME);
 end
-function[] = weightsSizeConflictError(d, nIndices, header)
+function[] = weightsSizeConflictError(obj, d, nIndices, header)
 dim = obj.dims(d);
 nWeights = obj.meanSize(d);
 id = sprintf('%s:weightsSizeConflict', header);

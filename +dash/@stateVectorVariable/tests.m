@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
- 
+
 %%%
 
 % Run tests
@@ -264,36 +264,69 @@ function[] = mean
 grid = gridfile('test-lltr.grid');
 svv = dash.stateVectorVariable(grid);
 svv = svv.design([3 4], [false false], {[],[]}, 'test');
-svvM = svv.mean(1:4, {[],[],1:3,12:12:36}, true(1,4), 'test');
+svvM = svv.mean(1:4, {[],[],1:3,2}, false(1,4), 'test');
 svvW = svvM.weightedMean([1 3], {ones(100,1), ones(3,1)}, 'test');
 
 tests = {
     % test, succeed, object, dims, indices, omitnan,...
     % meanType, meanSize, stateSize, meanIndices, omitnan, weights
-    'disable mean, weighted', true, svvW, [1 3], "none", [], [0 1 0 2], [NaN 20 NaN 3], [100 1 1 1], {[],[],[],(12:12:36)'}, false(1,4), {[],[],[],ones(3,1)}
-    'disable mean, unweighted', true, svvM, [1 3], "none", [], [0 0 0 0], [NaN 20 NaN 3], [100 1 1 1], {
-    'disable mean, no mean', true, svv, [1 3], "none", [], [0 0 0 0], NaN(1,4), [100 20 1 1], 
-    'disable weights', true, svvW, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 3], [1 1 1 1]
-    'disable weights, no weights', true, svvM, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 3], [1 1 1 1]
-    'disable weights, no mean', false, svv, [1 3], "unweighted", [], [],[],[],[],[]
+    'disable mean, weighted', true, svvW, [1 3], "none", [], [0 1 0 1], [NaN 20 NaN 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
+    'disable mean, unweighted', true, svvM, [1 3], "none", [], [0 1 0 1], [NaN 20 NaN 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
+    'disable mean, no mean', true, svv, [1 3], "none", [], [0 0 0 0], NaN(1,4), [100 20 1 1], {[],[],[],[]}, false(1,4), {[],[],[],[]}
+    'disable weights', true, svvW, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, false(1,4), {[],[],[],[]}
+    'disable weights, no weights', true, svvM, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, false(1,4), {[],[],[],[]}
+    'disable weights, no mean', false, svv, [1 3], "unweighted", [], [],[],[],[],[],[]
     
-    'state mean', true, svv, [1 2], {[],[]}, [true true], [1 1 0 0], [100 20 NaN NaN], [1 1 1 1]
-    'mean indices for state', false, svv, [1 2], {[],-2:2}, [true true],[],[],[],[],[]
-    'state mean, previous mean', true, svvM, [1 2], {[],[]}, [true true], [1 1 1 1], [100 20 3 3], [1 1 1 1]
-    'state mean, previous weights', true, svvW, [1 2], {[],[]}, [true true], [2 1 2 1], [100 20 3 3], [1 1 1 1]
+    'state mean', true, svv, [1 2], {[],[]}, [true true], [1 1 0 0], [100 20 NaN NaN], [1 1 1 1], {[],[],[],[]}, [true true false false], {[],[],[],[]}
+    'mean indices for state', false, svv, [1 2], {[],-2:2}, [true true],[],[],[],[],[],[]
+    'state mean, previous mean', true, svvM, [1 2], {[],[]}, [true true], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, [true true false false], {[],[],[],[]}
+    'state mean, previous weights', true, svvW, [1 2], {[],[]}, [true true], [2 1 2 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, [true true false false], {ones(100,1),[],ones(3,1),[]}
 
-    'ens mean',true, svv, [3 4], {1:3, 12:12:36}, [true true], [0 0 1 1], [NaN NaN 3 3], [100 20 1 1]
-    'ens mean, no indices', false, svv, [3 4], {1:3, []}, [true true],[],[],[],[],[]
-    'indices too large', false, svv, 3, {10000}, true,[],[],[],[],[]
-    'indices too small', false, svv, 3, -100000, true,[],[],[],[],[]
-    'ens mean, previous mean', true, svvM, 3, {1:5}, true, [1 1 1 1], [100 20 5 3], [1 1 1 1]
-    'ens mean, previous weights', true, svvW, 3, {-1:1}, true, [2 1 2 1], [100 20 3 3], [1 1 1 1]
-    'ens mean, weights conflict', false, svvW, 3, {-2:1}, true,[],[],[],[],[]
+    'ens mean',true, svv, [3 4], {1:3, 2}, [true true], [0 0 1 1], [NaN NaN 3 1], [100 20 1 1], {[],[],(1:3)',2}, [false false, true true], {[],[],[],[]}
+    'ens mean, no indices', false, svv, [3 4], {1:3, []}, [true true],[],[],[],[],[],[]
+    'indices too large', false, svv, 3, {10000}, true,[],[],[],[],[],[]
+    'indices too small', false, svv, 3, {-100000}, true,[],[],[],[],[],[]
+    'ens mean, previous mean', true, svvM, 3, {1:5}, false, [1 1 1 1], [100 20 5 1], [1 1 1 1], {[],[],(1:5)',2}, false(1,4), {[],[],[],[]}
+    'ens mean, previous weights', true, svvW, 3, {-1:1}, false, [2 1 2 1], [100 20 3 1], [1 1 1 1], {[],[],(-1:1)',2}, false(1,4), {ones(100,1),[],ones(3,1),[]}
+    'ens mean, weights conflict', false, svvW, 3, {-2:1}, false,[],[],[],[],[],[]
 
-    'ens, include nan', true, svv, 3, {-1:1}, false, [0 0 1 0], [NaN NaN 3 NaN], [100 20 1 1]
-    'state, include nan', true, svv, 1, {[]}, false, [1 0 0 0], [100 NaN NaN NaN], [1 20 1 1]
-    'mixed ens/state', true, svv, [1 3], {[], -1:1}, [false true], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1]
-    'dims with 0', true, svv, [3 0 1], {-1:1,[],[]}, [false false false], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1]
+    'ens, include nan', true, svv, 3, {-1:1}, true, [0 0 1 0], [NaN NaN 3 NaN], [100 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
+    'state, include nan', true, svv, 1, {[]}, true, [1 0 0 0], [100 NaN NaN NaN], [1 20 1 1], {[],[],[],[]}, [true false false false], {[],[],[],[]}
+    'mixed ens/state', true, svv, [1 3], {[], -1:1}, [false true], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
+    'dims with 0', true, svv, [3 0 1], {-1:1,[],[]}, [true false false], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
     };
 header = "DASH";
 
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.mean(tests{t,4:6}, header)
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            obj = obj.mean(tests{t,4:6}, header);
+
+            assert(isequaln(tests{t,7}, obj.meanType), 'mean type');
+            assert(isequaln(tests{t,8}, obj.meanSize), 'mean size');
+            assert(isequaln(tests{t,9}, obj.stateSize), 'state size');
+            assert(isequaln(tests{t,10}, obj.meanIndices), 'mean indices');
+            assert(isequaln(tests{t,11}, obj.omitnan), 'omitnan');
+            assert(isequaln(tests{t,12}, obj.weights), 'weights');
+            %...
+            % assert(output)
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
