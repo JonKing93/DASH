@@ -330,3 +330,69 @@ catch cause
 end
 
 end
+function[] = weightedMean
+
+grid = gridfile('test-lltr.grid');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svvM = svv.mean(1:4, {[],[],(12:12:36)',2}, false(1,4), 'test');
+svvW = svvM.weightedMean([1 2 3], {ones(100,1), ones(20,1), ones(3,1)}, 'test');
+
+tests = {
+    % test, succeed, obj, dims, weights, ...
+    % (output) meanType, weights, state size, mean size
+    'remove weights, no mean' true, svv, [1 3], {[],[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], NaN(1,4)
+    'remove weights, no weights', true, svvM, [1 3], {[],[]}, [1 1 1 1], {[],[],[],[]}, [1 1 1 1], [100 20 3 1]
+    'remove weights, weighted', true, svvW, [1 3], {[],[]}, [1 2 1 1], {[],ones(20,1),[],[]}, [1 1 1 1], [100 20 3 1]
+
+    'set new weights', true, svvM, [1 3], {ones(100,1), ones(3,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
+    'update existing weights', true, svvW, [1 3], {5*ones(100,1), 6*ones(3,1)}, [2 2 2 1], {5*ones(100,1), ones(20,1),6*ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
+    'mean index size conflict', false, svvM, 3, {ones(4,1)}, [],[],[],[]
+    'state size conflict', false, svvM, 1, {ones(101,1)}, [],[],[],[]
+    'size conflict, weighted', false, svvW, 3, {ones(4,1)}, [],[],[],[]
+    
+    'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 NaN NaN NaN], 
+    'new state, size conflict', false, svv, 1, {ones(101,1)}, [],[],[],[]
+    'set new ens mean', false, svv, 3, {ones(3,1)}, [],[],[],[]
+    'new ens mean no weights', true, svv, 3, {[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], NaN(1,4)
+
+    'set multiple dims', true, svvM, [3 1], {ones(3,1), ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
+    'dims with 0', true, svvM, [3 0 1], {ones(3,1), 5, ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
+    };
+header = "DASH";
+
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.weightedMean(tests{t,4:5}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            obj = obj.weightedMean(tests{t,4:5}, header);
+
+            assert(isequaln(tests{t,6}, obj.meanType), 'mean type');
+            assert(isequaln(tests{t,7}, obj.weights), 'weights');
+            assert(isequaln(tests{t,8}, obj.stateSize), 'state size');
+            assert(isequaln(tests{t,9}, obj.meanSize), 'mean size');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
+
+
