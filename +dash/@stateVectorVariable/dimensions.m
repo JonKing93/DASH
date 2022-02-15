@@ -1,14 +1,14 @@
 function[dimensions] = dimensions(obj, type)
 %% dash.stateVectorVariable.dimensions  List the dimensions of a state vector variable
 % ----------
-%   dimensions = obj.dimensions
-%   dimensions = obj.dimensions('all')
+%   dimensions = <strong>obj.dimensions</strong>
+%   dimensions = <strong>obj.dimensions</strong>('all')
 %   Return the list of all dimensions in the variable.
 %
-%   dimensions = obj.dimensions('state')
+%   dimensions = <strong>obj.dimensions</strong>('state')
 %   Return the list of state dimensions.
 %
-%   dimensions = obj.dimensions('ensemble')
+%   dimensions = <strong>obj.dimensions</strong>('ensemble')
 %   Return the list of ensemble dimensions.   
 % ----------
 %   Outputs:
