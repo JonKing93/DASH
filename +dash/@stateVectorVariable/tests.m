@@ -391,7 +391,69 @@ catch cause
 end
 
 end
+function[] = metadata
 
+convert = @(x,y,z) 5+x;
+args = {1,2};
+
+grid = gridfile('test-lltr.grid');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svvA = svv.metadata([3 4], 1, {(1:1000)',(1:3)'}, [], 'test');
+svvC = svv.metadata([3 4], 2, {convert, convert}, {args,args}, 'test');
+
+tests = {
+    % test, succeed, object, dims, type, arg1, arg2,...
+    % (output):   metadata type, metadata, convertFunction, convertArgs
+    'raw to raw', true, svv,3,0,[],[], [0 0 0 0], {[],[],[],[]}, {[],[],[],[]}, {[],[],[],[]}
+    'raw to alternate', true,svv,3,1,{(1:1000)'},[], [0 0 1 0], {[],[],(1:1000)',[]}, {[],[],[],[]}, {[],[],[],[]}
+    'raw to convert', true,svv,3,2,{convert},{args}, [0 0 2 0], {[],[],[],[]}, {[],[],convert,[]}, {[],[],args,[]}
+
+    'alternate to raw', true, svvA,3,0,[],[], [0 0 0 1], {[],[],[],(1:3)'}, {[],[],[],[]}, {[],[],[],[]}
+    'alternate to alternate', true, svvA,3,1,{(1:1000)'},[], [0 0 1 1], {[],[],(1:1000)',(1:3)'}, {[],[],[],[]}, {[],[],[],[]}
+    'alternate to convert', true, svvA,3,2,{convert},{args}, [0 0 2 1], {[],[],[],(1:3)'}, {[],[],convert,[]}, {[],[],args,[]}
+
+    'convert to raw', true, svvC,3,0,[],[], [0 0 0 2], {[],[],[],[]}, {[],[],[],convert}, {[],[],[],args}
+    'convert to alternate', true, svvC,3,1,{(1:1000)'},[], [0 0 1 2], {[],[],(1:1000)',[]}, {[],[],[],convert}, {[],[],[],args}
+    'convert to convert', true, svvC,3,2,{convert},{args}, [0 0 2 2], {[],[],[],[]}, {[],[],convert,convert}, {[],[],args,args}
+    
+    'state dimension', false, svv,1,0,[],[], [],[],[],[]
+    'alternate metadata wrong size', false, svv,3,1,{(1:2000)'},[], [],[],[],[]
+
+    'multiple dims', true, svv,[4 3],1,{(1:3)',(1:1000)'},[], [0 0 1 1], {[],[],(1:1000)',(1:3)'}, {[],[],[],[]}, {[],[],[],[]}
+    'dims with 0', true, svv,[4 0 3],1,{(1:3)',5,(1:1000)'},[], [0 0 1 1], {[],[],(1:1000)',(1:3)'}, {[],[],[],[]}, {[],[],[],[]}
+    };
+header = "DASH";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.metadata(tests{t,4:7}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            obj = obj.metadata(tests{t,4:7}, header);
+            
+            assert(isequaln(tests{t,8}, obj.metadataType), 'metadata type');
+            assert(isequaln(tests{t,9}, obj.metadata_), 'metadata');
+            assert(isequaln(tests{t,10}, obj.convertFunction), 'convert function');
+            assert(isequaln(tests{t,11}, obj.convertArgs), 'convert args');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 

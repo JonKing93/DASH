@@ -45,12 +45,12 @@ for k = 1:numel(dims)
     convertFunction = [];
     convertArgs = [];
 
-    % Parse metadata. Require rows match the number of reference indices
+    % Parse alternate metadata. Require rows match the number of reference indices
     if type==1
         metadata = arg1{k};
         nRows = size(metadata,1);
         if nRows ~= obj.ensSize(d)
-            metadataSizeConflictError(d, nRows, obj.ensSize(d), header);
+            metadataSizeConflictError(obj, d, nRows, obj.ensSize(d), header);
         end
     
     % Parse conversion function
@@ -64,9 +64,9 @@ for k = 1:numel(dims)
     
     % Update properties
     obj.metadataType(d) = type;
-    obj.metadata_(d) = metadata;
-    obj.convertFunction(d) = convertFunction;
-    obj.convertArgs(d) = convertArgs;
+    obj.metadata_{d} = metadata;
+    obj.convertFunction{d} = convertFunction;
+    obj.convertArgs{d} = convertArgs;
 end
 
 end
@@ -85,7 +85,7 @@ ME = MException(id, ...
     dim, dim, dim, link);
 throwAsCaller(ME);
 end
-function[ME] = metadataSizeConflictError(d, nRows, nIndex, header)
+function[ME] = metadataSizeConflictError(obj, d, nRows, nIndex, header)
 dim = obj.dims(d);
 id = sprintf('%s:metadataSizeConflict', header);
 ME = MException(id, ...
