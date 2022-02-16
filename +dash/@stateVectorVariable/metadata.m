@@ -1,8 +1,8 @@
 function[obj] = metadata(obj, dims, type, arg1, arg2, header)
-%% dash.stateVectorVariable.metadata  Sets metadata options for ensemble dimensions of a state vector variable
+%% dash.stateVectorVariable.metadata  Sets metadata options for dimensions of a state vector variable
 % ----------
 %   obj = <strong>obj.metadata</strong>(dims, 0, [], [], header)
-%   Use raw metadata for the indicated dimensions.
+%   Use raw gridfile metadata for the indicated dimensions.
 %
 %   obj = <strong>obj.metadata</strong>(dims, 1, metadata, [], header)
 %   Use user-provided metadata for the indicated dimensions.
@@ -12,8 +12,8 @@ function[obj] = metadata(obj, dims, type, arg1, arg2, header)
 %   functions and inputs.
 % ----------
 %   Inputs:
-%       dims (vector, linear indices [nDimensions]): The ensemble dimensions
-%           that should be updated.
+%       dims (vector, linear indices [nDimensions]): The dimensions that
+%           should have their metadata options updated.
 %       metadata (cell vector [nDimensions] {metadata matrix}): Alternate
 %           metadata to use for each dimension.
 %       conversionFunctions (cell vector [nDimensions] {function_handle}):
@@ -35,22 +35,23 @@ for k = 1:numel(dims)
         continue;
     end
 
-    % Only allow ensemble dimensions
-    if obj.isState(d)
-        stateDimensionError(obj, d, header);
-    end
-
     % Initialize metadata parameters
     metadata = [];
     convertFunction = [];
     convertArgs = [];
 
-    % Parse alternate metadata. Require rows match the number of reference indices
+    % Parse alternate metadata. 
     if type==1
         metadata = arg1{k};
+
+        % Require rows match the number of state/reference indices
+        nIndices = numel(obj.indices{d});
+        if nIndices == 0
+            nIndices = obj.gridSize(d);
+        end
         nRows = size(metadata,1);
-        if nRows ~= obj.ensSize(d)
-            metadataSizeConflictError(obj, d, nRows, obj.ensSize(d), header);
+        if nRows ~= nIndices
+            metadataSizeConflictError(obj, d, nRows, nIndices, header);
         end
     
     % Parse conversion function
@@ -72,25 +73,17 @@ end
 end
 
 % Error message
-function[] = stateDimensionError(obj, d, header)
-
-dim = obj.dims(d);
-link = '<a href="matlab:dash.doc(''stateVector.design'')">stateVector.design</a>';
-
-id = sprintf('%s:metadataOfStateDimension', header);
-ME = MException(id, ...
-    ['Cannot edit metadata settings for the "%s" dimension because "%s" is not an\n',...
-    'ensemble dimension. Either remove "%s" from the list of dimensions with metadata\n',...
-    'settings, or convert it to an ensemble dimension using %s.'],...
-    dim, dim, dim, link);
-throwAsCaller(ME);
-end
 function[ME] = metadataSizeConflictError(obj, d, nRows, nIndex, header)
 dim = obj.dims(d);
+if obj.isState(d)
+    type = 'state';
+else
+    type = 'reference';
+end
 id = sprintf('%s:metadataSizeConflict', header);
 ME = MException(id, ...
     ['The alternate metadata for the "%s" dimension must have one row per\n',...
-    'reference index (%.f), but it has %.f rows instead.'],...
-    dim, nIndex, nRows);
+    '%s index (%.f), but it has %.f rows instead.'],...
+    dim, type, nIndex, nRows);
 throwAsCaller(ME);
 end
