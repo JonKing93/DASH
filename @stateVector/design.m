@@ -54,7 +54,8 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %           logical vector the length of the dimension, a set of linear
 %           indices, or an empty array. If the indices for a dimension are
 %           an empty array, selects all elements along the dimension as
-%           state/reference dimensions.
+%           state/reference dimensions. If indices are linear indices, they
+%           cannot contain repeat elements.
 %
 %           If only a single dimension is listed, the dimension's indices
 %           may be provided directly as a vector, instead of in a scalar cell.
@@ -86,6 +87,12 @@ if ~exist('indices','var')
     indices = cell(1, nDims);
 else
     dash.assert.indexCollection(indices, nDims, [], dimensions, header);
+end
+
+% Require unique indices
+for d = 1:nDims
+    name = dash.string.indexedDimension(dimensions(d), d);
+    dash.assert.uniqueSet(indices{d}, name, header);
 end
 
 % Update each variable
