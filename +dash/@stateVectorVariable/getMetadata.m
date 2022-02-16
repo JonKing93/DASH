@@ -35,35 +35,42 @@ function[metadata, failed, cause] = getMetadata(obj, d, grid, header)
 failed = false;
 cause = [];
 
-% Use alternate metadata directly
-if obj.metadataType(d) == 1
+% Use alternate metadata
+if obj.metadataType(d)==1
     metadata = obj.metadata{d};
-    return
-end
 
-% Build gridfile object if necessary
-if dash.is.strflag(grid)
-    try
-        grid = gridfile(grid);
-    catch ME
-        [metadata, failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
-        return
+% Otherwise, loading from gridfile. Build gridfile if necessary
+else
+    if dash.is.strflag(grid)
+        try
+            grid = gridfile(grid);
+        catch ME
+            [metadata, failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
+            return
+        end
+
+        % Validate the gridfile object
+        [isvalid, cause] = obj.validateGrid(grid, header);
+        if ~isvalid
+            [metadata, failed, cause] = labelError(cause, 'invalidGridfile', header);
+            return
+        end
     end
 
-    % Validate the gridfile object
-    [isvalid, cause] = obj.validateGrid(grid, header);
-    if ~isvalid
-        [metadata, failed, cause] = labelError(cause, 'invalidGridfile', header);
-        return
-    end
+    % Extract gridfile metadata
+    dimension = obj.dims(d);
+    metadata = grid.metadata.(dimension);
 end
 
-% Extract metadata from gridfile
-dim = obj.dims(d);
-metadata = grid.metadata.(dim)(obj.indices{d}, :);
+% Use metadata at state / reference indices.
+rows = obj.indices{d};
+if isempty(rows)
+    rows = 1:obj.gridSize(d);
+end
+metadata = metadata(rows,:);
 
-% Finished if using raw metadata
-if obj.metadataType(d) == 0
+% Exit if not applying conversion function
+if obj.metadataType(d)~=2
     return
 end
 
@@ -85,10 +92,11 @@ catch ME
     return
 end
 
-% Check the number of rows match the ensemble size
+% Check the number of rows is correct
 nRows = size(metadata, 1);
-if nRows ~= obj.ensSize(d)
-    ME = metadataSizeConflict(obj, d, nRows, header);
+nRequired = numel(rows);
+if nRows ~= nRequired
+    ME = metadataSizeConflict(obj, d, nRows, nRequired, header);
     [metadata, failed, cause] = labelError(ME, 'metadataSizeConflict', header);
 end
 
@@ -102,10 +110,10 @@ id = sprintf('%s:%s', header, label);
 ME = MException(id, '');
 ME = addCause(ME, cause);
 end
-function[ME] = metadataSizeConflict(obj, d, nRows, header)
+function[ME] = metadataSizeConflict(obj, d, nRows, nRequired, header)
 dim = obj.dims(d);
 id = sprintf('%s:metadataSizeConflict', header);
 ME = MException(id, ['The "%s" metadata must have %.f rows, but the output from ',...
     'the metadata conversion function has %.f rows instead.'], ...
-    dim, obj.ensSize(d), nRows);
+    dim, nRequired, nRows);
 end
