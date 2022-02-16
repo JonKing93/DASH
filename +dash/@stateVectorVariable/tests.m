@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-
+validateGrid;
 %%%
 
 % Run tests
@@ -454,6 +454,43 @@ catch cause
 end
 
 end
+
+function[] = validateGrid
+
+grid = gridfile('test-lltr');
+diffSize = gridfile('test-lltr-different-size');
+diffDims = gridfile('test-llt');
+
+svv = dash.stateVectorVariable(grid);
+
+tests = {
+    'valid', grid, true
+    'different dimensions', diffDims, false
+    'different size', diffSize, false
+};
+header = "DASH";
+
+try
+    for t = 1:size(tests,1)
+        [isvalid, cause] = svv.validateGrid(tests{t,2}, header);
+
+        assert(isequal(isvalid, tests{t,3}), 'isvalid');
+        if isvalid
+            assert(isempty(cause), 'empty cause');
+        else
+            assert(contains(cause.identifier, header), 'cause');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
 
 
 
