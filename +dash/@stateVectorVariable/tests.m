@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-validateGrid;
+getMetadata;
 %%%
 
 % Run tests
@@ -488,6 +488,103 @@ catch cause
 end
 
 end
+function[] = getMetadata
+
+file = "test-lltr";
+grid = gridfile(file);
+diffSize = "test-lltr-different-size";
+notfile = fullfile(pwd, 'not-a-file');
+
+svv = dash.stateVectorVariable(grid);
+lons = 2:2:48;
+lats = [7 2 19 5 1];
+times = [7 2 19 5 1];
+runs = [3 1];
+svv = svv.design(1:4, [true true false false], {lons, lats, times, runs}, "test");
+
+convert1 = @datevec;
+convert2 = @(x,y,z) datevec(x)+y+z;
+failConvert = @() error('failed');
+invalidConvert = @(x) num2cell(rand(size(x)), ones(size(x,1),1), ones(size(x,2),1));
+repeatConvert = @(x) ones(size(x));
+rowsConvert = @() 5;
+
+altMeta = [1 2;3 4;5 6;7 8;9 10];
+svvA = svv.metadata(3, 1, {altMeta}, [], 'test');
+svvC1 = svv.metadata(3, 2, {convert1}, {{}}, 'test');
+svvC2 = svv.metadata(3, 2, {convert2}, {{5,6}}, 'test');
+svvF = svv.metadata(3, 2, {failConvert}, {{}}, 'test');
+svvI = svv.metadata(3, 2, {invalidConvert}, {{}}, 'test');
+svvR = svv.metadata(3, 2, {repeatConvert}, {{}}, 'test');
+svvRows = svv.metadata(3, 2, {rowsConvert}, {{}}, 'test');
+
+latMeta = grid.metadata.lat(lats,:);
+lonMeta = grid.metadata.lon(lons,:);
+timeMeta = grid.metadata.time(times,:);
+convertMeta1 = convert1(timeMeta);
+convertMeta2 = convert2(timeMeta, 5, 6);
+
+tests = {
+    % test, should succeed, object, dimension, gridfile, output metadata
+    'metadata', true, svv, 2, grid, latMeta
+    'metadata, multiple cols', true, svv, 1, grid, lonMeta
+
+    'state dimension, object', true, svv, 1, grid, lonMeta
+    'state dimension, filename', true, svv, 1, file, lonMeta 
+    'state dimension, failed build', false, svv, 1, notfile, []
+    'state dimension, invalid build', false, svv, 1, diffSize, []
+
+    'raw, object', true, svv, 3, grid, timeMeta
+    'raw, filename', true, svv, 3, file, timeMeta
+    'raw, failed build', false, svv, 3, notfile, timeMeta
+    'raw, invalid build', false, svv, 3, diffSize, timeMeta
+
+    'alternate, object', true, svvA, 3, grid, altMeta
+    'alternate, filename', true, svvA, 3, file, altMeta
+    'alternate, failed build', true, svvA, 3, notfile, altMeta
+    'alternate, invalid build', true, svvA, 3, diffSize, altMeta
+
+    'convert, object', true, svvC1, 3, grid, convertMeta1
+    'convert, filename', true, svvC1, 3, file, convertMeta1
+    'convert, failed build', false, svvC1, 3, notfile, []
+    'convert, invalid build', false, svvC1, 3, diffSize, []
+
+    'convert, extra args', true, svvC2, 3, grid, convertMeta2
+    'failed conversion function', false, svvF, 3, grid, []
+    'convert metadata invalid', false, svvI, 3, grid, []
+    'convert metadata not unique', false, svvR, 3, grid, []
+    'convert metadata wrong rows', false, svvRows, 3, grid, []
+    };
+header = "DASH";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+        [metadata, failed, cause] = obj.getMetadata(tests{t,4:5}, header);
+
+        shouldSucceed = tests{t,2};
+        if shouldSucceed
+            assert(isequal(tests{t,6}, metadata), 'metadata');
+            assert(isequal(failed, false), 'failed is false');
+            assert(isempty(cause), 'empty cause');
+        else
+            assert(isempty(metadata), 'empty metadata');
+            assert(isequal(failed, true), 'failed is true');
+            assert(contains(cause.identifier, header), 'cause');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
+
+
 
 
 

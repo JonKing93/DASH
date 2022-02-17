@@ -13,12 +13,11 @@ function[metadata, failed, cause] = getMetadata(obj, d, grid, header)
 % ----------
 %   Inputs:
 %       d (scalar linear index): The index of a dimension in the variable
-%       grid ([] | string scalar | scalar gridfile object): The gridfile
-%           object required to load the metadata. An empty array is
-%           permitted if the user specified alternate metadata. If grid is
+%       grid (string scalar | scalar gridfile object): The gridfile
+%           object required to load the metadata. If grid is
 %           a string scalar, attempts to build the gridfile when gridfile
 %           metadata is required. If grid is a gridfile object, extracts
-%           metadata directly.
+%           metadata directly from the object without validating.
 %       header (string scalar): Header for thrown error IDs.
 %
 %   Outputs:
@@ -37,7 +36,7 @@ cause = [];
 
 % Return alternate metadata directly
 if obj.metadataType(d)==1
-    metadata = obj.metadata{d};
+    metadata = obj.metadata_{d};
     return
 end
 
@@ -84,9 +83,9 @@ end
 
 % Check that converted metadata is a valid metadata matrix
 try
-    metadata = gridMetadata(dim, metadata);
-    metadata.assertUnique(dim, header);
-    metadata = metadata.(dim);
+    metadata = gridMetadata(dimension, metadata);
+    metadata.assertUnique(dimension, header);
+    metadata = metadata.(dimension);
 catch ME
     [metadata, failed, cause] = labelError(ME, 'invalidConversion', header);
     return
