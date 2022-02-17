@@ -1,7 +1,7 @@
 function[metadata, failed, cause] = getMetadata(obj, d, grid, header)
 %% dash.stateVectorVariable.getMetadata  Return metadata along a dimension of a state vector variable
 % ----------
-%   [metadata, failed, cause] = obj.getMetadata(d, grid, header)
+%   [metadata, failed, cause] = <strong>obj.getMetadata</strong>(d, grid, header)
 %   Returns final metadata along the indexed dimension. Selects metadata
 %   from a gridfile, user-specified alternate metadata, or from the output
 %   of a conversion function, as appropriate.

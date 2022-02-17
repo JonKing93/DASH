@@ -1,4 +1,12 @@
 function[] = tests
+%% dash.stateVectorVariable.tests  Unit tests for the stateVectorVariable class
+% ----------
+%   dash.stateVectorVariable.tests
+%   Runs the tests. If successful, exits silently. Otherwise, throws error
+%   at the first failed test.
+% ----------
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.tests')">Documentation Page</a>
 
 % Move to test folder
 here = mfilename('fullpath');

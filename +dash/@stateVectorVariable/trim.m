@@ -1,7 +1,7 @@
 function[obj] = trim(obj)
 %% dash.stateVectorVariable.trim  Trim reference indices to only allow complete sequences and means.
 % ----------
-%   obj = obj.trim
+%   obj = <strong>obj.trim</strong>
 %   Remove reference indices that would result in an ensemble member with
 %   an incomplete sequence or incomplete mean.
 % ----------

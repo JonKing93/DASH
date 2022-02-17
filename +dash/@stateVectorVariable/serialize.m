@@ -1,7 +1,7 @@
 function[s] = serialize(obj)
 %% dash.stateVectorVariable.serialize  Convert dash.stateVectorVariable vector to a struct that supports fast saving/loading
 % ----------
-%   s = obj.serialize
+%   s = <strong>obj.serialize</strong>
 %   Serializes a vector of stateVectorVariable objects. Converts nested
 %   fields to serial arrays. Organizes serial arrays and deserialization
 %   parameters in a struct. The struct can be provide to the deserialize

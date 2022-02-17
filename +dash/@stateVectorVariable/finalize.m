@@ -1,7 +1,7 @@
 function[obj] = finalize(obj)
 %% dash.stateVectorVariable.finalize  Fill empty and placeholder values in a state vector variable
 % ----------
-%   obj = obj.finalize
+%   obj = <strong>obj.finalize</strong>
 %   Fills empty state / reference indices with values. If a dimension has
 %   no means, sets the mean size to 1. Set mean and sequence indices to 0
 %   in ensemble dimensions that lack these indices.

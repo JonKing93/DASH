@@ -1,7 +1,7 @@
 function[sizes, dimNames] = ensembleSizes(obj)
 %% dash.stateVectorVariable.ensembleSizes  Returns the sizes and names of ensemble dimensions
 % ----------
-%   [sizes, names] = obj.ensembleSizes
+%   [sizes, names] = <strong>obj.ensembleSizes</strong>
 %   Return the sizes and names of ensemble dimensions.
 % ----------
 %   Outputs:

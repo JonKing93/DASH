@@ -1,6 +1,12 @@
 function[obj] = deserialize(s)
 %% dash.stateVectorVariable.deserialize  Rebuild a vector of stateVectorVariable objects from a serialized struct
 % ----------
+%   obj = dash.stateVectorVariable.deserialize(s)
+%   Rebuilds a vector of stateVectorVariable objects from a serialized
+%   struct. This method DOES NOT error check the deserialized struct.
+% ----------
+%   Inputs:
+%       s (scalar struct): A serialized struct for a 
 
 % Get the number of variables and dimensions. Initialize the vector
 nVars = numel(s.dims);

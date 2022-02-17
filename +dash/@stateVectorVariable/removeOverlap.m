@@ -1,7 +1,7 @@
 function[subMembers] = removeOverlap(obj, dims, subMembers)
 %% dash.stateVectorVariable.removeOverlap  Remove ensemble members that overlap previous members
 % ----------
-%   subMembers = obj.removeOverlap(dims, subMembers)
+%   subMembers = <strong>obj.removeOverlap</strong>(dims, subMembers)
 %   Takes a set of dimensionally-subscripted ensemble members and removes
 %   any members whose metadata overlaps metadata in previous ensemble
 %   members. Each ensemble member is a row of subMembers. Removes

@@ -1,17 +1,17 @@
 function[limits] = indexLimits(obj, dims, subMembers, includeState)
 %% dash.stateVectorVariable.indexLimits  Return the gridfile index limits required to load a set of ensemble members
 % ----------
-%   limits = obj.indexLimits(dims, subMembers, includeState)
+%   limits = <strong>obj.indexLimits</strong>(dims, subMembers, includeState)
 %   Returns index limits along dimensions of a variable. Size of the output
 %   and dimension order of limits will depend on whether state dimension
 %   limits are required or not.
 %
-%   allLimits = obj.indexLimits(dims, subMembers, true)
+%   allLimits = <strong>obj.indexLimits</strong>(dims, subMembers, true)
 %   Determines the gridfile indices needed to load all the indicated
 %   ensemble members. Includes limits for all dimensions in the variable.
 %   The order of limits is the order of dimensions in the variable.
 %
-%   ensLimits = obj.indexLimits(dims, subMembers, false)
+%   ensLimits = <strong>obj.indexLimits</strong>(dims, subMembers, false)
 %   Determines the index limits along ensemble dimensions required to load
 %   the indicated ensemble members. Only includes limits for ensemble
 %   dimensions. The order of limits is the order of columns of subMembers

@@ -1,7 +1,7 @@
 function[isvalid, cause] = validateGrid(obj, grid, header)
 %% dash.stateVectorVariable.validateGrid  Check that a gridfile object matches a variable's recorded gridfile parameters
 % ----------
-%   obj.validateGrid(grid)
+%   <strong>obj.validateGrid</strong>(grid)
 %   Checks that a gridfile object matches the gridfile parameters recorded
 %   for a state vector variable. Throws an error if not.
 % ----------

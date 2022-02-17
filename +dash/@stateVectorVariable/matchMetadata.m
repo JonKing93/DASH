@@ -1,7 +1,7 @@
 function[obj] = matchMetadata(obj, d, metadata, grid)
 %% dash.stateVectorVariable.matchMetadata  Order reference indices so that ensemble metadata matches a ordering set
 % ----------
-%   obj = obj.matchMetadata(d, metadata, grid)
+%   obj = <strong>obj.matchMetadata</strong>(d, metadata, grid)
 %   Compares the variable's metadata along the indexed dimension to an
 %   ordering set of metadata. Removes reference indices with metadata not
 %   in the ordering set. Reorders the remaining reference indices to match
