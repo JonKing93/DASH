@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-matchMetadata
+removeOverlap
 %%%
 
 % Run tests
@@ -701,6 +701,47 @@ try
         assert(isequal(tests{t,4}, obj.indices), 'indices');
         assert(isequal(tests{t,5}, obj.ensSize), 'ensSize');
         assert(isequal(tests{t,6}, obj.metadata_), 'metadata');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = removeOverlap
+
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design(1:3, [false false false], {[],[],[]}, 'test');
+svvP1 = svv.mean(1:3, {0:1, 0:1, 0:1}, true(1,3), 'test');
+svvP3 = svv.mean(1:3, {0:3,0:3,0:3}, true(1,3), 'test');
+svvPM1 = svv.mean(1:3, {-1:1, -1:1, -1:1}, true(1,3), 'test');
+
+membersP1 = [1 1 1;2 2 2;3 3 3;4 4 4;5 5 5];
+members3P1 = [1 1 1;1 1 2;1 1 3;1 1 4];
+membersDims = [10 20 30;11 21 31;12 22 32;13 23 33;14 24 34;15 25 35];
+membersUnordered = [4 4 4;2 2 2;1 1 1;3 3 3;5 5 5];
+membersProp = [2 2;3 3;4 4;5 5;6 6;7 7;8 8];
+
+tests = {
+    % test, object, dims, members, output members
+    'no overlap', svv, 1:3, membersP1, membersP1
+    'overlap but not all dims', svv, 1:3, members3P1, members3P1
+    'overlap all dims', svvP1, 1:3, membersP1, [1 1 1;3 3 3;5 5 5] 
+    'overlap, unordered dims', svvP1, [2 1 3], membersDims, [10 20 30;12 22 32; 14 24 34] 
+    'overlap, multiple matches', svvP3, 1:3, membersP1, [1 1 1;5 5 5]
+    'overlap, unordered members', svvP1, 1:3, membersUnordered, [4 4 4;2 2 2]
+    'multiple propagation of add indices', svvPM1, [1 3], membersProp, [2 2;5 5;8 8]
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+        subMembers = obj.removeOverlap(tests{t,3:4});
+
+        assert(isequal(subMembers, tests{t,5}), 'output');
     end
 catch cause
     ME = MException('test:failed', '%.f: %s', t, tests{t,1});
