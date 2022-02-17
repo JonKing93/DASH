@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-getMetadata;
+ensembleSizes;
 %%%
 
 % Run tests
@@ -581,10 +581,35 @@ end
 
 end
 
+function[] = ensembleSizes
 
+grid = gridfile('test-lltr');
+svvState = dash.stateVectorVariable(grid);
+svvEns = svvState.design(1:4, [false, false, false, false], {[],[],[],[]}, 'test');
+svv = svvState.design(3:4, [false, false], {[],[]}, 'test');
 
+tests = {
+    % test, object, sizes, dim names
+    'all ensemble', svvEns, [100 20 1000 3], ["lon","lat","time","run"]
+    'all state', svvState, NaN(1,0), strings(1,0)
+    'mixed dimensions', svv, [1000 3], ["time","run"]
+    };
 
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        [sizes, dims] = obj.ensembleSizes;
 
+        assert(isequal(sizes, tests{t,3}), 'sizes');
+        assert(isequal(dims, tests{t,4}), 'dimension names');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 
