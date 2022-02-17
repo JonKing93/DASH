@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-finalize
+addIndices;
 %%%
 
 % Run tests
@@ -671,5 +671,46 @@ catch cause
 end
 
 end
+function[] = addIndices
+
+timeMean = [-2 8 0 4 -3]';
+timeSeq = -2:1;
+allIndex = timeMean + timeSeq;
+allIndex = allIndex(:);
+
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design(3, false, {[]}, 'test');
+svvM = svv.mean(3, {timeMean}, true, 'test');
+svvS = svv.sequence(3, {timeSeq}, {(1:4)'}, 'test');
+svvMS = svvM.sequence(3, {timeSeq}, {(1:4)'}, 'test');
+
+tests = {
+    'no mean, no sequence', svv, 0
+    'mean, no sequence', svvM, timeMean
+    'sequence, no mean', svvS, timeSeq'
+    'sequence and mean', svvMS, allIndex
+};
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+        indices = obj.addIndices(3);
+
+        assert(isequal(indices, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
+
+
 
 

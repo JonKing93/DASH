@@ -12,6 +12,9 @@ function[indices] = addIndices(obj, d)
 %   corresponding to sequence elements are consecutive. The integers
 %   iterate over mean indices in sequence element 1, then mean indices in
 %   sequence element 2, etc.
+%
+%   **Important**: This method should only be called after the "finalize"
+%   method has been applied to a state vector variable.
 % ----------
 %   Inputs:
 %       d (scalar linear index): The index of an ensemble dimension in the
