@@ -31,7 +31,7 @@ for k = 1:numel(dims)
     obj.indices{d}(remove) = [];
     obj.ensSize(d) = numel(obj.indices{d});
     if obj.metadataType(d)==1
-        obj.metadata{d}(remove,:) = [];
+        obj.metadata_{d}(remove,:) = [];
     end
 end
 

@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-addIndices;
+trim
 %%%
 
 % Run tests
@@ -610,6 +610,55 @@ catch cause
 end
 
 end
+function[] = trim
+
+timeAddP = [-4 -1];
+timeAddE = [1 4];
+timeAddPE = [-4 1 -1 4];
+
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design([3 4], [false false], {[],[]}, 'test');
+
+allLon = (1:svv.gridSize(1))';
+allLat = (1:svv.gridSize(2))';
+allTime = (1:svv.gridSize(3))';
+allRun = (1:svv.gridSize(4))';
+altMeta = [allTime, 1000+allTime];
+
+svvP = svv.mean(3, {timeAddP}, true, 'test');
+svvE = svv.mean(3, {timeAddE}, true, 'test');
+svvPE = svv.mean(3, {timeAddPE}, true, 'test');
+svvA = svvPE.metadata(3, 1, {altMeta}, [], 'test');
+
+tests = {
+    % test, object, indices, ensSize, metadata
+    'all valid', svv, {allLon,allLat,allTime,allRun}, [1 1 1000 3], {[],[],[],[]}
+    'precede', svvP, {allLon,allLat,allTime(5:end),allRun}, [1 1 996 3], {[],[],[],[]}
+    'exceed', svvE, {allLon,allLat,allTime(1:end-4),allRun}, [1 1 996 3], {[],[],[],[]}
+    'precede and excede', svvPE, {allLon,allLat,allTime(5:end-4),allRun}, [1 1 992 3], {[],[],[],[]}
+    'remove alternate metadata', svvA, {allLon,allLat,allTime(5:end-4),allRun}, [1 1 992 3], {[],[],altMeta(5:end-4,:),[]}
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+        obj = obj.trim;
+
+        assert(isequal(tests{t,3}, obj.indices), 'indices');
+        assert(isequal(tests{t,4}, obj.ensSize), 'ensSize');
+        assert(isequal(tests{t,5}, obj.metadata_), 'metadata');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
 
 function[] = finalize
 
