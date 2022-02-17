@@ -35,32 +35,32 @@ function[metadata, failed, cause] = getMetadata(obj, d, grid, header)
 failed = false;
 cause = [];
 
-% Use alternate metadata
+% Return alternate metadata directly
 if obj.metadataType(d)==1
     metadata = obj.metadata{d};
+    return
+end
 
-% Otherwise, loading from gridfile. Build gridfile if necessary
-else
-    if dash.is.strflag(grid)
-        try
-            grid = gridfile(grid);
-        catch ME
-            [metadata, failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
-            return
-        end
-
-        % Validate the gridfile object
-        [isvalid, cause] = obj.validateGrid(grid, header);
-        if ~isvalid
-            [metadata, failed, cause] = labelError(cause, 'invalidGridfile', header);
-            return
-        end
+% Otherwise, build gridfile if necessary
+if dash.is.strflag(grid)
+    try
+        grid = gridfile(grid);
+    catch ME
+        [metadata, failed, cause] = labelError(ME, 'couldNotBuildGridfile', header);
+        return
     end
 
-    % Extract gridfile metadata
-    dimension = obj.dims(d);
-    metadata = grid.metadata.(dimension);
+    % Validate the gridfile object
+    [isvalid, cause] = obj.validateGrid(grid, header);
+    if ~isvalid
+        [metadata, failed, cause] = labelError(cause, 'invalidGridfile', header);
+        return
+    end
 end
+
+% Extract full gridfile metadata for the dimension
+dimension = obj.dims(d);
+metadata = grid.metadata.(dimension);
 
 % Use metadata at state / reference indices.
 rows = obj.indices{d};
