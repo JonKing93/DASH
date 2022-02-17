@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-removeOverlap
+indexLimits
 %%%
 
 % Run tests
@@ -847,10 +847,43 @@ catch cause
 end
 
 end
+function[] = indexLimits
 
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design(1:4,[false true false false], {[],[],[],[]}, 'test');
+svvA = svv.mean(3, {-3:1}, true(1,2), 'test');
+svvA = svvA.sequence(3, {6:8}, {(1:3)'}, 'test');
 
+members = [17 12 1;77 301 2;22 509 1;86 899 3;86 899 1];
 
+addLimits = [17 86;1 20;15 908;1 3];
+noaddLimits = [17 86;1 20;12 899;1 3];
 
+tests = {
+    % test, object, dims, subMembers, include state, (output) limits
+    'all, no add indices', svv, [1 3 4], members, true, noaddLimits
+    'all, with add indices', svvA, [1 3 4], members, true, addLimits
+    'all, unordered dims', svvA, [4 1 3], members(:,[3 1 2]), true, addLimits
+    'ens, no add indices', svv, [1 3 4], members, false, noaddLimits([1 3 4],:)
+    'ens, with add indices', svvA, [1 3 4], members, false, addLimits([1 3 4],:)
+    'ens, unordered dims',svvA, [4 1 3], members(:,[3 1 2]), false, addLimits([4 1 3],:)
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+        limits = obj.indexLimits(tests{t,3:5});
+        assert(isequal(limits, tests{t,6}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 

@@ -19,7 +19,7 @@ function[limits] = indexLimits(obj, dims, subMembers, includeState)
 % ----------
 %   Inputs:
 %       dims (vector, linear indices [nEnsDims]): The dimension indices that
-%           correpsond to the columns of subMembers.
+%           correspond to the columns of subMembers.
 %       subMembers (matrix, linear indices [nMembers x nEnsDims]): A set of
 %           dimensionally-subscripted ensemble members for the variable.
 %       includeState (scalar logical): Set to true if the method should
