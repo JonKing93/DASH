@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-trim
+matchMetadata
 %%%
 
 % Run tests
@@ -626,6 +626,8 @@ allTime = (1:svv.gridSize(3))';
 allRun = (1:svv.gridSize(4))';
 altMeta = [allTime, 1000+allTime];
 
+svvN = svv.design(3, false, {1}, 'test');
+svvN = svvN.mean(3, {-5}, true, 'test');
 svvP = svv.mean(3, {timeAddP}, true, 'test');
 svvE = svv.mean(3, {timeAddE}, true, 'test');
 svvPE = svv.mean(3, {timeAddPE}, true, 'test');
@@ -634,6 +636,7 @@ svvA = svvPE.metadata(3, 1, {altMeta}, [], 'test');
 tests = {
     % test, object, indices, ensSize, metadata
     'all valid', svv, {allLon,allLat,allTime,allRun}, [1 1 1000 3], {[],[],[],[]}
+    'none valid', svvN, {allLon, allLat, NaN(1,0), allRun}, [1 1 0 3], {[],[],[],[]}
     'precede', svvP, {allLon,allLat,allTime(5:end),allRun}, [1 1 996 3], {[],[],[],[]}
     'exceed', svvE, {allLon,allLat,allTime(1:end-4),allRun}, [1 1 996 3], {[],[],[],[]}
     'precede and excede', svvPE, {allLon,allLat,allTime(5:end-4),allRun}, [1 1 992 3], {[],[],[],[]}
@@ -657,8 +660,55 @@ catch cause
 end
 
 end
+function[] = matchMetadata
 
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design(3, false, {[]}, 'test');
+svvM = svv.metadata(3, 1, {grid.metadata.time}, [], 'test');
 
+ordered = 5:50;
+unordered = [6 19 200 7 599 2];
+[~, reorder] = sort(unordered);
+
+allLon = (1:svv.gridSize(1))';
+allLat = (1:svv.gridSize(2))';
+allTime = (1:svv.gridSize(3))';
+allRun = (1:svv.gridSize(4))';
+
+metaA = grid.metadata.time;
+metaN = grid.metadata.time + calyears(3000);
+metaO = grid.metadata.time(ordered);
+metaU = grid.metadata.time(unordered);
+metaM = [grid.metadata.time(unordered); metaN];
+
+tests = {
+    % test, object, metadata, (output) indices, ensSize, metadata
+    'all matching', svv, metaA, {allLon,allLat,allTime,allRun}, [1 1 1000 1], {[],[],[],[]}
+    'no matching', svv, metaN, {allLon,allLat,NaN(0,1),allRun}, [1 1 0 1], {[],[],[],[]}
+    'some match, ordered', svv, metaO, {allLon,allLat,allTime(ordered),allRun}, [1 1 numel(ordered), 1], {[],[],[],[]}
+    'some match, unordered', svv, metaU, {allLon,allLat,allTime(unordered(reorder)),allRun}, [1 1 numel(unordered),1], {[],[],[],[]}
+    'non-matching in metadata', svv, metaM, {allLon,allLat,allTime(unordered(reorder)),allRun}, [1 1 numel(unordered),1], {[],[],[],[]}
+    'update metadata', svvM, metaU, {allLon,allLat,allTime(unordered(reorder)),allRun}, [1 1 numel(unordered),1], {[],[],metaU(reorder,:),[]}
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+        obj = obj.matchMetadata(3, tests{t,3}, grid);
+
+        assert(isequal(tests{t,4}, obj.indices), 'indices');
+        assert(isequal(tests{t,5}, obj.ensSize), 'ensSize');
+        assert(isequal(tests{t,6}, obj.metadata_), 'metadata');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 function[] = finalize
 
