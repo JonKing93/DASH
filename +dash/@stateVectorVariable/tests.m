@@ -11,7 +11,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-ensembleSizes;
+finalize
 %%%
 
 % Run tests
@@ -26,22 +26,22 @@ mean;
 weightedMean;
 metadata;
 
-validateGrid
-getMetadata
+validateGrid;
+getMetadata;
 
-ensembleSizes
-trim
-matchMetadata
-removeOverlap
+ensembleSizes;
+trim;
+matchMetadata;
+removeOverlap;
 
-finalize
-addIndices
-indexLimits
-parametersForBuild
-buildMembers
+finalize;
+addIndices;
+indexLimits;
+parametersForBuild;
+buildMembers;
 
-serialize
-deserialize
+serialize;
+deserialize;
 
 end
 
@@ -191,7 +191,7 @@ tests = {
     'repeat indices, state',true, svv, 1, true, {[1 1 1]}
     'repeat indices, ens', true, svv, 3, false, {[1 1 1]}
 
-    'weights conflict',false, svvWeight, 1, true, {1:3}
+    'state to state, weights conflict',false, svvWeight, 1, true, {1:3}
     'metadata conflict',false, svvMeta, 3, false, {1:3}
     'mean indices conflict',false,svvMean, 3, true, {[]} 
     };
@@ -611,9 +611,65 @@ end
 
 end
 
+function[] = finalize
+
+grid = gridfile('test-lltr.grid');
+svv = dash.stateVectorVariable(grid);
+
+allLon = (1:svv.gridSize(1))';
+allLat = (1:svv.gridSize(2))';
+allTime = (1:svv.gridSize(3))';
+allRun = (1:svv.gridSize(4))';
+
+lons = [2 57 19 1]';
+lats = (2:2:18)';
+times = [1 209 55 811 3]';
+runs = [3 1]';
+
+timeAdd = [-4 8 0 -1]';
+runAdd = (-2:1)';
+
+empty = svv.design([3 4], [false false], {[],[]}, 'test');
+mixedIndex = svv.design(1:4, [true true false false], {[],lats,[],runs}, 'test');
+allIndex = svv.design(1:4, [true true false false], {lons,lats,times,runs}, 'test');
+mixedMean = empty.mean([2 4], {[],runAdd}, [true true], 'test');
+allMean = empty.mean(1:4, {[],[], timeAdd, runAdd}, true(1,4), 'test');
+mixedSeq = empty.sequence(4, {runAdd}, {(1:4)'}, 'test');
+meanSeq = mixedMean.sequence(3, {timeAdd}, {(1:4)'}, 'test');
 
 
+tests = {
+    % test, object, (output) indices, mean size, mean indices, sequence indices
+    'all empty indices', empty, {allLon,allLat,allTime,allRun}, [1 1 1 1], {[],[],0,0}, {[],[],0,0}
+    'mixed indices', mixedIndex, {allLon,lats,allTime,runs}, [1 1 1 1], {[],[],0,0}, {[],[],0,0}
+    'no empty indices', allIndex, {lons,lats,times,runs}, [1 1 1 1], {[],[],0,0}, {[],[],0,0}
 
+    'all empty mean', empty, {allLon,allLat,allTime,allRun}, [1 1 1 1], {[],[],0,0}, {[],[],0,0}
+    'mixed empty mean', mixedMean, {allLon,allLat,allTime,allRun}, [1 20 1 4], {[],[],0,runAdd}, {[],[],0,0}
+    'no empty mean', allMean, {allLon,allLat,allTime,allRun}, [100 20 4 4], {[],[],timeAdd,runAdd}, {[],[],0,0}
 
+    'mean indices, no sequence', mixedMean, {allLon,allLat,allTime,allRun}, [1 20 1 4], {[],[],0,runAdd}, {[],[],0,0}
+    'sequence indices, no mean', mixedSeq, {allLon,allLat,allTime,allRun}, [1 1 1 1], {[],[],0,0}, {[],[],0,runAdd} 
+    'mean and sequence', meanSeq, {allLon,allLat,allTime,allRun}, [1 20 1 4], {[],[],0,runAdd}, {[],[],timeAdd,0}
+    'no mean, no sequence', empty, {allLon,allLat,allTime,allRun}, [1 1 1 1], {[],[],0,0}, {[],[],0,0}
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        obj = obj.finalize;
+
+        assert(isequal(obj.indices, tests{t,3}), 'indices');
+        assert(isequal(obj.meanSize, tests{t,4}), 'meanSize');
+        assert(isequal(obj.meanIndices, tests{t,5}), 'mean indices');
+        assert(isequal(obj.sequenceIndices, tests{t,6}), 'sequence indices');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
