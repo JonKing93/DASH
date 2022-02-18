@@ -24,8 +24,9 @@ classdef stateVectorVariable
 %   The class framework allows multiple stateVectorVariable objects to be 
 %   stored as a vector, which is utilized by the stateVector class.
 %   However, such vectors are highly nested and are slow to save directly.
-%   See the dash.serializedStateVectorVariables class for options to
-%   serialize/deserialize vectors for fast saving and loading.
+%   Instead, these vectors should be serialized before saving, and
+%   deserialized upon load. See the "serialize" and "deserialize" commands
+%   to implement these options.
 % ----------
 % dash.stateVectorVariable methods:
 %
@@ -61,6 +62,10 @@ classdef stateVectorVariable
 %   indexLimits         - Return limits of gridfile dimension indices required to load ensemble members
 %   parametersForBuild  - Return parameters used for building ensemble members
 %   buildMembers        - Build a set of ensemble members
+%
+% Serialization:
+%   serialize           - Convert variables to a struct that supports fast saving / loading
+%   deserialize         - Rebuild variables from a serialized struct
 %
 % Unit tests:
 %   tests               - Unit tests for the dash.stateVectorVariable class
@@ -133,6 +138,12 @@ methods
     limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
     X = buildMembers(obj, dims, subMembers, grid, source, parameters);
+
+    % Serialization
+    s = serialize(obj);
+end
+methods (Static)
+    obj = deserialize(s);
 end
 
 % Constructor
