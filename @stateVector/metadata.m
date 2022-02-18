@@ -31,8 +31,8 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %   obj = obj.metadata(variables, dimensions, 1|"s"|"set", alternateMetadata)
 %   Specify an alternate set of metadata to use for a dimension, which will
 %   be used instead of the gridfile metadata. The metadata must be a
-%   matrix, and the number of rows must match the number of reference
-%   indices for the variable.
+%   matrix, and the number of rows must match the number of state/reference
+%   indices for the dimension.
 %
 %   obj = obj.metadata(variables, dimensions, 2|"c"|"convert", conversionFunction)
 %   obj = obj.metadata(variables, dimensions, 2|"c"|"convert", conversionFunction, conversionArgs)
@@ -68,7 +68,7 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %           [0|"r"|"raw" (default)]: Use gridfile metadata
 %           [1|"s"|"set"]: Use an alternate set of user-specified metadata
 %           [2|"c"|"convert"]: Apply a conversion function to gridfile metadata
-%       alternateMetadata (cell vector [nDimensions]{matadata matrix [gridfile dimension length x ?]}):
+%       alternateMetadata (cell vector [nDimensions]{matadata matrix [nIndices x ?]}):
 %           Alternate metadata to use for the dimensions. Each element
 %           should hold a metadata matrix, and the number of metadata rows
 %           for each matrix should match the length of the corresponding
