@@ -1,4 +1,12 @@
 function[] = tests
+%% gridfile.tests  Unit tests for the gridfile class
+% ----------
+%   gridfile.tests
+%   Runs the tests. If successful, exits silently. Otherwise, throws error
+%   at the first failed test.
+% ----------
+%
+% <a href="matlab:dash.doc('gridfile.tests')">Documentation Page</a>
 
 % Move to test folder
 here = mfilename('fullpath');
