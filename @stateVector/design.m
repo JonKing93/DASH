@@ -90,9 +90,10 @@ else
 end
 
 % Require unique indices
-for d = 1:nDims
-    name = dash.string.indexedDimension(dimensions(d), d);
-    dash.assert.uniqueSet(indices{d}, name, header);
+for k = 1:nDims
+    dimName = dimensions(k);
+    name = dash.string.indexedDimension(dimName);
+    dash.assert.uniqueSet(indices{k}, name, header);
 end
 
 % Update each variable
