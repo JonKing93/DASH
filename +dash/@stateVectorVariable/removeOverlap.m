@@ -8,6 +8,9 @@ function[subMembers] = removeOverlap(obj, dims, subMembers)
 %   overlapping members from the end of subMembers, so new ensemble members
 %   should be located at the end of subMembers in order to preserve
 %   previously saved ensemble members.
+%
+%   **Note**: This method can only be called after the variable has been
+%   finalized.
 % ----------
 %   Inputs:
 %       dims (vector, linear indices [nEnsDims]): The dimension indices for

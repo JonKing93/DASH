@@ -9,6 +9,9 @@ function[obj] = matchMetadata(obj, d, metadata, grid)
 %
 %   When this method finishes, the reference indices along the dimension
 %   point to metadata that exactly matches the ordering set.
+%
+%   **Note**: This method can only be called after the variable has been
+%   finalized.
 % ----------
 %   Inputs:
 %       d (scalar dimension index): The index of an ensemble dimension

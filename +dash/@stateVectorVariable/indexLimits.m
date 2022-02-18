@@ -6,6 +6,9 @@ function[limits] = indexLimits(obj, dims, subMembers, includeState)
 %   and dimension order of limits will depend on whether state dimension
 %   limits are required or not.
 %
+%   **Note**: This method should only be called after the variable has been
+%   finalized.
+%
 %   allLimits = <strong>obj.indexLimits</strong>(dims, subMembers, true)
 %   Determines the gridfile indices needed to load all the indicated
 %   ensemble members. Includes limits for all dimensions in the variable.

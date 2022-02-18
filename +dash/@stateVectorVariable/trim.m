@@ -4,6 +4,9 @@ function[obj] = trim(obj)
 %   obj = <strong>obj.trim</strong>
 %   Remove reference indices that would result in an ensemble member with
 %   an incomplete sequence or incomplete mean.
+%
+%   **Note**: This method can only be called after the variable has been
+%   finalized.
 % ----------
 %   Outputs:
 %       obj (scalar dash.stateVectorVariable object): The state vector
