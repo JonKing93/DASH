@@ -24,8 +24,8 @@ classdef stateVectorVariable
 %   The class framework allows multiple stateVectorVariable objects to be 
 %   stored as a vector, which is utilized by the stateVector class.
 %   However, such vectors are highly nested and are slow to save directly.
-%   Instead, vectors of stateVectorVariables should be serialized before
-%   saving, and deserialized upon load.
+%   See the dash.serializedStateVectorVariables class for options to
+%   serialize/deserialize vectors for fast saving and loading.
 % ----------
 % dash.stateVectorVariable methods:
 %
@@ -47,22 +47,20 @@ classdef stateVectorVariable
 %   validateGrid        - Check that a gridfile matches a variable's recorded gridfile parameters
 %   getMetadata         - Process and return metadata along a dimension
 %
+% Utilities for build:
+%   finalize            - Fill placeholder values in a variable
+%   addIndices          - Propagate mean indices over sequence indices   
+%
 % Select ensemble members:
-%   ensembleSizes       - Return the sizes and names of ensemble dimensions
 %   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
 %   matchMetadata       - Order reference indices so that ensemble metadata matches an ordering set
+%   ensembleSizes       - Return the sizes and names of ensemble dimensions
 %   removeOverlap       - Remove ensemble members that overlap previous members
 %
 % Build members:
-%   finalize            - Fill placeholder values in a variable
-%   addIndices          - Propagate mean indices over sequence indices
 %   indexLimits         - Return limits of gridfile dimension indices required to load ensemble members
 %   parametersForBuild  - Return parameters used for building ensemble members
 %   buildMembers        - Build a set of ensemble members
-%
-% Serialization:
-%   serialize           - Convert variables to a struct that supports fast saving/loading
-%   deserialize         - Rebuild a vector of stateVectorVariable objects from a serialized struct
 %
 % Unit tests:
 %   tests               - Unit tests for the dash.stateVectorVariable class
@@ -135,16 +133,7 @@ methods
     limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
     X = buildMembers(obj, dims, subMembers, grid, source, parameters);
-
-    % Serialization
-    s = serialize(obj);
 end
-methods (Static)
-    obj = deserialize(s);
-    tests;
-end
-
-
 
 % Constructor
 methods
