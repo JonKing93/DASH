@@ -112,6 +112,53 @@ if numel(fields)>0
     end
 end
 
+% Fill, valid range, transformation
+hasfill = ~isnan(obj.fill);
+hasrange = ~isequal(obj.range, [-Inf Inf]);
+hastransform = ~strcmp(obj.transform_, "none");
+
+if hasfill || hasrange || hastransform
+    if hastransform
+        fillAlign = '    ';
+        rangeAlign = '   ';
+    elseif hasrange
+        fillAlign = ' ';
+        rangeAlign = '';
+    else
+        fillAlign = '';
+    end
+
+    if hasfill
+        fprintf('    %sFill Value: %f\n', fillAlign, obj.fill);
+    end
+    if hasrange
+        fprintf('    %sValid Range: %f to %f\n', rangeAlign, obj.range);
+    end
+    if hastransform
+        type = obj.transform_;
+        params = obj.transform_params;
+        if strcmp(type, 'log')
+            type = 'log(X)';
+        elseif strcmp(type, 'ln')
+            type = 'ln(X)';
+        elseif strcmp(type, 'log10')
+            type = 'log10(X)';
+        elseif strcmp(type, 'exp')
+            type = 'exp(X)';
+        elseif strcmp(type, 'power')
+            type = sprintf('X .^ %f', params(1));
+        elseif any(strcmp(type, ["plus","add","+"]))
+            type = sprintf('X + %f', params(1));
+        elseif any(strcmp(type, ["times","multiply","*"]))
+            type = sprintf('X .* %f', params(1));
+        elseif strcmp(type, 'linear')
+            type = sprintf('%f .* X + %f', params(1), params(2));
+        end
+        fprintf('    Transformation: %s\n', type);
+    end
+    fprintf('\n');
+end
+
 % Data sources
 if obj.nSource>0
     fprintf('    Data Sources: %.f\n\n', obj.nSource);
