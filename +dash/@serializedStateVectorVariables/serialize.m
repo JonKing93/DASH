@@ -33,6 +33,9 @@ nVars = numel(svv);
 nDims = NaN(nVars, 1);
 for v = 1:nVars
     nDims(v) = numel(svv(v).dims);
+    if nDims(v)==0
+        throwAsCaller(emptyVariableError(v));
+    end
 end
 obj.nDims = nDims;
 
@@ -166,4 +169,11 @@ end
 obj.(field) = values;
 obj.(vdName) = vdIndices;
 
+end
+
+% Error messages
+function[ME] = emptyVariableError(v)
+id = 'DASH:serializedStateVectorVariables:serialize';
+ME = MException(id, ['Cannot serialize state vector variables because ',...
+    'variable %.f has no dimensions.'], v);
 end
