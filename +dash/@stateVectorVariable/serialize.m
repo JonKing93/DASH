@@ -34,19 +34,12 @@ s.nDims = nDims;
 
 %% String delimited properties
 
-% Convert function handles to char
-for v = 1:nVars
-    for d = 1:nDims(v)
-        obj(v).convertFunction{d} = char(obj(v).convertFunction{d});
-    end
-end
-
 % Convert fields to comma delimited string
 logicalFields = ["isState","hasSequence","omitnan"];
 numericFields = ["gridSize","stateSize","ensSize","meanSize","meanType","metadataType"];
 
 s = convertJoin(obj, s, nVars, logicalFields, {@single, @string});
-s = convertJoin(obj, s, nVars, [numericFields, "convertFunction"], {@string});
+s = convertJoin(obj, s, nVars, numericFields, {@string});
 s = convertJoin(obj, s, nVars, "dims", {});
 
 
@@ -59,9 +52,10 @@ s = stackVectors(obj, s, nVars, nDims, 'sequenceIndices', 'nSequence');
 s = stackVectors(obj, s, nVars, nDims, 'weights', 'nWeights');
 
 
-%% Cells with unpredictable elements
+%% Cells with elements that cannot be merged
 
 % Extract and stack cell elements
+s = extractCells(obj, s, nVars, nDims, 'convertFunction', 'vdConvertFunction');
 s = extractCells(obj, s, nVars, nDims, 'sequenceMetadata', 'vdSequenceMetadata');
 s = extractCells(obj, s, nVars, nDims, 'metadata_', 'vdMetadata');
 s = extractCells(obj, s, nVars, nDims, 'convertArgs', 'vdConvertArgs');

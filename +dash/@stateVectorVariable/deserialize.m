@@ -23,17 +23,7 @@ logicalFields = ["isState","hasSequence","omitnan"];
 % Delimit fields, restore type
 obj = delimitConvert(obj, s, nVars, numericFields, {@str2double});
 obj = delimitConvert(obj, s, nVars, logicalFields, {@str2double, @logical});
-obj = delimitConvert(obj, s, nVars, "convertFunction", {@cellstr});
 obj = delimitConvert(obj, s, nVars, "dims", {});
-
-% Restore function handles
-for v = 1:nVars
-    for d = 1:nDims(v)
-        if ~isempty(obj(v).convertFunction{d})
-            obj(v).convertFunction{d} = str2func(obj(v).convertFunction{d});
-        end
-    end
-end
 
 
 %% Cell vectors
@@ -51,12 +41,14 @@ for v = 1:nVars
     obj(v).sequenceMetadata = cell(1, nDims(v));
     obj(v).metadata_ = cell(1, nDims(v));
     obj(v).convertArgs = cell(1, nDims(v));
+    obj(v).convertFunction = cell(1, nDims(v));
 end
 
 % Fill cells with saved elements
+obj = fillCells(obj, s, 'convertFunction', s.vdConvertFunction);
 obj = fillCells(obj, s, 'sequenceMetadata', s.vdSequenceMetadata);
 obj = fillCells(obj, s, 'metadata_', s.vdMetadata);
-obj = fillCellVectors(obj, s, 'convertArgs', s.vdConvertArgs);
+obj = fillConvertArgs(obj, s, nVars, nDims, s.vdConvertArgs);
 
 end
 
@@ -100,6 +92,11 @@ for v = 1:nVars
 
     % Split across dimensions
     values = mat2cell(values, dimCounts, 1)';
+    for d = 1:numel(values)
+        if isempty(values{d})
+            values{d} = [];
+        end
+    end
     obj(v).(field) = values;
 
     % Update location
@@ -116,9 +113,9 @@ for k = 1:size(vdIndices,1)
 end
 
 end
-function[obj] = fillCellVectors(obj, s, field, vdIndices)
+function[obj] = fillConvertArgs(obj, s, nVars, nDims, vdIndices)
 
-afterEnd = size(vdIndices,1);
+afterEnd = size(vdIndices,1) + 1;
 [vdIndices, firstIndex] = unique(vdIndices, 'rows', 'stable');
 nElements = diff([firstIndex;afterEnd]);
 
@@ -127,8 +124,18 @@ for k = 1:size(vdIndices,1)
     v = vdIndices(k,1);
     d = vdIndices(k,2);
 
-    rows = previous + (1:nElements);
-    obj(v).(field){d} = s.(field)(rows)';
+    rows = previous + (1:nElements(k));
+    obj(v).convertArgs{d} = s.convertArgs(rows)';
+    previous = rows(end);
+end
+
+% Restore empty cells
+for v = 1:nVars
+    for d = 1:nDims(v)
+        if ~isempty(obj(v).convertFunction{d}) && isempty(obj(v).convertArgs{d})
+            obj(v).convertArgs{d} = {};
+        end
+    end
 end
 
 end

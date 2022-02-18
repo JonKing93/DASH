@@ -50,7 +50,7 @@ end
 
 % Reset all settings
 obj.meanType(d) = 0;
-obj.meanSize(d) = NaN;
+obj.meanSize(d) = 0;
 obj.meanIndices{d} = [];
 obj.omitnan(d) = false;
 obj.weights{d} = [];

@@ -95,7 +95,7 @@ properties
     %% Means
 
     meanType = zeros(1,0);          % 0: no mean, 1: unweighted mean, 2: weighted mean
-    meanSize = NaN(1,0);            % The size of the dimension after taking the mean
+    meanSize = zeros(1,0);            % The size of the dimension after taking the mean
     meanIndices = cell(1,0);        % Mean indices for ensemble dimensions
     omitnan = false(1,0);           % Nanflag options for each mean
     weights = cell(1,0);            % Weights for weighted means
@@ -144,6 +144,9 @@ methods
 end
 methods (Static)
     obj = deserialize(s);
+
+    % Unit tests
+    tests;
 end
 
 % Constructor
@@ -189,7 +192,7 @@ methods
     obj.sequenceMetadata = cell(1, nDims);
 
     obj.meanType = zeros(1, nDims);
-    obj.meanSize = NaN(1, nDims);
+    obj.meanSize = zeros(1, nDims);
     obj.meanIndices = cell(1, nDims);
     obj.omitnan = false(1, nDims);
     obj.weights = cell(1, nDims);

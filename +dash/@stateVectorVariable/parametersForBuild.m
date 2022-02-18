@@ -27,7 +27,7 @@ function[parameters] = parametersForBuild(obj)
 
 % Get the size of a loaded ensemble members
 meanSize = obj.meanSize;
-meanSize(isnan(meanSize)) = 1;
+meanSize(meanSize==0) = 1;
 rawSize = obj.stateSize .* meanSize;
 
 % Record location of dimensions for means
