@@ -3,7 +3,7 @@ function[] = tests
 % ----------
 %   gridMetadata.tests
 %   Runs the tests. If successful, exits silently. Otherwise, throws error
-%   at the first failed tests.
+%   at the first failed test.
 % ----------
 %
 % <a href="matlab:dash.doc('gridMetadata.tests')">Documentation Page</a>
