@@ -64,5 +64,5 @@ if isempty(siz)
 elseif isscalar(siz)
     siz = [siz, 1];
 end
-siz = dash.string.size(siz);
+siz = strjoin(string(siz),'x');
 end
