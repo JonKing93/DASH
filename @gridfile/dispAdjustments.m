@@ -4,7 +4,7 @@ function[] = dispAdjustments(fill, range, transformType, transformParams)
 
 
 % Parameters
-fieldStrings = ["Fill Value","Valid Range","Transformation"];
+fieldStrings = ["Fill Value","Valid Range","Transform"];
 printField = [false false false];
 
 % Get printed fields
@@ -51,9 +51,9 @@ if printField(3)
     elseif any(strcmp(transformType, ["plus","add","+"]))
         type = sprintf('X + %f', transformParams(1));
     elseif any(strcmp(transformType, ["times","multiply","*"]))
-        type = sprintf('X .* %f', transformParams(1));
+        type = sprintf('X * %f', transformParams(1));
     elseif strcmp(transformType, 'linear')
-        type = sprintf('%f .* X + %f', transformParams(1), transformParams(2));
+        type = sprintf('%f * X + %f', transformParams(1), transformParams(2));
     end 
     fprintf([format,': %s\n'], fieldStrings(3), type);
 end
