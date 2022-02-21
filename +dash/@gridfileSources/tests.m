@@ -31,6 +31,8 @@ absolutePaths(testpath);
 savePath(testpath);
 info(testpath);
 
+error('altered info struct output');
+
 end
 
 function[] = constructor
