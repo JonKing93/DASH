@@ -18,7 +18,7 @@ if ~obj.isvalid
     return;
 end
 
-% If not scalar, display array size and exit
+% If scalar, display details. If array, display gridfile names.
 if isscalar(obj)
     displayScalar(obj, link, inputname(1));
 else
@@ -50,50 +50,45 @@ function[] = displayScalar(obj, link, name)
 fprintf('  %s with properties:\n\n', link);
 
 % File and dimensions list
-fileIndent = '      ';
-dims = sprintf('%s, ', obj.dims);
-dims(end-1:end) = [];
-dimsList = sprintf('Dimensions: %s\n', dims);
-fprintf('    %sfile: %s\n', fileIndent, obj.file);
-fprintf('    %s\n', dimsList);
+fprintf('          file: %s\n', obj.file);
+fprintf('    Dimensions: %s\n', strjoin(obj.dims, ', '));
+fprintf('\n');
 
-% Dimension sizes
-if ~isempty(obj.dims)
-    dims = obj.dims;
-    sizes = string(obj.size);
+% Sizes
+nDims = numel(obj.dims);
+sizes = string(obj.size);
     
-    % Get metadata limits
-    metaLimits = strings(numel(dims), 2);
-    for d = 1:numel(dims)
-        dim = dims(d);
-        meta = obj.meta.(dim);
-        if size(meta,2)==1
-            metaLimits(d,1) = string(meta(1));
-            metaLimits(d,2) = string(meta(end));
-        end
+% Get metadata limits
+metaLimits = strings(nDims, 2);
+for d = 1:nDims
+    dim = obj.dims(d);
+    meta = obj.meta.(dim);
+    if size(meta,2)==1
+        metaLimits(d,1) = string(meta(1));
+        metaLimits(d,2) = string(meta(end));
     end
-    
-    % Get field lengths
-    nameLength = max(strlength(dims));
-    sizeLength = max(strlength(sizes));
-    meta1Length = max(strlength(metaLimits(:,1)));
-    meta2Length = max(strlength(metaLimits(:,2)));
-            
-    % Get line formats
-    nometa = sprintf('        %%%.fs: %%%.fs\n', nameLength, sizeLength);
-    withmeta = sprintf('%s    (%%%.fs to %%-%.fs)\n', nometa(1:end-1), meta1Length, meta2Length);
-    
-    % Print message
-    fprintf('    Dimension Sizes:\n');
-    for d = 1:numel(dims)
-        if strcmp(metaLimits(d,1), "")
-            fprintf(nometa, dims(d), sizes(d));
-        else
-            fprintf(withmeta, dims(d), sizes(d), metaLimits(d,1), metaLimits(d,2));
-        end
-    end
-    fprintf('\n');
 end
+
+% Get field lengths
+nameLength = max(strlength(obj.dims));
+sizeLength = max(strlength(sizes));
+meta1Length = max(strlength(metaLimits(:,1)));
+meta2Length = max(strlength(metaLimits(:,2)));
+        
+% Get line formats
+nometa = sprintf('        %%%.fs: %%%.fs\n', nameLength, sizeLength);
+withmeta = sprintf('%s    (%%%.fs to %%-%.fs)\n', nometa(1:end-1), meta1Length, meta2Length);
+
+% Print dimension sizes and metadata
+fprintf('    Dimension Sizes:\n');
+for d = 1:nDims
+    if strcmp(metaLimits(d,1), "")
+        fprintf(nometa, obj.dims(d), sizes(d));
+    else
+        fprintf(withmeta, obj.dims(d), sizes(d), metaLimits(d,1), metaLimits(d,2));
+    end
+end
+fprintf('\n');
 
 % Metadata attributes
 [~, atts] = obj.meta.dimensions;
@@ -112,52 +107,8 @@ if numel(fields)>0
     end
 end
 
-% Fill, valid range, transformation
-hasfill = ~isnan(obj.fill);
-hasrange = ~isequal(obj.range, [-Inf Inf]);
-hastransform = ~strcmp(obj.transform_, "none");
-
-if hasfill || hasrange || hastransform
-    if hastransform
-        fillAlign = '    ';
-        rangeAlign = '   ';
-    elseif hasrange
-        fillAlign = ' ';
-        rangeAlign = '';
-    else
-        fillAlign = '';
-    end
-
-    if hasfill
-        fprintf('    %sFill Value: %f\n', fillAlign, obj.fill);
-    end
-    if hasrange
-        fprintf('    %sValid Range: %f to %f\n', rangeAlign, obj.range);
-    end
-    if hastransform
-        type = obj.transform_;
-        params = obj.transform_params;
-        if strcmp(type, 'log')
-            type = 'log(X)';
-        elseif strcmp(type, 'ln')
-            type = 'ln(X)';
-        elseif strcmp(type, 'log10')
-            type = 'log10(X)';
-        elseif strcmp(type, 'exp')
-            type = 'exp(X)';
-        elseif strcmp(type, 'power')
-            type = sprintf('X .^ %f', params(1));
-        elseif any(strcmp(type, ["plus","add","+"]))
-            type = sprintf('X + %f', params(1));
-        elseif any(strcmp(type, ["times","multiply","*"]))
-            type = sprintf('X .* %f', params(1));
-        elseif strcmp(type, 'linear')
-            type = sprintf('%f .* X + %f', params(1), params(2));
-        end
-        fprintf('    Transformation: %s\n', type);
-    end
-    fprintf('\n');
-end
+% Default data adjustments (fill, valid range, transform)
+obj.dispAdjustments(obj.fill, obj.range, obj.transform_, obj.transform_params);
 
 % Data sources
 if obj.nSource>0
