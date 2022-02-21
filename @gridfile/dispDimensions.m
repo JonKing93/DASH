@@ -1,4 +1,18 @@
 function[] = dispDimensions(metadata)
+%% gridfile.dispDimensions  Print dimension sizes and metadata to the console
+% ----------
+%   gridfile.dispDimensions(metadata)
+%   Prints dimension names, sizes, and (if possible) metadata limits for a 
+%   gridMetadata object associated with a gridfile or gridfile data source.
+% ----------
+%   Inputs:
+%       metadata (scalar gridMetadata object): The dimensional metadata
+%           associated with a component of a gridfile dataset.
+%
+%   Outputs:
+%       Prints dimension names, sizes, and metadata limits to the console.
+%
+% <a href="matlab:dash.doc('gridfile.dispDimensions')">Documentation Page</a>
 
 % Get dimensions and sizes
 [dims, sizes] = metadata.defined;

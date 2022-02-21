@@ -2,8 +2,10 @@ function[] = dispSources(obj)
 %% gridfile.dispSources  List gridfile data sources in the console
 % ----------
 %   <strong>obj.dispSources</strong>
-%   Prints a numbered list of gridfile data sources to the console.
+%   Prints a numbered list of gridfile data source files to the console.
 % ----------
+%   Outputs:
+%       Prints a list of gridfile data source files to the console.
 % 
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>
 

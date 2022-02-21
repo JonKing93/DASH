@@ -7,6 +7,8 @@ function[] = disp(obj)
 %   metadata. Prints metadata attributes if they exist. Prints a summary of
 %   data sources.
 % ----------
+%   Outputs:
+%       Prints the contents of a gridfile object or array to the console.
 %
 % <a href="matlab:dash.doc('gridfile.disp')">Documentation Page</a>
 

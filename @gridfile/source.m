@@ -5,7 +5,20 @@ function[] = source(obj, source, showAllDetails)
 %   <strong>obj.source</strong>(sourceName)
 %   Prints information about a data source to the console.
 %
-%   <strong>obj.source
+%   <strong>obj.source</strong>(..., showAllDetails)
+%   Specify whether the methods should print all details about the data
+%   source to the console. By default, only prints basic details.
+% ----------
+%   Inputs:
+%       s (logical vector [nSources] | scalar linear index): The index
+%           of the data source to print to the console.
+%       sourceName (string scalar): The name of the data source to print to
+%           the console
+%
+%   Outputs:
+%       Prints information about the data source to the console.
+%
+% <a href="matlab:dash.doc('gridfile.source')">Documentation Page</a>
 
 % Setup
 header = "DASH:gridfile:source";

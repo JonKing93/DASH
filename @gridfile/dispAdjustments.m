@@ -1,7 +1,20 @@
 function[] = dispAdjustments(fill, range, transformType, transformParams)
 %% gridfile.dispAdjustments  Prints data adjustments to the console
 % ----------
-
+%   gridfile.dispAdjustments(fill, range, transformType, transformParams)
+%   Prints information about data adjustments to the console.
+% ----------
+%   Inputs:
+%       fill (numeric scalar): A fill value for a dataset
+%       range (numeric vector [2]): The valid range of a data set
+%       transformType (string scalar): The transformation to use for a data set
+%       transformParams (numeric vector [2]): Parameters to use for data
+%           transformations
+%
+%   Outputs:
+%       Prints information about data adjustments to the console.
+%
+% <a href="matlab:dash.doc('gridfile.dispAdjustments')">Documentation Page</a>
 
 % Parameters
 fieldStrings = ["Fill Value","Valid Range","Transform"];
