@@ -44,6 +44,7 @@ classdef gridfile < handle
     %   addDimension     - Add a new dimension to a .grid file
     %
     % Metadata attributes:
+    %   attributes       - Return the metadata attributes for a gridfile
     %   addAttributes    - Add attributes to gridfile metadata
     %   removeAttributes - Remove attributes from the metadata of a gridded dataset
     %   editAttributes   - Change existing metadata attributes
@@ -69,7 +70,8 @@ classdef gridfile < handle
     %   divide           - Divide the data in the current gridfile by a second gridfile
     %
     % Summary Information:
-    %   sources          - Return the ordered list of data sources in a gridfile
+    %   sources          - Return the ordered list of data source files catalogued in a gridfile
+    %   source           - Print details about a data source to the console
     %   dimensions       - Return the dimensions in a gridfile and their sizes
     %   info             - Return information about a gridfile object
     %   name             - Return the name of the .grid file, excluding path
@@ -87,6 +89,7 @@ classdef gridfile < handle
     %   disp             - Display gridfile object in console
     %   dispSources      - List gridfile data sources in the console
     %   dispAdjustments  - Print fill value, valid range, and data transformation to console
+    %   dispDimensions   - Print dimension sizes and metadata to the console
     %
     % Load:
     %   getLoadIndices   - Organize the dimension indices required to implement a load operation
@@ -140,6 +143,7 @@ classdef gridfile < handle
         addDimension(obj, dim, value);
         
         % Metadata attributes
+        attributes = attributes(obj);
         addAttributes(obj, varargin);
         removeAttributes(obj, varargin);        
         editAttributes(obj, varargin)
@@ -172,6 +176,7 @@ classdef gridfile < handle
         % Summary information
         name = name(obj);
         sources = sources(obj, s);
+        source(obj, s, showAllDetails);
         [dimensions, sizes] = dimensions(obj);
         info = info(obj, s)
         disp(obj);
@@ -179,8 +184,15 @@ classdef gridfile < handle
     end
     
     methods (Static)
-        dispAdjustments(fill, range, transformType, transformParams);
+
+        % Object creation
         obj = new(file, meta, overwrite);
+
+        % Console display
+        dispAdjustments(fill, range, transformType, transformParams);
+        dispDimensions(metadata);
+
+        % Unit tests
         tests;
     end
     

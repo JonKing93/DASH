@@ -50,45 +50,12 @@ function[] = displayScalar(obj, link, name)
 fprintf('  %s with properties:\n\n', link);
 
 % File and dimensions list
-fprintf('          file: %s\n', obj.file);
+fprintf('          File: %s\n', obj.file);
 fprintf('    Dimensions: %s\n', strjoin(obj.dims, ', '));
 fprintf('\n');
 
-% Sizes
-nDims = numel(obj.dims);
-sizes = string(obj.size);
-    
-% Get metadata limits
-metaLimits = strings(nDims, 2);
-for d = 1:nDims
-    dim = obj.dims(d);
-    meta = obj.meta.(dim);
-    if size(meta,2)==1
-        metaLimits(d,1) = string(meta(1));
-        metaLimits(d,2) = string(meta(end));
-    end
-end
-
-% Get field lengths
-nameLength = max(strlength(obj.dims));
-sizeLength = max(strlength(sizes));
-meta1Length = max(strlength(metaLimits(:,1)));
-meta2Length = max(strlength(metaLimits(:,2)));
-        
-% Get line formats
-nometa = sprintf('        %%%.fs: %%%.fs\n', nameLength, sizeLength);
-withmeta = sprintf('%s    (%%%.fs to %%-%.fs)\n', nometa(1:end-1), meta1Length, meta2Length);
-
-% Print dimension sizes and metadata
-fprintf('    Dimension Sizes:\n');
-for d = 1:nDims
-    if strcmp(metaLimits(d,1), "")
-        fprintf(nometa, obj.dims(d), sizes(d));
-    else
-        fprintf(withmeta, obj.dims(d), sizes(d), metaLimits(d,1), metaLimits(d,2));
-    end
-end
-fprintf('\n');
+% Dimension sizes and metadata
+obj.dispDimensions(obj.metadata);
 
 % Metadata attributes
 [~, atts] = obj.meta.dimensions;
@@ -113,8 +80,8 @@ obj.dispAdjustments(obj.fill, obj.range, obj.transform_, obj.transform_params);
 % Data sources
 if obj.nSource>0
     fprintf('    Data Sources: %.f\n\n', obj.nSource);
-    listLink = sprintf('<a href="matlab:%s.dispSources">data sources</a>', name);
-    fprintf('  Show %s\n\n', listLink);
+    listLink = sprintf('<a href="matlab:%s.dispSources">Show data sources</a>', name);
+    fprintf('  %s\n\n', listLink);
 end
 
 end         
