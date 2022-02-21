@@ -63,6 +63,7 @@ dispSources;
 error('array display in disp');
 error('gridMetadata parser for addAtributes (and maybe removeAttributes?)');
 error('constructor for gridfile with empty metadata');
+error('data adjustment outputs');
 
 
 end

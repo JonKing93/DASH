@@ -150,7 +150,7 @@ classdef gridfile < handle
         absolutePaths(obj, useAbsolute, sources);
         
         % Data adjustments
-        fill = fillValue(obj, fill, sources);
+        varargout = fillValue(obj, fill, sources);
         range = validRange(obj, range, sources);
         [transform, parameters] = transform(obj, type, params, sources);
         

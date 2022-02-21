@@ -31,11 +31,17 @@ Write examples
 
 FINISH GRIDFILE:
 
+Edit gridfile data adjustment outputs when setting values
+-Either return gridfile objector nothing
+-Nothing is more in line with previous syntax
+
 Combine dash.gridfile.indices with dash.parse.stringsOrIndices
 
 Consider renaming absolutePaths to preferredPath and adding switches syntax
 
 Update gridfile examples to show new disp
+
+Add disp for individual sources
 
 Write buildTestdata methods
 

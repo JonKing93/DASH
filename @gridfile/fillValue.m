@@ -1,4 +1,4 @@
-function[fill] = fillValue(obj, fill, sources)
+function[varargout] = fillValue(obj, fill, sources)
 %% gridfile.fillValue  Specify a fill value for data catalogued in a .grid file
 % ----------
 %   fill = <strong>obj.fillValue</strong>
@@ -49,7 +49,7 @@ obj.update;
 % Default fill
 if ~exist('fill','var') || strcmpi(fill, 'default')
     assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
-    fill = obj.fill;
+    varargout = {obj.fill};
     return
     
 % Source fill values
@@ -59,7 +59,7 @@ elseif strcmpi(fill, 'sources')
     else
         s = obj.sources_.indices(sources, header);
     end
-    fill = obj.sources_.fill(s);
+    varargout = {obj.sources_.fill(s)};
     return
 end
 
@@ -67,6 +67,7 @@ end
     
 % No outputs allowed
 assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
+varargout = {};
 
 % Error check the fill value
 dash.assert.scalarType(fill, 'numeric', 'fill', header);

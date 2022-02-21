@@ -1,4 +1,4 @@
-function[range] = validRange(obj, range, sources)
+function[varargout] = validRange(obj, range, sources)
 %% gridfile.validRange  Specify a valid range for data catalogued in a .grid file
 % ----------
 %   range = <strong>obj.validRange</strong>
@@ -51,7 +51,7 @@ obj.update;
 % Default
 if ~exist('range','var') || strcmpi(range, 'default')
     assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
-    range = obj.range;
+    varargout = {obj.range};
     return
     
 % Source ranges
@@ -61,7 +61,7 @@ elseif strcmpi(range, 'sources')
     else
         s = obj.sources_.indices(sources, header);
     end
-    range = obj.sources_.range(s,:);
+    varargout = {obj.sources_.range(s,:)};
     return
 end
 
@@ -69,6 +69,7 @@ end
 
 % No outputs allowed
 assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
+varargout = {};
 
 % Error check the valid range
 dash.assert.vectorTypeN(range, 'numeric', 2, 'range', header);
