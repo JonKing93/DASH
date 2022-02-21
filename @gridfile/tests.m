@@ -29,6 +29,7 @@ edit_;
 expand;
 addDimension;
 
+attributes;
 addAttributes;
 removeAttributes;
 editAttributes;
@@ -54,6 +55,7 @@ minus_;
 times_;
 divide_;
 
+source;
 sources;
 dimensions;
 info;
@@ -61,10 +63,12 @@ name;
 disp;
 dispSources;
 dispAdjustments;
+dispDimensions;
 error('array display in disp');
 error('gridMetadata parser for addAtributes (and maybe removeAttributes?)');
 error('constructor for gridfile with empty metadata');
 error('data adjustment outputs');
+error('altered info struct for gridfileSources');
 
 
 end
