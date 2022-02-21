@@ -13,11 +13,9 @@ function[info] = info(obj, s)
 %       info (struct vector): Information about the requested data sources
 %           in the gridfile catalogue. A struct vector with one element per
 %           requested data source. Each struct has the following fields:
-%
 %           .name (string scalar): The name of the data source file
 %           .index (numeric scalar): The index of the data source in the gridfile
 %           .parent (string scalar): The path to the parent gridfile
-%           
 %           .file (string scalar): The absolute path to the data source file
 %           .file_type (string scalar): The type of source file
 %           .path (string scalar): The saved path to the data source file.
@@ -25,7 +23,6 @@ function[info] = info(obj, s)
 %           .uses_relative_path (scalar logical): Whether the saved path is
 %               a path relative to the parent gridfile (true) or an
 %               absolute path (false).
-%           
 %           .variable (string scalar): The name of the catalogued variable
 %               for a NetCDF for MAT-file. Empty for delimited text data sources.
 %           .import_options (cell scalar): Import options used to read data
@@ -38,13 +35,11 @@ function[info] = info(obj, s)
 %               after merging).
 %           .size (numeric vector): The size of each (gridfile) dimension
 %               for the data in the source file.
-%
 %           .fill_value (numeric scalar): The fill value for the data source
 %           .valid_range (numeric vector [2]): The valid range for the data source
 %           .transform (string scalar): The data transformation for the data source
 %           .transform_parameters (numeric vector [2]): Any parameters needed to 
 %               implement the data transformation.
-%
 %           .raw_dimensions (string vector): The raw dimensions in the data
 %               source file. This is the dimension order before merging.
 %           .raw_size (numeric vector): The size of each raw dimension in
@@ -82,7 +77,7 @@ for k = 1:nSource
     elseif strcmp(type, 'text')
         type = 'Delimited text';
     end
-    info(k).type = type;
+    info(k).file_type = type;
     info(k).path = obj.source(s(k));
     info(k).uses_relative_path = obj.relativePath(s(k));
 

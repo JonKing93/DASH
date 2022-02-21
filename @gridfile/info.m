@@ -46,29 +46,40 @@ function[info] = info(obj, sources)
 %               needed to implement the default transformation.
 
 %
-%       sourceInfo (struct vector): Information about the individual data
-%           sources in the gridfile. Includes the following fields:
+%       sourceInfo (struct vector): Information about the requested data sources
+%           in the gridfile catalogue. A struct vector with one element per
+%           requested data source. Each struct has the following fields:
 %           .name (string scalar): The name of the data source file
-%           .variable (string scalar): The name of the saved variable in a
-%               NetCDF or MAT-file. Empty for delimited text data sources.
 %           .index (numeric scalar): The index of the data source in the gridfile
+%           .parent (string scalar): The path to the parent gridfile
 %           .file (string scalar): The absolute path to the data source file
-%           .data_type (string scalar): The data type of the data saved in
-%               the source file.
-%           .dimensions (string vector): The names of the dimensions for the
-%               data in the source file.
-%           .size (numeric vector): The size of each dimension for the data
+%           .file_type (string scalar): The type of source file
+%           .path (string scalar): The saved path to the data source file.
+%               May differ from the "file" field when using relative paths
+%           .uses_relative_path (scalar logical): Whether the saved path is
+%               a path relative to the parent gridfile (true) or an
+%               absolute path (false).
+%           .variable (string scalar): The name of the catalogued variable
+%               for a NetCDF for MAT-file. Empty for delimited text data sources.
+%           .import_options (cell scalar): Import options used to read data
+%               from delimited text files. Empty for NetCDF and MAT-file
+%               data sources.
+%           .data_type (string scalar): The data type of the values saved
 %               in the source file.
-%           .uses_relative_path (scalar logical): True if the gridfile
-%               records the relative path to the data source. False if the
-%               gridfile records the absolute path.
-%           .import_options (cell scalar): Any import options provided for
-%               delimited text data sources. Empty for NetCDF and MAT-file sources
+%           .dimensions (string vector): The gridfile dimensions of the data
+%               in the source file. (Note: This is the order of dimensions
+%               after merging).
+%           .size (numeric vector): The size of each (gridfile) dimension
+%               for the data in the source file.
 %           .fill_value (numeric scalar): The fill value for the data source
 %           .valid_range (numeric vector [2]): The valid range for the data source
 %           .transform (string scalar): The data transformation for the data source
 %           .transform_parameters (numeric vector [2]): Any parameters needed to 
 %               implement the data transformation.
+%           .raw_dimensions (string vector): The raw dimensions in the data
+%               source file. This is the dimension order before merging.
+%           .raw_size (numeric vector): The size of each raw dimension in
+%               the data source file.
 %
 % <a href="matlab:dash.doc('gridfile.info')">Documentation Page</a>
 
