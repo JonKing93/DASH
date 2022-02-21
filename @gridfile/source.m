@@ -14,6 +14,11 @@ function[] = source(obj, source, showAllDetails)
 %           of the data source to print to the console.
 %       sourceName (string scalar): The name of the data source to print to
 %           the console
+%       showAllDetails (scalar logical | string scalar): Whether to display
+%           all data source details in the console or only a basic set of 
+%           details. Default is to display the basic set.
+%           [true | "a" | "all"]: Display all details
+%           [false | "b" | "basic"]: Display basic details
 %
 %   Outputs:
 %       Prints information about the data source to the console.
@@ -35,11 +40,12 @@ elseif numel(s)>1
     tooManySourcesError;
 end
 
-% Default, error check details
+% Default, parse details
 if ~exist('showAllDetails','var') || isempty(showAllDetails)
     showAllDetails = false;
 else
-    dash.assert.scalarType(showAllDetails, 'logical', 'showAllDetails', header);
+    showAllDetails = dash.parse.switches(showAllDetails, {["b","basic"],["a","all"]},...
+        2, 'showAllDetails', 'allowed option', header);
 end
 
 % Get info and metadata for the source
