@@ -7,6 +7,12 @@ else
     siz = sprintf('%.f-D', N);
 end
 
-info = sprintf('  %s %s array\n\n', siz, type);
+if isempty(obj)
+    empty = 'empty ';
+else
+    empty = '';
+end
+
+info = sprintf('  %s %s%s array\n\n', siz, empty, type);
 
 end

@@ -58,7 +58,7 @@ classdef gridfileSources
         % Array management
         obj = add(obj, grid, dataSource, dims, size, mergedDims, mergedSize, mergeMap);
         obj = remove(obj, s);
-        s = indices(obj, sources, gridFile, header);
+        s = indices(obj, sources, header);
         [dims, size, mergedDims, mergedSize, mergeMap] = unpack(obj, s);
         info = info(obj, s)
         
