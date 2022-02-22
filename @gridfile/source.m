@@ -59,7 +59,7 @@ fprintf('  <strong>Data Source %.f</strong> in %s:\n\n', s, link);
 
 % File, variable, dimensions
 fprintf('          File: %s\n', info.file);
-if isfield('variable',info)
+if ~isempty(info.variable)
     fprintf('      Variable: %s\n', info.variable);
 end
 fprintf('    Dimensions: %s\n', strjoin(info.dimensions,', '));
