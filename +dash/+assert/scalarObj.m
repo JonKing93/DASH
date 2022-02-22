@@ -39,8 +39,15 @@ type = class(obj);
 % When called from console, reference variable by name
 if numel(stack)==1
     varName = inputname(1);
-    error(id, ['Variable "%s" is not a scalar %s object. ',...
-        'Instead "%s" is a %sgridMetadata array.'], varName, type, varName, empty);
+    if strcmp(varName, "")
+        var1 = 'Input';
+        var2 = 'input';
+    else
+        var1 = sprintf('Variable "%s"', varName);
+        var2 = sprintf('"%s"', varName);
+    end
+    error(id, ['%s is not a scalar %s object. ',...
+        'Instead, %s is a %sgridMetadata array.'], var1, type, var2, empty);
 
 % Otherwise, report the command name.
 else
