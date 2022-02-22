@@ -82,7 +82,7 @@ classdef gridfile < handle
     %
     % ==UTILITY METHODS==
     % Under-the-hood methods that help the class run. These are not intended
-    % for users.
+    % for users, and do not implement error checking on their inputs.
     %
     % File interactions:
     %   update           - Update a gridfile object to match the contents of its .grid file

@@ -13,11 +13,23 @@ function[] = assertValid(obj, header)
 %
 %   <a href="matlab:dash.doc('gridfile.assertValid')">Documentation Page</a>
 
+% Default header
+if ~exist('header','var') || isempty(header)
+    header = "DASH:gridfile:assertValid";
+end
+
+% Check if valid
 if ~isvalid(obj)
     id = sprintf('%s:deletedObjectNotSupported', header);
     stack = dbstack;
-    method = stack(1).name;
-    ME = MException(id, 'You cannot call the "%s" command on a deleted gridfile object.', method);
+
+    % Error
+    if numel(stack)==1
+        ME = MException(id, 'The gridfile object has been deleted.');
+    else
+        method = stack(1).name;
+        ME = MException(id, 'You cannot call the "%s" command on a deleted gridfile object.', method);
+    end
     throwAsCaller(ME);
 end
 
