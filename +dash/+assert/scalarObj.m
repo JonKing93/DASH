@@ -18,26 +18,46 @@ if ~exist('header','var') || isempty(header)
     header = 'DASH:assert:scalarObj';
 end
 
-% Throw error if not scalar
-if ~isscalar(obj)
+% If scalar, exit
+if isscalar(obj)
+    return
+end
+
+% Empty vs array
+if isempty(obj)
+    id = sprintf('%s:emptyObjectNotSupported', header);
+    empty = 'empty ';
+else
     id = sprintf('%s:objectArrayNotSupported', header);
-    stack = dbstack('-completenames');
-    type = class(obj);
-    
-    % Reference command name if called in stack
-    if numel(stack)>1
-        [~, command] = fileparts(stack(2).file);
-        error(id, ['You cannot call the "%1$s" command on a %2$s array, ',...
-            'because the %2$s class only supports operations on scalar ',...
-            '%2$s objects. If you need to apply the "%1$s" command ',...
-            'to multiple %2$s objects, use a loop.'], command, type);
-        
-    % Otherwise, reference object array by name
-    else
-        varName = inputname(1);
-        error(id, ['Variable "%s" is not a scalar %s object. ',...
-            'Instead "%s" is a gridMetadata array.'], varName, type, varName);
-    end 
+    empty = '';
+end
+
+% Get stack and class info
+stack = dbstack('-completenames');
+type = class(obj);
+
+% When called from console, reference variable by name
+if numel(stack)==1
+    varName = inputname(1);
+    error(id, ['Variable "%s" is not a scalar %s object. ',...
+        'Instead "%s" is a %sgridMetadata array.'], varName, type, varName, empty);
+
+% Otherwise, report the command name.
+else
+    [~, command] = fileparts(stack(2).file);
+
+    % Add suggestion if not empty
+    suggestion = '';
+    if ~isempty(obj)
+        suggestion = sprintf([' If you need to apply the "%s" command to ',...
+            'multiple %s objects, use a loop.'], command, type);
+    end
+
+    % Report error
+    ME = MException(id, ['You cannot call the "%s" command on a %s%s array, because ',...
+        'the %s class only supports this command for scalar %s objects.%s'],...
+        command, empty, type, type, type, suggestion);
+    throwAsCaller(ME);
 end
 
 end

@@ -35,6 +35,7 @@ logicalSwitches;
 integers;
 
 error('multiple types: type, scalarType, vectorTypeN');
+error('scalarObj');
 
 end
 
