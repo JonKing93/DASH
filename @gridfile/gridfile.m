@@ -69,12 +69,15 @@ classdef gridfile < handle
     %   times            - Multiply the data in two gridfiles
     %   divide           - Divide the data in the current gridfile by a second gridfile
     %
-    % Summary Information:
-    %   sources          - Return the ordered list of data source files catalogued in a gridfile
-    %   source           - Print details about a data source to the console
-    %   dimensions       - Return the dimensions in a gridfile and their sizes
-    %   info             - Return information about a gridfile object
-    %   name             - Return the name of the .grid file, excluding path
+    % Return Information:
+    %   info             - Return information about a gridfile object and data source files
+    %   dimensions       - Return the dimensions of a gridfile and their sizes
+    %   sources          - Return an ordered list of data source files catalogued in a gridfile
+    %   name             - Return the name of the .grid file (excluding path and extension)
+    %
+    % Print Information:
+    %   disp             - Displays a gridfile object in the console
+    %   source           - Displays a gridfile data source in the console
     %
     %
     % ==UTILITY METHODS==
@@ -172,15 +175,18 @@ classdef gridfile < handle
         minus(obj, grid2, filename, varargin);
         times(obj, grid2, filename, varargin);
         divide(obj, grid2, filename, varargin);
-        
-        % Summary information
+
+        % Information
         name = name(obj);
-        sources = sources(obj, s);
-        source(obj, s, showAllDetails);
         [dimensions, sizes] = dimensions(obj);
+        sources = sources(obj, s);
         info = info(obj, s)
+
+        % Console display
         disp(obj);
+        source(obj, s, showAllDetails);
         dispSources(obj);
+        dispDimensions(obj,s);
     end
     
     methods (Static)
@@ -190,7 +196,6 @@ classdef gridfile < handle
 
         % Console display
         dispAdjustments(fill, range, transformType, transformParams);
-        dispDimensions(metadata);
 
         % Unit tests
         tests;
