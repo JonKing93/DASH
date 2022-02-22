@@ -38,8 +38,8 @@ editAttributes;
 
 add;
 remove;
-rename
-absolutePaths
+relocate;
+absolutePaths;
 
 fillValue;  % these only check that gridfile properties are updated
 validRange; % check the actual implementation in the tests for "loadInternal"
@@ -809,7 +809,7 @@ catch cause
 end
 
 end
-function[] = rename
+function[] = relocate
 
 % Subfolder paths
 onpath = fullfile(pwd, 'on-path');

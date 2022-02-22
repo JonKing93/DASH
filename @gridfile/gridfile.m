@@ -52,7 +52,7 @@ classdef gridfile < handle
     % Data sources:
     %   add              - Catalogue a data source in a .grid file
     %   remove           - Remove data sources from a .grid file's catalogue
-    %   rename           - Update paths to data sources catalogued in a gridfile
+    %   relocate         - Update paths to data sources catalogued in a gridfile
     %   absolutePaths    - Save data source file names as absolute or relative paths
     %
     % Data adjustments:
@@ -155,7 +155,7 @@ classdef gridfile < handle
         % Data sources
         add(obj, type, source, varargin);
         remove(obj, sources);
-        rename(obj, sources, newNames);
+        relocate(obj, sources, newNames);
         absolutePaths(obj, useAbsolute, sources);
         
         % Data adjustments
