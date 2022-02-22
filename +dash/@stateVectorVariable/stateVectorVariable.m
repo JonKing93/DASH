@@ -95,7 +95,7 @@ properties
     %% Means
 
     meanType = zeros(1,0);          % 0: no mean, 1: unweighted mean, 2: weighted mean
-    meanSize = zeros(1,0);            % The size of the dimension after taking the mean
+    meanSize = zeros(1,0);          % The size of the dimension after taking the mean
     meanIndices = cell(1,0);        % Mean indices for ensemble dimensions
     omitnan = false(1,0);           % Nanflag options for each mean
     weights = cell(1,0);            % Weights for weighted means
@@ -138,6 +138,9 @@ methods
     limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
     X = buildMembers(obj, dims, subMembers, grid, source, parameters);
+
+    % Info
+    info = info(obj);
 
     % Serialization
     s = serialize(obj);
