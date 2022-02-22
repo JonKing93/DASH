@@ -53,8 +53,8 @@ info = obj.info(s);
 metadata = obj.metadata(s);
 
 % Title the data source
-% fprintf('\n');
-fprintf('Data Source %.f in gridfile "%s":\n\n', s, obj.name);
+fprintf('\n');
+fprintf('  Data Source %.f in gridfile "%s":\n\n', s, obj.name);
 
 % File, variable, dimensions
 fprintf('          File: %s\n', info.file);

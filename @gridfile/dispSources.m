@@ -12,15 +12,18 @@ function[] = dispSources(obj)
 % Require scalar
 dash.assert.scalarObj(obj, 'DASH:gridfile:dispSources');
 
+% Link to sources
+link = '<a href="matlab:%s.source(%.f)">(Source details)</a>';
+
 % Format the numbered list
 nSource = size(obj.dimLimit, 3);
 countLength = strlength(string(nSource));
-format = sprintf('    %%%.f.f. %%s\n', countLength);
+format = sprintf('    %%%.f.f. %%s', countLength);
 
 % Print each data source path
 paths = obj.sources_.absolutePaths;
 for s = 1:nSource
-    fprintf(format, s, paths(s));
+    fprintf([format,'   ',link,'\n'], s, paths(s), inputname(1), s);
 end
 fprintf('\n');
 
