@@ -1,22 +1,52 @@
-function[] = dispAdjustments(fill, range, transformType, transformParams)
+function[] = dispAdjustments(obj, s)
 %% gridfile.dispAdjustments  Prints data adjustments to the console
 % ----------
-%   gridfile.dispAdjustments(fill, range, transformType, transformParams)
-%   Prints information about data adjustments to the console.
+%   <strong>obj.dispAdjustments</strong>
+%   <strong>obj.dispAdjustments</strong>(0)
+%   Prints information about gridfile default data adjustments to the
+%   console.
+%
+%   <strong>obj.dispAdjustments</strong>(s)
+%   Prints information about data adjustments for a data source to the
+%   console
 % ----------
 %   Inputs:
-%       fill (numeric scalar): A fill value for a dataset
-%       range (numeric vector [2]): The valid range of a data set
-%       transformType (string scalar): The transformation to use for a data set
-%       transformParams (numeric vector [2]): Parameters to use for data
-%           transformations
+%       s (scalar integer): The index of a data source in the gridfile or 0.
+%           If 0, prints default data adjustments for the full gridfile. If an
+%           index, print data adjustments for the corresponding data source.
 %
 %   Outputs:
 %       Prints information about data adjustments to the console.
 %
 % <a href="matlab:dash.doc('gridfile.dispAdjustments')">Documentation Page</a>
 
-% Parameters
+% Default data adjustments
+if ~exist('s','var') || s==0
+    fill = obj.fill;
+    range = obj.range;
+    transformType = obj.transform_;
+    transformParams = obj.transform_params;
+
+% Data adjustments for data sources
+else
+    fill = obj.fillValue('sources', s);
+    if isnan(fill)
+        fill = obj.fill;
+    end
+
+    range = obj.validRange('sources', s);
+    if isequal(range, [-Inf, Inf])
+        range = obj.range;
+    end
+
+    [transformType, transformParams] = obj.transform('sources', s);
+    if strcmp(transformType, "none")
+        transformType = obj.transform_;
+        transformParams = obj.transform_params;
+    end
+end
+
+% Initialize printed fields
 fieldStrings = ["Fill Value","Valid Range","Transform"];
 printField = [false false false];
 

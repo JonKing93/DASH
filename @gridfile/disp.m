@@ -77,7 +77,7 @@ if numel(fields)>0
 end
 
 % Default data adjustments (fill, valid range, transform)
-obj.dispAdjustments(obj.fill, obj.range, obj.transform_, obj.transform_params);
+obj.dispAdjustments;
 
 % Data sources
 if obj.nSource>0

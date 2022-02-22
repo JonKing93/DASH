@@ -51,11 +51,11 @@ end
 
 % Get info and metadata for the source
 info = obj.info(s);
-metadata = obj.metadata(s);
 
 % Title the data source
 fprintf('\n');
-fprintf('  Data Source %.f in gridfile "%s":\n\n', s, obj.name);
+link = sprintf('<a href="matlab:disp(%s)">gridfile "%s"</a>', inputname(1), obj.name);
+fprintf('  <strong>Data Source %.f</strong> in %s:\n\n', s, link);
 
 % File, variable, dimensions
 fprintf('          File: %s\n', info.file);
@@ -66,10 +66,10 @@ fprintf('    Dimensions: %s\n', strjoin(info.dimensions,', '));
 fprintf('\n');
 
 % Dimension size and metadata
-obj.dispDimensions(metadata);
+obj.dispDimensions(s);
 
 % Data adjustments (fill, range, transform)
-obj.dispAdjustments(info.fill_value, info.valid_range, info.transform, info.transform_parameters);
+obj.dispAdjustments(s);
 
 % Link to all details if not displaying everything
 if ~showAllDetails

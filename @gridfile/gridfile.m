@@ -90,9 +90,9 @@ classdef gridfile < handle
     %
     % Console Display:
     %   disp             - Display gridfile object in console
+    %   dispDimensions   - Print dimension sizes and metadata to the console
     %   dispSources      - List gridfile data sources in the console
     %   dispAdjustments  - Print fill value, valid range, and data transformation to console
-    %   dispDimensions   - Print dimension sizes and metadata to the console
     %
     % Load:
     %   getLoadIndices   - Organize the dimension indices required to implement a load operation
@@ -186,19 +186,13 @@ classdef gridfile < handle
         % Console display
         disp(obj);
         source(obj, s, showAllDetails);
+        dispDimensions(obj, s);
+        dispAdjustments(obj, s);
         dispSources(obj);
-        dispDimensions(obj,s);
     end
     
     methods (Static)
-
-        % Object creation
         obj = new(file, meta, overwrite);
-
-        % Console display
-        dispAdjustments(fill, range, transformType, transformParams);
-
-        % Unit tests
         tests;
     end
     
