@@ -1,12 +1,12 @@
 function[] = dispDimensions(obj, s)
 %% gridfile.dispDimensions  Print dimension sizes and metadata to the console
 % ----------
-%   gridfile.dispDimensions
-%   gridfile.dispDimensions(0)
+%   <strong>obj.dispDimensions</strong>
+%   <strong>obj.dispDimensions</strong>(0)
 %   Prints dimension names, sizes, and (when possible) metadata limits for
 %   a gridfile.
 %
-%   gridfile.dispDimensions(s)
+%   <strong>obj.dispDimensions</strong>(s)
 %   Prints dimension names, sizes, and (when possible) metadata limits for
 %   a data source catalogued in a gridfile.
 % ----------
