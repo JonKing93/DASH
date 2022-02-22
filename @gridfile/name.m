@@ -9,6 +9,13 @@ function[name] = name(obj)
 %       name (string scalar): The name of the gridfile
 %
 % <a href="matlab:dash.doc('gridfile.name')">Documentation Page</a>
-dash.assert.scalarObj(obj, "DASH:gridfile:name");
+
+% Setup
+header = 'DASH:gridfile:name';
+dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
+
+% Get file name
 [~,name] = fileparts(obj.file);
+
 end

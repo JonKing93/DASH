@@ -27,6 +27,7 @@ function[metadata] = metadata(obj, sources)
 % Setup
 header = "DASH:gridfile:metadata";
 dash.assert.scalarObj(obj, header);
+obj.assertValid;
 obj.update;
 
 % If no inputs, return metadata directly

@@ -51,6 +51,7 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 % Setup
 header = sprintf('DASH:gridfile:%s', operation);
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 
 % Arithmetic function and error strings
 if strcmpi(operation, 'plus')

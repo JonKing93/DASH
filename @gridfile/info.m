@@ -86,6 +86,7 @@ function[info] = info(obj, sources)
 % Setup
 header = "DASH:gridfile:info";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Default sources

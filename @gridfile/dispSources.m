@@ -9,9 +9,6 @@ function[] = dispSources(obj)
 % 
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>
 
-% Require scalar
-dash.assert.scalarObj(obj, 'DASH:gridfile:dispSources');
-
 % Link to sources
 link = '<a href="matlab:%s.source(%.f)">(Source details)</a>';
 

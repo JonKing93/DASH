@@ -25,6 +25,7 @@ function[sources] = sources(obj, s)
 % Setup
 header = "DASH:gridfile:sources";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Parse indices

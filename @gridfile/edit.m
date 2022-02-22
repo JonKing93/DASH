@@ -22,6 +22,7 @@ function[] = edit(obj, dimension, metadata)
 % Setup
 header = "DASH:gridfile:edit";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Attributes

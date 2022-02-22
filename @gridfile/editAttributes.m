@@ -18,8 +18,13 @@ function[] = editAttributes(obj, varargin)
 % 
 % <a href="matlab:dash.doc('gridfile.editAttributes')">Documentation Page</a>
 
-dash.assert.scalarObj(obj, 'DASH:gridfile:editAttributes');
+% Setup
+header = "DASH:gridfile:editAttributes";
+dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
+
+% Update attributes
 obj.meta = obj.meta.editAttributes(varargin{:});
 obj.save;
 

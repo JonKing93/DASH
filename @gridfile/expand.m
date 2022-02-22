@@ -27,6 +27,7 @@ function[] = expand(obj, dimension, metadata)
 % Setup
 header = "DASH:gridfile:expand";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Require defined dimension, do not include attributes

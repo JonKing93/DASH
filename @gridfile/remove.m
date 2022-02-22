@@ -16,6 +16,7 @@ function[] = remove(obj, sources)
 % Setup
 header = "DASH:gridfile:remove";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Get data source indices

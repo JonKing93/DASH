@@ -44,8 +44,10 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 % <a href="matlab:dash.doc('gridfile.absolutePaths')">Documentation Page</a>
 
 % Setup
-obj.update;
 header = "DASH:gridfile:absolutePaths";
+dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
+obj.update;
 
 % Error check
 dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);

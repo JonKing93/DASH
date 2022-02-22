@@ -42,6 +42,7 @@ function[varargout] = fillValue(obj, fill, sources)
 % Setup
 header = "DASH:gridfile:fillValue";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 %% Return fill values

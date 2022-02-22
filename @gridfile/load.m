@@ -67,6 +67,7 @@ function[X, meta] = load(obj, dimensions, indices, precision)
 % Setup
 header = "DASH:gridfile:load";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Parse and error check dimensions

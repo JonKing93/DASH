@@ -100,6 +100,7 @@ function[transform, parameters] = transform(obj, type, params, sources)
 % Setup
 header = "DASH:gridfile:transform";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 %% Return transformations

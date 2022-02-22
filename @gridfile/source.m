@@ -28,6 +28,7 @@ function[] = source(obj, source, showAllDetails)
 % Setup
 header = "DASH:gridfile:source";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Get the index of the data source. Exit if empty. Otherwise, only allow a

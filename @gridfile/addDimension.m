@@ -21,6 +21,7 @@ function[] = addDimension(obj, dimension, metadata)
 % Setup
 header = "DASH:gridfile:addDimension";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Get valid dimension names, throw error if none are left

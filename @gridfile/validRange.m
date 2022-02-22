@@ -44,6 +44,7 @@ function[varargout] = validRange(obj, range, sources)
 % Setup
 header = "DASH:gridfile:validRange";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 %% Return valid ranges

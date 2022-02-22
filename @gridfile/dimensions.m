@@ -17,6 +17,7 @@ function[dimensions, sizes] = dimensions(obj)
 % Setup
 header = "DASH:gridfile:dimensions";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Get values

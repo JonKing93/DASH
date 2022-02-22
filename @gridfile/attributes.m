@@ -13,6 +13,7 @@ function[attributes] = attributes(obj)
 % Setup
 header = "DASH:gridfile:attributes";
 dash.assert.scalarObj(obj, header);
+obj.assertValid(header);
 obj.update;
 
 % Get the attributes
