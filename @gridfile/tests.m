@@ -21,6 +21,8 @@ cd(testpath);
 % Run the tests
 new;
 constructor;
+
+assertValid;
 update;
 save_;
 

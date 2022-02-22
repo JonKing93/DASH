@@ -136,6 +136,7 @@ classdef gridfile < handle
     methods
         
         % File interactions
+        assertValid(obj, header);
         update(obj);
         save(obj);
         
