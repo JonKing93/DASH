@@ -1,4 +1,4 @@
-function[s] = serialize(obj)
+function[obj] = serialize(obj)
 %% stateVector.serialize  Convert stateVector object to a struct that supports fast saving/loading
 % ----------
 %   s = obj.serialize
@@ -6,24 +6,27 @@ function[s] = serialize(obj)
 %   load operations.
 % ----------
 %   Outputs:
-%       s (scalar struct): A struct that can save/load quickly. The struct
-%           can be provided to the deserialize method to rebuild the state
-%           vector.
+%       obj (scalar serialized stateVector object): The serialized stateVector
+%           object. Supports fast save/load operations, but cannot be used
+%           to call most stateVector methods. Use the "deserialize" method
+%           to rebuild the original stateVector object.
 %
 % <a href="matlab:dash.doc('stateVector.serialize')">Documentation Page</a>
 
-% Get directly copyable save properties
-props = string(properties(obj));
-nocopy = ismember(props, ["variables_","unused","subMembers"]);
-props(nocopy) = [];
+% Note serialization
+obj.isserialized = true;
 
-% Build a struct with copyable values
-s = struct;
-for p = 1:numel(props)
-    s.(props(p)) = obj.(props(p));
+% Serialize variables
+if ~isempty(obj.variables_)
+    obj.variables_ = obj.variables_.serialize;
 end
 
-% Get number of coupling sets
+% If still editable, there are no ensemble members. Finished so exit
+if obj.iseditable
+    return
+end
+
+% Get the number of coupling sets
 nSets = numel(obj.unused);
 
 % Unused ensemble members
@@ -31,9 +34,8 @@ nUnused = NaN(nSets, 1);
 for k = 1:nSets
     nUnused(k) = numel(obj.unused{k});
 end
-
-s.unused = cell2mat(obj.unused');
-s.nUnused = nUnused;
+obj.unused = cell2mat(obj.unused');
+obj.nUnused_serialized = nUnused;
 
 % Saved ensemble members
 nMembers = size(obj.subMembers{1}, 1);
@@ -43,11 +45,8 @@ for k = 1:nSets
     obj.subMembers{k} = obj.subMembers{k}(:);
 end
 
-s.nMembers = nMembers;
-s.nEnsDims = nEnsDims;
-s.subMembers = cell2mat(obj.subMembers');
-
-% Variable designs
-s.variables_ = obj.variables_.serialize;
+obj.subMembers = cell2mat(obj.subMembers');
+obj.nMembers_serialized = nMembers;
+obj.nEnsDims_serialized = nEnsDims;
 
 end
