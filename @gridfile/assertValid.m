@@ -13,10 +13,11 @@ function[] = assertValid(obj, header)
 %
 %   <a href="matlab:dash.doc('gridfile.assertValid')">Documentation Page</a>
 
-% Default header
+% Default header. Require scalar.
 if ~exist('header','var') || isempty(header)
     header = "DASH:gridfile:assertValid";
 end
+dash.assert.scalarObj(obj, header);
 
 % Check if valid
 if ~isvalid(obj)
