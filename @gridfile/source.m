@@ -1,11 +1,11 @@
-function[] = source(obj, source, showAllDetails)
+function[] = source(obj, source, detailed)
 %% gridfile.source  Display gridfile data source in console
 % ----------
 %   <strong>obj.source</strong>(s)
 %   <strong>obj.source</strong>(sourceName)
 %   Prints information about a data source to the console.
 %
-%   <strong>obj.source</strong>(..., showAllDetails)
+%   <strong>obj.source</strong>(..., detailed)
 %   Specify whether the methods should print all details about the data
 %   source to the console. By default, only prints basic details.
 % ----------
@@ -14,11 +14,11 @@ function[] = source(obj, source, showAllDetails)
 %           of the data source to print to the console.
 %       sourceName (string scalar): The name of the data source to print to
 %           the console
-%       showAllDetails (scalar logical | string scalar): Whether to display
-%           all data source details in the console or only a basic set of 
-%           details. Default is to display the basic set.
-%           [true | "a" | "all"]: Display all details
-%           [false | "b" | "basic"]: Display basic details
+%       detailed (scalar logical | string scalar): Whether to display
+%           all data source details in the console or a concise set of 
+%           details. Default is to display the concise set.
+%           [true | "c" | "concise"]: (default) Display a concise set of details
+%           [false | "d" | "detailed"]: Display all data source details
 %
 %   Outputs:
 %       Prints information about the data source to the console.
@@ -40,11 +40,11 @@ if numel(s)>1
 end
 
 % Default, parse details
-if ~exist('showAllDetails','var') || isempty(showAllDetails)
-    showAllDetails = false;
+if ~exist('detailed','var') || isempty(detailed)
+    detailed = false;
 else
-    showAllDetails = dash.parse.switches(showAllDetails, {["b","basic"],["a","all"]},...
-        2, 'showAllDetails', 'allowed option', header);
+    detailed = dash.parse.switches(detailed, {["c","concise"],["d","detailed"]},...
+        2, 'detailed', 'allowed option', header);
 end
 
 % Exit if there are no sources
@@ -75,7 +75,7 @@ obj.dispDimensions(s);
 obj.dispAdjustments(s);
 
 % Link to all details if not displaying everything
-if ~showAllDetails
+if ~detailed
     link = sprintf('<a href="matlab:%s.source(%.f, true)">Show all details</a>', inputname(1), s);
     fprintf('  %s\n\n', link);
     return

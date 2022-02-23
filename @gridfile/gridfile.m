@@ -185,7 +185,7 @@ classdef gridfile < handle
 
         % Console display
         disp(obj, showSources);
-        source(obj, s, showAllDetails);
+        source(obj, s, detailed);
         dispDimensions(obj, s);
         dispAdjustments(obj, s);
         dispSources(obj);
