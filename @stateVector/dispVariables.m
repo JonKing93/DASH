@@ -27,7 +27,7 @@ format = sprintf('        %%%.fs - %%%.fs rows', nameWidth, rowsWidth);
 
 % Include dimension info and details link
 link = sprintf('<a href="matlab:%s.variable(%%.f)">Show details</a>', inputname(1));
-format = [format, ' | %s  ', link, '\n'];
+format = [format, '  |  %s   ', link, '\n'];
 
 % Print each variable
 for v = 1:obj.nVariables

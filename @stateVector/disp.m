@@ -2,7 +2,7 @@ function[] = disp(obj)
 %% stateVector.disp  Display stateVector object in console
 
 % Parameters
-MAXVARS = 5; % The maximum number of variables to sketch by default
+MAXVARS = 10; % The maximum number of variables to sketch by default
 
 % Get the class documentation link
 link = '<a href="matlab:dash.doc(''stateVector'')">stateVector</a>';
@@ -30,7 +30,19 @@ if obj.nVariables==0 || obj.nVariables>MAXVARS
 else
     vars = strjoin(obj.variableNames, ', ');
 end
-fprintf('    Variables: %s\n\n', vars);
+fprintf('    Variables: %s\n', vars);
+
+% Coupling information
+sets = obj.couplingInfo.sets;
+nSets = numel(sets);
+if nSets==1
+    fprintf('     Coupling: All variables coupled\n\n');
+elseif nSets == obj.nVariables
+    fprintf('     Coupling: No variables coupled\n\n');
+elseif nSets>0
+    fprintf('\n    Coupled Variables:\n');
+    obj.dispCoupled;
+end
 
 % Display variables if not too many
 if obj.nVariables>0 && obj.nVariables<=MAXVARS
