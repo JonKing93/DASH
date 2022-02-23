@@ -1,9 +1,6 @@
 function[] = dispVariables(obj)
 
-% Initialize Field
-fprintf('    Vector:\n');
-
-% No variables case
+% Exit if there are no variables
 if obj.nVariables==0
     fprintf('        No variables\n\n');
     return

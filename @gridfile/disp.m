@@ -94,7 +94,7 @@ obj.dispAdjustments;
 % Data sources
 fprintf('    Data Sources: %.f\n', obj.nSource);
 if showSources
-    obj.dispSources;
+    obj.dispSources(name);
 else
     link = sprintf('<a href="matlab:%s.dispSources">Show data sources</a>', name);
     fprintf('\n  %s\n\n', link);
