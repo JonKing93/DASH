@@ -1,8 +1,17 @@
-function[] = disp(obj)
+function[] = disp(obj, showVariables)
 %% stateVector.disp  Display stateVector object in console
 
 % Parameters
-MAXVARS = 10; % The maximum number of variables to sketch by default
+MAXVARS = 10; % The maximum number of variables to display by default
+
+% Parse showVariables
+header = "DASH:stateVector:disp";
+if ~exist('showVariables','var') || isempty(showVariables)
+    showVariables = obj.nVariables<=MAXVARS;
+else
+    showVariables = dash.parse.switches(showVariables, {["h","hide"],["s","show"]},...
+        1, 'showVariables', 'allowed option', header);
+end
 
 % Get the class documentation link
 link = '<a href="matlab:dash.doc(''stateVector'')">stateVector</a>';
@@ -35,23 +44,28 @@ fprintf('    Variables: %s\n', vars);
 % Coupling information
 sets = obj.couplingInfo.sets;
 nSets = numel(sets);
-if nSets==1
-    fprintf('     Coupling: All variables coupled\n\n');
-elseif nSets == obj.nVariables
-    fprintf('     Coupling: No variables coupled\n\n');
-elseif nSets>0
-    fprintf('\n    Coupled Variables:\n');
-    obj.dispCoupled;
+if nSets>0
+    if nSets==1
+        fprintf('     Coupling: All variables coupled\n\n');
+    elseif nSets == obj.nVariables
+        fprintf('     Coupling: No variables coupled\n\n');
+    else
+        fprintf('\n    Coupled Variables:\n');
+        obj.dispCoupled;
+    end
+else
+    fprintf('\n');
 end
 
-% Display variables if not too many
-if obj.nVariables>0 && obj.nVariables<=MAXVARS
-    obj.dispVariables;
-
-% Otherwise, link to the variables
-else
-    link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', inputname(1));
-    fprintf('  %s\n\n', link);
+% Display or link variables if they exist
+if obj.nVariables>0
+    if showVariables
+        fprintf('    Vector:\n');
+        obj.dispVariables;
+    else
+        link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', inputname(1));
+        fprintf('  %s\n\n', link);
+    end
 end
 
 end
