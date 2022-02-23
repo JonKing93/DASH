@@ -26,13 +26,13 @@ obj.assertEditable;
 v = obj.variableIndices(variables, true, header);
 
 % Remove variables
-obj.variables_(v) = [];
-obj.variableNames(v) = [];
-obj.allowOverlap(v) = [];
+obj.variables_(v,:) = [];
+obj.variableNames(v,:) = [];
+obj.allowOverlap(v,:) = [];
 obj.nVariables = numel(obj.variables);
 
 obj.coupled(v,:) = [];
 obj.coupled(:,v) = [];
-obj.autocouple_(v) = [];
+obj.autocouple_(v,:) = [];
 
 end
