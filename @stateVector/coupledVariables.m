@@ -40,34 +40,24 @@ if nargout>0
     return
 end
 
-% Print to console
-fprintf('\n');
-
 % No variables
 if nSets==0
-    message = sprintf('%s has no variables.', obj.name);
-    message(1) = upper(message(1));
-    fprintf('%s\n', message);
-    return
+    name = char(obj.name);
+    name(1) = upper(name(1));
+    fprintf('\n    %s has no variables.\n\n', name);
 
-% % Everything coupled to one another
-% elseif nSets==1
-%     fprintf('All variables are coupled to one other.\n');
-%     return
+% All coupled
+elseif nSets==1
+    fprintf('\n    All variables in %s are coupled.\n\n', obj.name);
+
+% No coupling
+elseif nSets==obj.nVariables
+    fprintf('\n    None of the variables in %s are coupled.\n\n', obj.name);
+
+% Mixed coupling
+else
+    fprintf('\n    Sets of coupled variables:\n');
+    obj.dispCoupled;
 end
-
-% Multiple sets. Get width for numbering
-fprintf('Sets of coupled variables:\n');
-maxnum = sprintf('%.f', nSets);
-width = numel(maxnum);
-count = sprintf('%%%.f.f', width');
-format = sprintf('\\t%s. %%s\\n', count);
-
-% Print each set
-for s = 1:nSets
-    varNames = obj.variables(sets(s).vars);
-    fprintf(format, s, dash.string.list(varNames));
-end
-fprintf('\n');
 
 end
