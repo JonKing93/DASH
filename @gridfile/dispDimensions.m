@@ -53,7 +53,6 @@ nometa = sprintf('        %%%.fs: %%%.fs\n', nameLength, sizeLength);
 withmeta = sprintf('%s    (%%%.fs to %%-%.fs)\n', nometa(1:end-1), meta1Length, meta2Length);
 
 % Print dimension sizes and metadata
-fprintf('    Dimension Sizes and Metadata:\n');
 for d = 1:nDims
     if strcmp(metaLimits(d,1), "")
         fprintf(nometa, dims(d), sizes(d));

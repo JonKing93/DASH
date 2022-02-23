@@ -78,6 +78,7 @@ fprintf('    Dimensions: %s\n', strjoin(obj.dims, ', '));
 fprintf('\n');
 
 % Dimension sizes and metadata
+fprintf('    Dimension Sizes and Metadata:\n');
 obj.dispDimensions;
 
 % Metadata attributes
