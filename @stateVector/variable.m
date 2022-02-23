@@ -84,7 +84,19 @@ objName = inputname(1);
 
 % Print the variable (when not suppressed)
 if ~suppress
-    fprintf('  <strong>Variable: %s</strong>\n', info.name);
+    fprintf('\n  <strong>Variable:  %s</strong>\n', info.name);
+
+    % Parent vector label
+    if strcmp(obj.label,"")
+        label = "state vector";
+    else
+        label = obj.label;
+    end
+    link = sprintf('<a href="matlab:%s.disp">%s</a>', objName, label);
+
+    % Fields that are always printed
+    fprintf('      Parent: %s\n', link);
+    fprintf('       Index: %.f\n', v);
     fprintf('    gridfile: %s\n', info.gridfile);
     fprintf('      Length: %.f\n', info.length);
     fprintf('\n');
