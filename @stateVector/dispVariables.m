@@ -23,11 +23,13 @@ nRows = string(nRows);
 % Get width formats
 nameWidth = max(strlength(obj.variableNames));
 rowsWidth = max(strlength(nRows));
-format = sprintf('        %%%.fs - %%%.fs rows', nameWidth, rowsWidth);
+detailsWidth = max(strlength(details));
+format = sprintf('        %%%.fs - %%%.fs rows   |   %%-%.fs   ', ...
+    nameWidth, rowsWidth, detailsWidth);
 
 % Include dimension info and details link
 link = sprintf('<a href="matlab:%s.variable(%%.f)">Show details</a>', inputname(1));
-format = [format, '  |  %s   ', link, '\n'];
+format = [format, link, '\n'];
 
 % Print each variable
 for v = 1:obj.nVariables
