@@ -68,6 +68,8 @@ dimensions = repmat(dimensions, nDims, 1);
 
 % Get the info for each dimension
 for d = 1:nDims
+    dimensions(d).name = obj.dims(d);
+
     indices = obj.indices{d};
     if isempty(indices)
         indices = (1:obj.gridSize(d))';
