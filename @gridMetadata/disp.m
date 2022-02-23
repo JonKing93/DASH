@@ -10,6 +10,9 @@ function[] = disp(obj)
 % 
 % <a href="matlab:dash.doc('gridMetadata.disp')">Documentation Page</a>
 
+% % Parse attributes option
+% if ~exist('showAttributes','var') || isempty
+
 % Get the class documentation link
 link = '<a href="matlab:dash.doc(''gridMetadata'')">gridMetadata</a>';
 

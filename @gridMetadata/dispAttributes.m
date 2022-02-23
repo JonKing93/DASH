@@ -28,7 +28,8 @@ pad = max(widths) - widths;
 % Cycle through fields
 for f = 1:numel(fields)
     field = fields{f};
-    s = struct(field, attributes.(field));
+    s = struct;
+    s.(field) = attributes.(field);
 
     % Print each field
     padding = repmat(' ', 1, pad(f));

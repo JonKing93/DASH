@@ -86,16 +86,8 @@ obj.dispDimensions;
 attributes = obj.meta.(atts);
 fields = fieldnames(attributes);
 if numel(fields)>0
-    fields = string(fields);
-    maxLength = max(strlength(fields));
-    fprintf('    Attributes:\n\n');
-    for f = 1:numel(fields)
-        fieldLength = strlength(fields(f));
-        pad = repmat(' ', 1, maxLength-fieldLength);
-        fprintf('\b    %s', pad);
-        atts = struct(fields(f), attributes.(fields(f)));
-        disp(atts);
-    end
+    fprintf('    Attributes:\n');
+    obj.meta.dispAttributes;
 end
 
 % Default data adjustments (fill, valid range, transform)
