@@ -43,7 +43,7 @@ classdef stateVector
     %
     % 
 
-    properties
+    properties (SetAccess = private)
         %% General settings
 
         label_ = "";                    % The label for the state vector
@@ -60,12 +60,19 @@ classdef stateVector
         %% Coupling
 
         coupled = true(0,0);            % Which variables are coupled to each other
-        autocouple_ = true(0,1);         % Whether variables should be automatically coupled to new variables
+        autocouple_ = true(0,1);        % Whether variables should be automatically coupled to new variables
 
         %% Ensemble members
 
-        unused;
-        subMembers;
+        unused;                         % Unused ensemble members for each coupling set
+        subMembers;                     % Saved ensemble members subscripted across ensemble dimensions for each coupling set
+
+        %% Serialization
+
+        isserialized = false;           % Whether the state vector is serialized
+        nMembers_serialized = [];       % The number of saved ensemble members
+        nUnused_serialized = [];        % The number of unused ensemble members in each coupling set
+        nEnsDims_serialized = [];       % The number of ensemble dimensions in each coupling set
 
     end
 
@@ -101,7 +108,6 @@ classdef stateVector
         obj = autocouple(obj, variables, setting);
         [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
         info = couplingInfo(obj);
-        [names, indices] = coupledVariables(obj);
 
         % Design parameters
         obj = design(obj, variables, dimensions, types, indices);
@@ -121,20 +127,30 @@ classdef stateVector
         [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress);
         addMembers;
 
-        % Summary information
-        info;
-%         disp;
-%         dispVariables;
+        % Information
+        info = info(obj, variables);
+        length = length(obj);
+        [names, indices] = coupledVariables(obj);
+
+        % Console display
+        variable(obj, variables, dimensions, detailed, suppressVariable);
+        disp(obj, showVariables);
+        dispVariables(obj, objName);
+        dispCoupled(obj);
 
         % Serialization
+        assertUnserialized(obj);
         s = serialize(obj);
+        obj = deserialize(obj);
     end
     methods (Static)
-        obj = deserialize(s);
 
         % Build gridfile objects
         [grids, failed, cause] = parseGrids(grids, nVariables, header);
         [grids, failed, cause] = buildGrids(files, nVariables);
+
+        % Unit tests
+        tests;
     end
 
     % Constructor
