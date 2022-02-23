@@ -42,7 +42,7 @@ try
     X = NaN(nState, nMembers);
 catch
     id = 'DASH:stateVectorVariable:buildMembers:arrayTooBig';
-    error(id, '');
+    error(id, 'The state vector ensemble for the variable is too large for active memory.');
 end
 
 
@@ -59,9 +59,8 @@ if parameters.loadAllMembers
     use = ismember(source.indices, s);
     dataSources = source.dataSources(use);
 
-    % Attempt to load data for all members. Note if failed. (Failure could
+    % Attempt to load data for all members. (Failure could
     % occur if the data for all members is too large for memory).
-    allLoaded = false;
     try
         Xall = grid.loadInternal([], indices, s, dataSources);
         allLoaded = true;
