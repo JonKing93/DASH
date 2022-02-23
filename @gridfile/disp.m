@@ -82,10 +82,8 @@ fprintf('    Dimension Sizes and Metadata:\n');
 obj.dispDimensions;
 
 % Metadata attributes
-[~, atts] = obj.meta.dimensions;
-attributes = obj.meta.(atts);
-fields = fieldnames(attributes);
-if numel(fields)>0
+attributes = obj.attributes;
+if ~isempty(attributes)
     fprintf('    Attributes:\n');
     obj.meta.dispAttributes;
 end

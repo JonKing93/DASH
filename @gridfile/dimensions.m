@@ -1,10 +1,6 @@
 function[dimensions, sizes] = dimensions(obj)
 %% gridfile.dimensions  Return the dimensions in gridfile and their sizes
 % ----------
-%   <strong>obj.dimensions</strong>
-%   Prints the names, sizes, and (when possible) metadata limits of
-%   gridfile dimensions to the console.
-%   
 %   dimensions = <strong>obj.dimensions</strong>
 %   Return the list of dimensions in a .grid file.
 %
@@ -25,14 +21,7 @@ obj.assertValid(header);
 obj.update;
 
 % Console display
-if nargout==0
-    fprintf('\n    Dimension Sizes and Metadata for gridfile "%s":\n',obj.name);
-    obj.dispDimensions;
-
-% Or return values
-else
-    dimensions = obj.dims;
-    sizes = obj.size;
-end
+dimensions = obj.dims;
+sizes = obj.size;
 
 end

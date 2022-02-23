@@ -87,7 +87,7 @@ if hasAttributes && showAttributes
 
 % Or link to attributes fields
 elseif hasAttributes
-    link = sprintf('<a href="%s.dispAttributes">Show attributes</a>', inputname(1));
+    link = sprintf('<a href="matlab:%s.dispAttributes">Show attributes</a>', inputname(1));
     fprintf('  %s\n\n', link);
 end
 
