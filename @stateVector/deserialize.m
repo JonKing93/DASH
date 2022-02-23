@@ -1,16 +1,12 @@
 function[obj] = deserialize(s)
 %% stateVector.deserialize  Rebuild a stateVector object from a serialized struct
 % ----------
-%   obj = stateVector.deserialize(s)
+%   obj = obj.deserialize
 %   Rebuilds a stateVector object from a serialized struct (produced by the
 %   stateVector.serialize method).
 % ----------
-%   Inputs:
-%       s (scalar struct): A serialized stateVector struct ouptut by the
-%           stateVector.serialize method.
-%
 %   Outputs:
-%       obj (scalar stateVector object): The rebuilt stateVector object
+%       obj (scalar stateVector object): The deserialized stateVector object
 %
 % <a href="matlab:dash.doc('stateVector.deserialize')">Documentation Page</a>
 

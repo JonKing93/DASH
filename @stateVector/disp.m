@@ -24,31 +24,45 @@ if ~isscalar(obj)
 end
 
 % Set default showVariables
-if ~obj.iseditable
-    showVariables = false;
-else
-    showVariables = obj.nVariables<=MAXVARS;
+if isempty(showVariables)
+    if ~obj.iseditable
+        showVariables = false;
+    else
+        showVariables = obj.nVariables<=MAXVARS;
+    end
 end
 
-% Finalized tag
+% Finalized and serialized tags
 finalized = '';
 if ~obj.iseditable
     finalized = 'finalized ';
 end
+serialized = '';
+if obj.isserialized
+    serialized = 'serialized ';
+end
 
 % Title
-fprintf('  %s%s with properties:\n\n', finalized, link);
+fprintf('  %s%s%s with properties:\n\n', serialized, finalized, link);
 
-% Label, Length
+% Label (if it exists)
 if ~strcmp(obj.label_,"")
     fprintf('        Label: %s\n', obj.label);
 end
-nRows = obj.length;
-fprintf('       Length: %.f rows\n', nRows);
 
-% Members for finalized vectors
+% Length (if not serialized)
+if ~obj.isserialized
+    nRows = obj.length;
+    fprintf('       Length: %.f rows\n', nRows);
+end
+
+% Members (finalized)
 if ~obj.iseditable
-    nMembers = size(obj.subMembers{1}, 1);
+    if obj.isserialized
+        nMembers = obj.nMembers_serialized;
+    else
+        nMembers = size(obj.subMembers{1}, 1);
+    end
     fprintf('      Members: %.f ensemble members\n', nMembers);
 end
 
@@ -76,9 +90,16 @@ else
     fprintf('\n');
 end
 
+% Link to deserialization
+name = inputname(1);
+if obj.isserialized
+    link = sprintf('<a href="matlab:%s.deserialize">Deserialize</a>', name);
+    fprintf('  %s to display more details\n\n', link);
+    return
+end
+
 % Display or link variables if they exist
 if obj.nVariables>0
-    name = inputname(1);
     if showVariables
         fprintf('    Vector:\n');
         obj.dispVariables(name);
