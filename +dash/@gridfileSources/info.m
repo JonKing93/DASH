@@ -50,7 +50,7 @@ function[info] = info(obj, s)
 % Initialize source structure array
 nSource = numel(s);
 pre = cell(nSource, 1);
-info = struct('parent',pre, 'source_index', pre, 'name', pre, ...
+info = struct('parent',pre, 'index', pre, 'name', pre, ...
     'file',pre,'file_type',pre,'path',pre,'uses_relative_path',pre,...
     'variable',pre,'import_options',pre,'data_type',pre,'dimensions',pre,'size',pre,...
     'fill_value',pre,'valid_range',pre,'transform',pre,'transform_parameters',pre,...
@@ -102,7 +102,7 @@ for k = 1:nSource
 
     % Raw sizes
     info(k).raw_dimensions = rawDims;
-    info(k).raw_sizes = rawSizes;
+    info(k).raw_size = rawSizes;
 end
 
 end
