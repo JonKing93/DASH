@@ -72,6 +72,7 @@ error('constructor for gridfile with empty metadata');
 error('data adjustment outputs');
 error('altered info struct for gridfileSources');
 error('deleted gridfile');
+error('disp, dispSources, and sources console display');
 
 
 end
