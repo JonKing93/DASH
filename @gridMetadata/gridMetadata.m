@@ -105,7 +105,7 @@ classdef gridMetadata
         [dims, size] = defined(obj);
         
         % Console display
-        disp(obj);
+        disp(obj, showAttributes);
         dispAttributes(obj);
         
         % Attribute manipulation

@@ -1,17 +1,31 @@
-function[] = disp(obj)
+function[] = disp(obj, showAttributes)
 %% gridMetadata.disp  Display gridMetadata object in console
 % ----------
 %   <strong>obj.disp</strong>
-%   Displays the contents of a gridMetadata object to the console. Only
-%   lists dimensions with metadata. Only references attributes when
-%   attributes is not empty. If attributes has contents, creates a link to
-%   optionally display the attributes.
+%   Displays the contents of a gridMetadata object to the console. Displays
+%   a link to the gridMetadata documentation page. If the object is scalar,
+%   displays dimensions with metadata. If the metadata has a set dimension 
+%   order, displays the dimensions in that order. If the metadata has
+%   non-dimensional attributes, notes the existence of attributes and links
+%   to the attributes fields. If the object is non-scalar, displays the
+%   size of the gridMetadata array.
+%
+%   <strong>obj.disp</strong>(showAttributes)
+%   Indicate whether to display the attributes fields in the console. By
+%   default, attributes fields are not displayed. This setting only affects
+%   the display of scalar object that have non-dimensional attributes.
 % ----------
 % 
 % <a href="matlab:dash.doc('gridMetadata.disp')">Documentation Page</a>
 
 % % Parse attributes option
-% if ~exist('showAttributes','var') || isempty
+header = "DASH:gridMetadata:disp";
+if ~exist('showAttributes','var') || isempty(showAttributes)
+    showAttributes = false;
+else
+    showAttributes = dash.parse.switches(showAttributes, {["h","hide"],["s","show"]},...
+        1, 'showAttributes', 'allowed option', header);
+end
 
 % Get the class documentation link
 link = '<a href="matlab:dash.doc(''gridMetadata'')">gridMetadata</a>';
@@ -43,13 +57,17 @@ for d = 1:numel(dims)
     end
 end
 
-% Also determine if attributes should be displayed
+% Determine if attributes should be displayed
 hasAttributes = false;
 meta = obj.(atts);
 if numel(fieldnames(meta))>0
     hasAttributes = true;
     empty = false;
-    display.(atts) = meta;
+
+    % Include attributes in struct if not showing fields
+    if ~showAttributes
+        display.(atts) = meta;
+    end
 end
 
 % Display an empty metadata object
@@ -62,10 +80,14 @@ end
 fprintf('  %s with metadata:\n\n', link);
 disp(display);
 
-% Attributes contents link
-if hasAttributes
-    command = sprintf('matlab:%s.dispAttributes', inputname(1));
-    link = sprintf('<a href="%s">Show attributes</a>', command);
+% Display attributes fields
+if hasAttributes && showAttributes
+    fprintf('    %s:\n',atts);
+    obj.dispAttributes;
+
+% Or link to attributes fields
+elseif hasAttributes
+    link = sprintf('<a href="%s.dispAttributes">Show attributes</a>', inputname(1));
     fprintf('  %s\n\n', link);
 end
 
