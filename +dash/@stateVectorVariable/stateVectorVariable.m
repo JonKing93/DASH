@@ -40,9 +40,11 @@ classdef stateVectorVariable
 %   weightedMean        - Apply a weighted mean over dimensions of a variable
 %   metadata            - Set metadata options for ensemble dimensions of a variable
 %
-% Dimensions:
+% Dimensions and Sizes:
 %   dimensions          - List the dimensions of a variable
 %   dimensionIndices    - Return the indices of dimensions within a variable
+%   ensembleSizes       - Return the sizes and names of ensemble dimensions
+%   stateSizes          - Return the sizes and types of non-trivial state dimensions
 %
 % gridfile interactions:
 %   validateGrid        - Check that a gridfile matches a variable's recorded gridfile parameters
@@ -55,7 +57,6 @@ classdef stateVectorVariable
 % Select ensemble members:
 %   trim                - Remove reference indices that would cause an incomplete sequence or incomplete mean
 %   matchMetadata       - Order reference indices so that ensemble metadata matches an ordering set
-%   ensembleSizes       - Return the sizes and names of ensemble dimensions
 %   removeOverlap       - Remove ensemble members that overlap previous members
 %
 % Build members:
@@ -122,12 +123,13 @@ methods
     [metadata, failed, cause] = getMetadata(obj, d, grid, header);
     [isvalid, cause] = validateGrid(obj, grid, header);
 
-    % Dimensions
-    dimensions = dimensions(obj, type);
+    % Dimensions and Sizes
+    [dimensions, lengths] = dimensions(obj, type);
     d = dimensionIndices(obj, dimensions);
+    [sizes, dimNames] = ensembleSizes(obj);
+    [sizes, types] = stateSizes(obj);
 
     % Select ensemble members
-    [sizes, dimNames] = ensembleSizes(obj);
     obj = trim(obj);
     obj = matchMetadata(obj, dims, metadata, grid);
     subMembers = removeOverlap(obj, dims, subMembers);

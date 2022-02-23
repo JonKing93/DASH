@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-indexLimits
+
 %%%
 
 % Run tests
@@ -27,6 +27,8 @@ constructor;
 
 dimensions;
 dimensionIndices;
+ensembleSizes;
+stateSizes;
 
 design;
 sequence;
@@ -37,7 +39,6 @@ metadata;
 validateGrid;
 getMetadata;
 
-ensembleSizes;
 trim;
 matchMetadata;
 removeOverlap;
@@ -48,8 +49,7 @@ indexLimits;
 parametersForBuild;
 buildMembers;
 
-serialize;
-deserialize;
+serialization;
 
 end
 
@@ -68,7 +68,7 @@ assert(isequal(svv.hasSequence, false(1,0)));
 assert(isequal(svv.sequenceIndices, cell(1,0)));
 assert(isequal(svv.sequenceMetadata, cell(1,0)));
 assert(isequal(svv.meanType, zeros(1,0)));
-assert(isequal(svv.meanSize, NaN(1,0)));
+assert(isequal(svv.meanSize, zeros(1,0)));
 assert(isequal(svv.meanIndices, cell(1,0)));
 assert(isequal(svv.omitnan, false(1,0)));
 assert(isequal(svv.weights, cell(1,0)));
@@ -94,7 +94,7 @@ assert(isequal(svv.hasSequence, false(1,nDims)));
 assert(isequal(svv.sequenceIndices, cell(1,nDims)));
 assert(isequal(svv.sequenceMetadata, cell(1,nDims)));
 assert(isequal(svv.meanType, zeros(1,nDims)));
-assert(isequaln(svv.meanSize, NaN(1,nDims)));
+assert(isequaln(svv.meanSize, zeros(1,nDims)));
 assert(isequal(svv.meanIndices, cell(1,nDims)));
 assert(isequal(svv.omitnan, false(1,nDims)));
 assert(isequal(svv.weights, cell(1,nDims)));
@@ -892,6 +892,95 @@ catch cause
 end
 
 end
+function[] = buildMembers
 
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+
+tests = {
+    'state mean'
+    'ens mean',
+    'mixed mean',
+    'multiple mixed means',
+    'mixed nanflag',
+    'sequence',
+    'sequence and mean'
+    'multiple sequence and mean'
+    'pre-loaded array',
+    'load all members'
+    'load individual members'
+    'weighted mean includenan',
+    'weighted mean omitnan',
+    'multiple weighted mean'
+    'multiple weighted mean mixed nanflag'
+    };
+
+% Array too large
+
+
+
+
+
+function[] = serialization
+
+% Build a large selection of variables. Variables should have different
+% dimension sizes and use different options.
+gridLLT = gridfile('test-llt');
+gridLLTR = gridfile('test-lltr');
+
+svv1 = dash.stateVectorVariable(gridLLTR);
+svv2 = dash.stateVectorVariable(gridLLT);
+
+svv1 = svv1.design(3:4, [false, false], {[],[]}, 'test');
+svv2 = svv2.design([1 3], [false false], {[],[]}, 'test');
+svvTest = [svv1;svv2;svv2;svv1;svv2];
+
+mean1 = svv1.mean([1 4],{[],-1:1}, [false true], 'test');
+mean2 = svv2.mean([2 3], {[],[-4 0 9]}, [true false], 'test');
+convert1 = svv1.metadata([1 4], 2, {@mean, @svd}, {{1,'includenan',"arg",5},{}}, 'test');
+convert2 = svv2.metadata([2 3], 2, {@times, @plus}, {{},{6}}, 'test');
+index1 = svv1.design([1 4], [true false], {[2 6 19 22 87], []}, 'test');
+index2 = svv2.design([2 3], [true false], {[], [200:5:499]}, 'test');
+seq1 = svv1.sequence([3 4], {-4:9, 0:1}, {rand(14,3), ["A","String";"meta","matrix"]}, 'test');
+seq2 = svv2.sequence(3, {-4:9}, {(1:14)'}, 'test');
+weights1 = mean1.weightedMean([1 4], {5*ones(100,1), rand(3,1)}, 'test');
+weights2 = mean2.weightedMean(2, {7*ones(20,1)}, 'test');
+meta1 = svv1.metadata([1 4], 1, {rand(100,3), [1;2;3]}, [], 'test');
+meta2 = svv2.metadata([2 3], 1, {rand(20,2), rand(1000,2)}, [], 'test');
+
+tests = {
+    'omitnan', [mean1;mean2]
+    'NaN mean size', svvTest
+    'mixed NaN mean size', [mean1;mean2]
+    'empty convertFunctions', svvTest
+    'mixed convertFunctions',[convert1;convert2]
+    'empty convert args', svvTest
+    'mixed convert args',[convert1;convert2]
+    'empty indices',svvTest
+    'mixed indices', [index1;index2]
+    'ens, empty mean indices', [mean2;mean2;svv2;svv1]
+    'ens, mixed mean indices', [mean1;mean2]
+    'ens, no sequences', svvTest
+    'ens, mixed sequences', [seq1;seq2]
+    'empty weights', svvTest
+    'mixed weights', [weights1;weights2]
+    'no alt metadata',svvTest
+    'mixed alt metadata',[meta1;meta2]
+    };
+
+try
+    for t = 1:size(tests,1)
+        svv = tests{t,2};
+        s = svv.serialize;
+        rebuilt = dash.stateVectorVariable.deserialize(s);
+        assert(isequaln(svv, rebuilt), 'not equivalent');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
