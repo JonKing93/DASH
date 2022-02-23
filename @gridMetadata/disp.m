@@ -62,8 +62,8 @@ disp(display);
 % Attributes contents link
 if hasAttributes
     command = sprintf('matlab:%s.dispAttributes', inputname(1));
-    link = sprintf('<a href="%s">attributes</a>', command);
-    fprintf('  Show %s\n\n', link);
+    link = sprintf('<a href="%s">Show attributes</a>', command);
+    fprintf('  %s\n\n', link);
 end
 
 end
