@@ -4,7 +4,7 @@ function[obj] = uncouple(obj, variables)
 %   obj = obj.uncouple(v)
 %   obj = obj.uncouple(variableNames)
 %   Uncouple the specified variables from one another. Uncoupled variables
-%   are not required to have matching metadata within an ensemble member.%   
+%   are not required to have matching metadata within an ensemble member.  
 %   Coupling is transitive, so unlisted variables that are coupled to two
 %   or more listed variables will also be uncoupled. 
 % ----------
