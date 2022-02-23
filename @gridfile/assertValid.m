@@ -27,7 +27,7 @@ if ~isvalid(obj)
     if numel(stack)==1
         ME = MException(id, 'The gridfile object has been deleted.');
     else
-        method = stack(1).name;
+        method = stack(2).name;
         ME = MException(id, 'You cannot call the "%s" command on a deleted gridfile object.', method);
     end
     throwAsCaller(ME);
