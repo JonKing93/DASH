@@ -59,11 +59,12 @@ end
 
 % Display or link variables if they exist
 if obj.nVariables>0
+    name = inputname(1);
     if showVariables
         fprintf('    Vector:\n');
-        obj.dispVariables;
+        obj.dispVariables(name);
     else
-        link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', inputname(1));
+        link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', name);
         fprintf('  %s\n\n', link);
     end
 end

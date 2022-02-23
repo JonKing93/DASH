@@ -1,4 +1,9 @@
-function[] = dispVariables(obj)
+function[] = dispVariables(obj, objName)
+
+% Default name
+if ~exist('objName','var') || isempty(objName)
+    objName = inputname(1);
+end
 
 % Exit if there are no variables
 if obj.nVariables==0
@@ -25,7 +30,7 @@ format = sprintf('        %%%.fs - %%%.fs rows   |   %%-%.fs   ', ...
     nameWidth, rowsWidth, detailsWidth);
 
 % Include dimension info and details link
-link = sprintf('<a href="matlab:%s.variable(%%.f)">Show details</a>', inputname(1));
+link = sprintf('<a href="matlab:%s.variable(%%.f)">Show details</a>', objName);
 format = [format, link, '\n'];
 
 % Print each variable
