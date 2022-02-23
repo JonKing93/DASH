@@ -3,34 +3,37 @@ function[dimensions] = dimensions(obj, type)
 % ----------
 %   dimensions = <strong>obj.dimensions</strong>
 %   dimensions = <strong>obj.dimensions</strong>('all')
-%   Return the list of all dimensions in the variable.
+%   Return the list of all dimensions in the variable, as well as the number
+%   of state vector elements associated with each dimension.
 %
 %   dimensions = <strong>obj.dimensions</strong>('state')
-%   Return the list of state dimensions.
+%   Return the list of state dimensions for the variable.
 %
 %   dimensions = <strong>obj.dimensions</strong>('ensemble')
-%   Return the list of ensemble dimensions.   
+%   Return the list of ensemble dimensions for the variable.
 % ----------
 %   Outputs:
-%       dimensions (string list): The list of dimensions of the requested
+%       dimensions (string vector [nDimensions]): The list of dimensions of the requested
 %           type for the variable.
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.dimensions')">Documentation Page</a>
 
-% Default type
+% Default
 if ~exist('type','var') || isempty(type)
     type = 'all';
 end
 
-% Get dimensions
-dimensions = obj.dims;
-
-% Refine by type
-if strcmp(type, 'state')
-    dimensions = dimensions(obj.isState);
+% Select dimensions
+if strcmp(type, 'all')
+    use = 1:numel(obj.dims);
+elseif strcmp(type, 'state')
+    use = obj.isState;
 elseif strcmp(type, 'ensemble')
-    dimensions = dimensions(~obj.isState);
+    use = ~obj.isState;
 end
+
+% Get names
+dimensions = obj.dims(use);
 
 end
 
