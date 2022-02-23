@@ -15,7 +15,7 @@ link = '<a href="matlab:%s.source(%.f)">Show details</a>';
 % Format the numbered list
 nSource = size(obj.dimLimit, 3);
 countLength = strlength(string(nSource));
-format = sprintf('    %%%.f.f. %%s', countLength);
+format = sprintf('        %%%.f.f. %%s', countLength);
 
 % Print each data source path
 paths = obj.sources_.absolutePaths;

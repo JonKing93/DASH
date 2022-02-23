@@ -1,4 +1,4 @@
-function[] = disp(obj)
+function[] = disp(obj, showSources)
 %% gridfile.disp  Display gridfile object in console
 % ----------
 %   <strong>disp</strong>(obj)
@@ -21,18 +21,39 @@ function[] = disp(obj)
 %   contains deleted gridfile objects, notes that the array contains
 %   deleted elements. The file name of deleted elements is
 %   reported as <missing>.
+%
+%   <strong>disp</strong>(obj, showSources)
+%   <strong>obj.disp</strong>(showSources)
+%   Indicate whether to display the gridfile data sources in the console.
+%   Default is to not display data sources. This setting only affects the
+%   display of scalar gridfile objects.
 % ----------
+%   Inputs:
+%       showSources (scalar logical | string scalar): Whether or not to
+%           display data sources of scalar gridfile objects.
+%           [false|"h"|"hide"]: (default) Does not display data sources
+%           [true|"s"|"show"]: Displays data sources.
+%
 %   Outputs:
 %       Prints the contents of a gridfile object or array to the console.
 %
 % <a href="matlab:dash.doc('gridfile.disp')">Documentation Page</a>
+
+% Parse showSources
+header = "DASH:gridfile:disp";
+if ~exist('showSources','var') || isempty(showSources)
+    showSources = false;
+else
+    showSources = dash.parse.switches(showSources, {["h","hide"],["s","show"]},...
+        1, 'showSources', 'allowed option', header);
+end
 
 % Get the class documentation link
 link = '<a href="matlab:dash.doc(''gridfile'')">gridfile</a>';
 
 % Display empty, scalar, or array as appropriate
 if isscalar(obj)
-    displayScalar(obj, link, inputname(1));
+    displayScalar(obj, link, inputname(1), showSources);
 else
     displayArray(obj, link);
 end
@@ -40,7 +61,7 @@ end
 end
 
 % Utilities
-function[] = displayScalar(obj, link, name)
+function[] = displayScalar(obj, link, name, showSources)
 
 % Deleted object
 if ~obj.isvalid
@@ -80,10 +101,12 @@ end
 obj.dispAdjustments;
 
 % Data sources
-if obj.nSource>0
-    fprintf('    Data Sources: %.f\n\n', obj.nSource);
-    listLink = sprintf('<a href="matlab:%s.dispSources">Show data sources</a>', name);
-    fprintf('  %s\n\n', listLink);
+fprintf('    Data Sources: %.f\n', obj.nSource);
+if showSources
+    obj.dispSources;
+else
+    link = sprintf('<a href="matlab:%s.dispSources">Show data sources</a>', name);
+    fprintf('\n  %s\n\n', link);
 end
 
 end         
