@@ -3,8 +3,8 @@ function[] = assertEditable(obj, header)
 % ----------
 %   <strong>obj.assertEditable</strong>
 %   Throws an error if a state vector is not editable. A state vector is
-%   not editable if it is associated with a built ensemble. State vector
-%   objects stored in .ens files are typically not editable.
+%   not editable if it is finalized and associated with a built ensemble. 
+%   State vector objects stored in .ens files are typically not editable.
 %
 %   <strong>obj.assertEditable</strong>(header)
 %   Customize thrown error IDs
@@ -22,8 +22,9 @@ end
 % Throw error if not editable
 if ~obj.iseditable
     id = sprintf('%s:stateVectorNotEditable', header);
-    error(id, ['%s is associated with an existing state vector ensemble ',...
+    ME = MException(id, ['%s is associated with an existing state vector ensemble ',...
         'and cannot be edited.'], obj.name);
+    throwAsCaller(ME);
 end
 
 end
