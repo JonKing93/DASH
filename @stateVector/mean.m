@@ -100,6 +100,7 @@ function[obj] = mean(obj, variables, dimensions, indices, NaNoptions)
 header = "DASH:stateVector:mean";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check dimensions and variables, get indices
 v = obj.variableIndices(variables, false, header);

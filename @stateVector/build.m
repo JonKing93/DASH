@@ -100,6 +100,7 @@ dash.assert.scalarObj(obj, header);
 if ~obj.iseditable
     addMembersError(obj, header);
 end
+obj.assertUnserialized;
 
 % Error check members
 if isnumeric(nMembers)

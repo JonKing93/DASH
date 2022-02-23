@@ -71,6 +71,7 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 header = "DASH:stateVector:sequence";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices
 v = obj.variableIndices(variables, false, header);

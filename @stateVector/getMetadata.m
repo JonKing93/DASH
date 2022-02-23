@@ -33,6 +33,7 @@ function[metadata] = getMetadata(obj, variable, dimension)
 % Setup
 header = "DASH:stateVector:getMetadata";
 dash.assert.scalarObj(obj, header);
+obj.assertUnserialized;
 
 % Check variable, get index
 v = obj.variableIndices(variable, true, header);

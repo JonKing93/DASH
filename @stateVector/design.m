@@ -71,6 +71,7 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 header = "DASH:stateVector:design";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices.
 v = obj.variableIndices(variables, false, header);

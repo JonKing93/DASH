@@ -21,6 +21,7 @@ function[obj] = remove(obj, variables)
 header = "DASH:stateVector:remove";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check variables, get indices
 v = obj.variableIndices(variables, true, header);

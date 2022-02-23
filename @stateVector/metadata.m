@@ -109,6 +109,7 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 header = "DASH:stateVector:metadata";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices
 v = obj.variableIndices(variables, false, header);

@@ -43,6 +43,7 @@ function[dimensions] = dimensions(obj, variables, cellOutput)
 % Setup
 header = "DASH:stateVector:dimensions";
 dash.assert.scalarObj(obj, header);
+obj.assertUnserialized;
 
 % Parse cell output
 if ~exist('cellOutput','var') || isempty(cellOutput)

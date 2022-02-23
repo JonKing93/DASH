@@ -30,6 +30,7 @@ function[] = variable(obj, variable, dimensions, detailed, suppressVariable)
 % Setup
 header = "DASH:stateVector:variable";
 dash.assert.scalarObj(obj, header);
+obj.assertUnserialized;
 
 % Parse indices
 v = obj.variableIndices(variable, true, header);

@@ -4,6 +4,7 @@ function[obj] = relocate(obj, variables, grids)
 header = "DASH:stateVector:relocate";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Check variables, get indices
 vars = obj.variableIndices(variables, false, header);

@@ -10,6 +10,12 @@ function[length] = length(obj)
 %
 % <a href="matlab:dash.doc('stateVector.length')">Documentation Page</a>
 
+% Setup
+header = "DASH:stateVector:length";
+dash.assert.scalarObj(obj, header);
+obj.assertUnserialized;
+
+% Sum the lengths of each variable
 length = 0;
 for v = 1:obj.nVariables
     sizes = obj.variables_(v).stateSizes;

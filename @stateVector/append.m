@@ -30,9 +30,16 @@ function[obj] = append(obj, vector2, responseToRepeats)
 header = "DASH:stateVector:append";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check second vector
 dash.assert.scalarType(vector2, 'stateVector', 'vector2', header);
+if vector2.isserialized
+    id = sprintf('%s:serializedObjectNotSupported', header);
+    link = '<a href="matlab:dash.doc(''stateVector.deserialize'')">deserialize</a>';
+    error(id, ['Cannot append vector2 because it is a serialized state vector.',...
+        'You will need to %s it first.'], link);
+end
 
 % Error check response to repeated variables
 if ~exist('responseToRepeats','var') || isempty(responseToRepeats)

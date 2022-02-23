@@ -61,6 +61,7 @@ function[obj] = add(obj, variableNames, grids, autocouple)
 header = "DASH:stateVector:add";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check the names of the new variables
 varNames = dash.assert.strlist(variableNames, 'variableNames', header);
@@ -98,7 +99,7 @@ for v = 1:nVariables
 
     % Add to the state vector
     obj.variables_ = [obj.variables_; newVariable];
-    obj.gridfiles = [obj.gridfiles; grids(g).file];
+    obj.gridfiles = [obj.gridfiles; grid.file];
 end
 
 % Update variable properties

@@ -24,6 +24,7 @@ function[obj] = extract(obj, variables)
 header ="DASH:stateVector:extract";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Check variables, get indices
 v = obj.variableIndices(variables, true, header);

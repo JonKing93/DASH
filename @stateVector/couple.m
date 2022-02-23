@@ -36,6 +36,7 @@ function[obj] = couple(obj, variables)
 header = "DASH:stateVector:couple";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Check user variables, get indices
 vUser = obj.variableIndices(variables, true, header);

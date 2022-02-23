@@ -23,6 +23,7 @@ function[info] = info(obj, variables)
 % Setup
 header = "DASH:stateVector:info";
 dash.assert.scalarObj(obj, header);
+obj.assertUnserialized;
 
 % Parse variables
 if ~exist('variables','var') || isequal(variables, 0)

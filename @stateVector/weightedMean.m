@@ -56,6 +56,7 @@ function[obj] = weightedMean(obj, variables, dimensions, weights)
 header = "DASH:stateVector:mean";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
+obj.assertUnserialized;
 
 % Error check dimensions and variables, get indices
 v = obj.variableIndices(variables, header);
