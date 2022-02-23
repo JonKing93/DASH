@@ -7,7 +7,7 @@ MAXVARS = 10; % The maximum number of variables to display by default
 % Parse showVariables
 header = "DASH:stateVector:disp";
 if ~exist('showVariables','var') || isempty(showVariables)
-    showVariables = obj.nVariables<=MAXVARS;
+    showVariables = [];
 else
     showVariables = dash.parse.switches(showVariables, {["h","hide"],["s","show"]},...
         1, 'showVariables', 'allowed option', header);
@@ -23,8 +23,21 @@ if ~isscalar(obj)
     return
 end
 
+% Set default showVariables
+if ~obj.iseditable
+    showVariables = false;
+else
+    showVariables = obj.nVariables<=MAXVARS;
+end
+
+% Finalized tag
+finalized = '';
+if ~obj.iseditable
+    finalized = 'finalized ';
+end
+
 % Title
-fprintf('  %s with properties:\n\n', link);
+fprintf('  %s%s with properties:\n\n', finalized, link);
 
 % Label, Length
 if ~strcmp(obj.label_,"")
@@ -32,6 +45,12 @@ if ~strcmp(obj.label_,"")
 end
 nRows = obj.length;
 fprintf('       Length: %.f rows\n', nRows);
+
+% Members for finalized vectors
+if ~obj.iseditable
+    nMembers = size(obj.subMembers{1}, 1);
+    fprintf('      Members: %.f ensemble members\n', nMembers);
+end
 
 % Print variables or number of variables
 if obj.nVariables==0 || obj.nVariables>MAXVARS
