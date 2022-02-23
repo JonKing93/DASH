@@ -35,9 +35,7 @@ obj.update;
 % single source
 s = obj.sources_.indices(source, header);
 s = unique(s);
-if isempty(s)
-    return
-elseif numel(s)>1
+if numel(s)>1
     tooManySourcesError;
 end
 
@@ -47,6 +45,11 @@ if ~exist('showAllDetails','var') || isempty(showAllDetails)
 else
     showAllDetails = dash.parse.switches(showAllDetails, {["b","basic"],["a","all"]},...
         2, 'showAllDetails', 'allowed option', header);
+end
+
+% Exit if there are no sources
+if isempty(s)
+    return
 end
 
 % Get info and metadata for the source

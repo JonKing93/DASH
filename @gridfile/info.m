@@ -7,7 +7,6 @@ function[info] = info(obj, sources)
 %   only includes fields pertinent to the entire gridfile. The details of
 %   different data sources are not included.
 %
-%   sourceInfo = <strong>obj.info</strong>([])
 %   sourceInfo = <strong>obj.info</strong>(-1)
 %   Returns a structure array with information about all the data sources
 %   in the gridfile. Each element holds details about one data source in
@@ -44,7 +43,6 @@ function[info] = info(obj, sources)
 %           .transform (string scalar): The default data transformation
 %           .transform_parameters (numeric vector [2]): Any parameters
 %               needed to implement the default transformation.
-
 %
 %       sourceInfo (struct vector): Information about the requested data sources
 %           in the gridfile catalogue. A struct vector with one element per
@@ -89,13 +87,17 @@ dash.assert.scalarObj(obj, header);
 obj.assertValid(header);
 obj.update;
 
-% Default sources
-if ~exist('sources','var')
-    sources = 0;
+% Parse sources
+if ~exist('sources','var') || isequal(sources,0)
+    s = 0;
+elseif isequal(sources, -1)
+    s = 1:obj.nSource;
+else
+    s = obj.sources_.indices(sources, header);
 end
 
 % Grid info
-if isnumeric(sources) && isequal(sources, 0)
+if isequal(s, 0)
     info = struct('file', obj.file, 'dimensions', obj.dims, ...
         'dimension_sizes', obj.size, 'metadata', obj.meta, ...
         'nSources', obj.nSource, 'prefer_relative_paths', obj.relativePath,...
@@ -104,14 +106,7 @@ if isnumeric(sources) && isequal(sources, 0)
     return;
 end
 
-% Otherwise, parse source indices
-if isempty(sources) || (isnumeric(sources) && isequal(sources, -1))
-    s = 1:obj.nSource;
-else
-    s = obj.sources_.indices(sources, header);
-end
-
-% Get the source information
+% Get data source information
 info = obj.sources_.info(s);
 
 end

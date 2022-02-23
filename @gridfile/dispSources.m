@@ -10,7 +10,7 @@ function[] = dispSources(obj)
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>
 
 % Link to sources
-link = '<a href="matlab:%s.source(%.f)">(Source details)</a>';
+link = '<a href="matlab:%s.source(%.f)">Show details</a>';
 
 % Format the numbered list
 nSource = size(obj.dimLimit, 3);
