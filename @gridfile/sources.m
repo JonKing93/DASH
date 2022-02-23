@@ -1,9 +1,6 @@
 function[sources] = sources(obj, s)
 %% gridfile.sources  Return the ordered list of data sources in a gridfile
 % ----------
-%   <strong>obj.sources</strong>
-%   Prints the ordered list of data sources to the console
-%
 %   sources = <strong>obj.sources</strong>
 %   sources = <strong>obj.sources</strong>([])
 %   sources = <strong>obj.sources</strong>(0)
@@ -30,17 +27,6 @@ header = "DASH:gridfile:sources";
 dash.assert.scalarObj(obj, header);
 obj.assertValid(header);
 obj.update;
-
-% Console display
-if ~exist('s','var') && nargout==0
-    if obj.nSource==0
-        fprintf('\n    The gridfile "%s" has no data sources.\n\n', obj.name);
-    else
-        fprintf('\n    Data Sources in gridfile "%s":\n', obj.name);
-        obj.dispSources;
-    end
-    return
-end
 
 % Parse indices
 if ~exist('s','var') || isempty(s) || isequal(s,0)
