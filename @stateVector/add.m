@@ -113,13 +113,12 @@ obj.coupled(v,:) = false;
 obj.coupled(:,v) = false;
 obj.coupled(1:obj.nVariables+1:end) = true;
 
-% Autocouple dimensions to existing variables
+% Autocouple to existing variables (no need to couple to each other,
+% because new variables only have state dimensions)
 if any(autocouple) && any(obj.autocouple_)
     vTemplate = find(obj.autocouple_, 1);
     vUpdate = v(autocouple);
     [obj, failed, cause] = obj.coupleDimensions(vTemplate, vUpdate, header);
-
-    % Informative error if autocoupling failed
     if failed
         couldNotAutocoupleError(obj, vTemplate, failed, cause, header);
     end
