@@ -120,7 +120,6 @@ classdef stateVector
 %         % Vector workflow
 %         obj = extract(obj, variables);
 %         obj = append(obj, vector2, responseToRepeats)
-%         copy;
 
         % Build / write
         [X, meta, obj] = build(obj, nMembers, varargin);
