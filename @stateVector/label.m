@@ -1,5 +1,5 @@
 function[varargout] = label(obj, label)
-%% stateVector.label  Set or return the label a stateVector object
+%% stateVector.label  Set or return the label of a stateVector object
 % ----------
 %   label = <strong>obj.label</strong>
 %   Returns the current label of the stateVector object.
