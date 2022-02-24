@@ -56,13 +56,9 @@ if ~obj.isserialized
     fprintf('       Length: %.f rows\n', nRows);
 end
 
-% Members (finalized)
-if ~obj.iseditable
-    if obj.isserialized
-        nMembers = obj.nMembers_serialized;
-    else
-        nMembers = size(obj.subMembers{1}, 1);
-    end
+% Members (if not 0)
+nMembers = obj.members;
+if nMembers > 0
     fprintf('      Members: %.f ensemble members\n', nMembers);
 end
 
