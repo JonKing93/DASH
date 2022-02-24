@@ -78,38 +78,30 @@ classdef stateVector
 
     methods
 
-        % General settings
+        % General
         varargout = label(obj, label);
         name = name(obj);
+        length = length(obj);
         assertEditable(obj);
 
         % Variables
         obj = add(obj, variableNames, grids, autocouple);
         obj = remove(obj, variables);
-        varargout = overlap(obj, variables, allowOverlap);
+        obj = extract(obj, variables);
+        obj = append(obj, vector2, responseToRepeats);
         v = variableIndices(obj, variables, allowRepeats, header);
-
-        % Gridfiles
-        [failed, cause] = validateGrids(obj, grids, vars, header);
-        obj = relocate(obj, variables, grids);
+        varargout = overlap(obj, variables, allowOverlap);
 
         % Variable names
         variables = variables(obj, v);
         obj = rename(obj, variables, newNames);
         assertValidNames(obj, newNames, header);
 
-        % Variable dimensions
+        % Dimensions
         dimensions = dimensions(obj, v, cellOutput);
         [indices, dimensions] = dimensionIndices(obj, v, dimensions, header);
 
-        % Coupling
-        obj = couple(obj, variables);
-        obj = uncouple(obj, variables);
-        obj = autocouple(obj, variables, setting);
-        [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
-        info = couplingInfo(obj);
-
-        % Design parameters
+        % Design
         obj = design(obj, variables, dimensions, types, indices);
         obj = sequence(obj, variables, dimensions, indices, metadata);
         obj = metadata(obj, variables, dimensions, metadataType, varargin);
@@ -117,34 +109,39 @@ classdef stateVector
         obj = weightedMean(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
 
-%         % Vector workflow
-%         obj = extract(obj, variables);
-%         obj = append(obj, vector2, responseToRepeats)
+        % Coupling
+        obj = couple(obj, variables);
+        obj = uncouple(obj, variables);
+        obj = autocouple(obj, variables, setting);
+        [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
+
+        % Coupling information
+        [indexSets, nSets] = coupledIndices(obj);
+        [names, indices] = coupledVariables(obj);
+        info = couplingInfo(obj);
 
         % Build / write
         [X, meta, obj] = build(obj, nMembers, varargin);
         [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress);
-        addMembers;
-
-        % Information
-        info = info(obj, variables);
-        length = length(obj);
-        [names, indices] = coupledVariables(obj);
-
-        % Console display
-        variable(obj, variables, dimensions, detailed, suppressVariable);
-        disp(obj, showVariables);
-        dispVariables(obj, objName);
-        dispCoupled(obj, sets);
+        [X, meta, obj] = addMembers(obj, nMembers, varargin);
 
         % Serialization
         assertUnserialized(obj);
         s = serialize(obj);
         obj = deserialize(obj);
+
+        % Information
+        info = info(obj, variables);
+        variable(obj, variables, dimensions, detailed, suppressVariable);
+        disp(obj, showVariables);
+        dispVariables(obj, objName);
+        dispCoupled(obj, sets);
+
+        % Gridfile interactions
+        [failed, cause] = validateGrids(obj, grids, vars, header);
+        obj = relocate(obj, variables, grids);
     end
     methods (Static)
-
-        % Build gridfile objects
         [grids, failed, cause] = parseGrids(grids, nVariables, header);
         [grids, failed, cause] = buildGrids(files, nVariables);
 
