@@ -17,20 +17,20 @@ if any([obj.isserialized])
     stack = dbstack;
     id = sprintf('%s:stateVectorIsSerialized', header);
 
+    % Array
+    if ~isscalar(obj)
+        ME = MException(id, ['The stateVector array contains elements ',...
+            'that have been serialized.']);
+
     % Console scalar
-    if numel(stack)==1 && isscalar(obj)
+    elseif numel(stack)==1
         name = 'The stateVector object';
         if ~strcmp(obj.label_, "")
             name = sprintf('State vector "%s"', obj.label_);
         end
         ME = MException(id, '%s has been serialized.', name);
 
-    % Console array
-    elseif numel(stack)==1
-        ME = MException(id, ['The stateVector array contains elements ',...
-            'that have been serialized.']);
-
-    % From a method
+    % Method scalar
     else
         method = stack(2).name;
         link ='<a href="matlab:dash.doc(''stateVector.deserialize'')">deserialize</a>';

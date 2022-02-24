@@ -28,15 +28,11 @@ if ~all(isvalid(obj))
     stack = dbstack;
     id = sprintf('%s:gridfileNotValid', header);
 
-    % Console scalar or array
-    if numel(stack)==1
-        if isscalar(obj)
-            ME = MException(id, 'The gridfile object has been deleted.');
-        else
-            ME = MException(id, 'The gridfile array contains deleted elements.');
-        end
-    
-    % From a method
+    % Array, console scalar, method scalar
+    if ~isscalar(obj)
+        ME = MException(id, 'The gridfile array contains deleted elements.');
+    elseif numel(stack)==1
+        ME = MException(id, 'The gridfile object has been deleted.');
     else
         method = stack(2).name;
         ME = MException(id, 'You cannot call the "%s" command on a deleted gridfile object.', method);
