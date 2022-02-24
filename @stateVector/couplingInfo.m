@@ -21,8 +21,7 @@ function[info] = couplingInfo(obj)
 % <a href="matlab:dash.doc('stateVector.couplingInfo')">Documentation Page</a>
 
 % Get the sets of coupled variables
-coupledVars = unique(obj.coupled, 'rows', 'stable');
-nSets = size(coupledVars, 1);
+[indices, nSets] = obj.coupledIndices;
 
 % Preallocate sets and variables
 sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0),'indices', NaN(0,0));
@@ -30,24 +29,21 @@ sets = repmat(sets, [nSets, 1]);
 variables = struct('whichSet', NaN, 'dims', NaN(0,1));
 variables = repmat(variables, [obj.nVariables, 1]);
 
-% Get the variables in each coupled set
+% Get ensemble dimensions and indices for each set
 for s = 1:nSets
-    vars = find(coupledVars(s,:))';
-    nVars = numel(vars);
-
-    % Get ensemble dimensions and indices
-    variable1 = obj.variables_(vars(1));
+    variable1 = obj.variables_(indices{s}(1));
     ensDims = variable1.dimensions('ensemble');
-    dims = obj.dimensionIndices(vars, ensDims);
+    dims = obj.dimensionIndices(indices{s}, ensDims);
 
-    % Record information for the set
-    sets(s).vars = vars;
+    % Record set information
+    sets(s).vars = indices{s};
     sets(s).ensDims = ensDims;
     sets(s).dims = dims;
 
     % Also organize info for each variable
+    nVars = numel(indices{s});
     for k = 1:nVars
-        v = vars(k);
+        v = indices{s}(k);
         variables(v).whichSet = s;
         variables(v).dims = dims(k,:);
     end

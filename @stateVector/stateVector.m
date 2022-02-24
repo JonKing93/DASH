@@ -135,7 +135,7 @@ classdef stateVector
         variable(obj, variables, dimensions, detailed, suppressVariable);
         disp(obj, showVariables);
         dispVariables(obj, objName);
-        dispCoupled(obj);
+        dispCoupled(obj, sets);
 
         % Serialization
         assertUnserialized(obj);

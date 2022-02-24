@@ -24,40 +24,30 @@ function[names, indices] = coupledVariables(obj)
 % <a href="matlab:dash.doc('stateVector.coupledVariables')">Documentation Page</a>
 
 % Get sets of coupled variables
-sets = unique(obj.coupled, 'rows', 'stable');
-nSets = size(sets, 1);
+[sets, nSets] = obj.coupledIndices;
 
-% Preallocate output
+% Build output
 if nargout>0
     names = cell(nSets,1);
-    indices = cell(nSets,1);
-
-    % Get names and indices of variables in each set
+    indices = sets;
     for s = 1:nSets
-        names{s} = obj.variableNames(sets(s,:));
-        indices{s} = find(sets(s,:));
+        names{s} = obj.variableNames(sets{s});
     end
     return
 end
 
-% No variables
+% Print info: no variables, all coupled, none coupled, multiple sets
 if nSets==0
     name = char(obj.name);
     name(1) = upper(name(1));
     fprintf('\n    %s has no variables.\n\n', name);
-
-% All coupled
 elseif nSets==1
     fprintf('\n    All variables in %s are coupled.\n\n', obj.name);
-
-% No coupling
 elseif nSets==obj.nVariables
     fprintf('\n    None of the variables in %s are coupled.\n\n', obj.name);
-
-% Mixed coupling
 else
     fprintf('\n    Sets of coupled variables:\n');
-    obj.dispCoupled;
+    obj.dispCoupled(sets);
 end
 
 end

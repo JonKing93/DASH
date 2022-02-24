@@ -75,8 +75,7 @@ end
 fprintf('    Variables: %s\n', vars);
 
 % Coupling information
-sets = unique(obj.coupled, 'rows');
-nSets = size(sets,1);
+[sets, nSets] = obj.coupledIndices;
 if nSets>0
     if nSets==1
         fprintf('     Coupling: All variables coupled\n\n');
@@ -84,7 +83,7 @@ if nSets>0
         fprintf('     Coupling: No variables coupled\n\n');
     else
         fprintf('\n    Coupled Variables:\n');
-        obj.dispCoupled;
+        obj.dispCoupled(sets);
     end
 else
     fprintf('\n');

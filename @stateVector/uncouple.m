@@ -30,13 +30,10 @@ obj.assertEditable;
 % Check user variables, get indices
 vUser = obj.variableIndices(variables, true, header);
 
-% Get sets of coupled variablesCycle through sets of coupled variables
-sets = unique(obj.coupled, 'rows');
-nSets = size(sets,1);
-
-% Check each set for user variables
+% Check each set of coupled variables for user-specified variables
+[sets, nSets] = obj.coupledIndices;
 for s = 1:nSets
-    vCoupled = find(sets(s,:));
+    vCoupled = sets{s};
     isUserVar = ismember(vCoupled, vUser);
 
     % If there are 2+ user variables in the set, uncouple the entire set

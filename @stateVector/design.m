@@ -102,13 +102,10 @@ method = 'design';
 inputs = {isstate, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 
-% Get sets of coupled variables
-sets = unique(obj.coupled, 'rows');
-nSets = size(sets,1);
-
-% Check each set for user-specified variables
+% Check each set of coupled variables for user-specified variables
+[sets, nSets] = obj.coupledIndices;
 for s = 1:nSets
-    vCoupled = find(sets(s,:));
+    vCoupled = sets{s};
     isUserVar = ismember(vCoupled, v);
 
     % If there are user variables, check for secondary coupled variables
