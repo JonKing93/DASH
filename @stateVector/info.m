@@ -15,8 +15,8 @@ function[info] = info(obj, variables)
 %   variables in the state vector.
 % ----------
 %   Inputs:
-%       v (logical vector [nSources] | vector, linear indices): The indices
-%           of the variables in the state vector for which to return information.
+%       v (logical vector | vector, linear indices): The indices of the
+%           variables in the state vector for which to return information.
 %       variableNames (string vector): The names of the variables in the 
 %           state vector for which to return information.
 
