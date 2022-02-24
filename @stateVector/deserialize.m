@@ -10,6 +10,10 @@ function[obj] = deserialize(obj)
 %
 % <a href="matlab:dash.doc('stateVector.deserialize')">Documentation Page</a>
 
+% Setup
+header = "DASH:stateVector:deserialize";
+dash.assert.scalarObj(obj, header);
+
 % Rebuild unused members
 obj.unused = mat2cell(obj.unused, obj.nUnused, 1)';
 

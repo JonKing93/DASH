@@ -13,6 +13,10 @@ function[obj] = serialize(obj)
 %
 % <a href="matlab:dash.doc('stateVector.serialize')">Documentation Page</a>
 
+% Setup
+header = "DASH:stateVector:serialize";
+dash.assert.scalarObj(obj, header);
+
 % Note serialization
 obj.isserialized = true;
 
