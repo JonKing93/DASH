@@ -1,9 +1,9 @@
 function[] = dispCoupled(obj)
 %% stateVector.dispCoupled  Display coupled variables in the console
 
-% Get coupling sets
-sets = obj.couplingInfo.sets;
-nSets = numel(sets);
+% Get sets of coupled variables
+sets = unique(obj.coupled, 'rows', 'stable');
+nSets = size(sets,1);
 
 % If there are no variables, exit
 if nSets==0
@@ -17,8 +17,7 @@ format = ['        ',format,'. %s\n'];
 
 % Print each set of variables
 for s = 1:nSets
-    v = sets(s).vars;
-    varNames = obj.variableNames(v);
+    varNames = obj.variableNames(sets(s,:));
     fprintf(format, s, strjoin(varNames, ', '));
 end
 fprintf('\n');

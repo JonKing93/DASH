@@ -26,15 +26,17 @@ function[obj] = uncouple(obj, variables)
 header = "DASH:stateVector:uncouple";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
-obj.assertUnserialized;
 
 % Check user variables, get indices
 vUser = obj.variableIndices(variables, true, header);
 
-% Cycle through sets of coupled variables, check for user variables
-sets = obj.couplingInfo.sets;
-for s = 1:numel(sets)
-    vCoupled = sets(s).vars;
+% Get sets of coupled variablesCycle through sets of coupled variables
+sets = unique(obj.coupled, 'rows');
+nSets = size(sets,1);
+
+% Check each set for user variables
+for s = 1:nSets
+    vCoupled = find(sets(s,:));
     isUserVar = ismember(vCoupled, vUser);
 
     % If there are 2+ user variables in the set, uncouple the entire set

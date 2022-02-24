@@ -57,6 +57,7 @@ obj.coupled(vAll, vAll) = true;
 
 end
 
+% Error message
 function[] = couplingFailedError(obj, vTemplate, vFailed, cause, header)
 
 tName = obj.variables(vTemplate);

@@ -75,8 +75,8 @@ end
 fprintf('    Variables: %s\n', vars);
 
 % Coupling information
-sets = obj.couplingInfo.sets;
-nSets = numel(sets);
+sets = unique(obj.coupled, 'rows');
+nSets = size(sets,1);
 if nSets>0
     if nSets==1
         fprintf('     Coupling: All variables coupled\n\n');

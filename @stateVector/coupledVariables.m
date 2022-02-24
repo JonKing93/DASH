@@ -23,19 +23,19 @@ function[names, indices] = coupledVariables(obj)
 %
 % <a href="matlab:dash.doc('stateVector.coupledVariables')">Documentation Page</a>
 
-% Get coupling info
-sets = obj.couplingInfo.sets;
-nSets = numel(sets);
+% Get sets of coupled variables
+sets = unique(obj.coupled, 'rows', 'stable');
+nSets = size(sets, 1);
 
-% Preallocate as output
+% Preallocate output
 if nargout>0
     names = cell(nSets,1);
     indices = cell(nSets,1);
 
-    % Get items in each set
+    % Get names and indices of variables in each set
     for s = 1:nSets
-        names{s} = obj.variables(sets(s).vars);
-        indices{s} = sets(s).vars;
+        names{s} = obj.variableNames(sets(s,:));
+        indices{s} = find(sets(s,:));
     end
     return
 end

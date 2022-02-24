@@ -90,7 +90,7 @@ else
     dash.assert.indexCollection(indices, nDims, [], dimensions, header);
 end
 
-% Require unique indices
+% Require unique state/reference indices
 for k = 1:nDims
     dimName = dimensions(k);
     name = dash.string.indexedDimension(dimName);
@@ -102,10 +102,13 @@ method = 'design';
 inputs = {isstate, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 
-% Cycle through sets of coupled variables, and check for user-specified variables
-sets = obj.couplingInfo.sets;
-for s = 1:numel(sets)
-    vCoupled = sets(s).vars;
+% Get sets of coupled variables
+sets = unique(obj.coupled, 'rows');
+nSets = size(sets,1);
+
+% Check each set for user-specified variables
+for s = 1:nSets
+    vCoupled = find(sets(s,:));
     isUserVar = ismember(vCoupled, v);
 
     % If there are user variables, check for secondary coupled variables

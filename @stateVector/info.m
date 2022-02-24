@@ -51,17 +51,16 @@ info = cell2mat(info);
 
 % Note original fields
 nFields = numel(fieldnames(info));
-varNames = obj.variableNames;
 
 % Supplement variable information
 for k = 1:numel(vars)
     v = vars(k);
-    info(k).name = varNames(v);
+    info(k).name = obj.variableNames(v);
     info(k).gridfile = obj.gridfiles(v);
 
     coupled = obj.coupled(v,:);
     coupled(v) = false;
-    info(k).coupled_variables = varNames(coupled);
+    info(k).coupled_variables = obj.variableNames(coupled);
     
     info(k).allow_overlap = obj.allowOverlap(v);
     info(k).auto_couple = obj.autocouple_(v);
