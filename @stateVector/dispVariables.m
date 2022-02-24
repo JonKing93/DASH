@@ -1,4 +1,5 @@
 function[] = dispVariables(obj, objName)
+%% stateVector.dispVariables  Display a list of state vector variables in the console
 
 % Default name
 if ~exist('objName','var') || isempty(objName)
