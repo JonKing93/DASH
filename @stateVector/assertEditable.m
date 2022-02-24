@@ -29,20 +29,14 @@ end
 if ~all([obj.iseditable])
     id = sprintf('%s:stateVectorNotEditable', header);
 
-    % Array
+    % Array or scalar
     if ~isscalar(obj)
         ME = MException(id, ['The stateVector array contains elements that ',...
             'are no longer editable. (These elements have been finalized ',...
             'and used to build state vector ensembles).']);
-
-    % Scalar
     else
-        name = 'The stateVector object';
-        if ~strcmp(obj.label_, "")
-            name = sprintf('State vector "%s"', obj.label_);
-        end
         ME = MException(id, ['%s is no longer editable. (It has been finalized ',...
-            'and used to build a state vector ensemble).'], name);
+            'and used to build a state vector ensemble).'], obj.name(true));
     end
 
     % Throw error

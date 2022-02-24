@@ -37,7 +37,7 @@ classdef stateVector
 
         % General
         varargout = label(obj, label);
-        name = name(obj);
+        name = name(obj, capitalize);
         length = length(obj);
         nMembers = members(obj);
         assertEditable(obj);

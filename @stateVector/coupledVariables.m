@@ -38,9 +38,7 @@ end
 
 % Print info: no variables, all coupled, none coupled, multiple sets
 if nSets==0
-    name = char(obj.name);
-    name(1) = upper(name(1));
-    fprintf('\n    %s has no variables.\n\n', name);
+    fprintf('\n    %s has no variables.\n\n', obj.name(true));
 elseif nSets==1
     fprintf('\n    All variables in %s are coupled.\n\n', obj.name);
 elseif nSets==obj.nVariables
