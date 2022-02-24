@@ -47,7 +47,7 @@ catch ME
 end
 
 % Get the indices of the ensemble members
-nTotal = size(obj.subMembers{1}, 1);
+nTotal = obj.members;
 members = nTotal-nMembers+1:nTotal;
 
 % Load ensemble directly
@@ -105,7 +105,7 @@ if strcmp(nMembers, 'all')
 end
 
 % Get initial number of saved and requested ensemble members
-nInitial = size(obj.subMembers{1}, 1);
+nInitial = obj.members;
 nRequested = nMembers;
 
 % Preallocate new ensemble members for sets of coupled variables
@@ -260,7 +260,7 @@ function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, c
 %           all ensemble members for a variable.
 
 % Get the indices of new ensemble members
-nMembers = size(obj.subMembers{1},1);
+nMembers = obj.members;
 newIndices = nMembers-nNew+1:nMembers;
 
 % Unpack gridfile info

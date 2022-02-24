@@ -1,47 +1,4 @@
 classdef stateVector
-    %
-    % *ALL USER METHODS*
-    %
-    %
-    % Create / General Settings:
-    %   stateVector
-    %   label
-    %   verbose
-    %
-    % Variables:
-    %   add
-    %   remove
-    %   variables
-    %   rename
-    %   relocate
-    %
-    % Coupling
-    %   couple
-    %   uncouple
-    %   autocouple
-    %
-    % Design
-    %   design
-    %   sequence
-    %   metadata
-    %   mean
-    %   weightedMean
-    %   overlap
-    %
-    % Workflow:
-    %   append
-    %   extract
-    %
-    % Build
-    %   build
-    %   addMembers
-    %
-    % Summary
-    %   info
-    %   dimensions
-    %   getMetadata
-    %
-    % 
 
     properties (SetAccess = private)
         %% General settings
@@ -70,9 +27,9 @@ classdef stateVector
         %% Serialization
 
         isserialized = false;           % Whether the state vector is serialized
-        nMembers_serialized = [];       % The number of saved ensemble members
-        nUnused_serialized = [];        % The number of unused ensemble members in each coupling set
-        nEnsDims_serialized = [];       % The number of ensemble dimensions in each coupling set
+        nMembers_serialized = [];       % The number of saved ensemble members for a serialized state vector
+        nUnused_serialized = [];        % The number of unused ensemble members in each coupling set for a serialized state vector
+        nEnsDims_serialized = [];       % The number of ensemble dimensions in each coupling set for a serialized state vector
 
     end
 
@@ -82,6 +39,7 @@ classdef stateVector
         varargout = label(obj, label);
         name = name(obj);
         length = length(obj);
+        nMembers = members(obj);
         assertEditable(obj);
 
         % Variables
