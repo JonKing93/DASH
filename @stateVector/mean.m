@@ -132,5 +132,6 @@ method = 'mean';
 inputs = {indices, omitnan, header};
 task = 'take a mean over';
 obj = obj.editVariables(v, d, method, inputs, task);
+obj = obj.updateLengths(v);
 
 end

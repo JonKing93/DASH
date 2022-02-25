@@ -71,6 +71,9 @@ for k = 1:numel(vars)
     end
 end
 
+% Update variable lengths
+obj = obj.updateLengths(vars);
+
 end
 
 function[ME] = missingDimensionError(obj, t, v, ensDims, missing, header)

@@ -101,6 +101,7 @@ method = 'sequence';
 inputs = {indices, metadata, header};
 task = 'design a sequence for';
 obj = obj.editVariables(v, d, method, inputs, task);
+obj = obj.updateLengths(v);
 
 end
 

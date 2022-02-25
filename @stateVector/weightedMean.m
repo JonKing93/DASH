@@ -76,5 +76,6 @@ method = 'weightedMean';
 inputs = {weights};
 task = 'take a weighted mean over';
 obj = obj.editVariables(v, d, method, inputs, task);
+obj = obj.updateLengths(v);
 
 end

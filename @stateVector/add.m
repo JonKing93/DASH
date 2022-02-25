@@ -131,6 +131,10 @@ if any(autocouple)
     obj.coupled(vCouple, vCouple) = true;
 end
 
+% Update variable lengths
+obj.lengths(v) = NaN;
+obj = obj.updateLengths(v);
+
 end
 
 % Errors

@@ -13,6 +13,7 @@ classdef stateVector
         variables_ = [];                % The collection of variables and their design parameters
         gridfiles = strings(0,1);       % The gridfile associated with each variable
         allowOverlap = false(0,1);      % Whether ensemble members for a variable are allowed to use overlapping information
+        lengths = NaN(0,1);             % The number of state vector elements for each variable
 
         %% Coupling
 
@@ -38,9 +39,10 @@ classdef stateVector
         % General
         varargout = label(obj, label);
         name = name(obj, capitalize);
+        assertEditable(obj);
         length = length(obj);
         nMembers = members(obj);
-        assertEditable(obj);
+        obj = updateLengths(obj, vars);
 
         % Variables
         obj = add(obj, variableNames, grids, autocouple);
@@ -96,8 +98,8 @@ classdef stateVector
         dispCoupled(obj, sets);
 
         % Gridfile interactions
-        [failed, cause] = validateGrids(obj, grids, vars, header);
         obj = relocate(obj, variables, grids);
+        [failed, cause] = validateGrids(obj, grids, vars, header);
     end
     methods (Static)
         [grids, failed, cause] = parseGrids(grids, nVariables, header);

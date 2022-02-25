@@ -101,6 +101,7 @@ end
 method = 'design';
 inputs = {isstate, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
+obj = obj.updateLengths(v);
 
 % Check each set of coupled variables for user-specified variables
 [sets, nSets] = obj.coupledIndices;
