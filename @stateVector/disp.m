@@ -45,18 +45,11 @@ end
 % Title
 fprintf('  %s%s%s with properties:\n\n', serialized, finalized, link);
 
-% Label (if it exists)
+% Label, Length, Members
 if ~strcmp(obj.label_,"")
     fprintf('        Label: %s\n', obj.label);
 end
-
-% Length (if not serialized)
-if ~obj.isserialized
-    nRows = obj.length;
-    fprintf('       Length: %.f rows\n', nRows);
-end
-
-% Members (if not 0)
+fprintf('       Length: %.f rows\n', obj.length);
 nMembers = obj.members;
 if nMembers > 0
     fprintf('      Members: %.f ensemble members\n', nMembers);
