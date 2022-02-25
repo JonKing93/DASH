@@ -11,6 +11,8 @@ TODO:
 9. Remove "throws" from non-assert calls
     -Or treat throws in a more consistent way through the docs
 
+Add properties parsing to class file autodoc
+
 
 Review string.indexedDimension
 
