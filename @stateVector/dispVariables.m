@@ -31,7 +31,7 @@ if ~obj.isserialized
     detailsWidth = max(strlength(details));
     detailsFormat = sprintf('   |   %%-%.fs', detailsWidth);
     link = sprintf('<a href="matlab:%s.variable(%%.f)">Show details</a>', objName);
-    format = [format, detailsFormat, link];
+    format = [format, detailsFormat, '   ', link];
 end
 
 % Print each variable
@@ -48,7 +48,7 @@ fprintf('\n');
 
 % If serialized, link to deserialization
 if obj.isserialized
-    link = '<a href="matlab:stateVector.deserialize">Deserialize</a>';
+    link = '<a href="matlab:dash.doc(''stateVector.deserialize'')">Deserialize</a>';
     fprintf('  %s to display more details\n\n', link);
 end
 

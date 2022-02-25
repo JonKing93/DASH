@@ -1,6 +1,6 @@
 classdef stateVector
 
-    properties (SetAccess = private)
+    properties %(SetAccess = private)
         %% General settings
 
         label_ = "";                    % The label for the state vector
@@ -40,7 +40,7 @@ classdef stateVector
         varargout = label(obj, label);
         name = name(obj, capitalize);
         assertEditable(obj);
-        length = length(obj);
+        length = length(obj, variables);
         nMembers = members(obj);
         obj = updateLengths(obj, vars);
 
