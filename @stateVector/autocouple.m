@@ -109,7 +109,8 @@ if ~isempty(vManual)
         v = vChange(k);
         [obj, failed, cause] = obj.coupleDimensions(t, v, header);
         if failed
-            failedCouplingError;
+            ME = failedCouplingError(obj, t, v, cause, header);
+            throwAsCaller(ME);
         end
     end
 end
@@ -117,21 +118,19 @@ end
 end
 
 % Error message
-function[] = failedCouplingError(obj, vUser, cause, header)
-
-var = 'variables';
-if numel(vUser)==1
-    var = 'variable';
-end
+function[ME] = failedCouplingError(obj, t, v, cause, header)
 vector = '';
 if ~strcmp(obj.label, "")
     vector = sprintf('in %s ', obj.name);
 end
+template = obj.variableNames(t);
+var = obj.variableNames(v);
 
 id = sprintf('%s:couldNotCoupleVariable', header);
-ME = MException(id, ['Cannot autocouple the specified %s %sbecause the %s ',...
- 
-
+ME = MException(id, ['Cannot autocouple variable "%s" %sbecause %s cannot ',...
+    'be coupled to the "%s" variable.'], var, vector, var, template);
+ME = addCause(ME, cause);
+end
 
 
 
