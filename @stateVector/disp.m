@@ -78,19 +78,14 @@ else
     fprintf('\n');
 end
 
-% Link to deserialization
-if obj.isserialized
-    link = '<a href="matlab:stateVector.deserialize">Deserialize</a>';
-    fprintf('  %s to display more details\n\n', link);
-
-% Otherwise, display or link variables if they exist
-elseif obj.nVariables>0
-    name = inputname(1);
+% Display or link variables if they exist
+if obj.nVariables>0
+    objName = inputname(1);
     if showVariables
         fprintf('    Vector:\n');
-        obj.dispVariables(name);
+        obj.dispVariables(objName);
     else
-        link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', name);
+        link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', objName);
         fprintf('  %s\n\n', link);
     end
 end
