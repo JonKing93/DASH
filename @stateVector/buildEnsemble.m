@@ -1,11 +1,13 @@
-function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress)
+function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, progress)
 %% 
+
+
 
 %% Select the new ensemble members:
 % 1. Select members and remove overlap
 % 2. Record saved / unused members in the state vector object
 % 3. Note the number of new members
-[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling);
+[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, progress);
 
 
 %% gridfile data sources:
@@ -67,7 +69,7 @@ end
 
 
 % Sub-functions
-function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
+function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, progress)
 %% Selects new ensemble members
 % ----------
 %  Cycles through sets of coupled variables and selects the required number
@@ -90,6 +92,8 @@ function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling)
 %               .whichSet (scalar index): The coupling set for the variable
 %               .dims (vector, linear indices [nDims]): Indices of the ensemble dimension
 %                   *in the order of the coupling set* for the variable
+%       progress ([] | progressbar object): The progress bar (if any) for
+%           selecting ensemble members
 %
 %   Outputs:
 %       obj: The state vector updated with the newly selected ensemble
@@ -112,6 +116,16 @@ nRequested = nMembers;
 nSets = numel(coupling.sets);
 nNew = NaN(nSets, 1);
 incomplete = false(nSets, 1);
+
+% Initialize progress bar
+showProgress = false;
+if ~isempty(progress)
+    showProgress = true;
+    waitbar(0, progress.handle, 'Selecting Ensemble Members: 0%');
+    if ~isinf(nMembers)
+        progress.max = nMembers * nSets;
+    end
+end
 
 % Cycle through sets of coupled variables.
 for s = 1:nSets
@@ -173,14 +187,30 @@ for s = 1:nSets
         nNew(s) = size(subMembers,1) - nInitial;
         nRemaining = numel(unused);
 
-        % If all members were selected, update maximum members and exit
-        % loop. Note incomplete sets of variables.
+        % If all members were selected, update maximum members. Note
+        % incomplete variables.
         if incomplete(s) || isinf(nMembers)
             nMembers = nNew(s);
             if incomplete(s)
                 incompleteVars = vars;
             end
+
+            % Complete set progress. Exit while loop
+            if showProgress
+                progress.max = nMembers * nSets;
+                x = s/nSets;
+                message = sprintf('Selecting Ensemble Members: %.f%%', 100*x);
+                waitbar(x, progress.handle, message);
+            end
             break
+        end
+
+        % Update progress within while loop
+        if showProgress
+            count = (s-1)*nMembers + nNew(s);
+            x = count/progress.max;
+            message = sprintf('Selecting Ensemble Members: %.f%%', 100*x);
+            waitbar(x, progress.handle, message);
         end
     end
 

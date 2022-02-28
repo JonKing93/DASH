@@ -144,8 +144,21 @@ for v = 1:obj.nVariables
     end
 end
 
+% Initialize the progress bar
+if showprogress
+    progress = progressbar;
+    progress.handle = waitbar(0);
+else
+    progress = [];
+end
+
 
 %% Finalize variables
+
+% Initialize progress bar
+if showprogress
+    waitbar(0, progress.handle, 'Finalizing Variables: 0%');
+end
 
 % Cycle through variables, fill in placeholder values
 for v = 1:obj.nVariables
@@ -158,6 +171,13 @@ for v = 1:obj.nVariables
     [siz, dims] = obj.variables_(v).ensembleSizes;
     if any(siz==0)
         noCompleteEnsembleMembersError(obj, v, siz, dims, header);
+    end
+
+    % Update progress
+    if showprogress
+        x = v/obj.nVariables;
+        message = sprintf('Finalizing Variables: %.f%%', 100*x);
+        waitbar(x, progress.handle, message);
     end
 end
 
@@ -257,7 +277,7 @@ end
 
 % Build the ensemble.
 obj.iseditable = false;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, showprogress);
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, progress);
 
 % After writing, move data from .tmp to .ens. Optionally get ensemble
 % object as output
