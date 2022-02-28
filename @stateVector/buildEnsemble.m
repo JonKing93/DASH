@@ -15,7 +15,7 @@ function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupli
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
 [sources, loadAllMembers, indexLimits] = ...
-                              gridSources(obj, nMembers, grids, coupling);
+                              gridSources(obj, nMembers, grids, coupling, progress);
 
 
 %% Variable build-parameters
@@ -121,7 +121,9 @@ incomplete = false(nSets, 1);
 showProgress = false;
 if ~isempty(progress)
     showProgress = true;
-    waitbar(0, progress.handle, 'Selecting Ensemble Members: 0%');
+    progress.setMessage('Selecting Ensemble Members');
+    progress.update(0);
+
     if ~isinf(nMembers)
         progress.max = nMembers * nSets;
     end
@@ -197,20 +199,16 @@ for s = 1:nSets
 
             % Complete set progress. Exit while loop
             if showProgress
-                progress.max = nMembers * nSets;
                 x = s/nSets;
-                message = sprintf('Selecting Ensemble Members: %.f%%', 100*x);
-                waitbar(x, progress.handle, message);
+                progress.update(x);
             end
             break
         end
 
         % Update progress within while loop
         if showProgress
-            count = (s-1)*nMembers + nNew(s);
-            x = count/progress.max;
-            message = sprintf('Selecting Ensemble Members: %.f%%', 100*x);
-            waitbar(x, progress.handle, message);
+            x = (s-1)/nSets + (nNew(s)/nMembers)*(1/nSets);
+            progress.update(x);
         end
     end
 
@@ -244,7 +242,7 @@ if all
 end
 
 end
-function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, coupling)
+function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, coupling, progress)
 %% Builds and error checks gridfile sources before loading data.
 % ----------
 % Builds gridfile dataSources required to load new members. If a gridfile
@@ -268,7 +266,8 @@ function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, c
 %               .vars (numeric vector): Variable indices
 %               .ensDims (string vector): Ensemble dimensions
 %               .dims (matrix [nVars x nDims]): Ensemble dimension indices
-%       precision
+%       progress ([] | progressbar object): The progress bar (if any) for
+%           checking data sources
 %
 %   Outputs:
 %       sources (struct vector [nGrids]):
@@ -305,6 +304,12 @@ sources = repmat(sources, [nGrids 1]);
 nVars = obj.nVariables;
 loadAllMembers = false(nVars, 1);
 indexLimits = cell(nVars, 1);
+
+% Initialize progress bar
+if ~isempty(progress)
+    progress.setMessage('Collecting Data Sources');
+    progress.update(0);
+end
 
 % Cycle through gridfiles. Get variables that use the file and get coupling sets
 for g = 1:nGrids
@@ -366,20 +371,27 @@ for g = 1:nGrids
                 sources(g).isloaded = true;
             catch
             end
-
-            % Record successful load. Variable should not attempt to load members
-            if sources(g).isloaded
-                sources(g).data = X;
-                sources(g).limits = fullLimits;
-                sources(g).dataSources = [];
-                sources(g).indices = [];
-            end
-            continue
         end
 
+        % Record successful load, variable should not attempt to load members
+        if sources(g).isloaded
+            sources(g).data = X;
+            sources(g).limits = fullLimits;
+            sources(g).dataSources = [];
+            sources(g).indices = [];    
+
         % If too big to load, the arrays for individual variables might be
-        % smaller. All necessary sources built, so move on to the next grid
-        loadAllMembers(vars) = true;
+        % smaller. All necessary sources built, so attempt to load all
+        % members. (Or if only a single variable, avoid filling memory).
+        else
+            loadAllMembers(vars) = true;
+        end
+
+        % Update progress and move on to the next grid
+        if showProgress
+            x = g/nGrids;
+            progress.update(x);
+        end
         continue
     end
 
@@ -400,10 +412,15 @@ for g = 1:nGrids
             indices(dims) = dash.indices.fromLimits(limits);
             sVar = grids(g).sourcesForLoad(indices);
 
-            % If successful, mark the variable as good and move to the next variable
+            % If successful, mark the variable as good. Update progress
+            % bar and move to the next variable
             if ~any(ismember(sVar, failedSources))
                 loadAllMembers(v) = true;
-                continue
+                if showProgress
+                    x = (g-1)/nGrids + (k/nVars)*(1/nGrids);
+                    progress.update(x);
+                    continue
+                end
             end
         end
 
@@ -418,6 +435,12 @@ for g = 1:nGrids
             if any(ismember(sMember, failedSources))
                 failedDataSourceError(obj, grids(g), v, m, sMember, ...
                     failedSources, failureCauses, header);
+            end
+
+            % Update progress bar
+            if showProgress
+                x = (g-1)/nGrids + (k-1)/nVars + (m/nNew)*(1/nGrids)*(1/nVars);
+                progress.update(x);
             end
         end
     end

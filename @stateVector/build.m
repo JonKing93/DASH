@@ -144,10 +144,9 @@ for v = 1:obj.nVariables
     end
 end
 
-% Initialize the progress bar
+% Initialize progress bar
 if showprogress
     progress = progressbar;
-    progress.handle = waitbar(0);
 else
     progress = [];
 end
@@ -157,7 +156,8 @@ end
 
 % Initialize progress bar
 if showprogress
-    waitbar(0, progress.handle, 'Finalizing Variables: 0%');
+    progress.setMessage('Finalizing Variables');
+    progress.update(0);
 end
 
 % Cycle through variables, fill in placeholder values
@@ -176,8 +176,7 @@ for v = 1:obj.nVariables
     % Update progress
     if showprogress
         x = v/obj.nVariables;
-        message = sprintf('Finalizing Variables: %.f%%', 100*x);
-        waitbar(x, progress.handle, message);
+        progress.update(x);
     end
 end
 
@@ -208,6 +207,12 @@ nSets = numel(coupling.sets);
 obj.unused = cell(nSets, 1);
 obj.subMembers = cell(nSets, 1);
 
+% Initialize progress bar
+if showprogress
+    progress.setMessage('Matching Metadata');
+    progress.update(0);
+end
+
 % Cycle through sets of coupled variables
 for s = 1:nSets
     set = coupling.sets(s);
@@ -220,7 +225,8 @@ for s = 1:nSets
 
     % Cycle through ensemble dimensions. Initialize metadata
     dims = set.dims;
-    for d = 1:size(dims,2)
+    nEnsDims = size(dims,2);
+    for d = 1:nEnsDims
         metadata = getMetadata(obj, vars(1), dims(1,d), varGrids(1), header);
 
         % Get metadata intersect over all the coupled variables
@@ -244,6 +250,12 @@ for s = 1:nSets
             variable = obj.variables_(vars(v));
             variable = variable.matchMetadata(dims(v,d), metadata, varGrids(v));
             obj.variables_(vars(v)) = variable;
+        end
+
+        % Update progress bar
+        if showprogress
+            x = (s-1)/nSets + (d/nEnsDims)*(1/nSets);
+            progress.update(x);
         end
 
         % !! Important !!
