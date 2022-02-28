@@ -14,10 +14,10 @@ function[obj] = append(obj, vector2, responseToRepeats)
 %           the current state vector.
 %       responseToRepeats (scalar integer): Indicates how to treat repeated
 %           variable names across the two state vectors.
-%           [0 (default)]: Throw an error if variable names are repeated
-%           [1]: Keep the variable from the current state vector and
+%           [0 | "e" | "error"]: Throw an error if variable names are repeated
+%           [1 | "f" | "first"]: Keep the variable from the current state vector and
 %                discard the variable in the second state vector.
-%           [2]: Keep the variable in the second state vector and discard
+%           [2 | "s" | "second]: Keep the variable in the second state vector and discard
 %                the variable in the current state vector.
 %
 %   Outputs:
@@ -45,11 +45,9 @@ end
 if ~exist('responseToRepeats','var') || isempty(responseToRepeats)
     responseToRepeats = 0;
 else
-    dash.assert.scalarType(responseToRepeats, 'numeric', 'responseToRepeats', header);
-    if ~ismember(responseToRepeats, 0:2)
-        id = sprintf('%s:invalidResponseToRepeats', header);
-        error(id, 'responseToRepeats must be either 0, 1, or 2.');
-    end
+    responseToRepeats = dash.parse.switches(responseToRepeats, ...
+        {["e","error"],["f","first"],["s","second"]}, 1, 'responseToRepeats',...
+        'allowed option', header);
 end
 
 % Check for repeats
@@ -72,13 +70,14 @@ obj.variableNames = [obj.variableNames; vector2.variableNames];
 obj.variables_ = [obj.variables_; vector2.variables_];
 obj.allowOverlap = [obj.allowOverlap; vector2.allowOverlap];
 obj.nVariables = numel(obj.variables_);
+obj.lengths = [obj.lengths; vector2.lengths];
 
 obj.coupled = blkdiag(obj.coupled, vector2.coupled);
 obj.autocouple_ = [obj.autocouple_; vector2.autocouple_];
 
 % Autocouple variables
 autoVars = obj.variables(obj.autocouple_);
-obj = obj.couple(autoVars, verbose);
+obj = obj.couple(autoVars);
 
 end
 
