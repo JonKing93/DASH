@@ -1,4 +1,4 @@
-function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, progress)
+function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress)
 %% 
 
 % Note whether to display progress
@@ -11,6 +11,7 @@ end
 % 1. Select members and remove overlap
 % 2. Record saved / unused members in the state vector object
 % 3. Note the number of new members
+% 4. Determine precision of output if unset
 [obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, progress);
 
 
@@ -18,8 +19,8 @@ end
 % 1. Check data sources can be loaded for required data
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
-[sources, loadAllMembers, indexLimits] = ...
-                              gridSources(obj, nMembers, grids, coupling, progress);
+[sources, loadAllMembers, indexLimits, precision] = ...
+          gridSources(obj, nMembers, grids, coupling, precision, progress);
 
 
 %% Variable build-parameters
@@ -75,11 +76,11 @@ members = nTotal-nMembers+1:nTotal;
 % Load ensemble directly
 metadata = ensembleMetadata(obj);
 if isempty(ens)
-    X = loadEnsemble(obj, members, grids, sources, parameters, progress);
+    X = loadEnsemble(obj, members, grids, sources, parameters, precision, progress, header);
 
 % Or write to file
 else
-    writeEnsemble(obj, members, grids, sources, parameters);
+    writeEnsemble(obj, members, grids, sources, parameters, precision, progress, header);
     ens.metadata = metadata.serialize;
     ens.stateVector = obj.serialize;
     X = [];
@@ -262,7 +263,7 @@ if all
 end
 
 end
-function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, coupling, progress)
+function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNew, grids, coupling, precision, progress)
 %% Builds and error checks gridfile sources before loading data.
 % ----------
 % Builds gridfile dataSources required to load new members. If a gridfile
@@ -286,6 +287,7 @@ function[sources, loadAllMembers, indexLimits] = gridSources(obj, nNew, grids, c
 %               .vars (numeric vector): Variable indices
 %               .ensDims (string vector): Ensemble dimensions
 %               .dims (matrix [nVars x nDims]): Ensemble dimension indices
+%       precision ([] | 'single' | 'double')
 %       progress ([] | progressbar object): The progress bar (if any) for
 %           checking data sources
 %
@@ -324,6 +326,13 @@ sources = repmat(sources, [nGrids 1]);
 nVars = obj.nVariables;
 loadAllMembers = false(nVars, 1);
 indexLimits = cell(nVars, 1);
+varPrecisions = strings(nVars, 1);
+
+% Track precision of loaded data
+getPrecision = false;
+if isempty(precision)
+    getPrecision = true;
+end
 
 % Initialize progress bar
 if ~isempty(progress)
@@ -364,7 +373,7 @@ for g = 1:nGrids
         indices(dims) = dash.indices.fromLimits(indexLimits{v});
     end
 
-    % Attempt to build sources
+    % Attempt to build sources. Also record loaded precision
     s = grids(g).sourcesForLoad(indices);
     [dataSources, failed, causes] = grids(g).buildSources(s, false);
 
@@ -379,9 +388,16 @@ for g = 1:nGrids
         dataSources = dataSources(~failed);
     end
 
-    % Record successful sources
+    % Record successful sources. Get data precision
     sources(g).dataSources = dataSources;
     sources(g).indices = s;
+    if getPrecision
+        nSource = numel(s);
+        sourcePrecisions = cell(nSource, 1);
+        for k = 1:nSource
+            sourcePrecisions{s} = dataSources{k}.dataType;
+        end
+    end
 
     % If all sources built, and there are 2+ variables, attempt to load
     if allBuilt
@@ -393,18 +409,27 @@ for g = 1:nGrids
             end
         end
 
-        % Record successful load, variable should not attempt to load members
+        % Record successful load, variable should not attempt to load
+        % members. Precision is from class of loaded array
         if sources(g).isloaded
             sources(g).data = X;
             sources(g).limits = fullLimits;
             sources(g).dataSources = [];
-            sources(g).indices = [];    
+            sources(g).indices = [];
+            if getPrecision && isa(X, 'double')
+                getPrecision = false;
+                precision = 'double';
+            end
 
         % If too big to load, the arrays for individual variables might be
         % smaller. All necessary sources built, so attempt to load all
         % members. (Or if only a single variable, avoid filling memory).
         else
             loadAllMembers(vars) = true;
+            if getPrecision && strcmp(gridfile.loadedPrecision(sourcePrecisions), 'double')
+                precision = 'double';
+                getPrecision = false;
+            end
         end
 
         % Update progress and move on to the next grid
@@ -414,8 +439,8 @@ for g = 1:nGrids
         end
         continue
     end
-
-    % If sources failed, need to check each variable individually
+    
+    % If source failed, check individual variables
     for k = 1:nVars
         v = vars(k);
         variable = obj.variables_(v);
@@ -432,10 +457,18 @@ for g = 1:nGrids
             indices(dims) = dash.indices.fromLimits(limits);
             sVar = grids(g).sourcesForLoad(indices);
 
-            % If successful, mark the variable as good. Update progress
-            % bar and move to the next variable
-            if ~any(ismember(sVar, failedSources))
+            % If successful, mark the variable as good.
+            [isbuilt, loc] = ismember(sVar, s);
+            if all(isbuilt)
                 loadAllMembers(v) = true;
+
+                % Get precision
+                if getPrecision && strcmp(gridfile.loadedPrecision(sourcePrecisions(loc)), 'double')
+                    getPrecision = false;
+                    precision = 'double';
+                end
+
+                % Update progress bar and move to the next variable
                 if showProgress
                     x = (g-1)/nGrids + (k/nVars)*(1/nGrids);
                     progress.update(x);
@@ -445,16 +478,23 @@ for g = 1:nGrids
         end
 
         % If can't load all members, need to check individual ensemble
-        % members. Get index limits and indices for each member
+        % members. Get sources for each member
         for m = 1:nNew
             limits = variable.indexLimits(dims, newMembers(m,:), false);
             indices(dims) = dash.indices.fromLimits(limits);
+            sMember = grids(g).sourcesForLoad(indices);
 
             % If any sources failed, cannot build. Throw error
-            sMember = grids(g).sourcesForLoad(indices);
-            if any(ismember(sMember, failedSources))
+            [isbuilt, loc] = ismember(sMember, s);
+            if ~all(isbuilt)
                 failedDataSourceError(obj, grids(g), v, m, sMember, ...
                     failedSources, failureCauses, header);
+            end
+
+            % Get precision
+            if getPrecision && strcmp(gridfile.loadedPrecision(sourcePrecisions(loc)), 'double')
+                getPrecision = false;
+                precision = 'double';
             end
 
             % Update progress bar
@@ -466,8 +506,13 @@ for g = 1:nGrids
     end
 end
 
+% Use single precision if no data is double
+if getPrecision
+    precision = 'single';
 end
-function[X] = loadEnsemble(obj, members, grids, sources, parameters, header, progress)
+
+end
+function[X] = loadEnsemble(obj, members, grids, sources, parameters, precision, progress, header)
 %% Load an entire state vector ensemble directly into memory
 % ----------
 %   Attempts to load all new ensemble members of all variables directly
@@ -479,6 +524,8 @@ function[X] = loadEnsemble(obj, members, grids, sources, parameters, header, pro
 %       grids (scalar struct): Gridfiles and whichGrid
 %       sources (scalar struct): Gridfile data sources
 %       parameters (struct vector [nVariables]): Build parameters for each variable
+%       precision ('single' | 'double'): Numerical precision of the output
+%       header (string scalar): Header for thrown error IDs.
 %
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The loaded state vector ensemble
@@ -491,7 +538,7 @@ end
 % Attempt to load all variables
 vLimit = [1, obj.nVariables];
 try
-    X = load(vLimit, members, grids, sources, parameters, progress);
+    X = load(vLimit, members, grids, sources, parameters, precision, progress);
 
 % Suggest using .ens file if too large to load directly
 catch ME
@@ -502,7 +549,7 @@ catch ME
 end
 
 end
-function[] = writeEnsemble(obj, members, grids, sources, parameters, header)
+function[] = writeEnsemble(obj, members, grids, sources, parameters, precision, progress, header)
 
 %%%%% Parameter for reducing chunk sizes
 ORDER = 10;
@@ -518,7 +565,7 @@ limits = dash.indices.limits(nState);
 
 % Preallocate the ens file
 nRows = sum(nState);
-ens.X(nRows, members(end)) = NaN;
+ens.X(nRows, members(end)) = NaN(precision);
 
 % Loop through sets of contiguous variables until all variables are loaded
 first = 1;
@@ -535,7 +582,7 @@ while first <= nVars
         % Attempt to load the set into memory
         isloaded = false;
         try
-            X = obj.load(vLimit, members, grids, sources, setParameters);
+            X = obj.load(vLimit, members, grids, sources, setParameters, precision);
             isloaded = true;
         catch ME
             if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
@@ -577,7 +624,7 @@ while first <= nVars
                 % Attempt to load the chunk
                 isloaded = false;
                 try
-                    X = obj.load([v v], chunkMembers, grids, sources, parameters(v));
+                    X = obj.load([v v], chunkMembers, grids, sources, parameters(v), precision);
                     isloaded = true;
                 catch ME
                     if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
@@ -619,7 +666,7 @@ while first <= nVars
 end
 
 end
-function[X] = load(vLimit, members, grids, sources, parameters, progress)
+function[X] = load(vLimit, members, grids, sources, parameters, precision, progress)
 %% Loads indicated ensemble members for a continuous set of variables in a state vector
 %
 % Inputs:
@@ -643,7 +690,7 @@ limits = dash.indices.limits(nState);
 nRows = sum(nState);
 nMembers = numel(members);
 try
-    X = NaN(nRows, nMembers);
+    X = NaN(nRows, nMembers, precision);
 catch
     id = 'DASH:stateVector:buildEnsemble:arrayTooBig';
     error(id, '');

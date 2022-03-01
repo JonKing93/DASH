@@ -1,4 +1,4 @@
-function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters)
+function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, precision)
 %% dash.stateVectorVariable.buildMembers  Builds a set of ensemble members for a state vector variable
 % ----------
 %   X = obj.buildMembers(dims, subMembers, grid, source, parameters)
@@ -24,6 +24,8 @@ function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters)
 %           Output from stateVector.buildEnsemble/gridSources.
 %       parameters (scalar struct): Build-parameters for the variable.
 %           Created in stateVector.buildEnsemble.
+%       precision ('single' | 'double'): The numerical precision of the
+%           output data array
 %
 %   Outputs:
 %       X (numeric matrix): The loaded data array
@@ -39,7 +41,7 @@ nDims = numel(obj.dims);
 
 % Preallocate. Tag error if array is too large
 try
-    X = NaN(nState, nMembers);
+    X = NaN(nState, nMembers, precision);
 catch
     id = 'DASH:stateVectorVariable:buildMembers:arrayTooBig';
     error(id, 'The state vector ensemble for the variable is too large for active memory.');

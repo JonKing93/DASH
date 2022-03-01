@@ -51,6 +51,12 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   a warning (but does not fail) when the requested number of ensemble
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
+%
+%   obj.build(..., 'precision', 'single' | 'double')
+%   obj.build(..., 'precision', precision)
+%   Specify the numerical precision of the ensemble. If no precision is
+%   specified, selects a precision based on the precision of the data used
+%   to build the ensemble.
 % ----------
 %   Inputs:
 %       nMembers (scalar positive integer | 'all'): The number of ensemble
@@ -112,16 +118,20 @@ elseif ~strcmp(nMembers, 'all')
 end
 
 % Parse the other variables
-flags =    ["sequential","strict","file","overwrite","showprogress"];
-defaults = {    false,     true,    [],     false,        false    };
-[sequential, strict, filename, overwrite, showprogress] = dash.parse.nameValue(...
-    varargin, flags, defaults, 1, header);
+flags =    ["sequential","strict","file","overwrite","precision","showprogress"];
+defaults = {    false,     true,    [],     false,      [],          false    };
+[sequential, strict, filename, overwrite, precision, showprogress] = ...
+    dash.parse.nameValue(varargin, flags, defaults, 1, header);
 
-% Error check logical switches
+% Error check optional inputs
 dash.assert.scalarType(sequential, 'logical', 'buildSequentially', header);
 dash.assert.scalarType(strict, 'logical', 'strict', header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
 dash.assert.scalarType(showprogress, 'logical', 'showprogress', header);
+if ~isempty(precision)
+    precision = dash.assert.strflag(precision, 'precision', header);
+    dash.assert.strsInList(precision, ["single","double"], 'precision', 'recognized option', header);
+end
 
 % Check file if writing. Get path, set extension, check overwrite
 writeFile = ~isempty(filename);
@@ -289,7 +299,7 @@ end
 
 % Build the ensemble.
 obj.iseditable = false;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, progress);
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress);
 
 % After writing, move data from .tmp to .ens. Optionally get ensemble
 % object as output
