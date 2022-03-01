@@ -6,8 +6,8 @@ function[] = add(obj, type, source, varargin)
 %   sources include NetCDF variables, MAT-file variables, and delimited
 %   text files. The syntaxes for different data source types are detailed
 %   below. Data stored in a data source must be compatible with numeric
-%   data types. Compatible types include double, single, char, logical,
-%   int* and uint* data types.  
+%   data types. Compatible types include double, single, int* and uint*
+%   data types.  
 %
 %   <strong>obj.add</strong>('nc', file, variable, dimensions, metadata)
 %   <strong>obj.add</strong>('nc', opendapURL, variable, dimensions, metadata)
@@ -89,7 +89,7 @@ else
 end
 
 % Require numeric-compatible data type
-compatible = ["double","single","char","logical","int64","uint64","int32","uint32","int16","uint16","int8","uint8"];
+compatible = ["double","single","int64","uint64","int32","uint32","int16","uint16","int8","uint8"];
 if ~ismember(source.dataType, compatible)
     incompatibleDataTypeError(obj, source, compatible, header);
 end
