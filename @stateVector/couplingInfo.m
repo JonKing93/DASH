@@ -12,6 +12,9 @@ function[info] = couplingInfo(obj)
 %                       variables in a set of coupled variables
 %               .ensDims (string vector [nDimensions]): The names of the
 %                       ensemble dimensions in the coupling set
+%               .dims (matrix, linear indices [nVariables x nDimensions]):
+%                   The indices of the ensemble dimensions for the
+%                   variables in the set
 %           .variables (struct vector [nVariables]): Coupling information for each variable
 %               .whichSet (scalar, linear index): The index of the coupling
 %                       set to which the variable belongs
