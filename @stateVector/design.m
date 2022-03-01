@@ -82,6 +82,9 @@ nDims = numel(dimensions);
 options = {["e","ens","ensemble"], ["s","state"]};
 isstate = dash.parse.switches(types, options, nDims, ...
                     'Dimension type', 'recognized dimension type', header);
+if numel(isstate)==1
+    isstate = repmat(isstate, [1 nDims]);
+end
 
 % Parse indices
 if ~exist('indices','var')

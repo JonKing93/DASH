@@ -30,7 +30,7 @@ v = obj.variableIndices(variables, true, header);
 obj.variables_(v,:) = [];
 obj.variableNames(v,:) = [];
 obj.allowOverlap(v,:) = [];
-obj.nVariables = numel(obj.variables);
+obj.nVariables = numel(obj.variables_);
 obj.lengths(v,:) = [];
 
 obj.coupled(v,:) = [];
