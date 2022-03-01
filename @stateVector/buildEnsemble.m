@@ -1,7 +1,11 @@
 function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, progress)
 %% 
 
-
+% Note whether to display progress
+showProgress = false;
+if ~isempty(progress)
+    showProgress = true;
+end
 
 %% Select the new ensemble members:
 % 1. Select members and remove overlap
@@ -19,6 +23,12 @@ function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupli
 
 
 %% Variable build-parameters
+
+% Update progress
+if showProgress
+    progress.setMessage('Organizing build parameters');
+    progress.updateMessage;
+end
 
 % Get build parameters for each variable
 parameters = cell(obj.nVariables, 1);
@@ -38,11 +48,21 @@ end
 
 %% Load / write
 
+% Progress
+if showProgress
+    progress.setMessage('Testing Sizes');
+    progress.update(0);
+    progress.startCount(nMembers);
+end
+
 % Check single ensemble members can fit in memory
 try
     for v = 1:obj.nVariables
         siz = [parameters(v).rawSize, 1, 1];
         NaN(siz);
+        if showProgress
+            progress.update(v/obj.nVariables);
+        end
     end
 catch ME
     singleMemberTooLargeError(ME);
@@ -55,7 +75,7 @@ members = nTotal-nMembers+1:nTotal;
 % Load ensemble directly
 metadata = ensembleMetadata(obj);
 if isempty(ens)
-    X = loadEnsemble(obj, members, grids, sources, parameters);
+    X = loadEnsemble(obj, members, grids, sources, parameters, progress);
 
 % Or write to file
 else
@@ -447,7 +467,7 @@ for g = 1:nGrids
 end
 
 end
-function[X] = loadEnsemble(obj, members, grids, sources, parameters, header)
+function[X] = loadEnsemble(obj, members, grids, sources, parameters, header, progress)
 %% Load an entire state vector ensemble directly into memory
 % ----------
 %   Attempts to load all new ensemble members of all variables directly
@@ -463,10 +483,15 @@ function[X] = loadEnsemble(obj, members, grids, sources, parameters, header)
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The loaded state vector ensemble
 
+% Progress bar parameters
+if ~isempty(progress)
+    progress.ongoing = false;
+end
+
 % Attempt to load all variables
 vLimit = [1, obj.nVariables];
 try
-    X = load(vLimit, members, grids, sources, parameters);
+    X = load(vLimit, members, grids, sources, parameters, progress);
 
 % Suggest using .ens file if too large to load directly
 catch ME
@@ -594,7 +619,7 @@ while first <= nVars
 end
 
 end
-function[X] = load(vLimit, members, grids, sources, parameters)
+function[X] = load(vLimit, members, grids, sources, parameters, progress)
 %% Loads indicated ensemble members for a continuous set of variables in a state vector
 %
 % Inputs:
@@ -624,10 +649,22 @@ catch
     error(id, '');
 end
 
+% Note whether to report progress
+showProgress = false;
+if ~isempty(progress)
+    showProgress = true;
+end
+
 % Cycle through contiguous variables
 vars = vLimit(1):vLimit(2);
 for k = 1:numel(vars)
     v = vars(k);
+
+    % Initialize progress bar
+    if showProgress && ~progress.ongoing
+        progress.setMessage(sprintf('Building "%s"', obj.variableNames(v)));
+        progress.update(0);
+    end
 
     % Get the gridfile and sources for each variable
     g = grids.whichGrid(v);
@@ -642,7 +679,7 @@ for k = 1:numel(vars)
     % Load the ensemble members for each variable
     rows = limits(k,1):limits(k,2);
     X(rows,:) = obj.variables_(v).buildMembers(...,
-        dims, subMembers, grid, source, parameters(k));
+        dims, subMembers, grid, source, parameters(k), progress);
 end
 
 end
