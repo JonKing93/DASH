@@ -49,6 +49,7 @@ getLoadIndices;
 sourcesForLoad;
 buildSources;
 loadInternal;
+loadedPrecision;
 load_;
 
 arithmetic;

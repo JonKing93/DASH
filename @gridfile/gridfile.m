@@ -98,6 +98,7 @@ classdef gridfile < handle
     %   getLoadIndices   - Organize the dimension indices required to implement a load operation
     %   sourcesForLoad   - Return the indices of data sources needed to load requested data
     %   buildSources     - Build dataSources for a gridfile load
+    %   loadedPrecision  - Return the precision of data loaded from mixed data types
     %   loadInternal     - Load requested data from pre-built dataSource objects
     %
     % Arithmetic:
@@ -192,6 +193,7 @@ classdef gridfile < handle
     end
     
     methods (Static)
+        precision = loadedPrecision(dataTypes);
         obj = new(file, meta, overwrite);
         tests;
     end

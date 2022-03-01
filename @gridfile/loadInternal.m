@@ -66,11 +66,7 @@ if ~exist('precision','var') || isempty(precision)
     for k = 1:nSource
         types(k) = dataSources{k}.dataType;
     end
-    if isempty(types) || any(ismember(types, ["double","int32","uint32","int64","uint64"]))
-        precision = 'double';
-    else
-        precision = 'single';
-    end
+    precision = obj.loadedPrecision(types);
 end
 
 % Preallocate the output array
