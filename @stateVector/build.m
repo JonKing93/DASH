@@ -18,8 +18,8 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   possible. Reports the number of ensemble members being built to the
 %   console.
 %
-%   obj.build(..., 'sequential', true | false)
-%   obj.build(..., 'sequential', buildSequentially)
+%   ... = obj.build(..., 'sequential', true | false)
+%   ... = obj.build(..., 'sequential', buildSequentially)
 %   Specify whether ensemble members should be selected sequentially along
 %   the ensemble dimensions, or at random. The default behavior is random
 %   selection. Use this option if, for example, you want the ensemble
@@ -33,18 +33,18 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   the first output is an ensemble object, which can be used to interact
 %   with the ensemble saved in the file.
 %
-%   obj.build(..., 'file', filename, 'overwrite', true | false)
-%   obj.build(..., 'file', filename, 'overwrite', overwrite)
+%   ... = obj.build(..., 'file', filename, 'overwrite', true | false)
+%   ... = obj.build(..., 'file', filename, 'overwrite', overwrite)
 %   Specify whether the new .ens file can overwrite an existing file.
 %   Default is to not overwrite existing files.
 %
-%   obj.build(..., 'showprogress', true | false)
-%   obj.build(...,  'showprogress', showprogress)
+%   ... = obj.build(..., 'showprogress', true | false)
+%   ... = obj.build(...,  'showprogress', showprogress)
 %   Specify whether to display a progress bar. Default is to not display a
 %   progress bar.
 %
-%   obj.build(..., 'strict', true | false)
-%   obj.build(..., 'strict', strict)
+%   ... = obj.build(..., 'strict', true | false)
+%   ... = obj.build(..., 'strict', strict)
 %   Specify how the method should respond if it cannot build the requested
 %   number of ensemble members. If true (default), throws an error when the
 %   requested number of ensemble members cannot be built. If false, issues
@@ -52,8 +52,8 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
 %
-%   obj.build(..., 'precision', 'single' | 'double')
-%   obj.build(..., 'precision', precision)
+%   ... = obj.build(..., 'precision', 'single' | 'double')
+%   ... = obj.build(..., 'precision', precision)
 %   Specify the numerical precision of the ensemble. If no precision is
 %   specified, selects a precision based on the precision of the data used
 %   to build the ensemble.
@@ -80,6 +80,8 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %           true (default), throws an error. If false, issues a warning and
 %           returns an ensemble with however many ensemble members did
 %           successfully build.
+%       precision ('single' | 'double'): The desired numerical precision of
+%           the built state vector ensemble.
 %
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The built state vector
