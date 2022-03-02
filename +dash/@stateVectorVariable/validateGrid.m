@@ -1,14 +1,26 @@
 function[isvalid, cause] = validateGrid(obj, grid, header)
 %% dash.stateVectorVariable.validateGrid  Check that a gridfile object matches a variable's recorded gridfile parameters
 % ----------
-%   <strong>obj.validateGrid</strong>(grid)
+%   [isvalid, cause] = <strong>obj.validateGrid</strong>(grid)
 %   Checks that a gridfile object matches the gridfile parameters recorded
-%   for a state vector variable. Throws an error if not.
+%   for a state vector variable. If the object does not match the
+%   parameters, returns false and the cause of the mismatch as an MException. 
+%   If the object matches, returns true and an empty array.
+%
+%   [isvalid, cause] = <strong>obj.validateGrid</strong>(grid, header)
+%   Customize the header of returned MExceptions.
 % ----------
 %   Inputs:
 %       grid (scalar gridfile object): The gridfile object being compared
 %           to the variable's recorded gridfile parameters.
 %       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       isvalid (scalar logical): True is the gridfile object matches the
+%           recorded values. False if not.
+%       cause ([] | scalar MException): If the gridfile does not match the
+%           recorded values, an MException reporting the cause of the mismatch.
+%           If the grid matches recorded values, an empty array.
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.validateGrid')">Documentation Page</a>
 

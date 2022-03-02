@@ -6,7 +6,14 @@ function[obj] = deserialize(s)
 %   struct. This method DOES NOT error check the deserialized struct.
 % ----------
 %   Inputs:
-%       s (scalar struct): A serialized struct for a 
+%       s (scalar struct): A serialized struct for a vector of
+%           stateVectorVariable objects
+%
+%   Outputs:
+%       obj (vector, stateVectorVariable objects): The deserialized vector
+%           stateVectorVariable objects
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.deserialize')">Documentation Page</a>
 
 % Get the number of variables and dimensions. Initialize the vector
 nVars = numel(s.dims);

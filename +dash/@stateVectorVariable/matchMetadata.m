@@ -23,6 +23,8 @@ function[obj] = matchMetadata(obj, d, metadata, grid)
 %   Outputs:
 %       obj (scalar dash.stateVectorVariable object): The variable with
 %           updated reference indices and metadata
+%
+% <a href="matlab:dash.doc('dash.stateVectorVariable.matchMetadata')">Documentation Page</a>
 
 % Get the variable's metadata. Sort the intersect
 varMetadata = obj.getMetadata(d, grid);

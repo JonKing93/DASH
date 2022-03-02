@@ -15,7 +15,7 @@ TODO:
 
 Add properties parsing to class file autodoc
 
-
+sv.uncouple(0) to uncouple all variables?
 Review string.indexedDimension
 
 STATE VECTOR

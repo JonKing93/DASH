@@ -23,7 +23,7 @@ classdef stateVectorVariable
 %
 %   The class framework allows multiple stateVectorVariable objects to be 
 %   stored as a vector, which is utilized by the stateVector class.
-%   However, such vectors are highly nested and are slow to save directly.
+%   However, such vectors are highly nested and can be slow to save directly.
 %   Instead, these vectors should be serialized before saving, and
 %   deserialized upon load. See the "serialize" and "deserialize" commands
 %   to implement these options.

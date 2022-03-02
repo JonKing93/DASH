@@ -1,7 +1,7 @@
 function[indices] = addIndices(obj, d)
 %% dash.stateVectorVariable.addIndices  Propagates mean indices over sequence indices for an ensemble dimension
 % ----------
-%   indices = obj.addIndices(d)
+%   indices = <strong>obj.addIndices</strong>(d)
 %   Propagates the mean indices over the sequence indices for the indexed
 %   dimension. The returned indices are useful when building ensemble members.
 %   These indices can be added to a reference index in order to determine

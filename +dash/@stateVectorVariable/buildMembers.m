@@ -1,7 +1,7 @@
 function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, precision)
 %% dash.stateVectorVariable.buildMembers  Builds a set of ensemble members for a state vector variable
 % ----------
-%   X = obj.buildMembers(dims, subMembers, grid, source, parameters)
+%   X = <strong>obj.buildMembers</strong>(dims, subMembers, grid, source, parameters)
 %   Builds ensemble members for a variable given a set of
 %   dimensionally-subscripted ensemble members. Attempts to load ensemble
 %   members data as efficiently as possible. If gridfile data is
