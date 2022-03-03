@@ -90,7 +90,7 @@ end
 if ~exist('indices','var')
     indices = cell(1, nDims);
 else
-    dash.assert.indexCollection(indices, nDims, [], dimensions, header);
+    indices = dash.assert.indexCollection(indices, nDims, [], dimensions, header);
 end
 
 % Require unique state/reference indices

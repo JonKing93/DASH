@@ -84,8 +84,8 @@ obj.sequenceMetadata{d} = [];
 
 % Update mean properties, remove mean indices
 obj.meanIndices{d} = [];
-if obj.meanType~=0
-    obj.meanSize(d) = obj.stateSize(d);
+if obj.meanType(d)~=0
+    obj.meanSize(d) = newSize;
     obj.stateSize(d) = 1;
 end
 
