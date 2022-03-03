@@ -36,7 +36,8 @@ end
 % Complex valued
 if ~isreal(X)
     id = sprintf('%s:inputIsComplex', header);
-    error(id, '%s is complex-valued.', name);
+    ME = MException(id, '%s is complex-valued.', name);
+    throwAsCaller(ME);
 end
 
 % NaN elements
@@ -45,8 +46,9 @@ if type==1 || type==3
     if any(nans, 'all')
         bad = find(nans,1);
         id = sprintf('%s:inputContainsNaN', header);
-        error(id, '%s cannot contain NaN values, but element %.f is NaN.', ...
+        ME = MException(id, '%s cannot contain NaN values, but element %.f is NaN.', ...
             name, bad);
+        throwAsCaller(ME);
     end
 end
 
@@ -56,8 +58,9 @@ if type==1 || type==2
     if any(infs, 'all')
         bad = find(infs, 1);
         id = sprintf('%s:inputContainsInf', header);
-        error(id, '%s cannot contain infinite values, but element %.f is infinite.',...
+        ME = MException(id, '%s cannot contain infinite values, but element %.f is infinite.',...
             name, bad);
+        throwAsCaller(ME);
     end
 end
 

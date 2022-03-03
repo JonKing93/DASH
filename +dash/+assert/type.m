@@ -47,7 +47,8 @@ end
 % Throw error if no matches
 types = dash.string.list(types, "or");
 id = sprintf('%s:inputWrongType', idHeader);
-error(id, '%s must be a %s %s, but it is a "%s" %s instead',...
+ME = MException(id, '%s must be a %s %s, but it is a "%s" %s instead',...
     name, types, descriptor, class(input), descriptor);
+throwAsCaller(ME);
 
 end

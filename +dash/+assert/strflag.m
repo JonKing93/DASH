@@ -37,7 +37,8 @@ end
 % Check input type
 if ~dash.is.strflag(input)
     id = sprintf('%s:inputNotStrflag', idHeader);
-    error(id, '%s must be a string scalar or character row vector', name);
+    ME = MException(id, '%s must be a string scalar or character row vector', name);
+    throwAsCaller(ME);
 end
 
 % Convert to string

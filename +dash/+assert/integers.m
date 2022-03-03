@@ -35,7 +35,8 @@ if ~isintegers
         name = sprintf('Element %.f of %s', bad, name);
     end
     id = sprintf('%s:inputNotIntegers', header);
-    error(id, '%s (%f) is not an integer.', name, X(bad));
+    ME = MException(id, '%s (%f) is not an integer.', name, X(bad));
+    throwAsCaller(ME);
 end
 
 end

@@ -35,7 +35,8 @@ if ~isvalid
         name = sprintf('Element %.f of %s', bad, name);
     end
     id = sprintf('%s:inputNotPositiveIntegers', header);
-    error(id, '%s (%f) is not a positive integer.', name, X(bad));
+    ME = MException(id, '%s (%f) is not a positive integer.', name, X(bad));
+    throwAsCaller(ME);
 end
 
 end

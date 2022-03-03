@@ -37,7 +37,8 @@ if ~isunique
     id = sprintf('%s:duplicateValues', header);
     message = sprintf('%s "%s" is repeated multiple times. (%ss %s)', ...
         inputName, format, inputName, dash.string.list(repeats));
-    error(id, message, value); %#ok<SPERR>
+    ME = MException(id, message, value);
+    throwAsCaller(ME);
 end
 
 end

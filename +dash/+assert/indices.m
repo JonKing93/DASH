@@ -65,8 +65,9 @@ dash.assert.vectorTypeN(indices, ["logical","numeric"], [], name, header);
 if islogical(indices)
     if numel(indices)~=length
         id = sprintf('%s:logicalIndicesWrongLength', header);
-        error(id, ['%s is a logical vector, so it must %s (%.f), but it has ',...
+        ME = MException(id, ['%s is a logical vector, so it must %s (%.f), but it has ',...
             '%.f elements instead.'], name, logicalRequirement, length, numel(indices));
+        throwAsCaller(ME);
     end
 
     % Convert to linear if providing output
@@ -79,16 +80,18 @@ else
     [isvalid, bad] = dash.is.positiveIntegers(indices);
     if ~isvalid
         id = sprintf('%s:invalidLinearIndices', header);
-        error(id, ['%s is a numeric vector, so it must consist of linear ',...
+        ME = MException(id, ['%s is a numeric vector, so it must consist of linear ',...
             'indices (positive integers). However, element %.f (%f) is not a ',...
             'positive integer.'], name, bad, indices(bad));
+        throwAsCaller(ME);
     end
     
     [maxIndex, loc] = max(indices);
     if maxIndex > length
         id = sprintf('%s:linearIndicesTooLarge', header);
-        error(id, 'Element %.f of %s (%.f) is greater than %s (%.f).',...
+        ME = MException(id, 'Element %.f of %s (%.f) is greater than %s (%.f).',...
             loc, name, maxIndex, linearMaxName, length);
+        throwAsCaller(ME);
     end
 end
 

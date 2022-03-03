@@ -52,8 +52,9 @@ if ~all(inList)
     % Error message
     id = sprintf('%s:stringNotInList', idHeader);
     allowed = dash.string.list(list);
-    error(id, '%s ("%s") is not a(n) %s. Allowed values are %s.',...
+    ME = MException(id, '%s ("%s") is not a(n) %s. Allowed values are %s.',...
         name, strings(bad), listName, allowed);
+    throwAsCaller(ME);
 end
 
 end

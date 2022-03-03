@@ -37,7 +37,8 @@ end
 % Check input type
 if ~dash.is.strlist(input)
     id = sprintf('%s:inputNotStrlist', idHeader);
-    error(id, '%s must be a string vector, cellstring vector, or character row vector', name);
+    ME = MException(id, '%s must be a string vector, cellstring vector, or character row vector', name);
+    throwAsCaller(ME);
 end
 
 % Convert to string

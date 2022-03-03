@@ -40,7 +40,8 @@ end
 % Vector
 if ~isvector(input)
     id = sprintf('%s:inputNotVector', idHeader);
-    error(id, '%s must be a vector', name);
+    ME = MException(id, '%s must be a vector', name);
+    throwAsCaller(ME);
 end
 
 % Type
@@ -51,8 +52,9 @@ end
 % Length
 if ~isempty(length) && numel(input)~=length
     id = sprintf('%s:inputWrongLength', idHeader);
-    error(id, '%s must have %.f elements, but it has %.f elements instead.', ...
+    ME = MException(id, '%s must have %.f elements, but it has %.f elements instead.', ...
         name, length, numel(input));
+    throwAsCaller(ME);
 end
 
 end

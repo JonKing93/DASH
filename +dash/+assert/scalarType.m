@@ -36,7 +36,8 @@ end
 % Scalar
 if ~isscalar(input)
     id = sprintf('%s:inputNotScalar', idHeader);
-    error(id, '%s is not scalar', name);
+    ME = MException(id, '%s is not scalar', name);
+    throwAsCaller(ME);
 
 % Type
 elseif ~isempty(types)

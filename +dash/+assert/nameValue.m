@@ -46,7 +46,8 @@ if mod(numel(inputs),2)~=0
     if ~strlength(extraInfo)==0
         extraInfo = sprintf(' (%s)', extraInfo);
     end
-    error(id, 'You must provide an even number of inputs%s.%s', countInfo, extraInfo);
+    ME = MException(id, 'You must provide an even number of inputs%s.%s', countInfo, extraInfo);
+    throwAsCaller(ME);
 end
 
 % Get the names and values
