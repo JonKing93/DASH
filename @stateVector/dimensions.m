@@ -1,18 +1,28 @@
-function[dimensions] = dimensions(obj, variables, cellOutput)
+function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %% stateVector.dimensions  Return the dimensions associated with state vector variables
 % ----------
 %   dimensions = obj.dimensions
 %   dimensions = obj.dimensions([])
 %   dimensions = obj.dimensions(0)
-%   Return the names of dimensions associated with each state vector
-%   variable.
+%   Return the names of dimensions associated with each variable in the
+%   state vector.
 %
 %   dimensions = obj.dimensions(v)
 %   dimensions = obj.dimensions(variableNames)
 %   Return the names of dimensions associated with the specified state
 %   vector variables.
 %
-%   dimensions = obj.dimensions(..., cellOutput)
+%   dimensions = obj.dimensions(..., type)
+%   dimensions = obj.dimensions(..., 0|'a'|'all'|[])
+%   dimensions = obj.dimensions(..., 1|'s'|'state')
+%   dimensions = obj.dimensions(..., 2|'e'|'ens'|'ensemble')
+%   Specify the type of dimension to return for each variable. Options are
+%   all dimensions, state dimensions, or ensemble dimensions. By default,
+%   returns all dimensions for each variable.
+%
+%   dimensions = obj.dimensions(..., type, cellOutput)
+%   dimensions = obj.dimensions(..., type, true|'c'|'cell')
+%   dimensions = obj.dimensions(..., type, false|'d'|'default')
 %   Specify whether output should always be organized in a cell. If false
 %   (default), dimensions for a single variable are returned as a string row
 %   vector. If true, dimensions for a single variable are returned as a
@@ -24,8 +34,8 @@ function[dimensions] = dimensions(obj, variables, cellOutput)
 %           in the state vector for which to return dimension names.
 %       variableNames (string vector [nVariables]): The names of variables
 %           in the state vector for which to return dimension names.
-%       cellOutput (scalar logical): Whether to always return output as a
-%           cell. When false (default), dimensions for a single variable are 
+%       cellOutput (scalar logical | string scalar): Whether to always
+%           return output as a cell. When false (default), dimensions for a single variable are 
 %           returned as a string row vector. If true, dimensions for a single
 %           variable are returned as a string row vector within a scalar cell.
 %
@@ -45,24 +55,43 @@ header = "DASH:stateVector:dimensions";
 dash.assert.scalarObj(obj, header);
 obj.assertUnserialized;
 
+% Parse dimension type
+if ~exist('type','var') || isempty(type)
+    type = 0;
+else
+    switches = {["a","all"],["s","state"],["e","ens","ensemble"]};
+    type = dash.parse.switches(type, switches, 1, 'type', 'recognized dimension type', header);
+end
+typeStrings = ["all","state","ensemble"];
+type = typeStrings(type+1);
+
 % Parse cell output
 if ~exist('cellOutput','var') || isempty(cellOutput)
     cellOutput = false;
 else
-    dash.assert.scalarType(cellOutput, 'logical', 'cellOutput', header);
+    switches = {["d","default"], ["c","cell"]};
+    cellOutput = dash.parse.switches(cellOutput, switches, 1, 'cellOutput',...
+        'allowed option', header);
 end
 
 % Parse variable indices
 if ~exist('variables','var') || isempty(variables) || isequal(variables, 0)
-    v = 1:obj.nVariables;
+    vars = 1:obj.nVariables;
 else
-    v = obj.variableIndices(variables, true, header);
+    vars = obj.variableIndices(variables, true, header);
 end
 
-% Get the dimension names
-dimensions = {obj.variables_(v).dimensions}';
+% Preallocate
+nVars = numel(vars);
+dimensions = cell(nVars, 1);
 
-% Optionally remove single variable output from cell
+% Get the dimension names
+for k = 1:numel(vars)
+    v = vars(k);
+    dimensions{k} = obj.variables_(v).dimensions(type);
+end
+
+% Optionally extract single variable output from cell
 if numel(dimensions)==1 && ~cellOutput
     dimensions = dimensions{1};
 end

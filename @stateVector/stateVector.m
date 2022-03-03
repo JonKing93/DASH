@@ -58,7 +58,7 @@ classdef stateVector
         assertValidNames(obj, newNames, header);
 
         % Dimensions
-        dimensions = dimensions(obj, v, cellOutput);
+        dimensions = dimensions(obj, v, types, cellOutput);
         [indices, dimensions] = dimensionIndices(obj, v, dimensions, header);
 
         % Design
