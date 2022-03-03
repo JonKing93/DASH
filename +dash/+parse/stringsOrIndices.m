@@ -51,23 +51,29 @@ if ~exist('header','var') || isempty(header)
 end
 
 % List of strings
-if dash.is.strlist(input)
-    input = string(input);
-    listName = sprintf('%s in %s', elementName, collectionName);
-    indices = dash.assert.strsInList(input, strings, name, listName, header);
+try
+    if dash.is.strlist(input)
+        input = string(input);
+        listName = sprintf('%s in %s', elementName, collectionName);
+        indices = dash.assert.strsInList(input, strings, name, listName, header);
+    
+    % Vector of indices
+    elseif isnumeric(input) || islogical(input)
+        length = numel(strings);
+        logicalRequirement = sprintf('have one element per %s in %s', elementName, collectionName);
+        linearMax = sprintf('the number of %ss in %s', elementName, collectionName);
+        indices = dash.assert.indices(input, length, name, logicalRequirement, linearMax, header);
+    
+    % Anything else
+    else
+        id = sprintf('%s:inputNeitherStringsNorIndices', header);
+        error(id, ['%s must either be a list of %s, or a set of indices for %ss', ...
+            'in %s.'], name, listType, elementName, collectionName);
+    end
 
-% Vector of indices
-elseif isnumeric(input) || islogical(input)
-    length = numel(strings);
-    logicalRequirement = sprintf('have one element per %s in %s', elementName, collectionName);
-    linearMax = sprintf('the number of %ss in %s', elementName, collectionName);
-    indices = dash.assert.indices(input, length, name, logicalRequirement, linearMax, header);
-
-% Anything else
-else
-    id = sprintf('%s:inputNeitherStringsNorIndices', header);
-    error(id, ['%s must either be a list of %s, or a set of indices for %ss', ...
-        'in %s.'], name, listType, elementName, collectionName);
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 end

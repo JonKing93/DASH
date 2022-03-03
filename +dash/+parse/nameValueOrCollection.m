@@ -27,13 +27,19 @@ function[names, values] = nameValueOrCollection(varargs, namesName, valuesName, 
 % <a href="matlab:dash.doc('dash.parse.nameValueOrCollection')">Documentation Page</a>
 
 % If varargs has 2 elements, require a valid collection
-if numel(varargs)==2
-    names = dash.assert.strlist(varargs{1}, namesName, header);
-    values = dash.parse.inputOrCell(varargs{2}, numel(names), valuesName, header);
+try
+    if numel(varargs)==2
+        names = dash.assert.strlist(varargs{1}, namesName, header);
+        values = dash.parse.inputOrCell(varargs{2}, numel(names), valuesName, header);
 
-% Otherwise, use Name,Value syntax
-else
-    [names, values] = dash.assert.nameValue(varargs, 0, extraInfo, header);
+    % Otherwise, use Name,Value syntax
+    else
+        [names, values] = dash.assert.nameValue(varargs, 0, extraInfo, header);
+    end
+
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 end

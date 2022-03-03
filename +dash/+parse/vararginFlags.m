@@ -44,10 +44,16 @@ nFlags = numel(inputs);
 flags = strings(nFlags, 1);
 
 % Get the index of each flag in the total set of inputs and parse
-for f = 1:nFlags
-    inputIndex = nPrevious + (f-1)*spacing + 1;
-    inputName = sprintf('Input %.f', inputIndex);
-    flags(f) = dash.assert.strflag(inputs{f}, inputName, header);
+try
+    for f = 1:nFlags
+        inputIndex = nPrevious + (f-1)*spacing + 1;
+        inputName = sprintf('Input %.f', inputIndex);
+        flags(f) = dash.assert.strflag(inputs{f}, inputName, header);
+    end
+
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 end

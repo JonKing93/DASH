@@ -39,6 +39,9 @@ end
 %
 % So, even though this is a low-level function, error check the inputs to
 % make sure the developer passed everything correctly.
+%
+% Also, use the full error stack in this section. We don't want to throw as
+% caller to facilitate debugging of the function call.
 
 % Inputs: cell vector (varargin)
 if ~isempty(inputs)
@@ -64,15 +67,21 @@ if numel(inputs)==0
 end
 
 % Parse the names and values
-extraInfo = 'Inputs must be Name,Value pairs';
-[names, values] = dash.assert.nameValue(inputs, nPrevious, extraInfo, header);
+try
+    extraInfo = 'Inputs must be Name,Value pairs';
+    [names, values] = dash.assert.nameValue(inputs, nPrevious, extraInfo, header);
+    
+    % Require names to be recognized options (case-insensitive) with no duplicates
+    names = lower(names);     % Note that flags were lower cased in developer error check
+    k = dash.assert.strsInList(names, flags, 'Option name', 'recognized option', header);
+    dash.assert.uniqueSet(names, 'Option name', header);
+    
+    % Record the values associated with the flags
+    varargout(k) = values;
 
-% Require names to be recognized options (case-insensitive) with no duplicates
-names = lower(names);     % Note that flags were lower cased in developer error check
-k = dash.assert.strsInList(names, flags, 'Option name', 'recognized option', header);
-dash.assert.uniqueSet(names, 'Option name', header);
-
-% Record the values associated with the flags
-varargout(k) = values;
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
+end
 
 end

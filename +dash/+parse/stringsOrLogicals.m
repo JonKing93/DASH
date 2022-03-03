@@ -35,22 +35,28 @@ if ~exist('header','var') || isempty(header)
 end
 
 % Strings
-if dash.is.strlist(input)
-    input = string(input);
-    nTrue = numel(trueStrings);
-    allowedStrings = [trueStrings(:); falseStrings(:)];
+try
+    if dash.is.strlist(input)
+        input = string(input);
+        nTrue = numel(trueStrings);
+        allowedStrings = [trueStrings(:); falseStrings(:)];
+        
+        k = dash.assert.strsInList(input, allowedStrings, name, stringsName, header);
+        logicals = k<=nTrue;
     
-    k = dash.assert.strsInList(input, allowedStrings, name, stringsName, header);
-    logicals = k<=nTrue;
+    % Logical
+    elseif islogical(input)
+        logicals = input;
+    
+    % Anything else
+    else
+        id = sprintf('%s:inputNeitherStringNorLogical', header);
+        error(id, '%s must be either a string or logical data type', name);
+    end
 
-% Logical
-elseif islogical(input)
-    logicals = input;
-
-% Anything else
-else
-    id = sprintf('%s:inputNeitherStringNorLogical', header);
-    error(id, '%s must be either a string or logical data type', name);
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 end

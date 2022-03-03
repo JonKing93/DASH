@@ -26,12 +26,19 @@ function[input, wasCell] = inputOrCell(input, nEls, name, header)
 %
 % <a href="matlab:dash.doc('dash.parse.inputOrCell')">Documentation Page</a>
 
-if nEls>1 || iscell(input)
-    dash.assert.vectorTypeN(input, 'cell', nEls, name, header);
-    wasCell = true;
-else
-    input = {input};
-    wasCell = false;
+% Parse
+try
+    if nEls>1 || iscell(input)
+        dash.assert.vectorTypeN(input, 'cell', nEls, name, header);
+        wasCell = true;
+    else
+        input = {input};
+        wasCell = false;
+    end
+
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 end
