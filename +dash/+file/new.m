@@ -38,7 +38,8 @@ end
 % Check for overwrite
 if ~overwrite && isfile(filename)
     id = sprintf('%s:fileAlreadyExists', header);
-    error(id, 'The file "%s" already exists.', filename);
+    ME = MException(id, 'The file "%s" already exists.', filename);
+    throwAsCaller(ME);
 end
 
 % Return name as string
