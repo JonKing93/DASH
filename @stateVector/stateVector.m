@@ -83,7 +83,8 @@ classdef stateVector
         % Build / write
         [X, meta, obj] = build(obj, nMembers, varargin);
         [X, meta, obj] = addMembers(obj, nMembers, varargin);
-        [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, showprogress);
+        [X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, ...
+                                       precision, showprogress, header);
 
         % Serialization
         assertUnserialized(obj);
