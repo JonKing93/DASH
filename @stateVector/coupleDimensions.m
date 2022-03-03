@@ -28,7 +28,7 @@ cause = [];
 
 % Get the template variable and its ensemble dimensions
 template = obj.variables_(t);
-ensDims = template.dims(~template.isState);
+ensDims = template.dimensions('ensemble');
 
 % Cycle through variables.
 for k = 1:numel(vars)
