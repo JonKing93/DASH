@@ -301,7 +301,7 @@ end
 
 % Build the ensemble.
 obj.iseditable = false;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress);
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress, header);
 
 % After writing, move data from .tmp to .ens. Optionally get ensemble
 % object as output

@@ -1,4 +1,4 @@
-function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress)
+function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress, header)
 %% 
 
 % Note whether to display progress
@@ -12,7 +12,7 @@ end
 % 2. Record saved / unused members in the state vector object
 % 3. Note the number of new members
 % 4. Determine precision of output if unset
-[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, progress);
+[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, progress, header);
 
 
 %% gridfile data sources:
@@ -20,7 +20,7 @@ end
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
 [sources, loadAllMembers, indexLimits, precision] = ...
-          gridSources(obj, nMembers, grids, coupling, precision, progress);
+          gridSources(obj, nMembers, grids, coupling, precision, progress, header);
 
 
 %% Variable build-parameters
@@ -90,7 +90,7 @@ end
 
 
 % Sub-functions
-function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, progress)
+function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, progress, header)
 %% Selects new ensemble members
 % ----------
 %  Cycles through sets of coupled variables and selects the required number
@@ -263,7 +263,7 @@ if all
 end
 
 end
-function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNew, grids, coupling, precision, progress)
+function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNew, grids, coupling, precision, progress, header)
 %% Builds and error checks gridfile sources before loading data.
 % ----------
 % Builds gridfile dataSources required to load new members. If a gridfile
@@ -326,7 +326,6 @@ sources = repmat(sources, [nGrids 1]);
 nVars = obj.nVariables;
 loadAllMembers = false(nVars, 1);
 indexLimits = cell(nVars, 1);
-varPrecisions = strings(nVars, 1);
 
 % Track precision of loaded data
 getPrecision = false;
@@ -747,7 +746,7 @@ nTotal = nNew + nRemaining;
 
 id = sprintf('%s:notEnoughMembers', header);
 error(id, ['Cannot find enough new members to complete the ensemble. You have ',...
-    'requested %.f ensemble members, but only %.f ensemble members could',...
+    'requested %.f ensemble members, but only %.f ensemble members could ',...
     'be found for %s %s.'], nMembers, nTotal, name, vars);
 end
 function[] = noMembersError(obj, vars, header)

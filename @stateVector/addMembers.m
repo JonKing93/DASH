@@ -132,6 +132,6 @@ end
 
 ens = [];
 coupling = obj.couplingInfo;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress);
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress, header);
 
 end
