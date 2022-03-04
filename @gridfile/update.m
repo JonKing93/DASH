@@ -22,7 +22,8 @@ try
     m = load(obj.file, '-mat', fields{:});
 catch
     id = sprintf('%s:couldNotLoad', header);
-    error(id, 'Could not load data from:\n    %s\n\nIt may not be a valid .grid file', obj.file);
+    ME = MException(id, 'Could not load data from:\n    %s\n\nIt may not be a valid .grid file', obj.file);
+    throwAsCaller(ME);
 end
 
 % Ensure every field is in the file
@@ -31,8 +32,9 @@ loadedFields = fieldnames(m);
 if ~all(loaded)
     bad = find(loc==0,1);
     id = sprintf('%s:missingField', header);
-    error(id, 'The file:\n\t%s\nis missing the "%s" field. It may not be a valid .grid file.', ...
+    ME = MException(id, 'The file:\n\t%s\nis missing the "%s" field. It may not be a valid .grid file.', ...
         obj.file, fields{bad});
+    throwAsCaller(ME);
 end
 
 % Update properties
