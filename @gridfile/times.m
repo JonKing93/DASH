@@ -98,6 +98,10 @@ function[] = times(obj, grid2, filename, varargin)
     ["overwrite","attributes","type","precision"], {[], [], [], []}, 2);
 
 % Implement gridfile arithmetic
-obj.arithmetic('times', grid2, filename, overwrite, atts, type, precision);
+try
+    obj.arithmetic('times', grid2, filename, overwrite, atts, type, precision);
+catch ME
+    throw(ME);
+end
 
 end
