@@ -22,7 +22,7 @@ function[list] = strlist(input, name, idHeader)
 %       list (string vector): The input converted to string data type
 %
 %   Throws:
-%       <idHeader>:<name>NotStrlist  when input is not a strlist
+%       <idHeader>:inputNotStrlist  when input is not a strlist
 %
 %   <a href="matlab:dash.doc('dash.assert.strlist')">Online Documentation</a>
 

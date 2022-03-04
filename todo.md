@@ -1,5 +1,10 @@
 TODO:
 
+0. Tests for failed cases should reference specific error ID, not DASH header
+
+A. Should have a utility to break apart means for merged dimensions. For example,
+area weighted means of a 2D tripolar grid
+
 1. positive integers is weird
 4. link to other pages in examples markdown
     - gridfile.expand with gridfile.addDimension (in examples)
@@ -24,6 +29,9 @@ STATE VECTOR
     - Add link once "label" method is complete
     - Add verbosity details
 
+Should svv Methods that issue errors should have default headers?
+(And should gridfile?)
+
 
 Write tests
 Write examples
@@ -34,7 +42,11 @@ Link to ensembleMetadata.append? in addMembers doc of meta output
 
 FINISH GRIDFILE:
 
-Combine dash.gridfile.indices with dash.parse.stringsOrIndices
+Minimize error stacks in gridfile methods
+-gridfileSources.indices
+-methods that call gridMetadata.assertUnique
+
+Combine dash.gridfileSources.indices with dash.parse.stringsOrIndices
 
 Consider renaming absolutePaths to preferredPath and adding switches syntax
 

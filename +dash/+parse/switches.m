@@ -1,5 +1,5 @@
 function[switches] = switches(input, typeStrings, nSwitches, name, listName, header)
-%% dash.parse.switches  Throw error if input is neither a set of logical/numeric switches, nor a set of strings associated with switches
+%% dash.parse.switches  Parse inputs that are logical, numeric, or string switches
 % ----------
 %   switches = dash.assert.switches(input, typeStrings, nSwitches)
 %   
