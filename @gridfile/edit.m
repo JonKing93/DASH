@@ -28,7 +28,11 @@ obj.update;
 % Attributes
 if strcmp(dimension, 'attributes')
     [~, atts] = gridMetadata.dimensions;
-    obj.meta = obj.meta.edit(atts, metadata);
+    try
+        obj.meta = obj.meta.edit(atts, metadata);
+    catch ME
+        throw(ME);
+    end
     
 % Require a dimension already in the .grid file
 else
@@ -47,8 +51,12 @@ else
     end
     
     % Require unique metadata rows
-    obj.meta = obj.meta.edit(dim, metadata);
-    obj.meta.assertUnique(dim, header);
+    try
+        obj.meta = obj.meta.edit(dim, metadata);
+        obj.meta.assertUnique(dim, header);
+    catch ME
+        throw(ME);
+    end
 end
 
 % Save changes

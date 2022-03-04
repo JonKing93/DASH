@@ -46,7 +46,11 @@ if nRows~=1
 end
 
 % Add the new dimension
-obj.meta = obj.meta.edit(dim, metadata);
+try
+    obj.meta = obj.meta.edit(dim, metadata);
+catch ME
+    throw(ME);
+end
 obj.dims = [obj.dims, dim];
 obj.size = [obj.size, 1];
 

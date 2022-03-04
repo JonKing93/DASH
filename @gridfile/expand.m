@@ -73,7 +73,11 @@ if ~areUnique
 end
 
 % Error check / update metadata. Also update sizes
-obj.meta = obj.meta.edit(dim, metadata);
+try
+    obj.meta = obj.meta.edit(dim, metadata);
+catch ME
+    throw(ME);
+end
 obj.size(d) = obj.size(d) + nNewRows;
 
 % Save
