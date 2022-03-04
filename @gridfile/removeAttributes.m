@@ -23,7 +23,11 @@ dash.assert.scalarObj(obj, header);
 obj.assertValid(header);
 obj.update;
 
-obj.meta = obj.meta.removeAttributes(varargin{:});
+try
+    obj.meta = obj.meta.removeAttributes(varargin{:});
+catch ME
+    throw(ME);
+end
 obj.save;
 
 end

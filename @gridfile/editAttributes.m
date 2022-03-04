@@ -25,7 +25,11 @@ obj.assertValid(header);
 obj.update;
 
 % Update attributes
-obj.meta = obj.meta.editAttributes(varargin{:});
+try
+    obj.meta = obj.meta.editAttributes(varargin{:});
+catch ME
+    throw(ME);
+end
 obj.save;
 
 end
