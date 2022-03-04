@@ -203,9 +203,6 @@ classdef gridMetadata
         try
             obj = obj.edit(varargin{:});
         catch ME
-            if ~contains(ME.identifier, 'DASH:gridMetadata:edit')
-                rethrow(ME);
-            end
             throw(ME);
         end
         

@@ -73,9 +73,6 @@ for k = 1:numel(names)
         try
             metadata{k} = gridMetadata.assertField(metadata{k}, dim, header);
         catch ME
-            if ~contains(ME.identifier, 'DASH:gridMetadata:edit')
-                rethrow(ME);
-            end
             throw(ME);
         end
 

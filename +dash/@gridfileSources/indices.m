@@ -99,9 +99,6 @@ try
 
 % Minimize error stacks
 catch ME
-    if ~contains(ME.identifier, "DASH:gridfile")
-        rethrow(ME);
-    end
     throwAsCaller(ME);
 end
 
