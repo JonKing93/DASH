@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-
+design
 %%%
 
 % Run tests
@@ -234,46 +234,86 @@ end
 function[] = design
 
 % Initial svv
-% svv with ens dims
-% svv with indexed ens dims
-% svv with sequence
-% svv with metadata
-% svv with weights
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svvSM = svv.mean(2, {[]}, false, 'test');
+svvSW = svv.weightedMean(2, {ones(20,1)}, 'test');
+svvE = svv.design(3, false, {[]}, 'test');
+svvEM = svvE.mean(3, {-2:2}, false, 'test');
+svvEW = svvEM.weightedMean(3, {ones(5,1)}, 'test');
+svvES = svvE.sequence(3, {-2:2}, {(-2:2)'}, 'test');
+svvMeta = svv.metadata(2, 1, {string((1:20)')}, [], 'test');
 
 
-tests = {
-    'single design', true, svv, 3, false, {[]},
-    'multiple dims',true, svv, [3 4], [false, false], {[],[]}
-    'dims with 0',true, svv, [4 0 3], [false false false], {[],[],[]}
+tests = {...
+    % description, should fail, object, dimension, type, indices,...
+    %(output) isState, stateSize, ensSize, meanSize, hasSequence, sequenceIndices, sequence Metadata, ...
+    % (error) error id
+    'state to state', true, svv, 2, true, {[]}, true(1,4), [100 20 1000 3], [1 1 1 1], [0 0 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with mean to state', true, svvSM, 2, true, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with weighted mean to state', true, svvSW, 2, true, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
 
-    'state to ens',true, 3, false, {1:3}
-    'ens to state',true, svv2, 3, true, {1:5}
-    'state to mixed',true, svv, [1 2], [true false], {1:9,1:6}
-    'ens to mixed',true, svv2, [3 4], [true false], {1:9,2}
-    'mixed to mixed',true, svv2, 1:4, [true false true false], {[],[],[],[]}
+    'ens to ens', true, svvE, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with mean to ens', true, svvEM, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with weighted mean to ens', true, svvEW, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with sequence to ens', true, svvES, 3, false, {[]}, [true true false true], [100 20 5 3], [1 1 1000 1], zeros(1,4), [false false true false], {[],[],(-2:2)',[]}, {[],[],(-2:2)',[]}, []
 
-    'ens to state, reset sequence', true,
-    'ens to state, reset metadata', true,
-    'ens to state, previous mean', true,
+    'state to ens', true, svv, 2, false, {[]}, [true false true true], [100 1 1000 3], [1 20 1 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with mean to ens', false, svvSM, 2, false, {[]}, [], [], [], [], [], [], [], 'noMeanIndices'
 
-    'logical indices wrong length',false, svv, 3, false, {true(4,1)}
-    'linear indices too large',false, svv, 3, false, {10000}
-    'empty indices, state',true, svv2, 3, true, {[]}
-    'empty indices, ens',true, svv, 3, false, {[]}
-    'repeat indices, state',true, svv, 1, true, {[1 1 1]}
-    'repeat indices, ens', true, svv, 3, false, {[1 1 1]}
+    'ens to state', true, svvE, 3, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with mean to state', true, svvEM, 3, true, {[]}, true(1,4), [100 20 1 3], ones(1,4), [0 0 1000 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with weighted mean to state', true, svvEW, 3, true, {1:5}, true(1,4), [100 20 1 3], ones(1,4), [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'weight size conflict', false, svvEW, 3, true, {[]}, [],[],[],[],[],[],[],'weightsSizeConflict'
+    'ens with sequence to state', true, svvES, 3, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
 
-    'state to state, weights conflict',false, svvWeight, 1, true, {1:3}
-    'metadata conflict',false, svvMeta, 3, false, {1:3}
-    'mean indices conflict',false,svvMean, 3, true, {[]} 
+    'empty indices', true, svv, 2, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'linear indices', true, svv, 2, true, {(2:2:20)'}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'logical indices', true, svv, 2, true, {[true(10,1);false(10,1)]}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'invalid logical indices', false, svv, 2, true, {false(5,1)}, [], [], [], [], [], [], [], 'logicalIndicesWrongLength'
+    'invalid linear indices', false, svv, 2, true, {22}, [], [], [], [], [], [], [], 'linearIndicesTooLarge'
+    'row indices', true, svv, 2, true, {2:2:20}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+
+    'alternate metadata', true, svvMeta, 2, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'metadata size conflict', false, svvMeta, 2, true, {1:10}, [], [], [], [], [], [], [], 'metadataSizeConflict'
+
+    'multiple dimensions, same', true, svv, [3 4], [false false], {[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'multiple dimensions, mixed', true, svv, [3 2 4], [false true false], {[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'dimensions with 0', true, svv, [0 4 0 3], [false false true false], {[],[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
     };
+header = 'DASH';
 
+try
+    for t = 1:size(tests,1)
+        svv = tests{t,3};
 
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                svv.design(tests{t,4:6}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,14}), 'invalid error');
+            
+        else
+            svv = svv.design(tests{t,4:6}, header);
 
+            assert(isequal(svv.isState, tests{t,7}), 'is state');
+            assert(isequal(svv.stateSize, tests{t,8}), 'state size');
+            assert(isequal(svv.ensSize, tests{t,9}), 'ens size');
+            assert(isequal(svv.meanSize, tests{t,10}), 'mean size');
+            assert(isequal(svv.hasSequence, tests{t,11}), 'has sequence');
+            assert(isequal(svv.sequenceIndices, tests{t,12}), 'sequence indices');
+            assert(isequal(svv.sequenceMetadata, tests{t,13}), 'sequence metadata');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
-
-
-error('unfinished');
 end
 function[] = sequence
 
@@ -342,19 +382,19 @@ svvW = svvM.weightedMean([1 3], {ones(100,1), ones(3,1)}, 'test');
 tests = {
     % test, succeed, object, dims, indices, omitnan,...
     % meanType, meanSize, stateSize, meanIndices, omitnan, weights
-    'disable mean, weighted', true, svvW, [1 3], "none", [], [0 1 0 1], [NaN 20 NaN 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
-    'disable mean, unweighted', true, svvM, [1 3], "none", [], [0 1 0 1], [NaN 20 NaN 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
-    'disable mean, no mean', true, svv, [1 3], "none", [], [0 0 0 0], NaN(1,4), [100 20 1 1], {[],[],[],[]}, false(1,4), {[],[],[],[]}
+    'disable mean, weighted', true, svvW, [1 3], "none", [], [0 1 0 1], [0 20 0 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
+    'disable mean, unweighted', true, svvM, [1 3], "none", [], [0 1 0 1], [0 20 0 1], [100 1 1 1], {[],[],[],2}, false(1,4), {[],[],[],[]}
+    'disable mean, no mean', true, svv, [1 3], "none", [], [0 0 0 0], zeros(1,4), [100 20 1 1], {[],[],[],[]}, false(1,4), {[],[],[],[]}
     'disable weights', true, svvW, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, false(1,4), {[],[],[],[]}
     'disable weights, no weights', true, svvM, [1 3], "unweighted", [], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, false(1,4), {[],[],[],[]}
     'disable weights, no mean', false, svv, [1 3], "unweighted", [], [],[],[],[],[],[]
     
-    'state mean', true, svv, [1 2], {[],[]}, [true true], [1 1 0 0], [100 20 NaN NaN], [1 1 1 1], {[],[],[],[]}, [true true false false], {[],[],[],[]}
+    'state mean', true, svv, [1 2], {[],[]}, [true true], [1 1 0 0], [100 20 0 0], [1 1 1 1], {[],[],[],[]}, [true true false false], {[],[],[],[]}
     'mean indices for state', false, svv, [1 2], {[],-2:2}, [true true],[],[],[],[],[],[]
     'state mean, previous mean', true, svvM, [1 2], {[],[]}, [true true], [1 1 1 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, [true true false false], {[],[],[],[]}
     'state mean, previous weights', true, svvW, [1 2], {[],[]}, [true true], [2 1 2 1], [100 20 3 1], [1 1 1 1], {[],[],(1:3)',2}, [true true false false], {ones(100,1),[],ones(3,1),[]}
 
-    'ens mean',true, svv, [3 4], {1:3, 2}, [true true], [0 0 1 1], [NaN NaN 3 1], [100 20 1 1], {[],[],(1:3)',2}, [false false, true true], {[],[],[],[]}
+    'ens mean',true, svv, [3 4], {1:3, 2}, [true true], [0 0 1 1], [0 0 3 1], [100 20 1 1], {[],[],(1:3)',2}, [false false, true true], {[],[],[],[]}
     'ens mean, no indices', false, svv, [3 4], {1:3, []}, [true true],[],[],[],[],[],[]
     'indices too large', false, svv, 3, {10000}, true,[],[],[],[],[],[]
     'indices too small', false, svv, 3, {-100000}, true,[],[],[],[],[],[]
@@ -362,10 +402,10 @@ tests = {
     'ens mean, previous weights', true, svvW, 3, {-1:1}, false, [2 1 2 1], [100 20 3 1], [1 1 1 1], {[],[],(-1:1)',2}, false(1,4), {ones(100,1),[],ones(3,1),[]}
     'ens mean, weights conflict', false, svvW, 3, {-2:1}, false,[],[],[],[],[],[]
 
-    'ens, include nan', true, svv, 3, {-1:1}, true, [0 0 1 0], [NaN NaN 3 NaN], [100 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
-    'state, include nan', true, svv, 1, {[]}, true, [1 0 0 0], [100 NaN NaN NaN], [1 20 1 1], {[],[],[],[]}, [true false false false], {[],[],[],[]}
-    'mixed ens/state', true, svv, [1 3], {[], -1:1}, [false true], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
-    'dims with 0', true, svv, [3 0 1], {-1:1,[],[]}, [true false false], [1 0 1 0], [100 NaN 3 NaN], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
+    'ens, include nan', true, svv, 3, {-1:1}, true, [0 0 1 0], [0 0 3 0], [100 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
+    'state, include nan', true, svv, 1, {[]}, true, [1 0 0 0], [100 0 0 0], [1 20 1 1], {[],[],[],[]}, [true false false false], {[],[],[],[]}
+    'mixed ens/state', true, svv, [1 3], {[], -1:1}, [false true], [1 0 1 0], [100 0 3 0], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
+    'dims with 0', true, svv, [3 0 1], {-1:1,[],[]}, [true false false], [1 0 1 0], [100 0 3 0], [1 20 1 1], {[],[],(-1:1)',[]}, [false false true false], {[],[],[],[]}
     };
 header = "DASH";
 
@@ -413,7 +453,7 @@ svvW = svvM.weightedMean([1 2 3], {ones(100,1), ones(20,1), ones(3,1)}, 'test');
 tests = {
     % test, succeed, obj, dims, weights, ...
     % (output) meanType, weights, state size, mean size
-    'remove weights, no mean' true, svv, [1 3], {[],[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], NaN(1,4)
+    'remove weights, no mean' true, svv, [1 3], {[],[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], zeros(1,4)
     'remove weights, no weights', true, svvM, [1 3], {[],[]}, [1 1 1 1], {[],[],[],[]}, [1 1 1 1], [100 20 3 1]
     'remove weights, weighted', true, svvW, [1 3], {[],[]}, [1 2 1 1], {[],ones(20,1),[],[]}, [1 1 1 1], [100 20 3 1]
 
@@ -423,10 +463,10 @@ tests = {
     'state size conflict', false, svvM, 1, {ones(101,1)}, [],[],[],[]
     'size conflict, weighted', false, svvW, 3, {ones(4,1)}, [],[],[],[]
     
-    'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 NaN NaN NaN], 
+    'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 0 0 0], 
     'new state, size conflict', false, svv, 1, {ones(101,1)}, [],[],[],[]
     'set new ens mean', false, svv, 3, {ones(3,1)}, [],[],[],[]
-    'new ens mean no weights', true, svv, 3, {[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], NaN(1,4)
+    'new ens mean no weights', true, svv, 3, {[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], zeros(1,4)
 
     'set multiple dims', true, svvM, [3 1], {ones(3,1), ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
     'dims with 0', true, svvM, [3 0 1], {ones(3,1), 5, ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
@@ -489,7 +529,6 @@ tests = {
     'convert to alternate', true, svvC,3,1,{(1:1000)'},[], [0 0 1 2], {[],[],(1:1000)',[]}, {[],[],[],convert}, {[],[],[],args}
     'convert to convert', true, svvC,3,2,{convert},{args}, [0 0 2 2], {[],[],[],[]}, {[],[],convert,convert}, {[],[],args,args}
     
-    'state dimension', false, svv,1,0,[],[], [],[],[],[]
     'alternate metadata wrong size', false, svv,3,1,{(1:2000)'},[], [],[],[],[]
 
     'multiple dims', true, svv,[4 3],1,{(1:3)',(1:1000)'},[], [0 0 1 1], {[],[],(1:1000)',(1:3)'}, {[],[],[],[]}, {[],[],[],[]}
@@ -928,7 +967,6 @@ catch cause
 end
 
 end
-function[] = parametersForBuild
 function[] = buildMembers
 
 grid = gridfile('test-lltr');

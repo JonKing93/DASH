@@ -31,7 +31,7 @@ for k = 1:numel(dims)
     name = sprintf('Indices for the "%s" dimension', obj.dims(d));
     linearMax = sprintf('the length of the "%s" dimension', obj.dims(d));
     logicalRequirement = sprintf('be %s', linearMax);
-    dash.assert.indices(indices{k}, obj.gridSize(d), name, logicalRequirement, linearMax, header);
+    indices{k} = dash.assert.indices(indices{k}, obj.gridSize(d), name, logicalRequirement, linearMax, header);
 
     % Get the new size of the dimension
     if isempty(indices{k})
