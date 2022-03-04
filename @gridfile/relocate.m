@@ -105,7 +105,8 @@ for k = 1:numel(s)
     newfile = which(filename);
     
     if isempty(newfile)
-        noMatchingFileError(sourceName, s(k), obj.file, header);
+        ME = noMatchingFileError(sourceName, s(k), obj.file, header);
+        throwAsCaller(ME);
     end
     newNames(k) = newfile;
 end
@@ -113,14 +114,13 @@ end
 end
 
 % Error messages
-function[] = noMatchingFileError(sourceName, s, gridFile, header)
+function[ME] = noMatchingFileError(sourceName, s, gridFile, header)
 id = sprintf('%s:noMatchingFile', header);
 ME = MException(id, ['Data source %.f cannot be found and there are no matching ',...
     'filenames on the active path.\n\n',...
     'Data source: %s\n',...
     '   gridfile: %s'],...
     s, sourceName, gridFile);
-throwAsCaller(ME);
 end
 function[] = invalidDataSourceError(obj, s, newfile, userRename, cause, header)
 
