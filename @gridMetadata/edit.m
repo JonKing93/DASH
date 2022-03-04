@@ -51,7 +51,7 @@ dash.assert.scalarObj(obj, header);
 % Parse inputs
 extraInfo = 'Inputs must be Dimension,Metadata pairs.';
 [names, metadata] = dash.parse.nameValueOrCollection(varargin, ...
-    'dimensions', 'metadata', extraInfo, header);
+    'dimensions', 'grouped metadata', extraInfo, header);
 
 % Require recognized, non-duplicate dimension names
 [dims, atts] = gridMetadata.dimensions;
@@ -68,9 +68,18 @@ for k = 1:numel(names)
     index = d(k);
     dim = names(k);
     
-    % Check metadata is valid
+    % Check metadata is valid.
     if index < numel(dims)
-        metadata{k} = gridMetadata.assertField(metadata{k}, dim, header);
+        try
+            metadata{k} = gridMetadata.assertField(metadata{k}, dim, header);
+        catch ME
+            if ~contains(ME.identifier, 'DASH:gridMetadata:edit')
+                rethrow(ME);
+            end
+            throw(ME);
+        end
+
+        % Warn user about row vector metadata
         if isrow(metadata{k}) && ~isscalar(metadata{k})
             metadataRowWarning(dim, header);
         end

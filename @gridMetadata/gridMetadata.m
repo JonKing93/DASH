@@ -199,8 +199,15 @@ classdef gridMetadata
             varargin = [cellstr(fields); metadata];
         end 
         
-        % Build the metadata
-        obj = obj.edit(varargin{:});
+        % Build the metadata. Minimize error stack
+        try
+            obj = obj.edit(varargin{:});
+        catch ME
+            if ~contains(ME.identifier, 'DASH:gridMetadata:edit')
+                rethrow(ME);
+            end
+            throw(ME);
+        end
         
         end
     end
