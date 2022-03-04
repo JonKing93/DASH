@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-design
+
 %%%
 
 % Run tests
@@ -959,6 +959,39 @@ try
         obj = obj.finalize;
         limits = obj.indexLimits(tests{t,3:5});
         assert(isequal(limits, tests{t,6}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = parametersForBuild
+
+grid = gridfile('test-lltr');
+svv = dash.stateVectorVariable(grid);
+svv = svv.design(3:4, [false false], {[],[]}, 'test');
+svvM = svv.mean([1 3], {[], -2:2}, [false false], 'test');
+svvS = svv.sequence([3 4], {-1:1, -1:1}, {(-1:1)', (-1:1)'}, 'test');
+svvMS = svvS.mean([1 3], {[], -2:2}, [false false], 'test');
+
+tests = {
+    % description, object, rawSize, meanDims, nState
+    'no means, no sequences', svv, [100 20 1 1], [1 2 3 4], 100*20
+    'means', svvM, [100 20 5 1], [1 2 3 4], 1*20
+    'sequences', svvS, [100 20 1 3 1 3], [1 2 3 5], 100*20*3*3
+    'means and sequences', svvMS, [100 20 5 3 1 3], [1 2 3 5], 1*20*3*3
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        params = obj.parametersForBuild;
+
+        assert(isequal(params.rawSize, tests{t,3}), 'raw size');
+        assert(isequal(params.meanDims, tests{t,4}), 'mean dims');
+        assert(isequal(params.nState, tests{t,5}), 'nState');
     end
 catch cause
     ME = MException('test:failed', '%.f: %s', t, tests{t,1});

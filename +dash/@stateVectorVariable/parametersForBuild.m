@@ -37,7 +37,7 @@ meanDims = 1:nDims;
 % Adjust size and mean dimensions for multiple sequence elements
 for d = nDims:-1:1
     if ~obj.isState(d) && obj.stateSize(d)>1
-        rawSize = [rawSize(1:d-1), obj.meanSize(d), obj.stateSize(d), rawSize(d+1:end)];
+        rawSize = [rawSize(1:d-1), meanSize(d), obj.stateSize(d), rawSize(d+1:end)];
         meanDims(d+1:end) = meanDims(d+1:end)+1;
     end
 end

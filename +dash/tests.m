@@ -8,7 +8,11 @@ function[] = tests
 %
 % <a href="matlab:dash.doc('dash.tests')">Documentation Page</a>
 
+% Classes
 dash.gridfileSources.tests;
+dash.stateVectorVariable.tests;
+
+% Sub packages
 dash.assert.tests;
 dash.dataSource.tests;
 dash.file.tests;
