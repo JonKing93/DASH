@@ -17,12 +17,13 @@ fields = properties('gridfile');
 fields(strcmp(fields, 'file')) = [];
 
 % Load the properties
-reset = dash.toggleWarning('off', "MATLAB:load:variableNotFound"); %#ok<NASGU>
+reset = dash.warning.state('off', 'MATLAB:load:variableNotFound'); %#ok<NASGU> 
 try
     m = load(obj.file, '-mat', fields{:});
 catch
     id = sprintf('%s:couldNotLoad', header);
-    ME = MException(id, 'Could not load data from:\n    %s\n\nIt may not be a valid .grid file', obj.file);
+    ME = MException(id, ['Could not load data from:  %s\n',...
+        'It may not be a valid .grid file.'], obj.file);
     throwAsCaller(ME);
 end
 

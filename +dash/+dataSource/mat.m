@@ -8,7 +8,6 @@ classdef mat < dash.dataSource.hdf
     %   loadStrided   - Load data from a MAT-file at strided indices
     %
     % v73 Matfile Warnings:
-    %   toggleWarning - Change the state of the v7.3 matfile warning.
     %   v73warning    - Issue informative warning if the .mat file for a dataSource is not version 7.3
     %
     % Inherited:
@@ -80,7 +79,7 @@ classdef mat < dash.dataSource.hdf
 
         % Warn user if not v7.3 MAT-file. Convert the warning message
         % to error so it is catchable, then give descriptive message.
-        obj.toggleWarning('error');       
+        reset = dash.warning.state('error', obj.warnID); %#ok<NASGU> 
         firstIndex = repmat({1}, [1, numel(obj.size)]);
         try
             obj.m.(obj.var)(firstIndex{:});
@@ -111,7 +110,7 @@ classdef mat < dash.dataSource.hdf
         %   <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Documentation Page</a>
         
         % Disable the partial load warning (it will reset state by default)
-        obj.toggleWarning('off');
+        reset = dash.warning.state('off', obj.warnID); %#ok<NASGU> 
         
         % Adjust the indices to include a second dimension if the variable
         % is a column vector
@@ -150,29 +149,4 @@ classdef mat < dash.dataSource.hdf
         end
     end
     
-    methods (Static)
-        function[reset] = toggleWarning(state)
-        %% dash.dataSource.mat.toggleWarning  Change the state of the v7.3 matfile warning.
-        % ----------
-        %   reset = dash.dataSource.mat.toggleWarning(state)  
-        %   Toggles the state of the Old-Format Mat-File warning to a
-        %   specified state. Returns a cleanup object that will reset the 
-        %   warning to its initial state when the object is destroyed.
-        % ----------
-        %   Inputs:
-        %       state ("on" | "off" | "error"): Desired state of the warning.
-        %
-        %   Outputs:
-        %       reset (onCleanup object): An object that resets the initial state
-        %           of warning when destroyed
-        %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.toggleWarning')">Documentation Page</a>
-        
-        warnID = dash.dataSource.mat.warnID;
-        warn = warning('query', warnID);
-        warning(state, warnID);
-        reset = onCleanup(  @()warning(warn.state, warnID)  );
-        
-        end
-    end
 end

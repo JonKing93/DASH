@@ -1,4 +1,4 @@
-% dash  Utilities for the DASH toolbox
+%% dash  Utilities for the DASH toolbox
 % ----------
 % Documentation Functions:
 %   doc                 - Open online reference page in a web browser
