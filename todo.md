@@ -24,12 +24,24 @@ sv.uncouple(0) to uncouple all variables?
 Review string.indexedDimension
 
 STATE VECTOR
+
+Add 0 and -1 options to various methods
+    -gridfile.remove
+    -gridfile.absolutePaths
+    -gridfile.dimensions (include options for source dimensions in general)
+    -sv.design (mean, sequence, weightedMean, metadata)
+    -sv.remove
+    -sv.uncouple and sv.autocouple
+    -
+
+coupledVariables should include option to return information about specific variables
+
 1. Verbosity toggle
 2. Constructor documentation
     - Add link once "label" method is complete
     - Add verbosity details
 
-Should svv Methods that issue errors should have default headers?
+Should svv Methods that issue errors have default headers?
 (And should gridfile?)
 
 
@@ -41,12 +53,6 @@ Link to ensembleMetadata.append? in addMembers doc of meta output
 
 
 FINISH GRIDFILE:
-
-Minimize error stacks in gridfile methods
--gridfileSources.indices
--methods that call gridMetadata.assertUnique
-
-Combine dash.gridfileSources.indices with dash.parse.stringsOrIndices
 
 Consider renaming absolutePaths to preferredPath and adding switches syntax
 
