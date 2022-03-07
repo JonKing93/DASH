@@ -4,6 +4,9 @@ function[] = remove(obj, sources)
 %   <strong>obj.remove</strong>(s)
 %   <strong>obj.remove</strong>(sourceNames)
 %   Removes the specified data sources from the gridfile.
+%
+%   <strong>obj.remove</strong>(0)
+%   Removes all data sources from the gridfile.
 % ----------
 %   Inputs:
 %       s (logical vector [nSources] | vector, linear indices): The indices
@@ -20,7 +23,11 @@ obj.assertValid(header);
 obj.update;
 
 % Get data source indices
-s = obj.sources_.indices(sources, header);
+if isequal(sources,0)
+    s = 1:obj.nSource;
+else
+    s = obj.sources_.indices(sources, header);
+end
 
 % Remove the sources
 obj.dimLimit(:,:,s) = [];

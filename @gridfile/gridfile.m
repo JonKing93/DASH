@@ -26,7 +26,7 @@ classdef gridfile < handle
     %   new             - Create a new, empty .grid file
     %   gridfile        - Return a gridfile object for a .grid file.
     %   add             - Catalogue a data source in a .grid file
-    %   metadata        - Return the metadata for a gridfile
+    %   metadata        - Return the metadata for a gridfile or data sources
     %   load            - Load data from the sources catalogued in a .grid file
     %
     %
@@ -89,7 +89,6 @@ classdef gridfile < handle
     %   save             - Save a gridfile object to a .grid file
     %
     % Console Display:
-    %   disp             - Display gridfile object in console
     %   dispDimensions   - Print dimension sizes and metadata to the console
     %   dispSources      - List gridfile data sources in the console
     %   dispAdjustments  - Print fill value, valid range, and data transformation to console

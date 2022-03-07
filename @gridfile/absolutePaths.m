@@ -2,6 +2,7 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %% gridfile.absolutePaths  Save data source file names as absolute or relative paths
 % ----------
 %   <strong>obj.absolutePaths</strong>(useAbsolute)
+%   <strong>obj.absolutePaths</strong>(0)
 %   Specify whether the .grid file should save data source locations as
 %   relative paths, or absolute paths. This syntax sets the preferred file
 %   path style for all data sources currently in the .grid, and applies the
@@ -54,11 +55,11 @@ dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);
 tryRelative = ~useAbsolute;
 
 % Get data source indices, set gridfile default
-if exist('sources','var')
-    s = obj.sources_.indices(sources, header);
-else
+if ~exist('sources','var') || isequal(sources, 0)
     obj.relativePath = tryRelative;
     s = 1:obj.nSource;
+else
+    s = obj.sources_.indices(sources, header);
 end
 
 % Get the absolute paths, use to update each source

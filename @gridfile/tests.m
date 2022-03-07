@@ -74,6 +74,7 @@ error('data adjustment outputs');
 error('altered info struct for gridfileSources');
 error('deleted gridfile');
 error('disp, dispSources, and sources console display');
+error('0 options for remove, absolutePaths');
 
 
 end
