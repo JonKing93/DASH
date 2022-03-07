@@ -17,7 +17,7 @@ function[length] = length(obj, variables)
 %       v (logical vector | vector, linear indices): The indices
 %           of the variables for which to return state vector lengths.
 %       variableNames (string vector): The names of the variables in the 
-%           state vector for for which to return 
+%           state vector for for which to return state vector lengths
 %
 %   Outputs:
 %       length (scalar positive integer): The number of elements in the

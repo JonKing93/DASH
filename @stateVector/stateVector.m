@@ -77,7 +77,7 @@ classdef stateVector
 
         % Coupling information
         [indexSets, nSets] = coupledIndices(obj);
-        [names, indices] = coupledVariables(obj);
+        [names, indices] = coupledVariables(obj, variables);
         info = couplingInfo(obj);
 
         % Build / write

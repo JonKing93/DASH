@@ -24,12 +24,6 @@ Review string.indexedDimension
 
 STATE VECTOR
 
-
-
-coupledVariables should include option to return information about specific variables
-
-should sv.dimensions return sizes?
-
 Should svv Methods that issue errors have default headers?
 (And should gridfile?)
 
