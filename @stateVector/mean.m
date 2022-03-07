@@ -117,7 +117,7 @@ end
 nDims = numel(dimensions);
 
 % Prohibit NaNoptions for string inputs. Get placeholder omitnan
-if exist('indices','var') && (strcmpi(indices,"none") || strcmpi(indices,"unweighted"))
+if exist('indices','var') && (isequal(indices,"none") || isequal(indices,"unweighted"))
     assert(~exist('nanflag','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
     omitnan = [];
 

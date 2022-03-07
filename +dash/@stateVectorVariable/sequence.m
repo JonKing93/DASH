@@ -3,6 +3,9 @@ function[obj] = sequence(obj, dims, indices, metadata, header)
 % ----------
 %   obj = <strong>obj.sequence</strong>(dims, indices, metadata, header)
 %   Applies sequences to the indicated ensemble dimensions.
+%
+%   obj = <strong>obj.sequence</strong>(dims, "none", [], header)
+%   Removes any sequences from the specified dimensions.
 % ----------
 %   Inputs:
 %       dims (vector, linear indices [nDimensions]): The indices of the
@@ -32,7 +35,7 @@ for k = 1:numel(dims)
     end
 
     % Remove sequences from a dimension
-    if isempty(indices{k})
+    if isequal(indices,"none") || isempty(indices{k})
         obj.stateSize(d) = 1;
         obj.hasSequence(d) = false;
         obj.sequenceIndices{d} = [];

@@ -6,7 +6,7 @@ function[obj] = mean(obj, dims, indices, omitnan, header)
 %   options.
 %
 %   obj = <strong>obj.mean</strong>(dims, "none", [], header)
-%   Disables the mean over the specified dimensions. Ignores 
+%   Disables the mean over the specified dimensions.
 %
 %   obj = <strong>obj.mean</strong>(dims, "unweighted", [], header)
 %   Discards weights for weighted means of the specified dimensions.

@@ -11,6 +11,9 @@ function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %   Design sequences for the listed ensemble dimensions.
 %   Sequences are built using the provided sequence indices. Each set of
 %   sequence indices is associated with a provided set of metadata.
+%
+%   obj = obj.sequence(variables, dimensions, "none")
+%   Removes any sequences from the listed dimensions.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices): The indices of variables in
@@ -87,21 +90,28 @@ end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 
-% Error check indices
-indices = dash.assert.additiveIndexCollection(indices, nDims, dimensions, header);
+% Prohibit metadata for "none" option. Create placeholder metadata
+if isequal(indices, "none")
+    assert(~exist('metadata','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    metadata = [];
 
-% Check metadata is valid and unique. Convert cellstring
-metadata = dash.parse.inputOrCell(metadata, nDims, "metadata", header);
-for k = 1:nDims
-    meta = gridMetadata(dimensions(k), metadata{k});
-    meta.assertUnique(dimensions(k), header);
-    metadata{k} = meta.(dimensions(k));
+% Otherwise, default and error check indices
+else
+    indices = dash.assert.additiveIndexCollection(indices, nDims, dimensions, header);
 
-    % Check metadata matches the number of sequence indices
-    nRows = size(metadata{k},1);
-    nIndices = numel(indices{k});
-    if nRows ~= nIndices
-        metadataSizeConflictError(nRows, nIndices, dimensions(k), header);
+    % Check metadata is valid and unique. Convert cellstring
+    metadata = dash.parse.inputOrCell(metadata, nDims, "metadata", header);
+    for k = 1:nDims
+        meta = gridMetadata(dimensions(k), metadata{k});
+        meta.assertUnique(dimensions(k), header);
+        metadata{k} = meta.(dimensions(k));
+    
+        % Check metadata matches the number of sequence indices
+        nRows = size(metadata{k},1);
+        nIndices = numel(indices{k});
+        if nRows ~= nIndices
+            metadataSizeConflictError(nRows, nIndices, dimensions(k), header);
+        end
     end
 end
 
