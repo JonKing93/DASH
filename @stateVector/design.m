@@ -1,8 +1,14 @@
 function[obj] = design(obj, variables, dimensions, indices, types)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
-%   obj = obj.design(v, dimensions, indices)
-%   obj = obj.design(variableNames, dimensions, indices)
+%   obj = obj.design(0, ...)
+%   obj = obj.design(v, ...)
+%   obj = obj.design(variableNames, ...)
+%   Designs the dimensions of the listed variables. If the first input is
+%   0, applies the design settings to all variables currently in the state
+%   vector.
+%
+%   obj = obj.design(variables, dimensions, indices)
 %   Specifies state and/or reference indices for the indicated dimensions.
 %   Indices for state dimensions (state indices) indicate which elements
 %   along the dimension should be used in the state vector. Indices for
@@ -50,7 +56,7 @@ function[obj] = design(obj, variables, dimensions, indices, types)
 %           If only a single dimension is listed, the dimension's indices
 %           may be provided directly as a vector, instead of in a scalar cell.
 %           However, the scalar cell syntax is also permitted.
-%       types (vector [1 | nDimensions], string | integer): The type of
+%       types (scalar | vector [nDimensions], string | integer): The type of
 %           each dimension. Options are:
 %           [0|"c"|"current"]: (default) Leave in current state
 %           [1|"s"|"state"]: State dimension
@@ -73,7 +79,11 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices.
-v = obj.variableIndices(variables, false, header);
+if isequal(variables, 0)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, false, header);
+end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 
@@ -82,7 +92,7 @@ options = {["c","current"], ["s","state"], ["e","ens","ensemble"]};
 types = dash.parse.switches(types, options, nDims, ...
                     'Dimension type', 'recognized dimension type', header);
 if numel(types)==1
-    isstate = repmat(types, [1 nDims]);
+    types = repmat(types, [1 nDims]);
 end
 
 % Parse indices

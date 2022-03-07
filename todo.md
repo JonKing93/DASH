@@ -25,16 +25,11 @@ Review string.indexedDimension
 
 STATE VECTOR
 
-Add 0 and -1 options to various methods
-    -gridfile.remove
-    -gridfile.absolutePaths
-    -gridfile.dimensions (include options for source dimensions in general)
-    -sv.design (mean, sequence, weightedMean, metadata)
-    -sv.remove
-    -sv.uncouple and sv.autocouple
-    -
+
 
 coupledVariables should include option to return information about specific variables
+
+should sv.dimensions return sizes?
 
 1. Verbosity toggle
 2. Constructor documentation

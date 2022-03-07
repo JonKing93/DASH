@@ -1,11 +1,16 @@
 function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %% stateVector.sequence  Use a sequence of data along ensemble dimensions
 % ----------
-%   obj = obj.sequence(v, dimensions, indices, metadata)
-%   obj = obj.sequence(variableNames, dimensions, indices, metadata)
-%   Designs a sequence for ensemble dimensions in the indicated variables.
+%   obj = obj.sequence(0, ...)
+%   obj = obj.sequence(v, ...)
+%   obj = obj.sequence(variableNames, ...)
+%   Creates sequences for the listed variables. If the first input is 0,
+%   applies a sequence to every variable currently in the state vector.
+% 
+%   obj = obj.sequence(variables, dimensions, indices, metadata)
+%   Design sequences for the listed ensemble dimensions.
 %   Sequences are built using the provided sequence indices. Each set of
-%   sequence indices are associated with a provided set of metadata.
+%   sequence indices is associated with a provided set of metadata.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices): The indices of variables in
@@ -74,7 +79,11 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices
-v = obj.variableIndices(variables, false, header);
+if isequal(variables, 0)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, false, header);
+end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

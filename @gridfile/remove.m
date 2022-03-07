@@ -5,7 +5,7 @@ function[] = remove(obj, sources)
 %   <strong>obj.remove</strong>(sourceNames)
 %   Removes the specified data sources from the gridfile.
 %
-%   <strong>obj.remove</strong>(0)
+%   <strong>obj.remove</strong>(-1)
 %   Removes all data sources from the gridfile.
 % ----------
 %   Inputs:
@@ -23,7 +23,7 @@ obj.assertValid(header);
 obj.update;
 
 % Get data source indices
-if isequal(sources,0)
+if isequal(sources,-1)
     s = 1:obj.nSource;
 else
     s = obj.sources_.indices(sources, header);

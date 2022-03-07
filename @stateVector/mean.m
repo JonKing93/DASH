@@ -1,28 +1,33 @@
 function[obj] = mean(obj, variables, dimensions, indices, NaNoptions)
 %% stateVector.mean  Take a mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.mean(v, stateDimension)
-%   obj = obj.mean(variableNames, stateDimension)
-%   Takes a mean over the indicated state dimension. The mean is taken over
-%   all elements of the dimension that are included in the state vector.
+%   obj = obj.mean(0, ...)
+%   obj = obj.mean(v, ...)
+%   obj = obj.mean(variableNames, ...)
+%   Updates the settings for means for the listed variables. If the first
+%   input is 0, applies the settings to all variables currently in the state
+%   vector.
 %
-%   obj = obj.mean(v, ensembleDimension, indices)
-%   obj = obj.mean(variableNames, ensembleDimension, indices)
+%   obj = obj.mean(variables, stateDimension)
+%   Takes a mean over the indicated state dimension. The mean is taken over
+%   all elements of the dimension that are included in the state vector
+%   (i.e. over all state indices for the dimension).
+%
+%   obj = obj.mean(variables, ensembleDimension, indices)
 %   Takes a mean over the indicated ensemble dimension. The mean is
 %   implemented using the specified mean indices. The mean for the
 %   dimension is calculated over elements located by applying the mean
 %   indices to particular elements along the dimension. If the dimension
 %   does not have a sequence, the mean indices are applied to the reference
 %   element. If the dimension has a sequence, applies the mean indices to
-%   each individual sequence element. 
+%   each individual sequence element.
 %
-%   obj = obj.mean(v, dimensions, indices)
-%   obj = obj.mean(variableNames, dimensions, indices)
+%   obj = obj.mean(variables, dimensions, indices)
 %   Takes a mean over multiple dimesions. If every listed dimension is a
 %   state dimension, you do not need to provide the third input (the mean indices).
 %   Specify mean indices if the dimensions list contains any ensemble dimensions.
 %   Use an empty array for the indices of any state dimensions.
-%   
+%
 %   obj = obj.mean(..., omitnan)
 %   obj = obj.mean(..., nanflags)
 %   Specify how to treat NaN elements along each dimension.
@@ -102,8 +107,12 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 obj.assertUnserialized;
 
-% Error check dimensions and variables, get indices
-v = obj.variableIndices(variables, false, header);
+% Check variables and dimensions, get indices
+if isequal(variables, 0)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, false, header);
+end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

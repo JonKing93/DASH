@@ -1,33 +1,39 @@
-function[obj] = autocouple(obj, variables, setting)
+function[obj] = autocouple(obj, setting, variables)
 %% stateVector.autocouple  Set whether variables are automatically coupled to new variables in a state vector
 % ----------
-%   obj = obj.autocouple(v, setting)
-%   obj = obj.autocouple(variableNames, setting)
+%   obj = obj.autocouple(setting)
+%   obj = obj.autocouple(setting, 0)
+%   Specify whether the variables in a state vector should be
+%   automatically coupled to new variables added to the state vector.
+%
+%   obj = obj.autocouple(setting, v)
+%   obj = obj.autocouple(setting, variableNames)
 %   Specify whether the indicated variables should be automatically coupled
 %   to new variables added to the state vector. Coupling is transitive, so
-%   changes to autocouple settings can change the coupling status of
+%   changes to autocouple settings can change the coupling status of other
 %   variables in the state vector.
 %
 %   If new variables are added to the set of autocoupled variables, the new
 %   variables will be coupled to the existing autocoupled variables. If
 %   there are no existing autocoupled variables, then the new autocoupled
-%   variables will be coupled to the first specified variable.
+%   variables will be coupled to the first listed variable.
 %
 %   If variables are removed from the set of autocoupled variables, the
 %   removed variables will be uncoupled from the remaining autocoupled
 %   variables.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
-%           the state vector that should be coupled. Either a logical
-%           vector with one element per state vector variable, or a vector
-%           of linear indices.
-%       variableNames (string vector): The names of variables
-%           in the state vector that should be coupled.
 %       setting (scalar logical | string scalar): Whether the variables
 %           should be automatically coupled to new variables.
 %           [true|"a"|"auto"|"automatic"]: Automatically couple the variables
 %           [false|"m"|"man"|"manual"]: Do not automatically couple the variables
+%       v (logical vector | linear indices): The indices of variables in
+%           the state vector that should have their autocoupling settings
+%           updated. Either a logical vector with one element per state 
+%           vector variable, or a vector of linear indices.
+%       variableNames (string vector): The names of variables
+%           in the state vector that should have their autocoupling
+%           settings updated.
 % 
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the
@@ -46,8 +52,12 @@ autoSetting = dash.parse.switches(setting, offOn, 1, 'setting', ...
     'recognized auto-coupling setting', header);
 
 % Check variables, get indices
-vUser = obj.variableIndices(variables, true, header);
-vUser = unique(vUser);
+if ~exist('variables','var') || isequal(variables, 0)
+    vUser = 1:obj.nVariables;
+else
+    vUser = obj.variableIndices(variables, true, header);
+    vUser = unique(vUser);
+end
 
 % Update coupling status as appropriate
 if ~autoSetting

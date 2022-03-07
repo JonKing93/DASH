@@ -6,7 +6,10 @@ function[obj] = uncouple(obj, variables)
 %   Uncouple the specified variables from one another. Uncoupled variables
 %   are not required to have matching metadata within an ensemble member.  
 %   Coupling is transitive, so unlisted variables that are coupled to two
-%   or more listed variables will also be uncoupled. 
+%   or more listed variables will also be uncoupled.
+%
+%   obj = obj.uncouple(-1)
+%   Uncouples all variables in the state vector.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices): The indices of variables in
@@ -28,7 +31,11 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Check user variables, get indices
-vUser = obj.variableIndices(variables, true, header);
+if isequal(variables, -1)
+    vUser = 1:obj.nVariables;
+else
+    vUser = obj.variableIndices(variables, true, header);
+end
 
 % Check each set of coupled variables for user-specified variables
 [sets, nSets] = obj.coupledIndices;

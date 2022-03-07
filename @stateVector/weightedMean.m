@@ -1,20 +1,24 @@
 function[obj] = weightedMean(obj, variables, dimensions, weights)
 %% stateVector.weightedMean  Take a weighted mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.weightedMean(v, stateDimension, weights)
-%   obj = obj.weightedMean(variableNames, stateDimension, weights)
+%   obj = obj.weightedMean(0, ...)
+%   obj = obj.weightedMean(v, ...)
+%   obj = obj.weightedMean(variablesNames, ...)
+%   Updates weighted mean settings for the listed variables. If the first
+%   input is zero, applies the settings to every variable currently in the
+%   state vector.
+%
+%   obj = obj.weightedMean(variables, stateDimension, weights)
 %   Takes a weighted mean over the indicated state dimension. You must
 %   provide a weight for each state index along the dimension.
 %
-%   obj = obj.weightedMean(v, ensembleDimension, weights)
-%   obj = obj.weightedMean(variableNames, ensembleDimension, weights)
+%   obj = obj.weightedMean(variables, ensembleDimension, weights)
 %   Takes a weighted mean over the indicated ensemble dimension. Before
 %   using this method, you must first use the "stateVector.mean" method
 %   to provide mean indices for the ensemble dimension. You must provide a
 %   weight for each mean index.
 %
-%   obj = obj.weightedMean(v, dimensions, weights)
-%   obj = obj.weightedMean(variableNames, dimensions, weights)
+%   obj = obj.weightedMean(variables, dimensions, weights)
 %   Take a weighted mean over multiple dimensions. If the dimension list
 %   contains ensemble dimensions, you must have first called the
 %   "stateVector.mean" method on the ensemble dimensions.
@@ -59,7 +63,11 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check dimensions and variables, get indices
-v = obj.variableIndices(variables, header);
+if isequal(variables, 0)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, header);
+end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

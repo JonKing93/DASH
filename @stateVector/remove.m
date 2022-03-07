@@ -4,6 +4,9 @@ function[obj] = remove(obj, variables)
 %   obj = obj.remove(v)
 %   obj = obj.remove(variableNames)
 %   Removes the specified variables from a state vector.
+%
+%   obj = obj.remove(-1)
+%   Removes all variables from a state vector.
 % ----------
 %   Inputs:
 %       v (logical vector [nVariables] | vector, linear indices): The
@@ -24,7 +27,11 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check variables, get indices
-v = obj.variableIndices(variables, true, header);
+if isequal(variables, -1)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, true, header);
+end
 
 % Remove variables
 obj.variables_(v,:) = [];

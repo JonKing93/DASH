@@ -1,8 +1,14 @@
 function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %% stateVector.metadata  Specify how to process metadata along dimensions of state vector variables
 % ----------
-%   obj = obj.metadata(v, dimensions, metadataType, ...)
-%   obj = obj.metadata(variableNames, dimensions, metadataType, ...)
+%   obj = obj.metadata(0, ...)
+%   obj = obj.metadata(v, ...)
+%   obj = obj.metadata(variableNames, ...)
+%   Specifies how to process metadata for the listed variables. If the
+%   first input is 0, applies the settings to all variables currently in
+%   the state vector.
+%
+%   obj = obj.metadata(variables, dimensions, metadataType, ...)
 %   Specify how to process metadata for the indicated dimensions of the
 %   listed variables. This metadata is used when building ensemble members
 %   of a state vector ensemble. The metadata is used to ensure that coupled
@@ -112,7 +118,11 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices
-v = obj.variableIndices(variables, false, header);
+if isequal(variables, 0)
+    v = 1:obj.nVariables;
+else
+    v = obj.variableIndices(variables, false, header);
+end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 
 % Parse the metadata type
