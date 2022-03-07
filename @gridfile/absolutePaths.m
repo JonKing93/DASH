@@ -1,41 +1,49 @@
 function[] = absolutePaths(obj, useAbsolute, sources)
 %% gridfile.absolutePaths  Save data source file names as absolute or relative paths
 % ----------
-%   <strong>obj.absolutePaths</strong>(useAbsolute)
-%   <strong>obj.absolutePaths</strong>(0)
-%   Specify whether the .grid file should save data source locations as
-%   relative paths, or absolute paths. This syntax sets the preferred file
-%   path style for all data sources currently in the .grid, and applies the
-%   style by default to any data sources added to the gridfile in the
-%   future.
+%   <strong>obj.absolutePaths</strong>(setting)
+%   <strong>obj.absolutePaths</strong>(true|"u"|"use")
+%   <strong>obj.absolutePaths</strong>(false|"a"|"avoid")
+%   Specify whether the .grid file should save data source file locations
+%   as absolute paths, or avoid absolute paths (and use relative paths)
+%   whenever possible. This syntax sets the preferred file path style for
+%   all data sources currently in the .grid file and applies the style by
+%   default to any new data sources added to the gridfile in the future.
 %
 %   By default, a gridfile saves the relative path to data sources whenever
-%   possible (useAbsolute = false). Relative data source paths are relative
-%   to the folder holding the .grid file. Use this style when 1. moving
-%   project folders that hold both .grid files and data sources, or
-%   2. uploading a .grid file to a data repository (such as Zenodo).
+%   possible. Relative data source paths are stored relative
+%   to the folder holding the .grid file. Use this style when:
+%   1. Moving project folders that hold both .grid files and data sources, or
+%   2. Uploading a .grid file to a data repository (such as Github, Zenodo, or figshare).
 %
-%   If useAbsolute is set to true, the .grid file will instead store the
+%   If the setting="use", the .grid file will instead store the
 %   absolute path to data source files. Use this option if you anticipate
 %   moving the .grid file, but not the data source files.
 %
-%   Note: Data sources located on a different drive than the .grid file, or
-%   accessed via an OPENDAP url, always use an absolute file path. Thus,
-%   setting useAbsolute to false does not guarantee that all data sources
-%   use relative paths.
+%   Note: Not all data source locations can be stored as relative paths.
+%   Data sources located on a different drive than the .grid file, or
+%   accessed via an OPENDAP url, will always use an absolute file path. Thus,
+%   setting useAbsolute to "avoid" does not guarantee that a data source
+%   file location uses a relative path.
 %
-%   <strong>obj.absolutePaths</strong>(useAbsolute, s)
-%   <strong>obj.absolutePaths</strong>(useAbsolute, sourceNames)
+%   <strong>obj.absolutePaths</strong>(setting, 0)
+%   <strong>obj.absolutePaths</strong>(setting, s)
+%   <strong>obj.absolutePaths</strong>(setting, sourceNames)
 %   Implement a preferred path style for the indicated data sources. This
 %   syntax overrides any preferred path style previously set for the data
-%   sources.
+%   sources. If the second input is 0, applies the setting to all data
+%   sources currently in the .grid file.
 % ----------
 %   Inputs:
-%       useAbsolute (scalar logical): Set to true to store the absolute
-%           path to data source files. Set to false to store relative paths
-%           whenever possible. Files located on a different drive, or
-%           accessed via an OPENDAP url, will always use an absolute path,
-%           regardless of the value of useAbsolute.
+%       setting (scalar logical): Indicates the preferred use of absolute
+%           file paths for saved data source file locations:
+%           [true|"u"|"use"]: Always save the absolute paths to sources
+%           [false|"a"|"avoid"]: Only use absolute paths when necessary
+%
+%           Regardless of setting, files that are
+%           1. Located oOn a different drive, or
+%           2. Accessed via an OPENDAP url
+%           will always use an absolute path.
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources that should be implement the preferred file
 %           path style.

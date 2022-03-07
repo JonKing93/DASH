@@ -41,7 +41,7 @@ function[obj] = weightedMean(obj, variables, dimensions, weights)
 %           or a numeric vector that does not contain contain NaN, Inf, or
 %           complex-valued elements. 
 % 
-%           If weights is an empty array, no weighted mean will be taken for the
+%           If weights is an empty array, an unweighted mean will be taken for the
 %           dimension. Otherwise, the weights for a state dimension should
 %           have one element per state index. The weights for an ensemble
 %           dimension should have one element per mean index.
