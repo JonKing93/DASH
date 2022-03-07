@@ -41,7 +41,11 @@ filename = dash.assert.strflag(filename, 'filename', header);
 filename = dash.file.new(filename, ".grid", overwrite, header);
 
 dash.assert.scalarType(metadata, 'gridMetadata', 'metadata', header);
-metadata.assertUnique([], header);
+try
+    metadata.assertUnique([], header);
+catch ME
+    throw(ME);
+end
 metadata = metadata.setOrder(0);
 if numel(metadata.defined)==0
     id = sprintf('%s:metadataHasNoDimensions', header);
