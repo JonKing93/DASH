@@ -1,17 +1,18 @@
-function[obj] = design(obj, dims, isstate, indices, header)
+function[obj] = design(obj, dims, indices, types, header)
 %% dash.stateVectorVariable.design  Design the dimensions of a state vector variable
 % ----------
-%   obj = <strong>obj.design</strong>(dims, isstate, indices, header)
+%   obj = <strong>obj.design</strong>(dims, indices, types, header)
 %   Designs the specified dimensions given the dimension types and
 %   state/reference indices for the dimensions.
 % ----------
 %   Inputs:
 %       dims (vector, linear indices [nDimensions]): The indices of the
 %           dimensions to design.
-%       isstate (logical vector [nDimensions]): True if a dimension is a
-%           state dimension. False if the dimension is an ensemble dimension.
 %       indices (cell vector [nDimensions] {[] | logical vector | vector, linear indices}:
 %           State or reference indices for each dimension.
+%       types (vector, integers [nDimensions]): 0 if a dimension should
+%           maintain its current state. 1 if a state dimension. 2 if an
+%           ensemble dimension.
 %       header (string scalar): Header for thrown error IDs
 %
 %   Outputs:
@@ -48,8 +49,15 @@ for k = 1:numel(dims)
         end
     end
 
+    % Get the dimension type
+    if types(d)==0
+        isstate = obj.isState(d);
+    else
+        isstate = d==1;
+    end
+
     % Update the dimension
-    if isstate(k)
+    if isstate
         obj = stateDimension(obj, d, newSize, header);
     else
         obj = ensembleDimension(obj, d, newSize, header);

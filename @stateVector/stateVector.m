@@ -1,6 +1,6 @@
 classdef stateVector
 
-    properties %(SetAccess = private)
+    properties (SetAccess = private)
         %% General settings
 
         label_ = "";                    % The label for the state vector
@@ -62,7 +62,7 @@ classdef stateVector
         [indices, dimensions] = dimensionIndices(obj, v, dimensions, header);
 
         % Design
-        obj = design(obj, variables, dimensions, types, indices);
+        obj = design(obj, variables, dimensions, indices, types);
         obj = sequence(obj, variables, dimensions, indices, metadata);
         obj = metadata(obj, variables, dimensions, metadataType, varargin);
         obj = mean(obj, variables, dimensions, indices, NaNoptions);
@@ -133,7 +133,11 @@ classdef stateVector
     
             % Add Label
             if exist('label','var')
-                obj = obj.label(label);
+                try
+                    obj = obj.label(label);
+                catch ME
+                    throw(ME);
+                end
             end
         end
     end

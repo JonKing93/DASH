@@ -1,24 +1,23 @@
-function[obj] = design(obj, variables, dimensions, types, indices)
+function[obj] = design(obj, variables, dimensions, indices, types)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
-%   obj = obj.design(v, dimensions, "s" | "state" | true)
-%   obj = obj.design(variableNames, dimensions, "s" | "state" | true)
-%   Sets the indicated dimensions as state dimensions for the specified
-%   variables.
+%   obj = obj.design(v, dimensions, indices)
+%   obj = obj.design(variableNames, dimensions, indices)
+%   Specifies state and/or reference indices for the indicated dimensions.
+%   Indices for state dimensions (state indices) indicate which elements
+%   along the dimension should be used in the state vector. Indices for
+%   ensemble dimensions (reference indices) are used to select ensemble
+%   members.
 %
-%   obj = obj.design(v, dimensions, "e" | "ens" | "ensemble" | false)
-%   obj = obj.design(variableNames, dimensions, "e" | "ens" | "ensemble" | false)
-%   Sets the indicated dimensions as ensemble dimensions for the specified
-%   variables.
-%
-%   obj = obj.design(v, dimensions, types)
-%   obj = obj.design(variableNames, dimensions, types)
-%   Specify the type of each indicated dimension. Allows dimensions to be a
-%   mix of state and ensemble dimensions.
-%
-%   obj = obj.design(..., indices)
-%   Also specifies state and/or reference indices for the indicated
-%   dimensions.
+%   obj = obj.design(..., types)
+%   obj = obj.design(..., 0|"c"|"current")
+%   obj = obj.design(..., 1|"s"|"state")
+%   obj = obj.design(..., 2|"e"|"ens"|"ensemble")
+%   Specify that the indicated dimensions should be used as state
+%   dimensions, ensemble dimensions, or kept in their current state.
+%   If a single option is provided, applies the same setting to all input
+%   dimensions. Provide multiple types to select different settings for
+%   different dimensions.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices): The indices of variables in
@@ -32,15 +31,6 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %       dimensions (string vector [nDimensions]): The names of dimensions
 %           that should be designed. Each dimension must occur in all
 %           listed variables. Cannot have repeated dimension names.
-%       types (vector [1 | nDimensions], string | logical): Whether each
-%           named dimension is a state or an ensemble dimension. If a
-%           scalar, applies the same setting to all named dimensions. If a
-%           vector, must have one element per named dimension.
-%
-%           If types is logical, use true to indicate a state dimension and
-%           false to indicate an ensemble dimension. If a string vector,
-%           use "s" or "state" to indicate state dimensions and "e", "ens",
-%           or "ensemble" to indicate ensemble dimensions.
 %       indices (cell vector [nDimensions] {[] | logical vector [dimension length] | vector, linear indices}):
 %           State and reference indices for the designed dimensions. State
 %           indices are used for state dimensions; they indicate which
@@ -60,6 +50,15 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %           If only a single dimension is listed, the dimension's indices
 %           may be provided directly as a vector, instead of in a scalar cell.
 %           However, the scalar cell syntax is also permitted.
+%       types (vector [1 | nDimensions], string | integer): The type of
+%           each dimension. Options are:
+%           [0|"c"|"current"]: (default) Leave in current state
+%           [1|"s"|"state"]: State dimension
+%           [2|"e"|"ens"|"ensemble"]: Ensemble dimension
+%
+%           If types is scalar, uses the same setting for all indicated
+%           dimensions. Otherwise, types must have one element per listed
+%           dimension.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the
@@ -79,11 +78,11 @@ v = obj.variableIndices(variables, false, header);
 nDims = numel(dimensions);
 
 % Parse dimension types
-options = {["e","ens","ensemble"], ["s","state"]};
-isstate = dash.parse.switches(types, options, nDims, ...
+options = {["c","current"], ["s","state"], ["e","ens","ensemble"]};
+types = dash.parse.switches(types, options, nDims, ...
                     'Dimension type', 'recognized dimension type', header);
-if numel(isstate)==1
-    isstate = repmat(isstate, [1 nDims]);
+if numel(types)==1
+    isstate = repmat(types, [1 nDims]);
 end
 
 % Parse indices
@@ -102,7 +101,7 @@ end
 
 % Update each variable
 method = 'design';
-inputs = {isstate, indices, header};
+inputs = {indices, types, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 obj = obj.updateLengths(v);
 
