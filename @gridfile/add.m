@@ -75,11 +75,11 @@ if any(strcmpi(type, ["mat","nc","netcdf"]))
 
     try
         source = dash.dataSource.(type)(source, variable);
-    catch ME
-        failedSourceError;
+    catch cause
+        failedSourceError(source, type, cause, header);
     end
         
-% Parse inputs for delimited text source
+% Text source
 elseif strcmpi(type, 'text') || strcmpi(type, 'txt')
     if numel(varargin)<2
         wrongNumberTextInputsError(header);
@@ -89,8 +89,8 @@ elseif strcmpi(type, 'text') || strcmpi(type, 'txt')
 
     try
         source = dash.dataSource.text(source, importOptions{:});
-    catch ME
-        failedSourceError;
+    catch cause
+        failedSourceError(source, type, cause, header);
     end
     
 % Throw error for any other type
@@ -258,6 +258,20 @@ function[] = wrongNumberTextInputsError(header)
 id = sprintf('%s:wrongNumberOfInputs', header);
 ME = MException(id, ['There must be at least 3 inputs after the "text" flag. ',...
     '(file, dimensions, and metadata)']);
+throwAsCaller(ME);
+end
+function[] = failedSourceError(source, type, cause, header)
+if strcmpi(type,'text') || strcmpi(type,'txt')
+    type = 'delimited-text';
+elseif strcmp(type, 'nc')
+    type = 'NetCDF';
+elseif strcmpi(type, 'mat')
+    type = 'MAT-file';
+end
+id = sprintf('%s:failedDataSource', header);
+ME = MException(id, ['Could not catalogue file:  %s\n',...
+                     'as a %s data source.'], source, type);
+ME = addCause(ME, cause);
 throwAsCaller(ME);
 end
 function[] = unrecognizedTypeError(header)

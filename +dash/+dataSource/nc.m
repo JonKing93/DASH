@@ -50,11 +50,10 @@ classdef nc < dash.dataSource.hdf
             % Check the file is a valid NetCDF
             try
                 info = ncinfo(obj.source);
-            catch problem
-                ME = MException(sprintf('%s:invalidNetCDF',header), ...
-                    'The file "%s" is not a valid NetCDF file', obj.source);
-                ME = addCause(ME, problem);
-                throw(ME);
+            catch
+                id = sprintf('%s:invalidNetCDF', header);
+                error(id, ['The file:  %s\n',...
+                           'is not a valid NetCDF file.'], obj.source);
             end
             
             % Check the variable is valid

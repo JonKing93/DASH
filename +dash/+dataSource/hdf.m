@@ -41,8 +41,10 @@ classdef (Abstract) hdf < dash.dataSource.Interface
         %   <a href="matlab:dash.doc('dash.dataSource.hdf.setVariable')">Documentation Page</a>
         
             if ~ismember(var, fileVars)
-                error('DASH:dataSource:hdf:variableNotInFile', ...
-                    'The file "%s" does not have a "%s" variable', obj.source, var);
+                ME = MException('DASH:dataSource:hdf:variableNotInFile', ...
+                    ['The file: "%s"\n',...
+                     'does not have a "%s" variable'], obj.source, var);
+                throwAsCaller(ME);
             end
             obj.var = var;
         end

@@ -50,11 +50,13 @@ classdef text < dash.dataSource.Interface
             % Check the data can be imported
             try
                 X = readmatrix(obj.source, varargin{:});
-            catch problem
-                ME = MException(sprintf('%s:invalidTextFile', header), ...
-                    'Could not import data from file "%s". It may not be a valid text file', obj.source);
-                ME = addCause(ME, problem);
-                throw(ME);
+            catch
+                link = '<a href="matlab:doc readmatrix">readmatrix</a>';
+                id = sprintf('%s:invalidTextFile', header);
+                error(id, ['Could not import data from file:  %s\n',...
+                    'It may not be a valid delimited-text file.\n',...
+                    'Alternatively, you may need to adjust the import options\n',...
+                    'for the %s function.'], obj.source, link);
             end
             
             % Get data type, size, and import options
@@ -64,14 +66,12 @@ classdef text < dash.dataSource.Interface
 
             % Prohibit empty data sources
             if ismember(0, obj.size)
-                [~, name, ext] = fileparts(obj.source);
-                name = strcat(name, ext);
-                tail = '';
-                if ~isempty(obj.importOptions)
-                    tail = ' using the specified options';
-                end
-                error('DASH:dataSource:text:emptyArray', ['The readmatrix function returns an empty array ',...
-                    'when applied to data source file "%s"%s.\nFile path: %s'], name, tail, obj.source);
+                id = 'DASH:dataSource:text:emptyArray';
+                link = '<a href="matlab:doc readmatrix">readmatrix</a>';
+                error(id, ['The %s function returns an empty array when\n',...
+                    'applied to data source file:  %s\n',...
+                    'You may need to adjust the import options for the %s function.'],...
+                    link, obj.source, link);
             end
         end       
         function[X] = load(obj, indices)

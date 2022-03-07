@@ -53,11 +53,10 @@ classdef mat < dash.dataSource.hdf
         % Check the file is a valid matfile
         try
             obj.m = matfile(obj.source);
-        catch problem
-            ME = MException(sprintf('%s:invalidMatfile',header), ...
-                'The file "%s" is not a valid .mat file', obj.source);
-            ME = addCause(ME, problem);
-            throw(ME);
+        catch
+            id = sprintf('%s:invalidMatfile', header);
+            error(id, ['The file:  %s\n',...
+                       'is not a valid MAT-file'], obj.source);
         end
         
         % Check the variable is valid, get data type and size
@@ -74,10 +73,9 @@ classdef mat < dash.dataSource.hdf
 
         % Do not allow empty variables
         if ismember(0, obj.size)
-            [~,name,ext] = fileparts(obj.source);
-            name = strcat(name, ext);
-            error('DASH:dataSource:mat:emptyArray', ['Variable "%s" in data source file "%s" is empty.\n',...
-                'File path: %s'], obj.var, name, obj.source);
+            error('DASH:dataSource:mat:emptyArray', ...
+                ['Variable "%s" is empty.\n',...
+                'Data source file: %s'], obj.var, obj.source);
         end
 
         % Warn user if not v7.3 MAT-file. Convert the warning message
