@@ -34,7 +34,6 @@ should sv.dimensions return sizes?
 1. Verbosity toggle
 2. Constructor documentation
     - Add link once "label" method is complete
-    - Add verbosity details
 
 Should svv Methods that issue errors have default headers?
 (And should gridfile?)
