@@ -1,4 +1,4 @@
-function[obj] = mean(obj, variables, dimensions, indices, NaNoptions)
+function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %% stateVector.mean  Take a mean over dimensions of variables in a state vector
 % ----------
 %   obj = obj.mean(0, ...)
@@ -116,24 +116,29 @@ end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 
-% Default and error check indices. Prohibit NaNoptions for string inputs
-if ~exist('indices','var') || isempty(indices)
-    indices = cell(1, nDims);
-elseif isequal(indices, "none") || isequal(indices, "unweighted")
-    assert(~exist('NaNoptions','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
-else
-    indices = dash.assert.additiveIndexCollection(indices, nDims, dimensions, header);
-end
+% Prohibit NaNoptions for string inputs. Get placeholder omitnan
+if exist('indices','var') && (strcmpi(indices,"none") || strcmpi(indices,"unweighted"))
+    assert(~exist('nanflag','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    omitnan = [];
 
-% Default and parse nanflag
-if ~exist('NaNoptions','var') || isempty(NaNoptions)
-    omitnan = false(1, nDims);
+% Otherwise, default and error check indices
 else
-    omitnan = dash.parse.switches(NaNoptions, {"includenan","omitnan"}, nDims, ...
-        'NaN option', 'recognized NaN option', header); %#ok<CLARRSTR> 
-end
-if isscalar(omitnan)
-    omitnan = repmat(omitnan, [numel(v),1]);
+    if ~exist('indices','var') || isempty(indices)
+        indices = cell(1, nDims);
+    else
+        indices = dash.assert.additiveIndexCollection(indices, nDims, dimensions, header);
+    end
+
+    % Default and parse nanflag
+    if ~exist('nanflag','var') || isempty(nanflag)
+        omitnan = false(1, nDims);
+    else
+        omitnan = dash.parse.switches(nanflag, {"includenan","omitnan"}, nDims, ...
+            'NaN option', 'recognized NaN option', header); %#ok<CLARRSTR> 
+    end
+    if isscalar(omitnan)
+        omitnan = repmat(omitnan, [numel(v),1]);
+    end
 end
 
 % Update the variables

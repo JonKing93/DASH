@@ -4,6 +4,12 @@ function[obj] = mean(obj, dims, indices, omitnan, header)
 %   obj = <strong>obj.mean</strong>(dims, indices, omitnan, header)
 %   Takes a mean over the specified dimensions given mean indices and NaN
 %   options.
+%
+%   obj = <strong>obj.mean</strong>(dims, "none", [], header)
+%   Disables the mean over the specified dimensions. Ignores 
+%
+%   obj = <strong>obj.mean</strong>(dims, "unweighted", [], header)
+%   Discards weights for weighted means of the specified dimensions.
 % ----------
 %   Inputs:
 %       dims (vector, linear indices [nDimensions]): The indices of the
