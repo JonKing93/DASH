@@ -47,7 +47,7 @@ if isfolder(path)
 end
 
 % Clone the repository
-clone = sprintf("git clone %s %s", repo, path);
+clone = sprintf("git clone %s ""%s""", repo, path);
 status = system(clone);
 if status~=0
     gitFailureError(repo, commit);
