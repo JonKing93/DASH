@@ -88,7 +88,7 @@ for k = 1:nSource
     info(k).variable = obj.var(s(k));
     [hasopts, loc] = ismember(s(k), obj.importOptionSource);
     if hasopts
-        info(k).importOptions = obj.importOptions{loc};
+        info(k).import_options = obj.importOptions{loc};
     end
     info(k).data_type = obj.dataType(s(k));
     info(k).dimensions = mergeDims;

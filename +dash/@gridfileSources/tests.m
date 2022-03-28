@@ -31,8 +31,6 @@ absolutePaths(testpath);
 savePath(testpath);
 info(testpath);
 
-error('altered info struct output');
-
 end
 
 function[] = constructor
@@ -57,7 +55,7 @@ text = fullfile(testpath, "test.txt");
 dap = "https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.anom.nc";
 
 % Create a default gridfile object
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 
 % Data sources
 matSource = dash.dataSource.mat(mat, 'a');
@@ -158,7 +156,7 @@ text = dash.dataSource.text(text, 'NumHeaderLines', 3);
 dap = dash.dataSource.nc(dap, 'air');
 
 % Create a default gridfile object
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 
 % Create sources and output to match
 dims = "a";
@@ -220,7 +218,7 @@ textSource = dash.dataSource.text(text, 'NumHeaderLines', 3);
 dapSource = dash.dataSource.nc(dap, 'air');
 
 % Create a default gridfile object
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 
 % Build source catalogue
 args = {"a",1,"a",1,1};
@@ -269,7 +267,7 @@ ncSource = dash.dataSource.nc(nc, 'a');
 textSource = dash.dataSource.text(text, 'NumHeaderLines', 3);
 
 % Create a default gridfile object
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 
 % Build source catalogue
 inputDims = {["lat","lon","lev"], ["site","time"], ["time","run"]};
@@ -308,7 +306,7 @@ textSource = dash.dataSource.text(text, 'NumHeaderLines', 3);
 text2Source = dash.dataSource.text(text2, 'NumHeaderLines',3);
 
 % Create a default gridfile object
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 args = {"a",1,"a",1,1};
 sources = dash.gridfileSources;
 sources = sources.add(grid, matSource, args{:});
@@ -369,7 +367,7 @@ tests = {
     };
 
 % Build sources
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 sources = dash.gridfileSources;
 sources = sources.add(grid, mat,["a","b","c"], [100 20 5], "a", 1, 1);
 sources = sources.add(grid, text, ["a","b"], [7,4], "a", 1, 1);
@@ -405,7 +403,7 @@ textSource = dash.dataSource.text(text, 'NumHeaderLines', 3);
 dapSource = dash.dataSource.nc(dap, 'air');
 
 % Build source catalogue
-grid = gridfile.new('test.grid', gridMetadata, true);
+grid = gridfile.new('test.grid', gridMetadata('lat',1), true);
 args = {"a",1,"a",1,1};
 sources = dash.gridfileSources;
 sources = sources.add(grid, matSource, args{:});
@@ -488,18 +486,7 @@ textfile = dash.file.urlSeparators(textfile);
 ncSource = dash.dataSource.nc(ncfile, 'a');
 textSource = dash.dataSource.text(textfile, "NumHeaderLines", 3);
 
-nc = struct('name', "test.nc", 'variable', "a", 'index', 1, 'file', ncfile, ...
-    'data_type',"single",'dimensions',"a",'size',1,'fill_value',5,'valid_range',[0 1000], ...
-    'transform', "linear", 'transform_parameters', [1 2], ...
-    'uses_relative_path', true, 'import_options', []);
-
-text = struct('name',"test.txt",'variable', [], 'index', 2, 'file', textfile, ...
-    'data_type', "double", 'dimensions', "a", 'size', 1, 'fill_value', 5, ...
-    'valid_range', [0 1000], 'transform', "linear", 'transform_parameters', [1 2],...
-    'uses_relative_path', true);
-text.import_options = {"NumHeaderLines", 3};
-
-grid = gridfile.new('test.grid',gridMetadata, true);
+grid = gridfile.new('test.grid',gridMetadata('lat',1), true);
 grid.fillValue(5);
 grid.validRange([0 1000]);
 grid.transform('linear', [1 2]);
@@ -510,13 +497,20 @@ sources.gridfile = grid.file;
 sources = sources.add(grid, ncSource, args{:});
 sources = sources.add(grid, textSource, args{:});
 
+nc = struct('parent', grid.file, 'index', 1, 'name', "test.nc", ...
+    'file', ncfile, 'file_type', 'NetCDF', 'path', sources.source(1), 'uses_relative_path', true,...
+    'variable','a', 'import_options',[], 'data_type','single', 'dimensions', "a", 'size', 1,...
+    'fill_value', 5, 'valid_range', [0 1000], 'transform','linear','transform_parameters', [1 2],...
+    'raw_dimensions', "a", 'raw_size', 1);
+
+text = struct('parent',grid.file,'index',2,'name',"test.txt",...
+    'file',textfile,'file_type','Delimited text','path',sources.source(2),'uses_relative_path',true,...
+    'variable',"",'import_options',[],'data_type','double','dimensions',"a",'size',1,...
+    'fill_value',5,'valid_range',[0 1000],'transform','linear','transform_parameters',[1 2],...
+    'raw_dimensions','a','raw_size',1);
+text.import_options = {"NumHeaderLines", 3};
+
 info = sources.info([2 1 1]);
 assert(isequaln(info, [text;nc;nc]), 'indexed sources');
-
-info = sources.info(1);
-assert(isequaln(info, rmfield(nc, 'import_options')), 'no import options');
-
-info = sources.info(2);
-assert(isequaln(info, rmfield(text, 'variable')), 'no variable');
 
 end
