@@ -25,16 +25,16 @@ cd(testpath);
 % Run tests
 constructor;
 
-dimensions;
-dimensionIndices;
-ensembleSizes;
-stateSizes;
-
 design;
 sequence;
 mean;
 weightedMean;
 metadata;
+
+dimensions;
+dimensionIndices;
+ensembleSizes;
+stateSizes;
 
 validateGrid;
 getMetadata;
