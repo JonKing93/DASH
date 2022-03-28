@@ -13,6 +13,7 @@
 %   indices             - Functions that manipulate array indices
 %   string              - Functions that manipulate strings
 %   file                - Functions that facilitate file manipulation
+%   warning             - Functions that manipulate warnings
 %
 % Classes:
 %   dataSource          - Classes that read data from source files
@@ -20,6 +21,6 @@
 %   stateVectorVariable - Implements a variable in a state vector
 %
 % Tests:
-%   tests           - Implements unit tests for functions, classes, and sub-packages in the DASH Toolbox
+%   tests               - Implement unit tests for functions, classes, and sub-packages in the DASH Toolbox
 %       
 % <a href="matlab:dash.doc('dash')">Documentation Page</a>
