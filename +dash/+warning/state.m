@@ -1,5 +1,5 @@
 function[reset] = state(state, warnID)
-%% dash.warning.state  Set the state of a warning
+%% dash.warning.state  Set the state of a warning and restore original state
 % ----------
 %   reset = dash.warning.state(state, warnID)
 %   Sets the state of the indicated warning to a specified value. Allowed
