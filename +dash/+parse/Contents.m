@@ -1,14 +1,14 @@
 %% dash.parse  Functions that parse user inputs
 % ----------
-% Variable inputs:
+% Name-Value Pairs:
 %   vararginFlags           - Parse flags from varargin
 %   nameValue               - Parse flagged options from Name,Value pairs
+%   nameValueOrCollection   - Parse inputs that are either Name,Value pairs, or collected Name,Value pairs
 %
-% Two types:
+% Multiple Types
 %   inputOrCell             - Parse inputs that are either cell vector of arrays, or a single array
 %   stringsOrIndices        - Parse inputs that are either a list of strings, or a vector of indices
-%   stringsOrLogcals        - Parse inputs that may either be logicals or strings associated with logicals
-%   nameValueOrCollection   - Parse inputs that are either Name,Value pairs, or collected Name,Value pairs
+%   switches                - Parse inputs that are logical, numeric, or string switches
 %
 % Unit tests:
 %   tests                   - Unit tests for the dash.parse package

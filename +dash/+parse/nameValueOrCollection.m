@@ -26,11 +26,33 @@ function[names, values] = nameValueOrCollection(varargs, namesName, valuesName, 
 %
 % <a href="matlab:dash.doc('dash.parse.nameValueOrCollection')">Documentation Page</a>
 
+% Defaults
+if ~exist('namesName','var') || isempty(namesName)
+    namesName = 'Names';
+end
+if ~exist('valuesName','var') || isempty(valuesName)
+    valuesName = 'Values';
+end
+if ~exist('extraInfo','var') || isempty(extraInfo)
+    extraInfo = [];
+end
+if ~exist('header','var') || isempty(header)
+    header = "DASH:parse:nameValueOrCollection";
+end
+
 % If varargs has 2 elements, require a valid collection
 try
     if numel(varargs)==2
         names = dash.assert.strlist(varargs{1}, namesName, header);
         values = dash.parse.inputOrCell(varargs{2}, numel(names), valuesName, header);
+
+        % Return columns
+        if isrow(names)
+            names = names';
+        end
+        if isrow(values)
+            values = values';
+        end
 
     % Otherwise, use Name,Value syntax
     else

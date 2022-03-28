@@ -2,7 +2,35 @@ function[switches] = switches(input, typeStrings, nSwitches, name, listName, hea
 %% dash.parse.switches  Parse inputs that are logical, numeric, or string switches
 % ----------
 %   switches = dash.assert.switches(input, typeStrings, nSwitches)
-%   
+%   Parses the states for a set of switches. Switch states are associated
+%   with collections of strings that indicate a particular state. As an
+%   alternative to strings, logical or numeric switch states may be used.
+%   Parses switch states for multiple switches. If the switch state is not
+%   scalar, requires a value for each switch.
+%
+%   ... = dash.assert.switches(..., name, listName, header)
+%   Customize thrown error messages and identifiers.
+% ----------
+%   Inputs:
+%       input: The input being parsed
+%       typeStrings (cell vector [nStates] {string vector}): Strings
+%           corresponding to the possible states of the switch. A cell
+%           vector with one element per state. Each cell holds a string
+%           vector with strings that can be used to select the state.
+%       nSwitches (scalar positive integer): The number of switch-states
+%           that are required.
+%       name (string scalar): The name of the input
+%       listName (string scalar): A name for the list of allowed strings
+%       header (string scalar): Header for thrown error IDs
+%
+%   Outputs:
+%       switches (scalar | vector [nSwitches], logical | integers): The 
+%           parsed switch states. States are logical when there are two
+%           states, or integers (from 0 to nStates-1) when there are more
+%           than two states. This output will either have a single element
+%           (same state for all switches) or one element per switch.
+%
+% <a href="matlab:dash.doc('dash.parse.switches')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)
@@ -86,6 +114,11 @@ try
         end
         id = sprintf('%s:inputInvalidSwitch', header);
         error(id, '%s must either be a string or %s data type', name, secondType);
+    end
+
+    % Return columns
+    if isrow(switches)
+        switches = switches';
     end
 
 % Minimize error stack
