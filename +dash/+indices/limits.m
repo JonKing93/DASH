@@ -1,5 +1,5 @@
 function[limits] = limits(nElements)
-%% dash.indices.limits  Returns index limits given a set of element counts
+%% dash.indices.limits  Returns index limits given a set of element lengths
 % ----------
 %   limits = dash.indices.limits(nElements)
 %   Given a set of element counts, returns the index limits of the item
