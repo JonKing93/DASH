@@ -21,14 +21,11 @@ removeAttributes;
 editAttributes;
 
 defined;
-error('size outputs for defined')
 
 disp;
 dispAttributes;
 
 assertUnique;
-error('collection syntax: edit, addAttributes, editAttributes');
-error('parser: edit, addAttributes, editAttributes, index');
 
 end
 
@@ -85,6 +82,7 @@ tests = {
     'some dimensions', {'lat', 1, 'lon', 2}
     'dimensions and attributes', {'lev', 1, 'run', 5, 'attributes', struct('a',1)}
     'only attributes', {'attributes', struct('a',1)}
+    'syntax 2', {["lat","lon"], {1 2}}
     };
 
 for t = 1:size(tests,1)
@@ -113,6 +111,7 @@ tests = {
     'maintain order', true, {'time',5}, "initialOrder"
     'new dimension reset order', true, {'lev',2}, "unordered"
     'remove dimension reset order', true, {'lat', []}, "unordered"
+    'collection syntax', true, {["lat","lon","run","time"],{s.lat,s.lon,s.run,s.time}}, ["lat","lon","run","time"]
     };
 
 for t = 1:size(tests,1)
@@ -231,6 +230,7 @@ tests = {
     'existing field',false, {'a',5}
     'invalid field name',false, {'?asdf', 5}
     'invalid name,value pairs',false, {4,5,6}
+    'collection syntax', true, {["b","c"],{2,3}}
     };
 
 for t = 1:size(tests,1)
@@ -293,6 +293,7 @@ tests = {
     'edit', true, {'c',6,'b',5}
     'not an attribute', false, {'d',5}
     'repeat dimension', false, {'b',5,'b',5}
+    'collection syntax', true, {["c","b"],{6,5}}
     };
 
 for t = 1:size(tests,1)
@@ -315,20 +316,21 @@ end
 end
 function[] = defined
 
-start = {'lon', 1, 'lat', 1, 'time', 1};
+start = {'lon', (1:10)', 'lat', ["A";"B";"C"], 'time', datetime(1:100,1,1)'};
 
 tests = {
     % description, inputs, match outputs
-    'list defined dimensions', {}, ["lon";"lat";"time"]
-    'remove dimension', {'lat', []}, ["lon";"time"]
-    'add new defined', {'lev', 1}, ["lon";"lat";"lev";"time"]
+    'list defined dimensions', {}, ["lon","lat","time"], [10 3 100]
+    'remove dimension', {'lat', []}, ["lon","time"], [10 100]
+    'add new defined', {'lev', 1}, ["lon","lat","lev","time"], [10 3 1 100]
     };
 
 for t = 1:size(tests,1)
     meta = gridMetadata(start{:});
     meta = meta.edit(tests{t,2}{:});
-    defined = meta.defined;
-    assert(isequal(defined, tests{t,3}), tests{t,1});
+    [defined, siz] = meta.defined;
+    assert(isequal(defined, tests{t,3}), [tests{t,1}, ' output dims']);
+    assert(isequal(siz, tests{t,4}), [tests{t,1}, ' output size']);
 end
 
 end
