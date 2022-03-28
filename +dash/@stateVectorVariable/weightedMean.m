@@ -24,15 +24,6 @@ for k = 1:numel(dims)
         continue;
     end
 
-    % Remove a weighted mean
-    if isempty(weights{k})
-        if obj.meanType(d)==2
-            obj.meanType(d) = 1;
-        end
-        obj.weights{d} = [];
-        continue;
-    end
-
     % If a new mean, require state dimension. Update sizes
     if obj.meanType(d) == 0
         if ~obj.isState(d)
@@ -40,6 +31,15 @@ for k = 1:numel(dims)
         end
         obj.meanSize(d) = obj.stateSize(d);
         obj.stateSize(d) = 1;
+    end
+
+    % Remove a weighted mean
+    if isempty(weights{k})
+        if obj.meanType(d)==2
+            obj.meanType(d) = 1;
+        end
+        obj.weights{d} = [];
+        continue;
     end
 
     % Check for size conflicts
