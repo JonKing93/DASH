@@ -24,6 +24,10 @@ scalarType;
 scalarObj;
 vectorTypeN;
 
+integers;
+positiveIntegers;
+defined;
+
 indices;
 indexCollection;
 additiveIndexCollection;
@@ -31,11 +35,9 @@ additiveIndexCollection;
 fileExists(testpath);
 nameValue;
 uniqueSet;
-logicalSwitches;
-integers;
 
 error('multiple types: type, scalarType, vectorTypeN');
-error('scalarObj');
+error('scalarObj, look at git history for last updates');
 
 end
 
@@ -158,6 +160,7 @@ for t = 1:size(tests,1)
 end
 
 end
+
 function[] = type
 
 tests = {
@@ -280,6 +283,7 @@ end
 
 
 end
+
 function[] = indices
 
 tests = {
@@ -364,6 +368,7 @@ catch cause
 end
 
 end
+
 function[] = fileExists(testpath)
 
 % Move to test data
