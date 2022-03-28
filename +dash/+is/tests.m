@@ -8,13 +8,75 @@ function[] = tests
 %   
 % <a href="matlab:dash.doc('dash.is.tests')">Documentation Page</a>
 
+charrow;
+str;
+string;
 strflag;
 strlist;
+
+integers;
+positiveIntegers;
+
 url;
 uniqueSet;
 
 end
 
+function[] = charrow
+tests = {
+    'char row', 'test', true
+    'string scalar', "test", false
+    'non-text', 6, false
+    };
+
+try
+    for t = 1:size(tests,1)
+       out = dash.is.charrow(tests{t,2});
+       assert(out==tests{t,3}, 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+end
+function[] = str
+tests = {
+    'string',strings(5,4), true
+    'cellstring', {'a','b';'c','d'}, true
+    'char', 'test', false
+    'non-text', 5, false
+    };
+try
+    for t = 1:size(tests,1)
+       out = dash.is.str(tests{t,2});
+       assert(out==tests{t,3}, 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+end
+function[] = string
+
+tests = {
+    'char row', 'test', true
+    'string array', strings(3,3,3), true
+    'cellstring array', {'a','b';'c','d'}, true
+    'non-text', 5, false
+    };
+try
+    for t = 1:size(tests,1)
+       out = dash.is.string(tests{t,2});
+       assert(out==tests{t,3}, 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+end
 function[] = strflag
 
 % Build test values
@@ -73,6 +135,46 @@ for t = 1:size(tests,1)
 end
 
 end
+
+function[] = integers
+tests = {
+    'all ints', -4:4, true, []
+    'not all ints', [1 2 3.3 4 5.5], false, 3
+    };
+
+try
+    for t = 1:size(tests,1)
+       [tf, loc] = dash.is.integers(tests{t,2});
+       assert(tf==tests{t,3}, 'tf');
+       assert(isequal(loc, tests{t,4}), 'loc');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+end
+function[] = positiveIntegers
+
+tests = {
+    'pass', 1:4, true, []
+    'non-positive', 0:4, false, 1
+    'non-integer', [1 2 3.3 4 5.5], false, 3
+    };
+
+try
+    for t = 1:size(tests,1)
+       [tf, loc] = dash.is.positiveIntegers(tests{t,2});
+       assert(tf==tests{t,3}, 'tf');
+       assert(isequal(loc, tests{t,4}), 'loc');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+end
+
 function[] = url
 
 tests = {

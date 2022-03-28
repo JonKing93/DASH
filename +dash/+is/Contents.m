@@ -14,7 +14,6 @@
 % Misc:
 %   url              - True if string begins with http:// or https://
 %   uniqueSet        - Test if input contains repeated values
-% 
 %
 % Tests:
 %   tests            - Unit tests for the dash.is package
