@@ -17,7 +17,6 @@ testpath = fullfile(dash{:}, 'testdata','dash','dataSource');
 % Run tests
 matconstructor(testpath);
 matload(testpath);
-mattoggle;
 
 ncconstructor(testpath);
 ncload(testpath);
@@ -83,7 +82,6 @@ function[] = matload(testpath)
 file = fullfile(testpath, 'test-v73.mat');
 oldfile = fullfile(testpath, 'test-v7.mat');
 tsfile = fullfile(testpath, 'trailing-singleton.mat');
-reset = dash.dataSource.mat.toggleWarning('error');
 
 tests = {
     % description, file, variable, indices
@@ -103,29 +101,6 @@ for t = 1:size(tests,1)
     
     assert(isequal(X, Xsource), tests{t,1});
     assert(isequal(class(Xsource), source.dataType), tests{t,1});
-end
-
-end
-function[] = mattoggle
-
-id = 'MATLAB:MatFile:OlderFormat';
-
-tests = {
-    % description/warning state
-    'on'
-    'off'
-    'error'
-    };
-
-initial = warning('query',id);
-
-for t = 1:size(tests,1)
-    reset = dash.dataSource.mat.toggleWarning(tests{t,1});
-    current = warning('query',id);
-    assert(isequal(current.state, tests{t,1}), tests{t,1});
-    clearvars reset
-    current = warning('query',id);
-    assert(isequal(current.state, initial.state), tests{t,1});
 end
 
 end
