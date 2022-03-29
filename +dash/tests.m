@@ -8,17 +8,20 @@ function[] = tests
 %
 % <a href="matlab:dash.doc('dash.tests')">Documentation Page</a>
 
-% Classes
-dash.gridfileSources.tests;
-dash.stateVectorVariable.tests;
-
-% Sub packages
-dash.assert.tests;
-dash.dataSource.tests;
-dash.file.tests;
-dash.indices.tests;
+% Input check utilities
 dash.is.tests;
 dash.parse.tests;
+dash.assert.tests;
+
+% Utility packages
+dash.file.tests;
+dash.indices.tests;
 dash.string.tests;
+dash.warning.tests;
+
+% Classes
+dash.dataSource.tests;
+dash.gridfileSources.tests;
+dash.stateVectorVariable.tests;
 
 end

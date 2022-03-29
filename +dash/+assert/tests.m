@@ -36,9 +36,6 @@ fileExists(testpath);
 nameValue;
 uniqueSet;
 
-error('multiple types: type, scalarType, vectorTypeN');
-error('scalarObj, look at git history for last updates');
-
 end
 
 
@@ -54,7 +51,7 @@ tests = {
     strRow, 'string row vector', false, []
     strRow', 'string column vector', false, []
     charRow', 'char column', false, []
-    {'test'}, 'cellstr scalar', false, []
+    {'test'}, 'cellstr scalar', true, []
     [], 'empty', false, []
     5, 'numeric', false, []
     true, 'logical', false, []
@@ -168,6 +165,8 @@ tests = {
     'inherited type', true, 5, 'numeric', [], []
     'wrong type', false, 5, 'logical', [], []
     'custom error', false, 5, 'logical', 'my variable', 'my description'
+    'multiple types, valid', true, 5, ["string","cell","double"], [], []
+    'multiple types, invalid', false, 5, ["string","cell"], 'my variable','my description'
     };
 testHeader = 'test:header';
 
@@ -203,6 +202,8 @@ tests = {
     'not scalar, no type', false, ones(4,1), [], []
     'custom error, not scalar', false, ones(4,1), [], 'my type'
     'custom error, wrong type', false, 1, 'logical', 'my type'
+    'multiple types, valid', true, 5, ["string","cell","double"],[]
+    'multiple types, invalid', false, 5, ["string","cell"], 'my type'
     };
 testHeader = 'test:header';
 
@@ -260,6 +261,8 @@ tests = {
     'custom error, not vector', false, ones(4,4), [], [], 'test name'
     'custom error, wrong type', false, ones(5,1), 'string', [], 'test name'
     'custom error, wrong length', false, ones(5,1), 'numeric', 7, 'test name'
+    'multiple types, valid', true, ones(5,1), ["string","cell","double"],5,[]
+    'multiple types, invalid', false, ones(5,1), ["string","cell"], 5, 'test name'
     };
 testHeader = 'test:header';
 
@@ -281,6 +284,127 @@ for t = 1:size(tests,1)
     end
 end
 
+
+end
+
+function[] = integers
+
+tests = {
+    'All integers', true, 1:5
+    'Not all integers', false, 1:.1:5
+    'has NaN', false, [1 2 NaN 3]
+    'has Inf', false, [1 2 Inf 3]
+};
+name = 'test name';
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                dash.assert.integers(tests{t,3}, name, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error header');
+            assert(contains(ME.message, name), 'invalid error message');
+            
+        else
+            dash.assert.integers(tests{t,3}, name, header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = positiveIntegers
+
+tests = {
+    'all positive integers', true, 1:10
+    'zero', false, 0:10
+    'not positive', false, -4:-2
+    'not integer', false, [1 2.2 3]
+    'NaN', false, [1 NaN 2]
+    'Inf', false, [1 Inf 2]
+    };
+name = 'test name';
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                dash.assert.positiveIntegers(tests{t,3}, name, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error header');
+            assert(contains(ME.message, name), 'invalid error message');
+            
+        else
+            dash.assert.positiveIntegers(tests{t,3}, name, header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = defined
+
+tests = {
+    '1, valid', true, 1, 1:5
+    '1, nan', false, 1, [1 2 NaN 3]
+    '1, inf', false, 1, [1 2 Inf 3]
+    '1, mixed', false, 1, [1 2 NaN Inf 3]
+    '1, complex', false, 1, 2i
+    '2, valid', true, 2, 1:5
+    '2, nan', true, 2, [1 2 NaN 3]
+    '2, inf', false, 2, [1 2 Inf 3]
+    '2, mixed', false, 2, [1 2 NaN Inf 3]
+    '2, complex', false, 2, 2i
+    '3, valid', true, 3, 1:5
+    '3, nan', false, 3, [1 2 NaN 3]
+    '3, inf', true, 3, [1 2 Inf 3]
+    '3, mixed', false, 3, [1 2 NaN Inf 3]
+    '3, complex', false, 3, 2i
+    '4, valid', true, 4, 1:5
+    '4, nan', true, 4, [1 2 NaN 3]
+    '4, inf', true, 4, [1 2 Inf 3]
+    '4, mixed', true, 4, [1 2 NaN Inf 3]
+    '4, complex', false, 4, 2i
+    };
+name = 'test name';
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                dash.assert.defined(tests{t,[4,3]}, name, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error header');
+            assert(contains(ME.message, name), 'invalid error message');
+            
+        else
+            dash.assert.defined(tests{t,[4,3]}, name, header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 end
 
@@ -330,7 +454,7 @@ end
 function[] = indexCollection
 
 tests = {
-    'direct 1, logical', true, [false;false;true], 1, 3, [], {3}
+    'direct, logical', true, [false;false;true], 1, 3, [], {3}
     'direct, linear', true, [5 2 6 7], 1, 10, [], {[5 2 6 7]}
     'cell, mixed', true, {true(5,1), 1:6, false(18,1)}, 3, [5 7 18], [], {(1:5)', 1:6, NaN(0,1)}
     'not collection', false, struct('a',1), 5, [], [], []
@@ -363,6 +487,40 @@ try
     end
 catch cause
     ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = additiveIndexCollection
+
+tests = {
+    'direct', true, -3:3, 1
+    'cell, 1', true, {-3:3}, 1
+    'cell, multiple', true, {-1:4,-3:3,5:8}, 3
+    'not collection', false, struct('a',1), 1
+    'wrong number of index vectors', false, {-1:4,-3:3}, 3
+    'invalid indices', false, {[-1 -2 -3], [1.1 2.2]}, 2
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                dash.assert.additiveIndexCollection(tests{t,3:4}, 'test', header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error header');
+            
+        else
+            dash.assert.additiveIndexCollection(tests{t,3:4}, 'test', header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
     ME = addCause(ME, cause);
     throw(ME);
 end

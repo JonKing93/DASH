@@ -47,7 +47,7 @@ if numel(stack)==1
         var2 = sprintf('"%s"', varName);
     end
     ME = MException(id, ['%s is not a scalar %s object. ',...
-        'Instead, %s is a %sgridMetadata array.'], var1, type, var2, empty);
+        'Instead, %s is a %s%s array.'], var1, type, var2, empty, type);
     throwAsCaller(ME);
 
 % Otherwise, report the command name.

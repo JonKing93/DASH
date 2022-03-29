@@ -6,7 +6,7 @@ function[] = positiveIntegers(X, name, header)
 %   integers. Here, "integer" does not refer to the underlying data type of
 %   the array, but rather the values of the array elements. An array of
 %   type "double" will pass the assertion if all elements are positive integers.
-%   Values of NaN, Inf, and -Inf are not considered integers here.
+%   Values of NaN and Inf are not considered integers here.
 %
 %   dash.assert.integers(X, name, header)
 %   Customize thrown error message and ID.
