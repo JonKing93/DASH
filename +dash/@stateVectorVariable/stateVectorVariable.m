@@ -139,7 +139,7 @@ methods
     indices = addIndices(obj, d);
     limits = indexLimits(obj, dims, subMembers, includeState);
     parameters = parametersForBuild(obj);
-    X = buildMembers(obj, dims, subMembers, grid, source, parameters);
+    X = buildMembers(obj, dims, subMembers, grid, source, parameters, precision);
 
     % Info
     info = info(obj);

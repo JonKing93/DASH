@@ -21,9 +21,24 @@ function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, prec
 %           dimensionally-subscripted ensemble members for the variable.
 %       grid (scalar gridfile object): The gridfile object for the variable
 %       source (scalar struct): Data source parameters for the gridfile.
-%           Output from stateVector.buildEnsemble/gridSources.
+%           Output from stateVector.buildEnsemble/gridSources. 
+%           .isloaded (scalar logical): Whether all the data for the variable is loaded
+%           .data (numeric array | []): Loaded data for the variable
+%           .limits (matrix, positive integers [nDims x 2]): The index
+%               limits of the loaded data within the overall gridfile.
+%           .dataSources (cell vector [nBuilt]): Successfully built
+%               dataSource objects for the gridfile
+%           .indices (vector, linear indices [nBuilt]): The indices of the
+%               built dataSource objects within the full set of gridfile sources
 %       parameters (scalar struct): Build-parameters for the variable.
 %           Created in stateVector.buildEnsemble.
+%           .rawSize 
+%           .meanDims
+%           .nState
+%           .indexLimits
+%           .loadAllMembers
+%           .whichSet   (not used here)
+%           .dims       (not used here)
 %       precision ('single' | 'double'): The numerical precision of the
 %           output data array
 %
@@ -50,9 +65,10 @@ end
 
 %% Load all members
 
-% If attempting to load all members, get load indices.
+% If attempting to load all members, get load indices. Directly load state
+% indices (no need to span indices). Span over ensemble indices
 allLoaded = false;
-if parameters.loadAllMembers
+if ~source.isloaded && parameters.loadAllMembers
     indices = obj.indices;
     indices(dims) = dash.indices.fromLimits(parameters.indexLimits);
 
@@ -61,7 +77,7 @@ if parameters.loadAllMembers
     use = ismember(source.indices, s);
     dataSources = source.dataSources(use);
 
-    % Attempt to load data for all members. (Failure could
+    % Attempt to load data for all members. (Failure could still
     % occur if the data for all members is too large for memory).
     try
         Xall = grid.loadInternal([], indices, s, dataSources);
@@ -72,13 +88,6 @@ end
 
 
 %% Setup tasks
-
-% Get the add indices for each ensemble dimension
-addIndices = cell(1, nEnsDims);
-for k = 1:nEnsDims
-    d = dims(k);
-    addIndices{k} = obj.addIndices(d);
-end
 
 % Identify standard omitnan and includenan dimensions
 includenan = obj.meanType==1 & ~obj.omitnan;
@@ -123,18 +132,34 @@ for d = 1:nDims
 end
 
 
-%% Extract raw ensemble members
+%% Prepare the load indices
 
-% Initialize load indices. Adjust state indices if all data was loaded.
-% (State dimension index limits are used when pre-loading data).
+% Get the add indices for each ensemble dimension
+addIndices = cell(1, nEnsDims);
+for k = 1:nEnsDims
+    d = dims(k);
+    addIndices{k} = obj.addIndices(d);
+end
+
+% Initialize load indices
 indices = obj.indices;
+
+% If data was pre-loaded (distinct from the "load-all-members" case), then
+% state dimension data is a span. Adjust the state dimension indices
 if source.isloaded
     for d = 1:nDims
         if obj.isState(d)
             indices{d} = indices{d} - parameters.indexLimits(d,1) + 1;
         end
     end
+
+% If all members were loaded, then use the loaded indices directly
+elseif allLoaded
+    indices(obj.isState) = {':'};
 end
+
+
+%% Extract raw ensemble members
 
 % Cycle through ensemble members. Get load indices for each ensemble dimension
 for m = 1:nMembers

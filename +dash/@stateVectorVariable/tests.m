@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%% Current test
-
+buildMembers2;
 %%%
 
 % Run tests
@@ -48,7 +48,8 @@ removeOverlap;
 
 indexLimits;
 parametersForBuild;
-buildMembers;
+buildMembers1;  % Tests that the correct data is extracted from source
+buildMembers2;  % Tests processing of means and sequences
 
 serialization;  % Tests both serialize and deserialize
 
@@ -171,8 +172,8 @@ function[] = ensembleSizes
 
 grid = gridfile('test-lltr');
 svvState = dash.stateVectorVariable(grid);
-svvEns = svvState.design(1:4, [false, false, false, false], {[],[],[],[]}, 'test');
-svv = svvState.design(3:4, [false, false], {[],[]}, 'test');
+svvEns = svvState.design(1:4, [2 2 2 2], {[],[],[],[]}, 'test');
+svv = svvState.design(3:4, [2 2], {[],[]}, 'test');
 
 tests = {
     % test, object, sizes, dim names
@@ -200,8 +201,8 @@ function[] = stateSizes
 
 grid = gridfile('test-llt');
 svv0 = dash.stateVectorVariable(grid);
-svvx = svv0.design(1:3, [false, false,false], {[],[],[]}, 'test');
-svv1 = svv0.design(3, false, {[]}, 'test');
+svvx = svv0.design(1:3, [2 2 2], {[],[],[]}, 'test');
+svv1 = svv0.design(3, 2, {[]}, 'test');
 svv2 = svv1.mean(1, {[]}, false, 'test');
 svv3 = svv2.mean(3, {-2:2}, false, 'test');
 svv4 = svv3.sequence(3, {-2:2}, {(-2:2)'}, 'test');
@@ -238,7 +239,7 @@ grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
 svvSM = svv.mean(2, {[]}, false, 'test');
 svvSW = svv.weightedMean(2, {ones(20,1)}, 'test');
-svvE = svv.design(3, false, {[]}, 'test');
+svvE = svv.design(3, 2, {[]}, 'test');
 svvEM = svvE.mean(3, {-2:2}, false, 'test');
 svvEW = svvEM.weightedMean(3, {ones(5,1)}, 'test');
 svvES = svvE.sequence(3, {-2:2}, {(-2:2)'}, 'test');
@@ -249,37 +250,37 @@ tests = {...
     % description, should fail, object, dimension, type, indices,...
     %(output) isState, stateSize, ensSize, meanSize, hasSequence, sequenceIndices, sequence Metadata, ...
     % (error) error id
-    'state to state', true, svv, 2, true, {[]}, true(1,4), [100 20 1000 3], [1 1 1 1], [0 0 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'state with mean to state', true, svvSM, 2, true, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'state with weighted mean to state', true, svvSW, 2, true, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state to state', true, svv, 2, 1, {[]}, true(1,4), [100 20 1000 3], [1 1 1 1], [0 0 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with mean to state', true, svvSM, 2, 1, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with weighted mean to state', true, svvSW, 2, 1, {[]}, true(1,4), [100 1 1000 3], ones(1,4), [0 20 0 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
 
-    'ens to ens', true, svvE, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'ens with mean to ens', true, svvEM, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'ens with weighted mean to ens', true, svvEW, 3, false, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'ens with sequence to ens', true, svvES, 3, false, {[]}, [true true false true], [100 20 5 3], [1 1 1000 1], zeros(1,4), [false false true false], {[],[],(-2:2)',[]}, {[],[],(-2:2)',[]}, []
+    'ens to ens', true, svvE, 3, 2, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with mean to ens', true, svvEM, 3, 2, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with weighted mean to ens', true, svvEW, 3, 2, {[]}, [true true false true], [100 20 1 3], [1 1 1000 1], [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with sequence to ens', true, svvES, 3, 2, {[]}, [true true false true], [100 20 5 3], [1 1 1000 1], zeros(1,4), [false false true false], {[],[],(-2:2)',[]}, {[],[],(-2:2)',[]}, []
 
-    'state to ens', true, svv, 2, false, {[]}, [true false true true], [100 1 1000 3], [1 20 1 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'state with mean to ens', false, svvSM, 2, false, {[]}, [], [], [], [], [], [], [], 'noMeanIndices'
+    'state to ens', true, svv, 2, 2, {[]}, [true false true true], [100 1 1000 3], [1 20 1 1], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'state with mean to ens', false, svvSM, 2, 2, {[]}, [], [], [], [], [], [], [], 'noMeanIndices'
 
-    'ens to state', true, svvE, 3, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'ens with mean to state', true, svvEM, 3, true, {[]}, true(1,4), [100 20 1 3], ones(1,4), [0 0 1000 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'ens with weighted mean to state', true, svvEW, 3, true, {1:5}, true(1,4), [100 20 1 3], ones(1,4), [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'weight size conflict', false, svvEW, 3, true, {[]}, [],[],[],[],[],[],[],'weightsSizeConflict'
-    'ens with sequence to state', true, svvES, 3, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens to state', true, svvE, 3, 1, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with mean to state', true, svvEM, 3, 1, {[]}, true(1,4), [100 20 1 3], ones(1,4), [0 0 1000 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'ens with weighted mean to state', true, svvEW, 3, 1, {1:5}, true(1,4), [100 20 1 3], ones(1,4), [0 0 5 0], false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'weight size conflict', false, svvEW, 3, 1, {[]}, [],[],[],[],[],[],[],'weightsSizeConflict'
+    'ens with sequence to state', true, svvES, 3, 1, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
 
-    'empty indices', true, svv, 2, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'linear indices', true, svv, 2, true, {(2:2:20)'}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'logical indices', true, svv, 2, true, {[true(10,1);false(10,1)]}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'invalid logical indices', false, svv, 2, true, {false(5,1)}, [], [], [], [], [], [], [], 'logicalIndicesWrongLength'
-    'invalid linear indices', false, svv, 2, true, {22}, [], [], [], [], [], [], [], 'linearIndicesTooLarge'
-    'row indices', true, svv, 2, true, {2:2:20}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'empty indices', true, svv, 2, 1, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'linear indices', true, svv, 2, 1, {(2:2:20)'}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'logical indices', true, svv, 2, 1, {[true(10,1);false(10,1)]}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'invalid logical indices', false, svv, 2, 1, {false(5,1)}, [], [], [], [], [], [], [], 'logicalIndicesWrongLength'
+    'invalid linear indices', false, svv, 2, 1, {22}, [], [], [], [], [], [], [], 'linearIndicesTooLarge'
+    'row indices', true, svv, 2, 1, {2:2:20}, true(1,4), [100 10 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
 
-    'alternate metadata', true, svvMeta, 2, true, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'metadata size conflict', false, svvMeta, 2, true, {1:10}, [], [], [], [], [], [], [], 'metadataSizeConflict'
+    'alternate metadata', true, svvMeta, 2, 1, {[]}, true(1,4), [100 20 1000 3], ones(1,4), zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'metadata size conflict', false, svvMeta, 2, 1, {1:10}, [], [], [], [], [], [], [], 'metadataSizeConflict'
 
-    'multiple dimensions, same', true, svv, [3 4], [false false], {[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'multiple dimensions, mixed', true, svv, [3 2 4], [false true false], {[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
-    'dimensions with 0', true, svv, [0 4 0 3], [false false true false], {[],[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'multiple dimensions, same', true, svv, [3 4], [2 2], {[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'multiple dimensions, mixed', true, svv, [3 2 4], [2 1 2], {[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
+    'dimensions with 0', true, svv, [0 4 0 3], [2 2 1 2], {[],[],[],[]}, [true true false false], [100 20 1 1], [1 1 1000 3], zeros(1,4), false(1,4), {[],[],[],[]}, {[],[],[],[]}, []
     };
 header = 'DASH';
 
@@ -319,7 +320,7 @@ function[] = sequence
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svv = svv.design([3 4], [2 2], {[],[]}, 'test');
 nLon = svv.stateSize(1);
 nLat = svv.stateSize(2);
 
@@ -375,7 +376,7 @@ function[] = mean
 
 grid = gridfile('test-lltr.grid');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svv = svv.design([3 4], [2 2], {[],[]}, 'test');
 svvM = svv.mean(1:4, {[],[],1:3,2}, false(1,4), 'test');
 svvW = svvM.weightedMean([1 3], {ones(100,1), ones(3,1)}, 'test');
 
@@ -446,7 +447,7 @@ function[] = weightedMean
 
 grid = gridfile('test-lltr.grid');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svv = svv.design([3 4], [2 2], {[],[]}, 'test');
 svvM = svv.mean(1:4, {[],[],(12:12:36)',2}, false(1,4), 'test');
 svvW = svvM.weightedMean([1 2 3], {ones(100,1), ones(20,1), ones(3,1)}, 'test');
 
@@ -510,7 +511,7 @@ args = {1,2};
 
 grid = gridfile('test-lltr.grid');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svv = svv.design([3 4], [2 2], {[],[]}, 'test');
 svvA = svv.metadata([3 4], 1, {(1:1000)',(1:3)'}, [], 'test');
 svvC = svv.metadata([3 4], 2, {convert, convert}, {args,args}, 'test');
 
@@ -611,7 +612,7 @@ lons = 2:2:48;
 lats = [7 2 19 5 1];
 times = [7 2 19 5 1];
 runs = [3 1];
-svv = svv.design(1:4, [true true false false], {lons, lats, times, runs}, "test");
+svv = svv.design(1:4, [1 1 2 2], {lons, lats, times, runs}, "test");
 
 convert1 = @datevec;
 convert2 = @(x,y,z) datevec(x)+y+z;
@@ -710,9 +711,9 @@ runs = [3 1]';
 timeAdd = [-4 8 0 -1]';
 runAdd = (-2:1)';
 
-empty = svv.design([3 4], [false false], {[],[]}, 'test');
-mixedIndex = svv.design(1:4, [true true false false], {[],lats,[],runs}, 'test');
-allIndex = svv.design(1:4, [true true false false], {lons,lats,times,runs}, 'test');
+empty = svv.design([3 4], [2 2], {[],[]}, 'test');
+mixedIndex = svv.design(1:4, [1 1 2 2], {[],lats,[],runs}, 'test');
+allIndex = svv.design(1:4, [1 1 2 2], {lons,lats,times,runs}, 'test');
 mixedMean = empty.mean([2 4], {[],runAdd}, [true true], 'test');
 allMean = empty.mean(1:4, {[],[], timeAdd, runAdd}, true(1,4), 'test');
 mixedSeq = empty.sequence(4, {runAdd}, {(1:4)'}, 'test');
@@ -761,7 +762,7 @@ allIndex = allIndex(:);
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design(3, false, {[]}, 'test');
+svv = svv.design(3, 2, {[]}, 'test');
 svvM = svv.mean(3, {timeMean}, true, 'test');
 svvS = svv.sequence(3, {timeSeq}, {(1:4)'}, 'test');
 svvMS = svvM.sequence(3, {timeSeq}, {(1:4)'}, 'test');
@@ -797,7 +798,7 @@ timeAddPE = [-4 1 -1 4];
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design([3 4], [false false], {[],[]}, 'test');
+svv = svv.design([3 4], [2 2], {[],[]}, 'test');
 
 allLon = (1:svv.gridSize(1))';
 allLat = (1:svv.gridSize(2))';
@@ -805,7 +806,7 @@ allTime = (1:svv.gridSize(3))';
 allRun = (1:svv.gridSize(4))';
 altMeta = [allTime, 1000+allTime];
 
-svvN = svv.design(3, false, {1}, 'test');
+svvN = svv.design(3, 2, {1}, 'test');
 svvN = svvN.mean(3, {-5}, true, 'test');
 svvP = svv.mean(3, {timeAddP}, true, 'test');
 svvE = svv.mean(3, {timeAddE}, true, 'test');
@@ -843,7 +844,7 @@ function[] = matchMetadata
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design(3, false, {[]}, 'test');
+svv = svv.design(3, 2, {[]}, 'test');
 svvM = svv.metadata(3, 1, {grid.metadata.time}, [], 'test');
 
 ordered = 5:50;
@@ -892,7 +893,7 @@ function[] = removeOverlap
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design(1:3, [false false false], {[],[],[]}, 'test');
+svv = svv.design(1:3, [2 2 2], {[],[],[]}, 'test');
 svvP1 = svv.mean(1:3, {0:1, 0:1, 0:1}, true(1,3), 'test');
 svvP3 = svv.mean(1:3, {0:3,0:3,0:3}, true(1,3), 'test');
 svvPM1 = svv.mean(1:3, {-1:1, -1:1, -1:1}, true(1,3), 'test');
@@ -934,7 +935,7 @@ function[] = indexLimits
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design(1:4,[false true false false], {[],[],[],[]}, 'test');
+svv = svv.design(1:4,[2 1 2 2], {[],[],[],[]}, 'test');
 svvA = svv.mean(3, {-3:1}, true(1,2), 'test');
 svvA = svvA.sequence(3, {6:8}, {(1:3)'}, 'test');
 
@@ -971,7 +972,7 @@ function[] = parametersForBuild
 
 grid = gridfile('test-lltr');
 svv = dash.stateVectorVariable(grid);
-svv = svv.design(3:4, [false false], {[],[]}, 'test');
+svv = svv.design(3:4, [2 2], {[],[]}, 'test');
 svvM = svv.mean([1 3], {[], -2:2}, [false false], 'test');
 svvS = svv.sequence([3 4], {-1:1, -1:1}, {(-1:1)', (-1:1)'}, 'test');
 svvMS = svvS.mean([1 3], {[], -2:2}, [false false], 'test');
@@ -1000,32 +1001,161 @@ catch cause
 end
 
 end
-function[] = buildMembers
+function[] = buildMembers1
 
-grid = gridfile('test-lltr');
-svv = dash.stateVectorVariable(grid);
+% Basic design
+grid = gridfile('load-lltr');
+ds1 = dash.dataSource.mat('load-data', 'X1');
+ds2 = dash.dataSource.mat('load-data', 'X2');
+ds3 = dash.dataSource.mat('load-data', 'X1');
+ds4 = dash.dataSource.mat('load-data', 'X2');
+ds5 = dash.dataSource.mat('load-data', 'X3');
 
-tests = {
-    'state mean'
-    'ens mean',
-    'mixed mean',
-    'multiple mixed means',
-    'mixed nanflag',
-    'sequence',
-    'sequence and mean'
-    'multiple sequence and mean'
-    'pre-loaded array',
-    'load all members'
-    'load individual members'
-    'weighted mean includenan',
-    'weighted mean omitnan',
-    'multiple weighted mean'
-    'multiple weighted mean mixed nanflag'
-    };
+svv0 = dash.stateVectorVariable(grid);
+svv0 = svv0.design([1 3 4], [1 2 2], {33:99,10:500,[]}, 'test');
+dims = [3 4];
 
-% Array too large
-error('unfinished');
+%% Preloaded data
+
+svv = svv0.finalize;
+subMembers = [ 41 1
+               41 2
+              191 1
+              191 2];
+
+Xall = grid.load(["lon","lat","time","run"], {33:99,[],50:200,1:2});
+source = struct(...
+    'isloaded', true,...
+    'data', Xall,...
+    'limits', [33 99;1 20;50 200; 1 2] ...
+    );
+
+parameters = svv.parametersForBuild;
+parameters.indexLimits = svv.indexLimits(dims, subMembers, true);
+parameters.loadAllMembers = false;
+
+precision = 'double';
+
+X = svv.buildMembers(dims, subMembers, grid, source, parameters, precision);
+
+Xtest = grid.load(["lon","lat","time","run"], {33:99, 1:20, [50 200], 1:2});
+Xtest = reshape(Xtest, 1340, 4);
+Xtest = Xtest(:,[1 3 2 4]);
+
+assert(isequal(X, Xtest), 'pre-loaded output');
+
+
+%% Load all members - success
+
+svv = svv0.finalize;
+
+subMembers = [ 41 1
+               41 2
+              191 1
+              191 2];
+
+source = struct;
+source.isloaded = false;
+source.indices = [1 2 3 4];
+source.dataSources = {ds1;ds2;ds3;ds4};
+
+parameters = svv.parametersForBuild;
+parameters.indexLimits = svv.indexLimits(dims, subMembers, false);
+parameters.loadAllMembers = true;
+
+precision = 'double';
+
+X = svv.buildMembers(dims, subMembers, grid, source, parameters, precision);
+assert(isequal(X, Xtest), 'all loaded success');
+
+
+%% Load all members - failed
+
+svv = svv0.finalize;
+
+subMembers = [ 41 1
+               41 10000
+               41 2
+              191 1 ];
+
+source = struct();
+source.isloaded = false;
+source.indices = [1 5 3 2];
+source.dataSources = {ds1;ds5;ds3;ds2};
+
+parameters = svv.parametersForBuild;
+parameters.indexLimits = svv.indexLimits(dims, subMembers, false);
+parameters.loadAllMembers = true;
+
+precision = 'double';
+
+X = svv.buildMembers(dims, subMembers, grid, source, parameters, precision);
+
+Xtest = grid.load(["lon","lat","time","run"], {33:99, 1:20, [50 200], [1 10000 2]});
+Xtest = reshape(Xtest, 1340, 6);
+Xtest = Xtest(:,[1 3 5 2]);
+assert(isequal(X, Xtest), 'all load fails and redirects');
+
+
+%% Load members
+
+svv = svv0.finalize;
+
+subMembers = [ 41 1
+               41 10000
+               41 2
+              191 1 ];
+
+source = struct();
+source.isloaded = false;
+source.indices = [1 5 3 2];
+source.dataSources = {ds1;ds5;ds3;ds2};
+
+parameters = svv.parametersForBuild;
+parameters.indexLimits = svv.indexLimits(dims, subMembers, false);
+parameters.loadAllMembers = false;
+
+precision = 'double';
+
+X = svv.buildMembers(dims, subMembers, grid, source, parameters, precision);
+
+assert(isequal(X, Xtest), 'load members');
+
+
 end
+function[] = buildMembers2
+
+
+
+
+% function[] = buildMembers
+% 
+% grid = gridfile('test-lltr');
+% svv = dash.stateVectorVariable(grid);
+% 
+% tests = {
+%     'pre-loaded array',
+%     'load all members'
+%     'load individual members'
+% 
+%     'state mean'
+%     'ens mean',
+%     'mixed mean',
+%     'multiple mixed means',
+%     'mixed nanflag',
+%     'sequence',
+%     'sequence and mean'
+%     'multiple sequence and mean'
+%     
+%     'weighted mean includenan',
+%     'weighted mean omitnan',
+%     'multiple weighted mean'
+%     'multiple weighted mean mixed nanflag'
+%     };
+% 
+% % Array too large
+% error('unfinished');
+% end
 
 function[] = serialization
 
@@ -1037,16 +1167,16 @@ gridLLTR = gridfile('test-lltr');
 svv1 = dash.stateVectorVariable(gridLLTR);
 svv2 = dash.stateVectorVariable(gridLLT);
 
-svv1 = svv1.design(3:4, [false, false], {[],[]}, 'test');
-svv2 = svv2.design([1 3], [false false], {[],[]}, 'test');
+svv1 = svv1.design(3:4, [2 2], {[],[]}, 'test');
+svv2 = svv2.design([1 3], [2 2], {[],[]}, 'test');
 svvTest = [svv1;svv2;svv2;svv1;svv2];
 
 mean1 = svv1.mean([1 4],{[],-1:1}, [false true], 'test');
 mean2 = svv2.mean([2 3], {[],[-4 0 9]}, [true false], 'test');
 convert1 = svv1.metadata([1 4], 2, {@mean, @svd}, {{1,'includenan',"arg",5},{}}, 'test');
 convert2 = svv2.metadata([2 3], 2, {@times, @plus}, {{},{6}}, 'test');
-index1 = svv1.design([1 4], [true false], {[2 6 19 22 87], []}, 'test');
-index2 = svv2.design([2 3], [true false], {[], [200:5:499]}, 'test');
+index1 = svv1.design([1 4], [1 2], {[2 6 19 22 87], []}, 'test');
+index2 = svv2.design([2 3], [1 2], {[], [200:5:499]}, 'test');
 seq1 = svv1.sequence([3 4], {-4:9, 0:1}, {rand(14,3), ["A","String";"meta","matrix"]}, 'test');
 seq2 = svv2.sequence(3, {-4:9}, {(1:14)'}, 'test');
 weights1 = mean1.weightedMean([1 4], {5*ones(100,1), rand(3,1)}, 'test');
@@ -1088,5 +1218,9 @@ catch cause
 end
 
 end
+
+
+
+
 
 
