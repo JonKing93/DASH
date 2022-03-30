@@ -450,7 +450,8 @@ svvW = svvM.weightedMean([1 2 3], {ones(100,1), ones(20,1), ones(3,1)}, 'test');
 tests = {
     % test, succeed, obj, dims, weights, ...
     % (output) meanType, weights, state size, mean size
-    'remove weights, no mean' true, svv, [1 3], {[],[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], zeros(1,4)
+    'remove weights, no mean (state)', true, svv, 1 {[]}, [1 0 0 0], {[],[],[],[]}, [1 20 1 1], [100 0 0 0]
+    'remove weights, no mean (ens)', false, svv, 3, {[]}, [],[],[],[]
     'remove weights, no weights', true, svvM, [1 3], {[],[]}, [1 1 1 1], {[],[],[],[]}, [1 1 1 1], [100 20 3 1]
     'remove weights, weighted', true, svvW, [1 3], {[],[]}, [1 2 1 1], {[],ones(20,1),[],[]}, [1 1 1 1], [100 20 3 1]
 
@@ -463,7 +464,6 @@ tests = {
     'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 0 0 0]
     'new state, size conflict', false, svv, 1, {ones(101,1)}, [],[],[],[]
     'set new ens mean', false, svv, 3, {ones(3,1)}, [],[],[],[]
-    'new ens mean no weights', true, svv, 3, {[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], zeros(1,4)
 
     'set multiple dims', true, svvM, [3 1], {ones(3,1), ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]
     'dims with 0', true, svvM, [3 0 1], {ones(3,1), 5, ones(100,1)}, [2 1 2 1], {ones(100,1),[],ones(3,1),[]}, [1 1 1 1], [100 20 3 1]

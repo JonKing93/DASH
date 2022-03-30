@@ -24,20 +24,19 @@ for k = 1:numel(dims)
         continue;
     end
 
-    % If a new mean, require state dimension. Update sizes
+    % If a new mean, require state dimension. Update sizes and type
     if obj.meanType(d) == 0
         if ~obj.isState(d)
             noMeanIndicesError(obj, d, header);
         end
         obj.meanSize(d) = obj.stateSize(d);
         obj.stateSize(d) = 1;
+        obj.meanType(d) = 2;
     end
 
-    % Remove a weighted mean
+    % If weights are empty, remove weights and downgrade mean type
     if isempty(weights{k})
-        if obj.meanType(d)==2
-            obj.meanType(d) = 1;
-        end
+        obj.meanType(d) = 1;
         obj.weights{d} = [];
         continue;
     end
