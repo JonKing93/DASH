@@ -69,7 +69,7 @@ for k = 1:numel(names)
     dim = names(k);
     
     % Check metadata is valid.
-    if index < numel(dims)
+    if index <= numel(dims)
         try
             metadata{k} = gridMetadata.assertField(metadata{k}, dim, header);
         catch ME
