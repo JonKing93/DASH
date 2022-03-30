@@ -230,7 +230,7 @@ for m = 1:nMembers
 
         nans = isnan(Xm);
         if any(nans, 'all')
-            siz = obj.weightParameters{d};
+            siz = weightParameters{d};
             w = repmat(w, siz);
             w(nans) = NaN;
         end

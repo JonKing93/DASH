@@ -18,16 +18,12 @@ home = pwd;
 gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
-%%% Current test
-buildMembers2;
-%%%
-
 % Run tests
 constructor;
 
 design;
 sequence;
-mean;
+mean_;
 weightedMean;
 metadata;
 
@@ -372,7 +368,7 @@ catch cause
 end
 
 end
-function[] = mean
+function[] = mean_
 
 grid = gridfile('test-lltr.grid');
 svv = dash.stateVectorVariable(grid);
@@ -464,7 +460,7 @@ tests = {
     'state size conflict', false, svvM, 1, {ones(101,1)}, [],[],[],[]
     'size conflict, weighted', false, svvW, 3, {ones(4,1)}, [],[],[],[]
     
-    'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 0 0 0], 
+    'set new state mean', true, svv, 1, {ones(100,1)}, [2 0 0 0], {ones(100,1),[],[],[]}, [1 20 1 1], [100 0 0 0]
     'new state, size conflict', false, svv, 1, {ones(101,1)}, [],[],[],[]
     'set new ens mean', false, svv, 3, {ones(3,1)}, [],[],[],[]
     'new ens mean no weights', true, svv, 3, {[]}, [0 0 0 0], {[],[],[],[]}, [100 20 1 1], zeros(1,4)
@@ -1125,37 +1121,328 @@ assert(isequal(X, Xtest), 'load members');
 end
 function[] = buildMembers2
 
+% Gridfile and data sources
+grid = gridfile('load-lltr');
+ds1 = dash.dataSource.mat('load-data', 'X1');
+ds2 = dash.dataSource.mat('load-data', 'X2');
+ds3 = dash.dataSource.mat('load-data', 'X1');
+ds4 = dash.dataSource.mat('load-data', 'X2');
+
+% Common inputs
+dims = [3 4];
+source = struct;
+source.isloaded = false;
+source.indices = [1 2 3 4];
+source.dataSources = {ds1;ds2;ds3;ds4};
+
+% SVV object
+svv = dash.stateVectorVariable(grid);
+svv = svv.design([1 3 4], [1 2 2], {33:99,10:500,[]}, 'test');
+
+% Output array
+Xg = grid.load(["lon","lat","time","run"], {33:99,[],[50 200 350],1:4});
+
+%% Multiple sequence sources
+
+grid2 = gridfile('load-seq');
+dseq = dash.dataSource.mat('load-seq','X');
+dims2 = [2 4 6];
+source2 = struct;
+source2.isloaded = false;
+source2.indices = 1;
+source2.dataSources = {dseq};
+svv2 = dash.stateVectorVariable(grid2);
+svv2 = svv2.design([2 4 6], [2 2 2], {[],[],[]}, 'test');
+Xg2 = grid2.load(["lon","lat","lev","time","run","var"]);
+
+%% State mean
+
+subSM = [41 1;41 2];
+svvSM = svv.mean(2, {[]}, true, 'test');
+Xsm = Xg(:,:,1,1:2);
+Xsm = mean(Xsm,2);
+Xsm = reshape(Xsm, [], 2);
+
+%% Ensemble mean
+
+subEM = [41 1; 191 1];
+svvEM = svv.mean(4, {0:1}, true, 'test');
+Xem = Xg(:,:,1:2,1:2);
+Xem = mean(Xem, 4);
+Xem = reshape(Xem, [], 2);
+
+%% Mixed mean
+
+subXM = [41 1; 191 1];
+svvXM = svv.mean([2 4], {[],0:1}, [true true], 'test');
+Xxm = Xg(:,:,1:2,1:2);
+Xxm = mean(Xxm, [2 4]);
+Xxm = reshape(Xxm, [], 2);
+
+%% Sequence
+
+subSeq = [41 1; 191 1];
+svvSeq = svv.sequence(4, {0:1}, {[0;1]}, 'test');
+Xseq = [reshape(Xg(:,:,1,1:2),[],1), reshape(Xg(:,:,2,1:2),[],1)];
+
+%% Multiple sequences
+
+subXSeq = [1 1 1;
+           11 11 11];
+svvXSeq = svv2.sequence([2 4 6], {0:2, 0:2, 0:2}, {[0;1;2],[0;1;2],[0;1;2]}, 'test');
+
+Xxs1 = Xg2(:,1:3,:,1:3,:,1:3);
+Xxs1 = reshape(Xxs1, [], 1);
+Xxs2 = Xg2(:,11:13,:,11:13,:,11:13);
+Xxs2 = reshape(Xxs2, [], 1);
+Xxseq = [Xxs1, Xxs2];
+
+%% Sequence and mean
+
+subSeqM = [1 1 1;
+           11 11 11];
+svvSeqM = svv2.sequence(4, {[0 3]}, {[0;1]}, 'test');
+svvSeqM = svvSeqM.mean(4, {0:1}, false, 'test');
+
+Xsm1 = Xg2(:,1,:,[1 2 4 5],:,1);
+Xsm1 = reshape(Xsm1, [3 1 3 2 2 3 1]);
+Xsm1 = mean(Xsm1, 4);
+Xsm1 = reshape(Xsm1, [], 1);
+
+Xsm2 = Xg2(:,11,:,[11 12 14 15],:,11);
+Xsm2 = reshape(Xsm2, [3 1 3 2 2 3 1]);
+Xsm2 = mean(Xsm2, 4);
+Xsm2 = reshape(Xsm2, [], 1);
+
+Xseqm = [Xsm1, Xsm2];
+
+%% Multiple sequence and mean
+
+subXSeqM = [1 1 1;11 11 11];
+svvXSeqM = svv2.sequence([2 4 6], {[0;3],[0;3],[0;3]}, {[0;1],[0;1],[0;1]}, 'test');
+svvXSeqM = svvXSeqM.mean([2 4 6], {0:1,0:1,0:1}, true(1,3), 'test');
+
+Xxsm1 = Xg2(:,[1 2 4 5],:,[1 2 4 5],:,[1 2 4 5]);
+Xxsm1 = reshape(Xxsm1, [3 2 2 3 2 2 3 2 2]);
+Xxsm1 = mean(Xxsm1, [2 5 8]);
+Xxsm1 = reshape(Xxsm1, [], 1);
+
+Xxsm2 = Xg2(:,[11 12 14 15],:,[11 12 14 15],:,[11 12 14 15]);
+Xxsm2 = reshape(Xxsm2, [3 2 2 3 2 2 3 2 2]);
+Xxsm2 = mean(Xxsm2, [2 5 8]);
+Xxsm2 = reshape(Xxsm2, [], 1);
+
+Xxseqm = [Xxsm1, Xxsm2];
+
+%% Multiple mixed sequence and mean
+
+subX2sm = [1 1 1;11 11 11];
+svvX2sm = svv2.sequence([2 4], {[0;3],[0;3]}, {[0;1],[0;1]}, 'test');
+svvX2sm = svvX2sm.mean([1 2 5 6], {[],0:1,[],0:1}, true(1,4), 'test');
+
+Xx2sm1 = Xg2(:,[1 2 4 5],:,[1 4],:,1:2);
+Xx2sm1 = reshape(Xx2sm1, [3 2 2 3 2 3 2]);
+Xx2sm1 = mean(Xx2sm1, [1 2 6 7]);
+Xx2sm1 = reshape(Xx2sm1, [], 1);
+
+Xx2sm2 = Xg2(:,[11 12 14 15],:,[11 14],:,11:12);
+Xx2sm2 = reshape(Xx2sm2, [3 2 2 3 2 3 2]);
+Xx2sm2 = mean(Xx2sm2, [1 2 6 7]);
+Xx2sm2 = reshape(Xx2sm2, [], 1);
+
+Xx2sm = [Xx2sm1, Xx2sm2];
+
+%% Include NaN
+
+subI = [41 1;41 2];
+svvI = svv.mean(4, {0:1}, false, 'test');
+Xi1 = Xg(:,:,1,1:2);
+Xi1 = mean(Xi1, 4, 'includenan');
+Xi1 = reshape(Xi1, [], 1);
+Xi2 = Xg(:,:,1,2:3);
+Xi2 = mean(Xi2, 4, 'includenan');
+Xi2 = reshape(Xi2, [], 1);
+Xi = [Xi1, Xi2];
+
+%% Omit NaN
+
+subO = [41 1;41 2];
+svvO = svv.mean(4, {0:1}, false, 'test');
+Xo1 = Xg(:,:,1,1:2);
+Xo1 = mean(Xo1, 4, 'includenan');
+Xo1 = reshape(Xo1, [], 1);
+Xo2 = Xg(:,:,1,2:3);
+Xo2 = mean(Xo2, 4, 'includenan');
+Xo2 = reshape(Xo2, [], 1);
+Xo = [Xo1, Xo2];
+
+%% Mixed nanflag
+
+subXN = [41 1;191 2];
+svvXN = svv.mean([3 4], {[0 150], 0:1}, [true, false], 'test');
+Xxn1 = Xg(:,:,1:2,1:2);
+Xxn1 = mean(Xxn1, 4, 'includenan');
+Xxn1 = mean(Xxn1, 3, 'omitnan');
+Xxn1 = reshape(Xxn1, [], 1);
+Xxn2 = Xg(:,:,2:3,2:3);
+Xxn2 = mean(Xxn2, 4, 'includenan');
+Xxn2 = mean(Xxn2, 3, 'omitnan');
+Xxn2 = reshape(Xxn2, [], 1);
+Xxn = [Xxn1, Xxn2];
+
+%% Weighted include nan
+
+subWI = [19 19 19;
+         20 20 20];
+svvWI = svv2.mean(2, {0:1}, false, 'test');
+svvWI = svvWI.weightedMean(2, {1:2}, 'test');
+w = [1 2];
+
+Xwi1 = Xg2(:,19:20,:,19,:,19);
+Xwi1 = Xwi1 .* w;
+Xwi1 = sum(Xwi1, 2, 'includenan') ./ sum(w);
+Xwi1 = reshape(Xwi1, [], 1);
+
+Xwi2 = Xg2(:,20:21,:,20,:,20);
+Xwi2 = Xwi2 .* w;
+Xwi2 = sum(Xwi2, 2, 'includenan') ./ sum(w);
+Xwi2 = reshape(Xwi2, [], 1);
+
+Xwi = [Xwi1, Xwi2];
+
+%% Weighted omit nan
+
+subWO = [19 19 19;20 20 20];
+svvWO = svv2.mean(2, {0:1}, true, 'test');
+svvWO = svvWO.weightedMean(2, {1:2}, 'test');
+w = repmat([1 2], [3 1 3 1 3 1]);
+
+Xwo1 = Xg2(:,19:20,:,19,:,19);
+w1 = w;
+w1(isnan(Xwo1)) = NaN;
+Xwo1 = Xwo1 .* w1;
+Xwo1 = sum(Xwo1, 2, 'omitnan') ./ sum(w1,2,'omitnan');
+Xwo1 = reshape(Xwo1, [], 1);
+
+Xwo2 = Xg2(:,20:21,:,20,:,20);
+w2 = w;
+w2(isnan(Xwo2)) = NaN;
+Xwo2 = Xwo2 .* w2;
+Xwo2 = sum(Xwo2, 2, 'omitnan') ./ sum(w2,2,'omitnan');
+Xwo2 = reshape(Xwo2, [], 1);
+
+Xwo = [Xwo1, Xwo2];
+
+
+%% Multiple weighted include nan
+
+subXWI = [19 19 19;20 20 20];
+svvXWI = svv2.mean([2 4], {0:1, 0:1}, [false false], 'test');
+svvXWI = svvXWI.weightedMean([2 4], {1:2,3:4}, 'test');
+w2 = [1 2];
+w4 = cat(4,3,4);
+
+X1 = Xg2(:,19:20,:,19:20,:,19);
+X1 = X1 .* w2;
+X1 = sum(X1, 2, 'includenan') ./ sum(w2);
+X1 = X1 .* w4;
+X1 = sum(X1, 4, 'includenan') ./ sum(w4);
+X1 = reshape(X1, [], 1);
+
+X2 = Xg2(:,20:21,:,20:21,:,20);
+X2 = X2 .* w2;
+X2 = sum(X2, 2, 'includenan') ./ sum(w2);
+X2 = X2 .* w4;
+X2 = sum(X2, 4, 'includenan') ./ sum(w4);
+X2 = reshape(X2, [], 1);
+
+Xxwi = [X1, X2];
+
+
+%% Multiple weighted omitnan
+
+subXWO = [19 19 19;20 20 20];
+svvXWO = svv2.mean([2 4], {0:1,0:1}, [true true], 'test');
+svvXWO = svvXWO.weightedMean([2 4], {1:2,3:4}, 'test');
+w2 = repmat([1 2], [3 1 3 2 3 1]);
+w4 = cat(4,3,4);
+w4 = repmat(w4, [3 1 3 1 3 1]);
+
+X1 = Xg2(:,19:20,:,19:20,:,19);
+w = w2;
+w(isnan(X1)) = NaN;
+X1 = X1 .* w;
+X1 = sum(X1,2,'omitnan') ./ sum(w,2,'omitnan');
+w = w4;
+w(isnan(X1)) = NaN;
+X1 = X1 .*w;
+X1 = sum(X1,4,'omitnan') ./ sum(w,4,'omitnan');
+X1 = reshape(X1, [],1);
+
+X2 = Xg2(:,20:21,:,20:21,:,20);
+w = w2;
+w(isnan(X2)) = NaN;
+X2 = X2 .* w;
+X2 = sum(X2,2,'omitnan') ./ sum(w,2,'omitnan');
+w = w4;
+w(isnan(X2)) = NaN;
+X2 = X2 .*w;
+X2 = sum(X2,4,'omitnan') ./ sum(w,4,'omitnan');
+X2 = reshape(X2, [],1);
+
+Xxwo = [X1, X2];
+
+
+%% Mixed weighted nanflag
 
 
 
-% function[] = buildMembers
-% 
-% grid = gridfile('test-lltr');
-% svv = dash.stateVectorVariable(grid);
-% 
-% tests = {
-%     'pre-loaded array',
-%     'load all members'
-%     'load individual members'
-% 
-%     'state mean'
-%     'ens mean',
-%     'mixed mean',
-%     'multiple mixed means',
-%     'mixed nanflag',
-%     'sequence',
-%     'sequence and mean'
-%     'multiple sequence and mean'
-%     
-%     'weighted mean includenan',
-%     'weighted mean omitnan',
-%     'multiple weighted mean'
-%     'multiple weighted mean mixed nanflag'
-%     };
-% 
-% % Array too large
-% error('unfinished');
-% end
+%% Tests
+
+tests = {
+    % Description, object, subMembers, output
+    'state mean', svvSM, subSM, Xsm, grid, source, dims
+    'ensemble mean', svvEM, subEM, Xem, grid, source, dims
+    'mixed mean', svvXM, subXM, Xxm, grid, source, dims
+
+    'sequence', svvSeq, subSeq, Xseq, grid, source, dims
+    'multiple sequences', svvXSeq, subXSeq, Xxseq, grid2, source2, dims2
+    'sequence and mean', svvSeqM, subSeqM, Xseqm, grid2, source2, dims2
+    'multiple sequence and mean', svvXSeqM, subXSeqM, Xxseqm, grid2, source2, dims2
+    'multiple mixed sequence and mean', svvX2sm, subX2sm, Xx2sm, grid2, source2, dims2
+ 
+    'include nan', svvI, subI, Xi, grid, source, dims
+    'omit nan', svvO, subO, Xo, grid, source, dims
+    'mixed nan', svvXN, subXN, Xxn, grid, source, dims
+
+    'weighted includenan', svvWI, subWI, Xwi, grid2, source2, dims2
+    'weighted omitnan', svvWO, subWO, Xwo, grid2, source2, dims2
+    'multiple weighted includenan', svvXWI, subXWI, Xxwi, grid2, source2, dims2
+    'multiple weighted omitnan', svvXWO, subXWO, Xxwo, grid2, source2, dims2
+    };
+
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,2};
+        subMembers = tests{t,3};
+        obj = obj.finalize;
+
+        parameters = obj.parametersForBuild;
+        parameters.indexLimits = obj.indexLimits(tests{t,7}, subMembers, false);
+        parameters.loadAllMembers = true;
+
+        X = obj.buildMembers(tests{t,7}, subMembers, tests{t,5}, tests{t,6}, parameters, 'double');
+        Xout = tests{t,4};
+        assert(isequaln(X, Xout), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 function[] = serialization
 
@@ -1176,7 +1463,7 @@ mean2 = svv2.mean([2 3], {[],[-4 0 9]}, [true false], 'test');
 convert1 = svv1.metadata([1 4], 2, {@mean, @svd}, {{1,'includenan',"arg",5},{}}, 'test');
 convert2 = svv2.metadata([2 3], 2, {@times, @plus}, {{},{6}}, 'test');
 index1 = svv1.design([1 4], [1 2], {[2 6 19 22 87], []}, 'test');
-index2 = svv2.design([2 3], [1 2], {[], [200:5:499]}, 'test');
+index2 = svv2.design([2 3], [1 2], {[], 200:5:499}, 'test');
 seq1 = svv1.sequence([3 4], {-4:9, 0:1}, {rand(14,3), ["A","String";"meta","matrix"]}, 'test');
 seq2 = svv2.sequence(3, {-4:9}, {(1:14)'}, 'test');
 weights1 = mean1.weightedMean([1 4], {5*ones(100,1), rand(3,1)}, 'test');

@@ -33,4 +33,12 @@ grid.transform('plus', 100000, 3:4);
 
 grid.add('mat','load-data','X3',["lon","lat"], meta.edit('time',50,'run',10000));
 
+%% Data for testing sequences
+
+X = rand(3,20,3,20,3,20);
+save('load-seq','X','-v7.3');
+meta = gridMetadata('lon',(1:3)', 'lat',(1:21)', 'lev', (1:3)', 'time',(1:21)','run',(1:3)','var',(1:21)');
+grid = gridfile.new('load-seq', meta, true);
+grid.add('mat', 'load-seq','X',["lon","lat","lev","time","run","var"],meta.index(["lat","time","var"],{1:20,1:20,1:20}));
+
 end
