@@ -4,6 +4,10 @@ function[obj] = editVariables(obj, vars, d, method, inputs, task)
 %   obj = obj.editVariables(vars, d, method, inputs, task)
 %   Applies the specified method to the given variables using indicated
 %   inputs. Throws informative error message if the method fails.
+%
+%   ***Note: In general, the purpose of this method is to provide a common
+%   error-handling framework for methods that edit variable design
+%   parameters.
 % ----------
 %   Inputs:
 %       vars (vector, linear indices [nVars]): The indices of the variables
