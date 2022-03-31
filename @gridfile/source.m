@@ -36,7 +36,7 @@ obj.update;
 s = obj.sources_.indices(source, header);
 s = unique(s);
 if numel(s)>1
-    tooManySourcesError;
+    tooManySourcesError(obj, s, header);
 end
 
 % Default, parse details
@@ -113,4 +113,13 @@ if ~isequal(info.dimensions, info.raw_dimensions)
     fprintf('          Raw Size: %s\n\n', dash.string.size(info.raw_size));
 end
 
+end
+
+function[] = tooManySourcesError(obj, s, header)
+nSource = numel(s);
+id = sprintf('%s:multipleSources', header);
+ME = MException(id, ['You can only specify a single source to print to console, ',...
+    'but you have queried %.f sources.\n\ngridfile: %s'],...
+    nSource, obj.file);
+throwAsCaller(ME);
 end

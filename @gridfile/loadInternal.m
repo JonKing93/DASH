@@ -70,7 +70,11 @@ if ~exist('precision','var') || isempty(precision)
 end
 
 % Preallocate the output array
-X = NaN([outputSize, 1, 1], precision);
+try
+    X = NaN([outputSize, 1, 1], precision);
+catch ME
+    throwAsCaller(ME);
+end
 
 % Load the data from each source
 for k = 1:nSource

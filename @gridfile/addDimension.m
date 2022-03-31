@@ -39,18 +39,16 @@ if ismember(dim, obj.dims)
 end
 dash.assert.strsInList(dim, undefined, 'dimension', 'a valid dimension', header);
 
-% Metadata must have a single row
+% Metadata must be valid and must have a single row
+gridMetadata.assertField(metadata, dim, header);
 nRows = size(metadata,1);
 if nRows~=1
     metadataRowsError(dim, nRows, obj.file, header);
 end
 
-% Add the new dimension
-try
-    obj.meta = obj.meta.edit(dim, metadata);
-catch ME
-    throw(ME);
-end
+% Add the new dimension. Disable the row warning
+reset = dash.warning.state('off', 'DASH:gridMetadata:edit:metadataFieldIsRow'); %#ok<NASGU> 
+obj.meta = obj.meta.edit(dim, metadata);
 obj.dims = [obj.dims, dim];
 obj.size = [obj.size, 1];
 

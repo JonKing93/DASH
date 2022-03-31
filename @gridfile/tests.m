@@ -18,6 +18,10 @@ home = pwd;
 gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
+%%%
+
+%%%
+
 % Run the tests
 new;
 constructor;
@@ -58,24 +62,16 @@ minus_;
 times_;
 divide_;
 
-source;
 sources;
 dimensions;
 info;
 name;
+
+source;
 disp;
 dispSources;
 dispAdjustments;
 dispDimensions;
-error('array display in disp');
-error('gridMetadata parser for addAtributes (and maybe removeAttributes?)');
-error('constructor for gridfile with empty metadata');
-error('data adjustment outputs');
-error('altered info struct for gridfileSources');
-error('deleted gridfile');
-error('disp, dispSources, and sources console display');
-error('0 options for remove, absolutePaths');
-
 
 end
 
@@ -97,11 +93,12 @@ tests = {
     'new file', true, file, meta, [], false
     'not filename', false, 5, meta, [], false
     'not metadata', false, file, struct('lat',(1:90)', 'lon',5), [], false
-    'no overwrite 1', false, exists, gridMetadata, [], false
-    'no overwrite 2', false, exists, gridMetadata, false, false
+    'no overwrite 1', false, exists, meta, [], false
+    'no overwrite 2', false, exists, meta, false, false
     'overwrite', true, file, meta, true, true
     'append extension', true, noext, meta, [], false
     'remove dimension order', true, file, meta2, [], false
+    'empty metadata', false, file, gridMetadata, true, false
     };
 header = "DASH:gridfile:new";
 
@@ -120,9 +117,9 @@ try
         else
             if isfile(file)
                 delete(file);
-            end
+            end            
             if tests{t,6}
-                gridfile.new(file, gridMetadata);
+                gridfile.new(file, meta);
             end
             
             grid = gridfile.new(tests{t,3:5});
@@ -192,6 +189,45 @@ try
     end
 catch cause
     ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+function[] = assertValid
+
+meta = gridMetadata('lat',1);
+invalid = gridfile.new('test', meta, true);
+invalid.delete;
+valid = gridfile.new('test',meta,true);
+
+tests = {
+    'scalar valid', true, valid
+    'scalar invalid', false, invalid
+    'array valid', true, [valid valid]
+    'array invalid', false, [invalid, invalid]
+    'mixed array invalid', false, [valid, invalid]
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                tests{t,3}.assertValid(header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            tests{t,3}.assertValid(header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
     ME = addCause(ME, cause);
     throw(ME);
 end
@@ -399,6 +435,7 @@ tests = {
     'attributes', false, 'attributes', struct('a',1)
     'invalid metadata', false, 'run', {1}
     'metadata with multiple rows', false, 'run', [1;2]
+    'row vector', true, 'run', [1 2 3 4]
     };
 header = "DASH";
 
@@ -438,18 +475,36 @@ catch cause
     throw(ME);
 end
 
+clc;
 end
 
+function[] = attributes
+
+%% Has attributes
+atts = struct('Units','Kelvin','mask',[false false, true true]);
+meta = gridMetadata('lat',1,'attributes', atts);
+grid = gridfile.new('test', meta, true);
+
+output = grid.attributes;
+assert(isequaln(atts, output), 'attributes');
+
+%% Empty attributes
+meta = gridMetadata('lat',1);
+grid = gridfile.new('test', meta, true);
+output = grid.attributes;
+assert(isequal(output, []), 'empty attributes');
+
+end
 function[] = addAttributes
 
 s = struct('a',1,'b',2,'c',3);
 file = fullfile(pwd, 'test.grid');
 meta = gridMetadata('site',(1:5)', 'attributes', struct('a',1));
-grid = gridfile.new(file, meta, true);
 
 tests = {
     % description, should succeed, inputs
     'add attributes', true, {'b',2,'c',3}
+    'syntax 2', true, {["b","c"], {2,3}}
     'existing field',false, {'a',5}
     'invalid field name',false, {'?asdf', 5}
     'invalid name,value pairs',false, {4,5,6}
@@ -459,6 +514,7 @@ header = "DASH:gridMetadata:addAttributes";
 
 try
     for t = 1:size(tests,1)
+        grid = gridfile.new(file, meta, true);
         shouldFail = ~tests{t,2};
         if shouldFail
             try
@@ -533,6 +589,7 @@ edited = struct('a',1,'b',5,'c',6);
 tests = {
     % description, should succeed, inputs
     'edit', true, {'c',6,'b',5}
+    'syntax 2', true, {["c","b"], {6,5}}
     'not an attribute', false, {'d',5}
     'repeat dimension', false, {'b',5,'b',5}
     };
@@ -572,7 +629,8 @@ opendap = 'https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.a
 notfile = fullfile(pwd, 'not-a-file.mat');
 
 % Metadata for tests
-dapMeta = gridMetadata('lon',(1:72)', 'lat', (1:36)', 'time', (1:2063)');
+nDapTime = numel(ncread(opendap, 'time'));
+dapMeta = gridMetadata('lon',(1:72)', 'lat', (1:36)', 'time', (1:nDapTime)');
 standardMeta = gridMetadata('lat',(6:10)', 'lon', (2:16)', 'time', (1:20)');
 singletonMeta = gridMetadata('time',5, 'lat', (6:10)', 'lon', (2:16)');
 scalarMeta = gridMetadata('time', 5,'lat',1,'lon',1);
@@ -583,7 +641,7 @@ mergeMeta = gridMetadata('lat',(1:4)', 'lon',(1:18)', 'time', (1:3)');
 
 % Output of gridfile properties
 stanOut = {1, [2 16;6 10;1 20;1 1]};
-dapOut = {1, [1 72;1 36;1 2063;1 1]};
+dapOut = {1, [1 72;1 36;1 nDapTime;1 1]};
 singleOut = {1, [2 16;6 10;5 5;1 1]};
 textOut = {1, [1 4;1 7;1 1;1 1]};
 vectorOut = {1, [1 1;1 1;1 5;1 1]};
@@ -775,6 +833,7 @@ tests = {
     'invalid index', false, 2.2
     'unrecognized name', false, notfile
     'repeat name', false, "test"
+    'remove all', true, -1
     };
 header = "DASH:gridfile:remove";
 meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
@@ -787,7 +846,9 @@ try
         grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
 
         grid2 = gridfile.new('test2', meta, true);
-        grid2.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
+        if ~isequal(tests{t,3},-1)
+            grid2.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
+        end
         grid2.file = grid.file;
         grid2.sources_.gridfile = grid.file;
 
@@ -820,7 +881,7 @@ offpath = fullfile(pwd, 'off-path');
 double = fullfile(pwd, 'double');
 diffSize = fullfile(pwd, 'different-size');
 home = pwd;
-header = "DASH:gridfile:rename";
+header = "DASH:gridfile:relocate";
 
 % Set up gridfile
 function[grid] = setupGrid
@@ -844,7 +905,7 @@ movefile(fullfile(home,'test.mat'), onpath);
 movefile(fullfile(home,'test-2.mat'), onpath);
 paths = ["./on-path/test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
 try
-    grid.rename;
+    grid.relocate;
 catch
     error('move files');
 end
@@ -856,7 +917,7 @@ delete(return2);
 grid = setupGrid;
 paths = ["./test.mat";"./test-1.mat";"./test-2.mat";"./test-3.mat"];
 try
-    grid.rename;
+    grid.relocate;
 catch
     error('files in same location');
 end
@@ -869,7 +930,7 @@ return2 = onCleanup( @()movefile(fullfile(onpath,'test.mat'), double) );
 movefile(fullfile(home,'test.mat'), offpath);
 movefile(fullfile(double,'test.mat'), onpath);
 try
-    grid.rename;
+    grid.relocate;
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -884,7 +945,7 @@ return2 = onCleanup( @()movefile(fullfile(onpath,'test.mat'), diffSize) );
 movefile(fullfile(home,'test.mat'), offpath);
 movefile(fullfile(diffSize,'test.mat'), onpath);
 try
-    grid.rename;
+    grid.relocate;
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -897,7 +958,7 @@ grid = setupGrid;
 return1 = onCleanup( @()movefile(fullfile(offpath,'test.mat'),home) );
 movefile(fullfile(home,'test.mat'), offpath);
 try
-    grid.rename;
+    grid.relocate;
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -916,7 +977,7 @@ for p = 1:numel(paths)
     paths(p) = dash.file.urlSeparators(paths(p));
 end
 try
-    grid.rename;
+    grid.relocate;
 catch
     error('move absolute paths');
 end
@@ -932,7 +993,7 @@ movefile(fullfile(home,'test.mat'), onpath);
 movefile(fullfile(home,'test-2.mat'), onpath);
 paths = ["./test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
 try
-    grid.rename(3);
+    grid.relocate(3);
 catch
     error('move indexed files');
 end
@@ -943,7 +1004,7 @@ delete(return2);
 % Invalid indices
 grid = setupGrid;
 try
-    grid.rename(17);
+    grid.relocate(17);
     error('did not fail');
 catch
     assert(contains(ME.identifier, header), 'invalid error');
@@ -957,7 +1018,7 @@ movefile(fullfile(home,'test.mat'), onpath);
 movefile(fullfile(home,'test-2.mat'), onpath);
 paths = ["./on-path/test.mat";"./test-1.mat";"./on-path/test-2.mat";"./test-3.mat"];
 try
-    grid.rename(["test-2.mat","test.mat"]);
+    grid.relocate(["test-2.mat","test.mat"]);
 catch
     error('move indexed files');
 end
@@ -973,7 +1034,7 @@ movefile(fullfile(home,'test.mat'), 'test-A.mat');
 movefile(fullfile(home,'test-2.mat'), 'test-B.mat');
 paths = ["./test-A.mat";"./test-1.mat";"./test-B.mat";"./test-3.mat"];
 try
-    grid.rename([1 3], ["test-A.mat", "test-B.mat"]);
+    grid.relocate([1 3], ["test-A.mat", "test-B.mat"]);
 catch
     error('set new name');
 end
@@ -993,7 +1054,7 @@ for p = 1:numel(paths)
     paths(p) = dash.file.urlSeparators(paths(p));
 end
 try
-    grid.rename([1 3], ["test-A.mat", "test-B.mat"]);
+    grid.relocate([1 3], ["test-A.mat", "test-B.mat"]);
 catch
     error('set new absolute path name');
 end
@@ -1008,7 +1069,7 @@ return2 = onCleanup( @()movefile(fullfile(onpath,'test-A.mat'), fullfile(double,
 movefile(fullfile(home,'test.mat'), offpath);
 movefile(fullfile(double,'test.mat'), fullfile(onpath,'test-A.mat'));
 try
-    grid.rename(1, "test-A.mat");
+    grid.relocate(1, "test-A.mat");
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -1023,7 +1084,7 @@ return2 = onCleanup( @()movefile(fullfile(onpath,'test-A.mat'), fullfile(diffSiz
 movefile(fullfile(home,'test.mat'), offpath);
 movefile(fullfile(diffSize,'test.mat'), fullfile(onpath,'test-A.mat'));
 try
-    grid.rename(1, "test-A.mat");
+    grid.relocate(1, "test-A.mat");
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -1034,7 +1095,7 @@ delete(return2);
 % Set name, missing file
 grid = setupGrid;
 try
-    grid.rename(1, fullfile(home,'test-A.mat'));
+    grid.relocate(1, fullfile(home,'test-A.mat'));
     error('did not fail');
 catch ME
     assert(contains(ME.identifier, header), 'invalid error');
@@ -1047,7 +1108,7 @@ return1 = onCleanup( @()movefile(fullpath, fullfile(home,'test.mat')) );
 movefile(fullfile(home,'test.mat'), fullpath);
 paths = ["./off-path/test-A.mat";"./test-1.mat";"./test-2.mat";"./test-3.mat"];
 try
-    grid.rename(1, fullpath);
+    grid.relocate(1, fullpath);
 catch
     error('set new name');
 end
@@ -1063,6 +1124,7 @@ path1 = dash.file.urlSeparators(fullfile(pwd, "test.nc"));
 path2 = dash.file.urlSeparators(fullfile(pwd, "test.mat"));
 path3 = dash.file.urlSeparators(fullfile(pwd, "test-2.mat"));
 opendap = "https://psl.noaa.gov/thredds/dodsC/Datasets/cru/crutem4/var/air.mon.anom.nc";
+nDapTime = numel(ncread(opendap,'time'));
 
 rel1 = "./test.nc";
 rel2 = "./test.mat";
@@ -1078,6 +1140,14 @@ tests = {
     'indexed sources to absolute', true, 'standard', false, {true, [3 1]}, true, {[path1;rel2;path3],[false;true;false]}
     'indexed sources to relative', true, 'standard', true, {false, ["test-2.mat";"test.nc"]}, false, {[rel1;path2;rel3],[true;false;true]}
     'invalid sources', false, 'standard', false, {true, 17}, [], []
+
+    'use switch 1', true, 'standard', false, {'use'}, false, {[path1;path2;path3], [false;false;false]}
+    'use switch 2', true, 'standard', false, {'u'}, false, {[path1;path2;path3], [false;false;false]}
+    'avoid switch 1', true, 'standard', true, {'avoid'}, true, {[rel1;rel2;rel3],[true;true;true]}
+    'avoid switch 2', true, 'standard', true, {'a'}, true, {[rel1;rel2;rel3],[true;true;true]}
+
+    'all sourcces absolute', true, 'standard', false, {'use', 0}, true, {[path1;path2;path3], [false;false;false]}
+    'all sources relative', true, 'standard', true, {'avoid', 0}, false, {[rel1;rel2;rel3], [true;true;true]}
     };
 header = "DASH:gridfile:absolutePaths";
 
@@ -1091,7 +1161,7 @@ try
             grid.add('mat', 'test', 'a', ["time","lon","lat"], meta.edit('run', 2));
             grid.add('mat', 'test-2', 'a', ["time","lon","lat"], meta.edit('run', 3));
         elseif strcmp(tests{t,3}, 'opendap')
-            meta = gridMetadata('lon',(1:72)','lat',(1:36)', 'time',(1:2063)');
+            meta = gridMetadata('lon',(1:72)','lat',(1:36)', 'time',(1:nDapTime)');
             grid = gridfile.new('test',meta,true);
             grid.add('nc', opendap, 'air', ["lon","lat","time"], meta);
         end
@@ -1640,6 +1710,30 @@ catch cause
 end
 
 end    
+function[] = loadedPrecision
+
+tests = {
+    'double', "double", 'double'
+    'multiple double', ["double","double","double"], 'double'
+    'single', "single", 'single'
+    'multiple single', ["single","single","single"], 'single'
+    'mixed double only', ["double","uint32","double","uint64"], 'double'
+    'mixed single only', ["single","char","int16"], 'single'
+    'mixed types', ["single","double"], 'double'
+    };
+
+try
+    for t = 1:size(tests,1)
+        output = gridfile.loadedPrecision(tests{t,2});
+        assert(strcmp(output, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 function[] = load_
 
 % Raw output arrays
@@ -2243,8 +2337,6 @@ assert(isequaln(g.metadata, metaAtts), 'gridfile array');
 
 end
 
-
-
 function[] = sources
 
 
@@ -2302,6 +2394,17 @@ catch cause
 end
 
 end
+function[] = dimensions
+
+meta = gridMetadata('lat',(1:5)', 'lon', (1:10)', 'time', (1:15)');
+grid = gridfile.new('test',meta,true);
+
+[dims, sizes] = grid.dimensions;
+
+assert(isequal(dims, ["lon","lat","time"]), 'dimensions');
+assert(isequal(sizes, [10 5 15]), 'sizes');
+
+end
 function[] = info
 
 gridfilename = dash.file.urlSeparators(fullfile(pwd, 'test.grid'));
@@ -2315,23 +2418,22 @@ sgrid = struct('file', gridfilename, 'dimensions',["lon","lat","time","run"],...
     'dimension_sizes', [20 100 5 3], 'metadata', meta, 'nSources', 3, ...
     'prefer_relative_paths', 1, 'fill_value', NaN, 'valid_range', [-Inf Inf], ...
     'transform', 'none', 'transform_parameters', [NaN NaN]);
-nc = struct('name', 'test.nc', 'variable', 'a', 'index', 1, 'file', ncfile,...
-    'data_type', 'single', 'dimensions', "lat,lon,time", 'size', [100 20 5], ...
-    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
-    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
-text = struct('name', 'test.txt', 'variable', [], 'index', 2, 'file', textfile,...
-    'data_type', 'double', 'dimensions', "lat,lon", 'size', [7 4], ...
-    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
-    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
-mat = struct('name', 'test.mat', 'variable', 'a', 'index', 3, 'file', matfile,...
-    'data_type', 'single', 'dimensions', "lat,lon,time", 'size', [100 20 5], ...
-    'fill_value', NaN, 'valid_range', [-Inf Inf], 'transform', 'none', ...
-    'transform_parameters', [NaN NaN], 'uses_relative_path', 1);
+
+grid = gridfile.new('test', meta, true);
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
+grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
+
+nc = grid.sources_.info(1);
+text = grid.sources_.info(2);
+mat = grid.sources_.info(3);
+emptyinfo = nc;
+emptyinfo(1,:) = [];
 
 tests = {
     'no input', true, {}, sgrid
     '0 input', true, {0}, sgrid
-    'empty array', true, {[]}, [nc;text;mat]
+    'empty array', true, {[]}, emptyinfo
     '-1 input', true, {-1}, [nc;text;mat]
     'indexed sources', true, {[3 1 1]}, [mat;nc;nc]
     'named sources', true, {["test.mat";"test.nc";"test.nc"]}, [mat;nc;nc]
@@ -2340,10 +2442,6 @@ tests = {
     'repeat name', false, {"test"}, []
     }; %#ok<STRSCALR> 
 header = "DASH";
-grid = gridfile.new('test', meta, true);
-grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
-grid.add('txt', 'test.txt', ["lat","lon"], meta.edit('run',2,'time',1,'lat',(1:7)','lon',(1:4)'));
-grid.add('mat', 'test.mat', 'a', ["lat","lon","time"], meta.edit('run',3));
 
 try
     for t = 1:size(tests,1)
@@ -2369,14 +2467,62 @@ end
 
 end
 function[] = name
-grid = gridfile.new('test', gridMetadata, true);
+meta = gridMetadata('lat',1);
+grid = gridfile.new('test', meta, true);
 output = grid.name;
 assert(isequal(output, "test"), 'output');
+end
+
+function[] = source
+
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+grid = gridfile.new('test',meta,true);
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',2));
+header = "DASH:gridfile:source";
+
+tests = {
+    'empty', true, {[]}
+    'source', true, {1}
+    'detailed logical', true, {1, true}
+    'detailed str 1', true, {1,'d'}
+    'detailed str 2', true, {1,'detailed'}
+    'undetailed logical', true, {1, false}
+    'undetailed str 1', true, {1,'c'}
+    'undetailed str 2', true, {1,'concise'}
+
+    'invalid source', false, {3}
+    'multiple sources', false, {[1 2]}
+    'invalid details', false, {1, 'option'}
+    };
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                grid.source(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            grid.source(tests{t,3}{:});
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
 end
 function[] = disp
 
 %% empty
-grid = gridfile.new('test',gridMetadata, true);
+grid = gridfile.new('test',gridMetadata('lat',1), true);
+grid(1) = [];
 try
     grid.disp;
 catch
@@ -2432,4 +2578,52 @@ catch
 end
 clc;
 
+end
+function[] = dispAdjustments
+
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+grid = gridfile.new('test',meta,true);
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+
+tests = {
+    'empty', {}, [], []
+    '0',{0},[],[]
+    'source',{1},[],[]
+    'fill',{},'fillValue', {5}
+    'valid range',{},'validRange', {[1 2]}
+    'log',{},'transform', {'log'}
+    'ln',{},'transform', {'ln'}
+    'log10',{},'transform', {'log10'}
+    'exp',{},'transform', {'exp'}
+    'power',{},'transform', {'power',2}
+    'plus',{},'transform', {'plus',2}
+    'times',{},'transform', {'times',2}
+    'linear',{},'transform', {'linear',[1 2]}
+    };
+
+try
+    for t = 1:size(tests,1)
+        if ~isempty(tests{t,3})
+            grid.(tests{t,3})(tests{t,4}{:});
+        end
+        grid.dispAdjustments(tests{t,2}{:});
+        clc;
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = dispDimensions
+
+meta = gridMetadata('lat',(1:100)', 'lon',(1:20)', 'time',(1:5)', 'run', (1:3)');
+grid = gridfile.new('test',meta,true);
+grid.add('nc', 'test.nc', 'a', ["lat","lon","time"], meta.edit('run',1));
+
+grid.dispDimensions;
+grid.dispDimensions(0);
+grid.dispDimensions(1);
+clc;
 end

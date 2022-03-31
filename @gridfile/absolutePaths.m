@@ -14,7 +14,7 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %   possible. Relative data source paths are stored relative
 %   to the folder holding the .grid file. Use this style when:
 %   1. Moving project folders that hold both .grid files and data sources, or
-%   2. Uploading a .grid file to a data repository (such as Github, Zenodo, or figshare).
+%   2. Uploading a project to a data repository (such as Github, Zenodo, or figshare).
 %
 %   If the setting="use", the .grid file will instead store the
 %   absolute path to data source files. Use this option if you anticipate
@@ -32,10 +32,11 @@ function[] = absolutePaths(obj, useAbsolute, sources)
 %   Implement a preferred path style for the indicated data sources. This
 %   syntax overrides any preferred path style previously set for the data
 %   sources. If the second input is 0, applies the setting to all data
-%   sources currently in the .grid file.
+%   sources currently in the .grid file. Note that this syntax does not
+%   alter the global preference for the .grid file.
 % ----------
 %   Inputs:
-%       setting (scalar logical): Indicates the preferred use of absolute
+%       setting (scalar logical | string scalar): Indicates the preferred use of absolute
 %           file paths for saved data source file locations:
 %           [true|"u"|"use"]: Always save the absolute paths to sources
 %           [false|"a"|"avoid"]: Only use absolute paths when necessary
@@ -59,15 +60,27 @@ obj.assertValid(header);
 obj.update;
 
 % Error check
-dash.assert.scalarType(useAbsolute, 'logical', 'useAbsolute', header);
+useAbsolute = dash.parse.switches(...
+    useAbsolute, {["a","avoid"],["u","use"]},1,'setting','allowed option', header);
 tryRelative = ~useAbsolute;
 
-% Get data source indices, set gridfile default
+% Note whether to change the global gridfile setting. (But don't change the
+% setting until after parsing indices in case a parsing error occurs)
+globalSetting = false;
+if ~exist('sources','var')
+    globalSetting = true;
+end
+
+% Get data source indices
 if ~exist('sources','var') || isequal(sources, 0)
-    obj.relativePath = tryRelative;
     s = 1:obj.nSource;
 else
     s = obj.sources_.indices(sources, header);
+end
+
+% Update the global setting
+if globalSetting
+    obj.relativePath = tryRelative;
 end
 
 % Get the absolute paths, use to update each source
