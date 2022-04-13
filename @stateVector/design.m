@@ -1,4 +1,4 @@
-function[obj] = design(obj, variables, dimensions, indices, types)
+function[obj] = design(obj, variables, dimensions, types, indices)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
 %   obj = obj.design(0, ...)
@@ -8,22 +8,28 @@ function[obj] = design(obj, variables, dimensions, indices, types)
 %   0, applies the design settings to all variables currently in the state
 %   vector.
 %
-%   obj = obj.design(variables, dimensions, indices)
-%   Specifies state and/or reference indices for the indicated dimensions.
+%   obj = obj.design(variables, dimensions, types)
+%   obj = obj.design(variables, dimensions, 0|"c"|"current"|[])
+%   obj = obj.design(variables, dimensions, 1|"s"|"state")
+%   obj = obj.design(variables, dimensions, 2|"e"|"ens"|"ensemble")
+%   Specifies the types of the listed dimensions. The listed dimensions
+%   will be set as ensemble dimensions, state dimensions, or kept in their
+%   current state. Ensemble dimensions are used to select the members of a
+%   state vector ensemble. State dimensions are used to select data
+%   elements along each state vector. When variables are first initialized,
+%   all dimensions are set to state dimensions. You must select at least
+%   one ensemble dimension in order to build a state vector ensemble.
+%
+%   If a single dimension type option is provided, applies the same setting
+%   to all listed dimensions. Otherwise, provide multiple dimension type
+%   options to select different settings for different dimensions.
+%
+%   obj = obj.design(..., indices)
+%   Specify state and/or reference indices for the indices dimensions.
 %   Indices for state dimensions (state indices) indicate which elements
 %   along the dimension should be used in the state vector. Indices for
-%   ensemble dimensions (reference indices) are used to select ensemble
-%   members.
-%
-%   obj = obj.design(..., types)
-%   obj = obj.design(..., 0|"c"|"current")
-%   obj = obj.design(..., 1|"s"|"state")
-%   obj = obj.design(..., 2|"e"|"ens"|"ensemble")
-%   Specify that the indicated dimensions should be used as state
-%   dimensions, ensemble dimensions, or kept in their current state.
-%   If a single option is provided, applies the same setting to all input
-%   dimensions. Provide multiple types to select different settings for
-%   different dimensions.
+%   ensemble dimensions (reference indices) are use as the reference points
+%   for selecting ensemble members.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices): The indices of variables in
@@ -37,6 +43,15 @@ function[obj] = design(obj, variables, dimensions, indices, types)
 %       dimensions (string vector [nDimensions]): The names of dimensions
 %           that should be designed. Each dimension must occur in all
 %           listed variables. Cannot have repeated dimension names.
+%       types (scalar | vector [nDimensions], string | integer): The type of
+%           each dimension. Options are:
+%           [0|"c"|"current"|[]]: (default) Leave in current state
+%           [1|"s"|"state"]: State dimension
+%           [2|"e"|"ens"|"ensemble"]: Ensemble dimension
+%
+%           If types is scalar, uses the same setting for all indicated
+%           dimensions. Otherwise, types must have one element per listed
+%           dimension.
 %       indices (cell vector [nDimensions] {[] | logical vector [dimension length] | vector, linear indices}):
 %           State and reference indices for the designed dimensions. State
 %           indices are used for state dimensions; they indicate which
@@ -56,15 +71,6 @@ function[obj] = design(obj, variables, dimensions, indices, types)
 %           If only a single dimension is listed, the dimension's indices
 %           may be provided directly as a vector, instead of in a scalar cell.
 %           However, the scalar cell syntax is also permitted.
-%       types (scalar | vector [nDimensions], string | integer): The type of
-%           each dimension. Options are:
-%           [0|"c"|"current"]: (default) Leave in current state
-%           [1|"s"|"state"]: State dimension
-%           [2|"e"|"ens"|"ensemble"]: Ensemble dimension
-%
-%           If types is scalar, uses the same setting for all indicated
-%           dimensions. Otherwise, types must have one element per listed
-%           dimension.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the
@@ -77,6 +83,11 @@ header = "DASH:stateVector:design";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 obj.assertUnserialized;
+
+% Default types
+if isempty(types)
+    types = 0;
+end
 
 % Error check variables and dimensions. Get indices.
 if isequal(variables, 0)
@@ -111,7 +122,7 @@ end
 
 % Update each variable
 method = 'design';
-inputs = {indices, types, header};
+inputs = {types, indices, header};
 obj = obj.editVariables(v, d, method, inputs, method);
 obj = obj.updateLengths(v);
 
