@@ -21,6 +21,7 @@
 %   stateVectorVariable - Implements a variable in a state vector
 %
 % Tests:
-%   tests               - Implement unit tests for functions, classes, and sub-packages in the DASH Toolbox
+%   tests               - Implement unit tests for functions, classes, and sub-packages in the dash utility package
+%   testToolbox         - Implement unit tests for all components of the entire DASH toolbox
 %       
 % <a href="matlab:dash.doc('dash')">Documentation Page</a>
