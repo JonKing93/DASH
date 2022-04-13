@@ -66,7 +66,7 @@ obj.assertUnserialized;
 if isequal(variables, 0)
     v = 1:obj.nVariables;
 else
-    v = obj.variableIndices(variables, header);
+    v = obj.variableIndices(variables, false, header);
 end
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
@@ -75,8 +75,10 @@ nDims = numel(dimensions);
 weights = dash.parse.inputOrCell(weights, nDims, 'weights', header);
 for k = 1:nDims
     name = dash.string.elementName(k, 'Mean weights', nDims);
-    dash.assert.vectorTypeN(weights{k}, 'numeric', [], name, header);
-    dash.assert.definedFiniteReal(weights{k}, name, header);
+    if ~isempty(weights{k})
+        dash.assert.vectorTypeN(weights{k}, 'numeric', [], name, header);
+        dash.assert.defined(weights{k}, 1, name, header);
+    end
 end
 
 % Update the variables
