@@ -1,7 +1,7 @@
 function[] = buildSvvTestdata
 
 %% Gridfiles for initializing most tests
-meta = gridMetadata('lon', rand(100,3), 'lat', (1:20)', 'time', datetime(1:1000,1,1));
+meta = gridMetadata('lon', rand(100,3), 'lat', (1:20)', 'time', datetime(1:1000,1,1)');
 gridfile.new('test-llt', meta, true);
 
 meta = meta.edit('run', ["Full";"Volcanic";"GHG"]);

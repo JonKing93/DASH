@@ -8,6 +8,16 @@ function[] = tests
 %
 % <a href="matlab:dash.doc('stateVector.tests')">Documentation Page</a>
 
+% Move to test folder
+here = mfilename('fullpath');
+folders = strsplit(here, filesep);
+dash = folders(1:end-2);
+testpath = fullfile(dash{:}, 'testdata', 'stateVector');
+
+home = pwd;
+gohome = onCleanup( @()cd(home) );
+cd(testpath);
+
 % Run the tests
 constructor;
 label;
@@ -215,8 +225,70 @@ end
 
 end
 
+function[] = length_
 
+sv = stateVector;
+sv = sv.add(["A","B","C"], 'test-lltr');
+sv.lengths = [10;500;2000];
 
+tests = {
+    'empty', {}, 2510
+    '0', {0}, 2510
+    '-1', {-1}, [10;500;2000]
+    'indexed variables', {[3 1 1]}, [2000;10;10]
+    };
+
+try
+    for t = 1:size(tests,1)
+        out = sv.length(tests{t,2}{:});
+        assert(isequal(out, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = members
+
+sv = stateVector;
+sv2 = sv;
+sv2.subMembers = {rand(4,2), rand(4,3)};
+sv2.iseditable = false;
+sv3 = sv.serialize;
+sv3.nMembers_serialized = 7;
+sv4 = sv3;
+sv4.iseditable = false;
+
+tests = {
+    'no members, unserialized', sv, 0
+    'members, unserialized', sv2, 4
+    'no members, serialized', sv3, 0
+    'members, serialized', sv4, 7
+    };
+
+try
+    for t = 1:size(tests,1)
+        N = tests{t,2}.members;
+        assert(isequal(N, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = updateLengths
+
+sv = stateVector;
+sv = sv.add(["A","B","C"], 'test-lltr');
+sv.lengths = [1;2;3];
+
+sv = sv.updateLengths([3 1]);
+assert(isequal(sv.lengths, [6000000;2;6000000]), 'did not update');
+end
 
 
 
