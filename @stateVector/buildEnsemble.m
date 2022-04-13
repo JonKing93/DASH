@@ -1,5 +1,35 @@
-function[X, meta, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress, header)
-%% 
+function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress, header)
+%% stateVector.buildEnsemble  Builds members of a state vector ensemble
+% ----------
+%   [X, metadata, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress, header)
+%   Builds N new members for a state vector ensemble.
+% ----------
+%   Inputs:
+%       ens (scalar matfile object): A matfile object for use when writing
+%           ensemble members to file.
+%       nMembers (scalar positive integer | 'all'): The number of new
+%           ensemble members to build
+%       strict (scalar logical): Whether to throw an error if the requested
+%           number of ensemble members cannot be built (true - default), or
+%           whether to permit a lesser number of ensemble members (false)
+%       grids (struct array): A data source structure for the unique
+%           gridfiles used to build the ensemble members
+%       coupling (scalar struct): Coupling parameters for the built ensemble
+%       precision ('single' | 'double'): The desired numerical precision of
+%           the new ensemble members.
+%       progress ([] | scalar dash.progressbar): An optional progress bar
+%           for long computations.
+%       header (string scalar): Header for thrown error IDs
+%
+% Outputs:
+%       X (numeric array | []): If loading new members directly, the new
+%           ensemble members. If writing to file, an empty array.
+%       metadata (scalar ensembleMetadata): The ensembleMetadata object for the
+%           new ensemble members.
+%       obj (scalar stateVector object): The object updated with the new
+%           ensemble members
+%
+% <a href="matlab:dash.doc('stateVector.buildEnsemble')">Documentation Page</a>
 
 % Note whether to display progress
 showProgress = false;
@@ -56,7 +86,8 @@ if showProgress
     progress.startCount(nMembers);
 end
 
-% Check single ensemble members can fit in memory
+% Check single ensemble members can fit in memory. Use double precision
+% because the precision of individual data sources is unknown.
 try
     for v = 1:obj.nVariables
         siz = [parameters(v).rawSize, 1, 1];
@@ -394,7 +425,7 @@ for g = 1:nGrids
         nSource = numel(s);
         sourcePrecisions = cell(nSource, 1);
         for k = 1:nSource
-            sourcePrecisions{s} = dataSources{k}.dataType;
+            sourcePrecisions{k} = dataSources{k}.dataType;
         end
     end
 
@@ -548,11 +579,12 @@ catch ME
 end
 
 end
-function[] = writeEnsemble(obj, members, grids, sources, parameters, precision, progress, header)
+function[] = writeEnsemble(obj, members, grids, sources, parameters, precision, header)
 
 %%%%% Parameter for reducing chunk sizes
 ORDER = 10;
 %%%%%
+
 
 % Get sizes
 nMembers = numel(members);

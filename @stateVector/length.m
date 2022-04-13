@@ -1,5 +1,5 @@
 function[length] = length(obj, variables)
-%% stateVector.length  Return the length of a state vector
+%% stateVector.length  Return the length of a state vector or variables in the vector
 % ----------
 %   length = <strong>obj.length</strong>
 %   length = <strong>obj.length</strong>(0)
