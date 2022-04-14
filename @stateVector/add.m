@@ -83,14 +83,6 @@ if failed
     gridfileFailedError(obj, varNames, failed, cause, header);
 end
 
-% Require each gridfile to have dimensions
-for g = 1:numel(grids.gridfiles)
-    grid = grids.gridfiles(g);
-    if isempty(grid.dimensions)
-        noDimensionsError(obj, varNames, grids, g, header);
-    end
-end
-
 % Build each new state vector variable
 for v = 1:nVariables
     g = grids.whichGrid(v);
@@ -104,9 +96,13 @@ end
 
 % Update variable properties
 v = obj.nVariables + (1:nVariables);
-obj.variableNames(v) = varNames;
-obj.allowOverlap(v) = false;
+obj.variableNames(v,:) = varNames;
+obj.allowOverlap(v,:) = false;
 obj.nVariables = v(end);
+
+% Initialize lengths
+obj.lengths(v,:) = NaN;
+obj = obj.updateLengths(v);
 
 % Initialize coupling
 obj.coupled(v,:) = false;
@@ -125,29 +121,15 @@ if any(autocouple) && any(obj.autocouple_)
 end
 
 % Update autocouple and coupling status of autocoupled variables
-obj.autocouple_(v) = autocouple;
+obj.autocouple_(v,:) = autocouple;
 if any(autocouple)
     vCouple = find(obj.autocouple_);
     obj.coupled(vCouple, vCouple) = true;
 end
 
-% Update variable lengths
-obj.lengths(v) = NaN;
-obj = obj.updateLengths(v);
-
 end
 
 % Errors
-function[] = noDimensionsError(obj, varNames, grids, g, header)
-v = find(grids.whichGrid==g,1);
-var = varNames(v);
-grid = grids.gridfiles(g);
-id = sprintf('%s:noDimensionsInGridfile', header);
-ME = MException(id, ['Could not add variable "%s" to %s because the gridfile ',...
-    'for the variable (%s) has no dimensions.\n\ngridfile: %s'], ...
-    var, obj.name, grid.name, grid.file);
-throwAsCaller(ME);
-end
 function[] = gridfileFailedError(obj, vars, g, cause, header)
 
 % Supplement failed build

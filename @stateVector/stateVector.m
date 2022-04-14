@@ -125,7 +125,7 @@ classdef stateVector
 
         nVariables = 0;                 % The number of variables in the state vector
         variableNames = strings(0,1);   % The names of the variables in the stateVector
-        variables_ = [];                % The collection of variables and their design parameters
+        variables_;                     % The collection of variables and their design parameters
         gridfiles = strings(0,1);       % The gridfile associated with each variable
         allowOverlap = false(0,1);      % Whether ensemble members for a variable are allowed to use overlapping information
         lengths = NaN(0,1);             % The number of state vector elements for each variable
@@ -258,6 +258,12 @@ classdef stateVector
                     throw(ME);
                 end
             end
+
+            % Initialize empty stateVectorVariable array
+            variables = dash.stateVectorVariable;
+            variables(1,:) = [];
+            obj.variables_ = variables;
+
         end
     end
 

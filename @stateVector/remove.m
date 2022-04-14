@@ -34,14 +34,16 @@ else
 end
 
 % Remove variables
-obj.variables_(v,:) = [];
 obj.variableNames(v,:) = [];
+obj.variables_(v,:) = [];
+obj.gridfiles(v,:) = [];
 obj.allowOverlap(v,:) = [];
-obj.nVariables = numel(obj.variables_);
 obj.lengths(v,:) = [];
 
 obj.coupled(v,:) = [];
 obj.coupled(:,v) = [];
 obj.autocouple_(v,:) = [];
+
+obj.nVariables = numel(obj.variables_);
 
 end

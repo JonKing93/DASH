@@ -68,16 +68,20 @@ end
 % Append the second vector
 obj.variableNames = [obj.variableNames; vector2.variableNames];
 obj.variables_ = [obj.variables_; vector2.variables_];
+obj.gridfiles = [obj.gridfiles; vector2.gridfiles];
 obj.allowOverlap = [obj.allowOverlap; vector2.allowOverlap];
-obj.nVariables = numel(obj.variables_);
 obj.lengths = [obj.lengths; vector2.lengths];
 
 obj.coupled = blkdiag(obj.coupled, vector2.coupled);
 obj.autocouple_ = [obj.autocouple_; vector2.autocouple_];
 
+obj.nVariables = numel(obj.variables_);
+
 % Autocouple variables
 autoVars = obj.variables(obj.autocouple_);
-obj = obj.couple(autoVars);
+if numel(autoVars)>1
+    obj = obj.couple(autoVars);
+end
 
 end
 
