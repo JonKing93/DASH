@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-variableIndices
+rename
 %%%
 
 % Run the tests
@@ -491,6 +491,131 @@ end
 
 end
     
+function[] = variables
 
+sve = stateVector;
+names = ["A";"test";"var3";"another"];
+sv = sve.add(names, 'test-lltr');
 
+tests = {
+    'no input', true, sv, {}, names
+    'empty', true, sv, {[]}, names
+    '0', true, sv, {0}, names
+    'list all, but no variables', true, sve, {}, strings(0,1)
+    'index', true, sv, {2}, "test"
+    'mixed repeat indices', true, sv, {[3 1 1 4]}, ["var3";"A";"A";"another"]
+    'invalid index', false, sv, {10}, []
+    'invalid input', false, sv, {struct}, []
+};
+header = "DASH:stateVector:variables";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.variables(tests{t,4}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = obj.variables(tests{t,4}{:});
+            assert(isequal(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = rename
+
+sve = stateVector;
+sv = sve.add(["A","test",'var3',"another"], 'test-lltr');
+sv2 = sve.add(["A","X","var3","Z"], 'test-lltr');
+
+tests = {
+    'indices', true, [2 4], ["X","Z"]
+    'misordered indices', true, [4 2], ["Z","X"]
+    'names', true, ["test","another"], ["X","Z"]
+    'misordered names', true, ["another","test"], ["Z","X"]
+
+    'invalid index', false, 7, "Q"
+    'invalid old name', false, "blarn", "Q"
+    'invalid variables', false, struct, "Q"
+
+    'invalid new name', false, 2, "123q"
+    'repeat indices', false, [2 2], ["Q","Q"]
+    'repeat old names', false, ["test","test"], ["Q","Q"]
+    'repeat new names', false, [2 4], ["Q","Q"]
+    'duplicates existing', false, [2 4], ["A","B"]
+    };
+header = "DASH:stateVector:rename";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.rename(tests{t,3:4});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = sv.rename(tests{t,3:4});
+            assert(isequaln(out, sv2), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = assertValidNames
+
+sv = stateVector;
+sv = sv.add(["A","test","var3"], 'test-lltr');
+
+tests = {
+    'valid name', true, "Precip"
+    'valid names', true, ["temp","precip","slp"]
+    'matlab keyword', false, "for"
+    'punctuation', false, "asd,fgh"
+    'starts with number', false, "12dfg"
+    'contains duplicates', false, ["temp","precip","temp"]
+    'duplicates existing vars', false, ["temp","test"]
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.assertValidNames(tests{t,3}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            sv.assertValidNames(tests{t,3}, header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
