@@ -69,8 +69,16 @@ if ~obj.isvalid
     return
 end
 
-% Link header
+% Link header and list file
 fprintf('  %s with properties:\n\n', link);
+
+% Update object. Catch invalid file
+try
+    obj.update;
+catch
+    fprintf('    <strong><invalid .grid file></strong>\n    %s\n\n', obj.file);
+    return
+end
 
 % File and dimensions list
 fprintf('          File: %s\n', obj.file);

@@ -22,7 +22,7 @@ try
     m = load(obj.file, '-mat', fields{:});
 catch
     id = sprintf('%s:couldNotLoad', header);
-    ME = MException(id, ['Could not load data from:  %s\n',...
+    ME = MException(id, ['Could not load data from gridfile:\n\t %s\n',...
         'It may not be a valid .grid file.'], obj.file);
     throwAsCaller(ME);
 end
