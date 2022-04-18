@@ -56,7 +56,7 @@ end
 % If the file is missing, throw an error
 if missing
     id = sprintf('%s:fileNotFound', idHeader);
-    ME = MException(id, 'File "%s" could not be found. It may be misspelled or not on the active path', filename);
+    ME = MException(id, 'File "%s"\ncould not be found. It may be misspelled or not on the active path', filename);
     throwAsCaller(ME);
 end
 
