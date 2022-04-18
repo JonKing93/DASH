@@ -223,7 +223,7 @@ classdef stateVector
     end
     methods (Static)
         [grids, failed, cause] = parseGrids(grids, nVariables, header);
-        [grids, failed, cause] = buildGrids(files, nVariables);
+        [grids, failed, cause] = buildGrids(files);
 
         % Unit tests
         tests;

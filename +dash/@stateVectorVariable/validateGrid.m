@@ -26,7 +26,7 @@ function[isvalid, cause] = validateGrid(obj, grid, header)
 
 % Default
 if ~exist('header','var')
-    header = "DASH:stateVectorVariable:verifyGrid";
+    header = "DASH:stateVectorVariable:validateGrid";
 end
 
 % Initialize

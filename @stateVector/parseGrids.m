@@ -1,7 +1,7 @@
 function[grids, failed, cause] = parseGrids(grids, nVariables, header)
 %% stateVector.parseGrids  Parse inputs that are either gridfile objects or .grid file paths
 % ----------
-%   [grids, failed, cause] = stateVector.parseGrids(grids, nVariables, header)
+%   [grids, failed, cause] = stateVector.parseGrids(grids, nVariables)
 %   Parses gridfile inputs for a specified number of variables. If inputs
 %   are strings, returns the unique set of gridfile objects. If inputs are
 %   gridfile objects, updates the objects and returns them directly.
@@ -13,6 +13,9 @@ function[grids, failed, cause] = parseGrids(grids, nVariables, header)
 % 
 %   If any gridfile fails to build or update, records the failed gridfile
 %   and exits.
+%
+%   ... = stateVector.parseGrids(grids, nVariables, header)
+%   Customize header in thrown error IDs.
 % ----------
 %   Inputs:
 %       grids: The input being parsed. If valid, should be a string or gridfile
@@ -30,33 +33,47 @@ function[grids, failed, cause] = parseGrids(grids, nVariables, header)
 %
 % <a href="matlab:dash.doc('stateVector.parseGrids')">Documentation Page</a>
 
-% Convert strings
+% Default header
+if ~exist('header','var') || isempty(header)
+    header = "DASH:stateVector:parseGrids";
+end
+
+% Use strings for text. Require string or gridfile type
 if dash.is.string(grids)
     grids = string(grids);
 end
-
-% Require string or gridfile type. Require correct length if not scalar
-dash.assert.type(grids, ["string","gridfile"], 'grids', [], header);
-if ~isscalar(grids)
-    name = 'Since it is not scalar, grids';
-    dash.assert.vectorTypeN(grids, [], nVariables, name, header);
+try
+    dash.assert.type(grids, ["string","gridfile"], 'grids', [], header);
+catch ME
+    throwAsCaller(ME);
 end
 
-% If given strings, build objects and exit
-if isstring(grids)
-    [grids, failed, cause] = stateVector.buildGrids(grids, nVariables);
-    return
-end
-
-% Otherwise, get whichGrid indices for the variables
+% Get the number of grids. Require correct length if not scalar. Get
+% whichGrid for either case.
 nGrids = numel(grids);
 if nGrids==1
     whichGrid = ones(nVariables, 1);
 else
     whichGrid = (1:nVariables)';
+
+    name = 'Since it is not scalar, grids';
+    try
+        dash.assert.vectorTypeN(grids, [], nVariables, name, header);
+    catch ME
+        throwAsCaller(ME);
+    end
 end
 
-% Update each object
+% If given string filepaths, build gridfile objects and exit
+if isstring(grids)
+    [grids, failed, cause] = stateVector.buildGrids(grids);
+    if ~failed && nGrids==1
+        grids.whichGrid = whichGrid;
+    end
+    return
+end
+
+% If given gridfile objects, attempt to update each object
 try
     for g = 1:nGrids
         grids(g).update;
@@ -73,7 +90,7 @@ catch cause
 end
 
 % Organize output
-grids = struct('gridfiles', grids, 'whichGrid', whichGrid);
+grids = struct('gridfiles', grids(:), 'whichGrid', whichGrid);
 failed = 0;
 cause = [];
 

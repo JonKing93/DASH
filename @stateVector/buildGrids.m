@@ -1,4 +1,4 @@
-function[grids, failed, cause] = buildGrids(files, nVariables)
+function[grids, failed, cause] = buildGrids(files)
 %% stateVector.buildGrids  Build unique gridfile objects
 % ----------
 %   [grids, failed, cause] = stateVector.buildGrids(files)
@@ -7,37 +7,26 @@ function[grids, failed, cause] = buildGrids(files, nVariables)
 %   index of the object associated with each element of "files". If any
 %   gridfile fails to build, reports the failed grid and the cause of the
 %   failure.
-%
-%   ... = stateVector.buildGrids(file, nVariables)
-%   If a single gridfile is being used for multiple variables, includes an
-%   whichGrid index for each of the variables.
 % ----------
 %   Inputs:
 %       files (string vector [nVariables] | string scalar): The absolute
 %           file paths to a set of gridfiles
-%       nVariables (scalar positive integer): The number of variables
-%           associated with a single file
 %
 %   Outputs:
 %       grids (scalar struct): Organizes the gridfile objects
 %           .gridfiles (gridfile vector [nGrids]): The unique gridfile objects
 %           .whichGrid (vector, linear indices [nVariables]): The index of
-%               the unique gridfile object associated with each variable.
+%               the unique gridfile object associated with each input filepath.
 %               Indices are on the interval 1:nGrids
 %       failed (0 | scalar linear index): Set to 0 if all gridfiles built
 %           successfully. If not, the index of the first failed file path.
 %           Index is on the interval 1:nFiles
-%       cause (scalar MException): The cause fo the failed gridfile
+%       cause (scalar MException): The cause of the failed gridfile
 %
 % <a href="matlab:dash.doc('stateVector.buildGrids')">Documentation Page</a>
 
-% Get the unique file paths. Adjust indices for scalar file
+% Get the unique file paths. Preallocate gridfile objects
 [files, ~, whichGrid] = unique(files);
-if exist('nVariables','var') && ~isempty(nVariables) && numel(files)==1
-    whichGrid = ones(nVariables, 1);
-end
-
-% Preallocate gridfile objects
 nGrids = numel(files);
 gridObjects = cell(nGrids, 1);
 

@@ -1,4 +1,38 @@
 function[obj] = relocate(obj, variables, grids)
+%% stateVector.relocate  Update paths to the .grid files associated with state vector variables
+% ----------
+%   obj = <strong>obj.relocate</strong>(v, ...)
+%   obj = <strong>obj.relocate</strong>(variableNames, ...)
+%   Updates the .grid files associated with specified variables to a new
+%   set of .grid files.
+%
+%   obj = <strong>obj.relocate</strong>(variables, gridPaths)
+%   obj = <strong>obj.relocate</strong>(variables, gridObjects)
+%   Specify the new .grid files using either file paths or gridfile
+%   objects.
+% ----------
+%   Inputs:
+%       v (logical vector | linear indices [nVariables]): The indices of variables in
+%           the state vector whose .grid files should be updated. Either a
+%           logical vector with one element per state vector variable, or a
+%           vector of linear indices. If linear indices, may not contain
+%           repeated values.
+%       variableNames (string vector [nVariables]): The names of variables in the state
+%           vector whose .grid files should be updated. May not contain
+%           repeat variable names.
+%       gridPaths (string, scalar | vector [nVariables]): File paths to the new
+%           .grid files. If scalar, uses the same .grid file path for all
+%           input variables. If a vector, must have one element per listed
+%           variable.
+%       gridObjects (gridfile object, scalar | vector [nVariables]): Gridfile
+%           objects for the new .grid files. If scalar, uses the same
+%           gridfile object for all input variables. If a vector, must have
+%           one element per listed variable.
+%
+%   Outputs:
+%       obj (scalar stateVector object): The stateVector with updated .grid files
+%
+% <a href="matlab:dash.doc('stateVector.relocate')">Documentation Page</a>
 
 % Setup
 header = "DASH:stateVector:relocate";
@@ -13,13 +47,13 @@ nVariables = numel(vars);
 % Parse and build gridfiles
 [grids, failed, cause] = obj.parseGrids(grids, nVariables, header);
 if failed
-    gridfileFailedError(obj, vars, g, cause, header);
+    gridfileFailedError(obj, vars, failed, cause, header);
 end
 
 % Validate grids against values recorded in variables
 [failed, cause] = obj.validateGrids(grids, vars, header);
 if failed
-    invalidReplacementError(failed, grids, g, cause, header);
+    invalidReplacementError(obj, failed, grids, cause, header);
 end
 
 % Update file paths
@@ -42,9 +76,12 @@ ME = MException(id, ['Could not relocate the "%s" variable%s because the ',...
 ME = addCause(ME, cause);
 throwAsCaller(ME);
 end
-function[] = invalidReplacementError(obj, v, grids, g, cause, header)
+function[] = invalidReplacementError(obj, v, grids, cause, header)
 var = obj.variables(v);
+
+g = grids.whichGrid(v);
 grid = grids.gridfiles(g);
+
 vector = '';
 if ~strcmp(obj.label,"")
     vector = sprintf(' in %s', obj.name);

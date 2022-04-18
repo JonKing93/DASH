@@ -19,8 +19,10 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-dimensions
-dimensionIndices
+buildGrids;
+parseGrids;
+validateGrids;
+relocate
 %%%
 
 % Run the tests
@@ -709,9 +711,210 @@ end
 
 end
 
+function[] = validateGrids
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip"], 'test-lltr');
+sv = sv.add("SLP", 'test-lst');
+
+lltr = gridfile('test-lltr');
+lst = gridfile('test-lst');
+
+gridsValid = struct('gridfiles',lltr,'whichGrid',[1;1]);
+gridsInvalid = struct('gridfiles',lst,'whichGrid',[1;1]);
+gridsMixed = struct('gridfiles',lltr,'whichGrid',[1;1;1]);
 
 
+tests = {
+    'all valid', true, gridsValid, 1:2, 0
+    'invalid grid', false, gridsInvalid, 1:2, 1
+    'some invalid', false gridsMixed, 1:3, 3
+    };
+header = "test:header";
 
+try
+    for t = 1:size(tests,1)
+        [failed, cause] = sv.validateGrids(tests{t,3:4}, header);
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            assert(isequal(failed, tests{t,5}), 'failed index');
+            assert(isa(cause,'MException') && contains(cause.identifier, header), 'cause');
+        else
+            assert(failed==0, 'failed index on success');
+            assert(isequal(cause,[]), 'cause on success');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = parseGrids
+
+path1 = fullfile(pwd, "test-lltr");
+path2 = fullfile(pwd, "test-lst");
+badpath = fullfile(pwd, "invalid.grid");
+
+lltr = gridfile("test-lltr");
+lst = gridfile("test-lst");
+invalid = gridfile.new('invalid', gridMetadata('lat',1), true);
+delete(badpath);
+
+tests = {
+    % test, no error, successful build, grids, nVariables, .gridfiles, .whichGrid, failed index
+    '1 path, 1 var', true, true, path1, 1, lltr, 1, []
+    '1 path, vars', true, true, path1, 5, lltr, ones(5,1), []
+    'paths vars', true, true, [path1,path2], 2, [lltr;lst], [1;2], []
+    'repeat paths vars', true, true, [path1,path1,path2], 3, [lltr;lst], [1;1;2], []
+    'incorrect number of paths', false, [], [path1, path2], 3, [], [], []
+    'failed path', true, false, [path1, badpath, path2], 3, [], [], 2
+
+    '1 object, 1 var', true, true, lltr, 1, lltr, 1, []
+    '1 object, vars', true, true, lltr, 5, lltr, ones(5,1), []
+    'objects vars', true, true, [lltr, lst], 2, [lltr;lst], [1;2], []
+    'repeat objects vars', true, true, [lltr lltr, lst], 3, [lltr;lltr;lst], [1;2;3], []
+    'incorrect number of objects', false, [], [lltr, lst], 3, [], [], []
+    'failed object', true, false, [lltr, invalid, lst], 3, [], [], 2
+
+    'invalid grids', false, [], 5, 1, [], [], []
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                stateVector.parseGrids(tests{t,4:5}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            [grids, failed, cause] = stateVector.parseGrids(tests{t,4:5}, header);
+            success = tests{t,3};
+            if success
+                assert(isequaln(grids.gridfiles, tests{t,6}), '.gridfiles');
+                assert(isequal(grids.whichGrid, tests{t,7}), '.whichGrid');
+                assert(failed==0, 'failed index on success');
+                assert(isequal(cause, []), 'cause on success');
+            else
+                assert(isequaln(grids, []), 'grids on failure');
+                assert(isequal(failed, tests{t,8}), 'failed index');
+                assert(isa(cause,'MException'), 'cause');
+            end
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = buildGrids
+
+lltr = gridfile('test-lltr');
+lst = gridfile('test-lst');
+path1 = fullfile(pwd, "test-lltr");
+path2 = fullfile(pwd, "test-lst");
+badpath = fullfile(pwd, "not-a-file");
+
+tests = {
+    'single path', true, path1, lltr, 1, []
+    'multiple paths', true, [path1, path2], [lltr;lst], [1;2], []
+    'repeat paths', true, [path1, path1, path2, path1, path2, path2], [lltr;lst], [1;1;2;1;2;2], []
+    'path failed', false, [path1, badpath, path2], [], [], 2
+    };
+
+try
+    for t = 1:size(tests,1)
+        [grids, failed, cause] = stateVector.buildGrids(tests{t,3});
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            assert(isequal(grids, []), 'failed grids');
+            assert(isequal(failed, tests{t,6}), 'failed index');
+            assert(isa(cause, 'MException'), 'failed cause');
+        else
+            assert(isequaln(grids.gridfiles, tests{t,4}), '.gridfiles');
+            assert(isequal(grids.whichGrid, tests{t,5}), '.whichGrid');
+            assert(failed==0, 'failure index on success');
+            assert(isequal(cause,[]), 'cause on success');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = relocate
+
+path1 = fullfile(pwd, "test-lltr");
+path2 = fullfile(pwd, "test-lst");
+badpath = fullfile(pwd, "invalid.grid");
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip","SLP","X"],[path1;path1;path2;path2]);
+
+lltr = gridfile('test-lltr');
+lst = gridfile('test-lst');
+invalid = gridfile.new("invalid",gridMetadata('lat',1),true);
+delete(badpath);
+
+tests = {
+    '1 var, 1 path', true, 1, path1
+    'vars, 1 path', true, 1:2, path1
+    'vars paths', true, [1 3], [path1,path2]
+    'vars repeat paths', true,[1 3 2 4],[path1,path2,path1,path2]
+    'incorrect number of paths', false, 1:3, [path1,path1,path2,path2]
+    'failed path', false, 1:3, [path1,badpath,path2]
+    'failed 1 path', false, 1:3, path1
+    'invalid path', false, 1:3, [path1,path1,path1]
+    'invalid 1 path', false, 1:3 path1
+
+    '1 var, 1 object', true, 1, lltr
+    'vars, 1 object', true, 1:2, lltr
+    'vars objects', true, [1 3], [lltr,lst]
+    'vars repeat objects', true, [1 3 2 4], [lltr,lst,lltr,lst]
+    'incorrect number of objects', false, 1:3, [lltr,lltr,lst,lst]
+    'failed object', false, 1:3, [lltr,invalid,lst]
+    'invalid object', false, 1:3, [lltr,lltr,lltr]
+
+    'invalid grids', false, 1, 5
+    };
+header = "DASH:stateVector:relocate";
+
+try
+    for t = 1:size(tests,1)
+        obj = sv;
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.relocate(tests{t,3:4});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            obj = obj.relocate(tests{t,3:4});
+            assert(isequaln(obj, sv), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 

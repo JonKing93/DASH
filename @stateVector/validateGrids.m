@@ -6,6 +6,9 @@ function[failed, cause] = validateGrids(obj, grids, vars, header)
 %   recorded for specified variables in a state vector. If not, returns the
 %   index of the first failed variable and reports the cause of the
 %   failure.
+%
+%   ... = obj.validateGrids(grids, vars, header)
+%   Customize the header in returned error IDs.
 % ----------
 %   Inputs:
 %       grids (scalar struct): Organizes a set of unique gridfile objects
@@ -15,7 +18,7 @@ function[failed, cause] = validateGrids(obj, grids, vars, header)
 %               variable. Indices are on the interval 1:nGrids
 %       vars (vector, linear indices [nVariables]): The index of the variables
 %           for the gridfile objects within the set of state vector variables
-%       header (string scalar): Header for thrown error IDs
+%       header (string scalar): Header for returned error IDs
 %
 %   Outputs:
 %       failed (0 | scalar linear index): Set to 0 if the gridfile objects
@@ -24,6 +27,11 @@ function[failed, cause] = validateGrids(obj, grids, vars, header)
 %       cause (scalar MException): The cause of the failed variable
 %
 % <a href="matlab:dash.doc('stateVector.validateGrids')">Documentation Page</a>
+
+% Default header
+if ~exist('header','var') || isempty(header)
+    header = "DASH:stateVector:validateGrids";
+end
 
 % Cycle through state vector variables
 for k = 1:numel(vars)
