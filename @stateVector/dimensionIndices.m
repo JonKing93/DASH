@@ -9,7 +9,7 @@ function[indices, dimensions] = dimensionIndices(obj, v, dimensions, header)
 %   [indices, dimensions] = obj.dimensionIndices(v, dimensions)
 %   Also return the dimension names as a "string" data type.
 %
-%   indices = obj.dimensionIndices(v, dimensions, header)
+%   ... = obj.dimensionIndices(v, dimensions, header)
 %   Customize thrown error IDs.
 % ----------
 %   Inputs:

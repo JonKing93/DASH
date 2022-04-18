@@ -19,7 +19,8 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-rename
+dimensions
+dimensionIndices
 %%%
 
 % Run the tests
@@ -618,4 +619,101 @@ catch cause
 end
 
 end
+
+function[] = dimensions
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip"], 'test-lltr', false);
+sv = sv.add(["SLP","X"], 'test-lst', false);
+sv = sv.design(0, ["time","run"], 'ensemble');
+
+dims = ...
+    {["lon"    "lat"    "time"    "run"]
+     ["lon"    "lat"    "time"    "run"]
+     ["lev"    "site"    "time"        ]
+     ["lev"    "site"    "time"        ]};
+
+state = {["lon","lat"];["lon","lat"];["lev","site"];["lev","site"]};
+ens = {["time","run"];["time","run"];"time";"time"};
+
+tests = {
+    'no input', {}, dims
+    'empty', {[]}, dims
+    '0', {0}, dims
+    'indexed', {[3 1 1 4]}, dims([3,1,1,4])
+    'names', {["SLP","Temp","Temp","X"]}, dims([3 1 1 4])
+    
+    'all A', {0, 0}, dims
+    'all B', {0, 'all'}, dims
+    'state A', {0, 1}, state
+    'state B', {0, 'state'}, state
+    'ens A', {0, 2}, ens
+    'ens B', {0, 'ens'}, ens
+
+    'single variable', {1}, dims{1}
+    'single force cell', {1,[],'cell'}, dims(1)
+    'single default', {1,[],'default'}, dims{1}
+    'multiple force cell', {[3 1],[],'cell'}, dims([3 1])
+    'multiple default', {[3 1],[],'default'}, dims([3 1])
+    };
+
+try
+    for t = 1:size(tests,1)
+        out = sv.dimensions(tests{t,2}{:});
+        assert(isequal(out, tests{t,3}), 'output');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = dimensionIndices
+
+sv1 = stateVector;
+sv1 = sv1.add(["A","B"], "test-lltr");
+
+sv2 = stateVector;
+sv2 = sv2.add(["A","B"],["test-lltr","test-lst"]);
+
+tests = {
+    'all dims in all vars', true, sv1, ["time","lon","run"], [3 1 4;3 1 4]
+    'all dims in some vars', true, sv2, ["time","lat","site"], [3 2 0;3 0 2]
+    'some dims in no vars', false, sv2, ["time","bad"], []
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.dimensionIndices(1:2, tests{t,4}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            indices = obj.dimensionIndices(1:2, tests{t,4}, header);
+            assert(isequal(indices, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
+
+
+
+
+
 
