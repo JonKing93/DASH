@@ -1,6 +1,16 @@
 function[] = assertUnserialized(obj, header)
 %% stateVector.assertUnserialized  Throw error if state vector is serialized
 % ----------
+%   <strong>obj.assertUnserialized</strong>
+%   Throws an error if a gridfile array contains serialized objects.
+%
+%   <strong>obj.assertUnserialized</strong>(header)
+%   Customize the header in thrown error IDs.
+% ----------
+%   Inputs:
+%       header (string scalar): Header for thrown error IDs.
+%
+% <a href="matlab:dash.doc('stateVector.assertUnserialized')">Documentation Page</a>
 
 % Default header
 if ~exist('header','var') || isempty(header)
