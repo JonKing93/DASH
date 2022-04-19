@@ -19,10 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-buildGrids;
-parseGrids;
-validateGrids;
-relocate
+mean_
 %%%
 
 % Run the tests
@@ -711,6 +708,371 @@ end
 
 end
 
+function[] = sequence
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip"], 'test-lltr');
+sv = sv.add(["SLP","X"], 'test-lst');
+sv = sv.design(0, ["time","run"], 'ensemble');
+
+ts = (-2:2)';
+rs = [1;2];
+
+varsT = sv.variables_;
+for k = 1:4
+    varsT(k) = varsT(k).sequence(3, {ts}, {ts}, 'test');
+end
+varsTR = varsT;
+varsTR(1) = varsTR(1).sequence(4, {rs}, {rs}, 'test');
+varsTR(2) = varsTR(2).sequence(4, {rs}, {rs}, 'test');
+
+svT4 = sv;
+svT4.variables_ = varsT;
+svT4 = svT4.updateLengths(1:4);
+svT2 = sv;
+svT2.variables_([1 3]) = varsT([1 3]);
+svT2 = svT2.updateLengths(1:4);
+svTR = sv;
+svTR.variables_ = varsTR;
+svTR = svTR.updateLengths(1:4);
+
+header = "DASH:stateVector:sequence";
+tests = {
+    % test, should succeed, object, variables, dims, indices, metadata, output
+    '0', true, sv, {0, "time", ts, ts}, svT4
+    'indexed vars', true, sv, {[1 3], "time", ts, ts}, svT2
+    'repeat vars', false, sv, {[1 1], "time", ts, ts}, header
+    'invalid variable', false, sv, {"blarn", "time", 1, 1}, header
+
+    'mixed dims', true, sv, {1:4, ["time","run"], {ts,rs}, {ts,rs}}, svTR
+    'missing dim', false, sv, {1:4, "blarn", 1, 1}, header
+    'none', true, svTR, {1:4, ["time","run"], "none"}, sv
+    'inputs after none', false, svTR, {1:4, "time", "none", []}, 'MATLAB:TooManyInputs'
+    'invalid sequence parameters', false, sv, {1:4, "time", 100000000, 1}, header
+    'empty indices', true, svTR, {1:4, ["time","run"], "none"}, sv
+
+    'wrong number indices', false, sv, {1:4, ["time","run"], {ts}, {ts,rs}}, header
+    'invalid indices', false, sv, {1:4, "time", 2.2, 2.2}, header
+    '1 indices cell', true, sv, {1:4, "time", {ts}, {ts}}, svT4
+    '1 indices direct', true, sv, {1:4, "time", ts, {ts}}, svT4
+
+    'wrong number metadata', false, sv, {1:4, ["time","run"], {ts,rs}, {ts}}, header
+    'invalid metadata', false, sv, {1:4, "time", ts, reshape(ts,1,1,[])}, "DASH:gridMetadata"
+    '1 metadata cell', true, sv, {1:4, "time", ts, {ts}}, svT4
+    '1 metadata direct', true, sv, {1:4, "time", ts, ts}, svT4
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.sequence(tests{t,4}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,5}), 'invalid error');
+            
+        else
+            obj = obj.sequence(tests{t,4}{:});
+            assert(isequaln(obj, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = mean_
+
+sv = stateVector;
+sv2 = sv.add(["Temp","Precip"], 'test-lltr');
+sv2 = sv2.design(0, "time", 'ensemble');
+sv4 = sv2.add(["SLP","X"], 'test-lst');
+
+vars2L = sv2.variables_;
+vars2T = sv2.variables_;
+vars2LT = sv2.variables_;
+vars2LToo = sv2.variables_;
+vars2LToi = sv2.variables_;
+vars2LTw = sv2.variables_;
+
+for k = 1:2
+    vars2L(k)  = vars2L(k).mean(2, {[]}, false, 'test');
+    vars2T(k)  = vars2T(k).mean(3, {-2:2}, false, 'test');
+    vars2LT(k) = vars2L(k).mean(3, {-2:2}, false, 'test');
+
+    vars2LTw(k) = vars2LT(k).weightedMean(2:3, {1:20,1:5}, 'test');
+    vars2LToo(k) = vars2L(k).mean(2:3, {[],-2:2}, [true true], 'test');
+    vars2LToi(k) = vars2L(k).mean(2:3, {[],-2:2}, [true,false], 'test');
+end
+
+sv2L = sv2;
+sv2L.variables_ = vars2L;
+sv2L = sv2L.updateLengths(1:2);
+
+sv2T = sv2;
+sv2T.variables_ = vars2T;
+sv2T = sv2T.updateLengths(1:2);
+
+sv2LT = sv2;
+sv2LT.variables_ = vars2LT;
+sv2LT = sv2LT.updateLengths(1:2);
+
+sv2LTw = sv2;
+sv2LTw.variables_ = vars2LTw;
+sv2LTw = sv2LTw.updateLengths(1:2);
+
+sv2LToo = sv2;
+sv2LToo.variables_ = vars2LToo;
+sv2LToo = sv2LToo.updateLengths(1:2);
+
+sv2LToi = sv2;
+sv2LToi.variables_ = vars2LToi;
+sv2LToi = sv2LToi.updateLengths(1:2);
+
+sv4T2 = sv4;
+sv4T2.variables_(1:2) = vars2T;
+sv4T2 = sv4T2.updateLengths(1:2);
+
+sv4L = sv4;
+sv4L.variables_(1:2) = vars2L;
+sv4L = sv4L.updateLengths(1:2);
+
+header = "DASH:stateVector:mean";
+tests = {
+    '0', true, sv2, {0, "lat"}, sv2L
+    'indexed', true, sv4, {1:2, "time", -2:2}, sv4T2
+    'repeat vars', false, sv4, {[1 1 2], "lat"}, header
+    
+    'state, no indices', true, sv2, {0, "lat"}, sv2L
+    'state, empty indices', true, sv2, {0, "lat", []}, sv2L
+    'state, indices', false, sv2, {0 "lat", 1}, header
+    'ensemble, no indices', false, sv2, {0, "time"}, header
+    'ensemble, empty indices', false, sv2, {0, "time", []}, header
+    'ensemble, indices', true, sv2, {0 "time", -2:2}, sv2T
+    'wrong number indices', false, sv2, {0, ["lat","time"], {-2:2}}, header
+    
+    'mutliple dims', true, sv2, {0, ["lat","time"], {[],-2:2}}, sv2LT
+    'multiple dims, some invalid indices', false, sv2, {0, ["lat","time"], {1,-2:2}}, header
+    'mixed dims', true, sv4, {0, "lat"}, sv4L
+    'missing dim', false, sv4, {0, "blarn"}, header
+
+    'single omitnan', true, sv2, {0, ["lat","time"], {[],-2:2}, true}, sv2LToo
+    'vector omitnan', true, sv2, {0, ["lat","time"], {[],-2:2}, [true false]}, sv2LToi
+    'single nanflag', true, sv2, {0, ["lat","time"], {[],-2:2}, 'omitnan'}, sv2LToo
+    'vector nanflag', true, sv2, {0, ["lat","time"], {[],-2:2}, ["omitnan","includenan"]}, sv2LToi
+    'wrong number nanflag', false, sv2, {0, ["lat","time"], {[],-2:2}, true(3,1)}, header
+
+    'none', true, sv2LT, {0, ["lat","time"], "none"}, sv2
+    'inputs after none', false, sv2LT, {0, "lat", "none", []}, 'MATLAB:TooManyInputs'
+    'unweighted', true, sv2LTw, {0, ["lat","time"], "unweighted"}, sv2LT
+    'inputs after unweighted', false, sv2LTw, {0, "lat","unweighted", []}, 'MATLAB:TooManyInputs'
+    'unweighted dimensions with no mean', false, sv2LTw, {0, ["lat","lon"], "unweighted"}, header
+};
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.mean(tests{t,4}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,5}), 'invalid error');
+            
+        else
+            obj = obj.mean(tests{t,4}{:});
+            assert(isequaln(obj, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
+
+
+function[] = dispVariables
+
+%% No variables
+sv = stateVector;
+try
+    sv.dispVariables;
+catch
+    error('no variables');
+end
+
+% No variables with name
+try
+    sv.dispVariables('test');
+catch
+    error('no variables with name');
+end
+
+% variables
+sv = sv.add(["T","SLP"], 'test-lltr');
+try
+    sv.dispVariables;
+catch
+    error("variables");
+end
+
+% variables with name
+try
+    sv.dispVariables('test');
+catch
+    error('variables with name');
+end
+
+% Serialization link
+sv.isserialized = true;
+try
+    sv.dispVariables;
+catch
+    error('serialization link');
+end
+
+clc;
+
+end
+function[] = dispCoupled
+
+% No sets
+sv = stateVector;
+sets = {};
+try
+    sv.dispCoupled(sets);
+catch
+    error('no sets');
+end
+
+% Sets
+sv = sv.add(["Temp","Precip","SLP","X"], 'test-lltr');
+sets = {[1 2],[3 4]};
+try
+    sv.dispCoupled(sets);
+catch
+    error('coupling sets');
+end
+
+clc;
+
+end
+
+
+function[] = assertUnserialized
+
+svUn = stateVector;
+svSer = svUn;
+svSer.isserialized = true;
+svempty = svUn;
+svempty(1) = [];
+
+tests = {
+    'serialized scalar', false, svSer
+    'unserialized scalar', true, svUn
+    'empty array', true, svempty
+    'array unserialized', true, [svUn, svUn;svUn svUn];
+    'array with serialized elements', false, [svUn, svSer;svUn, svUn]
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                tests{t,3}.assertUnserialized(header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            tests{t,3}.assertUnserialized(header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+function[] = relocate
+
+path1 = fullfile(pwd, "test-lltr");
+path2 = fullfile(pwd, "test-lst");
+badpath = fullfile(pwd, "invalid.grid");
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip","SLP","X"],[path1;path1;path2;path2]);
+
+lltr = gridfile('test-lltr');
+lst = gridfile('test-lst');
+invalid = gridfile.new("invalid",gridMetadata('lat',1),true);
+delete(badpath);
+
+tests = {
+    '1 var, 1 path', true, 1, path1
+    'vars, 1 path', true, 1:2, path1
+    'vars paths', true, [1 3], [path1,path2]
+    'vars repeat paths', true,[1 3 2 4],[path1,path2,path1,path2]
+    'incorrect number of paths', false, 1:3, [path1,path1,path2,path2]
+    'failed path', false, 1:3, [path1,badpath,path2]
+    'failed 1 path', false, 1:3, path1
+    'invalid path', false, 1:3, [path1,path1,path1]
+    'invalid 1 path', false, 1:3 path1
+
+    '1 var, 1 object', true, 1, lltr
+    'vars, 1 object', true, 1:2, lltr
+    'vars objects', true, [1 3], [lltr,lst]
+    'vars repeat objects', true, [1 3 2 4], [lltr,lst,lltr,lst]
+    'incorrect number of objects', false, 1:3, [lltr,lltr,lst,lst]
+    'failed object', false, 1:3, [lltr,invalid,lst]
+    'invalid object', false, 1:3, [lltr,lltr,lltr]
+
+    'invalid grids', false, 1, 5
+    };
+header = "DASH:stateVector:relocate";
+
+try
+    for t = 1:size(tests,1)
+        obj = sv;
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.relocate(tests{t,3:4});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            obj = obj.relocate(tests{t,3:4});
+            assert(isequaln(obj, sv), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 function[] = validateGrids
 
 sv = stateVector;
@@ -854,68 +1216,6 @@ catch cause
 end
 
 end
-function[] = relocate
-
-path1 = fullfile(pwd, "test-lltr");
-path2 = fullfile(pwd, "test-lst");
-badpath = fullfile(pwd, "invalid.grid");
-
-sv = stateVector;
-sv = sv.add(["Temp","Precip","SLP","X"],[path1;path1;path2;path2]);
-
-lltr = gridfile('test-lltr');
-lst = gridfile('test-lst');
-invalid = gridfile.new("invalid",gridMetadata('lat',1),true);
-delete(badpath);
-
-tests = {
-    '1 var, 1 path', true, 1, path1
-    'vars, 1 path', true, 1:2, path1
-    'vars paths', true, [1 3], [path1,path2]
-    'vars repeat paths', true,[1 3 2 4],[path1,path2,path1,path2]
-    'incorrect number of paths', false, 1:3, [path1,path1,path2,path2]
-    'failed path', false, 1:3, [path1,badpath,path2]
-    'failed 1 path', false, 1:3, path1
-    'invalid path', false, 1:3, [path1,path1,path1]
-    'invalid 1 path', false, 1:3 path1
-
-    '1 var, 1 object', true, 1, lltr
-    'vars, 1 object', true, 1:2, lltr
-    'vars objects', true, [1 3], [lltr,lst]
-    'vars repeat objects', true, [1 3 2 4], [lltr,lst,lltr,lst]
-    'incorrect number of objects', false, 1:3, [lltr,lltr,lst,lst]
-    'failed object', false, 1:3, [lltr,invalid,lst]
-    'invalid object', false, 1:3, [lltr,lltr,lltr]
-
-    'invalid grids', false, 1, 5
-    };
-header = "DASH:stateVector:relocate";
-
-try
-    for t = 1:size(tests,1)
-        obj = sv;
-        shouldFail = ~tests{t,2};
-        if shouldFail
-            try
-                obj.relocate(tests{t,3:4});
-                error('did not fail');
-            catch ME
-            end
-            assert(contains(ME.identifier, header), 'invalid error');
-            
-        else
-            obj = obj.relocate(tests{t,3:4});
-            assert(isequaln(obj, sv), 'output');
-        end
-    end
-catch cause
-    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
-    ME = addCause(ME, cause);
-    throw(ME);
-end
-
-end
-
 
 
 

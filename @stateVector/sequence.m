@@ -102,8 +102,12 @@ else
     % Check metadata is valid and unique. Convert cellstring
     metadata = dash.parse.inputOrCell(metadata, nDims, "metadata", header);
     for k = 1:nDims
-        meta = gridMetadata(dimensions(k), metadata{k});
-        meta.assertUnique(dimensions(k), header);
+        try
+            meta = gridMetadata(dimensions(k), metadata{k});
+            meta.assertUnique(dimensions(k), header);
+        catch ME
+            throwAsCaller(ME);
+        end
         metadata{k} = meta.(dimensions(k));
     
         % Check metadata matches the number of sequence indices
