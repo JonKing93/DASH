@@ -25,8 +25,9 @@
 %   defined                 - Throw error if numeric array contains NaN, Inf, or complex values
 %
 % Indices:
-%   indices                 - Throw error if inputs are neither logical indices nor linear indices
+%   indices                 - Throw error if input is neither logical indices nor linear indices
 %   indexCollection         - Throw error if input is not a collection of indices
+%   additiveIndices         - Throw error if input is not a vector of additive indices
 %   additiveIndexCollection - Throw error if input is not a collection of additive indices
 %
 % Misc:

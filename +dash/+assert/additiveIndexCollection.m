@@ -26,20 +26,19 @@ if ~exist('header','var') || isempty(header)
     header = "DASH:assert:additiveIndexCollection";
 end
 
-% Parse cell vs single set of indices
+% Parse cell vs single set of indices. Get names of indices
 try
     [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indices', header);
+    for d = 1:nDims
+        name = dash.string.indexedDimension(dimNames(d), d, wasCell);
+
+        % Error check the indices
+        indices{d} = dash.assert.additiveIndices(indices{d}, name, header);
+    end
+
+% Minimize error stack
 catch ME
     throwAsCaller(ME);
-end
-
-% Get the name of each set of indices
-for d = 1:nDims
-    name = dash.string.indexedDimension(dimNames(d), d, wasCell);
-
-    % Check the indices are a vector of integers
-    dash.assert.vectorTypeN(indices{d}, 'numeric', [], name, header);
-    dash.assert.integers(indices{d}, name, header);
 end
 
 end

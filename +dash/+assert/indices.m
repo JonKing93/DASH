@@ -1,5 +1,5 @@
 function[indices] = indices(indices, length, name, logicalRequirement, linearMaxName, header)
-%% dash.assert.indices  Throw error if inputs are neither logical indices nor linear indices
+%% dash.assert.indices  Throw error if input is neither logical indices nor linear indices
 % ----------
 %   indices = dash.assert.indices(indices)
 %   Checks if input is a vector of logical or linear indices. If not throws

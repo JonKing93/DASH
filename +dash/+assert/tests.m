@@ -30,6 +30,7 @@ defined;
 
 indices;
 indexCollection;
+additiveIndices;
 additiveIndexCollection;
 
 fileExists(testpath);
@@ -410,9 +411,16 @@ end
 
 function[] = indices
 
+a = ones(3,3,3);
+a(:,:,:) = [];
+
 tests = {
+    % test, should succeed, indices, dimension length, name, logical name,
+    % linear name, output 
     'logical', true, [true;false;true;false], 4, [], [], [], [1;3]
     'linear', true, [4 7 1 1 9], 10, [], [], [], [4 7 1 1 9]
+    'empty', true, [], 10, [],[],[], []
+    'empty array', true, a, 10, [],[],[], []
     'not indices', false, struct('a',1), 5, [], [], [], []
     'not vector', false, [1 2;3 4], 4, [], [], [], []
     'logical wrong length', false, [true;true;false], 4, 'test1', 'test2', [], []
@@ -483,6 +491,45 @@ try
         else
             output = dash.assert.indexCollection(tests{t,3:6}, testHeader);
             assert(isequal(output, tests{t,7}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = additiveIndices
+
+a = ones(3,3,3);
+a(:,:,:) = [];
+
+tests = {
+    % test, should succeed, indices, name, output
+    'indices', true, -2:2, [], -2:2
+    'invalid indices', false, [1.1 2.2], 'test', []
+    'empty', true, [], [], []
+    'empty array', true, a, [], []
+    'not indices', false, struct('a',1), 'test', []
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                dash.assert.additiveIndices(tests{t,3:4}, header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'header');
+            assert(contains(ME.message, tests{t,4}), 'message');
+
+        else
+            output = dash.assert.additiveIndices(tests{t,3:4}, header);
+            assert(isequal(output, tests{t,5}), 'output');
         end
     end
 catch cause
