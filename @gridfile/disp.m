@@ -9,7 +9,7 @@ function[] = disp(obj, showSources)
 %   sizes, and (when printable) the limits of dimensional metadata. Prints
 %   metadata attributes if they exist. If there are data sources, prints
 %   the number of data sources and links to a display of all the data
-%   source file names.
+%   source file names. If the .grid file 
 %
 %   If the object is an array, includes the size of the array in the display.
 %   Instead of gridfile details, prints the name of the .grid file for each
@@ -21,6 +21,11 @@ function[] = disp(obj, showSources)
 %   contains deleted gridfile objects, notes that the array contains
 %   deleted elements. The file name of deleted elements is
 %   reported as <missing>.
+%
+%   If the .grid file for a scalar object is no longer valid, reports that
+%   the object has a invalid .grid file. Displays the name of the file and
+%   nothing else. If an element of a gridfile array has an invalid .grid
+%   file, lists the name of the file as usual.
 %
 %   <strong>disp</strong>(obj, showSources)
 %   <strong>obj.disp</strong>(showSources)
