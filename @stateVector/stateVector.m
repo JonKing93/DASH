@@ -206,7 +206,7 @@ classdef stateVector
                                        precision, showprogress, header);
 
         % Serialization
-        assertUnserialized(obj);
+        assertUnserialized(obj, header);
         s = serialize(obj);
         obj = deserialize(obj);
 

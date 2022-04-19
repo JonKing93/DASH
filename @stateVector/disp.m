@@ -1,8 +1,39 @@
 function[] = disp(obj, showVariables)
 %% stateVector.disp  Display stateVector object in console
+% ----------
+%   <strong>obj.disp</strong>
+%   Displays a stateVector object in the console. Begins display with a
+%   link to the stateVector documentation page. For a scalar stateVector
+%   object, lists the label and length, along with a list of variables and
+%   coupling status of the state vector. If the state vector contains 10 or
+%   less variables, displays the number of rows and dimensional properties
+%   associated with each variable. Also links to additional details for the
+%   variables. If there are more than 10 variables, provides a link to
+%   variable details. Also notes if the stateVector is serialized.
+%
+%   If a stateVector array, notes the size of the array. If empty,
+%   indicates that the array is empty. If any of the elements in the array
+%   are labeled, displays the labels of the array elements.
+%
+%   <strong>obj.disp</strong>(showVariables)
+%   <strong>obj.disp</strong>(true | 's' | 'show')
+%   <strong>obj.disp</strong>(false | 'h' | 'hide')
+%   Indicate whether variables or not to display variables in the console.
+% ----------
+%   Inputs:
+%       showVariables (scalar logical | string scalar): Whether or not to
+%           display variables for the state vector.
+%           [true|"s"|"show"]: Displays variables in the console
+%           [false|"h"|"hide"]: Does not display variables in the console
+%
+%   Outputs:
+%       Prints the contents of a stateVector object or array to the console
+%
+% <a href="matlab:dash.doc('stateVector.disp')">Documentation Page</a>
 
-% Parameters
+%%% Parameters
 MAXVARS = 10; % The maximum number of variables to display by default
+%%%
 
 % Parse showVariables
 header = "DASH:stateVector:disp";
@@ -18,8 +49,7 @@ link = '<a href="matlab:dash.doc(''stateVector'')">stateVector</a>';
 
 % If not scalar, display array size and exit
 if ~isscalar(obj)
-    info = dash.string.nonscalarObj(obj, link);
-    fprintf(info);
+    displayArray(obj, link);
     return
 end
 
@@ -87,6 +117,25 @@ if obj.nVariables>0
     else
         link = sprintf('<a href="matlab:%s.dispVariables">Show variables</a>', objName);
         fprintf('  %s\n\n', link);
+    end
+end
+
+end
+
+% Utility functions
+function[] = displayArray(obj, link)
+
+info = dash.string.nonscalarObj(obj, link);
+fprintf(info);
+
+if ~isempty(obj)
+    labels = strings(size(obj));
+    for k = 1:numel(obj)
+        labels(k) = obj(k).label;
+    end
+
+    if any(~strcmp(labels, ""))
+        disp(labels);
     end
 end
 

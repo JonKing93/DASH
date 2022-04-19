@@ -1,5 +1,26 @@
 function[] = dispVariables(obj, objName)
 %% stateVector.dispVariables  Display a list of state vector variables in the console
+% ----------
+%   <strong>obj.dispVariables</strong>
+%   Displays the state vector variables for the current state vector in the
+%   console. Indicates the number of rows for each variable and dimensional
+%   contributions to the rows. Also links to more full details for each
+%   variable. Console links are generated using the name of the object in
+%   the calling function.
+%
+%   If the state vector is serialized, only displays the length of each
+%   variable. Indicates that deserialization is required to display more
+%   details.
+%
+%   <strong>obj.dispVariables</strong>(objName)
+%   Indicate the name of the object to use when generating console
+%   hyperlinks.
+% ----------
+%   Inputs:
+%       objName (string scalar): The name to use for the state vector
+%           object when generating console hyperlinks.
+%
+% <a href="matlab:dash.doc('stateVector.dispVariables')">Documentation Page</a>
 
 % Default name
 if ~exist('objName','var') || isempty(objName)
