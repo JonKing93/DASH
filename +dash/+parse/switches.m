@@ -1,14 +1,14 @@
 function[switches] = switches(input, typeStrings, nSwitches, name, listName, header)
 %% dash.parse.switches  Parse inputs that are logical, numeric, or string switches
 % ----------
-%   switches = dash.assert.switches(input, typeStrings, nSwitches)
+%   switches = dash.parse.switches(input, typeStrings, nSwitches)
 %   Parses the states for a set of switches. Switch states are associated
 %   with collections of strings that indicate a particular state. As an
 %   alternative to strings, logical or numeric switch states may be used.
 %   Parses switch states for multiple switches. If the switch state is not
 %   scalar, requires a value for each switch.
 %
-%   ... = dash.assert.switches(..., name, listName, header)
+%   ... = dash.parse.switches(..., name, listName, header)
 %   Customize thrown error messages and identifiers.
 % ----------
 %   Inputs:

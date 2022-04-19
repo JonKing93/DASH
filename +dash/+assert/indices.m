@@ -53,13 +53,18 @@ if ~exist('header','var') || isempty(header)
     header = "DASH:assert:indices";
 end
 
-% Allow empty indexing
-if isequal(indices, [])
-    return;
+% Require logical or numeric type. Allow empty or vector
+try
+    dash.assert.type(indices, ["logical","numeric"], name, 'vector', header);
+    if isempty(indices)
+        indices = [];
+        return;
+    else
+        dash.assert.vectorTypeN(indices, [], [], name, header);
+    end
+catch ME
+    throwAsCaller(ME);
 end
-
-% Linear or numeric vector
-dash.assert.vectorTypeN(indices, ["logical","numeric"], [], name, header);
 
 % Logical indices
 if islogical(indices)

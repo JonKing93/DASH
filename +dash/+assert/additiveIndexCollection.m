@@ -27,7 +27,11 @@ if ~exist('header','var') || isempty(header)
 end
 
 % Parse cell vs single set of indices
-[indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indices', header);
+try
+    [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indices', header);
+catch ME
+    throwAsCaller(ME);
+end
 
 % Get the name of each set of indices
 for d = 1:nDims

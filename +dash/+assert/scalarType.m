@@ -41,7 +41,11 @@ if ~isscalar(input)
 
 % Type
 elseif ~isempty(types)
-    dash.assert.type(input, types, name, "scalar", idHeader);
+    try
+        dash.assert.type(input, types, name, "scalar", idHeader);
+    catch ME
+        throwAsCaller(ME);
+    end
 end
 
 end

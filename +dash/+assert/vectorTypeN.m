@@ -46,7 +46,11 @@ end
 
 % Type
 if ~isempty(types)
-    dash.assert.type(input, types, name, "vector", idHeader);
+    try
+        dash.assert.type(input, types, name, "vector", idHeader);
+    catch ME
+        throwAsCaller(ME);
+    end
 end
     
 % Length
