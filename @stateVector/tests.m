@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-mean_
+weightedMean
 %%%
 
 % Run the tests
@@ -847,6 +847,7 @@ tests = {
     '0', true, sv2, {0, "lat"}, sv2L
     'indexed', true, sv4, {1:2, "time", -2:2}, sv4T2
     'repeat vars', false, sv4, {[1 1 2], "lat"}, header
+    'invalid var', false, sv4, {"blarn",["lat"]}, header
     
     'state, no indices', true, sv2, {0, "lat"}, sv2L
     'state, empty indices', true, sv2, {0, "lat", []}, sv2L
@@ -899,7 +900,84 @@ catch cause
 end
 
 end
+function[] = weightedMean
 
+sv = stateVector;
+sv2 = sv.add(["Temp","Precip"], 'test-lltr');
+sv4 = sv2.add(["SLP","X"], 'test-lst');
+
+vars = sv4.variables_;
+varsL = vars;
+varsLm = vars;
+varsLT2 = vars;
+varsT = sv2.variables_;
+for k = 1:2
+    varsL(k) = varsL(k).weightedMean(2, {1:20}, 'test');
+    varsLm(k) = varsLm(k).mean(2, {[]}, false, 'test');
+    varsLT2(k) = varsL(k).weightedMean(3, {1:1000}, 'test');
+    varsT(k) = varsT(k).weightedMean(3, {1:1000}, 'test');
+end
+
+svT = sv2;
+svT.variables_ = varsT;
+svT = svT.updateLengths(1:2);
+
+svL = sv4;
+svL.variables_ = varsL;
+svL = svL.updateLengths(1:2);
+
+svLm = sv4;
+svLm.variables_ = varsLm;
+svLm = svLm.updateLengths(1:2);
+
+svLT2 = sv4;
+svLT2.variables_ = varsLT2;
+svLT2 = svLT2.updateLengths(1:2);
+
+header = "DASH:stateVector:weightedMean";
+tests = {
+    '0', true, sv2, {0, "time", 1:1000}, svT
+    'indexed', true, sv4, {1:2, "lat", 1:20}, svL
+    'repeat vars', false, sv4, {[2 2], "lat", 1:20}, header
+    'invalid var', false, sv4, {"blarn", "lat", 1:20}, header
+
+    'multiple dims', true, sv4, {1:2, ["lat","time"], {1:20, 1:1000}}, svLT2
+    'mixed dims', true, sv4, {1:4, "lat", 1:20}, svL
+    'missing dim', false, sv4, {1:4, "blarn", 1:20}, header
+
+    '1 weights, direct', true, sv4, {1:2, "lat", 1:20}, svL
+    '1 weights, cell', true, sv4, {1:2, "lat", {1:20}}, svL
+    'incorrect number of weights', false, sv4, {1:2, ["lat","time"], 1:20}, header
+    'invalid weights', false, sv4, {1:2, "lat", NaN(1,20)}, header
+    'array weights', false, sv4, {1:2, "lat", ones(4,5)}, header
+    'empty weights', true, svL, {1:4, "lat", []}, svLm
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.weightedMean(tests{t,4}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,5}), 'invalid error');
+            
+        else
+            obj = obj.weightedMean(tests{t,4}{:});
+            assert(isequaln(obj, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 

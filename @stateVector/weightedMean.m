@@ -3,7 +3,7 @@ function[obj] = weightedMean(obj, variables, dimensions, weights)
 % ----------
 %   obj = obj.weightedMean(0, ...)
 %   obj = obj.weightedMean(v, ...)
-%   obj = obj.weightedMean(variablesNames, ...)
+%   obj = obj.weightedMean(variableNames, ...)
 %   Updates weighted mean settings for the listed variables. If the first
 %   input is zero, applies the settings to every variable currently in the
 %   state vector.
@@ -57,7 +57,7 @@ function[obj] = weightedMean(obj, variables, dimensions, weights)
 % <a href="matlab:dash.doc('stateVector.weightedMean')">Documentation Page</a>
 
 % Setup
-header = "DASH:stateVector:mean";
+header = "DASH:stateVector:weightedMean";
 dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 obj.assertUnserialized;

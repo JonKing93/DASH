@@ -42,12 +42,18 @@ collectionName = obj.name;
 listType = 'variable names';
 
 % Parse the inputs
-v = dash.parse.stringsOrIndices(variables, obj.variableNames, name, elementName, ...
-        collectionName,  listType,  header);
+try
+    v = dash.parse.stringsOrIndices(variables, obj.variableNames, name, elementName, ...
+            collectionName,  listType,  header);
+    
+    % Check for repeats
+    if ~allowRepeats
+        dash.assert.uniqueSet(variables, 'Variable', header);
+    end
 
-% Check for repeats
-if ~allowRepeats
-    dash.assert.uniqueSet(variables, 'Variable', header);
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end
