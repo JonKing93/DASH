@@ -33,38 +33,42 @@ else
 end
 
 % Get stack and class info
-stack = dbstack('-completenames');
-type = class(obj);
-
-% When called from console, reference variable by name
-if numel(stack)==1
-    varName = inputname(1);
-    if strcmp(varName, "")
-        var1 = 'Input';
-        var2 = 'input';
+try
+    stack = dbstack('-completenames');
+    type = class(obj);
+    
+    % When called from console, reference variable by name
+    if numel(stack)==1
+        varName = inputname(1);
+        if strcmp(varName, "")
+            var1 = 'Input';
+            var2 = 'input';
+        else
+            var1 = sprintf('Variable "%s"', varName);
+            var2 = sprintf('"%s"', varName);
+        end
+        error(id, ['%s is not a scalar %s object. ',...
+            'Instead, %s is a %s%s array.'], var1, type, var2, empty, type);
+    
+    % Otherwise, report the command name.
     else
-        var1 = sprintf('Variable "%s"', varName);
-        var2 = sprintf('"%s"', varName);
-    end
-    ME = MException(id, ['%s is not a scalar %s object. ',...
-        'Instead, %s is a %s%s array.'], var1, type, var2, empty, type);
-    throwAsCaller(ME);
-
-% Otherwise, report the command name.
-else
-    [~, command] = fileparts(stack(2).file);
-
-    % Add suggestion if not empty
-    suggestion = '';
-    if ~isempty(obj)
-        suggestion = sprintf([' If you need to apply the "%s" command to ',...
-            'multiple %s objects, use a loop.'], command, type);
+        [~, command] = fileparts(stack(2).file);
+    
+        % Add suggestion if not empty
+        suggestion = '';
+        if ~isempty(obj)
+            suggestion = sprintf([' If you need to apply the "%s" command to ',...
+                'multiple %s objects, use a loop.'], command, type);
+        end
+    
+        % Report error
+        error(id, ['You cannot call the "%s" command on a %s%s array, because ',...
+            'the %s class only supports this command for scalar %s objects.%s'],...
+            command, empty, type, type, type, suggestion);
     end
 
-    % Report error
-    ME = MException(id, ['You cannot call the "%s" command on a %s%s array, because ',...
-        'the %s class only supports this command for scalar %s objects.%s'],...
-        command, empty, type, type, type, suggestion);
+% Minimize error stack
+catch ME
     throwAsCaller(ME);
 end
 

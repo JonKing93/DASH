@@ -37,24 +37,29 @@ if ~exist('header','var') || isempty(header)
 end
 
 % Throw error if there are an odd number of inputs
-if mod(numel(inputs),2)~=0
-    id = sprintf('%s:oddNumberOfInputs', header);
-    countInfo = '';
-    if nPrevious>0
-        countInfo = sprintf(' after the first %.f inputs', nPrevious);
+try
+    if mod(numel(inputs),2)~=0
+        id = sprintf('%s:oddNumberOfInputs', header);
+        countInfo = '';
+        if nPrevious>0
+            countInfo = sprintf(' after the first %.f inputs', nPrevious);
+        end
+        if ~strlength(extraInfo)==0
+            extraInfo = sprintf(' (%s)', extraInfo);
+        end
+        error(id, 'You must provide an even number of inputs%s.%s', countInfo, extraInfo);
     end
-    if ~strlength(extraInfo)==0
-        extraInfo = sprintf(' (%s)', extraInfo);
+    
+    % Get the names and values
+    names = dash.parse.vararginFlags(inputs, 2, nPrevious, header);
+    values = inputs(2:2:end);
+    if isrow(values)
+        values = values';
     end
-    ME = MException(id, 'You must provide an even number of inputs%s.%s', countInfo, extraInfo);
-    throwAsCaller(ME);
-end
 
-% Get the names and values
-names = dash.parse.vararginFlags(inputs, 2, nPrevious, header);
-values = inputs(2:2:end);
-if isrow(values)
-    values = values';
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end

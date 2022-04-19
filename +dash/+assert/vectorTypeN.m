@@ -38,26 +38,26 @@ if ~exist('idHeader','var') || isempty(idHeader)
 end
 
 % Vector
-if ~isvector(input)
-    id = sprintf('%s:inputNotVector', idHeader);
-    ME = MException(id, '%s must be a vector', name);
-    throwAsCaller(ME);
-end
-
-% Type
-if ~isempty(types)
-    try
-        dash.assert.type(input, types, name, "vector", idHeader);
-    catch ME
-        throwAsCaller(ME);
+try
+    if ~isvector(input)
+        id = sprintf('%s:inputNotVector', idHeader);
+        error(id, '%s must be a vector', name);
     end
-end
+
+    % Type
+    if ~isempty(types)
+        dash.assert.type(input, types, name, "vector", idHeader);
+    end
     
-% Length
-if ~isempty(length) && numel(input)~=length
-    id = sprintf('%s:inputWrongLength', idHeader);
-    ME = MException(id, '%s must have %.f elements, but it has %.f elements instead.', ...
-        name, length, numel(input));
+    % Length
+    if ~isempty(length) && numel(input)~=length
+        id = sprintf('%s:inputWrongLength', idHeader);
+        error(id, '%s must have %.f elements, but it has %.f elements instead.', ...
+            name, length, numel(input));
+    end
+
+% Minimize error stack
+catch ME
     throwAsCaller(ME);
 end
 

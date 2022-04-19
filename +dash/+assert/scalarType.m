@@ -34,18 +34,19 @@ if ~exist('idHeader','var') || isempty(idHeader)
 end
 
 % Scalar
-if ~isscalar(input)
-    id = sprintf('%s:inputNotScalar', idHeader);
-    ME = MException(id, '%s is not scalar', name);
-    throwAsCaller(ME);
+try
+    if ~isscalar(input)
+        id = sprintf('%s:inputNotScalar', idHeader);
+        error(id, '%s is not scalar', name);
 
-% Type
-elseif ~isempty(types)
-    try
+    % Type
+    elseif ~isempty(types)
         dash.assert.type(input, types, name, "scalar", idHeader);
-    catch ME
-        throwAsCaller(ME);
     end
+
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end

@@ -43,34 +43,30 @@ if ~exist('dimNames','var') || isempty(dimNames)
     dimNames = strings(1,nDims);
 end
 
-% Parse cell vs single set of indices
+% Parse cell vs single set of indices. Get names of indices and dimensions
 try
     [indices, wasCell] = dash.parse.inputOrCell(indices, nDims, 'indices', header);
-catch ME
-    throwAsCaller(ME);
-end
-
-% Get the name of the indices and the dimension
-for d = 1:nDims
-    [name, dim] = dash.string.indexedDimension(dimNames(d), d, wasCell);
-
-    % Get the dimension length
-    length = [];
-    if ~isempty(dimLengths)
-        length = dimLengths(d);
-    end
-
-    % Dimension length error strings
-    logicalRequirement = sprintf('be the length of %s', dim);
-    linearMax = sprintf('the length of %s', dim);
-
-    % Check the indices
-    try
+    for d = 1:nDims
+        [name, dim] = dash.string.indexedDimension(dimNames(d), d, wasCell);
+    
+        % Get the dimension length
+        length = [];
+        if ~isempty(dimLengths)
+            length = dimLengths(d);
+        end
+    
+        % Dimension length error strings
+        logicalRequirement = sprintf('be the length of %s', dim);
+        linearMax = sprintf('the length of %s', dim);
+    
+        % Check the indices
         indices{d} = dash.assert.indices(indices{d}, length, ...
             name, logicalRequirement, linearMax, header);
-    catch ME
-        throwAsCaller(ME);
     end
+
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end
