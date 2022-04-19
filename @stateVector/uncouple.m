@@ -1,21 +1,23 @@
 function[obj] = uncouple(obj, variables)
 %% stateVector.uncouple  Allow variables to use different metadata when building ensemble members
 % ----------
+%   obj = obj.uncouple
+%   obj = obj.uncouple(-1)
+%   Uncouples all the variables in the state vector. Uncoupled variables
+%   are not required to have matching metadata within an ensemble member.
+%
 %   obj = obj.uncouple(v)
 %   obj = obj.uncouple(variableNames)
-%   Uncouple the specified variables from one another. Uncoupled variables
-%   are not required to have matching metadata within an ensemble member.  
+%   Uncouples the specified variables from one another.
 %   Coupling is transitive, so unlisted variables that are coupled to two
 %   or more listed variables will also be uncoupled.
-%
-%   obj = obj.uncouple(-1)
-%   Uncouples all variables in the state vector.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector that should be coupled. Either a logical
 %           vector with one element per state vector variable, or a vector
-%           of linear indices.
+%           of linear indices. If -1, selects all variables in the state
+%           vector.
 %       variableNames (string vector): The names of variables in the state
 %           vector that should be coupled.
 %
@@ -31,11 +33,10 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Check user variables, get indices
-if isequal(variables, -1)
-    vUser = 1:obj.nVariables;
-else
-    vUser = obj.variableIndices(variables, true, header);
+if ~exist('variables','var')
+    variables = -1;
 end
+vUser = obj.variableIndices(variables, true, header);
 
 % Check each set of coupled variables for user-specified variables
 [sets, nSets] = obj.coupledIndices;

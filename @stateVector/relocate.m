@@ -1,10 +1,12 @@
 function[obj] = relocate(obj, variables, grids)
 %% stateVector.relocate  Update paths to the .grid files associated with state vector variables
 % ----------
+%   obj = <strong>obj.relocate</strong>(-1, ...)
 %   obj = <strong>obj.relocate</strong>(v, ...)
 %   obj = <strong>obj.relocate</strong>(variableNames, ...)
 %   Updates the .grid files associated with specified variables to a new
-%   set of .grid files.
+%   set of .grid files. If the first input is -1, updates all the variables
+%   in the state vector.
 %
 %   obj = <strong>obj.relocate</strong>(variables, gridPaths)
 %   obj = <strong>obj.relocate</strong>(variables, gridObjects)
@@ -12,11 +14,12 @@ function[obj] = relocate(obj, variables, grids)
 %   objects.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices [nVariables]): The indices of variables in
+%       v (logical vector | linear indices [nVariables] | -1): The indices of variables in
 %           the state vector whose .grid files should be updated. Either a
 %           logical vector with one element per state vector variable, or a
 %           vector of linear indices. If linear indices, may not contain
-%           repeated values.
+%           repeated values. If -1, selects all the variables in the state
+%           vector.
 %       variableNames (string vector [nVariables]): The names of variables in the state
 %           vector whose .grid files should be updated. May not contain
 %           repeat variable names.

@@ -14,8 +14,10 @@ function[length] = length(obj, variables)
 %   vector.
 % ----------
 %   Inputs:
-%       v (logical vector | vector, linear indices): The indices
-%           of the variables for which to return state vector lengths.
+%       v (logical vector | vector, linear indices | 0 | -1): The indices
+%           of the variables for which to return state vector lengths. If
+%           0, returns the length of the entire state vector. If -1,
+%           returns the lengths of every variable in the state vector.
 %       variableNames (string vector): The names of the variables in the 
 %           state vector for for which to return state vector lengths
 %
@@ -31,19 +33,11 @@ function[length] = length(obj, variables)
 header = "DASH:stateVector:length";
 dash.assert.scalarObj(obj, header);
 
-% Parse variables
+% Parse variables and return lengths
 if ~exist('variables','var') || isequal(variables,0)
-    v = 0;
-elseif isequal(variables, -1)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, true, header);
-end
-
-% Length of entire vector or variables
-if isequal(v,0)
     length = sum(obj.lengths);
 else
+    v = obj.variableIndices(variables, true, header);
     length = obj.lengths(v);
 end
 

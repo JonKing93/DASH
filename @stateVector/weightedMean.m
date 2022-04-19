@@ -1,11 +1,11 @@
 function[obj] = weightedMean(obj, variables, dimensions, weights)
 %% stateVector.weightedMean  Take a weighted mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.weightedMean(0, ...)
+%   obj = obj.weightedMean(-1, ...)
 %   obj = obj.weightedMean(v, ...)
 %   obj = obj.weightedMean(variableNames, ...)
 %   Updates weighted mean settings for the listed variables. If the first
-%   input is zero, applies the settings to every variable currently in the
+%   input is -1, applies the settings to every variable currently in the
 %   state vector.
 %
 %   obj = obj.weightedMean(variables, stateDimension, weights)
@@ -24,11 +24,12 @@ function[obj] = weightedMean(obj, variables, dimensions, weights)
 %   "stateVector.mean" method on the ensemble dimensions.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector over which to take a weighted mean. Either a logical
 %           vector with one element per state vector variable, or a vector
 %           of linear indices. If linear indices, may not contain repeated
-%           indices.
+%           indices. If -1, applies the settings to all variables in the
+%           state vector.
 %       variableNames (string vector): The names of variables in the state
 %           vector over which to take a weighted mean. May not contain
 %           repeated variable names.
@@ -63,11 +64,7 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check dimensions and variables, get indices
-if isequal(variables, 0)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, false, header);
-end
+v = obj.variableIndices(variables, false, header);
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

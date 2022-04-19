@@ -1,11 +1,11 @@
 function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %% stateVector.mean  Take a mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.mean(0, ...)
+%   obj = obj.mean(-1, ...)
 %   obj = obj.mean(v, ...)
 %   obj = obj.mean(variableNames, ...)
 %   Updates the settings for means for the listed variables. If the first
-%   input is 0, applies the settings to all variables currently in the state
+%   input is -1, applies the settings to all variables currently in the state
 %   vector.
 %
 %   obj = obj.mean(variables, stateDimension)
@@ -46,11 +46,11 @@ function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %   mean at all.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector over which to take a mean. Either a logical
 %           vector with one element per state vector variable, or a vector
 %           of linear indices. If linear indices, may not contain repeated
-%           indices.
+%           indices. If -1, selects every variable in the state vector.
 %       variableNames (string vector): The names of variables in the state
 %           vector over which to take a mean. May not contain
 %           repeated variable names.
@@ -108,11 +108,7 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Check variables and dimensions, get indices
-if isequal(variables, 0)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, false, header);
-end
+v = obj.variableIndices(variables, false, header);
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

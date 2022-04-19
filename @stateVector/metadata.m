@@ -1,11 +1,11 @@
 function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %% stateVector.metadata  Specify how to process metadata along dimensions of state vector variables
 % ----------
-%   obj = obj.metadata(0, ...)
+%   obj = obj.metadata(-1, ...)
 %   obj = obj.metadata(v, ...)
 %   obj = obj.metadata(variableNames, ...)
 %   Specifies how to process metadata for the listed variables. If the
-%   first input is 0, applies the settings to all variables currently in
+%   first input is -1, applies the settings to all variables currently in
 %   the state vector.
 %
 %   obj = obj.metadata(variables, dimensions, metadataType, ...)
@@ -57,11 +57,11 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %   convertedMetadata = conversionFunction(gridfile metadata, args{1}, args{2}, ... arg{N})
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector that should have metadata updated. Either a logical
 %           vector with one element per state vector variable, or a vector
 %           of linear indices. If linear indices, may not contain repeated
-%           indices.
+%           indices. If -1, selects all variables in the state vector.
 %       variableNames (string vector): The names of variables in the state
 %           vector that should have metadata updated. May not contain
 %           repeated variable names.
@@ -118,11 +118,7 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Error check variables and dimensions. Get indices
-if isequal(variables, 0)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, false, header);
-end
+v = obj.variableIndices(variables, false, header);
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 
 % Parse the metadata type

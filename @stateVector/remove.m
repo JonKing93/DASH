@@ -9,8 +9,9 @@ function[obj] = remove(obj, variables)
 %   Removes all variables from a state vector.
 % ----------
 %   Inputs:
-%       v (logical vector [nVariables] | vector, linear indices): The
-%           indices of the variables that should be removed from the state vector.
+%       v (logical vector [nVariables] | vector, linear indices | -1): The
+%           indices of the variables that should be removed from the state
+%           vector. If -1, removes all variables from the state vector.
 %       variableNames (string vector): The names of the variables that
 %           should be removed from the state vector.
 % 
@@ -26,12 +27,8 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 obj.assertUnserialized;
 
-% Error check variables, get indices
-if isequal(variables, -1)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, true, header);
-end
+% Get variable indices
+v = obj.variableIndices(variables, true, header);
 
 % Remove variables
 obj.variableNames(v,:) = [];

@@ -2,32 +2,30 @@ function[varargout] = overlap(obj, variables, allowOverlap)
 %% stateVector.overlap  Set whether ensemble members of variable can use overlapping, non-duplicate information
 % ----------
 %   allowOverlap = obj.overlap
-%   allowOverlap = obj.overlap([])
-%   allowOverlap = obj.overlap(0)
-%   Returns the overlap permissions for all variables in the state vector.
+%   allowOverlap = obj.overlap(-1)
+%   Return the overlap permissions of all variables in the state vector.
 %
 %   allowOverlap = obj.overlap(v)
 %   allowOverlap = obj.overlap(variableNames)
 %   Returns the overlap permissions for the indicated variables.
 %
-%   obj = obj.overlap(v, allowOverlap)
-%   obj = obj.overlap(variableNames, allowOverlap)
-%   Specifies whether the ensemble members of the indicated variables can
-%   use overlapping (but non-duplicate) information. Default is to prohibit
-%   overlap. Set to true to enable overlap for the indicated variables.
+%   obj = obj.overlap(variables, allowOverlap)
+%   obj = obj.overlap(variables, true|"a"|"allow")
+%   obj = obj.overlap(variables, false|"p"|"prohibit")
+%   Specify whether the ensemble members of indicated variables can use 
+%   overlapping (but non-duplicate) information. Default is to prohibit
+%   overlap.
 % ----------
 %   Inputs:
-%       v (logical vector [nVariables] | vector, linear indices [nInput]): The
-%           indices of the variables that should have overlap permissions
-%           adjusted.
-%       variableNames (string vector [nInput]): The names of the variables that
+%       v (logical vector | vector, linear indices [nVariables] | -1): The
+%           indices of the variables for which to set or return overlap
+%           permissions. If -1, selects all variables in the state vector.
+%       variableNames (string vector [nVariables]): The names of the variables that
 %           should have overlap permissions adjusted.
 %       allowOverlap (scalar logical | logical vector [nInput]): The overlap
-%           permissions for the input variables. Set to true to allow
-%           overlap. Set to false (default) to prohibit overlap. If scalar,
-%           applies the same setting to all input variables. If a vector,
-%           must have one element per input variable, and applies the
-%           indicated setting to each variable.
+%           permissions to use for the listed variables.
+%           [true|"a"|"allow"]: Allow ensemble members to use overlapping data
+%           [false|"p"|"prohibit"]: Prohibit overlapping ensemble members
 %
 %   Outputs:
 %       allowOverlap (logical vector [nVariables | nInput]): Lists the current 
@@ -42,30 +40,27 @@ function[varargout] = overlap(obj, variables, allowOverlap)
 header = "DASH:stateVector:overlap";
 dash.assert.scalarObj(obj, header);
 
-% Return all permissions
-if ~exist('variables','var') || isempty(variables) || isequal(variables,0)
-    assert(~exist('allowOverlap','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
-    varargout = {obj.allowOverlap};
-    return;
-end
-
-% Additional error checking when setting values
-allowRepeats = true;
-if exist('allowOverlap','var') && ~isempty(allowOverlap)
+% Allow or prohibit repeat variables for returning/setting values
+if ~exist('allowOverlap','var')
+    allowRepeats = true;
+else
     allowRepeats = false;
-    obj.assertEditable;
 end
 
 % Parse variable indices
+if ~exist('variables','var')
+    variables = -1;
+end
 v = obj.variableIndices(variables, allowRepeats, header);
 
 % Return values
 if allowRepeats
     varargout = {obj.allowOverlap(v)};
 
-% Set values
+% Require editable if setting values
 else
-    dash.assert.logicalSwitches(allowOverlap, numel(v), 'allowOverlap', header);
+    obj.assertEditable;
+    allowOverlap = dash.assert.logicalSwitches(allowOverlap, numel(v), 'allowOverlap', header);
     obj.allowOverlap(v) = allowOverlap;
 end
 

@@ -2,8 +2,7 @@ function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %% stateVector.dimensions  Return the dimensions associated with state vector variables
 % ----------
 %   dimensions = obj.dimensions
-%   dimensions = obj.dimensions([])
-%   dimensions = obj.dimensions(0)
+%   dimensions = obj.dimensions(-1)
 %   Return the names of dimensions associated with each variable in the
 %   state vector.
 %
@@ -30,8 +29,9 @@ function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %   are always returned as a cell vector of string row vectors.
 % ----------
 %   Inputs:
-%       v (vector, logical | linear indices [nVariables]): The indices of the variables
-%           in the state vector for which to return dimension names.
+%       v (vector, logical | linear indices [nVariables] | -1): The indices of the variables
+%           in the state vector for which to return dimension names. If -1,
+%           selects all variables in the state vector.
 %       variableNames (string vector [nVariables]): The names of variables
 %           in the state vector for which to return dimension names.
 %       cellOutput (scalar logical | string scalar): Whether to always
@@ -75,11 +75,10 @@ else
 end
 
 % Parse variable indices
-if ~exist('variables','var') || isempty(variables) || isequal(variables, 0)
-    vars = 1:obj.nVariables;
-else
-    vars = obj.variableIndices(variables, true, header);
+if ~exist('variables','var') 
+    variables = -1;
 end
+vars = obj.variableIndices(variables, true, header);
 
 % Preallocate
 nVars = numel(vars);

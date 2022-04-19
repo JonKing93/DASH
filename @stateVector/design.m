@@ -1,11 +1,11 @@
 function[obj] = design(obj, variables, dimensions, types, indices)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
-%   obj = obj.design(0, ...)
+%   obj = obj.design(-1, ...)
 %   obj = obj.design(v, ...)
 %   obj = obj.design(variableNames, ...)
 %   Designs the dimensions of the listed variables. If the first input is
-%   0, applies the design settings to all variables currently in the state
+%   -1, applies the design settings to all variables currently in the state
 %   vector.
 %
 %   obj = obj.design(variables, dimensions, types)
@@ -32,11 +32,11 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %   for selecting ensemble members.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector that should be designed. Either a logical
 %           vector with one element per state vector variable, or a vector
 %           of linear indices. If linear indices, may not contain repeated
-%           indices.
+%           indices. If -1, selects all variables in the state vector.
 %       variableNames (string vector): The names of variables in the state
 %           vector whose dimensions should be designed. May not contain
 %           repeated variable names.
@@ -90,11 +90,7 @@ if isempty(types)
 end
 
 % Error check variables and dimensions. Get indices.
-if isequal(variables, 0)
-    v = 1:obj.nVariables;
-else
-    v = obj.variableIndices(variables, false, header);
-end
+v = obj.variableIndices(variables, false, header);
 [d, dimensions] = obj.dimensionIndices(v, dimensions, header);
 nDims = numel(dimensions);
 

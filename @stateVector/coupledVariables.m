@@ -5,20 +5,20 @@ function[varargout] = coupledVariables(obj, variables)
 %   obj.coupledVariables(0)
 %   Prints the sets of coupled variables to the console.
 %
-%   [namesInSets, indicesInSets] = obj.coupledVariables
-%   ... = obj.coupledVariables(0)
-%   Returns the names of coupled variables in the state vector. The names
-%   are organized in a cell vector with one element per set of coupled
-%   variables. Each element holds a list of variable names that are coupled
-%   to one another. Also returns the indices of the variables in each
-%   coupled set.
-%
 %   obj.coupledVariables(-1)
 %   obj.coupledVariables(v)
 %   obj.coupledVariables(variableNames)
 %   Prints the sets of variables that are coupled to each of the listed
 %   variables. If the first input is -1, prints the variables coupled to
-%   every vector in the state vector.
+%   each variable in the state vector.
+%
+%   [namesInSets, indicesInSets] = obj.coupledVariables
+%   [namesInSets, indicesInSets] = obj.coupledVariables(0)
+%   Returns the names of coupled variables in the state vector. The names
+%   are organized in a cell vector with one element per set of coupled
+%   variables. Each element holds a list of variable names that are coupled
+%   to one another. Also returns the indices of the variables in each
+%   coupled set.
 %
 %   [names, indices] = obj.coupledVariables(-1)
 %   [names, indices] = obj.coupledVariables(v)
@@ -28,8 +28,11 @@ function[varargout] = coupledVariables(obj, variables)
 %   every variable in the state vector.
 % ----------
 %   Inputs:
-%       v (logical vector | vector [nVariables], linear indices): The indices
-%           of the variables for which to return coupled variables.
+%       v (logical vector | vector [nVariables], linear indices | 0 | -1): The indices
+%           of the variables for which to return coupled variables. If 0,
+%           provides global information about coupling in the state vector.
+%           If -1, returns the coupled variables for each variable in the
+%           state vector.
 %       variableNames (string vector [nVariables]): The names of the variables in the 
 %           state vector for for which to return coupled variables
 %
@@ -51,7 +54,7 @@ function[varargout] = coupledVariables(obj, variables)
 header = "DASH:stateVector:coupledVariables";
 dash.assert.scalarObj(obj, header);
 
-%% Returning set information
+%% Returning global set information
 if ~exist('variables','var') || isequal(variables, 0)
     
     % Get sets of coupled variables
@@ -82,11 +85,7 @@ if ~exist('variables','var') || isequal(variables, 0)
 else
 
     % Error check variables.
-    if isequal(variables, -1)
-        vars = 1:obj.nVariables;
-    else
-        vars = obj.variableIndices(variables, true, header);
-    end
+    vars = obj.variableIndices(variables, true, header);
 
     % Preallocate
     nVars = numel(vars);

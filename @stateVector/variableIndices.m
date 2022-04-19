@@ -27,6 +27,12 @@ function[v] = variableIndices(obj, variables, allowRepeats, header)
 %
 % <a href="matlab:dash.doc('stateVector.variableIndices')">Documentation Page</a>
 
+% Shortcut for returning all variables
+if isequal(variables, -1)
+    v = 1:obj.nVariables;
+    return
+end
+
 % Defaults
 if ~exist('allowRepeats','var') || isempty(allowRepeats)
     allowRepeats = true;

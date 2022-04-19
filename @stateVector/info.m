@@ -3,11 +3,11 @@ function[info] = info(obj, variables)
 % ----------
 %   vectorInfo = <strong>obj.info</strong>
 %   vectorInfo = <strong>obj.info</strong>(0)
-%   Returns a structure with information about a state vector.
+%   Returns a structure with global information about a state vector.
 %
-%   variableInfo = <strong>obj.info(-1)</strong>
-%   Returns a structure array with detailed information about all of the
-%   variables in the state vector.
+%   variableInfo = <strong>obj.info</strong>(-1)
+%   Returns a structure array with detailed information about every
+%   variable in the state vector.
 %
 %   variableInfo = <strong>obj.info</strong>(v)
 %   variableInfo = <strong>obj.info</strong>(variableNames)
@@ -15,8 +15,10 @@ function[info] = info(obj, variables)
 %   variables in the state vector.
 % ----------
 %   Inputs:
-%       v (logical vector | vector, linear indices): The indices of the
+%       v (logical vector | vector, linear indices | 0 | -1): The indices of the
 %           variables in the state vector for which to return information.
+%           If 0, returns global information about the state vector. If -1,
+%           returns information about every variable in the state vector.
 %       variableNames (string vector): The names of the variables in the 
 %           state vector for which to return information.
 
@@ -24,21 +26,17 @@ function[info] = info(obj, variables)
 header = "DASH:stateVector:info";
 dash.assert.scalarObj(obj, header);
 
-% Parse variables, require unserialized if returning variable information
+% Global information
 if ~exist('variables','var') || isequal(variables, 0)
-    v = 0;
+    info = vectorInfo(obj);
+
+% Require unserialized to return variable information
 elseif obj.isserialized
     serializedVariableError(obj);
-elseif isequal(variables, -1)
-    v = 1:obj.nVariables;
+
+% Parse variables and return info
 else
     v = obj.variableIndices(variables, true, header);
-end
-
-% Information about the entire vector or certain variables
-if isequal(v, 0)
-    info = vectorInfo(obj);
-else
     info = variablesInfo(obj, v);
 end
 

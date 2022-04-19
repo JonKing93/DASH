@@ -1,8 +1,12 @@
 function[obj] = autocouple(obj, setting, variables)
 %% stateVector.autocouple  Set whether variables are automatically coupled to new variables in a state vector
 % ----------
+%   obj = obj.autocouple
+%   Indicates that the variables in a state vector should automatically be
+%   coupled to new variables added to the state vector.
+%
 %   obj = obj.autocouple(setting)
-%   obj = obj.autocouple(setting, 0)
+%   obj = obj.autocouple(setting, -1)
 %   Specify whether the variables in a state vector should be
 %   automatically coupled to new variables added to the state vector.
 %
@@ -27,10 +31,11 @@ function[obj] = autocouple(obj, setting, variables)
 %           should be automatically coupled to new variables.
 %           [true|"a"|"auto"|"automatic"]: Automatically couple the variables
 %           [false|"m"|"man"|"manual"]: Do not automatically couple the variables
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector that should have their autocoupling settings
-%           updated. Either a logical vector with one element per state 
-%           vector variable, or a vector of linear indices.
+%           updated. A logical vector with one element per state 
+%           vector variable, or a vector of linear indices. If -1, selects
+%           all variables in the state vector.
 %       variableNames (string vector): The names of variables
 %           in the state vector that should have their autocoupling
 %           settings updated.
@@ -52,12 +57,11 @@ autoSetting = dash.parse.switches(setting, offOn, 1, 'setting', ...
     'recognized auto-coupling setting', header);
 
 % Check variables, get indices
-if ~exist('variables','var') || isequal(variables, 0)
-    vUser = 1:obj.nVariables;
-else
-    vUser = obj.variableIndices(variables, true, header);
-    vUser = unique(vUser);
+if ~exist('variables','var')
+    variables = -1;
 end
+vUser = obj.variableIndices(variables, true, header);
+vUser = unique(vUser);
 
 % Update coupling status as appropriate
 if ~autoSetting

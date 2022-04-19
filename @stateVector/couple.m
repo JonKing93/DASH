@@ -1,9 +1,9 @@
 function[obj] = couple(obj, variables)
 %% stateVector.couple  Match variable metadata when building ensemble members
 % ----------
-%   obj = obj.couple(v)
-%   obj = obj.couple(variableNames)
-%   Couples the specified variables to one another. Coupled variables
+%   obj = obj.couple
+%   obj = obj.couple(-1)
+%   Couples all the variables in the state vector to one another. Coupled variables
 %   are required to have matching metadata within ensemble members of a
 %   state vector ensemble. This ensures that, within an ensemble member,
 %   the data from multiple variables all refer to the same point. By
@@ -15,14 +15,18 @@ function[obj] = couple(obj, variables)
 %   Only the status of a dimension as an ensemble/state dimension is
 %   updated.
 %
+%   obj = obj.couple(v)
+%   obj = obj.couple(variableNames)
+%   Couples the specified variables to one another. 
 %   Coupling is transitive, so unlisted variables that are coupled to one
 %   of the listed variables will also be coupled.
 % ----------
 %   Inputs:
-%       v (logical vector | linear indices): The indices of variables in
+%       v (logical vector | linear indices | -1): The indices of variables in
 %           the state vector that should be coupled. Either a logical
 %           vector with one element per state vector variable, or a vector
-%           of linear indices.
+%           of linear indices. If -1, selects all variables in the state
+%           vector.
 %       variableNames (string vector): The names of variables
 %           in the state vector that should be coupled.
 %
@@ -39,6 +43,9 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Check user variables, get indices
+if ~exist('variables','var')
+    variables = -1;
+end
 vUser = obj.variableIndices(variables, true, header);
 
 % Get the full set of variables being coupled.
