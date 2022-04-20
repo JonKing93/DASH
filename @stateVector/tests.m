@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-metadata
+serialization
 %%%
 
 % Run the tests
@@ -68,8 +68,7 @@ addMembers;
 buildEnsemble;
 
 assertUnserialized;
-serialize;
-deserialize;
+serialization;
 
 info;
 variable;
@@ -1118,6 +1117,136 @@ end
 
 end
 
+function[] = overlap
+
+sv = stateVector;
+sv = sv.add(["A","B","C","D"], 'test-lltr');
+sv.allowOverlap = [true;false;true;false];
+
+svF = sv;
+svF.allowOverlap = false(4,1);
+svF1 = sv;
+svF1.allowOverlap(1) = false;
+sv2 = sv;
+sv2.allowOverlap = [true;true;false;false];
+
+tests = {
+    % test, should succeed, inputs, output
+    'return, no inputs', true, {}, [true;false;true;false]
+    'return, -1', true, {-1}, [true;false;true;false]
+    'return, indexed', true, {[1 3]}, [true;true]
+    'return, repeat vars', true, {[1 1 3 4 4]}, [true;true;true;false;false]
+    'return, invalid var', false, {5}, []
+
+    'set, -1', true, {-1, false}, svF
+    'set, indexed', true, {1, false}, svF1
+    'set, repeat', false, {[1 1], false}, []
+    'set, invalid var', false, {5, false}, []
+
+    'single setting', true, {-1, false}, svF
+    'vector setting', true, {-1, [true;true;false;false]}, sv2
+    'incorrect number of settings', false, {-1 , [true;true;false]}, []
+    };
+header = "DASH:stateVector:overlap";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.overlap(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = sv.overlap(tests{t,3}{:});
+            assert(isequaln(out, tests{t,4}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+function[] = assertUnserialized
+
+svUn = stateVector;
+svSer = svUn;
+svSer.isserialized = true;
+svempty = svUn;
+svempty(1) = [];
+
+tests = {
+    'serialized scalar', false, svSer
+    'unserialized scalar', true, svUn
+    'empty array', true, svempty
+    'array unserialized', true, [svUn, svUn;svUn svUn];
+    'array with serialized elements', false, [svUn, svSer;svUn, svUn]
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                tests{t,3}.assertUnserialized(header);
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            tests{t,3}.assertUnserialized(header);
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = serialization
+
+%% Unfinalized
+sv = stateVector('my sv label');
+sv = sv.add(["Temp","Precip"], 'test-lltr', false);
+sv = sv.add(["SLP","X"], 'test-lst', [true false]);
+sv = sv.uncouple;
+sv = sv.design(-1, 'time', 'ensemble');
+sv = sv.couple([1 3]);
+sv = sv.overlap([2 3], 'allow');
+
+assert(~sv.isserialized, 'initial isserialized');
+svs = sv.serialize;
+assert(svs.isserialized, 'post isserialized');
+sv2 = svs.deserialize;
+assert(isequaln(sv, sv2), 'deserialized');
+
+%% Finalized
+sv = stateVector('my sv label');
+sv = sv.add(["Temp","Precip"], 'test-lltr', false);
+sv = sv.add(["SLP","X"], 'test-lst', false);
+sv = sv.couple(1:2);
+sv = sv.couple(3:4);
+sv = sv.design(-1, ["time","run"], 'ensemble');
+
+sv.iseditable = false;
+sv.unused = {(1:4000)', (1:2000)'};
+sv.subMembers = {rand(345,2), rand(345,1)};
+
+svs = sv.serialize;
+sv2 = svs.deserialize;
+assert(isequaln(sv, sv2), 'finalized deserialized');
+
+end
+
 
 
 function[] = dispVariables
@@ -1184,47 +1313,6 @@ catch
 end
 
 clc;
-
-end
-
-
-function[] = assertUnserialized
-
-svUn = stateVector;
-svSer = svUn;
-svSer.isserialized = true;
-svempty = svUn;
-svempty(1) = [];
-
-tests = {
-    'serialized scalar', false, svSer
-    'unserialized scalar', true, svUn
-    'empty array', true, svempty
-    'array unserialized', true, [svUn, svUn;svUn svUn];
-    'array with serialized elements', false, [svUn, svSer;svUn, svUn]
-    };
-header = "test:header";
-
-try
-    for t = 1:size(tests,1)
-        shouldFail = ~tests{t,2};
-        if shouldFail
-            try
-                tests{t,3}.assertUnserialized(header);
-                error('did not fail');
-            catch ME
-            end
-            assert(contains(ME.identifier, header), 'invalid error');
-            
-        else
-            tests{t,3}.assertUnserialized(header);
-        end
-    end
-catch cause
-    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
-    ME = addCause(ME, cause);
-    throw(ME);
-end
 
 end
 

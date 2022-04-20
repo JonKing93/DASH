@@ -17,7 +17,10 @@ function[obj] = serialize(obj)
 header = "DASH:stateVector:serialize";
 dash.assert.scalarObj(obj, header);
 
-% Note serialization
+% If already serialized, exit. Otherwise, note serialization
+if obj.isserialized
+    return
+end
 obj.isserialized = true;
 
 % Serialize variables
@@ -25,7 +28,7 @@ if ~isempty(obj.variables_)
     obj.variables_ = obj.variables_.serialize;
 end
 
-% If still editable, there are no ensemble members. Finished so exit
+% Exit if there are no ensemble members.
 if obj.iseditable
     return
 end

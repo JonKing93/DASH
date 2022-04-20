@@ -14,20 +14,36 @@ function[obj] = deserialize(obj)
 header = "DASH:stateVector:deserialize";
 dash.assert.scalarObj(obj, header);
 
-% Rebuild unused members
-obj.unused = mat2cell(obj.unused, obj.nUnused, 1)';
-
-% Rebuild subMembers
-nSets = numel(obj.nEnsDims);
-nElements = obj.nMembers * obj.nEnsDims;
-subMembers = mat2cell(obj.subMembers, nElements, 1)';
-for k = 1:nSets
-    subMembers{k} = reshape(subMembers{k}, obj.nMembers, obj.nEnsDims(k));
+% Exit if not serialized. Note change in serialization status
+if ~obj.isserialized
+    return
 end
-obj.subMembers = subMembers;
+obj.isserialized = false;
 
 % Rebuild variables
 obj.variables_ = dash.stateVectorVariable.deserialize(obj.variables_);
+
+% If still editable, there are no ensemble members. Finished so exit
+if obj.iseditable
+    return
+end
+
+% Rebuild unused members
+obj.unused = mat2cell(obj.unused, obj.nUnused_serialized, 1)';
+
+% Rebuild subMembers
+nSets = numel(obj.nEnsDims_serialized);
+nElements = obj.nMembers_serialized * obj.nEnsDims_serialized;
+subMembers = mat2cell(obj.subMembers, nElements, 1)';
+for k = 1:nSets
+    subMembers{k} = reshape(subMembers{k}, obj.nMembers_serialized, obj.nEnsDims_serialized(k));
+end
+obj.subMembers = subMembers;
+
+% Clear serialization properties
+obj.nMembers_serialized = [];
+obj.nUnused_serialized = [];
+obj.nEnsDims_serialized = [];
 
 end
 
