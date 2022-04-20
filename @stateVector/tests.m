@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-weightedMean
+metadata
 %%%
 
 % Run the tests
@@ -347,8 +347,12 @@ sv = svEmpty.add(["A","B","C"], 'test-lltr');
 sv0 = sv.extract([]);
 assert(isequaln(svEmpty, sv0), 'extract none');
 
-% Extract all
+% Extract mixed all
 sva = sv.extract([3 1 2]);
+assert(isequaln(sva, sv), 'extract mixed all');
+
+% Extract all
+sva = sv.extract(-1);
 assert(isequaln(sva, sv), 'extract all');
 
 % Duplicate extract
@@ -447,7 +451,8 @@ sv = sv.add(["A","test","tes","a_long_name","variable5"], 'test-lltr');
 
 
 tests = {
-    % test, should succeed, allow repeat, output
+    % test, should succeed, input, allow repeat, output
+    '-1', true, -1, true, 1:5
     'index', true, 3, true, 3
     'indices', true, [2 4 3], true, [2 4 3]
     'repeat mixed indices', true, [3 3 1 4], true, [3 3 1 4]
@@ -500,7 +505,7 @@ sv = sve.add(names, 'test-lltr');
 tests = {
     'no input', true, sv, {}, names
     'empty', true, sv, {[]}, names
-    '0', true, sv, {0}, names
+    '-1', true, sv, {-1}, names
     'list all, but no variables', true, sve, {}, strings(0,1)
     'index', true, sv, {2}, "test"
     'mixed repeat indices', true, sv, {[3 1 1 4]}, ["var3";"A";"A";"another"]
@@ -624,7 +629,7 @@ function[] = dimensions
 sv = stateVector;
 sv = sv.add(["Temp","Precip"], 'test-lltr', false);
 sv = sv.add(["SLP","X"], 'test-lst', false);
-sv = sv.design(0, ["time","run"], 'ensemble');
+sv = sv.design(-1, ["time","run"], 'ensemble');
 
 dims = ...
     {["lon"    "lat"    "time"    "run"]
@@ -638,7 +643,7 @@ ens = {["time","run"];["time","run"];"time";"time"};
 tests = {
     'no input', {}, dims
     'empty', {[]}, dims
-    '0', {0}, dims
+    '-1', {-1}, dims
     'indexed', {[3 1 1 4]}, dims([3,1,1,4])
     'names', {["SLP","Temp","Temp","X"]}, dims([3 1 1 4])
     
@@ -713,7 +718,7 @@ function[] = sequence
 sv = stateVector;
 sv = sv.add(["Temp","Precip"], 'test-lltr');
 sv = sv.add(["SLP","X"], 'test-lst');
-sv = sv.design(0, ["time","run"], 'ensemble');
+sv = sv.design(-1, ["time","run"], 'ensemble');
 
 ts = (-2:2)';
 rs = [1;2];
@@ -739,7 +744,7 @@ svTR = svTR.updateLengths(1:4);
 header = "DASH:stateVector:sequence";
 tests = {
     % test, should succeed, object, variables, dims, indices, metadata, output
-    '0', true, sv, {0, "time", ts, ts}, svT4
+    '-1', true, sv, {-1, "time", ts, ts}, svT4
     'indexed vars', true, sv, {[1 3], "time", ts, ts}, svT2
     'repeat vars', false, sv, {[1 1], "time", ts, ts}, header
     'invalid variable', false, sv, {"blarn", "time", 1, 1}, header
@@ -786,11 +791,103 @@ catch cause
 end
 
 end
+function[] = metadata
+
+sv = stateVector;
+sv2 = sv.add(["Temp","Precip"], 'test-lltr');
+sv4 = sv2.add(["SLP","X"], 'test-lst');
+
+vars = sv2.variables_;
+varsL = vars;
+varsLc = vars;
+varsLc0 = vars;
+varsLT = vars;
+
+for k = 1:2
+    varsL(k) = varsL(k).metadata(2, 1, {(101:120)'}, [], 'test');
+    varsLc(k) = varsLc(k).metadata(2, 2, {@plus}, {{100}}, 'test');
+    varsLc0(k) = varsLc0(k).metadata(2, 2, {@plus}, {{}}, 'test');
+    varsLT(k) = varsL(k).metadata(3, 1, {(1:1000)'}, [], 'test');
+end
+
+sv2L = sv2;
+sv2Lc = sv2;
+sv2Lc0 = sv2;
+sv2LT = sv2;
+sv4L = sv4;
+
+sv2L.variables_ = varsL;
+sv2Lc.variables_ = varsLc;
+sv2Lc0.variables_ = varsLc0;
+sv2LT.variables_ = varsLT;
+sv4L.variables_(1:2) = varsL;
+
+header = "DASH:stateVector:metadata";
+tests = {
+    '-1', true, sv2, {-1, "lat", 'set', (101:120)'}, sv2L
+    'indexed', true, sv4, {1:2, "lat", 'set', (101:120)'}, sv4L
+    'repeat vars', false, sv4, {[1 1 2], "lat", "set", (101:120)'}, header
+    'invalid var', false, sv4, {"blarn","lat","set", (101:120)'}, header
+
+    'multiple dims', true, sv2, {-1, ["lat","time"], "set", {(101:120)',(1:1000)'}}, sv2LT
+    'mixed dims', true, sv4, {-1, "lat", "set", (101:120)'}, sv4L
+    'missing dim', false, sv2, {-1, "blarn", "raw"}, header
+
+    'invalid type', false, sv2, {-1, "lat", 3}, header
+    'raw', true, sv2L, {-1, "lat", "raw"}, sv2
+    'inputs after raw', false, sv2L, {-1 "lat", "raw", []}, 'MATLAB:TooManyInputs'
+    
+    'set 1 direct', true, sv2, {-1, "lat", "set", (101:120)'}, sv2L
+    'set 1 cell', true, sv2, {-1, "lat", "set", {(101:120)'}}, sv2L
+    'no args after set', false, sv2, {-1, "lat", "set"}, 'MATLAB:minrhs'
+    '2+ args after set', false, sv2, {-1, "lat", "set", (101:120)', []}, 'MATLAB:TooManyInputs'
+    'incorrect number of metadata', false, sv2, {-1, ["lat","time"], "set", {(101:120)'}}, header
+    'invalid metadata', false, sv2, {-1, "lat", "set", ones(20,1)}, header
+
+    'convert', true, sv2, {-1, "lat", "convert", @plus, {{100}}}, sv2Lc
+    'no args after convert', false, sv2, {-1 "lat","convert"}, 'MATLAB:minrhs'
+    '3+ args after convert', false, sv2, {-1,"lat","convert",@plus,{100},[]}, 'MATLAB:TooManyInputs'
+    '1 handle direct', true, sv2, {-1 "lat", "convert" @plus, {100}}, sv2Lc
+    '1 handle cell', true, sv2, {-1 "lat", "convert", {@plus} {100}}, sv2Lc
+    'incorrect number of handles', false, sv2, {-1, ["lat","time"], "convert", {@plus}}, header
+    'invalid handles', false, sv2, {-1 "lat", "convert", 5}, header
+    'no handle args', true, sv2, {-1, "lat","convert",@plus}, sv2Lc0
+    '1 arg direct', true, sv2, {-1 "lat", "convert", @plus {100}}, sv2Lc
+    '1 arg cell', true, sv2, {-1 "lat", "convert", @plus {{100}}}, sv2Lc
+    'incorrect number of handle args', false, sv2, {-1 ["lat","time"], "convert", {@plus @plus}, {{100}}}, header
+    'invalid handle args', false, sv2, {-1 "lat", "convert", @plus, 100}, header
+    };
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.metadata(tests{t,4}{:});                
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,5}), 'invalid error');
+            
+        else
+            obj = obj.metadata(tests{t,4}{:});
+            assert(isequaln(obj, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 function[] = mean_
 
 sv = stateVector;
 sv2 = sv.add(["Temp","Precip"], 'test-lltr');
-sv2 = sv2.design(0, "time", 'ensemble');
+sv2 = sv2.design(-1, "time", 'ensemble');
 sv4 = sv2.add(["SLP","X"], 'test-lst');
 
 vars2L = sv2.variables_;
@@ -844,7 +941,7 @@ sv4L = sv4L.updateLengths(1:2);
 
 header = "DASH:stateVector:mean";
 tests = {
-    '0', true, sv2, {0, "lat"}, sv2L
+    '-1', true, sv2, {-1, "lat"}, sv2L
     'indexed', true, sv4, {1:2, "time", -2:2}, sv4T2
     'repeat vars', false, sv4, {[1 1 2], "lat"}, header
     'invalid var', false, sv4, {"blarn",["lat"]}, header
@@ -936,7 +1033,7 @@ svLT2 = svLT2.updateLengths(1:2);
 
 header = "DASH:stateVector:weightedMean";
 tests = {
-    '0', true, sv2, {0, "time", 1:1000}, svT
+    '-1', true, sv2, {-1, "time", 1:1000}, svT
     'indexed', true, sv4, {1:2, "lat", 1:20}, svL
     'repeat vars', false, sv4, {[2 2], "lat", 1:20}, header
     'invalid var', false, sv4, {"blarn", "lat", 1:20}, header
@@ -978,7 +1075,48 @@ catch cause
 end
 
 end
+function[] = editVariables
 
+grid = gridfile('test-lltr');
+sv = stateVector;
+sv = sv.add(["T","Precip","SLP"], grid);
+svv = dash.stateVectorVariable(grid);
+svv = svv.mean(2, {[]}, false, 'test');
+sv2 = sv;
+sv2.variables_(2) = svv;
+
+tests = {
+    'success', true, 2, 2, 'mean', {{[]},false,'DASH:test'}, 'test task', sv2
+    'DASH error', false, 2, 2, 'mean', {{2}, false,'DASH:test'}, 'test task', 'DASH'
+    'other error', false, 2, 2, 'mean', {{[]},false,'DASH:test',1,1,1,1,1}, [], 'MATLAB:TooManyInputs'
+    };
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.editVariables(tests{t,3:7});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, tests{t,8}), 'identifier');
+            if ~isempty(tests{t,7})
+                assert(contains(ME.message, tests{t,7}), 'message');
+            end
+            
+        else
+            out = sv.editVariables(tests{t,3:7});
+            assert(isequaln(out, tests{t,8}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 
 
 

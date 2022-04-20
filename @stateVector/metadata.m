@@ -103,7 +103,7 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %           element of conversionArgs should hold an empty cell. If only a
 %           single dimension is listed, you may provide the additional
 %           arguments for the conversion function directly as a cell
-%           vector, instead of in a scalar cell.
+%           vector, instead of within a scalar cell.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector with updated
@@ -203,17 +203,25 @@ end
 
 % Parse the optional args
 if numel(varargs)==1
-    convertArgs = cell(1, nDims);
+    convertArgs = repmat({{}}, 1, nDims);
     args = {convertFunction, convertArgs};
     return;
 end
 
 % Error check conversion args
 convertArgs = varargs{2};
-convertArgs = dash.parse.inputOrCell(convertArgs, nDims, 'conversionArgs', header);
-for d = 1:nDims
-    name = dash.string.elementName(d, 'conversionArgs', nDims);
-    dash.assert.vectorTypeN(convertArgs{d}, 'cell', [], name, header);
+nEls = [];
+if nDims > 1
+    nEls = nDims;
+end
+dash.assert.vectorTypeN(convertArgs, 'cell', nEls, 'conversionArgs', header);
+
+% Process convert args for single dimension case
+if nDims==1
+    content1 = convertArgs{1};
+    if ~isscalar(convertArgs) || ~iscell(content1) || ~isvector(content1)
+        convertArgs = {convertArgs};
+    end
 end
 
 % Args are the function handle and input args

@@ -26,6 +26,14 @@ function[input, wasCell] = inputOrCell(input, nEls, name, header)
 %
 % <a href="matlab:dash.doc('dash.parse.inputOrCell')">Documentation Page</a>
 
+% Defaults
+if ~exist('name','var') || isempty(name)
+    name = "input";
+end
+if ~exist('header','var') || isempty(header)
+    header = "DASH:parse:inputOrCell";
+end
+
 % Parse
 try
     if nEls>1 || iscell(input)
