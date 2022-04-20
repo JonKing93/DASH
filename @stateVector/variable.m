@@ -10,9 +10,9 @@ function[] = variable(obj, variable, dimensions, detailed, suppressVariable)
 %
 %   obj.variable(variable, dimensions)
 %   obj.variable(variable, -1)
-%   Also displays information about the listed variables in the console.
-%   If -1 is used as the dimensions input, displays information about all
-%   dimensions.
+%   Also displays information about the listed dimensions in the console.
+%   If -1 is used as the second input, displays information about all
+%   dimensions in the variable.
 %
 %   obj.variable(variable, dimensions, detailed)
 %   Specify whether to print detailed, or concise information about the

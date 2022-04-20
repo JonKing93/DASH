@@ -88,7 +88,9 @@ nDims = numel(dimensions);
 
 % Prohibit metadata for "none" option. Create placeholder metadata
 if isequal(indices, "none")
-    assert(~exist('metadata','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if exist('metadata','var')
+        dash.error.tooManyInputs;
+    end
     metadata = [];
 
 % Otherwise, default and error check indices

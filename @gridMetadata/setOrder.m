@@ -39,7 +39,7 @@ dash.assert.scalarObj(obj, header);
 
 % Parse dimension lists
 if numel(varargin)==0
-    error('MATLAB:minrhs', 'Not enough input arguments');
+    dash.error.notEnoughInputs;
 elseif numel(varargin)==1 && isequal(varargin{1}, 0)
     obj.order = strings(1,0);
     return

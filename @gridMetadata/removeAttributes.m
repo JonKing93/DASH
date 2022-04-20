@@ -31,7 +31,7 @@ fields = string(fieldnames(attributes));
 
 % Parse the inputs
 if numel(varargin)==0
-    error('MATLAB:minrhs', 'Not enough input arguments');
+    dash.error.notEnoughInputs;
 elseif numel(varargin)==1 && isequal(varargin{1}, 0)
     remove = fields;
 elseif numel(varargin)==1

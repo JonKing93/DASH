@@ -13,7 +13,10 @@
 %   indices             - Functions that manipulate array indices
 %   string              - Functions that manipulate strings
 %   file                - Functions that facilitate file manipulation
+%
+% Console Notifications
 %   warning             - Functions that manipulate warnings
+%   error               - Functions that throw errors
 %
 % Classes:
 %   dataSource          - Classes that read data from source files

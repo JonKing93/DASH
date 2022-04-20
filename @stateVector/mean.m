@@ -29,8 +29,10 @@ function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %   Use an empty array for the indices of any state dimensions.
 %
 %   obj = obj.mean(..., omitnan)
-%   obj = obj.mean(..., nanflags)
-%   Specify how to treat NaN elements along each dimension.
+%   obj = obj.mean(..., true|"omitnan")
+%   obj = obj.mean(..., false|"includenan")
+%   Specify how to treat NaN elements along each dimension. Default is to
+%   include NaN values.
 %
 %   obj = obj.mean(variables, dimensions, "none")
 %   Discards any previously-specified options for taking a mean for the
@@ -80,20 +82,13 @@ function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %           If the single dimension is an ensemble dimension, you may
 %           provide the mean indices directly as a vector, rather than in a
 %           scalar cell. However, the scalar cell syntax is also permitted.
-%       omitnan (logical, scalar | vector [nDimensions]): Indicates whether
-%           to omit NaN elements when taking a mean over a dimension. Set
-%           to true to omit NaN elements, and false (default) to include
-%           NaNs. If a scalar, applies the same setting to all listed
-%           dimensions. Use a vector with one element per listed dimension
-%           to specify different settings for the different dimensions.
-%       nanflag ("omitnan" | "includenan" | string vector [nDimensions]):
-%           Indicates how to treat NaN elements when taking a mean over a
-%           dimension. Use "omitnan" to discard NaN elements, and
-%           "includenan" (default) to include NaN elements in the mean. If
-%           a string scalar, applies the same setting to all listed
-%           dimensions. Use a string vector with one element per listed
-%           dimension to specify different settings for the different
-%           dimensions.
+%       omitnan (logical | string, scalar | vector [nDimensions]):
+%           Indicates how to treat NaN elements when taking means. If a
+%           scalar, applies the same setting to all listed dimensions. Use
+%           a vector with one element per listed dimension to specify
+%           different settings for the different dimensions.
+%           [true|"omitnan"]: Omit NaN values when taking means
+%           [false|"includenan" (default)]: Include NaN values in means.
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the
@@ -114,7 +109,9 @@ nDims = numel(dimensions);
 
 % Prohibit NaNoptions for string inputs. Get placeholder omitnan
 if exist('indices','var') && (isequal(indices,"none") || isequal(indices,"unweighted"))
-    assert(~exist('nanflag','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if exist('nanflag','var')
+        dash.error.tooManyInputs;
+    end
     omitnan = [];
 
 % Otherwise, default and error check indices

@@ -49,7 +49,9 @@ obj.update;
 
 % Default fill
 if ~exist('fill','var') || strcmpi(fill, 'default')
-    assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if exist('sources','var')
+        dash.error.tooManyInputs;
+    end
     varargout = {obj.fill};
     return
     
@@ -67,7 +69,9 @@ end
 %% Set fill values
     
 % No outputs allowed
-assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
+if nargout~=0
+    dash.error.tooManyOutputs;
+end
 varargout = {};
 
 % Error check the fill value

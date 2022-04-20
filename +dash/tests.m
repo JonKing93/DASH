@@ -17,7 +17,10 @@ dash.assert.tests;
 dash.file.tests;
 dash.indices.tests;
 dash.string.tests;
+
+% Notification packages
 dash.warning.tests;
+dash.error.tests;
 
 % Classes
 dash.dataSource.tests;

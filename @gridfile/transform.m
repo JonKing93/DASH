@@ -107,14 +107,18 @@ obj.update;
 
 % Default
 if ~exist('type','var') || strcmpi(type, 'default')
-    assert(~exist('params','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if exist('params','var')
+        dash.error.tooManyInputs;
+    end
     transform = obj.transform_;
     parameters = obj.transform_params;
     return
     
 % Source transformations
 elseif strcmpi(type, 'sources')
-    assert(~exist('sources','var'), 'MATLAB:TooManyInputs', 'Too many input arguments.');
+    if exist('sources','var')
+        dash.error.tooManyInputs;
+    end
     if ~exist('params','var')
         s = 1:obj.nSource;
     else
@@ -129,7 +133,9 @@ end
 %% Set transformation
 
 % No outputs allowed
-assert(nargout==0, 'MATLAB:TooManyOutputs', 'Too many output arguments.');
+if nargout~=0
+    dash.error.tooManyOutputs;
+end
 
 % Error check the transformation type
 type = dash.assert.strflag(type, 'First input (transformation type)', header);

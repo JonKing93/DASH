@@ -126,13 +126,17 @@ typeStrings = {["r";"raw"]; ["s";"set"]; ["c";"convert"]};
 type = dash.parse.switches(metadataType, typeStrings, 1, ...
     'Metadata type', 'allowed metadata type', header);
 
-% Raw: No additional arguments
-if type==0
-    args = checkRaw(varargin);
-elseif type==1
-    args = checkSet(dimensions, varargin, header);
-elseif type==2
-    args = checkConvert(dimensions, varargin, header);
+% Error check based on type
+try
+    if type==0
+        args = checkRaw(varargin);
+    elseif type==1
+        args = checkSet(dimensions, varargin, header);
+    elseif type==2
+        args = checkConvert(dimensions, varargin, header);
+    end
+catch ME
+    throw(ME);
 end
 
 % Update the variables
@@ -148,7 +152,7 @@ function[args] = checkRaw(varargs)
 
 % Don't allow additional inputs
 if numel(varargs)>0
-    throwAsCaller(tooManyArgs);
+    dash.error.tooManyInputs;
 end
 
 % No args needed
@@ -159,9 +163,9 @@ function[args] = checkSet(dimensions, varargs, header)
 
 % Require single metadata input
 if numel(varargs)==0
-    throwAsCaller(notEnoughArgs);
+    dash.error.notEnoughInputs;
 elseif numel(varargs)>1
-    throwAsCaller(tooManyArgs);
+    dash.error.tooManyInputs;
 end
 metadata = varargs{1};
 
@@ -182,15 +186,15 @@ function[args] = checkConvert(dimensions, varargs, header)
 
 % Allow one or two inputs
 if numel(varargs)==0
-    throwAsCaller(notEnoughArgs);
+    dash.error.notEnoughInputs;
 elseif numel(varargs)>2
-    throwAsCaller(tooManyArgs);
+    dash.error.tooManyInputs;
 end
 nDims = numel(dimensions);
 
 % Error check conversion function
 convertFunction = varargs{1};
-convertFunction = dash.parse.inputOrcell(convertFunction, nDims, 'conversionFunction', header);
+convertFunction = dash.parse.inputOrCell(convertFunction, nDims, 'conversionFunction', header);
 for d = 1:nDims
     if ~isa(convertFunction{d}, 'function_handle')
         notFunctionHandleError(dimensions, d, header);
@@ -218,22 +222,16 @@ args = {convertFunction, convertArgs};
 end
 
 % Error messages
-function[ME] = notEnoughArgs
-ME = MException('MATLAB:minrhs', 'Not enough input arguments');
-end
-function[ME] = tooManyArgs
-ME = MException('MATLAB:TooManyInputs', 'Too many input arguments.');
-end
 function[] = notFunctionHandleError(dimensions, d, header)
 nDims = numel(dimensions);
+extraInfo = '';
 if nDims>1
     extraInfo = sprintf('(Element %.f of conversionFunction). ', d);
 end
 link = '<a href="matlab:doc function_handle">function handle documentation</a>';
 
 id = sprintf('%s:elementNotFunctionHandle', header);
-ME = MException(id, ['The conversion function input for the "%s" dimension is not a function ',...
+error(id, ['The conversion function input for the "%s" dimension is not a function ',...
     'handle. %sFor additional help with function handles, check out the %s.'],...
     dimensions(d), extraInfo, link);
-throwAsCaller(ME);
 end
