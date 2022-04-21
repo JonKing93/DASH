@@ -191,7 +191,7 @@ classdef stateVector
         % Coupling
         obj = couple(obj, variables, template);
         obj = uncouple(obj, variables);
-        obj = autocouple(obj, setting, variables);
+        obj = autocouple(obj, setting, variables, template);
         [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
 
         % Coupling information

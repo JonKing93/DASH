@@ -69,7 +69,7 @@ else
     t = obj.variableIndices(template, true, header);
     t = unique(t);
     if numel(t)>1
-        tooManyTemplatesError(t);
+        tooManyTemplatesError(obj, t, header);
     end
     v = [t;v];
 end
@@ -90,11 +90,11 @@ obj.coupled(v,v) = true;
 end
 
 % Error message
-function[] = tooManyTemplatesError(t, header)
+function[] = tooManyTemplatesError(obj, t, header)
 
 id = sprintf('%s:tooManyTemplates', header);
 ME = MException(id, ['You can only specify a single variable as a coupling ',...
-    'template, but you have specified %.f templates.'], numel(t));
+    'template, but you have specified %.f templates for %s.'], numel(t), obj.name);
 throwAsCaller(ME);
 
 end
