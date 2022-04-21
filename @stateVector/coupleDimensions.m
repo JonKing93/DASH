@@ -56,7 +56,7 @@ for k = 1:numel(vars)
 
     % Update the dimensions
     d = variable.dimensionIndices([toState, toEns]);
-    type = [true(numel(toState),1);  false(numel(toEns),1)];
+    type = [ones(numel(toState),1); repmat(2,numel(toEns),1)];
     indices = cell(numel(d), 1);
     try
         obj.variables_(v) = variable.design(d, type, indices, header);

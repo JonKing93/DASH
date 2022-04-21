@@ -189,7 +189,7 @@ classdef stateVector
         varargout = overlap(obj, variables, allowOverlap);
 
         % Coupling
-        obj = couple(obj, variables);
+        obj = couple(obj, variables, template);
         obj = uncouple(obj, variables);
         obj = autocouple(obj, setting, variables);
         [obj, failed, cause] = coupleDimensions(obj, t, vars, header);
