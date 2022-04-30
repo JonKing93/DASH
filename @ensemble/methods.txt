@@ -1,0 +1,34 @@
+Ensemble Methods:
+
+[X] ensemble     -   Creates an ensemble object for a file
+[X] label        -   Applies a label to an ensemble object
+
+[X] addMembers   -   Add members to a .ens file.
+
+useVariables -   Specify which variables should be loaded
+useMembers   -   Indicate which ensemble members should be loaded
+evolving     -   Implement an evolving ensemble from the values saved in the .ens file.
+metadata     -   Return the ensembleMetadata object for an ensemble
+
+load         -   Loads values from a saved ensemble
+loadGrids    -   Loads gridded variables from an ensemble (might wrap directly into load)
+loadRows     -   Loads requested rows from an ensemble  (might wrap directly into load)
+
+[X] variables    -   Returns the variables in an ensemble
+members      -   Returns the ensemble members in an ensemble
+
+[X] length       -   Returns the length of the state vector
+disp         -   Displays an ensemble object in the console
+
+
+
+Properties:
+
+file        -   The .ens file
+label       -   A label for the ensemble
+
+fileVariables   -  The variables saved in the .ens file
+usedVariables   -  The variables being used by the object
+?nVariables     -  The number of variables being used by the object
+
+nMembers        -  The number of 
