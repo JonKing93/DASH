@@ -1,4 +1,4 @@
-function[obj] = autocouple(obj, setting, variables)
+function[obj] = autocouple(obj, setting, variables, template)
 %% stateVector.autocouple  Set whether variables are automatically coupled to new variables in the state vector
 % ----------
 %   obj = obj.autocouple
@@ -24,21 +24,25 @@ function[obj] = autocouple(obj, setting, variables)
 %   changes to autocouple settings can change the coupling status of other
 %   variables in the state vector.
 %
-%   If you add variables to an existing set of autocoupled variables,
-%   then the listed variables will be coupled to the existing autocoupled
-%   variables. If there are no existing autocoupled variables, then the
-%   first listed variable will be used as a coupling template.
+%   If you remove variables from a set of autocoupled variables, then the
+%   listed variables will be uncoupled from the remaining variables in the
+%   autocoupling set. However, the variables removed from the autocoupling
+%   set will remain coupled to one another.
 %
-%   If you remove variables from an existing set of autocoupled variables,
-%   then the listed variables will be uncoupled from the remaining
-%   variables in the autocoupling set. However, the formerly autocoupled
-%   variables will remain coupled to one another.
+%   If you add variables to the set of autocoupled variables, then any
+%   unlisted variables that are already coupled to the listed variables
+%   will also be added to the set of autocoupled variables. If there are
+%   already variables in the autocoupling set, then the new variables will
+%   all be coupled to the existing autocoupled variables and will use the
+%   existing autocoupled variables as a coupling template. If there are no
+%   existing autocoupled variables, then the first listed variable will be
+%   used as the coupling template.
 %
 %   obj = obj.autocouple(true, variables, t)
 %   obj = obj.autocouple(true, variables, templateName)
 %   Specify the coupling template to use when initializing a set of coupled
 %   variables. This syntax can only be used when there are no previously
-%   existing variables in an autocoupling set.
+%   existing autocoupling variables.
 % ----------
 %   Inputs:
 %       setting (scalar logical | string scalar): Whether the variables
@@ -68,16 +72,20 @@ dash.assert.scalarObj(obj, header);
 obj.assertEditable;
 
 % Parse the setting
+if ~exist('setting','var') || isempty(setting)
+    setting = 'auto';
+end
 offOn = {["m","man","manual"], ["a","auto","automatic"]};
 setToAuto = dash.parse.switches(setting, offOn, 1, 'setting', ...
     'recognized auto-coupling setting', header);
 
 % Get variable indices
-if ~exist('variables','var') || isempty(variables)
+if ~exist('variables','var')
     variables = -1;
+elseif isempty(variables)
+    variables = [];
 end
 v = obj.variableIndices(variables, true, header);
-v = unique(v);
 
 % Parse the template variable
 if ~setToAuto && exist('template','var')
@@ -91,18 +99,16 @@ elseif setToAuto && exist('template','var') && ~isempty(template)
     if numel(t) > 1
         tooManyTemplatesError(obj, t, header);
     end
-    v = [t;v];
+    v = [t; v(:)];
 end
+v = unique(v, 'stable');
 
-% Update autocoupling ass appropriate
+% Update autocoupling as appropriate
 if setToAuto
     obj = automatic(obj, v, header);
 else
     obj = manual(obj, v);
 end
-
-% Update the autocouple setting
-obj.autocouple_(v) = setToAuto;
 
 end
 
@@ -114,50 +120,56 @@ vAuto = find(obj.autocouple_);
 if ~isempty(vAuto)
     [changeStatus, loc] = ismember(vUser, vAuto);
     vChange = vUser(changeStatus);
+    loc(loc==0) = [];
 
     % Uncouple the remaining variables in the coupling set from those being
-    % remove. However, maintain coupling between the removed variables
+    % removed. However, maintain coupling between the removed variables
     vRemain = vAuto;
     vRemain(loc) = [];
     obj.coupled(vChange, vRemain) = false;
     obj.coupled(vRemain, vChange) = false;
+
+    % Update autocoupling status
+    obj.autocouple_(vChange) = false;
 end
 
 end
 function[obj] = automatic(obj, vUser, header)
 
-% Find variables that *were not* in the autocouple set
+% Find variables being changed from manual to automatic
 vManual = find(~obj.autocouple_);
 if ~isempty(vManual)
     changeStatus = ismember(vUser, vManual);
     vChange = vUser(changeStatus);
-    nChange = numel(vChange);
 
     % Exit if nothing changed state
-    if nChange == 0
+    if numel(vChange) == 0
         return
     end
 
-    % Get the coupling template for autocoupled variables
-    t = find(obj.autocouple_, 1);
-    if isempty(t) && nChange==1
-        return
-    elseif isempty(t)
-        t = vUser(1);
-        start = 2;
+    % Determine the coupling template
+    alreadyAuto = find(obj.autocouple_);
+    if ~isempty(alreadyAuto)
+        t = alreadyAuto(1);
     else
-        start = 1;
+        t = vUser(1);
     end
 
-    % Couple variables that are changing state
-    for k = start:nChange
-        v = vChange(k);
-        [obj, failed, cause] = obj.coupleDimensions(t, v, header);
-        if failed
-            ME = failedCouplingError(obj, t, v, cause, header);
-            throwAsCaller(ME);
-        end
+    % Find the complete set of variables changing to automatic
+    [~, col] = find(obj.coupled(vChange,:));
+    vChange = unique(col);
+
+    % Couple variables to the template
+    [obj, failed, cause] = obj.coupleDimensions(t, vChange, header);
+    if failed
+        ME = failedCouplingError(obj, t, failed, cause, header);
+        throwAsCaller(ME);
     end
+    obj.autocouple_(vChange) = true;
+
+    % Record coupling status
+    vAll = [alreadyAuto; vChange];
+    obj.coupled(vAll, vAll) = true;
 end
 
 end
@@ -182,16 +194,19 @@ ME = MException(id, ['You can only specify a single variable as an autocoupling 
 throwAsCaller(ME);
 
 end
-function[ME] = failedCouplingError(obj, t, v, cause, header)
+function[ME] = failedCouplingError(obj, t, vFailed, cause, header)
+
+tName = obj.variables(t);
+vName = obj.variables(vFailed);
+
 vector = '';
 if ~strcmp(obj.label, "")
     vector = sprintf('in %s ', obj.name);
 end
-template = obj.variableNames(t);
-var = obj.variableNames(v);
 
 id = sprintf('%s:couldNotCoupleVariable', header);
 ME = MException(id, ['Cannot autocouple variable "%s" %sbecause %s cannot ',...
-    'be coupled to the "%s" variable.'], var, vector, var, template);
+    'be coupled to the "%s" template variable.'], vName, vector, vName, tName);
 ME = addCause(ME, cause);
+
 end

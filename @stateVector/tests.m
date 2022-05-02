@@ -19,7 +19,9 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-serialization
+uncouple;
+couple;
+autocouple;
 %%%
 
 % Run the tests
@@ -1173,6 +1175,224 @@ end
 
 end
 
+function[] = couple
+
+sv = stateVector;
+
+sv0 = sv.add(["Temp","Precip","SLP"], 'test-lltr', 'manual');
+sv0 = sv0.add(["A","B","C"], 'test-lst', 'manual');
+sv0 = sv0.design([1 4], "time", 'ensemble');
+
+sv1 = sv0.design(-1, "time", 'ensemble');
+sv1.coupled = true(6,6);
+sv2 = sv0.design([1 2 4 5], "time", 'ensemble');
+sv2.coupled([2 4 5],[2 4 5]) = true;
+
+svc = sv.add(["Temp","Precip","SLP"], 'test-lltr');
+svc = svc.design(1, "time","ensemble");
+
+svm = sv.add(["Temp","Precip","SLP","X"], 'test-lltr', [true false true false]);
+svm = svm.design(1,'time','ensemble');
+svm2 = svm.design(-1, 'time','ensemble');
+svm2.autocouple_(:) = true;
+svm2.coupled = true(4,4);
+svm3 = svm.design(1:3,'time','ensemble');
+svm3.autocouple_ = [true;true;true;false];
+svm3.coupled = [true(1,3),false;true(1,3),false;true(1,3),false;false(1,3), true];
+
+svf = sv.add("T",'test-lltr','manual');
+svf = svf.add("X", 'test-lst', 'manual');
+svf = svf.design(1, 'run', 'ensemble');
+
+tests = {
+    'empty vector', true, sv, {}, sv
+    'no inputs', true, sv0, {}, sv1
+    '-1', true, sv0, {-1}, sv1
+    'variables', true, sv0, {[4 2 5]}, sv2
+
+    'variables not coupled', true, sv0, {[4 2 5]}, sv2
+    'variables already coupled', true, svc, {-1}, svc
+    'variables mixed coupled', true, svm, {-1}, svm2
+
+    'variables, template 1', true, sv0, {-1}, sv1
+    'secondary variables', true, svm, {[1 2]}, svm3
+
+    'repeat variables', true, sv0, {[4 2 2 4 5 2 5]}, sv2
+    'invalid variables', false, sv0, {12}, []
+    'empty variables', true, sv0, {[]}, sv0
+
+    'template not in variables', true, sv0, {[2 5], 4}, sv2
+    'template in variables', true, sv0, {[4 2 5], 4}, sv2
+    'invalid template', false, sv0, {-1, 12}, []
+    'multiple templates', false, sv0, {-1, [1 4]}, []
+    'repeat unique template', true, sv0, {[2 5], [4 4 4 4]}, sv2
+
+    'coupling failed', false, svf, {-1}, []
+    };
+header = "DASH:stateVector:couple";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.couple(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = obj.couple(tests{t,4}{:});
+            assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = uncouple
+
+sv0 = stateVector;
+sv = sv0.add(["Temp","Precip","SLP","X","Y"], 'test-lltr');
+
+sv1 = sv;
+sv1.coupled = false(5,5);
+sv1.coupled(1:6:end) = true;
+sv1.autocouple_ = false(5,1);
+
+sv2 = sv;
+sv2.coupled([1 3 4],:) = false;
+sv2.coupled(:, [1 3 4]) = false;
+sv2.coupled(1:6:end) = true;
+sv2.autocouple_ = [false;true;false;false;true];
+
+
+tests = {
+    'empty vector', true, sv0, {}, sv0
+    'no inputs', true, sv, {}, sv1
+    '-1', true, sv, {-1}, sv1
+    'variables', true, sv, {[3 4 1]}, sv2
+    'repeat variables', true, sv, {[3 4 3 3 1 4 1]}, sv2
+    'empty variables', true, sv, {[]}, sv
+    'invalid variables', false, sv, {10}, []
+};
+header = "DASH:stateVector:uncouple";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.uncouple(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = obj.uncouple(tests{t,4}{:});
+            assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = autocouple
+
+sv = stateVector;
+sv0 = sv.add(["A","B","C","D"], 'test-lltr', 'manual');
+sv1 = sv.add(["A","B","C","D"], 'test-lltr');
+svm = sv.add(["A","B","C","D"], 'test-lltr', [true true false false]);
+svc = sv0.couple;
+sv12c = sv0.couple([1 2]);
+
+sv2t = sv0.design(2,'time','ensemble');
+svt = sv1.design(-1, 'time', 'ensemble');
+
+svf = sv.add("A", 'test-lltr','manual');
+svf = svf.add("B", 'test-lst', 'manual')';
+svf = svf.design(1, 'run', 'ensemble');
+
+header = "DASH:stateVector:autocouple";
+tests = {
+    'empty vector', true, sv, {}, sv
+    'no inputs', true, sv0, {}, sv1
+    'auto', true, sv0, {'auto'}, sv1
+    'manual', true, sv1, {'manual'}, svc
+    
+    'auto, some current', true, svm, {true}, sv1
+    'auto, no current', true, sv0, {true}, sv1
+    'manual, stay same', true, sv0, {false}, sv0
+    'manual, switch', true, sv1, {false}, svc
+
+    '-1', true, sv0, {true, -1}, sv1
+    'variables', true, sv0, {'a', [1 2]}, svm
+    'invalid variables', false, sv0, {'a', 7}, header
+    'empty variables', true, sv0, {'a', []}, sv0
+    'repeat variables', true, sv0, {'a', [1 2 2 2 1]}, svm
+
+    'template with manual', false, sv0, {'manual', 1, 1}, 'MATLAB:TooManyInputs'
+    'template with existing auto', false, svm, {true, 3, 1}, strcat(header,':templateNotAllowed')
+    'template with no auto', true, sv2t, {true, -1, 2}, svt
+    'invalid template', false, sv0, {true, -1, 12}, header
+    'multiple template', false, sv0, {true,-1,[1 2]}, strcat(header,':tooManyTemplates')
+    'unique repeat template', true, sv2t, {true, -1, [2 2 2 2]}, svt
+
+    'auto, update coupling', true, sv2t, {true, -1}, sv1
+    'manual, retain coupling', true, svm, {false, -1}, sv12c
+    'coupling failed', false, svf, {true}, header
+    };
+
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.autocouple(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, tests{t,5}), 'invalid error');
+            
+        else
+            out = obj.autocouple(tests{t,4}{:});
+            assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+
+
+
 function[] = assertUnserialized
 
 svUn = stateVector;
@@ -1248,7 +1468,78 @@ assert(isequaln(sv, sv2), 'finalized deserialized');
 end
 
 
+function[] = info
 
+sv = stateVector('my sv label');
+sv = sv.add(["Temp","Precip"], 'test-lltr', false);
+sv = sv.add(["SLP","X"], 'test-lst', [true false]);
+sv = sv.uncouple;
+sv = sv.design(-1, 'time', 'ensemble');
+sv = sv.couple([1 3]);
+sv = sv.overlap([2 3], 'allow');
+sv.iseditable = false;
+sv.subMembers = {rand(345,1)};
+
+info0 = struct('label',"my sv label",'length',22000,'members',345,...
+    'variables',["Temp";"Precip";"SLP";"X"], 'coupled_variables',[], ...
+    'finalized', true, 'serialized', false);
+info0.coupled_variables = {["Temp";"SLP"];"Precip";"X"};
+
+T = sv.variables_(1).info;
+P = sv.variables_(2).info;
+S = sv.variables_(3).info;
+X = sv.variables_(4).info;
+vars = [T;P;S;X];
+nFields = numel(fieldnames(vars));
+
+names = {"Temp";"Precip";"SLP";"X"};
+gridfiles = mat2cell(sv.gridfiles, ones(4,1), 1);
+coupled = {"SLP",strings(0,1),"Temp",strings(0,1)};
+overlap = {false;true;true;false};
+autocouple = {false;false;true;false};
+
+[vars.name] = names{:};
+[vars.gridfile] = gridfiles{:};
+[vars.coupled_variables] = coupled{:};
+[vars.allow_overlap] = overlap{:};
+[vars.auto_couple] = autocouple{:};
+vars = orderfields(vars, [nFields+(1:2), 1:nFields, nFields+(3:5)]);
+
+tests = {
+    'no input', true, {}, info0
+    '0', true, {0}, info0
+    '-1', true, {-1}, vars
+    'indexed', true, {[3 1 1]}, vars([3 1 1])
+    'invalid variable', false, {5}, []
+
+    'serialized global', true, {}, info0
+    'serialized variable', false, {1}, []
+    };
+header = "DASH:stateVector:info";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.info(tests{t,3}{:});
+                error('did not fail');
+            catch ME
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = sv.info(tests{t,3}{:});
+            assert(isequaln(out, tests{t,4}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 function[] = dispVariables
 
 %% No variables

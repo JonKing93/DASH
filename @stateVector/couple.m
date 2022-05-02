@@ -6,29 +6,35 @@ function[obj] = couple(obj, variables, template)
 %   Couples all the variables in the state vector to one another. Coupled
 %   variables are required to have matching metadata within ensemble
 %   members of a state vector ensemble. This ensures that, within an
-%   ensemble meber, the data from different variables all align to the same
-%   point. By default, all variables in a state vector are coupled to one
-%   another.
+%   ensemble member, the data from different variables all align to the same
+%   point. By default, all variables in a state vector are automatically
+%   coupled to one another, so this method is only necessary if you have
+%   previously disabled autocoupling.
 %
 %   When the ensemble dimensions of a variable are changed, the ensemble
 %   dimensions of coupled variables will be updated to match. Note that
 %   this update does not copy reference/state indices across variables.
 %   Only the status of a dimension as an ensemble/state dimension is
-%   updated.
+%   updated. For this syntax, the first variable in the state vector is used
+%   as a template variable; the ensemble dimensions and autocoupling
+%   settings of all other variables will be updated to match those of the
+%   template.
 %
 %   obj = obj.couple(v)
 %   obj = obj.couple(variableNames)
-%   Couples the specified variables to one another. Coupling is transitive,
-%   so any unlisted variables that are coupled to the listed variables will
+%   Couples the listed variables to one another. Coupling is transitive,
+%   so any unlisted variables that are already coupled to the listed variables will
 %   also be coupled. The first listed variable is used as the template
-%   variable; the ensemble dimensions of all other listed variables will be
-%   updated to match this first variable.
+%   variable; the ensemble dimensions and autocoupling settings of all
+%   variables being coupled will be updated to match this template.
 %
 %   obj = obj.couple(variables, t)
 %   obj = obj.couple(variables, templateName)
-%   Specify the variable to use as a template. The listed variables will
-%   all be coupled to the template variable and their ensemble dimensions
-%   will be updated to match the ensemble dimensions of the template.
+%   Specify the variable to use as a template. All listed variables, as
+%   well as unlisted variables already coupled to the listed variables,
+%   will be coupled to this template. The ensemble dimensions and
+%   autocoupling settings of all variables being coupled will be updated to
+%   match this template.
 % ----------
 %   Inputs:
 %       v (logical vector | linear indices | -1): The indices of variables in
@@ -56,22 +62,35 @@ obj.assertEditable;
 obj.assertUnserialized;
 
 % Check user variables, get indices
-if ~exist('variables','var') || isempty(variables)
+if ~exist('variables','var')
     variables = -1;
+elseif isempty(variables)
+    variables = [];
 end
 v = obj.variableIndices(variables, true, header);
-v = v(:);
 
-% Default and parse the template variable
+% Error check template variable
 if ~exist('template','var') || isempty(template)
-    t = v(1);
+    t = [];
 else
     t = obj.variableIndices(template, true, header);
     t = unique(t);
     if numel(t)>1
         tooManyTemplatesError(obj, t, header);
     end
-    v = [t;v];
+end
+
+% Organize the variable indices and template. Exit if there are <2 variables
+if isempty(v)
+    return
+elseif isempty(t)
+    t = v(1);
+else
+    v = [t; v(:)];
+end
+v = unique(v);
+if numel(v)==1
+    return
 end
 
 % Get the full set of coupling variables
@@ -83,6 +102,7 @@ v = unique(col);
 if failed
     couplingFailedError(obj, t, failed, cause, header);
 end
+obj.autocouple_(v) = obj.autocouple_(t);
 
 % Record coupling status
 obj.coupled(v,v) = true;

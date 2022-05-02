@@ -15,10 +15,13 @@ classdef stateVector
     %
     %   stateVector         - Create a new, empty state vector
     %   add                 - Add variables to a state vector
+    %
     %   design              - Design the dimensions of variables
     %   mean                - Take means over dimensions of variables
     %   weightedMean        - Take weighted means over the dimensions of variables
-    %   build               - Build a state vector ensemble from a design template
+    %   sequence            - Take a sequence over an ensemble dimension
+    %
+    %   build               - Build a state vector ensemble from a design
     %
     %
     % *ALL USER METHODS*
