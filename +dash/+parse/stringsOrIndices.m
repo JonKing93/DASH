@@ -67,7 +67,7 @@ try
     % Anything else
     else
         id = sprintf('%s:inputNeitherStringsNorIndices', header);
-        error(id, ['%s must either be a list of %s, or a set of indices for %ss', ...
+        error(id, ['%s must either be a list of %s, or a set of indices for %ss ', ...
             'in %s.'], name, listType, elementName, collectionName);
     end
 
