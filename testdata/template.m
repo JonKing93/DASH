@@ -4,8 +4,11 @@ try
         if shouldFail
             try
                 %...
-                error('did not fail');
+                error('test:succeeded','did not fail');
             catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
             end
             assert(contains(ME.identifier, header), 'invalid error');
             
