@@ -24,14 +24,10 @@ Add properties parsing to class file autodoc
 
 Review string.indexedDimension
 
+
 STATE VECTOR
 
-Should svv Methods that issue errors have default headers?
-(And should gridfile?)
-
-
 Write tests
-Write examples
 
 Link to ensembleMetadata.append? in addMembers doc of meta output
 
@@ -39,9 +35,11 @@ Link to ensembleMetadata.append? in addMembers doc of meta output
 
 FINISH GRIDFILE:
 
-Update gridfile examples to show new disp
-
 Write buildTestdata methods
 
-Write examples
-    gridfile
+
+AFTER NEXT RELEASE
+
+Write examples for user facing methods
+Write examples for internal methods (lower priority)
+Add progress bars to long methods
