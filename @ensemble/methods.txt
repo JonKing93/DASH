@@ -7,13 +7,15 @@ Ensemble Methods:
 
 useVariables -   Specify which variables should be loaded
 useMembers   -   Indicate which ensemble members should be loaded
+
 evolving     -   Implement an evolving ensemble from the values saved in the .ens file.
-metadata     -   Return the ensembleMetadata object for an ensemble
+labelPriors
 
 load         -   Loads values from a saved ensemble
 loadGrids    -   Loads gridded variables from an ensemble (might wrap directly into load)
 loadRows     -   Loads requested rows from an ensemble  (might wrap directly into load)
 
+metadata     -   Return the ensembleMetadata object for an ensemble
 [X] variables    -   Returns the variables in an ensemble
 members      -   Returns the ensemble members in an ensemble
 
