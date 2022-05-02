@@ -5,6 +5,8 @@ TODO:
 A. Should have a utility to break apart means for merged dimensions. For example,
 area weighted means of a 2D tripolar grid
 
+B. ensembleMetadata.appendMembers?
+When calling sv.addMembers - how to treat returned metadata?
 
 4. link to other pages in examples markdown
     - gridfile.expand with gridfile.addDimension (in examples)
