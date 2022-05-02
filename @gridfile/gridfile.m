@@ -218,7 +218,8 @@ classdef gridfile < handle
         %           size as this input.
         %  
         %   Outputs:
-        %       obj (gridfile object): A gridfile object for the file.
+        %       obj (scalar gridfile object | gridfile array): A gridfile object for the file or
+        %           gridfile array for the set of files.
         %
         % <a href="matlab:dash.doc('gridfile.gridfile')">Documentation Page</a>
         
@@ -257,12 +258,8 @@ classdef gridfile < handle
         % Header for error IDs
         header = "DASH:gridfile";
         
-        % Require strings array with at least one element
-        if ~dash.is.string(filename)
-            id = sprintf('%s:invalidType', header);
-            error(id, 'filenames must be either a string array, cellstring array, or character row vector');
-        end
-        filename = string(filename);
+        % Error check filename
+        filename = dash.assert.string(filename);
         if isempty(filename)
             id = sprintf('%s:emptyFilenames', header);
             error(id, 'filenames cannot be empty');
@@ -270,8 +267,7 @@ classdef gridfile < handle
 
         % If scalar, build the gridfile
         if isscalar(filename)
-            file = dash.assert.strflag(filename, 'filename', header);
-            file = dash.assert.fileExists(file, '.grid', header);
+            file = dash.assert.fileExists(filename, '.grid', header);
             obj.file = dash.file.urlSeparators(file);
         
             % Fill the object fields with values from the file

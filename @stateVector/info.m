@@ -21,6 +21,74 @@ function[info] = info(obj, variables)
 %           returns information about every variable in the state vector.
 %       variableNames (string vector): The names of the variables in the 
 %           state vector for which to return information.
+%
+%   Outputs:
+%       vectorInfo (scalar struct): Information about the full state vector
+%           .label (string scalar): The label of the state vector
+%           .length (scalar integer): The number of state vector rows
+%           .members (scalar integer): The number of built ensemble members
+%               associated with the state vector.
+%           .variables (string vector): The names of the variables in the state vector
+%           .coupled_variables (cell vector {string vector}): The sets of coupled variables
+%           .finalized (scalar logical): Whether the state vector can no longer be edited
+%           .serialized (scalar logical): Whether the state vector object is serialized
+%       variableInfo (struct vector): Information about variables in the
+%           state vector.
+%           .name (string scalar): The name of the variable in the state vector
+%           .gridfile (string scalar): The absolute path to the .grid file
+%               associated with the variable
+%           .length (scalar integer): The number of state vector elements
+%               for the variable
+%           .dimension_names (string vector): The names of the dimensions
+%               in the variable
+%           .state_dimensions (string vector): The names of the state
+%               dimensions for the variable
+%           .ensemble_dimensions (string vector): The names of the ensemble
+%               dimensions for the variable
+%           .dimensions (struct vector): Organizes design parameters for
+%               the variable's dimensions. Has one element per dimension.
+%               Fields include the following:
+%               .name (string scalar): The name of the dimension
+%               .length (scalar integer): The number of state vector
+%                   elements associated with the dimension
+%               .type (string scalar): Whether the dimension is a state or
+%                   an ensemble dimension
+%               .state_indices (vector, linear indices): The state indices
+%                   for the dimension. Empty if an ensemble dimension.
+%               .reference_indices (vector, linear indices): The reference
+%                   indices for the dimension. Empty if a state dimension.
+%               .sequence (scalar struct | []): Sequence design parameters.
+%                   Empty if not using a sequence. If using a sequence, a
+%                   scalar struct with fields:
+%                   .indices (vector, integers): The sequence indices
+%                   .metadata (metadata matrix): Sequence metadata
+%               .metadata (scalar struct): Metadata options
+%                   .type (string scalar): raw, alternate, or convert
+%                   .values (metadata matrix): Alternate metadata values.
+%                       Only includes this field when using alternate metadata.
+%                   .function (scalar function handle): The conversion
+%                       function. Only includes this field when using a
+%                       conversion function.
+%                   .args (cell row vector): Additional arguments for the
+%                       conversion function. Only includes this field when
+%                       using a conversion function with additional arguments.
+%               .mean (scalar struct): Mean design parameters
+%                   .type (string scalar): none, standard, or weighted
+%                   .nanflag (string scalar): "omitnan" or "includenan".
+%                       Only includes this field when taking a mean.
+%                   .indices (vector, integers): Mean indices for ensemble
+%                       dimensions. Only includes this field when taking a mean
+%                       over an ensemble dimension.
+%                   .weights (numeric vector): Weights for a weighted mean.
+%                       Only includes this field when taking a weighted mean.
+%           .coupled_variables (string vector): A list of variables that
+%               are coupled to the variable
+%           .allow_overlap (scalar logical): Whether ensemble members for
+%               the variable are permitted to use overlapping information
+%           .auto_couple (scalar logical): Whether the variable is
+%               automatically coupled to new variables in the state vector.
+%
+% <a href="matlab:dash.doc('stateVector.info')">Documentation Page</a>
 
 % Setup
 header = "DASH:stateVector:info";
