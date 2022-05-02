@@ -22,6 +22,7 @@ cd(testpath);
 uncouple;
 couple;
 autocouple;
+coupleDimensions
 %%%
 
 % Run the tests
@@ -1381,6 +1382,56 @@ try
         else
             out = obj.autocouple(tests{t,4}{:});
             assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = coupleDimensions
+
+sv = stateVector;
+sv = sv.add(["A","B"], 'test-lltr', 'manual');
+sv2t = sv.design(2, 'time', 'ensemble');
+svt = sv.design(1:2, 'time', 'ensemble');
+
+svb = stateVector;
+svb = svb.add(["A","B"], ["test-lltr","test-lst"], 'manual');
+svb1r = svb.design(1, 'run', 'ensemble');
+svb1t = svb.design(1, 'time', 'ensemble');
+svbt = svb.design(-1, 'time', 'ensemble');
+svbs = svb1t.design(2, 'site', 'ensemble');
+
+
+tests = {
+    'empty vars', true, sv2t, 2, [], sv2t, 0, []
+    'flip state to ensemble', true, sv2t, 2, 1, svt, 0, []
+    'flip ensemble to state', true, sv2t, 1, 2, sv, 0, []
+    'missing ensemble', false, svb1r, 1, 2, svb1r, 2, 'missingEnsembleDimension'
+    'missing state', true, svb1t, 1, 2, svbt, 0, []
+    'extra dim already state', true, svb1t, 1 2, svbt, 0, []
+    'convert extra dim to state', true, svbs, 1, 2, svbt, 0, []
+    };
+header = "test:header";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+        shouldFail = ~tests{t,2};
+
+        [out, failed, cause] = obj.coupleDimensions(tests{t,4:5}, header);
+
+        if shouldFail
+            assert(isequaln(out, tests{t,6}), 'fail obj');
+            assert(isequaln(failed, tests{t,7}), 'failed index');
+            assert(contains(cause.identifier, tests{t,8}), 'failed header');
+        else
+            assert(isequaln(out, tests{t,6}), 'obj');
+            assert(isequal(failed, 0), 'failed when successful');
+            assert(isequal(cause, []), 'cause when successful');
         end
     end
 catch cause

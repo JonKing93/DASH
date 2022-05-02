@@ -14,17 +14,24 @@ function[obj, failed, cause] = coupleDimensions(obj, t, vars, header)
 %
 %   Outputs:
 %       obj (scalar stateVector object): The state vector updated with the
-%           coupled dimensions
+%           coupled dimensions or the original object if coupling failed.
 %       failed (0 | scalar linear index): Set to 0 if the state vector
 %           updated successfully. If unsuccessful returns the index of the
 %           variable that failed
-%       cause (scalar MException): The cause of the failed update
+%       cause (scalar MException | []): The cause of the failed update, or
+%           an empty array if the coupling was successful.
 %
 % <a href="matlab: dash.doc('stateVector.coupleDimensions')">Documentation Page</a>
 
 % Initialize error handling
 failed = 0;
 cause = [];
+objInitial = obj;
+
+% Exit if there are no variables
+if isempty(vars)
+    return
+end
 
 % Get the template variable and its ensemble dimensions
 template = obj.variables_(t);
@@ -67,6 +74,7 @@ for k = 1:numel(vars)
             rethrow(cause);
         end
         failed = v;
+        obj = objInitial;
         return
     end
 end
