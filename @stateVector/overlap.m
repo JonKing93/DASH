@@ -60,8 +60,10 @@ if allowRepeats
 % Require editable if setting values
 else
     obj.assertEditable;
-    allowOverlap = dash.assert.logicalSwitches(allowOverlap, numel(v), 'allowOverlap', header);
+    allowOverlap = dash.parse.switches(allowOverlap, {["p","prohibit"],["a","allow"]},...
+        numel(v), 'allowOverlap', 'recognized setting', header);
     obj.allowOverlap(v) = allowOverlap;
+    varargout = {obj};
 end
 
 end
