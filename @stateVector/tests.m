@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-add_
+variable
 %%%
 
 % Run the tests
@@ -1874,6 +1874,112 @@ catch cause
     ME = addCause(ME, cause);
     throw(ME);
 end
+
+end
+function[] = disp_
+
+%% Empty
+
+sv = stateVector;
+sv(1) = [];
+try
+    sv.disp;
+catch
+    error('empty');
+end
+
+%% Scalar
+
+sv = stateVector;
+sv = sv.add(["TEmp","Precip"], 'test-lltr');
+
+try
+    sv.disp;
+catch
+    error('scalar');
+end
+
+%% Array
+
+sva = [sv, sv,sv;sv sv sv];
+try
+    sva.disp;
+catch
+    error('array');
+end
+
+%% Finalized
+
+sv.iseditable = false;
+sv.subMembers = {1;2;3};
+sv.unused = {4;5;6};
+try
+    sv.disp;
+catch
+    error('finalized');
+end
+
+%% Serialized
+
+sv.isserialized = true;
+try
+    sv.disp;
+catch
+    error('serialized');
+end
+clc;
+
+end
+function[] = variable
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip"], 'test-lltr');
+
+tests = {
+    'multiple vars', false, {[1 2]}
+    'var', true, {1}
+
+    'dim 0', true, {1 0}
+    'dims', true, {1 ["time","lon"]}
+    'dim -1', true, {1 -1}
+    'invalid dims', false, {1 10}
+
+    'no detailed', true, {1, -1}
+    'single detailed', true, {1 -1 true}
+    '2 detailed', true, {1, -1, [true true]}
+    '3 detailed', false, {1,-1,true(3,1)}
+    'invalid detailed', false, {1,-1,'balrn'}
+
+    'suppress', true, {1,-1,true,true}
+    'invalid suppress', false, {1,-1,true,'invalid'}
+    };
+header = "DASH:stateVector:variable";
+
+try
+    for t = 1:size(tests,1)
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                sv.variable(tests{t,3}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            sv.variable(tests{t,3}{:});
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+clc;
 
 end
 function[] = dispVariables

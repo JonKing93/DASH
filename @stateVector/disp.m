@@ -55,11 +55,7 @@ end
 
 % Set default showVariables
 if isempty(showVariables)
-    if ~obj.iseditable
-        showVariables = false;
-    else
-        showVariables = obj.nVariables<=MAXVARS;
-    end
+    showVariables = obj.nVariables<=MAXVARS;
 end
 
 % Finalized and serialized tags

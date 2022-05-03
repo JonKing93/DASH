@@ -33,24 +33,30 @@ if ~exist('header','var') || isempty(header)
 end
 
 % Initial error check
-dimensions = dash.assert.strlist(dimensions);
-dash.assert.uniqueSet(dimensions, 'dimensions', header);
+try
+    dimensions = dash.assert.strlist(dimensions, 'dimensions', header);
+    dash.assert.uniqueSet(dimensions, 'dimensions', header);
+    
+    % Preallocate dimension indices for each variable
+    nDims = numel(dimensions);
+    nVars = numel(v);
+    indices = NaN(nVars, nDims);
+    
+    % Get the dimensions and index for each variable
+    for k = 1:nVars
+        variable = obj.variables_(v(k));
+        indices(k,:) = variable.dimensionIndices(dimensions);
+    end
+    
+    % Throw error if a dimension isn't in any variable
+    missing = all(indices==0, 1);
+    if any(missing)
+        missingDimensionError(dimensions, missing, nVars, header);
+    end
 
-% Preallocate dimension indices for each variable
-nDims = numel(dimensions);
-nVars = numel(v);
-indices = NaN(nVars, nDims);
-
-% Get the dimensions and index for each variable
-for k = 1:nVars
-    variable = obj.variables_(v(k));
-    indices(k,:) = variable.dimensionIndices(dimensions);
-end
-
-% Throw error if a dimension isn't in any variable
-missing = all(indices==0, 1);
-if any(missing)
-    missingDimensionError(dimensions, missing, nVars, header);
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end

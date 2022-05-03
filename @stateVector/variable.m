@@ -38,7 +38,7 @@ v = unique(v);
 if isempty(v)
     return
 elseif numel(v)>1
-    tooManyVariablesError;
+    tooManyVariablesError(v, header);
 end
 
 % Parse dimension indices
@@ -298,5 +298,17 @@ elseif strcmp(type, 'convert')
         fprintf('\n');
     end
 end
+
+end
+
+%% Error message
+function[] = tooManyVariablesError(v, header)
+
+link = '<a href="matlab:dash.doc(''stateVector.variable'')">stateVector.variable</a>';
+id = sprintf('%s:tooManyVariables', header);
+ME = MException(id, ['You can only print a single variable at a time using the ',...
+    '%s method. However, you have provided %.f variables as input.'], ...
+    link, numel(v));
+throwAsCaller(ME);
 
 end
