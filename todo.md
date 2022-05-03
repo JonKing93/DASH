@@ -31,6 +31,7 @@ Write tests
 
 Link to ensembleMetadata.append? in addMembers doc of meta output
 
+Add strong tags to function headers
 
 
 FINISH GRIDFILE:
