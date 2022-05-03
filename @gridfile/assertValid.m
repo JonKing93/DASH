@@ -1,5 +1,5 @@
 function[] = assertValid(obj, header)
-%% gridfile.assertValid  Throw error if a scalar gridfile object is not valid (is deleted)
+%% gridfile.assertValid  Throw error if a gridfile array has deleted elements
 % ----------
 %   <strong>obj.assertValid</strong>
 %   Throws an error if a gridfile array contains elements that are not
