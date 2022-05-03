@@ -76,6 +76,10 @@ end
 % If given gridfile objects, attempt to update each object
 try
     for g = 1:nGrids
+        if ~isvalid( grids(g) )
+            id = sprintf('%s:deletedGridfile', header);
+            error(id, 'The gridfile object has been deleted.');
+        end
         grids(g).update;
     end
 

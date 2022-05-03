@@ -19,9 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-coupledIndices
-coupledVariables
-couplingInfo
+add_
 %%%
 
 % Run the tests
@@ -34,7 +32,7 @@ length_;
 members;
 updateLengths;
 
-add;
+add_;
 remove;
 extract;
 append;
@@ -297,31 +295,144 @@ sv = sv.updateLengths([3 1]);
 assert(isequal(sv.lengths, [6000000;2;6000000]), 'did not update');
 end
 
-function[] = add
+function[] = add_
+
+lltr = gridfile('test-lltr.grid');
+lst = gridfile('test-lst.grid');
+deleted = gridfile('test-lltr');
+deleted.delete;
+notfile = fullfile(pwd, 'not-a-file');
+
+sv = stateVector;
+svu = sv.add(["Temp","Precip"], lltr, 'manual');
+svu = svu.design(-1, 'time', 'ensemble');
+svc = sv.add(["Temp","Precip"], lltr);
+svc = svc.design(-1,'time','ensemble');
+
+temp = dash.stateVectorVariable(lltr);
+precip = dash.stateVectorVariable(lltr);
+precip2 = dash.stateVectorVariable(lst);
+slp = dash.stateVectorVariable(lltr);
+xvar = dash.stateVectorVariable(lltr);
+
+ttime = temp.design(3, 2, {[]}, 'test');
+ptime = precip.design(3, 2, {[]}, 'test');
+stime = slp.design(3, 2, {[]}, 'test');
+
+outT = sv;
+outT.nVariables = 1;
+outT.variableNames = "Temp";
+outT.variables_ = temp;
+outT.gridfiles = lltr.file;
+outT.allowOverlap = false;
+outT.lengths = prod(lltr.size);
+outT.coupled = true;
+outT.autocouple_ = true;
+
+outtp = sv;
+outtp.nVariables = 2;
+outtp.variableNames = ["Temp";"Precip"];
+outtp.variables_ = [temp;precip];
+outtp.gridfiles = [lltr.file;lltr.file];
+outtp.allowOverlap = [false;false];
+outtp.lengths = repmat(prod(lltr.size), 2, 1);
+outtp.coupled = true(2,2);
+outtp.autocouple_ = [true;true];
+
+outtp2 = outtp;
+outtp2.variables_(2) = precip2;
+outtp2.gridfiles(2) = lst.file;
+outtp2.lengths(2) = prod(lst.size);
+
+outem = sv;
+outem.nVariables = 3;
+outem.variableNames = ["Temp";"Precip";"SLP"];
+outem.variables_ = [ttime;ptime;slp];
+outem.gridfiles = [lltr.file;lltr.file;lltr.file];
+outem.allowOverlap = [false;false;false];
+outem.lengths = [prod(lltr.size([1 2 4]));prod(lltr.size([1 2 4]));prod(lltr.size)];
+outem.coupled = [true false false;false true false;false false true];
+outem.autocouple_ = [false;false;true];
+
+outea = sv;
+outea.nVariables = 3;
+outea.variableNames = ["Temp";"Precip";"SLP"];
+outea.variables_ = [ttime;ptime;stime];
+outea.gridfiles = [lltr.file;lltr.file;lltr.file];
+outea.allowOverlap = [false;false;false];
+outea.lengths = repmat( prod(lltr.size([1 2 4])), 3, 1);
+outea.coupled = true(3,3);
+outea.autocouple_ = [true;true;true];
+
+outm = sv;
+outm.nVariables = 3;
+outm.variableNames = ["Temp";"Precip";"SLP"];
+outm.variables_ = [ttime;ptime;slp];
+outm.gridfiles = [lltr.file;lltr.file;lltr.file];
+outm.allowOverlap = [false;false;false];
+outm.lengths = [repmat( prod(lltr.size([1 2 4])), 2, 1); prod(lltr.size)];
+outm.coupled = [true true false;true true false;false false true];
+outm.autocouple_ = [true;true;false];
+
+outxa = sv;
+outxa.nVariables = 4;
+outxa.variableNames = ["Temp";"Precip";"SLP";"X"];
+outxa.variables_ = [ttime;ptime;stime;xvar];
+outxa.gridfiles = [lltr.file;lltr.file;lltr.file;lltr.file];
+outxa.allowOverlap = [false;false;false;false];
+outxa.lengths = [repmat(prod(lltr.size([1 2 4])), 3, 1); prod(lltr.size)];
+outxa.coupled = cat(1, cat(2, true(3,3), false(3,1)), [false false false true]);
+outxa.autocouple_ = [true;true;true;false];
 
 tests = {
-    'single variable'
-    'multiple variables'
-    'name not string'
-    'invalid name'
-    'repeat name in new variables'
-    'repeat name with existing variables'
-    'grid file path'
-    'gridfile object'
-    'grid filepath vector'
-    'gridfile object vector'
-    'invalid grid'
-    'deleted grid'
-    'autocouple, new'
-    'autocouple, existing variables'
-    'autocouple, existing variables not autocoupled'
-    'no autocouple, new'
-    'no autocouple, existing variables'
-    'no autocouple, existing variables not autocoupled'
-    'mixed autocouple'
-    };
+    'single variable', true, sv, {"Temp",lltr}, outT
+    'variables, same grid', true, sv, {["Temp","Precip"], lltr}, outtp
+    'variables, different grids', true, sv, {["Temp","Precip"], [lltr;lst]}, outtp2
+    
+    'no autocouple input', true, sv, {["Temp","Precip"], lltr}, outtp
+    'autocouple, none existing', true, sv, {["Temp","Precip"], lltr}, outtp
+    'autocouple, existing not autocoupled', true, svu, {"SLP", lltr, 'auto'}, outem
+    'autocouple, existing autocoupled', true, svc, {"SLP", lltr, 'auto'}, outea
+    'manual', true, svc, {"SLP", lltr, 'manual'}, outm
+    'mixed autocouple', true, svc, {["SLP","X"], lltr, [true;false]}, outxa
 
-error('unfinished');
+    'gridfile object', true, sv, {"Temp", lltr}, outT
+    'gridfile path', true, sv, {"Temp", 'test-lltr'}, outT
+    'invalid grid', false, sv, {"Temp", notfile}, []
+    'deleted grid', false, sv, {"Temp", deleted}, []
+
+    'repeat names in new vars', false, sv, {["Temp","Temp"], lltr}, []
+    'repeat existing names', false, svu, {"Temp",lltr}, []
+    'invalid names', false, sv, {"5", lltr}, []
+    };
+header = "DASH:stateVector:add";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.add(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = obj.add(tests{t,4}{:});
+            assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
 
 end
 function[] = remove
@@ -505,7 +616,7 @@ sv = sve.add(names, 'test-lltr');
 
 tests = {
     'no input', true, sv, {}, names
-    'empty', true, sv, {[]}, names
+    'empty', true, sv, {[]}, strings(0,0)
     '-1', true, sv, {-1}, names
     'list all, but no variables', true, sve, {}, strings(0,1)
     'index', true, sv, {2}, "test"
@@ -643,17 +754,17 @@ ens = {["time","run"];["time","run"];"time";"time"};
 
 tests = {
     'no input', {}, dims
-    'empty', {[]}, dims
+    'empty', {[]}, cell(0,1)
     '-1', {-1}, dims
     'indexed', {[3 1 1 4]}, dims([3,1,1,4])
     'names', {["SLP","Temp","Temp","X"]}, dims([3 1 1 4])
     
-    'all A', {0, 0}, dims
-    'all B', {0, 'all'}, dims
-    'state A', {0, 1}, state
-    'state B', {0, 'state'}, state
-    'ens A', {0, 2}, ens
-    'ens B', {0, 'ens'}, ens
+    'all A', {-1, 0}, dims
+    'all B', {-1, 'all'}, dims
+    'state A', {-1, 1}, state
+    'state B', {-1, 'state'}, state
+    'ens A', {-1, 2}, ens
+    'ens B', {-1, 'ens'}, ens
 
     'single variable', {1}, dims{1}
     'single force cell', {1,[],'cell'}, dims(1)
@@ -1692,7 +1803,6 @@ sv2 = svs.deserialize;
 assert(isequaln(sv, sv2), 'finalized deserialized');
 
 end
-
 
 function[] = info
 
