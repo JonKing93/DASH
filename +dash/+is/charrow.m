@@ -1,9 +1,8 @@
 function[tf] = charrow(input)
-%% dash.is.charrow  True if an input is a char row vector or empty char
+%% dash.is.charrow  True if an input is a char row vector
 % ----------
 %   tf = dash.is.charrow(input)
-%   Return true if the input is either a char row vector, or an empty char.
-%   Otherwise, return false.
+%   Return true if the input is a char row vector. Otherwise, return false.
 % ----------
 %   Inputs:
 %       input: The input being tested
@@ -15,7 +14,7 @@ function[tf] = charrow(input)
 % <a href="matlab:dash.doc('dash.is.charrow')">Documentation Page</a>
 
 tf = false;
-if ischar(input) && (isrow(input) || isempty(input))
+if ischar(input) && isrow(input)
     tf = true;
 end
 

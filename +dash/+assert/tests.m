@@ -15,6 +15,7 @@ dash = folders(1:end-3);
 testpath = fullfile(dash{:}, 'testdata','dash','assert');
 
 % Run tests
+string_;
 strflag;
 strlist;
 strsInList;

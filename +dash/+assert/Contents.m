@@ -9,6 +9,7 @@
 %   consistent internal handling of different input types.
 % ----------
 % Strings:
+%   string                  - Throw error if input is not a string array, cellstring array, or character row vector
 %   strflag                 - Throw error if input is not a string scalar, cellstring scalar, or character row vector
 %   strlist                 - Throw error if input is not a string vector, cellstring vector, or char row vector
 %   strsInList              - Throw error if strings are not in a list of allowed strings

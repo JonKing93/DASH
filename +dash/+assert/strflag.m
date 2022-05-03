@@ -1,9 +1,10 @@
 function[str] = strflag(input, name, idHeader)
-%% dash.assert.strflag  Throw error if input is not a string flag.
+%% dash.assert.strflag  Throw error if input is not a string scalar, cellstring scalar, or char row vector.
 % ----------
 %   str = dash.assert.strflag(input)
-%   Checks if an input is either a string scalar or char row vector. If not, 
-%   throws an error. If so, returns the input as a string data type.
+%   Checks if an input is either a string scalar, cellstring scalar, or
+%   char row vector. If not, throws an error. If so, returns the input as a
+%   string data type.
 %
 %   str = dash.assert.strflag(input, name)
 %   Refers to the input by a custom name in thrown error messages.
