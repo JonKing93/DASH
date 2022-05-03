@@ -19,7 +19,7 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-variable
+design
 %%%
 
 % Run the tests
@@ -825,6 +825,112 @@ end
 
 end
 
+function[] = design
+
+lltr = gridfile('test-lltr');
+lst = gridfile('test-lst');
+
+sv = stateVector;
+sv = sv.add(["Temp","Precip"], [lltr lst], 'manual');
+svt = sv.design(-1, 'time', 'ensemble');
+svc = sv.couple;
+
+temp = dash.stateVectorVariable(lltr);
+ttime = temp.design(3, 2, {[]}, 'test');
+ttime5 = temp.design(3, 2, {1:5}, 'test');
+trtime = temp.design(3:4, [2 2], {[],[]}, 'test');
+trtime5 = temp.design(3:4, [2 2], {1:5,[]}, 'test');
+trtimex = temp.design(3:4, [2 2], {1:5, 2:3}, 'test');
+
+precip = dash.stateVectorVariable(lst);
+ptime = precip.design(3, 2, {[]}, 'test');
+ptime5 = precip.design(3, 2, {1:5}, 'test');
+
+out1t = sv;
+out1t.variables_(1) = ttime;
+out1t = out1t.updateLengths(1);
+
+out2t = sv;
+out2t.variables_(2) = ptime;
+out2t = out2t.updateLengths(2);
+
+outt = out2t;
+outt.variables_(1) = ttime;
+outt = outt.updateLengths(1);
+
+outtr = outt;
+outtr.variables_(1) = trtime;
+outtr = outtr.updateLengths(1);
+
+outt5 = sv;
+outt5.variables_ = [ttime5;ptime5];
+outt5 = outt5.updateLengths(1:2);
+
+outt5r = sv;
+outt5r.variables_ = [trtime5; ptime5];
+outt5r = outt5r.updateLengths(1:2);
+
+outtrx = sv;
+outtrx.variables_ = [trtimex;ptime5];
+outtrx = outtrx.updateLengths(1:2);
+
+outtc = outt;
+outtc.coupled = true(2,2);
+
+tests = {
+    'var', true, sv, {2, "time", 'ensemble'}, out2t
+    'vars', true, sv, {[1 2], "time", 'ensemble'}, outt
+    '-1', true, sv, {-1, "time", "ensemble"}, outt
+    'repeat vars', false, sv, {[1 1], "time", "ensemble"}, []
+    'invalid vars', false, sv, {5, 'time', 'ensemble'}, []
+
+    'dims', true, sv, {1, "time", 'ensemble'}, out1t
+    'dims with 0', true, sv, {-1, ["time","run"], 'e'}, outtr
+    'current', true, svt, {-1, ["run","time"], []}, outt
+    'state', true, svt, {-1, ["time","run"], 's'}, sv
+    'ens', true, svt, {-1, ["time","run"], 'e'}, outtr
+    'mixed', true, sv, {-1, ["lon","lat","time","run"], [1 1 2 2]}, outtr
+    'repeat dims', false, sv, {1, ["lon","lon"], 's'}, []
+    'invalid dims', false, sv, {1, "invalid", []}, []
+
+    'single indices array', true, sv, {-1, 'time', 'e', 1:5}, outt5
+    'single indices cell', true, sv, {-1, 'time', 'e', {1:5}}, outt5
+    'multiple indices', true, sv, {-1, ["time","run"], 'e', {1:5, 2:3}}, outtrx
+    'empty indices', true, sv, {-1, ["time","run"], 'e', {1:5,[]}}, outt5r
+    'invalid indices', false, sv, {-1, "time", 'e', -1:1}, []
+    
+    'coupled variables', true, svc, {2, "time", 'e'}, outtc
+    };
+header = "DASH:stateVector:design";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.design(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            out = obj.design(tests{t,4}{:});
+            assert(isequaln(out, tests{t,5}), 'output');
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
 function[] = sequence
 
 sv = stateVector;
@@ -1058,30 +1164,30 @@ tests = {
     'repeat vars', false, sv4, {[1 1 2], "lat"}, header
     'invalid var', false, sv4, {"blarn",["lat"]}, header
     
-    'state, no indices', true, sv2, {0, "lat"}, sv2L
-    'state, empty indices', true, sv2, {0, "lat", []}, sv2L
-    'state, indices', false, sv2, {0 "lat", 1}, header
-    'ensemble, no indices', false, sv2, {0, "time"}, header
-    'ensemble, empty indices', false, sv2, {0, "time", []}, header
-    'ensemble, indices', true, sv2, {0 "time", -2:2}, sv2T
-    'wrong number indices', false, sv2, {0, ["lat","time"], {-2:2}}, header
+    'state, no indices', true, sv2, {-1, "lat"}, sv2L
+    'state, empty indices', true, sv2, {-1, "lat", []}, sv2L
+    'state, indices', false, sv2, {-1 "lat", 1}, header
+    'ensemble, no indices', false, sv2, {-1, "time"}, header
+    'ensemble, empty indices', false, sv2, {-1, "time", []}, header
+    'ensemble, indices', true, sv2, {-1 "time", -2:2}, sv2T
+    'wrong number indices', false, sv2, {-1, ["lat","time"], {-2:2}}, header
     
-    'mutliple dims', true, sv2, {0, ["lat","time"], {[],-2:2}}, sv2LT
-    'multiple dims, some invalid indices', false, sv2, {0, ["lat","time"], {1,-2:2}}, header
-    'mixed dims', true, sv4, {0, "lat"}, sv4L
-    'missing dim', false, sv4, {0, "blarn"}, header
+    'mutliple dims', true, sv2, {-1, ["lat","time"], {[],-2:2}}, sv2LT
+    'multiple dims, some invalid indices', false, sv2, {-1, ["lat","time"], {1,-2:2}}, header
+    'mixed dims', true, sv4, {-1, "lat"}, sv4L
+    'missing dim', false, sv4, {-1, "blarn"}, header
 
-    'single omitnan', true, sv2, {0, ["lat","time"], {[],-2:2}, true}, sv2LToo
-    'vector omitnan', true, sv2, {0, ["lat","time"], {[],-2:2}, [true false]}, sv2LToi
-    'single nanflag', true, sv2, {0, ["lat","time"], {[],-2:2}, 'omitnan'}, sv2LToo
-    'vector nanflag', true, sv2, {0, ["lat","time"], {[],-2:2}, ["omitnan","includenan"]}, sv2LToi
-    'wrong number nanflag', false, sv2, {0, ["lat","time"], {[],-2:2}, true(3,1)}, header
+    'single omitnan', true, sv2, {-1, ["lat","time"], {[],-2:2}, true}, sv2LToo
+    'vector omitnan', true, sv2, {-1, ["lat","time"], {[],-2:2}, [true false]}, sv2LToi
+    'single nanflag', true, sv2, {-1, ["lat","time"], {[],-2:2}, 'omitnan'}, sv2LToo
+    'vector nanflag', true, sv2, {-1, ["lat","time"], {[],-2:2}, ["omitnan","includenan"]}, sv2LToi
+    'wrong number nanflag', false, sv2, {-1, ["lat","time"], {[],-2:2}, true(3,1)}, header
 
-    'none', true, sv2LT, {0, ["lat","time"], "none"}, sv2
-    'inputs after none', false, sv2LT, {0, "lat", "none", []}, 'MATLAB:TooManyInputs'
-    'unweighted', true, sv2LTw, {0, ["lat","time"], "unweighted"}, sv2LT
-    'inputs after unweighted', false, sv2LTw, {0, "lat","unweighted", []}, 'MATLAB:TooManyInputs'
-    'unweighted dimensions with no mean', false, sv2LTw, {0, ["lat","lon"], "unweighted"}, header
+    'none', true, sv2LT, {-1, ["lat","time"], "none"}, sv2
+    'inputs after none', false, sv2LT, {-1, "lat", "none", []}, 'MATLAB:TooManyInputs'
+    'unweighted', true, sv2LTw, {-1, ["lat","time"], "unweighted"}, sv2LT
+    'inputs after unweighted', false, sv2LTw, {-1, "lat","unweighted", []}, 'MATLAB:TooManyInputs'
+    'unweighted dimensions with no mean', false, sv2LTw, {-1, ["lat","lon"], "unweighted"}, header
 };
 
 try
@@ -1663,7 +1769,7 @@ variables = struct('whichSet',[],'dims',[]);
 variables(1,:) = [];
 info = struct('sets', sets, 'variables', variables);
 
-assert(isequal(info, out), 'empty vector');
+assert(isequaln(info, out), 'empty vector');
 
 %% All coupled
 svc = sv0.add(["Temp","Precip","SLP","X"], 'test-lltr');
@@ -1728,6 +1834,7 @@ info = struct('sets', sets, 'variables', variables);
 assert(isequal(info, out), 'mixed coupled');
 
 end
+
 
 
 function[] = assertUnserialized
@@ -2253,7 +2360,3 @@ catch cause
 end
 
 end
-
-
-
-
