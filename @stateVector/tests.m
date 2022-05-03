@@ -19,10 +19,9 @@ gohome = onCleanup( @()cd(home) );
 cd(testpath);
 
 %%%
-uncouple;
-couple;
-autocouple;
-coupleDimensions
+coupledIndices
+coupledVariables
+couplingInfo
 %%%
 
 % Run the tests
@@ -1442,6 +1441,182 @@ end
 
 end
 
+function[] = coupledIndices
+
+sv0 = stateVector;
+svc = sv0.add(["A","B","C","D","E","F"], 'test-lltr');
+svu = svc.uncouple;
+svm = svu.couple([1 3 4]);
+svm = svm.couple([5 6]);
+
+tests = {
+    'empty vector', sv0, cell(0,1), 0
+    'all coupled', svc, {(1:6)'}, 1
+    'none coupled', svu, {1;2;3;4;5;6}, 6
+    'mixed', svm, {[1;3;4];2;(5:6)'}, 3
+    };
+
+try
+    for t = 1:size(tests,1)
+        [sets, nSets] = tests{t,2}.coupledIndices;
+        assert(isequal(sets, tests{t,3}), 'sets');
+        assert(isequal(nSets, tests{t,4}), 'nSets');
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+
+end
+function[] = coupledVariables
+
+sv0 = stateVector;
+svu = sv0.add(["Temp","Precip","SLP","X"], 'test-lltr','manual');
+svm = svu.couple(["Precip","SLP"]);
+svc = svu.couple;
+
+mnames = {"Temp";["Precip";"SLP"];"X"};
+mindices = {1;[2;3];4};
+
+tests = {
+    'print, empty vector', true, sv0, {}, [], []
+    'print, no input', true, svm, {}, [], []
+    'print, 0', true, svm, {0}, [], []
+    'print, -1', true, svm, {-1}, [], []
+    'print, variables', true, svm, {[2 4 3 3]}, [], []
+    'print, invalid variables', false, svm, {5}, [], []
+    'print, none', true, svu, {}, [], []
+    'print, mixed', true, svm, {}, [], []
+    'print, all', true, svc, {}, [], []
+
+    'empty vector', true, sv0, {}, cell(0,1), cell(0,1)
+    'no input', true, svm, {}, mnames, mindices
+    '0', true, svm, {0}, mnames, mindices
+    '-1', true, svm, {-1}, {strings(0,1);"SLP";"Precip";strings(0,1)}, {NaN(0,1);3;2;NaN(0,1)}
+    
+    'variables', true, svm, {[3 1]}, {"Precip";strings(0,1)}, {2;NaN(0,1)}
+    'invalid variables', false, svm, {5}, [], []
+    'repeat variables', true, svm, {[2 2]}, {"SLP";"SLP"}, {3;3}
+    'empty variables', true, svm, {[]}, cell(0,1), cell(0,1)
+
+    'all coupled', true, svc, {}, {["Temp";"Precip";"SLP";"X"]}, {[1;2;3;4]}
+    'none coupled', true, svu, {}, {"Temp";"Precip";"SLP";"X"}, {1;2;3;4}
+    'mixed coupled', true, svm, {}, mnames, mindices
+    }; %#ok<*CLARRSTR> 
+header = "DASH:stateVector:coupledVariables";
+
+try
+    for t = 1:size(tests,1)
+        obj = tests{t,3};
+
+        shouldFail = ~tests{t,2};
+        if shouldFail
+            try
+                obj.coupledVariables(tests{t,4}{:});
+                error('test:succeeded','did not fail');
+            catch ME
+                if strcmp(ME.identifier, 'test:succeeded')
+                    throw(ME);
+                end
+            end
+            assert(contains(ME.identifier, header), 'invalid error');
+            
+        else
+            if startsWith(tests{t,1}, 'print')
+                obj.coupledVariables(tests{t,4}{:});
+            else
+                [names, indices] = obj.coupledVariables(tests{t,4}{:});
+                assert(isequaln(names, tests{t,5}), 'names');
+                assert(isequaln(indices, tests{t,6}), 'indices');
+            end
+        end
+    end
+catch cause
+    ME = MException('test:failed', '%.f: %s', t, tests{t,1});
+    ME = addCause(ME, cause);
+    throw(ME);
+end
+clc;
+
+end
+function[] = couplingInfo
+
+%% Empty vector
+sv0 = stateVector;
+out = sv0.couplingInfo;
+
+sets = struct('vars',[],'ensDims',[],'dims',[]);
+sets(1,:) = [];
+variables = struct('whichSet',[],'dims',[]);
+variables(1,:) = [];
+info = struct('sets', sets, 'variables', variables);
+
+assert(isequal(info, out), 'empty vector');
+
+%% All coupled
+svc = sv0.add(["Temp","Precip","SLP","X"], 'test-lltr');
+svc = svc.design(-1,'time','ensemble');
+out = svc.couplingInfo;
+
+sets = struct('vars', [1;2;3;4], 'ensDims', "time", 'dims', [3;3;3;3]);
+whichSet = {1 1 1 1};
+dims = {3 3 3 3};
+variables = repmat(struct('whichSet',[],'dims',[]), 4, 1);
+[variables.whichSet] = whichSet{:};
+[variables.dims] = dims{:};
+info = struct('sets', sets, 'variables', variables);
+
+assert(isequal(info, out), 'all coupled');
+
+%% None coupled
+svu = svc.uncouple;
+svu = svu.design(2, 'run', 'ensemble');
+out = svu.couplingInfo;
+
+vars = {1;2;3;4};
+ensDims = {"time";["time" "run"];"time";"time"};
+dims = {3;[3 4];3;3};
+sets = struct('vars',[],'ensDims',[],'dims',[]);
+sets = [sets;sets;sets;sets];
+[sets.vars] = vars{:};
+[sets.ensDims] = ensDims{:};
+[sets.dims] = dims{:};
+
+whichSet = {1;2;3;4};
+dims = {3;[3 4];3;3};
+variables = struct('whichSet',[],'dims',[]);
+variables = repmat(variables,4,1);
+[variables.whichSet] = whichSet{:};
+[variables.dims] = dims{:};
+info = struct('sets', sets, 'variables', variables);
+
+assert(isequal(info, out), 'none coupled');
+
+%% Mixed coupled
+svm = svu.couple([2 3], 2);
+out = svm.couplingInfo;
+
+vars = {1;[2;3];4};
+ensDims = {"time";["time" "run"];"time"};
+dims = {3;[3 4;3 4];3};
+sets = struct('vars',[],'ensDims',[],'dims',[]);
+sets = [sets;sets;sets];
+[sets.vars] = vars{:};
+[sets.ensDims] = ensDims{:};
+[sets.dims] = dims{:};
+
+whichSet = {1;2;2;3};
+dims = {3;[3 4];[3 4];3};
+variables = struct('whichSet',[],'dims',[]);
+variables = repmat(variables,4,1);
+[variables.whichSet] = whichSet{:};
+[variables.dims] = dims{:};
+info = struct('sets', sets, 'variables', variables);
+
+assert(isequal(info, out), 'mixed coupled');
+
+end
 
 
 function[] = assertUnserialized

@@ -27,7 +27,7 @@ function[info] = couplingInfo(obj)
 [indices, nSets] = obj.coupledIndices;
 
 % Preallocate sets and variables
-sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0),'indices', NaN(0,0));
+sets = struct('vars', NaN(0,1), 'ensDims', strings(1,0));
 sets = repmat(sets, [nSets, 1]);
 variables = struct('whichSet', NaN, 'dims', NaN(0,1));
 variables = repmat(variables, [obj.nVariables, 1]);

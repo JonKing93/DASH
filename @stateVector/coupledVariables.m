@@ -97,7 +97,7 @@ else
         v = vars(k);
         coupled = obj.coupled(v,:);
         coupled(v) = false;
-        indices{k} = find(coupled);
+        indices{k} = find(coupled)';
         names{k} = obj.variableNames(indices{k});
     end
 
