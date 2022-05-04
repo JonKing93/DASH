@@ -1,4 +1,0 @@
-ncSource
-    dataSource.dataSource
-    dataSource.checkVariable
-load
