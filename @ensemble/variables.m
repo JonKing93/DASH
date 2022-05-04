@@ -33,6 +33,21 @@ function[variableNames] = variables(obj, varargin)
 %   variables saved in the .ens file. If the index is -1, returns the names
 %   of all variables within the appropriate scope.
 % ----------
+%   Inputs:
+%       v (-1 | vector, linear indices): The indices of variables in the
+%           ensemble whose names should be returned. If -1, selects all
+%           variables.
+%       scope (string scalar | logical scalar): The scope in which to
+%           interpret indices and return variable names
+%           ["used"|"u"|true (default)]: Return names relative to the set
+%               of variables being used by the ensemble object.
+%           ["file"|"f|false]: Return names relative to the set of all
+%               variables stored in the .ens file.
+%
+%   Outputs:
+%       variableNames (string vector): The names of the specified variables
+%
+% <a href="matlab:dash.doc('ensemble.variables')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensemble:variables";
