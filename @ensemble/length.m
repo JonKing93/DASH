@@ -31,7 +31,6 @@ function[lengths] = length(obj, variables, scope)
 %   interprets names and indices in the context of all variables saved in
 %   the .ens file.
 % ----------
-% ----------
 %   Inputs:
 %       v (0 | -1 | vector, linear indices): The indices of variables for
 %           which to return lengths. If 0, returns the full length of the
