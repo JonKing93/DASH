@@ -38,11 +38,6 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %   Specify whether the new .ens file can overwrite an existing file.
 %   Default is to not overwrite existing files.
 %
-%   ... = obj.build(..., 'showprogress', true | false)
-%   ... = obj.build(...,  'showprogress', showprogress)
-%   Specify whether to display a progress bar. Default is to not display a
-%   progress bar.
-%
 %   ... = obj.build(..., 'strict', true | false)
 %   ... = obj.build(..., 'strict', strict)
 %   Specify how the method should respond if it cannot build the requested
@@ -72,14 +67,6 @@ function[X, meta, obj] = build(obj, nMembers, varargin)
 %       overwrite (scalar logical): True if the new ".ens" file can
 %           overwrite existing files. False (default) if the method should
 %           not overwrite existing files.
-%       showprogress (scalar logical): Set to true if the method should
-%           display a progress bar. Set to false (default) to not display a
-%           progress bar.
-%       strict (scalar logical): Specify how the method should respond if
-%           the requested number of ensemble members cannot be built. If
-%           true (default), throws an error. If false, issues a warning and
-%           returns an ensemble with however many ensemble members did
-%           successfully build.
 %       precision ('single' | 'double'): The desired numerical precision of
 %           the built state vector ensemble.
 %
@@ -120,16 +107,15 @@ elseif ~strcmp(nMembers, 'all')
 end
 
 % Parse the other variables
-flags =    ["sequential","strict","file","overwrite","precision","showprogress"];
-defaults = {    false,     true,    [],     false,      [],          false    };
-[sequential, strict, filename, overwrite, precision, showprogress] = ...
+flags =    ["sequential","strict","file","overwrite","precision"];
+defaults = {    false,     true,    [],     false,      []};
+[sequential, strict, filename, overwrite, precision] = ...
     dash.parse.nameValue(varargin, flags, defaults, 1, header);
 
 % Error check optional inputs
 dash.assert.scalarType(sequential, 'logical', 'buildSequentially', header);
 dash.assert.scalarType(strict, 'logical', 'strict', header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
-dash.assert.scalarType(showprogress, 'logical', 'showprogress', header);
 if ~isempty(precision)
     precision = dash.assert.strflag(precision, 'precision', header);
     dash.assert.strsInList(precision, ["single","double"], 'precision', 'recognized option', header);
@@ -156,21 +142,8 @@ for v = 1:obj.nVariables
     end
 end
 
-% Initialize progress bar
-if showprogress
-    progress = progressbar;
-else
-    progress = [];
-end
-
 
 %% Finalize variables
-
-% Initialize progress bar
-if showprogress
-    progress.setMessage('Finalizing Variables');
-    progress.update(0);
-end
 
 % Cycle through variables, fill in placeholder values
 for v = 1:obj.nVariables
@@ -183,12 +156,6 @@ for v = 1:obj.nVariables
     [siz, dims] = obj.variables_(v).ensembleSizes;
     if any(siz==0)
         noCompleteEnsembleMembersError(obj, v, siz, dims, header);
-    end
-
-    % Update progress
-    if showprogress
-        x = v/obj.nVariables;
-        progress.update(x);
     end
 end
 
@@ -218,12 +185,6 @@ nSets = numel(coupling.sets);
 % Preallocate unused, and selected ensemble members
 obj.unused = cell(nSets, 1);
 obj.subMembers = cell(nSets, 1);
-
-% Initialize progress bar
-if showprogress
-    progress.setMessage('Matching Metadata');
-    progress.update(0);
-end
 
 % Cycle through sets of coupled variables
 for s = 1:nSets
@@ -264,12 +225,6 @@ for s = 1:nSets
             obj.variables_(vars(v)) = variable;
         end
 
-        % Update progress bar
-        if showprogress
-            x = (s-1)/nSets + (d/nEnsDims)*(1/nSets);
-            progress.update(x);
-        end
-
         % !! Important !!
         % At this point, the reference indices in the coupled variables are
         % in the same order. The first index in each variable points to
@@ -301,7 +256,7 @@ end
 
 % Build the ensemble.
 obj.iseditable = false;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress, header);
+[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header);
 
 % After writing, move data from .tmp to .ens. Optionally get ensemble
 % object as output

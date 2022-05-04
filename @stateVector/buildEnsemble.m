@@ -1,7 +1,7 @@
-function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, progress, header)
+function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, header)
 %% stateVector.buildEnsemble  Builds members of a state vector ensemble
 % ----------
-%   [X, metadata, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, progress, header)
+%   [X, metadata, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header)
 %   Builds N new members for a state vector ensemble.
 % ----------
 %   Inputs:
@@ -17,8 +17,6 @@ function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, co
 %       coupling (scalar struct): Coupling parameters for the built ensemble
 %       precision ('single' | 'double'): The desired numerical precision of
 %           the new ensemble members.
-%       progress ([] | scalar dash.progressbar): An optional progress bar
-%           for long computations.
 %       header (string scalar): Header for thrown error IDs
 %
 % Outputs:
@@ -31,18 +29,12 @@ function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, co
 %
 % <a href="matlab:dash.doc('stateVector.buildEnsemble')">Documentation Page</a>
 
-% Note whether to display progress
-showProgress = false;
-if ~isempty(progress)
-    showProgress = true;
-end
-
 %% Select the new ensemble members:
 % 1. Select members and remove overlap
 % 2. Record saved / unused members in the state vector object
 % 3. Note the number of new members
 % 4. Determine precision of output if unset
-[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, progress, header);
+[obj, nMembers] = selectMembers(obj, nMembers, strict, coupling, header);
 
 
 %% gridfile data sources:
@@ -50,16 +42,10 @@ end
 % 2. Pre-load data from gridfiles with multiple state vector variables
 % 3. Note whether variables can load all ensemble members simultaneously
 [sources, loadAllMembers, indexLimits, precision] = ...
-          gridSources(obj, nMembers, grids, coupling, precision, progress, header);
+          gridSources(obj, nMembers, grids, coupling, precision, header);
 
 
 %% Variable build-parameters
-
-% Update progress
-if showProgress
-    progress.setMessage('Organizing build parameters');
-    progress.updateMessage;
-end
 
 % Get build parameters for each variable
 parameters = cell(obj.nVariables, 1);
@@ -79,40 +65,29 @@ end
 
 %% Load / write
 
-% Progress
-if showProgress
-    progress.setMessage('Testing Sizes');
-    progress.update(0);
-    progress.startCount(nMembers);
-end
-
 % Check single ensemble members can fit in memory. Use double precision
 % because the precision of individual data sources is unknown.
 try
     for v = 1:obj.nVariables
         siz = [parameters(v).rawSize, 1, 1];
         NaN(siz);
-        if showProgress
-            progress.update(v/obj.nVariables);
-        end
     end
 catch ME
     singleMemberTooLargeError(ME);
 end
 
-% Get the indices of the ensemble members
+% Get the indices of the new ensemble members
 nTotal = obj.members;
 members = nTotal-nMembers+1:nTotal;
 
 % Load ensemble directly
-metadata = ensembleMetadata(obj);
 if isempty(ens)
-    X = loadEnsemble(obj, members, grids, sources, parameters, precision, progress, header);
+    X = loadEnsemble(obj, members, grids, sources, parameters, precision, header);
+    metadata = ensembleMetadata(obj);
 
 % Or write to file
 else
-    writeEnsemble(obj, members, grids, sources, parameters, precision, progress, header);
-    ens.metadata = metadata.serialize;
+    writeEnsemble(obj, members, grids, sources, parameters, precision, header);
     ens.stateVector = obj.serialize;
     X = [];
 end
@@ -121,7 +96,7 @@ end
 
 
 % Sub-functions
-function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, progress, header)
+function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, header)
 %% Selects new ensemble members
 % ----------
 %  Cycles through sets of coupled variables and selects the required number
@@ -144,8 +119,6 @@ function[obj, nNew] = selectMembers(obj, nMembers, strict, coupling, progress, h
 %               .whichSet (scalar index): The coupling set for the variable
 %               .dims (vector, linear indices [nDims]): Indices of the ensemble dimension
 %                   *in the order of the coupling set* for the variable
-%       progress ([] | progressbar object): The progress bar (if any) for
-%           selecting ensemble members
 %
 %   Outputs:
 %       obj: The state vector updated with the newly selected ensemble
@@ -168,18 +141,6 @@ nRequested = nMembers;
 nSets = numel(coupling.sets);
 nNew = NaN(nSets, 1);
 incomplete = false(nSets, 1);
-
-% Initialize progress bar
-showProgress = false;
-if ~isempty(progress)
-    showProgress = true;
-    progress.setMessage('Selecting Ensemble Members');
-    progress.update(0);
-
-    if ~isinf(nMembers)
-        progress.max = nMembers * nSets;
-    end
-end
 
 % Cycle through sets of coupled variables.
 for s = 1:nSets
@@ -248,19 +209,7 @@ for s = 1:nSets
             if incomplete(s)
                 incompleteVars = vars;
             end
-
-            % Complete set progress. Exit while loop
-            if showProgress
-                x = s/nSets;
-                progress.update(x);
-            end
             break
-        end
-
-        % Update progress within while loop
-        if showProgress
-            x = (s-1)/nSets + (nNew(s)/nMembers)*(1/nSets);
-            progress.update(x);
         end
     end
 
@@ -294,7 +243,7 @@ if all
 end
 
 end
-function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNew, grids, coupling, precision, progress, header)
+function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNew, grids, coupling, precision, header)
 %% Builds and error checks gridfile sources before loading data.
 % ----------
 % Builds gridfile dataSources required to load new members. If a gridfile
@@ -319,8 +268,6 @@ function[sources, loadAllMembers, indexLimits, precision] = gridSources(obj, nNe
 %               .ensDims (string vector): Ensemble dimensions
 %               .dims (matrix [nVars x nDims]): Ensemble dimension indices
 %       precision ([] | 'single' | 'double')
-%       progress ([] | progressbar object): The progress bar (if any) for
-%           checking data sources
 %
 %   Outputs:
 %       sources (struct vector [nGrids]):
@@ -362,12 +309,6 @@ indexLimits = cell(nVars, 1);
 getPrecision = false;
 if isempty(precision)
     getPrecision = true;
-end
-
-% Initialize progress bar
-if ~isempty(progress)
-    progress.setMessage('Collecting Data Sources');
-    progress.update(0);
 end
 
 % Cycle through gridfiles. Get variables that use the file and get coupling sets
@@ -461,12 +402,6 @@ for g = 1:nGrids
                 getPrecision = false;
             end
         end
-
-        % Update progress and move on to the next grid
-        if showProgress
-            x = g/nGrids;
-            progress.update(x);
-        end
         continue
     end
     
@@ -497,13 +432,6 @@ for g = 1:nGrids
                     getPrecision = false;
                     precision = 'double';
                 end
-
-                % Update progress bar and move to the next variable
-                if showProgress
-                    x = (g-1)/nGrids + (k/nVars)*(1/nGrids);
-                    progress.update(x);
-                    continue
-                end
             end
         end
 
@@ -526,12 +454,6 @@ for g = 1:nGrids
                 getPrecision = false;
                 precision = 'double';
             end
-
-            % Update progress bar
-            if showProgress
-                x = (g-1)/nGrids + (k-1)/nVars + (m/nNew)*(1/nGrids)*(1/nVars);
-                progress.update(x);
-            end
         end
     end
 end
@@ -542,7 +464,7 @@ if getPrecision
 end
 
 end
-function[X] = loadEnsemble(obj, members, grids, sources, parameters, precision, progress, header)
+function[X] = loadEnsemble(obj, members, grids, sources, parameters, precision, header)
 %% Load an entire state vector ensemble directly into memory
 % ----------
 %   Attempts to load all new ensemble members of all variables directly
@@ -560,15 +482,10 @@ function[X] = loadEnsemble(obj, members, grids, sources, parameters, precision, 
 %   Outputs:
 %       X (numeric matrix [nState x nMembers]): The loaded state vector ensemble
 
-% Progress bar parameters
-if ~isempty(progress)
-    progress.ongoing = false;
-end
-
 % Attempt to load all variables
 vLimit = [1, obj.nVariables];
 try
-    X = load(vLimit, members, grids, sources, parameters, precision, progress);
+    X = load(obj, vLimit, members, grids, sources, parameters, precision);
 
 % Suggest using .ens file if too large to load directly
 catch ME
@@ -613,7 +530,7 @@ while first <= nVars
         % Attempt to load the set into memory
         isloaded = false;
         try
-            X = obj.load(vLimit, members, grids, sources, setParameters, precision);
+            X = load(obj, vLimit, members, grids, sources, setParameters, precision);
             isloaded = true;
         catch ME
             if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
@@ -655,7 +572,7 @@ while first <= nVars
                 % Attempt to load the chunk
                 isloaded = false;
                 try
-                    X = obj.load([v v], chunkMembers, grids, sources, parameters(v), precision);
+                    X = load(obj, [v v], chunkMembers, grids, sources, parameters(v), precision);
                     isloaded = true;
                 catch ME
                     if ~strcmp(ME.identifier, 'DASH:stateVector:buildEnsemble:arrayTooBig')
@@ -697,7 +614,7 @@ while first <= nVars
 end
 
 end
-function[X] = load(vLimit, members, grids, sources, parameters, precision, progress)
+function[X] = load(obj, vLimit, members, grids, sources, parameters, precision)
 %% Loads indicated ensemble members for a continuous set of variables in a state vector
 %
 % Inputs:
@@ -727,22 +644,10 @@ catch
     error(id, '');
 end
 
-% Note whether to report progress
-showProgress = false;
-if ~isempty(progress)
-    showProgress = true;
-end
-
 % Cycle through contiguous variables
 vars = vLimit(1):vLimit(2);
 for k = 1:numel(vars)
     v = vars(k);
-
-    % Initialize progress bar
-    if showProgress && ~progress.ongoing
-        progress.setMessage(sprintf('Building "%s"', obj.variableNames(v)));
-        progress.update(0);
-    end
 
     % Get the gridfile and sources for each variable
     g = grids.whichGrid(v);
@@ -757,7 +662,7 @@ for k = 1:numel(vars)
     % Load the ensemble members for each variable
     rows = limits(k,1):limits(k,2);
     X(rows,:) = obj.variables_(v).buildMembers(...,
-        dims, subMembers, grid, source, parameters(k), progress);
+        dims, subMembers, grid, source, parameters(k), precision);
 end
 
 end
