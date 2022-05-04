@@ -12,7 +12,7 @@ function[varargout] = label(obj, label)
 %
 %   Outputs:
 %       label (string scalar): The current label of the ensemble object
-%   obj (scalar ensemble object): The ensemble object with an updated label
+%       obj (scalar ensemble object): The ensemble object with an updated label
 %
 % <a href="matlab:dash.doc('ensemble.label')">Documentation Page</a>
 
