@@ -54,7 +54,7 @@ classdef mat < dash.dataSource.hdf
             obj.m = matfile(obj.source);
         catch
             id = sprintf('%s:invalidMatfile', header);
-            error(id, ['The file:  %s\n',...
+            error(id, ['The file:\n\t%s\n',...
                        'is not a valid MAT-file'], obj.source);
         end
         
