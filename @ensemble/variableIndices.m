@@ -1,4 +1,4 @@
-function[v] = variableIndices(variables, scope, header)
+function[v] = variableIndices(obj, variables, scope, header)
 %% ensemble.variableIndices  Parse the indices of variables in an ensemble
 % ----------
 %   v = obj.variableIndices(variables, scope)
