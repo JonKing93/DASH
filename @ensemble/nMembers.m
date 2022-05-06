@@ -1,22 +1,32 @@
 function[nMembers] = nMembers(obj, scope)
-%% ensemble.nMembers  Returns the number of ensemble members for the elements of an ensemble array
+%% ensemble.nMembers  Return the number of members used by the ensemble objects in an array
 % ----------
 %   nMembers = obj.nMembers
-%   Returns the number of ensemble members for each element of an ensemble
-%   array. If an element is a static ensemble, returns the total number of
-%   used ensemble members. If an element implements an evolving ensemble,
-%   returns the number of ensemble members per prior.
-% 
-%   ... = obj.nMembers(scope)
-%   ... = obj.nMembers(false|"u"|"used")
-%   ... = obj.nMembers( true|"f"|"file")
-%   Indicate the scope in which to count ensemble members. If false,
-%   behaves identically to the previous sytax. If true, returns the total
-%   number of ensemble members stored in the .ens file for each element of
-%   an ensemble array.   
+%   Returns the number of state vector rows being used for each element of
+%   an ensemble array. For evolving ensembles, the number of members is the
+%   number of ensemble members per ensemble in an evolving set.
+%
+%   nMembers = obj.nRows(scope)
+%   ... = obj.nRows(false|"u"|"used")
+%   ... = obj.nRows( true|"f"|"file")
+%   Indicate the scope in which to count members. If "used"|"u"|false, behaves
+%   identically to the previous syntax and counts the number of members
+%   used by each ensemble. If "file"|"f"|true, counts the number of
+%   ensemble members saved in the .ens file for each ensemble.
 % ----------
+%   Inputs:
+%       scope (scalar logical | string scalar): Indicates the scope in
+%           which to count ensemble members.
+%           ["used"|"u"|false (default)]: Counts members used by the ensemble
+%           ["file"|"f"|true]: Counts members saved in the .ens file
+%
+%   Outputs:
+%       nMembers (numeric array): The number of members in each element
+%           of an ensemble array. Has the same size as obj.
+%
+% <a href="matlab:dash.doc('ensemble.nMembers')">Documentation Page</a>
 
-% Parse the scope
+% Default and parse scope
 header = "DASH:ensemble:nMembers";
 if ~exist('scope','var') || isempty(scope)
     scope = "used";
@@ -25,11 +35,11 @@ useFile = obj.parseScope(scope, header);
 
 % Count members
 nMembers = NaN(size(obj));
-for m = 1:numel(obj)
+for v = 1:numel(obj)
     if useFile
-        nMembers(m) = obj(m).nMembers_;
+        nMembers(k) = obj(k).totalMembers;
     else
-        nMembers(m) = size(obj(m).members, 1);
+        nMembers(k) = size(obj(k).members_, 1);
     end
 end
 

@@ -5,27 +5,40 @@ function[nVariables] = nVariables(obj, scope)
 %   Returns the number of used variables for each element of an ensemble
 %   array.
 %
-%   ... = obj.nVariables(scope)
+%   nVariables = obj.nVariables(scope)
 %   ... = obj.nVariables(false|"u"|"used")
 %   ... = obj.nVariables( true|"f"|"file")
-%   Indicate the scope in which to count variables. If false, behaves
-%   identically to the previous syntax and returns the number of used
-%   variables for each element of an ensemble array. If true, returns the
-%   number of variables stored in the .ens file for each element of an
-%   ensemble array.
+%   Indicate the scope in which to count variables. If "used"|"u"|false, 
+%   behaves identically to the previous syntax and returns the number of used
+%   variables for each element of an ensemble array. If "file"|"f"|true, returns the
+%   number of variables stored in the .ens file for each element of an ensemble array.
 % ----------
+%   Inputs:
+%       scope (scalar logical | string scalar): Indicates the scope in
+%           which to count variables.
+%           ["used"|"u"|false (default)]: Returns the number of variables used by the ensemble
+%           ["file"|"f"|true]: Return the number of variables saved in the .ens file
+%
+%   Outputs:
+%       nVariables (numeric array): The number of variables in each element
+%           of an ensemble array. Has the same size as obj.
+%
+% <a href="matlab:dash.doc('ensemble.nVariables')">Documentation Page</a>
 
-% Parse the scope
+% Default and parse scope
 header = "DASH:ensemble:nVariables";
+if ~exist('scope','var') || isempty(scope)
+    scope = "used";
+end
 useFile = obj.parseScope(scope, header);
 
 % Count variables
 nVariables = NaN(size(obj));
-for v = 1:numel(obj)
+for k = 1:numel(obj)
     if useFile
-        nVariables(v) = numel(obj(v).variables_);
+        nVariables(k) = numel(obj(k).variables_);
     else
-        nVariables(v) = sum(obj(v).use);
+        nVariables(k) = sum(obj(k).use);
     end
 end
 
