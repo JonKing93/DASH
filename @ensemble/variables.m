@@ -25,7 +25,7 @@ function[variableNames] = variables(obj, v, scope)
 %   of all variables within the appropriate scope.
 % ----------
 %   Inputs:
-%       v (-1 | vector, linear indices): The indices of variables in the
+%       v (-1 | logical vector | linear indices): The indices of variables in the
 %           ensemble whose names should be returned. If -1, selects all
 %           variables. Depending on scope, these indices are interpreted in
 %           the context of either the variables being used by the ensemble,

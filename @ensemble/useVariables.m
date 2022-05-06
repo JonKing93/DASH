@@ -48,7 +48,7 @@ function[obj] = useVariables(obj, variables, scope)
 %   being used by the ensemble object.
 % ----------
 %   Inputs:
-%       v (-1 | vector, linear indices): The indices of the variables that
+%       v (-1 | linear indices | logical vector): The indices of the variables that
 %           should be used by the ensemble object. If -1, selects all
 %           variables. Depending on scope, these indices are interpreted
 %           with respect to either the variables saved in the .ens file, or
