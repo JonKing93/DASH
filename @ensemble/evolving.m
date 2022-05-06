@@ -8,7 +8,7 @@ function[obj] = evolving(obj, varargin)
 %   columns. If the ensemble object previously implemented an evolving
 %   ensemble, the evolving labels will all be reset.
 %
-%   obj = obj.evolving(members, evolvingLabels)
+%   obj = obj.evolving(members, newLabels)
 %   Also applies labels to the ensembles in the evolving ensemble. You must
 %   provide one label per evolving ensemble (one label per column of "members").
 %   These evolving labels are distinct from any global label applied to the
@@ -20,7 +20,7 @@ function[obj] = evolving(obj, varargin)
 %
 %   obj = obj.evolving(-1, members)
 %   obj = obj.evolving(e, members)
-%   obj = obj.evolving(evolvingLabels, members)
+%   obj = obj.evolving(labels, members)
 %   Replaces the ensemble members used for specific ensembles in an
 %   existing evolving ensemble. If the first input is -1, sets new ensemble
 %   members for all the ensembles in the current evolving ensemble. Unlike
@@ -32,7 +32,7 @@ function[obj] = evolving(obj, varargin)
 %   same evolving label, then you will need to specify those ensembles
 %   using their indices.
 %
-%   obj = obj.evolving(..., members, evolvingLabels)
+%   obj = obj.evolving(..., members, newLabels)
 %   In addition to replacing ensemble members, also updates the evolving
 %   labels of the specified ensembles.
 %
@@ -49,7 +49,7 @@ function[obj] = evolving(obj, varargin)
 %   The "eNew" input may also include the indices of existing ensembles,
 %   and these ensembles will have their ensemble members updated.
 %
-%   obj = obj.evolving(eNew, members, evolvingLabels)
+%   obj = obj.evolving(eNew, members, newLabels)
 %   Also applies evolving labels to the new ensembles in the evolving
 %   ensemble. If the "eNew" input contains the indices of existing
 %   ensembles, updates the labels of those ensembles.
@@ -81,8 +81,14 @@ function[obj] = evolving(obj, varargin)
 %           ensembles in an evolving ensemble. Must include every index
 %           between the current number of ensembles and the new total
 %           number of ensembles. Cannot have repeat elements.
-%       evolvingLabels (string vector [nEnsembles]): The labels to apply to
-%           ensembles in an evolving ensemble. Must have one element per
+%       labels (string vector [nEnsembles]): The current labels of ensembles in the
+%           evolving set. Must have one element per column in members and
+%           cannot contain duplicate elements. You can only use labels to 
+%           reference ensembles that have unique labels. If multiple
+%           ensembles in the evolving set share the same label, reference
+%           them using indices instead.
+%       newLabels (string vector [nEnsembles]): The new labels to apply to
+%           the ensembles in an evolving set. Must have one element per
 %           column of "members".
 %       staticMembers (vector, linear indices [nMembers] | logical [nSavedMembers]): 
 %           The ensemble members to use when reverting the ensemble object 
@@ -148,8 +154,8 @@ end
 
 % Reset as a static ensemble
 obj.members_ = members(:);
-obj.evolvingLabels_ = strings(0,1);
 obj.isevolving = false;
+obj.evolvingLabels_ = "";
 
 end
 function[obj] = resetEvolving(obj, header, members, labels)
@@ -195,7 +201,7 @@ end
 
 % Get ensemble indices when not adding new ensembles
 if ~linear
-    e = obj.evolvingIndices(ensembles, header);
+    e = obj.evolvingIndices(ensembles, false, header);
 
 % If linear indices, require positive integers
 else
@@ -254,7 +260,7 @@ else
     nLabels = numel(labels);
     if nLabels~=nEnsembles
         id = sprintf('%s:wrongNumberOfLabels', header);
-        error(id, ['You must provide one evolving label per listed ensemble ',...
+        error(id, ['You must provide one label per specified ensemble ',...
             '(%.f), but you have provided %.f labels instead.'],...
             nEnsembles, nLabels);
     end
