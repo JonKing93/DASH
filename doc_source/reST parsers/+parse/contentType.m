@@ -1,4 +1,16 @@
 function[type] = contentType(content)
+%% parse.contentType  Identifies an item in a folder.
+% ----------
+%   type = parse.contentType(content)
+%   Identifies the indicated file as either a class folder, a package, a
+%   function, a classdef file, or other.
+% ----------
+%   Inputs:
+%       content (string scalar): The absolute path to a item in a folder.
+%
+%   Outputs:
+%       type (string scalar): A string identifying the item. Options are
+%           "class_folder", "package", "function", "classdef", or "other".
 
 % Get the name
 content = char(content);
@@ -24,5 +36,3 @@ else
 end
 
 end
-
-    

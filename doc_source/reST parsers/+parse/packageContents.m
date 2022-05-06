@@ -1,4 +1,19 @@
 function[sections, sectionTypes, summaries, headings, files, h1] = packageContents(header)
+%% parse.packageContents  Parses the Contents section of package help text
+% ----------
+%   [sections, sectionTypes, summaries, headings, files, h1] = 
+%                                           parse.packageContents(helpText)
+%   Extracts contents information from package help text.
+% ----------
+%   Inputs:
+%       helpText (char vector): Help text for the package
+%
+%   Outputs:
+%       sections (string vector): 
+%       sectionTypes (vector, integers): Indicates the type of each section.
+%           [1]: Section title is within ** markers. This indicates a key
+%               section
+
 %%
 % sections: reST section headings. The first element is empty
 % sectionType: Section types

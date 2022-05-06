@@ -1,20 +1,41 @@
-function[title, h1] = h1(header)
-%% Parse function title and H1 description
+function[title, summary] = h1(helpText)
+%% parse.h1  Extracts function title and summary from the first line of function help text
 % ----------
-%   [title, description] = parse.title(header)
+%   [title, summary] = parse.h1(helpText)
+%   Extracts function title and summary from the first line of function
+%   help text.
 % ----------
 %   Inputs:
-%       header (char vector): Function help text
+%       helpText (char vector): The help text for a function
 %
 %   Outputs:
-%       title (string scalar): The title of the function
-%       description (string scalar): The H1 description
+%       title (string scalar): The full dot-indexing title of the function
+%       summary (string scalar): The H1 summary of the function
 
-line = get.title(header);
-line = strip(line, 'right');
-line = string(strsplit(line));
-line(1) = [];
-title = line(1);
-h1 = strjoin(line(2:end));
+% Get the H1 line, strip trailing whitespace
+h1 = get.h1(helpText);
+h1 = strip(h1, 'right');
+
+% Check initial formatting
+assert(numel(h1)>=3, 'The H1 line is too short');
+assert(strcmp(h1(1:2), '% '), 'The H1 line does not begin with "% "');
+assert(isletter(h1(3)), 'The H1 title does not begin on element 3');
+
+% Extract non-whitespace blocks. Remove the % sign
+h1Strings = string(strsplit(h1));
+h1Strings(1) = [];
+
+% Require a title and summary. Require exactly 2 spaces between them
+assert(numel(h1Strings)>=2, 'The H1 line is missing a summary');
+titleLength = strlength(h1Strings(1));
+minLength = 2 + titleLength + 3;
+assert(numel(h1)>=minLength, 'The H1 line is too short');
+spaces = 2 + titleLength + (1:2);
+assert(all(isspace(h1(spaces))), 'The H1 title must be followed by two spaces');
+assert(isletter(h1(minLength)), 'The H1 summary must begin three points after the title');
+
+% Title is the first text key, the remaining lines are the summary
+title = h1Strings(1);
+summary = strjoin(h1Strings(2:end));
 
 end

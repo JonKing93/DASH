@@ -1,5 +1,19 @@
 function[name] = name(header, istitle)
-%% parse.name  The short name of a function/class/method/package/etc.
+%% parse.name  Extract the short name of an item
+% ----------
+%   name = parse.name(helpText)
+%   Extracts the short name of an item from its help text.
+%
+%   name = parse.name(title, true)
+%   Extracts the short name of an item from its dot-indexing title.
+% ----------
+%   Inputs:
+%       helpText (char vector): Help text for an item
+%       title (string scalar): The dot-indexing title of an item
+%
+%   Outputs:
+%       name (string scalar): The short name of an item. This is the
+%           dot-indexing title with all containing packages removed.
 
 % Default
 if ~exist('istitle','var') || isempty(istitle)

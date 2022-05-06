@@ -1,5 +1,19 @@
 function[] = package(title, examplesRoot, excludes)
-%% Builds the .rst pages for a package and its contents
+%% doc.package  Builds the RST files for a package and its contents
+% ----------
+%   doc.package(title, examplesRoot, excludes)
+%   Builds the RST pages for the contents of a package. Optionally excludes
+%   specified items from the documentation.
+% ----------
+%   Inputs:
+%       title (string scalar): The full dot indexing title of the package
+%       examplesRoot (string scalar): The absolute path to the folder
+%           holding the markdown examples pages for the package contents
+%       excudes (string vector): The names of items in the package that
+%           should be excluded from the documentation.
+%
+%   Outputs:
+%       Write the RST file set for the package
 
 % Contents to exclude from build
 if ~exist('excludes','var') || isempty(excludes)

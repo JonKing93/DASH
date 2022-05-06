@@ -1,5 +1,14 @@
 function[] = packageRST(title, saveIn)
-%% Convert a package help file to .rst file
+%% write.packageRST  Builds a RST file from the help text in the Contents.m file of a package.
+% ----------
+%   write.packageRST(title, saveIn)
+%   Loads the help text for a package from its Contents.m file, formats the
+%   help text into RST, and writes the RST file.
+% ----------
+%   Inputs:
+%       title (string scalar): The dot-indexing title of the package
+%       saveIn (string scalar): The absolute path to the folder in which to
+%           save the RST file.
 
 % Default
 if ~exist('saveIn','var') || isempty(saveIn)

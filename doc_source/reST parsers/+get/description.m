@@ -1,37 +1,39 @@
-function[description] = description(header)
+function[description] = description(helpText)
 %% get.description  Get the description section of help text
 % ----------
-%   description = get.description(header)
-%   The description (if it exists), begins at the third line and ends with
-%   10 -s.
-%
-%   This is another line of details
-%
-%   desc = get.description
-%   That was another signature line
+%   description = get.description(helpText, required)
+%   Extracts the description section from help text. The second line of
+%   help text should consist of 10 -s. The description is the text
+%   following this line and terminates with another 10 -s.
 % ----------
 %   Inputs:
-%       header (char vector): Help text
+%       header (char vector): Help text for an item
+%       required
 %
 %   Outputs:
 %       description (char vector): The text of the description section
 
-% Begin at line 3
-[header, eol] = get.belowH1(header);
+% Get the text below the H1 line and its section break
+[text, eol] = get.belowH1(helpText);
 
-% Check for end of description
-breaks = strfind(header, '----------');
+% Search for section breaks
+breaks = strfind(text, [newline,'% ----------']);
+if numel(text)>=12 && strcmp(text(1:12), '% ----------')
+    breaks = [1, breaks];
+end
 nBreaks = numel(breaks);
 
-% Get description text
-if nBreaks==0
+% Empty or invalid descriptions
+if nBreaks > 1
+    error('The help text has more than 2 section breaks');
+elseif nBreaks == 0 || breaks==1
     description = '';
-elseif nBreaks==1
-    lastEOL = find(eol<breaks, 1, 'last');
-    endDescription = eol(lastEOL);
-    description = header(1:endDescription);
+
+% Extract description
 else
-    error('Too many section breaks "----------"');
+    lastEOL = eol==breaks;
+    endDescription = eol(lastEOL) - 1;
+    description = text(1:endDescription);
 end
 
 end

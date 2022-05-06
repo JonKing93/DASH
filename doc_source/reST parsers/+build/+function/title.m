@@ -1,15 +1,16 @@
-function[rst] = title(header)
-%% Markup the page title from function help text
+function[rst] = title(helpText)
+%% build.function.title  Format the RST page title from function help text
 % ----------
-%   rst = build.title(header)
+%   rst = build.function.title(helpText)
+%   Extracts function title information from help text and formats into RST
 % ----------
 %   Inputs:
-%       header (char vector): Function help text
+%       helpText (char vector): Function help text
 %
 %   Outputs:
-%       rst (string scalar): reST markup for title
+%       rst (char vector): Formatted RST for the page title
 
-[title, description] = parse.h1(header);
+[title, description] = parse.h1(helpText);
 rst = format.function.title(title, description);
 
 end
