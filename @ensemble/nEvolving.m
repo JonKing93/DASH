@@ -1,4 +1,4 @@
-function[nPriors] = nPriors(obj)
+function[nPriors] = nEvolving(obj)
 %% ensemble.nPrior  Returns the number of priors for the elements of an ensemble array
 % ----------
 %   nPriors = obj.nPriors

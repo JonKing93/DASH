@@ -45,7 +45,7 @@ function[obj] = evolving(obj, varargin)
 %   number of ensembles in the evolving ensemble, and these indices are
 %   used to add new ensembles to the evolving set. The "eNew" input must
 %   include all indices on the interval:
-%   [current number of ensembles + (1:number of new ensembles)].
+%   current number of ensembles + 1 : new number of ensembles
 %   The "eNew" input may also include the indices of existing ensembles,
 %   and these ensembles will have their ensemble members updated.
 %
@@ -155,7 +155,7 @@ end
 function[obj] = resetEvolving(obj, header, members, labels)
 
 % Error check members, convert to linear indices
-members = checkMembers(obj, members, header);
+members = checkMembers(obj, members, [], header);
 nEnsembles = size(members, 2);
 
 % Default and error check labels
@@ -172,8 +172,10 @@ else
     end
 end
 
-% Update
-obj = updateValues(obj, 1:nEnsembles, members, labels);
+% Record new evolving ensemble
+obj.members_ = members;
+obj.isevolving = nEnsembles > 1;
+obj.evolvingLabels_ = labels(:);
 
 end
 function[obj] = updateEvolving(obj, header, ensembles, members, labels)
@@ -210,26 +212,27 @@ end
 % Note if adding new ensembles
 addingNew = false;
 maxIndex = max(e);
-if maxIndex > obj.nEnsembles
+nCurrent = obj.nEvolving;
+if maxIndex > nCurrent
     addingNew = true;
 end
 
 % If adding new ensembles, require each index on the interval:
-%       current number + (1:number of new)
+%       current number + 1 : new number
 if addingNew
-    required = obj.nEnsembles + (1:maxIndex);
+    required = nCurrent+1:maxIndex;
     missing = ~ismember(required, e);
     if any(missing)
         id = sprintf('%s:missingEvolvingIndex', header);
         error(id, ['Since you are adding new ensembles to the evolving set ',...
             'the first index must include every index on the interval ',...
-            '%.f:%.f. However, the following indices are missing: %s.'],...
-            required(1), required(end), required(missing));
+            '(%.f:%.f). However, the following indices are missing: %s.'],...
+            required(1), required(end), dash.string.list(required(missing)));
     end
 end
 
 % Error check members, convert to linear indices
-members = checkMembers(obj, members, header);
+members = checkMembers(obj, members, obj.nMembers, header);
 
 % Require one column of members per ensemble
 nEnsembles = numel(e);
@@ -244,8 +247,8 @@ end
 % Default and error check labels
 if ~exist('labels', 'var')
     labels = strings(nEnsembles, 1);
-    haslabel = (e <= obj.nEnsembles);
-    labels(haslabel) = obj.evolvingPriors_(e(haslabel));
+    haslabel = (e <= nCurrent);
+    labels(haslabel) = obj.evolvingLabels_(e(haslabel));
 else
     labels = dash.assert.strlist(labels, 'evolvingLabels', header);
     nLabels = numel(labels);
@@ -257,16 +260,13 @@ else
     end
 end
 
-% Update values
-obj = updateValues(obj, e, members, labels);
+% Update evolving ensemble
+obj.members_(:,e) = members;
+obj.isevolving = max(nCurrent,maxIndex) > 1;
+obj.evolvingLabels_(e,:) = labels(:);
 
 end
-function[obj] = updateValues(obj, e, members, labels)
-obj.members_(:,e) = members;
-obj.isevolving = obj.nEnsembles > 1;
-obj.evolvingLabels_(e,:) = labels(:);
-end
-function[members] = checkMembers(obj, members, header)
+function[members] = checkMembers(obj, members, nRequired, header)
 
 % Check members size
 if ~ismatrix(members)
@@ -300,6 +300,18 @@ if islogical(members)
             nMembers(1), bad, nMembers(bad));
     end
 
+    % Optionally require a specific number of members
+    if ~isempty(nRequired) && nMembers(1)~=nRequired
+        id = sprintf('%s:changedNumberOfMembers', header);
+        error(id, ['Since you are updating the existing evolving ensemble, you cannot ',...
+            'change the number of members per ensemble (%.f). Thus, since members is ',...
+            'logical, the columns of members must each have %.f true elements. However, ',...
+            'the columns of members have %.f true elements instead.\n\nIf you would ',...
+            'like to change the number members per ensemble, you will need to design a ',...
+            'new evolving ensemble (syntax 1 or 2).'],...
+            nRequired, nRequired, nMembers(1));
+    end
+
     % Convert to linear
     [r, ~] = find(members);
     members = reshape(r, [], nEnsembles);
@@ -314,15 +326,28 @@ elseif isnumeric(members)
             bad, members(bad));
     end
 
-    % ...and not too large
+    % ...and not too large...
     [maxMember, loc] = max(members);
     if maxMember > obj.totalMembers
         id = sprintf('%s:linearIndicesTooLarge', header);
         error(id, ['Element %.f of members (%.f) is greater than the number ',...
             'of saved members (%.f).'], loc, maxMember, obj.totalMembers);
+
+    % ...and have the correct number of members
+    elseif ~isempty(nRequired)
+        nMembers = size(members,1);
+        if nRequired ~= nMembers
+            id = sprintf('%s:changeNumberOfMembers', header);
+            error(id, ['Since you are updating the existing evolving ensemble, you cannot ',...
+                'change the number of members per ensemble (%.f). Thus, since members consists ',...
+                'of linear indices, members must have %.f rows. However, members has %.f rows ',...
+                'instead. If you would like to change the number of members per ensemble, you will ',...
+                'need to design a new evolving ensemble (syntax 1 or 2).'],...
+                nRequired, nRequired, nMembers);
+        end
     end
 
-% Anything else is invalid
+% All other data types are invalid
 else
     id = sprintf('%s:invalidMembers', header);
     error(id, 'members must either be a matrix of linear indices, or a logical matrix');

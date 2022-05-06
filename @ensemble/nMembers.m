@@ -18,6 +18,9 @@ function[nMembers] = nMembers(obj, scope)
 
 % Parse the scope
 header = "DASH:ensemble:nMembers";
+if ~exist('scope','var') || isempty(scope)
+    scope = "used";
+end
 useFile = obj.parseScope(scope, header);
 
 % Count members
