@@ -32,7 +32,7 @@ function[lengths] = length(obj, variables, scope)
 %   the .ens file.
 % ----------
 %   Inputs:
-%       v (0 | -1 | vector, linear indices): The indices of variables for
+%       v (0 | -1 | linear indices | logical vector): The indices of variables for
 %           which to return lengths. If 0, returns the full length of the
 %           state vector, rather than individual variable lengths. If -1, returns
 %           the lengths of every variable. Depending on scope, these
