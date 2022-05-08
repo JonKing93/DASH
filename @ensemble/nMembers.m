@@ -35,7 +35,7 @@ useFile = obj.parseScope(scope, header);
 
 % Count members
 nMembers = NaN(size(obj));
-for v = 1:numel(obj)
+for k = 1:numel(obj)
     if useFile
         nMembers(k) = obj(k).totalMembers;
     else

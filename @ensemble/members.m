@@ -2,48 +2,46 @@ function[members] = members(obj, ensembles)
 %% ensemble.members  Return the ensemble members for an ensemble
 % ----------
 %   members = obj.members
-%   Returns the indices of the ensemble members being used by the ensemble
-%   object. If the ensemble object implements a static ensemble, returns
-%   the indices of all used ensemble members. If the ensemble object 
-%   implements evolving ensembles, returns the indices of the ensemble
-%   members in each evolving ensemble. Each column holds the indices for a
-%   particular ensemble. The order of columns matches the order of
-%   ensembles in the evolving ensemble.
+%   Returns the ensemble members being used by the ensemble object. The
+%   elements of the output array list the indices of ensembles members
+%   saved in the .ens file. If the ensemble object implements a static
+%   ensemble, returns the indices of all used ensemble members as a column
+%   vector. If the ensemble object implements an evolving ensemble, the
+%   output array will be a matrix. Each column will hold the indices for a
+%   particular ensemble in the evolving set, and the order of columns will
+%   match the order of ensembles in the evolving set.
 %
-%   members = obj.members(evolvingLabels)
+%   members = obj.members(labels)
 %   members = obj.members(e)
 %   members = obj.members(-1)
-%   Returns the indices of the ensemble members being used by the specified
-%   ensembles in an evolving ensemble. Each column holds the indices for a
-%   particular ensemble. The order of columns matches the order of input
-%   ensembles. If the index is -1, returns the ensemble members for all
-%   evolving ensembles.
-%
-%   members = obj.members(label)
-%   members = obj.members(-1 | 1)
-%   If the ensemble object implements a static ensemble, you may still use
-%   the first input to "select" the ensemble. However, the ensemble can only
-%   be selected using the label of the ensemble object, 1, or -1.
+%   Returns the ensemble members for the specified ensembles in an evolving
+%   ensemble. Each column of the output array holds the ensemble members
+%   for a specified matrix, and the order of columns matches the order of
+%   specified ensembles. If the index is -1, returns the ensemble members
+%   for all ensembles in the evolving set.
 %
 %   members = obj.members(0)
-%   Returns the indices of the all the ensemble members saved in the .ens
-%   file.
+%   Returns the indices of all ensemble members saved in the .ens file.
 % ----------
 %   Inputs:
-%       evolvingNames (string vector): The labels of specific ensembles in
-%           an evolving ensemble. If the ensemble object implements a
-%           static ensemble, can only use the label of the ensemble object.
-%       e (0 | -1 | linear indices | logical vectorf): The indices of ensembles in an
-%           evolving ensemble. If -1, selects all ensemble implemented by
-%           the ensemble object. If the ensemble object implements a static
-%           ensemble, can only be 1 or -1. If 0, returns the indices of
-%           all ensemble members saved in the .ens file.
+%       e (0 | -1 | linear indices | logical vector): Indicates the
+%           ensembles for which to return ensemble members. If 0, returns
+%           all ensemble members saved in the .ens file. Otherwise,
+%           indicates specific ensembles in the evolving set. If -1,
+%           selects all ensembles in the evolving set. If a logical vector,
+%           must have one element per ensemble in the evolving set.
+%           Otherwise, use the linear indices of ensembles in the evolving set.
+%       labels (string vector): The labels of specific ensembles in the
+%           evolving set. You can only use labels to reference ensembles
+%           that have unique labels. If multiple ensembles in the evolving
+%           set share the same label, reference them using indices instead.
 %
 %   Outputs:
 %       members (array, positive integers, [nMembers x nEnsembles]):
-%           The indices of the ensemble members in the specified ensembles.
-%           Indices mark the location of the used ensemble members within
-%           the total set of ensemble members saved in the .ens file.
+%           The ensemble members for the specified ensembles. Each element 
+%           of "members" lists the index of an ensemble member saved in the
+%           .ens file. The columns of "members" list the ensemble members
+%           for different ensembles.
 %
 % <a href="matlab:dash.doc('ensemble.members')">Documentation Page</a>
 
@@ -60,9 +58,9 @@ end
 if isequal(ensembles, 0)
     members = (1:obj.totalMembers)';
     
-% Otherwise, parse ensembles and return members
+% Otherwise, parse ensembles indices and return members
 else
-    e = obj.ensembleIndices(ensembles);
+    e = obj.evolvingIndices(ensembles, true, header);
     members = obj.members_(:,e);
 end
 
