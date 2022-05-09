@@ -53,15 +53,6 @@ function[obj] = evolving(obj, varargin)
 %   Also applies evolving labels to the new ensembles in the evolving
 %   ensemble. If the "eNew" input contains the indices of existing
 %   ensembles, updates the labels of those ensembles.
-%
-%   obj = obj.evolving(0)
-%   Removes any evolving ensembles from the current ensemble object. The
-%   ensemble object is reset to implement a static ensemble using all ensemble
-%   members saved in the .ens file. All evolving labels are deleted.
-%
-%   obj = obj.evolving(0, staticMembers)
-%   Specify which ensemble members should be used by the static ensemble
-%   when reverting the ensemble object to a static ensemble.
 % ----------
 %   Inputs:
 %       members (matrix, linear indices [nMembers x nEnsembles] | logical [nSavedMembers x nEnsembles]): 
@@ -72,7 +63,7 @@ function[obj] = evolving(obj, varargin)
 %           in the .ens file. If using logical indices, must have one row
 %           per saved ensemble member, and the sum of each column must be
 %           the same.
-%       e (-1 | logical vector | vector): The indices of ensembles
+%       e (-1 | logical vector | linear indices): The indices of ensembles
 %           in an existing evolving ensemble. If a logical vector, must
 %           have one element per ensemble in the evolving set. If a linear
 %           vector, cannot include repeat indices. If -1, selects all
@@ -90,11 +81,6 @@ function[obj] = evolving(obj, varargin)
 %       newLabels (string vector [nEnsembles]): The new labels to apply to
 %           the ensembles in an evolving set. Must have one element per
 %           column of "members".
-%       staticMembers (vector, linear indices [nMembers] | logical [nSavedMembers]): 
-%           The ensemble members to use when reverting the ensemble object 
-%           to a static ensemble. If linear indices, each element refers to
-%           the index of an ensemble member saved in the .ens file. If
-%           logical, must have one element per saved ensemble member.
 %
 %   Outputs:
 %       obj (scalar ensemble object): The ensemble object with updated
@@ -112,20 +98,12 @@ if nInputs==0
     dash.error.notEnoughInputs;
 elseif nInputs>3
     dash.error.tooManyInputs;
-end
 
-% Revert to static
-if isequal(varargin{1}, 0)
-    if nInputs==3
-        dash.error.tooManyInputs;
-    end
-    obj = revertToStatic(obj, header, varargin{2:end});
-
-% Reset evolving ensemble
+% Create a new evolving ensemble
 elseif nInputs==1 || (nInputs==2 && dash.is.string(varargin{2}))
     obj = resetEvolving(obj, header, varargin{1:end});
 
-% Update existing evolving ensemble
+% Update an existing evolving ensemble
 else
     obj = updateEvolving(obj, header, varargin{1:end});
 end
@@ -134,41 +112,17 @@ end
 
 
 %% Subfunctions
-function[obj] = revertToStatic(obj, header, members)
-
-% Default and error check static members
-if ~exist('members','var') || isempty(members)
-    members = 1:obj.totalMembers;
-else
-    logicalReq = 'have one element per saved ensemble member';
-    linearMax = 'the number of saved ensemble members';
-    members = dash.assert.indices(members, obj.totalMembers, 'staticMembers',...
-                                            logicalReq, linearMax, header);
-
-    % Require at least 1 member
-    if isempty(members)
-        id = sprintf('%s:notEnoughMembers', header);
-        error(id, 'staticMembers must include at least 1 ensemble member');
-    end
-end
-
-% Reset as a static ensemble
-obj.members_ = members(:);
-obj.isevolving = false;
-obj.evolvingLabels_ = "";
-
-end
 function[obj] = resetEvolving(obj, header, members, labels)
 
 % Error check members, convert to linear indices
-members = checkMembers(obj, members, [], header);
+members = obj.assertEvolvingMembers(members, [], [], 'members', header);
 nEnsembles = size(members, 2);
 
 % Default and error check labels
 if ~exist('labels','var') || isempty(labels)
     labels = strings(nEnsembles, 1);
 else
-    labels = dash.assert.strlist(labels, 'evolvingLabels', header);
+    labels = dash.assert.strlist(labels, 'newLabels', header);
     nLabels = numel(labels);
     if nLabels~=nEnsembles
         id = sprintf('%s:wrongNumberOfLabels', header);
@@ -186,9 +140,6 @@ obj.evolvingLabels_ = labels(:);
 end
 function[obj] = updateEvolving(obj, header, ensembles, members, labels)
 
-% Ensemble references must be unique
-dash.assert.uniqueSet(ensembles, 'ensemble', header);
-
 % Identify whether the ensembles are linear indices
 linear = true;
 if isequal(ensembles,-1) || islogical(ensembles) || dash.is.string(ensembles)
@@ -203,8 +154,9 @@ end
 if ~linear
     e = obj.evolvingIndices(ensembles, false, header);
 
-% If linear indices, require positive integers
+% If linear indices, require unique positive integers
 else
+    dash.assert.uniqueSet(ensembles, 'ensemble', header);
     e = ensembles;
     [isvalid, bad] = dash.is.positiveIntegers(e);
     if ~isvalid
@@ -238,17 +190,7 @@ if addingNew
 end
 
 % Error check members, convert to linear indices
-members = checkMembers(obj, members, obj.nMembers, header);
-
-% Require one column of members per ensemble
-nEnsembles = numel(e);
-nCols = size(members, 2);
-if nEnsembles ~= nCols
-    id = sprintf('%s:membersWrongNumberColumns', header);
-    error(id, ['The first input lists %.f ensembles, so the "members" input ',...
-        'must have %.f columns (one per ensemble). However, "members" has %.f ',...
-        'columns instead.'], nEnsembles, nEnsembles, nCols);
-end
+members = obj.assertEvolvingMembers(members, obj.nMembers, numel(e), 'members', header);
 
 % Default and error check labels
 if ~exist('labels', 'var')
@@ -256,7 +198,7 @@ if ~exist('labels', 'var')
     haslabel = (e <= nCurrent);
     labels(haslabel) = obj.evolvingLabels_(e(haslabel));
 else
-    labels = dash.assert.strlist(labels, 'evolvingLabels', header);
+    labels = dash.assert.strlist(labels, 'newLabels', header);
     nLabels = numel(labels);
     if nLabels~=nEnsembles
         id = sprintf('%s:wrongNumberOfLabels', header);
@@ -270,93 +212,5 @@ end
 obj.members_(:,e) = members;
 obj.isevolving = max(nCurrent,maxIndex) > 1;
 obj.evolvingLabels_(e,:) = labels(:);
-
-end
-function[members] = checkMembers(obj, members, nRequired, header)
-
-% Check members size
-if ~ismatrix(members)
-    id = sprintf('%s:membersNotMatrix', header);
-    error(id, 'members must be a matrix');
-elseif isempty(members)
-    id = sprintf('%s:notEnoughMembers', header);
-    error(id, 'members cannot be empty');
-end
-
-% Check logical members
-if islogical(members)
-    [nRows, nEnsembles] = size(members);
-
-    % Require one row per saved ensemble member
-    if nRows ~= obj.totalMembers
-        id = sprintf('%s:logicalMembersWrongLength', header);
-        error(id, ['Since members is logical, it must have one row per saved ',...
-            'ensemble member (%.f), but it has %.f rows instead.'], ...
-            obj.totalMembers, nRows);
-    end
-
-    % Require columns to have the same number of members
-    nMembers = sum(members, 1);
-    bad = find(nMembers~=nMembers(1));
-    if any(bad)
-        id = sprintf('%s:differentNumberOfMembers', header);
-        error(id, ['Since members is logical, the number of true elements in ',...
-            'each column must be the same. However, column 1 has %.f true elements ',....
-            'whereas column %.f has %.f true elements'], ...
-            nMembers(1), bad, nMembers(bad));
-    end
-
-    % Optionally require a specific number of members
-    if ~isempty(nRequired) && nMembers(1)~=nRequired
-        id = sprintf('%s:changedNumberOfMembers', header);
-        error(id, ['Since you are updating the existing evolving ensemble, you cannot ',...
-            'change the number of members per ensemble (%.f). Thus, since members is ',...
-            'logical, the columns of members must each have %.f true elements. However, ',...
-            'the columns of members have %.f true elements instead.\n\nIf you would ',...
-            'like to change the number members per ensemble, you will need to design a ',...
-            'new evolving ensemble (syntax 1 or 2).'],...
-            nRequired, nRequired, nMembers(1));
-    end
-
-    % Convert to linear
-    [r, ~] = find(members);
-    members = reshape(r, [], nEnsembles);
-
-% Check numeric are positive integers...
-elseif isnumeric(members)
-    [isvalid, bad] = dash.is.positiveIntegers(members);
-    if ~isvalid
-        id = sprintf('%s:invalidLinearIndices', header);
-        error(id, ['Since members is numeric, it must consist of linear indices ',...
-            '(positive integers). However, element %.f (%f) is not a positive integer.'],...
-            bad, members(bad));
-    end
-
-    % ...and not too large...
-    [maxMember, loc] = max(members);
-    if maxMember > obj.totalMembers
-        id = sprintf('%s:linearIndicesTooLarge', header);
-        error(id, ['Element %.f of members (%.f) is greater than the number ',...
-            'of saved members (%.f).'], loc, maxMember, obj.totalMembers);
-
-    % ...and have the correct number of members
-    elseif ~isempty(nRequired)
-        nMembers = size(members,1);
-        if nRequired ~= nMembers
-            id = sprintf('%s:changeNumberOfMembers', header);
-            error(id, ['Since you are updating the existing evolving ensemble, you cannot ',...
-                'change the number of members per ensemble (%.f). Thus, since members consists ',...
-                'of linear indices, members must have %.f rows. However, members has %.f rows ',...
-                'instead. If you would like to change the number of members per ensemble, you will ',...
-                'need to design a new evolving ensemble (syntax 1 or 2).'],...
-                nRequired, nRequired, nMembers);
-        end
-    end
-
-% All other data types are invalid
-else
-    id = sprintf('%s:invalidMembers', header);
-    error(id, 'members must either be a matrix of linear indices, or a logical matrix');
-end
 
 end
