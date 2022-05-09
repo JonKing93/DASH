@@ -115,10 +115,13 @@ else
 end
 fprintf('    Variables: %s\n', vars);
 
-% Length and members
+% Length and static members
 fprintf('       Length: %.f\n', obj.length);
-fprintf('      Members: %.f\n', obj.nMembers);
-fprintf('\n');
+fprintf('      Members: %.f', obj.nMembers);
+if obj.isevolving
+    fprintf('  (per ensemble)');
+end
+fprintf('\n\n');
 
 % Evolving ensembles
 if obj.isevolving
