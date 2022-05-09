@@ -44,3 +44,4 @@ AFTER NEXT RELEASE
 Write examples for user facing methods
 Write examples for internal methods (lower priority)
 Add progress bars to long methods
+Add links to scalar disp for array objects (click on a gridfile in an array disp to show the disp for the scalar gridfile/ensemble/sv/etc)

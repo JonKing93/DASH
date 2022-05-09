@@ -121,16 +121,19 @@ end
 % Utility functions
 function[] = displayArray(obj, link)
 
+% Display array size
 info = dash.string.nonscalarObj(obj, link);
 fprintf(info);
 
+% If not empty, collect labels
 if ~isempty(obj)
     labels = strings(size(obj));
     for k = 1:numel(obj)
         labels(k) = obj(k).label;
     end
 
-    if any(~strcmp(labels, ""))
+    % Display labels
+    if ~all(strcmp(labels, ""))
         disp(labels);
     end
 end

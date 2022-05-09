@@ -9,7 +9,7 @@ function[] = disp(obj, showSources)
 %   sizes, and (when printable) the limits of dimensional metadata. Prints
 %   metadata attributes if they exist. If there are data sources, prints
 %   the number of data sources and links to a display of all the data
-%   source file names. If the .grid file 
+%   source file names.
 %
 %   If the object is an array, includes the size of the array in the display.
 %   Instead of gridfile details, prints the name of the .grid file for each
