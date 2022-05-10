@@ -199,7 +199,7 @@ classdef gridfile < handle
     
     % Constructor
     methods
-        function[obj] = gridfile(filename)
+        function[obj] = gridfile(filenames)
         %% gridfile.gridfile  Return a gridfile object for a .grid file
         % ----------
         %   obj = gridfile(filename)
@@ -259,44 +259,47 @@ classdef gridfile < handle
         header = "DASH:gridfile";
         
         % Error check filename
-        filename = dash.assert.string(filename);
-        if isempty(filename)
+        filenames = dash.assert.string(filenames);
+        if isempty(filenames)
             id = sprintf('%s:emptyFilenames', header);
             error(id, 'filenames cannot be empty');
         end
 
-        % If scalar, build the gridfile
-        if isscalar(filename)
-            file = dash.assert.fileExists(filename, '.grid', header);
-            obj.file = dash.file.urlSeparators(file);
-        
-            % Fill the object fields with values from the file
-            obj.update;
-        
-        % If not scalar, preallocate gridfile array
-        else
-            nFiles = numel(filename);
-            obj = cell(nFiles, 1);
-        
-            % Get object for each file
-            try
-                for k = 1:nFiles
-                    obj{k} = gridfile(filename(k));
-                end
+        % Preallocate gridfile array
+        obj = repmat(obj, size(filenames));
 
-            % If failed, note which file caused the error
-            catch cause
+        % Get unique files and associated objects
+        [uniqueFiles, ~, whichObj] = unique(filenames, 'stable');
+        nUniqueFiles = numel(uniqueFiles);
+
+        % Build the gridfile object for each file
+        try
+            for f = 1:nUniqueFiles
+                file = uniqueFiles(f);
+                usesFile = whichObj==f;
+                k = find(usesFile, 1);
+
+                % Check and update file
+                file = dash.assert.fileExists(file, '.grid', header);
+                obj(k).file = dash.file.urlSeparators(file);
+                obj(k).update;
+                
+                % Fill all objects that use the file
+                obj(usesFile) = obj(k);
+            end
+
+        % Informative error if failed. Different structure for scalar vs array
+        catch cause
+            if isscalar(obj)
+                throw(cause);
+            else
                 id = sprintf('%s:couldNotBuildGridfile', header);
-                ME = MException(id, 'Could not build the gridfile object for filename %.f (%s).', k, filename(k));
+                ME = MException(id, 'Could not build the gridfile object for filename %.f (%s).', k, file);
                 ME = addCause(ME, cause);
                 throw(ME);
             end
-        
-            % Convert cell array to gridfile array
-            obj = [obj{:}];
-            obj = reshape(obj, size(filename));
-        end
-
         end
     end
-end 
+    end 
+
+end
