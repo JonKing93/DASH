@@ -93,8 +93,8 @@ classdef ensemble
         v = variableIndices(obj, variables, scope, header);
 
         % Members
-        members = members(obj, ensembles);
         obj = useMembers(obj, varargin);
+        members = members(obj, ensembles);
 
         % Static Ensembles
         obj = static(obj, members);
@@ -105,6 +105,9 @@ classdef ensemble
         varargout = evolvingLabels(obj, varargin);
         e = evolvingIndices(obj, ensembles, allowRepeats, header);
         members = assertEvolvingMembers(obj, members, nRows, nCols, name, header);
+
+        % Metadata
+        metadata = metadata(obj, ensembles);
 
         % Console display
         disp(obj, showVariables, showEvolving);
@@ -118,121 +121,123 @@ classdef ensemble
         tests;
     end
 
+%     % Constructor
+%     methods
+%         function[obj] = ensemble(files, label)
+% 
+%             % Optionally label the object
+%             if exist('label','var')
+%                 try
+%                     obj = obj.label(label);
+%                 catch ME
+%                     throw(ME);
+%                 end
+%             end
+% 
+%             % Create some placeholder values
+%             obj.file = "C://users/test/filename.ens";
+%             obj.variables_ = ["Temp";"Precip";"SLP";"X"];
+%             obj.use = true(4,1);
+%             obj.lengths = [100;5;219;1];
+% 
+%             obj.totalMembers = 1156;
+%             obj.members_ = (1:obj.totalMembers)';
+%         
+%         end
+%     end
+
     % Constructor
     methods
-        function[obj] = ensemble(files, label)
+        function[obj] = ensemble(filenames, labels)
+            %% ensemble.ensemble  Create an ensemble object for a saved state vector ensemble
+            % ----------
+            %   obj = ensemble(filename)
+            %   Creates an ensemble object for the ensemble saved in a .ens file. The
+            %   ensemble object can be used to manipulate and load subsets of the saved
+            %   ensemble while limiting use of computer memory.
+            %
+            %   obj = ensemble(filenames)
+            %   Creates an array of ensemble objects for the specified .ens files. 
+            %
+            %   obj = ensemble(..., labels)
+            %   Also labels the new ensemble objects.
+            % ----------
 
-            % Optionally label the object
-            if exist('label','var')
-                try
-                    obj = obj.label(label);
-                catch ME
+            % Header
+            header = "DASH:ensemble";
+
+            % Error check the file names
+            filenames = dash.assert.string(filenames, 'filenames', header);
+            if isempty(filenames)
+                id = sprintf('%s:emptyFilename', header);
+                error(id, 'filename cannot be empty');
+            end
+            siz = size(filenames);
+
+            % Default and error check labels
+            if ~exist('labels','var')
+                labels = strings(size(filenames));
+            else
+                labels = dash.assert.string(labels, 'labels', header);
+
+                % Check matching size
+                labelSize = size(labels);
+                if ~isequal(labelSize, siz)
+                    id = sprintf('%s:labelsDifferentSize', header);
+                    error(id, ['The size of the "labels" input (%s) is different than the size of the ',...
+                        '"filenames" input (%s).'], dash.string.size(labelSize), dash.string.size(siz));
+                end
+            end
+
+            % Preallocate ensemble array
+            obj = repmat(obj, siz);
+
+            % Get unique files and associated objects
+            [uniqueFiles, ~, whichObj] = unique(filenames, 'stable');
+            nUniqueFiles = numel(uniqueFiles);
+
+            % Build the ensemble object for each file
+            try
+                for f = 1:nUniqueFiles
+                    file = uniqueFiles(f);
+                    usesFile = whichObj==f;
+                    k = find(usesFile, 1);
+
+                    % Check and update file path
+                    file = dash.assert.fileExists(file, '.ens', header);
+                    obj(k).file = dash.file.urlSeparators(file);
+
+                    % Validate matfile contents. Get state vector
+                    m = obj(k).validateMatfile;
+                    sv = m.stateVector;
+
+                    % Initialize variables, members, and metadata
+                    obj(k).variables_ = sv.variables;
+                    obj(k).use = true(size(obj.variables_));
+                    obj(k).lengths = sv.length(-1);
+                    obj(k).totalMembers = sv.members;
+                    obj(k).members_ = (1:obj.totalMembers)';
+                    obj(k).metadata_ = ensembleMetadata(sv);
+
+                    % Fill all objects that use the file
+                    obj(usesFile) = obj(k);
+                end
+
+            % Informative error if failed. Tweak message for scalar vs array
+            catch cause
+                if isscalar(obj)
+                    throw(cause);
+                else
+                    id = sprintf('%s:couldNotBuildEnsemble', header);
+                    ME = MException(id, 'Could not build the ensemble object for filename %.f (%s).', k, file);
+                    ME = addCause(ME, cause);
                     throw(ME);
                 end
             end
 
-            % Create some placeholder values
-            obj.file = "C://users/test/filename.ens";
-            obj.variables_ = ["Temp";"Precip";"SLP";"X"];
-            obj.use = true(4,1);
-            obj.lengths = [100;5;219;1];
-
-            obj.totalMembers = 1156;
-            obj.members_ = (1:obj.totalMembers)';
-        
+            % Apply labels
+            labels = num2cell(labels);
+            [obj.label_] = labels{:};
         end
     end
-
-
-
-%     % Construction
-%     methods
-%         function[obj] = ensemble(files)
-% %% ensemble.ensemble  Create an ensemble object for a saved state vector ensemble
-% % ----------
-% %   obj = ensemble(files)
-% %   Creates an ensemble object or array of ensemble objects for
-% %   a state vector ensembles saved in .ens files. The ensemble
-% %   objects can be used to manipulate and load subsets of the
-% %   saved ensembles while limiting use of computer memory.
-% %
-% %   obj = ensemble(files, labels)
-% %   Also labels the ensemble objects. 
-% % ----------
-% %   Inputs:
-% %       files (string array): The file paths to one or more .ens files.
-% %           Adds a ".ens" extension if a file cannot be found and lacks
-% %           the extension.
-% %       labels (string, scalar | array [size(files)]): A set of labels
-% %           for the ensemble objects. Should have the same size as the
-% %           "files" input. Alternatively, use a string scalar or char row
-% %           vector to apply the same label to all the objects.
-% %
-% %   Outputs:
-% %       obj (ensemble array): An array of ensemble objects for the
-% %       specified .ens files.
-% %
-% % <a href="matlab:dash.doc('ensemble.ensemble')">Documentation Page</a>
-% 
-% % Error header
-% header = "DASH:ensemble";
-% 
-% % Error check filename
-% files = dash.assert.string(files);
-% if isempty(files)
-%     id = sprintf('%s:emptyFilenames', header);
-%     error(id, 'file names cannot be empty');
-% end
-% 
-% % If scalar, build the ensemble object
-% if isscalar(files)
-%     file = dash.assert.fileExists(files, '.ens', header);
-%     obj.file = dash.file.urlSeparators(file);
-% 
-%     % Get a matfile object for the ensemble
-%     reset = dash.warning.state('off', 'MATLAB:load:variableNotFound'); %#ok<NASGU> 
-%     try
-%         m = matfile(file);
-%     catch
-%         id = sprintf('%s:couldNotLoad', header);
-%         error(id, ['Could not load data from file:\n\t%s\n',...
-%             'It may not be a valid .ens file.'], file);
-%     end
-% 
-%     % Ensure required fields are in the file
-%     requiredFields = ["X","stateVector"];
-%     loadedFields = fieldnames(m);
-%     [loaded, loc] = ismember(requiredFields, loadedFields);
-%     if ~all(loaded)
-%         missing = find(loc==0,1);
-%         missing = requiredFields(missing);
-%         id = sprintf('%s:missingField', header);
-%         error(id, ['The file:\n\t%s\nis missing the "%s" field. It may not ',...
-%             'be a valid .ens file.'], file, missing);
-%     end
-% 
-%     % Check that the data matrix is valid. Get data size.
-%     info = whos(m, 'X', 'stateVector');
-%     if ~ismember(info(1).class, ["single","double"])
-%         invalidTypeError;
-%     elseif numel(info(1).size)~=2
-%         Xmustbematrix
-%     elseif any(info(1).size==0)
-%         XcannotBeEmpty
-%     end
-%     Xsize = info(1).size;
-% 
-%     % Load the ensemble metadata, error check, etc.
-%     warning('unfinished');
-
 end
-
-
-
-
-
-
-       
-
-
-
