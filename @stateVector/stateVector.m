@@ -234,7 +234,7 @@ classdef stateVector
 
     % Constructor
     methods
-        function[obj] = stateVector(label)
+        function[obj] = stateVector(varargin)
             %% stateVector.stateVector  Return a new, empty stateVector object
             % ----------
             %   obj = stateVector
@@ -242,23 +242,89 @@ classdef stateVector
             %   variables associated with it.
             %
             %   obj = stateVector(label)
+            %   obj = stateVector(labels)
             %   Also applies a label to the state vector object. If unset, the label is
-            %   set to an empty string.
+            %   set to an empty string. If labels is a string array, returns an array of
+            %   state vector objects and applies the corresponding label to each 
+            %   individual state vector.
+            %
+            %   obj = stateVector(size)
+            %   obj = stateVector(size, labels)
+            %   Initializes an array of state vector objects of the indicated size.
+            %   Optionally also applies a label to each object in the array.
+            %   If applying labels, the size of the "labels" array must
+            %   match the requested size of the stateVector array.
             % ----------
             %   Inputs:
-            %       label (string scalar | []): A label for the state vector.
+            %       labels (string array | cellstring array | char row vector): 
+            %           Labels for the elements of a stateVector array.
+            %           If the only input, the output array will have the
+            %           same size as labels. If combined with the "size"
+            %           input, must be the size of the requested array.
+            %       size (row vector, positive integers): Indicates the
+            %           size of the requested array of stateVector objects.
+            %           Must have at least 2 elements, and all elements
+            %           must be non-negative integers. 
             %
             %   Outputs:
-            %       obj (scalar stateVector object): A new, empty stateVector object.
+            %       obj (scalar stateVector object | stateVector array): 
+            %           A new, empty stateVector object or array of
+            %           stateVector objects.
             %
             % <a href="matlab:dash.doc('stateVector.stateVector')">Documentation Page</a>
-    
-            % Add Label
-            if exist('label','var')
-                try
-                    obj = obj.label(label);
-                catch ME
-                    throw(ME);
+
+            % Header
+            header = "DASH:stateVector";
+
+            % Parse inputs
+            nInputs = numel(varargin);
+            if nInputs > 2
+                dash.error.tooManyInputs;
+            elseif nInputs == 0
+                labels = "";
+            elseif nInputs==2
+                siz = varargin{1};
+                labels = varargin{2};
+
+            % Parse single input case
+            else
+                input = varargin{1};
+                if isnumeric(input)
+                    siz = input;
+                elseif dash.is.string(input)
+                    labels = input;
+                else
+                    id = sprintf('%s:invalidInput', header);
+                    error(id, 'The first input must either be a size vector or a set of labels.');
+                end
+            end
+
+            % Error check size
+            if exist('siz','var')
+                if ~isrow(siz) || numel(siz)<2
+                    id = sprintf('%s:invalidSizeVector',header);
+                    error(id, 'Size vector should be a row vector with at least 2 elements.');
+                end
+                dash.assert.integers(siz, 'Size vector', header);
+                if any(siz<0)
+                    bad = find(siz<0,1);
+                    id = sprintf('%s:negativeSize', header);
+                    error(id, ['Size vector cannot contain values less than 0, but element ',...
+                        '%.f (%.f) is negative.'], bad, siz(bad));
+                end
+                dash.assert.defined(siz, 1, 'Size vector', header);
+            end
+
+            % Default and error check labels
+            if ~exist('labels','var')
+                labels = strings(siz);
+            else
+                labels = dash.assert.string(labels, 'labels', header);
+
+                % Get default size
+                labelSize = size(labels);
+                if ~exist('siz','var')
+                    siz = labelSize;
                 end
             end
 
@@ -267,6 +333,20 @@ classdef stateVector
             variables(1,:) = [];
             obj.variables_ = variables;
 
+            % Fill stateVector array
+            obj = repmat(obj, siz);
+
+            % Compare array size to labels
+            siz = size(obj);
+            if ~isequal(labelSize, siz)
+                id = sprintf('%s:differentLabelSize', header);
+                error(id, ['The size of the "labels" input (%s) is different than the size of the ',...
+                    'requested stateVector array (%s).'], dash.string.size(labelSize), dash.string.size(siz));
+            end
+
+            % Apply labels
+            labels = num2cell(labels);
+            [obj.label_] = labels{:};
         end
     end
 
