@@ -71,7 +71,6 @@ try
     for v = 1:obj.nVariables
         siz = [parameters(v).rawSize, 1, 1];
         NaN(siz);
-        error('failed');
     end
 catch ME
     singleMemberTooLargeError(ME);

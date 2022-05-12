@@ -249,6 +249,9 @@ end
 ens = [];
 if writeFile
     tmpFile = strcat(filename, ".tmp");
+    if isfile(tmpFile)
+        delete(tmpFile);
+    end
     cleanup = onCleanup(@()removeTmpFile(tmpFile));
     removeTmpFile(tmpFile);
     ens = matfile(tmpFile);
