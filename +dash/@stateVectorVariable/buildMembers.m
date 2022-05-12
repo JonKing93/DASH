@@ -1,4 +1,4 @@
-function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, precision, progress)
+function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, precision)
 %% dash.stateVectorVariable.buildMembers  Builds a set of ensemble members for a state vector variable
 % ----------
 %   X = <strong>obj.buildMembers</strong>(dims, subMembers, grid, source, parameters)
@@ -62,20 +62,12 @@ catch
     error(id, 'The state vector ensemble for the variable is too large for active memory.');
 end
 
-% Note progress bar
-if ~isempty(progress)
-    showprogress = true;
-end
-
 
 %% Load all members
 
 % Attempt to load all members
 allLoaded = false;
 if ~source.isloaded && parameters.loadAllMembers
-    if showprogress
-        progress.task(3, 'Attempting data load');
-    end
 
     % Get load indices. Directly load state indices (no need to span
     % indices because can load directly). Use span over ensemble indices
@@ -98,11 +90,6 @@ end
 
 
 %% Setup tasks
-
-% Progress
-if showprogress
-    progress.task(3, 'Setting up');
-end
 
 % Identify standard omitnan and includenan dimensions
 includenan = obj.meanType==1 & ~obj.omitnan;
@@ -175,12 +162,6 @@ end
 
 
 %% Extract raw ensemble members
-
-% Progress
-if showprogress
-    progress.task(3, 'Building Members');
-    progress.task(2);
-end
 
 % Cycle through ensemble members. Get load indices for each ensemble dimension
 for m = 1:nMembers
@@ -261,14 +242,6 @@ for m = 1:nMembers
 
     % Record state vector
     X(:,m) = Xm(:);
-
-    % Progress
-    if showprogress
-        progress.update;
-    end
-end
-if showprogress
-    progress.complete(3);
 end
 
 end
