@@ -47,3 +47,4 @@ Add progress bars to long methods
 Add links to scalar disp for array objects (click on a gridfile in an array disp to show the disp for the scalar gridfile/ensemble/sv/etc)
 Add handling for <missing> strings
 More sophisticated loading for ensemble.loadRows
+Add serializer to ensembleMetadata (maybe do now)
