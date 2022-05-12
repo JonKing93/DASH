@@ -44,8 +44,12 @@ if ~obj.isserialized
     details = strings(obj.nVariables, 1);
     for v = 1:obj.nVariables
         [sizes, types] = obj.variables_(v).stateSizes;
-        types = strcat(types, ' (', string(sizes), ')');
-        details(v) = strjoin(types, ' x ');
+        if isempty(sizes)
+            details = "";
+        else
+            types = strcat(types, ' (', string(sizes), ')');
+            details(v) = strjoin(types, ' x ');
+        end
     end
 
     % Include details and details link in format
