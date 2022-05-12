@@ -11,7 +11,7 @@ function[obj] = useVariables(obj, variables, scope)
 %
 %   After using this command, the ensemble will only load these specified
 %   variables when the "ensemble.load" command is used. Unused variables
-%   will not be loaded into memory. By default, ensemble objeects load all
+%   will not be loaded into memory. By default, ensemble objects load all
 %   the variables saved in the .ens file, so use this command when you only
 %   want to load a subset of the saved variables.
 %
@@ -19,7 +19,7 @@ function[obj] = useVariables(obj, variables, scope)
 %   priors. Only the used variables will be loaded and assimilated, so this
 %   method can help select a subset of variables as reconstruction targets.
 %
-%   Calling this command will also affect values returned various ensemble
+%   Calling this command will also affect values returned by various ensemble
 %   methods. Typcially, ensemble methods will interpret inputs and return
 %   values in the context of the variables being used by the ensemble
 %   object, rather than the context of variables saved in the .ens file.
@@ -31,12 +31,12 @@ function[obj] = useVariables(obj, variables, scope)
 %   ***Important***
 %   It is usually not necessary to use this command when running the
 %   "PSM.estimate" command, because "PSM.estimate" already implements
-%   memory optimizations. However, if you *do* apply this command to an
+%   memory optimizations. However, if you do apply this command to an
 %   ensemble object used as input to "PSM.estimate", then you should call
 %   this command BEFORE determining the rows for each forward model.
-%   Essentially, you must determine forward models rows with respect to the
-%   subset of used variables, rather than the full set of variables saved
-%   in the .ens file.
+%   Essentially, you will need to determine forward models rows with respect
+%   to the subset of used/loaded variables, rather than the full set of
+%   variables saved in the .ens file.
 %
 %   obj = obj.useVariables(variables, scope)
 %   obj = obj.useVariables(variables, "file"|"f"|true)
