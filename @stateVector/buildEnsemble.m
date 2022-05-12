@@ -71,6 +71,7 @@ try
     for v = 1:obj.nVariables
         siz = [parameters(v).rawSize, 1, 1];
         NaN(siz);
+        error('failed');
     end
 catch ME
     singleMemberTooLargeError(ME);
@@ -87,9 +88,10 @@ if isempty(ens)
 
 % Or write to file
 else
-    writeEnsemble(obj, members, grids, sources, parameters, precision, header);
+    writeEnsemble(obj, ens, members, grids, sources, parameters, precision, header);
     ens.stateVector = obj.serialize;
     X = [];
+    metadata = [];
 end
 
 end
@@ -496,7 +498,7 @@ catch ME
 end
 
 end
-function[] = writeEnsemble(obj, members, grids, sources, parameters, precision, header)
+function[] = writeEnsemble(obj, ens, members, grids, sources, parameters, precision, header)
 
 %%%%% Parameter for reducing chunk sizes
 ORDER = 10;

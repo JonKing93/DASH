@@ -264,6 +264,7 @@ if writeFile
     movefile(tmpFile, filename);
     if nargout>0
         X = ensemble(filename);
+        meta = X.metadata;
     end
 end
 

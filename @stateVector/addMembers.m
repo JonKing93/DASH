@@ -92,8 +92,7 @@ defaults = {  true,    [],         false,          [],        []    };
 % Redirect user if attempting to write to file
 if ~isempty(file)
     fileError;
-end
-if ~isempty(overwrite)
+elseif ~isempty(overwrite)
     overwriteError;
 end
 
