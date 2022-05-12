@@ -1,7 +1,7 @@
-function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, header)
+function[X, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, header)
 %% stateVector.buildEnsemble  Builds members of a state vector ensemble
 % ----------
-%   [X, metadata, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header)
+%   [X, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header)
 %   Builds N new members for a state vector ensemble.
 % ----------
 %   Inputs:
@@ -22,8 +22,6 @@ function[X, metadata, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, co
 % Outputs:
 %       X (numeric array | []): If loading new members directly, the new
 %           ensemble members. If writing to file, an empty array.
-%       metadata (scalar ensembleMetadata): The ensembleMetadata object for the
-%           new ensemble members.
 %       obj (scalar stateVector object): The object updated with the new
 %           ensemble members
 %
@@ -83,14 +81,11 @@ members = nTotal-nMembers+1:nTotal;
 % Load ensemble directly
 if isempty(ens)
     X = loadEnsemble(obj, members, grids, sources, parameters, precision, header);
-    metadata = ensembleMetadata(obj);
 
 % Or write to file
 else
     writeEnsemble(obj, ens, members, grids, sources, parameters, precision, header);
-    ens.stateVector = obj.serialize;
     X = [];
-    metadata = [];
 end
 
 end

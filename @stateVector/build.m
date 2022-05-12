@@ -1,4 +1,4 @@
-function[X, meta, obj] = build(obj, nMembers, varargin)
+function[X, metadata, obj] = build(obj, nMembers, varargin)
 %% stateVector.build  Build a state vector ensemble
 % ----------
 %   [X, metadata, obj] = obj.build(nMembers)
@@ -259,16 +259,23 @@ end
 
 % Build the ensemble.
 obj.iseditable = false;
-[X, meta, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header);
+[X, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header);
 
-% After writing, move data from .tmp to .ens. Optionally get ensemble
-% object as output
+% If writing file, add serialized state vector *after* large data array and
+% move file from .tmp to .ens
 if writeFile
+    ens.stateVector = obj.serialize;
     movefile(tmpFile, filename);
+
+    % Optionally build ensemble and metadata outputs
     if nargout>0
         X = ensemble(filename);
-        meta = X.metadata;
+        metadata = X.metadata;
     end
+
+% If loading data directly, optionally build metadata
+elseif nargout>1
+    metadata = ensembleMetadata(obj);
 end
 
 end
