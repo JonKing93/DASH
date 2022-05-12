@@ -63,6 +63,7 @@ end
 % Update the object
 dims = cellstr(dims(:))';
 nameValue = [dims; newMeta];
+reset = dash.warning.state('off', 'DASH:gridMetadata:edit:metadataFieldIsRow'); %#ok<NASGU> 
 obj = obj.edit(nameValue{:});
 
 end
