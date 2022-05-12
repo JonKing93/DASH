@@ -299,7 +299,7 @@ classdef gridfile < handle
                 throw(ME);
             end
         end
-    end
-    end 
 
+        end
+    end 
 end
