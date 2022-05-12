@@ -109,6 +109,16 @@ classdef ensemble
         % Metadata
         metadata = metadata(obj, ensembles);
 
+        % Load
+        [X, metadata] = load(obj, ensembles);
+        X = loadRows(obj, scope);
+        X = loadGrid(obj, variable, scope);
+
+        % Matfile interactions
+        obj = addMembers(obj, nMembers, strict);
+        obj = update(obj);
+        [m, metadata] = validateMatfile(obj, header);
+
         % Console display
         disp(obj, showVariables, showEvolving);
         dispVariables(obj, showFile);
@@ -120,31 +130,6 @@ classdef ensemble
         useFile = parseScope(scope, header);
         tests;
     end
-
-%     % Constructor
-%     methods
-%         function[obj] = ensemble(files, label)
-% 
-%             % Optionally label the object
-%             if exist('label','var')
-%                 try
-%                     obj = obj.label(label);
-%                 catch ME
-%                     throw(ME);
-%                 end
-%             end
-% 
-%             % Create some placeholder values
-%             obj.file = "C://users/test/filename.ens";
-%             obj.variables_ = ["Temp";"Precip";"SLP";"X"];
-%             obj.use = true(4,1);
-%             obj.lengths = [100;5;219;1];
-% 
-%             obj.totalMembers = 1156;
-%             obj.members_ = (1:obj.totalMembers)';
-%         
-%         end
-%     end
 
     % Constructor
     methods
@@ -207,17 +192,16 @@ classdef ensemble
                     file = dash.assert.fileExists(file, '.ens', header);
                     obj(k).file = dash.file.urlSeparators(file);
 
-                    % Validate matfile contents. Get state vector
-                    m = obj(k).validateMatfile;
-                    sv = m.stateVector;
+                    % Validate matfile contents. Build ensembleMetadata
+                    [~, metadata] = obj(k).validateMatfile(header);
 
-                    % Initialize variables, members, and metadata
-                    obj(k).variables_ = sv.variables;
+                    % Initialize ensemble properties
+                    obj(k).variables_ = metadata.variables;
                     obj(k).use = true(size(obj.variables_));
-                    obj(k).lengths = sv.length(-1);
-                    obj(k).totalMembers = sv.members;
+                    obj(k).lengths = metadata.length(-1);
+                    obj(k).totalMembers = metadata.members;
                     obj(k).members_ = (1:obj.totalMembers)';
-                    obj(k).metadata_ = ensembleMetadata(sv);
+                    obj(k).metadata_ = metadata;
 
                     % Fill all objects that use the file
                     obj(usesFile) = obj(k);
