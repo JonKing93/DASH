@@ -21,7 +21,7 @@ function[] = dispVariables(obj, showFile)
 % <a href="matlab:dash.doc('ensemble.dispVariables')">Documentation Page</a>
 
 % Default
-if ~exist('useFile','var')
+if ~exist('showFile','var')
     showFile = false;
 end
 
