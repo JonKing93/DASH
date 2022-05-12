@@ -77,6 +77,7 @@ dispVariables;
 dispCoupled;
 
 relocate;
+prepareGrids;
 validateGrids;
 parseGrids;
 buildGrids;

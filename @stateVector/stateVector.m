@@ -109,6 +109,7 @@ classdef stateVector
     %
     % Gridfile Interactions:
     %   parseGrids          - Parse inputs that are either gridfile objects or .grid file paths
+    %   prepareGrids        - Build and validate the gridfile objects for the state vector variables
     %   buildGrids          - Build unique gridfile objects
     %   validateGrids       - Check that gridfiles match recorded values
     %
@@ -221,6 +222,7 @@ classdef stateVector
 
         % Gridfile interactions
         obj = relocate(obj, variables, grids);
+        [grids, failed, cause] = prepareGrids(obj, header);
         [failed, cause] = validateGrids(obj, grids, vars, header);
     end
     methods (Static)

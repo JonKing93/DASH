@@ -162,17 +162,10 @@ end
 
 %% Gridfiles
 
-% Build gridfiles
-[grids, failed, cause] = obj.buildGrids(obj.gridfiles);
+% Build the gridfile objects for the variables
+[grids, failed, cause] = obj.prepareGrids(header);
 if failed
-    gridfileFailedError;
-end
-
-% Check gridfiles match recorded values
-vars = 1:obj.nVariables;
-[failed, cause] = obj.validateGrids(grids, vars, header);
-if failed
-    invalidGridfileError;
+    gridfileFailedError(obj, failed, cause, header);
 end
 
 
