@@ -27,13 +27,66 @@ classdef ensembleMetadata
 
     end
 
+    methods
+
+        varargout = label(obj, label);
+        name = name(obj);
+
+        variableNames = variables(obj, v);
+        length = length(obj, variables);
+        v = variableIndices(obj, variables, allowRepeats, header);
+
+        obj = remove(obj, variables);
+        obj = extract(obj, variables);
+        obj = append(obj, meta2);
+
+        obj = removeMembers(obj, members);
+        obj = extractMembers(obj, members);
+        obj = appendMembers(obj, members);
+
+
+
+    end
+
     % Constructor
     methods
-        function[obj] = ensembleMetadata(sv)
+        function[obj] = ensembleMetadata(sv, label)
+            %% ensembleMetadata.ensembleMetadata  Create a new ensembleMetadata object
+            % ----------
+            %   obj = ensembleMetadata(sv)
+            %   Returns an ensembleMetadata object for the input stateVector object.
+            %   The ensembleMetadata object holds the metadata down the state vector,
+            %   as well as metadata for any built ensemble members. Note that only
+            %   stateVector objects produced as output from the "stateVector.build"
+            %   and "stateVector.addMembers" will have ensemble members. The label 
+            %   of the each ensembleMetadata object will match the label of the 
+            %   stateVector object.
+            %
+            %   obj = ensembleMetadata(sv, label)
+            %   Specify the label that should be applied to the ensembleMetadata object
+            % ----------
+            %   Inputs:
+            %       sv (scalar stateVector objects): The stateVector object for
+            %           which to build ensembleMetadata objects.
+            %       label (string scalar | cellstring scalar | char row vector):
+            %           The label to apply to the ensembleMetadata object
+            %
+            %   Outputs:
+            %       obj (scalar ensembleMetadata objects): The ensembleMetadata
+            %           object for the state vector ensemble.
+            %
+            % <a href="matlab:dash.doc('ensembleMetadata.ensembleMetadata')">Documentation Page</a>
 
             % Check the input is a scalar state vector
             header = "DASH:ensembleMetadata";
             dash.assert.scalarType(sv, "stateVector", 'sv', header);
+
+            % Default and parse the label
+            if ~exist('label','var')
+                label = sv.label;
+            else
+                label = dash.assert.strflag(label, 'label', header);
+            end
 
             % Build and validate the gridfile objects
             [grids, failed, cause] = sv.prepareGrids;
@@ -41,8 +94,8 @@ classdef ensembleMetadata
                 gridfileFailedError(cause);
             end
 
-            % Copy the label from the state vector design
-            obj.label_ = sv.label;
+            % Apply the label
+            obj.label_ = label;
 
             % Get the variables and their lengths
             obj.variables_ = sv.variables;
