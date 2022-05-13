@@ -133,7 +133,10 @@ if ~isempty(obj)
     end
 
     % Display labels
-    if ~all(strcmp(labels, ""))
+    unlabeled = strcmp(labels, "");
+    if ~all(unlabeled)
+        fprintf('    Labels:\n');
+        labels(unlabeled) = missing;
         disp(labels);
     end
 end

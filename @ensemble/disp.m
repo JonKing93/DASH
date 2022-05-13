@@ -63,6 +63,7 @@ end
 
 end
 
+%% Utilities
 function[] = dispFile(obj, name, link, maxVars)
 
 % Title
@@ -153,8 +154,6 @@ link = sprintf('<a href="matlab:%s.disp(''file'')">Show .ens file contents</a>',
 fprintf('  %s\n\n', link);
 
 end
-
-%% Utilities
 function[] = displayArray(obj, link, showFile)
 
     % Display the array size
@@ -168,6 +167,7 @@ function[] = displayArray(obj, link, showFile)
             labels(k) = obj(k).label;
         end
         unlabeled = strcmp(labels, "");
+        labels(unlabeled) = missing;
     end
 
     % If showing file, or labels are empty, collect files
@@ -181,11 +181,10 @@ function[] = displayArray(obj, link, showFile)
 
     % Display files or labels
     if showFile
-        fprintf('    Files:\n\n')
+        fprintf('    Files:\n')
         disp(files);
     else
-        labels(unlabeled) = "<no label>";
-        fprintf('    Labels:\n\n')
+        fprintf('    Labels:\n')
         disp(labels);
     end
 
