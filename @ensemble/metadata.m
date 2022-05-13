@@ -57,6 +57,13 @@ else
         e = ensembles(k);
         members = obj.members_(:,e);
         metadata(k) = metadata(k).extractMembers(members);
+
+        % Label each metadata
+        if obj.isevolving
+            metadata(k) = metadata(k).label(obj.evolvingLabels(k));
+        else
+            metadata(k) = metadata(k).label(obj.label);
+        end
     end
 end
 
