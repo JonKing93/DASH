@@ -12,12 +12,13 @@ removed = obj.variables_(v);
 obj.variables_(v,:) = [];
 obj.lengths(v,:) = [];
 
-obj.stateDimensions(v,:) = [];
-obj.stateSize(v,:) = [];
+obj.stateDimensions = rmfield(obj.stateDimensions, removed);
+obj.stateSize = rmfield(obj.stateSize, removed);
 obj.state = rmfield(obj.state, removed);
 
 % Remove the coupling set indices
 sets = obj.couplingSet(v);
+obj.couplingSet(v,:) = [];
 
 % Cycle through the unique coupling sets of removed variables
 sets = unique(sets);

@@ -13,8 +13,8 @@ classdef ensembleMetadata
 
         %% State dimensions
 
-        stateDimensions = cell(0,1);    % The names of the dimensions with state elements for each variable
-        stateSize = cell(0,1);          % The sizes of the dimensions with state elements for each variable
+        stateDimensions = struct;       % The names of the dimensions with state elements for each variable
+        stateSize = struct;             % The sizes of the dimensions with state elements for each variable
         state = struct;                 % The state metadata for each variable
 
         %% Ensemble dimensions
@@ -23,7 +23,7 @@ classdef ensembleMetadata
         couplingSet = NaN(0,1);         % The coupling set associated with each variable
         ensembleDimensions = cell(0,1); % The names of the ensemble dimensions for each coupling set
         nMembers = 0;                   % The number of ensemble members for the ensemble
-        ensemble;                       % The ensemble metadata for each coupling set
+        ensemble = cell(0,1);           % The ensemble metadata for each coupling set
 
     end
 
