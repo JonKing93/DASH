@@ -101,6 +101,7 @@ else
     metadata = dash.parse.inputOrCell(metadata, nDims, "metadata", header);
     for k = 1:nDims
         try
+            reset = dash.warning.state('off', 'DASH:gridMetadata:edit:metadataFieldIsRow'); %#ok<NASGU> 
             meta = gridMetadata(dimensions(k), metadata{k});
             meta.assertUnique(dimensions(k), header);
         catch ME

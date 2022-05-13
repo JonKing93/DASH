@@ -1,17 +1,33 @@
 classdef ensembleMetadata
 
     properties
+        %% General
+
         label_ = "";                    % A label for the metadata
+
+        %% Variables
 
         nVariables = 0;                 % The number of variables in the state vector ensemble
         variables_ = strings(0,1);      % The names of variables in the state vector ensemble
         lengths = NaN(0,1);             % The number of state vector elements for each variable
 
+        %% State dimensions
+
         stateDimensions = cell(0,1);    % The names of the dimensions with state elements for each variable
         stateSize = cell(0,1);          % The sizes of the dimensions with state elements for each variable
-        state = struct();               % The state metadata for each variable
+        state = struct;                 % The state metadata for each variable
+
+        %% Ensemble dimensions
+
+        nSets = 0;                      % The number of coupling sets in the ensemble
+        couplingSet = NaN(0,1);         % The coupling set associated with each variable
+        ensembleDimensions = cell(0,1); % The names of the ensemble dimensions for each coupling set
+        nMembers = 0;                   % The number of ensemble members for the ensemble
+        ensemble;                       % The ensemble metadata for each coupling set
+
     end
 
+    % Constructor
     methods
         function[obj] = ensembleMetadata(sv)
 
@@ -22,7 +38,7 @@ classdef ensembleMetadata
             % Build and validate the gridfile objects
             [grids, failed, cause] = sv.prepareGrids;
             if failed
-                gridfileFailedError;
+                gridfileFailedError(cause);
             end
 
             % Copy the label from the state vector design
@@ -35,53 +51,104 @@ classdef ensembleMetadata
             obj.lengths = sv.length(-1);
 
             % Initialize state dimension metadata
-            obj.stateDimensions = cell(nVariables, 1);
-            obj.stateSize = cell(nVariables, 1);
-            obj.state = struct;
+            obj.stateDimensions = struct;
+            obj.stateSize = struct;
 
-            % Get the dimensions with state elements for each variable
+            % Get the name and stateVectorVariable object for each variable
             for v = 1:nVariables
+                variable = obj.variables_(v);
                 svv = sv.variables_(v);
+                obj.state.(variable) = struct;
+
+                % Record the dimensions that have state vector elements.
                 dimensions = find(svv.isState | svv.hasSequence);
-                obj.stateDimensions{v} = svv.dims(dimensions);
-                obj.stateSize{v} = svv.stateSize(dimensions);
+                obj.stateDimensions.(variable) = svv.dims(dimensions);
+                obj.stateSize.(variable) = svv.stateSize(dimensions);
 
-                % Get the gridfile metadata for the variable
+                % Get the gridfile for the variable
                 g = grids.whichGrid(v);
-                gridmeta = grids.gridfiles(g).metadata;
+                grid = grids.gridfiles(g);
 
-                % Get metadata along each dimension with state vector elements
-                stateMetadata = struct;
+                % Get index and name of each dimension with state elements
                 for k = 1:numel(dimensions)
                     d = dimensions(k);
-                    dim = svv.dims(d);
+                    dimension = svv.dims(d);
 
-                    % State dimensions
+                    % Get state dimension metadata.
                     if svv.isState(d)
-                        metadata = gridmeta.(dim)(svv.indices{d},:);
-                        if svv.meanType(d)~=0
+                        [metadata, failed, cause] = svv.getMetadata(d, grid, header);
+                        if failed
+                            metadataFailedError(cause);
+                        end
+
+                        % Permute if taking a mean
+                        if svv.meanType(d) ~= 0
                             metadata = permute(metadata, [3 2 1]);
                         end
 
-                    % Sequences
+                    % Get sequence metadata
                     else
                         metadata = svv.sequenceMetadata{d};
                     end
 
-                    % Record the metadata for each dimension and variable
-                    stateMetadata.(dim) = metadata;
+                    % Record the metadata for each dimension
+                    obj.state.(variable).(dimension) = metadata;
                 end
-                variable = obj.variables_(v);
-                obj.state.(variable) = stateMetadata;
             end
 
+            % Get the number of members and the coupling sets
+            nMembers = sv.members;
+            obj.nMembers = nMembers;
+            info = sv.couplingInfo;
+            nSets = numel(info.sets);
+
+            % Initialize ensemble dimension metadata
+            obj.nSets = nSets;
+            obj.couplingSet = [info.variables.whichSet]';
+            obj.ensembleDimensions = cell(nSets, 1);
+            if nMembers>0
+                obj.ensemble = repmat({struct}, nSets, 1);
+            end
+
+            % Get the ensemble dimensions for each coupling set
+            for s = 1:nSets
+                set = info.sets(s);
+                obj.ensembleDimensions{s} = set.ensDims;
+
+                % If there are no members, continue to the next set
+                if nMembers==0
+                    continue;
+                end
+
+                % Get the leading svv object in each set and the indices of
+                % the ensemble dimensions in this variable
+                v = set.vars(1);
+                svv = sv.variables_(v);
+                dimensions = set.dims(1,:);
+
+                % Get the ensemble members and gridfile
+                subMembers = sv.subMembers{s};
+                g = grids.whichGrid(v);
+                grid = grids.gridfiles(g);
+
+                % Get the index and name of each ensemble dimension
+                for k = 1:numel(dimensions)
+                    d = dimensions(k);
+                    dimension = set.ensDims(k);
+
+                    % Get metadata along the dimension
+                    [metadata, failed, cause] = svv.getMetadata(d, grid, header);
+                    if failed
+                        metadataFailedError(cause);
+                    end
+
+                    % Record metadata for the ensemble members
+                    members = subMembers(1:nMembers, k);
+                    rows = svv.indices{d}(members, :);
+                    metadata = metadata(rows,:);
+                    obj.ensemble{s}.(dimension) = metadata;
+                end
+            end
         end
     end
 end
-
-
-
-
-
-
-
