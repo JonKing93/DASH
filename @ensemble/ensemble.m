@@ -136,16 +136,15 @@ classdef ensemble
         function[obj] = ensemble(filenames, labels)
             %% ensemble.ensemble  Create an ensemble object for a saved state vector ensemble
             % ----------
-            %   obj = ensemble(filename)
-            %   Creates an ensemble object for the ensemble saved in a .ens file. The
-            %   ensemble object can be used to manipulate and load subsets of the saved
-            %   ensemble while limiting use of computer memory.
-            %
             %   obj = ensemble(filenames)
-            %   Creates an array of ensemble objects for the specified .ens files. 
+            %   Creates an array of ensemble objects for the specified .ens files. Each
+            %   ensemble object can be used to manipulate and load subsets of a saved
+            %   ensemble while limiting use of computer memory. The label of each
+            %   ensemble object will match the label of the stateVector object used
+            %   to build the ensemble.
             %
             %   obj = ensemble(..., labels)
-            %   Also labels the new ensemble objects.
+            %   Specify the labels to apply to each ensemble object.
             % ----------
 
             % Header
@@ -161,16 +160,16 @@ classdef ensemble
 
             % Default and error check labels
             if ~exist('labels','var')
-                labels = strings(size(filenames));
+                haveLabels = false;
             else
+                haveLabels = true;
                 labels = dash.assert.string(labels, 'labels', header);
 
                 % Check matching size
-                labelSize = size(labels);
-                if ~isequal(labelSize, siz)
+                if ~isequal(size(labels), siz)
                     id = sprintf('%s:labelsDifferentSize', header);
                     error(id, ['The size of the "labels" input (%s) is different than the size of the ',...
-                        '"filenames" input (%s).'], dash.string.size(labelSize), dash.string.size(siz));
+                        '"filenames" input (%s).'], dash.string.size(size(labels)), dash.string.size(siz));
                 end
             end
 
@@ -194,20 +193,21 @@ classdef ensemble
 
                     % Validate matfile contents. Build ensembleMetadata
                     [~, metadata] = obj(k).validateMatfile(header);
-
+                    
                     % Initialize ensemble properties
+                    obj(k).label_ = metadata.label;
                     obj(k).variables_ = metadata.variables;
-                    obj(k).use = true(size(obj.variables_));
+                    obj(k).use = true(size(obj(k).variables_));
                     obj(k).lengths = metadata.length(-1);
-                    obj(k).totalMembers = metadata.members;
-                    obj(k).members_ = (1:obj.totalMembers)';
+                    obj(k).totalMembers = metadata.nMembers;
+                    obj(k).members_ = (1:obj(k).totalMembers)';
                     obj(k).metadata_ = metadata;
 
                     % Fill all objects that use the file
                     obj(usesFile) = obj(k);
                 end
 
-            % Informative error if failed. Tweak message for scalar vs array
+            % Informative error if failed. Adjust message for scalar vs array
             catch cause
                 if isscalar(obj)
                     throw(cause);
@@ -219,9 +219,11 @@ classdef ensemble
                 end
             end
 
-            % Apply labels
-            labels = num2cell(labels);
-            [obj.label_] = labels{:};
+            % Apply user labels
+            if haveLabels
+                labels = num2cell(labels);
+                [obj.label_] = labels{:};
+            end
         end
     end
 end
