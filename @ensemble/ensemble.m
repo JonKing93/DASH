@@ -111,7 +111,7 @@ classdef ensemble
 
         % Load
         [X, metadata] = load(obj, ensembles);
-        X = loadRows(obj, scope);
+        X = loadRows(obj, ensembles);
         X = loadGrid(obj, variable, scope);
 
         % Matfile interactions

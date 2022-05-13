@@ -22,8 +22,6 @@ When calling sv.addMembers - how to treat returned metadata?
 
 Add properties parsing to class file autodoc
 
-Review string.indexedDimension
-
 
 STATE VECTOR
 
@@ -46,6 +44,5 @@ Write examples for internal methods (lower priority)
 Add progress bars to long methods
 Add links to scalar disp for array objects (click on a gridfile in an array disp to show the disp for the scalar gridfile/ensemble/sv/etc)
 Add handling for <missing> strings
-More sophisticated loading for ensemble.loadRows
 Add serializer to ensembleMetadata (maybe do now)
 Scalar return values don't require scalarObjs (for example, returning a label)
