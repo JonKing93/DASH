@@ -38,19 +38,9 @@ end
 % Append the variables from the second metadata object
 obj.variables_ = [obj.variables; meta2.variables];
 obj.lengths = [obj.lengths; meta2.lengths];
-
-% Append state dimension metadata
-for v = 1:numel(meta2.variables)
-    variable = meta2.variables(v);
-    dimensions = meta2.stateDimensions.(variable);
-    for d = 1:numel(dimensions)
-        dimension = dimensions(d);
-
-        obj.state.(variable).(dimension) = meta2.state.(variable).(dimension);
-    end
-    obj.stateDimensions.(variable) = meta2.stateDimensions.(variable);
-    obj.stateSize.(variable) = meta2.stateSize.(variable);
-end
+obj.stateDimensions = [obj.stateDimensions; meta2.stateDimensions];
+obj.stateSize = [obj.stateSize; meta2.stateSize];
+obj.state = [obj.state; meta2.state];
 
 % Append the coupling sets
 obj.couplingSet = [obj.couplingSet; obj.nSets+meta2.couplingSet];

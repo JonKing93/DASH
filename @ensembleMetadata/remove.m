@@ -8,13 +8,11 @@ dash.assert.scalarObj(obj, header);
 v = obj.variableIndices(variables, true, header);
 
 % Remove variables
-removed = obj.variables_(v);
 obj.variables_(v,:) = [];
 obj.lengths(v,:) = [];
-
-obj.stateDimensions = rmfield(obj.stateDimensions, removed);
-obj.stateSize = rmfield(obj.stateSize, removed);
-obj.state = rmfield(obj.state, removed);
+obj.stateDimensions(v,:) = [];
+obj.stateSize(v,:) = [];
+obj.state(v,:) = [];
 
 % Remove the coupling set indices
 sets = obj.couplingSet(v);
