@@ -13,9 +13,10 @@ classdef ensembleMetadata
 
         %% State dimensions
 
-        stateDimensions = struct;       % The names of the dimensions with state elements for each variable
-        stateSize = struct;             % The sizes of the dimensions with state elements for each variable
-        state = struct;                 % The state metadata for each variable
+        stateDimensions = cell(0,1);    % The names of the dimensions with state elements for each variable
+        stateSize = cell(0,1);          % The sizes of the dimensions with state elements for each variable
+        stateType = cell(0,1);          % The type of each dimension: 0-state, 1-state mean, 2-sequence
+        state = cell(0,1);              % The state metadata for each variable
 
         %% Ensemble dimensions
 
@@ -43,6 +44,15 @@ classdef ensembleMetadata
         obj = removeMembers(obj, members);
         obj = extractMembers(obj, members);
         obj = appendMembers(obj, members);
+
+        metadata = members(obj, dimension, members, variable);
+        metadata = rows(obj, dimension, rows, cellOutput);
+        metadata = variable(obj, variable, dimension, varargin);
+
+        varargout = find(obj, variables, type);
+        [variableNames, v] = identify(obj, rows);
+
+
 
 
 
@@ -104,19 +114,21 @@ classdef ensembleMetadata
             obj.lengths = sv.length(-1);
 
             % Initialize state dimension metadata
-            obj.stateDimensions = struct;
-            obj.stateSize = struct;
+            obj.stateDimensions = cell(nVariables, 1);
+            obj.stateSize = cell(nVariables, 1);
+            obj.stateType = cell(nVariables, 1);
+            obj.state = cell(nVariables, 1);
 
-            % Get the name and stateVectorVariable object for each variable
+            % Get the svv object and initialize metadata structs
             for v = 1:nVariables
-                variable = obj.variables_(v);
                 svv = sv.variables_(v);
-                obj.state.(variable) = struct;
+                obj.state{v} = struct;
+                obj.stateType{v} = struct;
 
                 % Record the dimensions that have state vector elements.
                 dimensions = find(svv.isState | svv.hasSequence);
-                obj.stateDimensions.(variable) = svv.dims(dimensions);
-                obj.stateSize.(variable) = svv.stateSize(dimensions);
+                obj.stateDimensions{v} = svv.dims(dimensions);
+                obj.stateSize{v} = svv.stateSize(dimensions);
 
                 % Get the gridfile for the variable
                 g = grids.whichGrid(v);
@@ -134,18 +146,22 @@ classdef ensembleMetadata
                             metadataFailedError(cause);
                         end
 
-                        % Permute if taking a mean
-                        if svv.meanType(d) ~= 0
+                        % Permute if taking a mean. Record type
+                        if svv.meanType(d)==0
+                            obj.stateType{v}.(dimension) = 0;
+                        else
                             metadata = permute(metadata, [3 2 1]);
+                            obj.stateType{v}.(dimension) = 1;
                         end
 
-                    % Get sequence metadata
+                    % Get sequence metadata. Record type
                     else
                         metadata = svv.sequenceMetadata{d};
+                        obj.stateType{v}.(dimension) = 2;
                     end
 
                     % Record the metadata for each dimension
-                    obj.state.(variable).(dimension) = metadata;
+                    obj.state{v}.(dimension) = metadata;
                 end
             end
 
