@@ -29,14 +29,13 @@ end
 % Cycle through ensemble dimensions in each coupling set
 for s = 1:obj.nSets
     dims = obj.ensembleDimensions{s};
-    for k = 1:numel(dims)
-        dimension = dims(k);
+    for d = 1:numel(dims)
 
         % Append the metadata for the new members
-        currentMetadata = obj.ensemble{s}.(dimension);
-        newMetadata = meta2.ensemble{s}.(dimension);
+        currentMetadata = obj.ensemble{s}{d};
+        newMetadata = meta2.ensemble{s}{d};
         try
-            obj.ensemble{s}.(dimension) = cat(1, currentMetadata, newMetadata);
+            obj.ensemble{s}{d} = cat(1, currentMetadata, newMetadata);
         catch
             couldNotAppendError;
         end

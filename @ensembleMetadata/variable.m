@@ -30,7 +30,7 @@ function[metadata] = variable(obj, variable, dimension, varargin)
 %
 %   metadata = obj.variable(variable, dimension, type, rows)
 %   metadata = obj.variable(variable, dimension, type, members)
-%   Specify the type of metadata to return, in addition to a set of rows or
+%   Specify both the type of metadata to return, and also the rows or
 %   ensemble members.
 % ----------
 %   Inputs:
@@ -107,8 +107,8 @@ end
 
 % Check the dimension is in the variable and compatible with type
 dimension = dash.assert.strflag(dimension, 'dimension', header);
-[isState, d] = ismember(dimension, obj.stateDimensions{v});
-isEnsemble = ismember(dimension, obj.ensembleDimensions{s});
+[isState, dState] = ismember(dimension, obj.stateDimensions{v});
+[isEnsemble, dEns] = ismember(dimension, obj.ensembleDimensions{s});
 if ~isState && ~isEnsemble
     unrecognizedDimension;
 elseif type==1 && ~isState
@@ -124,6 +124,13 @@ if type==0
     else
         type = 2;
     end
+end
+
+% Get the dimension index
+if type==1
+    d = dState;
+else
+    d = dEns;
 end
 
 % State metadata. Default and error check rows
@@ -144,8 +151,8 @@ if type==1
     indices = subDimensions{d};
 
     % Basic metadata or state dimension mean
-    metadata = obj.state{v}.(dimension);
-    if obj.stateType{v}.(dimension) ~= 1
+    metadata = obj.state{v}{d};
+    if obj.stateType{v}(d) ~= 1
         metadata = metadata(indices,:);
     else
         metadata = repmat(metadata, numel(indices), 1, 1);
@@ -162,7 +169,7 @@ else
     end
 
     % Get the metadata
-    metadata = obj.ensemble{s}.(dimension)(indices, :);
+    metadata = obj.ensemble{s}{d}(indices, :);
 end
 
 end

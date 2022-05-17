@@ -23,7 +23,7 @@ else
     for s = 1:obj.nSets
         dimensions = obj.ensembleDimensions{s};
         for d = 1:numel(dimensions)
-            obj.ensemble{s}.(dimension)(members,:) = [];
+            obj.ensemble{s}{d}(members,:) = [];
         end
     end
 end

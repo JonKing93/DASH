@@ -22,9 +22,8 @@ else
     for s = 1:obj.nSets
         dimensions = obj.ensembleDimensions{s};
         for d = 1:numel(dimensions)
-            dimension = dimensions(d);
-            currentMembers = obj.ensemble{s}.(dimension);
-            obj.ensemble{s}.(dimension) = currentMembers(members, :);
+            currentMembers = obj.ensemble{s}{d};
+            obj.ensemble{s}{d} = currentMembers(members, :);
         end
     end
 end

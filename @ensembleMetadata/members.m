@@ -38,23 +38,22 @@ if exist('variable','var') && ~isempty(variable)
 
     % Get the coupling set for the variable, require it uses the ensemble dimension
     s = obj.couplingSet(v);
-    ensembleDimensions = obj.ensembleDimensions{s};
-    if ~ismember(dimension, ensembleDimensions)
+    [isdim, d] = ismember(dimension, obj.ensembleDimensions{s});
+    if ~isdim
         notEnsembleDimensionError;
     end
 
 % If there is no variable, search for one that uses the dimension
 else
-    foundSet = false;
     for s = 1:obj.nSets
-        if ismember(dimension, obj.ensembleDimensions{s})
-            foundSet = true;
+        [isdim, d] = ismember(dimension, obj.ensembleDimensions{s});
+        if isdim
             break
         end
     end
 
     % Throw error if there is no variable
-    if ~foundSet
+    if ~isdim
         noSetError;
     end
 end
@@ -69,6 +68,6 @@ else
 end
 
 % Get the metadata
-metadata = obj.ensemble{s}.(dimension)(members, :);
+metadata = obj.ensemble{s}{d}(members, :);
 
 end
