@@ -118,10 +118,12 @@ elseif type==2 && ~isEnsemble
 end
 
 % Determine default type
-if type==0 && isState
-    type = 1;
-else
-    type = 2;
+if type==0
+    if isState
+        type = 1;
+    else
+        type = 2;
+    end
 end
 
 % State metadata. Default and error check rows
