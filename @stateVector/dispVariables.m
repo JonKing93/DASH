@@ -45,7 +45,7 @@ if ~obj.isserialized
     for v = 1:obj.nVariables
         [sizes, types] = obj.variables_(v).stateSizes;
         if isempty(sizes)
-            details = "";
+            details(v) = "";
         else
             types = strcat(types, ' (', string(sizes), ')');
             details(v) = strjoin(types, ' x ');
