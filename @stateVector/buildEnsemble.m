@@ -147,10 +147,6 @@ for s = 1:nSets
     variable1 = obj.variables_(vars(1));
     ensSize = variable1.ensembleSizes;
 
-    % Initialize indices for dimensionally-subscripted ensemble members
-    nDims = numel(set.ensDims);
-    subIndices = cell(1, nDims);
-
     % Initialize ensemble member selection
     subMembers = obj.subMembers{s};
     unused = obj.unused{s};
@@ -179,7 +175,7 @@ for s = 1:nSets
 
         % Subscript members over ensemble dimensions. Add to full set of
         % saved ensemble members
-        [subIndices{:}] = ind2sub(ensSize, members);
+        subIndices = dash.indices.subscript(ensSize, members);
         newMembers = cell2mat(subIndices);
         subMembers = cat(1, subMembers, newMembers);
 
