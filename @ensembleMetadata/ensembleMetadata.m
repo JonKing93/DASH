@@ -53,7 +53,7 @@ classdef ensembleMetadata
         [variableNames, v] = identify(obj, rows);
 
         [V, metadata] = regrid(obj, variable, X, varargin);
-        latlon
+        coordinates = latlon(obj, siteColumns, variables);
         closestLatLon
         serialize
 
@@ -152,21 +152,21 @@ classdef ensembleMetadata
                         end
 
                         % Permute if taking a mean. Record type
-                        if svv.meanType(d)==0
-                            obj.stateType{v}(d) = 0;
+                        if svv.meanType(d)==0 || obj.stateSize{v}(k)==1
+                            obj.stateType{v}(k) = 0;
                         else
                             metadata = permute(metadata, [3 2 1]);
-                            obj.stateType{v}(d) = 1;
+                            obj.stateType{v}(k) = 1;
                         end
 
                     % Get sequence metadata. Record type
                     else
                         metadata = svv.sequenceMetadata{d};
-                        obj.stateType{v}(d) = 2;
+                        obj.stateType{v}(k) = 2;
                     end
 
                     % Record the metadata for each dimension
-                    obj.state{v}{d} = metadata;
+                    obj.state{v}{k} = metadata;
                 end
             end
 
