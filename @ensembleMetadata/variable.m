@@ -136,19 +136,16 @@ end
 % State metadata. Default and error check rows
 if type==1
     if ~exist('indices','var')
-        indices = 1:obj.lengths(v);
+        rows = 1:obj.lengths(v);
     else
         logicalReq = 'have one element per row of the variable';
         linearMax = 'the number of rows for the variable';
-        indices = dash.assert.indices(indices, obj.lengths(v), 'rows', logicalReq, linearMax, header);
+        rows = dash.assert.indices(indices, obj.lengths(v), 'rows', logicalReq, linearMax, header);
     end
-    indices = indices(:);
 
     % Get subscripted indices along the dimension
-    nDims = numel(obj.stateDimensions{v});
-    subDimensions = cell(1, nDims);
-    [subDimensions{:}] = ind2sub(obj.stateSize{v}, indices);
-    indices = subDimensions{d};
+    indices = obj.subscriptRows(v, rows);
+    indices = indices{d};
 
     % Basic metadata or state dimension mean
     metadata = obj.state{v}{d};
@@ -161,15 +158,15 @@ if type==1
 % Ensemble metadata. Default and error check members
 else
     if ~exist('indices','var')
-        indices = 1:obj.nMembers;
+        members = 1:obj.nMembers;
     else
         logicalReq = 'have one element per ensemble member';
         linearMax = 'the number of ensemble members';
-        indices = dash.assert.indices(indices, obj.nMembers, 'members', logicalReq, linearMax, header);
+        members = dash.assert.indices(indices, obj.nMembers, 'members', logicalReq, linearMax, header);
     end
 
     % Get the metadata
-    metadata = obj.ensemble{s}{d}(indices, :);
+    metadata = obj.ensemble{s}{d}(members, :);
 end
 
 end
