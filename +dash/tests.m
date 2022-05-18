@@ -8,6 +8,9 @@ function[] = tests
 %
 % <a href="matlab:dash.doc('dash.tests')">Documentation Page</a>
 
+% Functions
+haversine;
+
 % Input check utilities
 dash.is.tests;
 dash.parse.tests;

@@ -4,6 +4,9 @@
 %   doc                 - Open online reference page in a web browser
 %   version             - Return the current version of the DASH toolbox
 %
+% User utilities:
+%   haversine           - Return distances between latitude-longitude coordinates
+%
 % Input Utilities:
 %   is                  - Functions that test whether an input is a particular type
 %   assert              - Functions that throw errors when an input does not match required criteria
@@ -25,6 +28,6 @@
 %
 % Tests:
 %   tests               - Implement unit tests for functions, classes, and sub-packages in the dash utility package
-%   testToolbox         - Implement unit tests for all components of the entire DASH toolbox
+%   testToolbox         - Implement unit tests for all components of the DASH toolbox
 %       
 % <a href="matlab:dash.doc('dash')">Documentation Page</a>
