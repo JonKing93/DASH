@@ -10,11 +10,11 @@ function[metadata] = variable(obj, variable, dimension, varargin)
 %   ensemble dimension with a sequence, returns the sequence metadata down
 %   the rows of the state vector.
 %
-%   metadata = obj.variable(variable, dimension, rows)
+%   metadata = obj.variable(variable, dimension, variableRows)
 %   metadata = obj.variable(variable, dimension, members)
 %   Return metadata at the specified rows or ensemble members. Here, rows
 %   are interpreted relative to the variable's rows, rather than all the
-%   rows in the state vector. For example, setting rows=1 will return
+%   rows in the state vector. For example, setting variableRows=1 will return
 %   metadata for the first row of the variable, regardless of the
 %   variable's overall position in the state vector.
 %
@@ -41,7 +41,7 @@ function[metadata] = variable(obj, variable, dimension, varargin)
 %       variableName (string scalar | char row vector): The name of the variable.
 %       dimension (string scalar | char row vector): The name of a
 %           dimension for the variable.
-%       rows (logical vector | vector, linear indices): The rows of the
+%       variableRows (logical vector | vector, linear indices): The rows of the
 %           variable at which to return metadata. If a logical vector, must
 %           have one element per row in the variable. If a vector of linear
 %           indices, elements should be between 1 and the length of the
