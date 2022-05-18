@@ -121,100 +121,11 @@ for v = 1:obj.nVariables
     rows = obj.find(v);
 
     % Get coordinates from site dimension or lat-lon
-    if useSite
-        coordinates(rows,:) = siteCoordinates(obj, v, columns(v,:), site);
+    if useSite(v)
+        coordinates(rows,:) = obj.getLatLon(v, site, columns(v,:));
     else
-        coordinates(rows,:) = latlonCoordinates(obj, v, lat, lon);
+        coordinates(rows,:) = obj.getLatLon(v, [lat,lon]);
     end
-end
-
-end
-
-%% Utilities
-function[coordinates] = siteCoordinates(obj, v, columns, site)
-
-% Preallocate coordinates for the variable
-coordinates = NaN(obj.lengths(v), 2);
-
-% Only search for metadata if the site dimension is present and does not
-% implement a mean.
-[hasSite, d] = ismember(site, obj.stateDimensions{v});
-if ~hasSite || obj.stateType{v}(d)==1
-    return
-end
-
-% Require at least one column
-nCols = size(obj.state{v}{d}, 2);
-if nCols >= min(columns)
-    return
-end
-
-% Get subscripted indices along the dimension
-nDims = numel(obj.stateDimensions{v});
-subDimensions = cell(1, nDims);
-[subDimensions{:}] = ind2sub(obj.stateSize{v}, 1:obj.lengths(v));
-indices = subDimensions{d};
-
-% Get the latitude column metadata. Convert to coordinates
-if nCols >= columns(1)
-    meta = obj.state{v}{d}(indices, columns(1));
-    coordinates(:,1) = meta2coord(meta);
-end
-
-% Get the longitude column metadata. Convert to coordinates
-if nCols >= columns(2)
-    meta = obj.state{v}{d}(indices, columns(2));
-    coordinates(:,2) = meta2coord(meta);
-end
-
-end
-function[coordinates] = latlonCoordinates(obj, v, lat, lon)
-
-% Preallocate coordinates for the variable
-coordinates = NaN(obj.lengths(v), 2);
-
-% Get subscripted indices along all state dimensions
-nDims = numel(obj.stateDimensions{v});
-subDimensions = cell(1, nDims);
-[subDimensions{:}] = ind2sub(obj.stateSize{v}, 1:obj.lengths(v));
-
-% Get latitude metadata
-[hasLat, d] = ismember(lat, obj.stateDimensions{v});
-if hasLat && obj.stateType{v}(d)~=1
-    indices = subDimensions{d};
-    meta = obj.state{v}{d}(indices,:);
-    coordinates(:,1) = meta2coord(meta);
-end
-
-% Get longitude metadata
-[hasLon, d] = ismember(lon, obj.stateDimensions{v});
-if hasLon && obj.stateType{v}(d)~=1
-    indices = subDimensions{d};
-    meta = obj.state{v}{d}(indices,:);
-    coordinates(:,2) = meta2coord(meta);
-end
-
-end
-function[coord] = meta2coord(coord)
-%% Convert metadata to numeric coordinates
-
-% Require a char matrix or numeric/string column vector
-if    (ismatrix(coord) && ischar(coord))      ...                    % Char matrix
-   || (iscolumn(coord) && (isnumeric(coord) || isstring(coord)))   % Numeric or string column vector
-   
-    % Convert char to string
-    if ischar(coord)
-        coord = string(coord);
-    end
-    
-    % Convert strings to doubles
-    if isstring(coord)
-        coord = str2double(coord);
-    end
-
-% Otherwise, just return NaN
-else
-    coord = NaN;
 end
 
 end
