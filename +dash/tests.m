@@ -11,6 +11,9 @@ function[] = tests
 % Functions
 haversine;
 
+% User utilities
+dash.closest.tests;
+
 % Input check utilities
 dash.is.tests;
 dash.parse.tests;

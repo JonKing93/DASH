@@ -5,6 +5,7 @@
 %   version             - Return the current version of the DASH toolbox
 %
 % User utilities:
+%   closest             - Functions that find points closest to specified coordinates
 %   haversine           - Return distances between latitude-longitude coordinates
 %
 % Input Utilities:
