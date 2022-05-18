@@ -51,14 +51,17 @@ classdef ensembleMetadata
 
         varargout = find(obj, variables, type);
         [variableNames, v] = identify(obj, rows);
+        indices = subscriptRows(obj, v, variableRows);
 
         [V, metadata] = regrid(obj, variable, X, varargin);
+
+        coordinates = getLatLon(obj, v, dimensions, columns);
         coordinates = latlon(obj, siteColumns, variables);
         closestLatLon
+        
         serialize
 
-
-
+        %!!! meta.rows(0) does not work
 
 
     end
