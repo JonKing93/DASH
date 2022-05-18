@@ -1,5 +1,5 @@
 function[] = vectorTypeN(input, types, length, name, idHeader)
-%% dash.assert.vector  Throws error if input is not a vector of a specified format
+%% dash.assert.vectorTypeN  Throws error if input is not a vector of a specified format
 % ----------
 %   dash.assert.vectorTypeN(input, types, length)
 %   Checks if an input is a vector of the required data type and length. If

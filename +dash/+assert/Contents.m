@@ -19,6 +19,7 @@
 %   scalarType              - Throw error if input is not a scalar of a required data type
 %   scalarObj               - Throw error if method object is not scalar
 %   vectorTypeN             - Throw error if input is not a vector of required data type and length
+%   matrixTypeSize          - Throw error if input is not matrix of required data type and size
 %
 % Numeric:
 %   integers                - Throw error if numeric array does not consist entirely of integers
