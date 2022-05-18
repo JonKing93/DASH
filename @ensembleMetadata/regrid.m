@@ -105,7 +105,7 @@ end
 
 % Track whether dimensions were listed by the user
 nStateDims = numel(obj.stateDimensions{v});
-userDimension = false(nStateDims, 1);
+userDimension = false(1, nStateDims);
 
 % Default or error check dimension order
 if isempty(stateOrder)
@@ -131,22 +131,13 @@ else
     stateOrder = [stateOrder, remainingDims];
 end
 
-% Initialize the metadata and cycle through state dimensions
-metadata = gridMetadata;
-dimensions = obj.stateDimensions{v};
-for d = 1:nStateDims
-
-    % Get metadata for each dimension
-    dimMetadata = obj.state{v}{d};
-    if obj.stateType{v}(d) == 1
-        dimMetadata = permute(dimMetadata, [3 2 1]);
-    end
-    metadata = metadata.edit(dimensions(d), dimMetadata);
+% Note which dimensions to keep in the final dataset
+if singletons
+    keep = true(1, nStateDims);
+else
+    keep = obj.stateSize{v}>1 | userDimension;
 end
-
-% Set dimension order
-dimensionOrder = dimensions(stateOrder);
-metadata = metadata.setOrder(dimensionOrder);
+nKeep = sum(keep);
 
 % Extract the variable from the overall state vector
 nDims = max(dim, nArrayDims);
@@ -154,15 +145,59 @@ indices = repmat({':'}, 1, nDims);
 indices{dim} = obj.find(v);
 X = X(indices{:});
 
-% Reshape the array
-siz = [siz(1:dim-1), obj.stateSize{v}, siz(dim+1:end)];
+% Reshape the state vector
+stateSize = obj.stateSize{v}(keep);
+if isempty(stateSize)
+    stateSize = 1;
+end
+siz = [siz(1:dim-1), stateSize, siz(dim+1:end)];
 X = reshape(X, siz);
 
-% Permute to requested dimension order
-leadingOrder = 1:dim-1;
-stateOrder = stateOrder + dim - 1;
-trailingOrder = (dim+1:nArrayDims) + nStateDims - 1;
-order = [leadingOrder, stateOrder, trailingOrder];
+% Adjust state order for removed dimensions
+dRemove = find(~keep);
+stateOrder(ismember(stateOrder, dRemove)) = [];
+if isempty(stateOrder)
+    stateOrder = 1;
+    nKeep = 1;
+else
+    adjust = sum(stateOrder>dRemove', 1);
+    stateOrder = stateOrder - adjust;
+end
+
+% Permute to requested dimension order. Preserve leading and trailing
+% dimensions of the full data array.
+order = [1:dim-1,  stateOrder+dim-1,  (dim+1:nArrayDims)+nKeep-1];
 X = permute(X, order);
+
+% Only return metadata if requested
+if nargout<2
+    return
+end
+
+% Initialize metadata. Return if there are no kept dimensions
+metadata = gridMetadata;
+if ~any(keep)
+    return
+end
+
+% Get the metadata for each kept dimension
+metadata = gridMetadata;
+for d = 1:numel(obj.stateDimensions{v})
+    if keep(d)
+        dimMetadata = obj.state{v}{d};
+        if obj.stateType{v}(d) == 1
+            dimMetadata = permute(dimMetadata, [3 2 1]);
+        end
+
+        % Update the output object
+        dimension = obj.stateDimensions{v}(d);
+        metadata = metadata.edit(dimension, dimMetadata);
+    end
+end
+
+% Order the metadata
+dimensions = obj.stateDimensions{v}(keep);
+dimensionOrder = dimensions(stateOrder);
+metadata = metadata.setOrder(dimensionOrder);
 
 end
