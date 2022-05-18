@@ -1,8 +1,8 @@
-function[coordinates] = getLatLon(obj, v, dimensions, columns)
+function[coordinates] = getLatLon(obj, v, variableRows, dimensions, columns)
 %% ensembleMetadata.getLatLon  Return latitude-longitude coordinates for a variable
 % ----------
-%   coordinates = obj.getLatLon(v, ...)
-%   Obtains latitude-longitude coordinates for a variable in a state
+%   coordinates = obj.getLatLon(v, variableRows, ...)
+%   Obtains latitude-longitude coordinates at the specified rows of avariable in a state
 %   vector. Extracts coordinates from either the lat and lon dimensions, or
 %   from the site dimension. If the variable is missing the required
 %   dimensions, returns NaN coordinates. Also returns NaN coordinates if
@@ -14,16 +14,20 @@ function[coordinates] = getLatLon(obj, v, dimensions, columns)
 %   "str2double" function. If the coordinate cannot be converted, uses a
 %   NaN coordinate for the row.
 %
-%   coordinates = obj.getLatLon(v, latlonDimensions)
+%   coordinates = obj.getLatLon(v, variableRows, latlonDimensions)
 %   Extracts coordinate metadata from the lat and lon dimensions.
 %
-%   coordinates = obj.getLatLon(v, siteDimension, columns)
+%   coordinates = obj.getLatLon(v, variableRows, siteDimension, columns)
 %   Extracts coordinate metadata from the site dimension. Coordinates are
 %   extracted from the indicated columns of the metadata. If the site
 %   metadata is missing a column, returns NaN for that coordinate.
 % ----------
 %   Inputs:
 %       v (scalar linear index): The index of a variable in the state vector
+%       variableRows (vector, linear indices): Rows of the variable at
+%           which to return latitude-longitude coordinates. These rows are
+%           interpreted relative to the variable, rather than the overall
+%           state vector.
 %       latlonDimensions (string vector [2]): The names of the lat and lon
 %           dimension. First element is lat, and second element is lon.
 %       siteDimension (string scalar): The name of the site dimension
@@ -43,7 +47,8 @@ function[coordinates] = getLatLon(obj, v, dimensions, columns)
 % <a href="matlab:dash.doc('ensembleMetadata.getLatLon')">Documentation Page</a>
 
 % Preallocate coordinates
-coordinates = NaN(obj.lengths(v), 2);
+nRows = numel(variableRows);
+coordinates = NaN(nRows, 2);
 
 % Use the number of dimensions to determine site vs lat-lon
 if numel(dimensions)==1
@@ -79,7 +84,7 @@ else
 end
 
 % Get subscripted indices along the dimensions of the variable
-subIndices = obj.subscriptRows(v);
+subIndices = obj.subscriptRows(v, variableRows);
 
 % If using site dimension, get site indices
 if useSite

@@ -55,9 +55,9 @@ classdef ensembleMetadata
 
         [V, metadata] = regrid(obj, variable, X, varargin);
 
-        coordinates = getLatLon(obj, v, dimensions, columns);
+        coordinates = getLatLon(obj, v, variableRows, dimensions, columns);
         coordinates = latlon(obj, siteColumns, variables);
-        closestLatLon
+        rows = closestLatLon(variable, coordinates, varargin);
         
         serialize
 

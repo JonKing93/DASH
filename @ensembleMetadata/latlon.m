@@ -116,15 +116,17 @@ end
 nRows = obj.length;
 coordinates = NaN(nRows, 2);
 
-% Cycle though variables, get rows for each variable
+% Cycle though variables, get rows for each variable in the context of 
+% 1. the overall state vector, and 2. the variable itself
 for v = 1:obj.nVariables
     rows = obj.find(v);
+    variableRows = 1:numel(rows);
 
     % Get coordinates from site dimension or lat-lon
     if useSite(v)
-        coordinates(rows,:) = obj.getLatLon(v, site, columns(v,:));
+        coordinates(rows,:) = obj.getLatLon(v, variableRows, site, columns(v,:));
     else
-        coordinates(rows,:) = obj.getLatLon(v, [lat,lon]);
+        coordinates(rows,:) = obj.getLatLon(v, variableRows, [lat,lon]);
     end
 end
 
