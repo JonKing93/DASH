@@ -12,6 +12,7 @@ strided;
 keep;
 limits;
 fromLimits;
+subscript;
 
 end
 
