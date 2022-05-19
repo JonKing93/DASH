@@ -14,15 +14,50 @@ function[X, members, labels] = loadRows(obj, rows, ensembles)
 %   used ensemble member. If the object implements an evolving ensemble,
 %   then the output array is a 3D array, and the third dimension holds the
 %   requested rows for different ensembles in the evolving set.
+%
+%   [X, members, labels] = obj.loadRows(rows)
+%   Also returns the ensemble members and evolving labels associated with
+%   the loaded datast.
 % 
-%   X = obj.loadRows(rows, labels)
-%   X = obj.loadRows(rows, e)
-%   X = obj.loadRows(rows, -1)
+%   ... = obj.loadRows(rows, labels)
+%   ... = obj.loadRows(rows, e)
+%   ... = obj.loadRows(rows, -1)
 %   Load rows for specific ensembles in the evolving set. The output array
 %   will be a 3D matrix and the length of the third dimension will match
 %   the number of requested ensembles. If the second input is -1, selects
 %   all ensembles in the evolving set.
 % ----------
+%   Inputs:
+%       rows (logical vector | vector, linear indices): The state vector
+%           rows that should be loaded into memory. These rows are interpreted
+%           in the context of the variables being used by the ensemble
+%           object. Variables that are not used are not counted towards the
+%           total number of state vector rows. If a logical vector, must
+%           have one element per row of the used variables. Otherwise, use
+%           the linear indices of the rows of the used variables.
+%       e (-1 | vector, linear indices | logical vector): Indicates the
+%           ensembles to load. If -1, loads all ensembles in the evolving
+%           set. If a logical vector, must have one element per ensemble in
+%           the evolving set. Otherwise, use the linear indices of
+%           ensembles in the evolving set.
+%       labels (string vector): The labels of specific ensembles in the
+%           evolving set. You can only use labels to reference ensembles
+%           that have unique labels. Use linear indices to reference 
+%           ensembles that share the same label.
+%
+%   Outputs:
+%       X (numeric array [nRows x nMembers x nEvolving]): The loaded data
+%           for the specified rows. Values for different ensemble members
+%           and evoving ensembles are organized along dimensions 2 and 3.
+%       members (array, positive integers, [nMembers x nEvolving]):
+%           The ensemble members for the loaded ensembles. Each element 
+%           of "members" lists the index of an ensemble member saved in the
+%           .ens file. The columns of "members" list the ensemble members
+%           for different loaded evolving ensembles.
+%       labels (string vector [nEvolving]): The labels of the loaded
+%           ensembles in the evolving set.
+%
+% <a href="matlab:dash.doc('ensemble.loadRows')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensemble:loadRows";

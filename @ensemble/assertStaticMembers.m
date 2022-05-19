@@ -2,7 +2,7 @@ function[members] = assertStaticMembers(obj, members, name, header)
 %% ensemble.assertStaticMembers  Throw error if input is not members for a static ensemble
 % ----------
 %   members = obj.assertStaticMembers(members)
-%   Throw error if input is not a vector of indices for for members of an
+%   Throw error if input is not a vector of indices for members of a static
 %   ensemble. If the input passes the assertion, returns ensemble members
 %   as linear indices.
 %
@@ -35,15 +35,21 @@ if isequal(members,-1) || isequal(members, 'all')
 end
     
 % Check the indices, convert to linear
-logicalRequirement = 'have one element per saved ensemble member';
-linearMax = 'the number of saved ensemble members';
-members = dash.assert.indices(members, obj.totalMembers, name, ...
-                                    logicalRequirement, linearMax, header);
+try
+    logicalRequirement = 'have one element per saved ensemble member';
+    linearMax = 'the number of saved ensemble members';
+    members = dash.assert.indices(members, obj.totalMembers, name, ...
+                                        logicalRequirement, linearMax, header);
+    
+    % Require at least 1 member
+    if isempty(members)
+        id = sprintf('%s:notEnoughMembers', header);
+        error(id, '%s must include at least 1 ensemble member', name);
+    end
 
-% Require at least 1 member
-if isempty(members)
-    id = sprintf('%s:notEnoughMembers', header);
-    error(id, '%s must include at least 1 ensemble member', name);
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 % Use column vector

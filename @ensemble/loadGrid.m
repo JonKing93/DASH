@@ -49,6 +49,42 @@ function[X, metadata, members, labels] = loadGrid(obj, variable, ensembles)
 %   the elements of this dimension will follow the order in which the
 %   ensembles were requested.
 % ----------
+%   Inputs:
+%       variableName (string scalar): The name of a variable being used by
+%           the ensemble object.
+%       v (logical vector | scalar linear index): The index of a variable
+%           being used by the ensemble object. If a logical vector, must
+%           have a single true element.
+%       e (-1 | vector, linear indices | logical vector): Indicates the
+%           ensembles to load. If -1, loads all ensembles in the evolving
+%           set. If a logical vector, must have one element per ensemble in
+%           the evolving set. Otherwise, use the linear indices of
+%           ensembles in the evolving set.
+%       labels (string vector): The labels of specific ensembles in the
+%           evolving set. You can only use labels to reference ensembles
+%           that have unique labels. Use linear indices to reference 
+%           ensembles that share the same label.
+%
+%   Outputs:
+%       X (numeric array [? x nMembers x nEvolving]): The regridded loaded
+%           variable. Has one dimension for each state dimension, followed
+%           by ensemble members, and then evolving ensembles.
+%       metadata (scalar gridMetadata object): A gridMetadata object for
+%           the regridded variable. Has information for each state
+%           dimension of the regridded variable. Metadata fields are in the
+%           same order as the leading dimensions of the output X. If the
+%           state vector implements a mean along a state dimension, the
+%           metadata for the dimension has a row for each element used in
+%           the mean.
+%       members (array, positive integers, [nMembers x nEvolving]):
+%           The ensemble members for the loaded ensembles. Each element 
+%           of "members" lists the index of an ensemble member saved in the
+%           .ens file. The columns of "members" list the ensemble members
+%           for different loaded evolving ensembles.
+%       labels (string vector [nEvolving]): The labels of the loaded
+%           ensembles in the evolving set.
+%
+% <a href="matlab:dash.doc('ensemble.loadGrid')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensemble:loadGrid";
@@ -64,7 +100,7 @@ end
 % Get the variable indices
 v = obj.variableIndices(variable, "used", header);
 if numel(v)>1
-    tooManyVariablesError;
+    tooManyVariablesError(v, header);
 end
 
 % Isolate the variable and load
@@ -84,4 +120,14 @@ if nargout>2
     labels = obj.evolvingLabels_(e);
 end
 
+end
+
+% Error message
+function[] = tooManyVariablesError(v, header)
+variables = obj.variables_(v);
+variables = dash.string.list(variables);
+id = sprintf('%s:tooManyVariables', header);
+ME = MException(id, ['You can only list a single variable, but you have specified ',...
+    '%.f variables (%s).'], numel(v), variables);
+throwAsCaller(ME);
 end

@@ -25,15 +25,20 @@ dash.assert.scalarObj(obj, header);
 try
     [~, metadata] = obj.validateMatfile(header);
 catch cause
-    id = sprintf('%s:invalidEnsembleFile', header);
-    ME = MException(id, ['Cannot update %s because the ensemble file is no ',...
-        'longer valid. It may have been altered.\n\nFile: %s'], obj.name, obj.file);
-    ME = addCause(ME, cause);
-    throw(ME);
+    matfileFailedError(obj, cause, header);
 end
 
 % Update the metadata and total members
 obj.totalMembers = metadata.members;
 obj.metadata_ = metadata;
 
+end
+
+% Error message
+function[] = matfileFailedError(obj, cause, header)
+id = sprintf('%s:invalidEnsembleFile', header);
+ME = MException(id, ['Cannot update %s because the ensemble file is no ',...
+    'longer valid. It may have been altered.\n\nFile: %s'], obj.name, obj.file);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 end

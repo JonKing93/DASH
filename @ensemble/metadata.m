@@ -26,6 +26,24 @@ function[metadata] = metadata(obj, ensembles)
 %   members saved in the file, regardless of whether they are used by the
 %   ensemble object.
 % ----------
+%   Inputs:
+%       e (0 | -1 | logical vector | vector, linear indices): If 0, returns
+%           the metadata for the data saved in the .ens file. Otherwise,
+%           indicates which ensembles in the evolving set to return metadata
+%           for. If -1, selects all evolving ensembles. If a logical
+%           vector, must have one element per evolving ensemble.
+%       labels (string vector [nEvolving]): The labels of ensembles in an
+%           evolving set. You can only use labels to refer to ensembles
+%           that have unique labels. If multiple ensembles share the same
+%           label, reference them using ensemble indices instead.
+%
+%   Outputs:
+%       metadata (vector, ensembleMetadata objects): The ensembleMetadata
+%           objects for the indicated ensembles. Has one element per listed
+%           ensemble. Each metadata object holds information on the used
+%           variables and ensemble members for a particular ensemble.
+%
+% <a href="matlab:dash.doc('ensemble.metadata')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensemble:metadata";

@@ -107,7 +107,6 @@ end
 
 %% Error message
 function[] = staticOptionError(obj, input1, header)
-
 if isequal(input1, -1)
     input1 = "-1";
 else
@@ -115,7 +114,7 @@ else
 end
 
 id = sprintf('%s:invalidOption', header);
-error(id, ['You cannot use %s as the only input to "useMembers" because ',...
+ME = MException(id, ['You cannot use %s as the only input to "useMembers" because ',...
     '%s is an evolving ensemble.'], input1, obj.name);
-
+throwAsCaller(ME);
 end

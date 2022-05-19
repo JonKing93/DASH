@@ -6,6 +6,11 @@ function[name] = name(obj)
 %   references the label. Otherwise, refers to the object as "the ensemble
 %   object".
 % ----------
+%   Outputs:
+%       name (string scalar): A name for the object for use in error
+%           messages.
+%
+% <a href="matlab:dash.doc('ensemble.name')">Documentation Page</a>
 
 if strcmp(obj.label_, "")
     name = "the ensemble object";

@@ -6,7 +6,7 @@ function[] = dispVariables(obj, showFile)
 %   Prints the state vector length of each variable in addition to its
 %   name.
 %
-%   obj = obj.dispVariables(showFile)
+%   obj.dispVariables(showFile)
 %   Indicate whether to print the variables used by the ensemble object
 %   (false - default), or the variables saved in the .ens file.
 % ----------

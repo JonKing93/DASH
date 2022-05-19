@@ -79,7 +79,7 @@ nEnsembles = numel(e);
 try
     X = NaN([nRows, nMembers*nEnsembles], precision);
 catch
-    arrayTooLargeError;
+    arrayTooLargeError(header)
 end
 
 % Get the requested, unique, and strided ensemble members
@@ -143,5 +143,21 @@ X = reshape(X, nRows, nMembers, nEnsembles);
 if nargout>1
     metadata = obj.metadata(e);
 end
+
+end
+
+%% Error message
+function[] = arrayTooLargeError(nEnsembles, header)
+
+message = ['The ensemble is too large to load into memory. Consider ',...
+    'using the "useVariables", "useMembers", and/or "evolving commands to ' ...
+    'reduce the size of the loaded array.'];
+if nEnsembles>1
+    message = sprintf(['%s Altenatively, try loading fewer evolving ensembles ',...
+        'than the %.f ensembles currently requested.'], message, nEnsembles);
+end
+id = sprintf('%s:arrayTooLarge', header);
+ME = MException(id, message);
+throwAsCaller(ME);
 
 end

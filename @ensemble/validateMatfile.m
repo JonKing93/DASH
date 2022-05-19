@@ -1,4 +1,33 @@
 function[m, metadata] = validateMatfile(obj, header)
+%% ensemble.validateMatfile  Check that a .ens file is valid
+% ----------
+%   [m, metadata] = obj.validateMatfile
+%   Checks that the .ens file associated with an ensemble object is valid
+%   and matches the metadata stored in the ensemble object. Requires the
+%   .ens file to be a MAT file with X and stateVector fields that have
+%   matching sizes. Builds an ensembleMetadata object from the saved
+%   stateVector. If the ensemble object has an ensembleMetadata object,
+%   checks that the metadata built from the file matches the current
+%   metadata. Returns a matfile object for the file, as well as the
+%   ensembleMetadata object.
+%
+%   ... = obj.validateMatfile(header)
+%   Customize header in thrown error IDs
+% ----------
+%   Inputs:
+%       header (string scalar): Header for thrown error IDs
+%   
+%   Outputs:
+%       m (scalar matfile object): A matfile object for the .ens file
+%       metadata (scalar ensembleMetadata object): The ensembleMetadata
+%           object for the ensemble object.
+%
+% <a href="matlab:dash.doc('ensemble.validateMatfile')">Documentation Page</a>
+
+% Default
+if ~exist('header','var') || isempty(header)
+    header = "DASH:ensemble:validateMatfile";
+end
 
 % Get a matfile object for the ensemble
 reset = dash.warning.state('off', 'MATLAB:load:variableNotFound'); %#ok<NASGU> 

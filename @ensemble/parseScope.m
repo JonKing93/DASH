@@ -5,6 +5,15 @@ function[useFile] = parseScope(scope, header)
 %   Parses the 'scope" input used in various ensemble methods. Throws an
 %   error if the input is not valid.
 % ----------
+%   Inputs:
+%       scope: The input being checked
+%
+%   Outputs:
+%       useFile (scalar logical): Indicates whether to interpret values in
+%           the scope of the saved .ens file (true), or in the scope of the
+%           values used by the ensemble object (false).
+%
+% <a href="matlab:dash.doc('ensemble.parseScope')">Documentation Page</a>
 
 % Default
 if ~exist('header','var') || isempty(header)

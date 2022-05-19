@@ -1,5 +1,5 @@
 function[obj] = static(obj, members)
-%% ensemble.static
+%% ensemble.static  Design static ensembles
 % ----------
 %   obj = obj.static
 %   obj = obj.static(-1)

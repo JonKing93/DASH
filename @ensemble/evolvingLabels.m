@@ -88,9 +88,7 @@ else
     nEnsembles = numel(e);
     nLabels = numel(labels);
     if nLabels ~= nEnsembles
-        id = sprintf("%s:wrongNumberLabels", header);
-        error(id, ['You must provide one label per ensemble (%.f), ',...
-            'but you have provided %.f labels instead.'], nEnsembles, nLabels);
+        wrongNumberLabelsError(nLabels, nEnsembles, header);
     end
 
     % Update the labels
@@ -98,4 +96,12 @@ else
     varargout = {obj};
 end
 
+end
+
+% Error message
+function[] = wrongNumberLabelsError(nLabels, nEnsembles, header)
+id = sprintf("%s:wrongNumberLabels", header);
+ME = MException(id, ['You must provide one label per ensemble (%.f), ',...
+    'but you have provided %.f labels instead.'], nEnsembles, nLabels);
+throwAsCaller(ME);
 end

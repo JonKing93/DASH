@@ -42,6 +42,7 @@ classdef ensemble
     %
     % Add members:
     %   addMembers      - Add more members to a saved state vector ensemble
+    %   update          - Update an ensemble object to include new members added to a .ens file
     %
     % Console display:
     %   disp            - Displays an ensemble object in the console
@@ -143,9 +144,22 @@ classdef ensemble
             %   ensemble object will match the label of the stateVector object used
             %   to build the ensemble.
             %
-            %   obj = ensemble(..., labels)
+            %   obj = ensemble(filenames, labels)
             %   Specify the labels to apply to each ensemble object.
             % ----------
+            %   Inputs:
+            %       filenames (string array | cellstring array | char row vector): The
+            %           names of the .ens files to build ensemble objects for
+            %       labels (string array): Labels for each of the elements in the
+            %           array of ensemble objects. Must have a size that matches the
+            %           number of input filenames.
+            %
+            %   Outputs:
+            %       obj (ensemble object array): An array of ensemble objects for the
+            %           specified .ens files. The size will match the number of
+            %           provided filenames.
+            %
+            % <a href="matlab:dash.doc('ensemble.ensemble')">Documentation Page</a>
 
             % Header
             header = "DASH:ensemble";
