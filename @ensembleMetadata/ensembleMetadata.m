@@ -30,35 +30,45 @@ classdef ensembleMetadata
 
     methods
 
+        % Labels
         varargout = label(obj, label);
         name = name(obj);
 
+        % Variables
         variableNames = variables(obj, v);
         length = length(obj, variables);
+        dimensions = dimensions(obj, variables, type, cellOutput);
         v = variableIndices(obj, variables, allowRepeats, header);
-
-        obj = remove(obj, variables);
-        obj = extract(obj, variables);
-        obj = append(obj, meta2);
-
-        obj = removeMembers(obj, members);
-        obj = extractMembers(obj, members);
-        obj = appendMembers(obj, members);
-
+        
+        % Return metadata
         metadata = members(obj, dimension, members, variable);
         metadata = rows(obj, dimension, rows, cellOutput);
         metadata = variable(obj, variable, dimension, varargin);
 
+        % Locate rows
         varargout = find(obj, variables, type);
         [variableNames, v] = identify(obj, rows);
         indices = subscriptRows(obj, v, variableRows);
 
-        [V, metadata] = regrid(obj, variable, X, varargin);
-
+        % Coordinates
         coordinates = getLatLon(obj, v, variableRows, dimensions, columns);
         coordinates = latlon(obj, siteColumns, variables);
         rows = closestLatLon(variable, coordinates, varargin);
 
+        % Regrid
+        [V, metadata] = regrid(obj, variable, X, varargin);
+
+        % Manipulate variables
+        obj = remove(obj, variables);
+        obj = extract(obj, variables);
+        obj = append(obj, meta2);
+
+        % Manipulate members
+        obj = removeMembers(obj, members);
+        obj = extractMembers(obj, members);
+        obj = appendMembers(obj, members);
+
+        % Console display
         disp(obj);
         dispVariables(obj);
         dispEnsemble(obj);
@@ -97,6 +107,11 @@ classdef ensembleMetadata
             % Check the input is a scalar state vector
             header = "DASH:ensembleMetadata";
             dash.assert.scalarType(sv, "stateVector", 'sv', header);
+
+            % Deserialize if necessary
+            if sv.isserialized
+                sv = sv.deserialize;
+            end
 
             % Default and parse the label
             if ~exist('label','var')
