@@ -5,10 +5,10 @@
 %   a few contents that may be useful to users. In particular, we think
 %   users may be interested in:
 %
-%   1. dash.doc       The fuction that opens the documentation browser
-%   2. dash.closest   Can help users locate points close to specific coordinates
-%   3. dash.math      Various mathematical functions that users may find useful
-%   4. dash.version   Reports the current version of the DASH toolbox.
+%   dash.doc       The fuction that opens the documentation browser
+%   dash.closest   Can help users locate points close to specific coordinates
+%   dash.math      Various mathematical functions that users may find useful
+%   dash.version   Reports the current version of the DASH toolbox.
 % ----------
 % Documentation Functions:
 %   doc                 - Open online reference page in a web browser
