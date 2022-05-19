@@ -41,6 +41,10 @@ classdef stateVector
     %        implement means and sequences in the state vector.
     %     5. Use "build" to generate a state vector ensemble from the design.
     %
+    %     The class also includes various methods that return information
+    %     about the state vector. Among others, the "variables", "length",
+    %     "members", and "label" commands can all help facilitate workflows.
+    %
     %   Troubleshooting Metadata:
     %       Sometimes, variables have different metadata formats along the
     %       ensemble dimensions (for example, annual and monthly time

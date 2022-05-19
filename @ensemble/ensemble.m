@@ -1,9 +1,55 @@
 classdef ensemble
     %% ensemble  Manipulate and load saved state vector ensembles
     % ----------
-    %   Introduction
+    %   The ensemble class implements objects that allow users to interact 
+    %   with a saved state vector ensemble, while minimizing the amount of
+    %   data that is actually loaded into memory. To that end, the class
+    %   includes methods that allow users to load select variables and
+    %   ensemble members, rather than all the data stored in a .ens file.
+    %   The ensemble class also implements evolving ensembles, and lets
+    %   users select saved ensemble members to use in different ensembles
+    %   of an evolving set. 
+    % 
+    %   Ensemble objects can be provided to other commands in the DASH
+    %   toolbox, such as "PSM.estimate" and "kalmanFilter.prior". This
+    %   allows these methods to utilize values in a saved state vector
+    %   ensemble, without requiring users to load the ensembles into
+    %   memory. These other commands include various memory optimizations
+    %   so that even very large ensembles can be used to estimate proxies
+    %   or used for assimilation.
+    %
+    %   The following is an outline for using the ensemble class.
+    %     0. Use "stateVector.build" with the 'file' option to save a state
+    %        vector ensemble in a .ens file.
+    %     1. Use the "ensemble" command to create an ensemble object for
+    %        the .ens file.
+    %     2. Use the "useVariables" command to select the state vector
+    %        variables required for a particular task.
+    %     3. Use "useMembers", "static", and/or "evolving" to implement
+    %        static or evolving ensembles with particular members
+    %     4. Use "load" to load the selected variables, ensemble members,
+    %        or ensembles in an evolving set. Use "loadGrid" to load a
+    %        variable and regrid it from a state vector to a gridded
+    %        dataset. Use "loadRows" to load specific state vector rows.
+    %
+    %   The class also includes various methods that return information
+    %   about the state vector ensemble. Among others, the "variables", 
+    %   "length", "members", "label", and "evolvingLabels" commands can all
+    %   help to facilitate workflows.
     % ----------
     % ensemble Methods:
+    %
+    % **KEY METHODS**
+    % The following methods are among the most essential for users
+    %
+    %   ensemble        - Create an ensemble object for a saved state vector ensemble
+    %   useVariables    - Use a subset of saved variables
+    %   useMembers      - Use a subset of saved ensemble members
+    %   evolving        - Implement an evolving ensemble
+    %   metadata        - Return the metadata for an ensemble object
+    %   load            - Load portions of a state vector ensemble into memory
+    %   loadGrid        - Load a variable in a state vector ensemble as a gridded field
+    %
     %
     % *ALL USER METHODS*
     % The complete list of methods for users.
@@ -31,7 +77,7 @@ classdef ensemble
     %
     % Load:
     %   load            - Loads a state vector ensemble into memory
-    %   loadGrids       - Loads the variables of a state vector ensemble as gridded fields
+    %   loadGrids       - Load a variable in a state vector ensemble as a gridded fields
     %   loadRows        - Loads specific rows of a state vector ensemble
     %
     % Information:
