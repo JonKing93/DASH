@@ -64,11 +64,8 @@ dash.assert.scalarObj(obj, header);
 
 % Initial error checking of siteColumns
 if exist('siteColumns','var')
-    dash.assert.type(siteColumns, 'numeric', 'siteColumns', header);
+    dash.assert.matrixTypeSize(siteColumns, 'numeric', [NaN, 2], 'siteColumns', header);
     dash.assert.positiveIntegers(siteColumns, 'siteColumns', header);
-    if size(siteColumns, 2) ~= 2
-        requireTwoColumnsError;
-    end
 end
 
 % Get dimension names
@@ -87,16 +84,14 @@ if exist('variables','var')
     nVars = numel(vars);
     useSite(vars) = true;
 
-    % Parse site columns
-    nCols = size(siteColumns, 1);
-    if ~ismatrix(siteColumns)
-        columnsNotMatrixError;
-    elseif nCols~=1 && nCols~=nVars
-        wrongNumberOfColumnsError;
-    elseif nCols==1
+    % Parse siteColumns
+    nSites = size(siteColumns, 1);
+    if nSites==1
         columns(vars,:) = repmat(siteColumns, nVars, 1);
-    else
+    elseif nSites==nVars
         columns(vars,:) = siteColumns;
+    else
+        wrongNumberOfColumnsError;
     end
 
 % Error check when the user only provides columns
