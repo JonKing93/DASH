@@ -13,7 +13,8 @@ function[] = disp(obj, showVariables)
 %
 %   If a stateVector array, notes the size of the array. If empty,
 %   indicates that the array is empty. If any of the elements in the array
-%   are labeled, displays the labels of the array elements.
+%   are labeled, displays the labels of the array elements. Elements
+%   without labels are marked by "<no label>".
 %
 %   <strong>obj.disp</strong>(showVariables)
 %   <strong>obj.disp</strong>(true | 's' | 'show')
@@ -125,20 +126,26 @@ function[] = displayArray(obj, link)
 info = dash.string.nonscalarObj(obj, link);
 fprintf(info);
 
-% If not empty, collect labels
-if ~isempty(obj)
-    labels = strings(size(obj));
-    for k = 1:numel(obj)
-        labels(k) = obj(k).label;
-    end
+% Exit if empty
+if isempty(obj)
+    return
+end
 
-    % Display labels
-    unlabeled = strcmp(labels, "");
-    if ~all(unlabeled)
-        fprintf('    Labels:\n');
-        labels(unlabeled) = missing;
-        disp(labels);
+% Collect labels
+labels = strings(size(obj));
+for k = 1:numel(obj)
+    labels(k) = obj(k).label_;
+end
+
+% Display labels
+unlabeled = strcmp(labels, "");
+if ~all(unlabeled, 'all')
+    fprintf('    Labels:\n');
+    labels(unlabeled) = "<no label>";
+    if ismatrix(labels)
+        fprintf('\n');
     end
+    disp(labels);
 end
 
 end
