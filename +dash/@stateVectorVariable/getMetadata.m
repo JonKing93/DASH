@@ -59,7 +59,7 @@ end
 
 % Extract full gridfile metadata for the dimension
 dimension = obj.dims(d);
-metadata = grid.metadata.(dimension);
+metadata = grid.meta.(dimension);
 
 % Use metadata at state / reference indices.
 rows = obj.indices{d};
