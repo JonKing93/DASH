@@ -2,12 +2,12 @@ classdef gridfile < handle
     %% gridfile  Catalogue and load gridded data sets
     % ----------
     %   The gridfile class creates and manages gridfile objects. These
-    %   objects catalogue metadata and source files for a gridded dataset.
+    %   objects catalogue metadata and data source files for a gridded dataset.
     %   The catalogue is stored in a file with a ".grid" extension.
     %
     %   A key function of gridfile is to provide an interface for loading
-    %   data from the source files. This interface allows the user to
-    %   efficiently:
+    %   data from data source files with diverse formatting. This interface
+    %   allows the user to efficiently:
     %
     %       1. Load subsets of the catalogued data
     %       2. Order the dimensions of loaded data
@@ -17,6 +17,20 @@ classdef gridfile < handle
     %   Another function of gridfile is to associate all gridded data
     %   with dimensional metadata. This allows data to be accessed using
     %   human-readable metadata, rather than array indices.
+    %
+    %   The following is an outline for using the gridfile class:
+    %     1. Use the "new" command to initialize a new .grid file
+    %     2. Use "add" to add data source file to the gridfile's catalogue
+    %     3. Use "fillValue", "validRange", and "transform" to apply data
+    %        transformations when data is loaded from the source files
+    %     4. Use the output of the "metadata" command to locate interesting
+    %        subsets of the catalogued data.
+    %     5. Use "load" to load data subsets in customizable dimension orders.
+    %     6. Use "plus", "minus", "times", or "divide" to implement
+    %        arithmetic across multiple data catalogues.
+    %
+    %   The class also includes many methods for accessing and editing
+    %   metadata, which are summarized in the methods list.
     % ----------
     % gridfile methods:
     %

@@ -2,11 +2,53 @@ classdef stateVector
     %% stateVector  Design and build state vector ensembles
     % ----------
     %   The state vector class is used to design and build state vector
-    %   ensembles with a minimum of data manipulation. The class uses data
-    %   catalogued in .grid files to create variables within a state
-    %   vector....
-    %   
-    %   ....... Lots more introduction ........
+    %   ensembles. The class implements an object that describes how a
+    %   state vector ensemble should look. Thus, the class allows users to design
+    %   a state vector ensemble without manipulating any data. Once a user
+    %   finishes designing a state vector ensemble, they can call the
+    %   "build" command to automatically build the state vector ensemble
+    %   from a set of gridfile data catalogues.
+    %
+    %   CONCEPTS:
+    %   The following is some vocabulary useful for designing state vector
+    %   ensembles. **Ensemble Dimensions** are the data dimensions used to
+    %   select different ensemble members - often, these are the time and
+    %   run dimensions. **State Dimensions** are the data dimensions that are
+    %   organized down the state vector. These are often the spatial
+    %   dimensions used to describe the dataset. In general, state dimensions
+    %   will have the same metadata value at a state vector element, regardless
+    %   of the ensemble member. By contrast, ensemble dimensions will have 
+    %   different values for different ensemble members.
+    % 
+    %   Sometimes, an ensemble dimension will also have elements down the
+    %   state vector (for example, successive months of the year). This is
+    %   referred to as a **sequence**. The term **coupled variables**
+    %   indicates that, within an ensemble member, the variables should be
+    %   selected from the same points along the ensemble dimensions (for
+    %   example, from the same points in time or from the same climate model
+    %   run). In most cases, all the variables in an ensemble should be
+    %   coupled to one another.
+    %
+    %   OUTLINE:
+    %   The following is a rough sketch for using the stateVector class.
+    %     1. Use the "stateVector" command to initialize the design for a
+    %        state vector.
+    %     2. Use the "add" command to add variables to the state vector
+    %     3. Use the "design" command to indicate the ensemble dimensions,
+    %        and to select subsets of gridfile catalogues that should be
+    %        used to build the state vector ensemble.
+    %     4. Use the "mean", "weightedMean", and "sequence" commands to
+    %        implement means and sequences in the state vector.
+    %     5. Use "build" to generate a state vector ensemble from the design.
+    %
+    %   Troubleshooting Metadata:
+    %       Sometimes, variables have different metadata formats along the
+    %       ensemble dimensions (for example, annual and monthly time
+    %       metadata). This can prevent stateVector from building an
+    %       ensemble, because the class will not be able to check that the
+    %       values in different ensemble members align to the same points.
+    %       If this occurs, use the "metadata" command to allow comparison
+    %       of the variables with different metadata formats.
     % ----------
     % stateVector methods:
     %
@@ -15,12 +57,10 @@ classdef stateVector
     %
     %   stateVector         - Create a new, empty state vector
     %   add                 - Add variables to a state vector
-    %
     %   design              - Design the dimensions of variables
     %   mean                - Take means over dimensions of variables
     %   weightedMean        - Take weighted means over the dimensions of variables
     %   sequence            - Take a sequence over an ensemble dimension
-    %
     %   build               - Build a state vector ensemble from a design
     %
     %
@@ -115,7 +155,6 @@ classdef stateVector
     %
     % Unit Tests:
     %   tests               - Implement unit tests for the stateVector class
-    %
     %
     % <a href="matlab:dash.doc('stateVector')">Documentation Page</a>
 
