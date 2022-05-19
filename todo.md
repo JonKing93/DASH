@@ -39,6 +39,7 @@ Write buildTestdata methods
 
 AFTER NEXT RELEASE
 
+ensemble.addMembers
 Write examples for user facing methods
 Write examples for internal methods (lower priority)
 Add progress bars to long methods

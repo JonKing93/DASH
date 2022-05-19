@@ -206,7 +206,11 @@ classdef ensemble
                     obj(k).file = dash.file.urlSeparators(file);
 
                     % Validate matfile contents. Build ensembleMetadata
-                    [~, metadata] = obj(k).validateMatfile(header);
+                    try
+                        [~, metadata] = obj(k).validateMatfile(header);
+                    catch ME
+                        throw(ME);
+                    end
                     
                     % Initialize ensemble properties
                     obj(k).label_ = metadata.label;

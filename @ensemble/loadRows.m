@@ -76,7 +76,11 @@ else
 end
 
 % Check the .ens file is still valid. Get numeric precision
-m = obj.validateMatfile(header);
+try
+    m = obj.validateMatfile(header);
+catch
+    matfileFailedError(obj, cause, header);
+end
 info = whos(m, 'X');
 precision = info.class;
 
@@ -90,7 +94,7 @@ try
     nCols = nMembers * nEnsembles;
     X = NaN([nRows, nCols], precision);
 catch
-    arrayTooLargeError;
+    arrayTooLargeError(nEnsembles, header);
 end
 
 % Get strided ensemble members
@@ -198,4 +202,27 @@ if nargout>2
     labels = obj.evolvingLabels(e);
 end
 
+end
+
+%% Error messages
+function[] = arrayTooLargeError(nEnsembles, header)
+
+message = ['The ensemble is too large to load into memory. Consider ',...
+    'using the "useMembers", and/or "evolving commands to ' ...
+    'reduce the size of the loaded array.'];
+if nEnsembles>1
+    message = sprintf(['%s Altenatively, try loading fewer evolving ensembles ',...
+        'than the %.f ensembles currently requested.'], message, nEnsembles);
+end
+id = sprintf('%s:arrayTooLarge', header);
+ME = MException(id, message);
+throwAsCaller(ME);
+
+end
+function[] = matfileFailedError(obj, cause, header)
+id = sprintf('%s:invalidEnsembleFile', header);
+ME = MException(id, ['Cannot load data because the ensemble file is no ',...
+    'longer valid. It may have been altered.\n\nFile: %s'], obj.file);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 end

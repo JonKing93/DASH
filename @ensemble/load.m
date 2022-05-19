@@ -66,7 +66,11 @@ else
 end
 
 % Check the .ens file is still valid. Get numeric precision
-m = obj.validateMatfile(header);
+try
+    m = obj.validateMatfile(header);
+catch cause
+    matfileFailedError(obj, cause, header)
+end
 info = whos(m, 'X');
 precision = info.class;
 
@@ -160,4 +164,11 @@ id = sprintf('%s:arrayTooLarge', header);
 ME = MException(id, message);
 throwAsCaller(ME);
 
+end
+function[] = matfileFailedError(obj, cause, header)
+id = sprintf('%s:invalidEnsembleFile', header);
+ME = MException(id, ['Cannot load data because the ensemble file is no ',...
+    'longer valid. It may have been altered.\n\nFile: %s'], obj.file);
+ME = addCause(ME, cause);
+throwAsCaller(ME);
 end
