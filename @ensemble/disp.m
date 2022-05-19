@@ -158,34 +158,41 @@ function[] = displayArray(obj, link, showFile)
 
     % Display the array size
     info = dash.string.nonscalarObj(obj, link);
-    fprintf(info);
+    fprintf(info);  
 
-    % If not showing file, collect labels
+    % Exit if empty
+    if isempty(obj)
+        return
+    end
+
+    % Preallocate and collect label or file as ID
+    IDs = strings(size(obj));
     if ~showFile
-        labels = strings(size(obj));
-        for k = 1:numel(labels)
-            labels(k) = obj(k).label;
+        for k = 1:numel(IDs)
+            IDs(k) = obj(k).label_;
         end
-        unlabeled = strcmp(labels, "");
-        labels(unlabeled) = missing;
+        unlabeled = strcmp(IDs, "");
     end
 
     % If showing file, or labels are empty, collect files
-    if showFile || all(unlabeled)
-        files = strings(size(obj));
-        for k = 1:numel(files)
-            files(k) = obj(k).file;
+    if showFile || all(unlabeled,'all')
+        for k = 1:numel(IDs)
+            IDs(k) = obj(k).file;
         end
         showFile = true;
     end
 
-    % Display files or labels
+    % Display file or labels
     if showFile
-        fprintf('    Files:\n')
-        disp(files);
+        title = "Files";
     else
-        fprintf('    Labels:\n')
-        disp(labels);
+        title = "Labels";
+        IDs(unlabeled) = "<no label>";
     end
+    fprintf('    %s:\n', title);
+    if ismatrix(IDs)
+        fprintf('\n');
+    end
+    disp(IDs);
 
 end
