@@ -24,7 +24,10 @@ function[X, metadata] = regrid(obj, variable, X, varargin)
 %   By default, the method removes any singleton regridded state vector
 %   dimensions (regridded state vector dimensions that have a length of 1).
 %   Neither the returned array nor the returned metadata will include these
-%   removed singleton dimensions.
+%   removed singleton dimensions. If all the regridded state vector
+%   dimensions are singleton (i.e. the variable has a length of 1), then
+%   the length of the regridded state vector dimension will be 1, but the
+%   metadata will not contain information on any dimension.
 %
 %   ... = obj.regrid(..., 'order', dimensions)
 %   Returns the regridded data in a custom dimension order. The order of
