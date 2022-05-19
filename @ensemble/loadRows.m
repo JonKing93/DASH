@@ -1,4 +1,4 @@
-function[X] = loadRows(obj, rows, ensembles)
+function[X, members, labels] = loadRows(obj, rows, ensembles)
 %% ensemble.loadRows  Load specific rows of the used subset of a saved ensemble
 % ----------
 %   X = obj.loadRows(rows)
@@ -48,7 +48,7 @@ precision = info.class;
 % Get sizes
 nRows = numel(rows);
 nMembers = obj.nMembers;
-nEnsembles = obj.nEvolving;
+nEnsembles = numel(e);
 
 % Preallocate
 try
@@ -89,73 +89,78 @@ catch
     loaded = false;
 end
 
-% If loaded, build the output array and exit
+% If loaded, build the output array
 if loaded
     keepRows = dash.indices.keep(rows, stridedRows);
     X(:,:) = Xload(keepRows, keepMembers);
-    return
-end
 
 % If strided loading didn't work, attempt to load strided rows for
 % individual variables. Record which variables are loaded
-limits = dash.indices.limits(obj.lengths);
-vars = unique(vRows);
-nVars = numel(vars);
-
-% Locate requested rows associated with each variable
-for k = 1:nVars
-    v = vars(k);
-    inVariable = rows>=limits(v,1) & rows<=limits(v,2);
-    variableRows = rows(inVariable);
-
-    % Attempt to load strided rows within the variable
-    stridedRows = dash.indices.strided(variableRows);
-    try
-        Xload = m.X(stridedRows, stridedMembers);
-        loaded = true;
-    catch
-        loaded = false;
-    end
-
-    % If successful, add to the output array and move to the next variable
-    if loaded
-        keepRows = dash.indices.keep(variableRows, stridedRows);
-        X(inVariable,:) = Xload(keepRows, keepMembers);
-        continue
-    end
-
-    % If unsuccessful, get unique rows for the variable
-    uniqueRows = unique(variableRows);
-    keepRows = dash.indices.keep(variableRows, uniqueRows);
-    nVarRows = numel(uniqueRows);
-    Xvar = NaN([nVarRows, nCols], precision);
-
-    % Load each row iteratively
-    for r = 1:nVarRows
+else
+    limits = dash.indices.limits(obj.lengths);
+    vars = unique(vRows);
+    nVars = numel(vars);
+    
+    % Locate requested rows associated with each variable
+    for k = 1:nVars
+        v = vars(k);
+        inVariable = rows>=limits(v,1) & rows<=limits(v,2);
+        variableRows = rows(inVariable);
+    
+        % Attempt to load strided rows within the variable
+        stridedRows = dash.indices.strided(variableRows);
         try
-            Xload = m.X(uniqueRows(r), stridedMembers);
+            Xload = m.X(stridedRows, stridedMembers);
             loaded = true;
         catch
             loaded = false;
         end
-
-        % If successful, extract the requested members
+    
+        % If successful, add to the output array and move to the next variable
         if loaded
-            Xvar(r,:) = Xload(1, keepMembers);
-
-        % If still unsuccessful, also load each member iteratively
-        else
-            for c = 1:nCols
-                Xvar(r,c) = m.X(uniqueRows(r), members(c));
+            keepRows = dash.indices.keep(variableRows, stridedRows);
+            X(inVariable,:) = Xload(keepRows, keepMembers);
+            continue
+        end
+    
+        % If unsuccessful, get unique rows for the variable
+        uniqueRows = unique(variableRows);
+        keepRows = dash.indices.keep(variableRows, uniqueRows);
+        nVarRows = numel(uniqueRows);
+        Xvar = NaN([nVarRows, nCols], precision);
+    
+        % Load each row iteratively
+        for r = 1:nVarRows
+            try
+                Xload = m.X(uniqueRows(r), stridedMembers);
+                loaded = true;
+            catch
+                loaded = false;
+            end
+    
+            % If successful, extract the requested members
+            if loaded
+                Xvar(r,:) = Xload(1, keepMembers);
+    
+            % If still unsuccessful, also load each member iteratively
+            else
+                for c = 1:nCols
+                    Xvar(r,c) = m.X(uniqueRows(r), members(c));
+                end
             end
         end
+    
+        % Add the rows for the variable to the output array
+        X(inVariable,:) = Xvar(keepRows, :);
     end
-
-    % Add the rows for the variable to the output array
-    X(inVariable,:) = Xvar(keepRows, :);
 end
 
 % Reshape output array to organize ensembles along the third dimension
 X = reshape(X, nRows, nMembers, nEnsembles);
+
+% Optionally get labels output
+if nargout>2
+    labels = obj.evolvingLabels(e);
+end
 
 end

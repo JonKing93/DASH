@@ -41,7 +41,7 @@ function[X, metadata] = load(obj, ensembles)
 %           ensembles that share the same label.
 %
 %   Outputs:
-%       X (numeric array, [nState x nMembers x nEnsembles]): The loaded
+%       X (numeric array, [nState x nMembers x nEvolving]): The loaded
 %           ensemble. Each row is a particular element along the state
 %           vector, and each column is an ensemble member. The third
 %           dimension holds different ensembles in an evolving set. The
@@ -139,7 +139,7 @@ end
 % Reshape loaded array to organize ensembles along the third dimension
 X = reshape(X, nRows, nMembers, nEnsembles);
 
-% Get the ensembleMetadata objects
+% Optionally get ensembleMetadata output
 if nargout>1
     metadata = obj.metadata(e);
 end
