@@ -58,11 +58,10 @@ classdef ensembleMetadata
         coordinates = getLatLon(obj, v, variableRows, dimensions, columns);
         coordinates = latlon(obj, siteColumns, variables);
         rows = closestLatLon(variable, coordinates, varargin);
-        
-        serialize
 
-        %!!! meta.rows(0) does not work
-
+        disp(obj);
+        dispVariables(obj);
+        dispEnsemble(obj);
 
     end
 
