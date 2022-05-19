@@ -37,15 +37,17 @@ for k = 1:nEnsDims
     nAdd(k) = numel(addIndices{k});
 end
 
-% We're going to dimensionally-subscript the entire set of add indices. Get
-% indices that indicate which add index is used for each element of the
-% complete set of loaded indices. Note that the total number of gridfile
-% element loaded over all the ensemble dimensions is determined by
-% propagating the add indices in each dimension across all the other
-% ensemble dimensions.
-addindexIndices = dash.indices.subscript(nAdd);
+% Get the total number of gridfile elements loaded over all the ensemble
+% dimensions. This multiplies the number of add indices in each dimension
+% across all the ensemble dimensions
+nElements = prod(nAdd);
+
+% We're going to dimensionally-subscript the entire set of add indices.
+% Get indices that indicate which add index is used for each element of the
+% complete set of loaded indices.
+addindexIndices = cell(1, nEnsDims);
+[addindexIndices{:}] = ind2sub(nAdd, (1:nElements)');
 addindexIndices = cell2mat(addindexIndices);
-nElements = size(addindexIndices, 1);
 
 % Dimensionally-subscript the add indices and reference indices across all
 % the ensemble dimensions
