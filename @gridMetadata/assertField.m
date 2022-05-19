@@ -33,34 +33,27 @@ else
     name = sprintf('The "%s" metadata', dim);
 end
 
-% Type
-if ~isnumeric(meta) && ~islogical(meta) && ~ischar(meta) && ...
-        ~isstring(meta) && ~iscellstr(meta) && ~isdatetime(meta)
-    
-    id = sprintf('%s:unallowedMetadataType', idHeader);
-    allowed = ["numeric","logical","char","string","cellstring","datetime"];
-    error(id, '%s must be one of the following data types: %s',...
-        name, dash.string.list(allowed));
-    
-% Matrix
-elseif ~ismatrix(meta)
-    id = sprintf('%s:metadataNotMatrix', idHeader);
-    error(id, '%s is not a matrix', name);
-    
-% Illegal elements
-elseif isnumeric(meta) && any(isnan(meta),'all')
-    bad = find(isnan(meta),1);
-    id = sprintf('%s:metadataHasNaN', idHeader);
-    error(id, '%s contains NaN elements. (Element %.f is NaN).', name, bad);
-elseif isdatetime(meta) && any(isnat(meta),'all')
-    bad = find(isnat(meta),1);
-    id = sprintf('%s:metadataHasNaT', idHeader);
-    error(id, '%s contains NaT elements. (Element %.f is NaT).', name, bad);
-end
-
 % Convert cellstring to string
 if iscellstr(meta) %#ok<ISCLSTR>
     meta = string(meta);
+end
+
+% Require a matrix of allowed type
+types = ["numeric","logical","char","string","datetime"];
+dash.assert.matrixTypeSize(meta, types, [], name, idHeader);
+
+% Do not allow NaN, NaT, or <missing> elements
+if (isnumeric(meta) || isdatetime(meta) || isstring(meta)) && any(ismissing(meta),'all')
+    bad = find(ismissing(meta), 1);
+    if isnumeric(meta)
+        type = "NaN";
+    elseif isdatetime(meta)
+        type = "NaT";
+    elseif isstring(meta)
+        type = "<missing>";
+    end
+    id = sprintf('%s:missingMetadata', idHeader);
+    error(id, '%s contains %s elements. (Element %.f is %s)', name, type, bad, type);
 end
 
 end
