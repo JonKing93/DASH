@@ -85,6 +85,15 @@ else
         'allowed option', header);
 end
 
+% If returning variable names
+if isequal(dimension,0)
+    metadata = obj.identify(rows);
+    if cellOutput
+        metadata = num2cell(metadata);
+    end
+    return
+end
+
 % Preallocate metadata and missing flags
 nRows = numel(rows);
 metadata = cell(nRows, 1);
