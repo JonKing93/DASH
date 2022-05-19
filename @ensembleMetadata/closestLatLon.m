@@ -99,7 +99,7 @@ end
 if iscolumn(coordinates)
     coordinates = coordinates';
 end
-distances = dash.haversine(variableCoordinates, coordinates);
+distances = dash.math.haversine(variableCoordinates, coordinates);
 
 % Locate the closest elements within the overall state vector
 closest = distances == min(distances);

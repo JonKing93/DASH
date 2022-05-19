@@ -47,7 +47,7 @@ dash.assert.defined(coordinates, 1, 'coordinates', header);
 dash.assert.defined(siteCoordinates, 1, 'siteCoordinates', header);
 
 % Use haversine to locate the closest point
-distances = dash.haversine(coordinates, siteCoordinates);
+distances = dash.math.haversine(coordinates, siteCoordinates);
 [~, closest] = min(distances, [], 2);
 coordinates = siteCoordinates(closest, :);
 siteIndices = closest;

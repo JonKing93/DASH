@@ -1,12 +1,22 @@
 %% dash  Utilities for the DASH toolbox
 % ----------
+%   This package contains various utilities that help the DASH toolbox run.
+%   Most of the contents here are "under-the-hood" functions, but there are
+%   a few contents that may be useful to users. In particular, we think
+%   users may be interested in:
+%
+%   1. dash.doc       The fuction that opens the documentation browser
+%   2. dash.closest   Can help users locate points close to specific coordinates
+%   3. dash.math      Various mathematical functions that users may find useful
+%   4. dash.version   Reports the current version of the DASH toolbox.
+% ----------
 % Documentation Functions:
 %   doc                 - Open online reference page in a web browser
 %   version             - Return the current version of the DASH toolbox
 %
 % User utilities:
 %   closest             - Functions that find points closest to specified coordinates
-%   haversine           - Return distances between latitude-longitude coordinates
+%   math                - Functions that implement mathematical formulas
 %
 % Input Utilities:
 %   is                  - Functions that test whether an input is a particular type
