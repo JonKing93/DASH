@@ -42,57 +42,57 @@ classdef ensemble
     % **KEY METHODS**
     % The following methods are among the most essential for users
     %
-    %   ensemble        - Create an ensemble object for a saved state vector ensemble
-    %   useVariables    - Use a subset of saved variables
-    %   useMembers      - Use a subset of saved ensemble members
-    %   evolving        - Implement an evolving ensemble
-    %   metadata        - Return the metadata for an ensemble object
-    %   load            - Load portions of a state vector ensemble into memory
-    %   loadGrid        - Load a variable in a state vector ensemble as a gridded field
+    %   ensemble                - Create an ensemble object for a saved state vector ensemble
+    %   useVariables            - Use a subset of saved variables
+    %   useMembers              - Use a subset of saved ensemble members
+    %   evolving                - Implement an evolving ensemble
+    %   metadata                - Return the metadata for an ensemble object
+    %   load                    - Load portions of a state vector ensemble into memory
+    %   loadGrid                - Load a variable in a state vector ensemble as a gridded field
     %
     %
     % *ALL USER METHODS*
     % The complete list of methods for users.
     %
     % Create:
-    %   ensemble        - Create an ensemble object for a saved state vector ensemble
-    %   label           - Set or return a label for an ensemble object
+    %   ensemble                - Create an ensemble object for a saved state vector ensemble
+    %   label                   - Set or return a label for an ensemble object
     %
     % Subset:
-    %   useVariables    - Use a subset of saved variables
-    %   useMembers      - Use a subset of saved ensemble members
+    %   useVariables            - Use a subset of saved variables
+    %   useMembers              - Use a subset of saved ensemble members
     %
     % Design:
-    %   static          - Implement a static ensemble
-    %   evolving        - Implement an evolving ensemble
-    %   evolvingLabels  - Label the different ensembles in an evolving ensemble
+    %   static                  - Implement a static ensemble
+    %   evolving                - Implement an evolving ensemble
+    %   evolvingLabels          - Label the different ensembles in an evolving ensemble
     %
     % Metadata:
-    %   metadata        - Return the ensembleMetadata object for an ensemble
+    %   metadata                - Return the ensembleMetadata object for an ensemble
     %
     % Load:
-    %   load            - Loads a state vector ensemble into memory
-    %   loadGrid        - Load a variable in a state vector ensemble as a gridded fields
-    %   loadRows        - Loads specific rows of a state vector ensemble
+    %   load                    - Loads a state vector ensemble into memory
+    %   loadGrid                - Load a variable in a state vector ensemble as a gridded fields
+    %   loadRows                - Loads specific rows of a state vector ensemble
     %
     % Information:
-    %   length          - Return the state vector length of an ensemble and its variables
-    %   variables       - List the variables used in an ensemble
-    %   members         - List the ensemble members used in an ensemble
-    %   info            - Return information about an ensemble as a struct
+    %   length                  - Return the state vector length of an ensemble and its variables
+    %   variables               - List the variables used in an ensemble
+    %   members                 - List the ensemble members used in an ensemble
+    %   info                    - Return information about an ensemble as a struct
     %
     % Sizes:
-    %   nRows           - Return the number of state vector rows for one or more ensemble objects
-    %   nVariables      - Return the number of state vector variables for one or more ensemble objects
-    %   nMembers        - Return the number of ensemble members for one or more ensemble objects
-    %   nEvolving       - Return the number of ensembles implemented by static or evolving ensemble objects
+    %   nRows                   - Return the number of state vector rows for one or more ensemble objects
+    %   nVariables              - Return the number of state vector variables for one or more ensemble objects
+    %   nMembers                - Return the number of ensemble members for one or more ensemble objects
+    %   nEvolving               - Return the number of ensembles implemented by static or evolving ensemble objects
     %
     % Add members:
-    %   addMembers      - Add more members to a saved state vector ensemble
-    %   update          - Update an ensemble object to include new members added to a .ens file
+    %   addMembers              - Add more members to a saved state vector ensemble
+    %   update                  - Update an ensemble object to include new members added to a .ens file
     %
     % Console display:
-    %   disp            - Displays an ensemble object in the console
+    %   disp                    - Displays an ensemble object in the console
     %
     %
     % ==Utility Methods==

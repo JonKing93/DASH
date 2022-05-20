@@ -1,4 +1,117 @@
 classdef ensembleMetadata
+    %% ensembleMetadata  Obtain metadata along the rows and members of a state vector ensemble
+    % ----------
+    %   The ensembleMetadata class provides functions that allow users to
+    %   query and locate metadata at different points in a state vector
+    %   ensemble. The class has several main purposes:
+    %   
+    %     A. Locating data values needed to run proxy system models,
+    %     B. Obtaining the coordinates of state vector elements for
+    %        covariance localization, and
+    %     C. Reshaping state vector variables back into gridded datasets.
+    %
+    %   Additionally, by allowing users to locate different elements in an
+    %   ensemble, the class can help facilitate miscellaneous scientific
+    %   tasks not explicitly supported by the DASH toolbox. 
+    %
+    %   The following is an overview for using the ensembleMetadata class:
+    %     1. Use the "ensemble.metadata" command to return an
+    %        ensembleMetadata object for a saved state vector ensemble.
+    %        Alternatively, use the "ensembleMetadata" command to build a
+    %        metadata object from a stateVector object.
+    %     2. Use "closestLatLon" to locate data values closest to proxy
+    %        sites for generating proxy estimates.
+    %     3. Use "latlon" to return latitude-longitude coordinates of state
+    %        vector elements for covariance localization.
+    %     4. Use "regrid" to reshape state vector variables back into
+    %        gridded datasets.
+    %     5. Use "rows", "members" and "variable" to return metadata at
+    %        state vector rows, ensemble members, and variables in the
+    %        state vector ensemble.
+    %     6. Use "find" and "identify" to locate variables within the
+    %        overall state vector.
+    %
+    %   The class also includes methods that return information about an
+    %   ensemble. Among others, the "variables", "length", "members",
+    %   "label", and "dimensions" commands can all facilitate workflows.
+    %   
+    %   The class also provides methods that facilitate splitting
+    %   ensembles into multiple pieces (for example, variables required for
+    %   proxy estimation, and variables used in an assimilation prior).
+    %   The "extract", "remove", and "append" methods can assist with
+    %   manipulating variables, while "extractMembers" ,"removeMembers",
+    %   and "appendMembers" can assist with manipulating ensemble members.
+    % ----------
+    % ensembleMetadata Methods:
+    %
+    % **KEY METHODS**
+    % The following methods are among the most essential for users
+    %
+    %   closestLatLon       - Locates data values closest to a set of coordinates
+    %   latlon              - Return latitude-longitude coordinates for all state vector elements
+    %   regrid              - Reshape state vectors back into gridded datasets
+    %
+    %
+    % *ALL USER METHODS*
+    % The complete list of methods for users.
+    %
+    % Create:
+    %   ensembleMetadata    - Build an ensembleMetadata object for a stateVector object
+    %   label               - Return and apply labels for a metadata object
+    %
+    % Coordinates
+    %   closestLatLon       - Locate data values closest to a set of coordinates
+    %   latlon              - Return latitude-longitude coordinates for all state vector elements
+    %
+    % Regrid:
+    %   regrid              - Reshape state vectors back into gridded datasets
+    %
+    % Metadata:
+    %   rows                - Return metadata down the rows of the state vector
+    %   members             - Return metadata across the ensemble members (columns) of a state vector ensemble
+    %   variable            - Return metadata for specific variables in a state vector ensemble
+    %
+    % Locate variables:
+    %   find                - Locate state vector rows corresponding to specified variables
+    %   identify            - Determine which variables are associated with specified state vector rows
+    %
+    % Variable Information:
+    %   variables           - List the variables in a state vector ensemble
+    %   length              - Return the length of a state vector and its variables
+    %   dimensions          - List the state and ensemble dimensions of variables in an ensemble
+    %
+    % Manipulate Varaibles:
+    %   extract             - Update metadata to only include specified variables
+    %   remove              - Remove specified variables from metadata
+    %   append              - Add new variables to metadata
+    %
+    % Manipulate Members:
+    %   extractMembers      - Update metadata to only include specified ensemble members
+    %   removeMembers       - Remove specified ensemble members from metadata
+    %   appendMembers       - Add new ensemble members to metadata
+    %
+    % Console Display:
+    %   disp                - Displays an ensembleMetadata object in the console
+    %
+    %
+    % ==UTILITY METHODS==
+    % Utility methods that help the class run. These do not implement error
+    % checking and are not intended for users.
+    %
+    % Misc:
+    %   name                - Return a name for the metadata for use in error messages
+    %   variableIndices     - Parse input variables and return indices
+    %   subscriptRows       - Return subscripted state dimension indices for specified state vector rows
+    %   getLatLon           - Extract latitude-longitude coordinates for a variable
+    %
+    % Console Display:
+    %   dispVariables       - Display state vector variables in the console
+    %   dispEnsemble        - Display ensemble dimensions in the console
+    %
+    % Tests:
+    %   tests               - Unit tests for the ensembleMetadata class
+    %
+    % <a href="matlab:dash.doc('ensembleMetadata')">Documentation Page</a>
 
     properties
         %% General
