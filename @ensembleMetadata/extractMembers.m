@@ -15,7 +15,10 @@ obj.nMembers = nMembers;
 
 % If extracting nothing, remove the coupling sets
 if obj.nMembers == 0
-    obj = obj.deleteSets;
+    obj.nSets = 0;
+    obj.couplingSet = NaN(0,1);
+    obj.ensembleDimensions = cell(0,1);
+    obj.ensemble = cell(0,1);
 
 % Otherwise, extract the selected members from each ensemble dimension
 else
