@@ -1,4 +1,14 @@
 function[] = dispEnsemble(obj)
+%% ensembleMetadata.dispEnsemble  Display the ensemble dimensions of variables in the console
+% ----------
+%   obj.dispEnsemble
+%   Prints the ensemble dimensions associated with each variable to the
+%   console.
+% ----------
+%   Outputs:
+%       Prints a list of variables and ensemble dimensions to the console
+%
+% <a href="matlab:dash.doc('ensembleMetadata.dispEnsemble')">Documentation Page</a>
 
 % Exit if there are no variables
 if obj.nVariables == 0

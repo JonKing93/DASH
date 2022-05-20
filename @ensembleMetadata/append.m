@@ -1,4 +1,39 @@
 function[obj] = append(obj, meta2, responseToRepeats)
+%% ensembleMetadata.append  Add variables to an ensembleMetadata object
+% ----------
+%   obj = obj.append(ensMeta2)
+%   Adds the variables in a second ensembleMetadata object to the current
+%   object. The second ensembleMetadata object must have the same number of
+%   ensemble members as the current object. By default, throws an error if
+%   the second object has any variables with the same name as a variable in
+%   the current object.
+%
+%   obj = obj.append(ensMeta2, responseToRepeats)
+%   obj = obj.append(ensMeta2, "error"|"e"|0)
+%   obj = obj.append(ensMeta2, "first"|"f"|1)
+%   obj = obj.append(ensMeta2, "second"|"s"|2)
+%   Indicate how to treat variable names that are repeated in the current
+%   and second ensembleMetadata objects. If "error"|"e"|0, throws an error
+%   when duplicate variable names occur. If "first"|"f"|1, retains the
+%   variable in the current ensembleMetadata object and discards the variable
+%   in the second object. If "second"|"s"|2, discards the variable in the
+%   current object, and retains the variable in the second object.
+% ----------
+%   Inputs:
+%       ensMeta2 (scalar ensembleMetadata object): A second ensembleMetadata
+%           object whose variables should be added to the current object.
+%       responseToRepeats (string scalar | scalar integer): Indicates how
+%           to treat variables with duplicate names across the current and
+%           second ensembleMetadata objects.
+%           [0|"e"|"error" (default)]: Throws an error when duplicate names occur
+%           [1|"f"|"first"]: Uses the variables in the current object
+%           [2|"s"|"second"]: Uses the variables in the second object
+%
+%   Outputs:
+%       obj (scalar ensembleMetadata object): The ensembleMetadta object
+%           with updated variables.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.append')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:append";
@@ -7,7 +42,7 @@ dash.assert.scalarObj(obj, header);
 % Check the second vector
 dash.assert.scalarType(meta2, 'ensembleMetadata', 'The first input', header);
 if ~isequal(obj.nMembers, meta2.nMembers)
-    differentMembersError;
+    differentMembersError(obj, ensMeta2, header);
 end
 
 % Default and check response to repeated variables
@@ -51,4 +86,22 @@ obj.ensemble = [obj.ensemble; meta2.ensemble];
 obj.nVariables = numel(obj.variables_);
 obj.nSets = numel(obj.ensemble);
 
+end
+
+%% Error messages
+function[] = differentMembersError(obj, ensMeta2, header)
+name1 = '';
+if ~strcmp(obj.label_, "")
+    name1 = sprintf(' (%s)', obj.label_);
+end
+name2 = '';
+if ~strcmp(ensMeta2.label_, "")
+    name2 = sprintf(' (%s)', ensMeta2.label_);
+end
+
+id = sprintf('%s:differentNumberOfMembers', header);
+ME = MException(id, ['The two ensembleMetadata object have different numbers of ensemble ',...
+    'members. The current object%s has %.f ensemble members, but the second ',...
+    'object has %.f members.'], name1, obj.nMembers, name2, ensMeta2.nMembers);
+throwAsCaller(ME);
 end

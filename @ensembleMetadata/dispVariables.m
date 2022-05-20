@@ -6,7 +6,6 @@ function[] = dispVariables(obj)
 %   name of each variable, its length, and the details of its state
 %   dimensions.
 % ----------
-%
 %   Outputs:
 %       Prints a list of variables, lengths, and state dimensions to the console.
 %

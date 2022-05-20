@@ -28,6 +28,35 @@ function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %   string row vector within a scalar cell. Dimensions for multiple variables
 %   are always returned as a cell vector of string row vectors.
 % ----------
+%   Inputs:
+%       variableNames (string vector): The names of variables for which to
+%           return dimension names.
+%       v (-1 | logical vector | vector, linear indices): The indices of
+%           variables in the state vector for which to return dimension
+%           names. If -1, selects all variables. If a logical vector, must
+%           have one element per variable in the state vector.
+%       type (string scalar | scalar positive integer): Indicates which
+%           types of dimension names to return
+%           [0|"all"|"a" (default)]: Returns the names of all dimensions for each variable
+%           [1|"state"|"s"]: Returns the names of state dimensions.
+%           [2|"ensemble"|"ens"|"e"]: Returns the names of ensemble dimensions
+%       cellOutput (string scalar | scalar logical): Whether to always
+%           return output as a cell.
+%           ["cell"|"c"|true]: Always returns outputs in a cell, even the
+%               dimensions for a single variable.
+%           ["default"|"d"|false]: Dimensions for a single variable are
+%               returned directly as a string vector.
+%
+%   Outputs:
+%       dimensions (string vector | cell vector [nVariables] {string vector}:
+%           The names of the dimensions for the listed variables. If a
+%           single variable is listed and cellOutput is on the default
+%           setting, a string vector with one element per listed dimension.
+%           If multiple variables are listed, a cell vector with one
+%           element per listed variable. Each element holds the names of the
+%           dimensions for a listed variable.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.dimensions')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:dimensions";
@@ -60,7 +89,7 @@ vars = obj.variableIndices(variables, true, header);
 nVars = numel(vars);
 dimensions = cell(nVars, 1);
 
-% Get the dimension names
+% Get the state and ensemble names
 for k = 1:numel(vars)
     v = vars(k);
     if type==0 || type==1
@@ -71,6 +100,7 @@ for k = 1:numel(vars)
         ensDims = [obj.ensembleDimensions{s}];
     end
 
+    % Get the requested dimension names
     if type==0
         dimensions{v} = unique([stateDims, ensDims]);
     elseif type==1
