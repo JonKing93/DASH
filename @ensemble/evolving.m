@@ -115,21 +115,27 @@ end
 function[obj] = resetEvolving(obj, header, members, labels)
 
 % Error check members, convert to linear indices
-members = obj.assertEvolvingMembers(members, [], [], 'members', header);
-nEnsembles = size(members, 2);
-
-% Default and error check labels
-if ~exist('labels','var') || isempty(labels)
-    labels = strings(nEnsembles, 1);
-else
-    labels = dash.assert.strlist(labels, 'newLabels', header);
-    nLabels = numel(labels);
-    if nLabels~=nEnsembles
-        id = sprintf('%s:wrongNumberOfLabels', header);
-        error(id, ['You must provide one evolving label per ensemble in the ',...
-            'evolving set (%.f), but you have provided %.f labels instead.'],...
-            nEnsembles, nLabels);
+try
+    members = obj.assertEvolvingMembers(members, [], [], 'members', header);
+    nEnsembles = size(members, 2);
+    
+    % Default and error check labels
+    if ~exist('labels','var') || isempty(labels)
+        labels = strings(nEnsembles, 1);
+    else
+        labels = dash.assert.strlist(labels, 'newLabels', header);
+        nLabels = numel(labels);
+        if nLabels~=nEnsembles
+            id = sprintf('%s:wrongNumberOfLabels', header);
+            error(id, ['You must provide one evolving label per ensemble in the ',...
+                'evolving set (%.f), but you have provided %.f labels instead.'],...
+                nEnsembles, nLabels);
+        end
     end
+
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 % Record new evolving ensemble
@@ -141,71 +147,77 @@ end
 function[obj] = updateEvolving(obj, header, ensembles, members, labels)
 
 % Identify whether the ensembles are linear indices
-linear = true;
-if isequal(ensembles,-1) || islogical(ensembles) || dash.is.string(ensembles)
-    linear = false;
-elseif ~isnumeric(ensembles)
-    id = sprintf('%s:invalidEnsembles', header);
-    error(id, ['When selecting ensembles, the first input must be a ',...
-        'logical, numeric, or string vector']);
-end
-
-% Get ensemble indices when not adding new ensembles
-if ~linear
-    e = obj.evolvingIndices(ensembles, false, header);
-
-% If linear indices, require unique positive integers
-else
-    dash.assert.uniqueSet(ensembles, 'ensemble', header);
-    e = ensembles;
-    [isvalid, bad] = dash.is.positiveIntegers(e);
-    if ~isvalid
-        id = sprintf('%s:invalidLinearIndices', header);
-        error(id, ['The first input is numeric, so it must consist ',...
-            'of linear indices (positive integers). However element %.f (%f) is ',...
-            'not a positive integer.'], bad, e(bad));
+try
+    linear = true;
+    if isequal(ensembles,-1) || islogical(ensembles) || dash.is.string(ensembles)
+        linear = false;
+    elseif ~isnumeric(ensembles)
+        id = sprintf('%s:invalidEnsembles', header);
+        error(id, ['When selecting ensembles, the first input must be a ',...
+            'logical, numeric, or string vector']);
     end
-end
-
-% Note if adding new ensembles
-addingNew = false;
-maxIndex = max(e);
-nCurrent = obj.nEvolving;
-if maxIndex > nCurrent
-    addingNew = true;
-end
-
-% If adding new ensembles, require each index on the interval:
-%       current number + 1 : new number
-if addingNew
-    required = nCurrent+1:maxIndex;
-    missing = ~ismember(required, e);
-    if any(missing)
-        id = sprintf('%s:missingEvolvingIndex', header);
-        error(id, ['Since you are adding new ensembles to the evolving set ',...
-            'the first index must include every index on the interval ',...
-            '(%.f:%.f). However, the following indices are missing: %s.'],...
-            required(1), required(end), dash.string.list(required(missing)));
+    
+    % Get ensemble indices when not adding new ensembles
+    if ~linear
+        e = obj.evolvingIndices(ensembles, false, header);
+    
+    % If linear indices, require unique positive integers
+    else
+        dash.assert.uniqueSet(ensembles, 'ensemble', header);
+        e = ensembles;
+        [isvalid, bad] = dash.is.positiveIntegers(e);
+        if ~isvalid
+            id = sprintf('%s:invalidLinearIndices', header);
+            error(id, ['The first input is numeric, so it must consist ',...
+                'of linear indices (positive integers). However element %.f (%f) is ',...
+                'not a positive integer.'], bad, e(bad));
+        end
     end
-end
-
-% Error check members, convert to linear indices
-members = obj.assertEvolvingMembers(members, obj.nMembers, numel(e), 'members', header);
-
-% Default and error check labels
-if ~exist('labels', 'var')
-    labels = strings(nEnsembles, 1);
-    haslabel = (e <= nCurrent);
-    labels(haslabel) = obj.evolvingLabels_(e(haslabel));
-else
-    labels = dash.assert.strlist(labels, 'newLabels', header);
-    nLabels = numel(labels);
-    if nLabels~=nEnsembles
-        id = sprintf('%s:wrongNumberOfLabels', header);
-        error(id, ['You must provide one label per specified ensemble ',...
-            '(%.f), but you have provided %.f labels instead.'],...
-            nEnsembles, nLabels);
+    
+    % Note if adding new ensembles
+    addingNew = false;
+    maxIndex = max(e);
+    nCurrent = obj.nEvolving;
+    if maxIndex > nCurrent
+        addingNew = true;
     end
+    
+    % If adding new ensembles, require each index on the interval:
+    %       current number + 1 : new number
+    if addingNew
+        required = nCurrent+1:maxIndex;
+        missing = ~ismember(required, e);
+        if any(missing)
+            id = sprintf('%s:missingEvolvingIndex', header);
+            error(id, ['Since you are adding new ensembles to the evolving set ',...
+                'the first index must include every index on the interval ',...
+                '(%.f:%.f). However, the following indices are missing: %s.'],...
+                required(1), required(end), dash.string.list(required(missing)));
+        end
+    end
+    
+    % Error check members, convert to linear indices
+    members = obj.assertEvolvingMembers(members, obj.nMembers, numel(e), 'members', header);
+    
+    % Default and error check labels
+    if ~exist('labels', 'var')
+        labels = strings(nEnsembles, 1);
+        haslabel = (e <= nCurrent);
+        labels(haslabel) = obj.evolvingLabels_(e(haslabel));
+    else
+        labels = dash.assert.strlist(labels, 'newLabels', header);
+        nLabels = numel(labels);
+        if nLabels~=nEnsembles
+            id = sprintf('%s:wrongNumberOfLabels', header);
+            error(id, ['You must provide one label per specified ensemble ',...
+                '(%.f), but you have provided %.f labels instead.'],...
+                nEnsembles, nLabels);
+        end
+    end
+
+% Minimize error stacks
+catch ME
+    throwAsCaller(ME);
 end
 
 % Update evolving ensemble
