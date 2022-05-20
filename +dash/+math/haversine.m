@@ -32,9 +32,17 @@ function[distances] = haversine(coordinates1, coordinates2)
 R = 6378.137;    % Radius of the Earth
 %%%
 
-% Default for the second set of coordinates
+% Error check the first set of coordinates
+header = "DASH:math:haversine";
+dash.assert.matrixTypeSize(coordinates1, 'numeric', [NaN,2], 'coordinates1', header);
+dash.assert.defined(coordinates1, 4, 'coordinates1', header);
+
+% Default and error check the second set of coordinates
 if ~exist('coordinates2','var')
     coordinates2 = coordinates1;
+else
+    dash.assert.matrixTypeSize(coordinates2, 'numeric', [NaN,2], 'coordinates2', header);
+    dash.assert.defined(coordinates2, 4, 'coordinates2', header);
 end
 
 % Convert to radians
