@@ -62,22 +62,17 @@ classdef ensemble
     %   useVariables    - Use a subset of saved variables
     %   useMembers      - Use a subset of saved ensemble members
     %
-    % Evolving ensembles:
+    % Design:
+    %   static          - Implement a static ensemble
     %   evolving        - Implement an evolving ensemble
-    %   labelEvolving   - Label the different ensembles in an evolving ensemble
+    %   evolvingLabels  - Label the different ensembles in an evolving ensemble
     %
     % Metadata:
     %   metadata        - Return the ensembleMetadata object for an ensemble
     %
-    % Sizes:
-    %   nRows           - Return the number of state vector rows for one or more ensemble objects
-    %   nVariables      - Return the number of state vector variables for one or more ensemble objects
-    %   nMembers        - Return the number of ensemble members for one or more ensemble objects
-    %   nEnsembles      - Return the number of ensembles implemented by static or evolving ensemble objects
-    %
     % Load:
     %   load            - Loads a state vector ensemble into memory
-    %   loadGrids       - Load a variable in a state vector ensemble as a gridded fields
+    %   loadGrid        - Load a variable in a state vector ensemble as a gridded fields
     %   loadRows        - Loads specific rows of a state vector ensemble
     %
     % Information:
@@ -85,6 +80,12 @@ classdef ensemble
     %   variables       - List the variables used in an ensemble
     %   members         - List the ensemble members used in an ensemble
     %   info            - Return information about an ensemble as a struct
+    %
+    % Sizes:
+    %   nRows           - Return the number of state vector rows for one or more ensemble objects
+    %   nVariables      - Return the number of state vector variables for one or more ensemble objects
+    %   nMembers        - Return the number of ensemble members for one or more ensemble objects
+    %   nEvolving       - Return the number of ensembles implemented by static or evolving ensemble objects
     %
     % Add members:
     %   addMembers      - Add more members to a saved state vector ensemble
@@ -95,9 +96,30 @@ classdef ensemble
     %
     %
     % ==Utility Methods==
-    %   
-    % General:
-    %   name            - Return a name for use in error messages
+    % Utility methods that help the class run. These do not implement error
+    % checking and are not intended for users.
+    %
+    % Assertions:
+    %   assertEvolvingMembers   - Throw error if input is not a set of ensemble members for an evolving ensemble
+    %   assertStaticMembers     - Throw error if input is not ensemble members for a static ensemble
+    %
+    % Indices:
+    %   variableIndices         - Parse variables and return indices in state vector
+    %   evolvingIndices         - Parse ensembles and return indices in the evolving set
+    %
+    % Console Display
+    %   dispEvolving            - Display the labels of evolving ensembles in the console
+    %   dispVariables           - Display the names and lengths of variables in an ensemble
+    %
+    % Misc:
+    %   name                    - Return a name for use in error messages
+    %   parseScope              - Parse scope inputs
+    %   validateMatfile         - Check .ens file is valid and unaltered
+    %
+    % Unit Tests:
+    %   tests                   - Unit tests for the ensemble class
+    %
+    % <a href="matlab:dash.doc('ensemble')">Documentation Page</a>
 
     properties (SetAccess = private)
         %% General
