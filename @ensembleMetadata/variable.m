@@ -18,10 +18,10 @@ function[metadata] = variable(obj, variable, dimension, varargin)
 %   metadata for the first row of the variable, regardless of the
 %   variable's overall position in the state vector.
 %
-%   metadata = obj.variable(..., type)
-%   metadata = obj.variable(..., "members"|"m")
-%   metadata = obj.variable(..., "rows"|"r")
-%   metadata = obj.variable(..., "default"|"d")
+%   metadata = obj.variable(variable, dimension, type)
+%   metadata = obj.variable(variable, dimension, "members"|"m")
+%   metadata = obj.variable(variable, dimension, "rows"|"r")
+%   metadata = obj.variable(variable, dimension, "default"|"d")
 %   Specify which type of metadata to return the for the dimension. If
 %   "members"|"m", returns metadata across the ensemble members. If
 %   "rows"|"r", returns metadata down the rows of the state vector. If
@@ -76,7 +76,7 @@ dash.assert.scalarObj(obj, header);
 % Parse the variable, get the coupling set
 v = obj.variableIndices(variable, false, header);
 if numel(v)>1
-    multipleVariablesError;
+    tooManyVariablesError(obj, v, header);
 end
 s = obj.couplingSet(v);
 
@@ -93,7 +93,7 @@ elseif nInputs==1
     elseif dash.is.string(varargin{1})
         type = varargin{1};
     else
-        invalidInputError;
+        invalidInputError(header);
     end
 end
 
@@ -110,11 +110,11 @@ dimension = dash.assert.strflag(dimension, 'dimension', header);
 [isState, dState] = ismember(dimension, obj.stateDimensions{v});
 [isEnsemble, dEns] = ismember(dimension, obj.ensembleDimensions{s});
 if ~isState && ~isEnsemble
-    unrecognizedDimension;
+    unrecognizedDimensionError(obj, dimension, v, header);
 elseif type==1 && ~isState
-    notStateDimensionError;
+    notStateDimensionError(obj, dimension, v, header);
 elseif type==2 && ~isEnsemble
-    notEnsembleDimensionError;
+    notEnsembleDimensionError(obj, dimension, v, header);
 end
 
 % Determine default type
@@ -169,4 +169,37 @@ else
     metadata = obj.ensemble{s}{d}(members, :);
 end
 
+end
+
+%% Error messages
+function[] = tooManyVariablesError(obj, v, header)
+variables = obj.variables_(v);
+variables = dash.string.list(variables);
+id = sprintf('%s:tooManyVariables', header);
+ME = MException(id, ['You must list exactly 1 variable, but you have specified ',...
+    '%.f variables (%s).'], numel(v), variables);
+throwAsCaller(ME);
+end
+function[] = invalidInputError(header)
+id = sprintf('%s:invalidInput', header);
+ME = MException(id, 'The third input must be a string, logical, or numeric data type');
+throwAsCaller(ME);
+end
+function[] = unrecognizedDimensionError(obj, dimension, v, header)
+id = sprintf('%s:unrecognizedDimension', header);
+ME = MException(id, '"%s" is not a dimension of variable "%s" in %s',...
+    dimension, obj.variables_(v), obj.name);
+throwAsCaller(ME);
+end
+function[] = notStateDimensionError(obj, dimension, v, header)
+id = sprintf('%s:notStateDimension', header);
+ME = MException(id, '"%s" is not a state dimension of variable "%s" in %s',...
+    dimension, obj.variables_(v), obj.name);
+throwAsCaller(ME);
+end
+function[] = notEnsembleDimensionError(obj, dimension, v, header)
+id = sprintf('%s:notEnsembleDimension', header);
+ME = MException(id, '"%s" is not an ensemble dimension of variable "%s" in %s',...
+    dimension, obj.variables_(v), obj.name);
+throwAsCaller(ME);
 end

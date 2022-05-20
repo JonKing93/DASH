@@ -81,26 +81,28 @@ classdef ensembleMetadata
             %% ensembleMetadata.ensembleMetadata  Create a new ensembleMetadata object
             % ----------
             %   obj = ensembleMetadata(sv)
-            %   Returns an ensembleMetadata object for the input stateVector object.
-            %   The ensembleMetadata object holds the metadata down the state vector,
-            %   as well as metadata for any built ensemble members. Note that only
-            %   stateVector objects produced as output from the "stateVector.build"
-            %   and "stateVector.addMembers" will have ensemble members. The label 
-            %   of the each ensembleMetadata object will match the label of the 
-            %   stateVector object.
+            %   Returns an array of ensembleMetadata objects for an array of stateVector objects.
+            %   Each ensembleMetadata object organizes the metadata down the state vector, as well
+            %   as the metadata for any built ensemble members. (Note that only stateVector objects
+            %   produced as output from the "stateVector.build" and "stateVector.addMembers" will
+            %   have ensemble members). The output array will match the size of the array of 
+            %   stateVector objects. The label of each ensembleMetadata object will match the
+            %   label of the associated stateVector object.
             %
-            %   obj = ensembleMetadata(sv, label)
+            %   obj = ensembleMetadata(sv, labels)
             %   Specify the label that should be applied to the ensembleMetadata object
             % ----------
             %   Inputs:
-            %       sv (scalar stateVector objects): The stateVector object for
+            %       sv (scalar stateVector objects): An array of stateVector objects for
             %           which to build ensembleMetadata objects.
-            %       label (string scalar | cellstring scalar | char row vector):
-            %           The label to apply to the ensembleMetadata object
+            %       labels (string scalar | cellstring scalar | char row vector):
+            %           The labels to apply to the ensembleMetadata object.
+            %           Must match the size of the array of stateVector objects.
             %
             %   Outputs:
             %       obj (scalar ensembleMetadata objects): The ensembleMetadata
-            %           object for the state vector ensemble.
+            %           objects for the stateVector objects. The size will matcht the size
+            %           of the input array of stateVector objects.           
             %
             % <a href="matlab:dash.doc('ensembleMetadata.ensembleMetadata')">Documentation Page</a>
 
@@ -142,7 +144,11 @@ classdef ensembleMetadata
                     % Build and validate the gridfile objects
                     [grids, failed, cause] = sv.prepareGrids;
                     if failed
-                        gridfileFailedError(cause);
+                        id = sprintf('%s:gridfileFailed', header);
+                        ME = MException(id, ['The gridfile for the ensembleMetadata object ',...
+                            'failed.\nFile: %s'], sv.gridfiles(failed));
+                        ME = addCause(ME, cause);
+                        throw(ME);
                     end
         
                     % Apply the label
@@ -153,7 +159,7 @@ classdef ensembleMetadata
                     end
         
                     % Get the variables and their lengths
-                    obj(q).variables_ = sv.variables_;
+                    obj(q).variables_ = sv.variableNames;
                     nVariables = numel(sv.variables_);
                     obj(q).nVariables = nVariables;
                     obj(q).lengths = sv.length(-1);
@@ -188,7 +194,11 @@ classdef ensembleMetadata
                             if svv.isState(d)
                                 [metadata, failed, cause] = svv.getMetadata(d, grid, header);
                                 if failed
-                                    metadataFailedError(cause);
+                                    id = sprintf('%s:metadataFailed', header);
+                                    ME = MException(id, 'The metadata for the "%s" dimension of the "%s" variable failed.',...
+                                        svv.dims(d), sv.variableNames(v));
+                                    ME = addCause(ME, cause);
+                                    throw(ME);
                                 end
         
                                 % Permute if taking a mean. Record type
@@ -254,7 +264,11 @@ classdef ensembleMetadata
                             % Get metadata along the dimension
                             [metadata, failed, cause] = svv.getMetadata(d, grid, header);
                             if failed
-                                metadataFailedError(cause);
+                                id = sprintf('%s:metadataFailed', header);
+                                ME = MException(id, 'The metadata for the "%s" dimension of the "%s" variable failed.',...
+                                    svv.dims(d), sv.variableNames(v));
+                                ME = addCause(ME, cause);
+                                throw(ME);
                             end
         
                             % Record metadata for the ensemble members

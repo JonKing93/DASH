@@ -12,6 +12,19 @@ function[variableNames, v] = identify(obj, rows)
 %   specified rows. If the input is -1, selects all rows. The outputs will
 %   have one element per listed row.
 % ----------
+%   Inputs:
+%       rows (-1 | logical vector | vector, linear indices): Rows of the
+%           state vector for which to identify the associated variables. If
+%           -1, selects all state vector rows. If a logical vector, must
+%           have the same length as the state vector.
+%
+%   Outputs:
+%       variableNames (string vector [nRows]): The names of the variables
+%           associated with each of the listed rows.
+%       v (vector, linear indices [nRows]): The indices of the variables
+%           associated with each of the listed rows.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.identify')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:identify";

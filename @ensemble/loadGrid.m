@@ -100,7 +100,7 @@ end
 % Get the variable indices
 v = obj.variableIndices(variable, "used", header);
 if numel(v)~=1
-    tooManyVariablesError(v, header);
+    tooManyVariablesError(obj, v, header);
 end
 
 % Isolate the variable and load
@@ -123,7 +123,7 @@ end
 end
 
 % Error message
-function[] = tooManyVariablesError(v, header)
+function[] = tooManyVariablesError(obj, v, header)
 variables = obj.variables_(v);
 variables = dash.string.list(variables);
 id = sprintf('%s:tooManyVariables', header);

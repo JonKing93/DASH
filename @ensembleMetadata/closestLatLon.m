@@ -79,7 +79,7 @@ dash.assert.scalarObj(obj, header);
 % Check the variable
 v = obj.variableIndices(variable, false, header);
 if numel(v)~=1
-    tooManyVariablesError;
+    tooManyVariablesError(obj, v, header);
 end
 
 % Error check the coordinates
@@ -149,7 +149,7 @@ rows = variableRows + startRow - 1;
 end
 
 % Error messages
-function[] = tooManyVariablesError(v, header)
+function[] = tooManyVariablesError(obj, v, header)
 variables = obj.variables_(v);
 variables = dash.string.list(variables);
 id = sprintf('%s:tooManyVariables', header);

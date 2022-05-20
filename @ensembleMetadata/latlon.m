@@ -57,6 +57,41 @@ function[coordinates] = latlon(obj, siteColumns, variables)
 %   variables, the method will only extract coordinates from "lat" and
 %   "lon", even if the other variables have "site" as a state dimension.
 % ----------
+%   Inputs:
+%       siteColumns (positive integers, vector [2] | matrix [nVariables x 2]):
+%           Indicates the columns of "site" metadata that should be used as
+%           latitude and longitude coordinates. If a vector, uses the same columns
+%           for all variables with "site" metadata. The first element is
+%           the latitude column, and the second element is the longitude
+%           column. siteColumns must be vector when no variables are
+%           specified.
+%
+%           If site variables are also listed, siteColumns may either be a
+%           vector or a matrix. If a matrix, must have one row per listed
+%           variable and two columns. The first column lists latitude
+%           columns in the site metadata, and the second column lists
+%           longitude columns for each variable.
+%       variableNames (string vector [nVariables]): The names of variables
+%           that should use "site" metadata to determine
+%           latitude-longitude coordinates. Cannot have repeated names.
+%       v (-1 | logical vector | vector, linear indices): The indices of
+%           variable that should use "site" metadata to determine
+%           latitude-longitude coordinates. If -1, selects all variables.
+%           If a logical vector, must have one element per variable in the
+%           state vector. If linear indices, cannot have repeated elements.
+%
+%   Outputs:
+%       coordinates (numeric matrix [nRows x 2]): Latitude-longtidue
+%           coordinates for each row of the state vector. First column is
+%           latitude and second column is longitude. If coordinate metadata
+%           for a row is not an expected format, returns a NaN coordinate
+%           for that row. NaN coordinates are returned for rows that: are
+%           missing a required dimension, implement a mean over a
+%           dimension, use coordinates that are not numeric scalars /
+%           string scalars / char row vectors, or have string metadata that
+%           cannot be converted to numeric values.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.latlon')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:latlon";
@@ -66,6 +101,9 @@ dash.assert.scalarObj(obj, header);
 if exist('siteColumns','var')
     dash.assert.matrixTypeSize(siteColumns, 'numeric', [NaN, 2], 'siteColumns', header);
     dash.assert.positiveIntegers(siteColumns, 'siteColumns', header);
+    if iscolumn(siteColumns)
+        siteColumns = siteColumns';
+    end
 end
 
 % Get dimension names
@@ -91,7 +129,7 @@ if exist('variables','var')
     elseif nSites==nVars
         columns(vars,:) = siteColumns;
     else
-        wrongNumberOfColumnsError;
+        wrongNumberOfSiteColumnsError(nVars, nSites, header);
     end
 
 % Error check when the user only provides columns
@@ -125,4 +163,13 @@ for v = 1:obj.nVariables
     end
 end
 
+end
+
+% Error messages
+function[] = wrongNumberOfSiteColumnsError(nVars, nSites, header)
+id = sprintf('%s:wrongNumberOfSiteColumns', header);
+ME = MException(id, ['Since siteColumns is a matrix, it must have one row per listed ',...
+    'variable (%.f rows). However, siteColumns has %.f rows instead.'],...
+    nVars, nSites);
+throwAsCaller(ME);
 end

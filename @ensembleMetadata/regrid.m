@@ -53,6 +53,47 @@ function[X, metadata] = regrid(obj, variable, X, varargin)
 %   enacts the default behavior and removes singleton dimensions that are
 %   not listed in the dimension order.
 % ----------
+%   Inputs:
+%       variableName (string scalar): The name of the variable to regrid
+%       v (scalar linear index | logical vector): The index of the variable
+%           to regrid. If a logical vector, must have one element per
+%           variable in the state vector and exactly one true element.
+%       X (N-dimensional array [leading dimensions x state vector dimension x trailing dimensions]): 
+%           An N-dimensional array that includes the state vector
+%           containing the variable being regridded. Must have at least one
+%           dimension that matches the length of the state vector. If the
+%           "dim" input is specified, the length of that dimension must
+%           match the length of the state vector.
+%       dimensions (string vector): The names of state dimensions in the
+%           order they should appear in the regridded variable.
+%       d (scalar positive integer): The index of the dimension for input 
+%           "X" that contains the state vector. If specified, the length of
+%           this dimension in X must match the length of the state vector.
+%       singletons (string scalar | scalar logical): Specifies how to treat
+%           regridded singleton dimensions that are not listed in the
+%           "dimensions" input.
+%           ["remove"|"r"|false (default)]: Unlisted singleton dimensions
+%               are removed from the regridded dataset.
+%           ["keep"|"k"|true]: All singleton dimension are retained in the
+%               regridded dataset.
+%
+%   Outputs:
+%       V (N-dimensional array [leading dimensions x regridded dimensions x trailing dimensions]):
+%           The regridded variable. An N-dimensional array. The state
+%           vector dimension has been reshaped into a gridded dataset. Any
+%           dimensions preceding or following the state vector dimension
+%           are left unaltered. If the variable has no state dimensions
+%           (i.e. a singleton variable), the state vector dimension is
+%           retained as a singleton.
+%       metadata (scalar gridMetadata object): A gridMetadata object
+%           describing the regridded state dimensions for the variable.
+%           The metadata for each dimension includes one row per element
+%           along the dimension. The order of dimensions in the metadata
+%           matches the order of dimensions for the regridded dataset. If a
+%           regridded dimension implements a mean, the metadata for the
+%           dimension will include one row per element used in the mean.
+% 
+% <a href="matlab:dash.doc('ensembleMetadata.regrid')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:regrid";
@@ -61,7 +102,7 @@ dash.assert.scalarObj(obj, header);
 % Get variable index
 v = obj.variableIndices(variable, false, header);
 if numel(v)>1
-    tooManyVariablesError;
+    tooManyVariablesError(obj, v, header);
 end
 
 % Parse optional inputs
@@ -80,7 +121,7 @@ if ~isempty(dim)
     dash.assert.scalarType(dim, 'numeric', 'dim', header);
     dash.assert.positiveIntegers(dim, 'dim', header);
     if siz(dim) ~= obj.length
-        wrongSizeError;
+        wrongSizeError(obj, siz, dim, header);
     end
 
 % Otherwise, locate first dimension of the required length
@@ -96,7 +137,7 @@ else
 
     % Throw error if no dimensions have the correct length
     if ~haveDimension
-        noDimensionError;
+        noDimensionError(obj, header);
     end
 end
 
@@ -121,10 +162,9 @@ else
     end
 
     % Require dimensions are state dimensions
-    [isdim, stateOrder] = ismember(stateOrder, obj.stateDimensions{v});
-    if ~all(isdim)
-        notStateDimensionError;
-    end
+    list = sprintf('state dimension of the "%s" variables', obj.variables_(v));
+    stateOrder = dash.assert.strsInList(stateOrder, obj.stateDimensions{v}, ...
+                                                 'dimension', list, header);
 
     % Record listed dimensions. Get full state dimension order including
     % state dimensions not listed by the user
@@ -203,4 +243,26 @@ dimensions = obj.stateDimensions{v}(keep);
 dimensionOrder = dimensions(stateOrder);
 metadata = metadata.setOrder(dimensionOrder);
 
+end
+
+%% Error messages
+function[] = tooManyVariablesError(obj, v, header)
+variables = obj.variables_(v);
+variables = dash.string.list(variables);
+id = sprintf('%s:tooManyVariables', header);
+ME = MException(id, ['You must list exactly 1 variable, but you have specified ',...
+    '%.f variables (%s).'], numel(v), variables);
+throwAsCaller(ME);
+end
+function[] = wrongSizeError(obj, siz, dim, header)
+id = sprintf('%s:dimensionWrongLength', header);
+ME = MException(id, ['The length of dimension %.f (%.f) does not match the length of the ',...
+    'state vector (%.f).'], siz(dim), obj.length);
+throwAsCaller(ME);
+end
+function[] = noDimensionError(obj, header)
+id = sprintf('%s:noStateVectorDimension', header);
+ME = MException(id, ['None of the dimensions of the input dataset match the ',...
+    'length of the state vector (%.f).'], obj.length);
+throwAsCaller(ME);
 end

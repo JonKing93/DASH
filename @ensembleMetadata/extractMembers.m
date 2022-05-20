@@ -1,4 +1,24 @@
 function[obj] = extractMembers(obj, members)
+%% ensembleMetadata.extractMembers  Limit ensemble metadata to specific ensemble members
+% ----------
+%   obj = obj.extractMembers(members)
+%   Updates an ensemble metadata object to only include the specified
+%   members. All unlisted members are removed from the ensembleMetadata
+%   object.
+% ----------
+%   Inputs:
+%       members (logical vector | vector, linear indices): The indices of
+%           the current ensemble members to keep in the metadata. If a
+%           logical vector, must have one element per ensemble member
+%           currently in the ensembleMetadata object. If linear indices
+%           with repeated elements, the ensemble members will be repeated
+%           in the updated object.
+%
+%   Outputs:
+%       obj (scalar ensembleMetadata object): The ensembleMetadata object
+%           with udpated ensemble members.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.extractMembers')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:extractMembers";

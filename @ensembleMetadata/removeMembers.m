@@ -1,4 +1,21 @@
 function[obj] = removeMembers(obj, members)
+%% ensembleMetadata.removeMembers  Remove ensemble members from an ensembleMetadata object
+% ----------
+%   obj = obj.removeMembers(members)
+%   Removes the indicated ensemble members from an ensembleMetadata object.
+%   All other ensemble members are retained in the metadata.
+% ----------
+%   Inputs:
+%       members (vector, linear indices | logical vector): The indices of
+%           ensemble members that should be removed from the metadata.
+%           If a logical vector, must have one element per ensemble member
+%           currently in the metadata.
+%
+%   Outputs:
+%       obj (scalar ensembleMetadata object): The ensembleMetadata object
+%           with updated ensemble members.
+%   
+%  <a href="matlab:dash.doc('ensembleMetadata.removeMembers')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:removeMembers";

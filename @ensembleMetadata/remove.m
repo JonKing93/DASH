@@ -1,4 +1,23 @@
 function[obj] = remove(obj, variables)
+%% ensembleMetadata.remove  Remove variables from an ensembleMetadata object
+% ----------
+%   obj = obj.remove(variableNames)
+%   obj = obj.remove(v)
+%   Removes the indicated variables from an ensembleMetadata object. All
+%   other variables are retained in the metadata.
+% ----------
+%   Inputs:
+%       variableNames (string vector): The names of variables that should
+%           be removed from an ensembleMetadata object.
+%       v (logical vector | vector, linear indices | -1): The indices of
+%           variables to remove from the object. If a logical vector, must
+%           have one element per variable in the state vector. If -1,
+%           removes all variables.
+%
+%   Outputs:
+%       obj (scalar ensembleMetadata object): The ensembleMetadata object
+%           with updated variables.
+% <a href="matlab:dash.doc('ensembleMetadata.remove')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:remove";

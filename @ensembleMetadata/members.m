@@ -14,16 +14,39 @@ function[metadata] = members(obj, dimension, members, variable)
 %   is -1, selects all members in the ensemble. The returned metadata will
 %   have one row per listed ensemble member.
 %
-%   metadata = obj.members(dimension, members, variable)
+%   metadata = obj.members(dimension, members, variableName)
+%   metadata = obj.members(dimension, members, v)
 %   Indicate which variable's metadata to return. The variable must use the
 %   listed dimension as an ensemble dimension.
 % ----------
+%   Inputs:
+%       dimension (string scalar | char row vector): The name of an ensemble dimension used
+%           by a variable in the state vector.
+%       members (-1 | logical vector | vector, linear indices): The indices
+%           of ensemble members for which to return metadata. If -1, selects
+%           all ensemble members in the state vector ensemble. If a logical
+%           vector, must have one element per ensemble members in the
+%           ensemble. Otherwise, a vector a linear indices. Note that these
+%           indices refer to the columns (ensemble members) of the ensemble.
+%       variableName (string scalar | char row vector): The name of the variable whose
+%           ensemble dimension metadata should be used.
+%       v (scalar linear index | logical vector): The index of the variable
+%           whose ensemble dimension metadata should be used. If a logical
+%           vector, must have one element per variable in the state vector
+%           and exactly one true element.
+%
+%   Outputs:
+%       metadata (matrix [nMembers x ?]): The metadata for the selected
+%           ensemble members along the indicated ensemble dimension. Will
+%           have one row per selected ensemble member.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.members')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:members";
 dash.assert.scalarObj(obj, header);
 if obj.nMembers == 0
-    noMembersError;
+    noMembersError(obj, header);
 end
 
 % Check the dimension
@@ -33,15 +56,13 @@ dimension = dash.assert.strflag(dimension, 'dimension', header);
 if exist('variable','var') && ~isempty(variable)
     v = obj.variableIndices(variable, false, header);
     if numel(v)>1
-        tooManyVariablesError;
+        tooManyVariablesError(obj, v, header);
     end
 
     % Get the coupling set for the variable, require it uses the ensemble dimension
     s = obj.couplingSet(v);
-    [isdim, d] = ismember(dimension, obj.ensembleDimensions{s});
-    if ~isdim
-        notEnsembleDimensionError;
-    end
+    list = sprintf('ensemble dimension of the "%s" variable', obj.variables_(v));
+    d = dash.assert.strsInList(dimension, obj.ensembleDimensions{s}, 'dimension', list, header);
 
 % If there is no variable, search for one that uses the dimension
 else
@@ -54,7 +75,7 @@ else
 
     % Throw error if there is no variable
     if ~isdim
-        noSetError;
+        noVariableError(obj, dimension, header);
     end
 end
 
@@ -70,4 +91,25 @@ end
 % Get the metadata
 metadata = obj.ensemble{s}{d}(members, :);
 
+end
+
+%% Error messages
+function[] = noMembersError(obj, header)
+id = sprintf('%s:noEnsembleMembers', header);
+ME = MException(id, ['Cannot return ensemble member metadata for %s because the ',...
+    'ensemble does not have any members.'], obj.name);
+throwAsCaller(ME);
+end
+function[] = tooManyVariablesError(obj, v, header)
+variables = obj.variables_(v);
+variables = dash.string.list(variables);
+id = sprintf('%s:tooManyVariables', header);
+ME = MException(id, ['You must list exactly 1 variable, but you have specified ',...
+    '%.f variables (%s).'], numel(v), variables);
+throwAsCaller(ME);
+end
+function[] = noVariableError(obj, dimension, header)
+id = sprintf('%s:noVariableUsesDimension', header);
+ME = MException(id, 'None of the variables in %s use "%s" as an ensemble dimension', obj.name, dimension);
+throwAsCaller(ME);
 end

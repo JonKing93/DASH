@@ -42,12 +42,42 @@ function[metadata] = rows(obj, dimension, rows, cellOutput)
 %   have compatible metadata. If true, metadata is always returned as a
 %   cell vector, even when variables have compatiable metadata.
 % ----------
+%   Inputs:
+%       dimension (string scalar | 0): Indicates the dimension to return
+%           metadata for. The dimension must be a state dimension of at
+%           least one of the variables in the state vector. If 0, returns
+%           the names of variables at the specified rows.
+%       rows (-1 | vector, linear indices | logical vector): Indicates
+%           which state vector rows to return metadata at. If -1, selects
+%           all rows in the state vector. If a logical vector, must match
+%           the length of the state vector.
+%       cellOutput (string scalar | scalar logical): Indicates whether
+%           metadata should always be returned as a cell.
+%           ["default"|"d"|false]: When the metadata for different
+%               variables is compatible and can be concatenated, returns the
+%               metadata directly as a matrix.
+%           ["cell"|"c"|true]: Metadata is always returned as a cell vector
+%
+%   Outputs:
+%       metadata (matrix [nRows x ?] | cell vector [nRows] {metadata vector}):
+%           The metadata at the selected rows. Has one row per selected
+%           row. If the metadata values for different variables are
+%           compatible (and cellOutput is not set to true), returns the
+%           metadata directly as a matrix. Otherwise, returns metadata as a
+%           cell vector. Each element of the cell vector holds the metadata
+%           for the associated row. If the row implements a mean over the
+%           state dimension, the metadata for elements used in the mean is
+%           organized along the third dimension. If a row is not associated
+%           with the state dimension, returns NaN, NaT, or <missing>
+%           metadata as appropriate.
+%
+% <a href="matlab:dash.doc('ensembleMetadata.rows')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:rows";
 dash.assert.scalarObj(obj, header);
 if obj.nVariables==0
-    noRowsError;
+    noRowsError(obj, header);
 end
 
 % Check dimension. Require at least 1 variable to use it as a state dimension
@@ -61,7 +91,7 @@ if ~isequal(dimension, 0)
         end
     end
     if ~isState
-        notStateDimensionError;
+        noVariableError(obj, dimension, header);
     end
 end
 
@@ -162,4 +192,17 @@ if ~cellOutput
     end
 end
 
+end
+
+%% Error messages
+function[] = noRowsError(obj, header)
+id = sprintf('%s:noRows', header);
+ME = MException(id, ['Cannot return row metadata for %s because the ',...
+    'state vector does not have any rows.'], obj.name);
+throwAsCaller(ME);
+end
+function[] = noVariableError(obj, dimension, header)
+id = sprintf('%s:noVariableUsesDimension', header);
+ME = MException(id, 'None of the variables in %s use "%s" as a state dimension', obj.name, dimension);
+throwAsCaller(ME);
 end
