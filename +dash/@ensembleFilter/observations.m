@@ -63,7 +63,7 @@ try
     end
     
     % Validate observations have R uncertainties
-    obj.validateR;
+    obj.assertValidR;
 
 % Minimize error stacks
 catch ME
