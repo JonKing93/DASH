@@ -99,7 +99,7 @@ end
 
 % Get the variable indices
 v = obj.variableIndices(variable, "used", header);
-if numel(v)>1
+if numel(v)~=1
     tooManyVariablesError(v, header);
 end
 
@@ -127,7 +127,7 @@ function[] = tooManyVariablesError(v, header)
 variables = obj.variables_(v);
 variables = dash.string.list(variables);
 id = sprintf('%s:tooManyVariables', header);
-ME = MException(id, ['You can only list a single variable, but you have specified ',...
+ME = MException(id, ['You must list exactly 1 variable, but you have specified ',...
     '%.f variables (%s).'], numel(v), variables);
 throwAsCaller(ME);
 end
