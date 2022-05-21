@@ -1,66 +1,59 @@
-function[out] = run(pf)
-%% Runs a particleFilter object
+function[output] = run(obj)
+%% particleFilter.run  Runs an offline particle filter assimilation
+% ----------
+%   output = obj.run
+%   Runs the offline particle filter assimilation. Requires the particle
+%   filter object to have observations, estimates, uncertainties, and a
+%   prior. The following is a brief sketch of the particle filter
+%   algorithm:
+%
+%   For a given assimilated time step, the method begins by calculating the
+%   innovations between the observations and estimates. The innovatios are
+%   then weighted by the R uncertainties. The method then computes the sum
+%   of the weighted innovations for each ensemble member. The result is the
+%   sum of squared errors (SSE) for each ensemble member - the SSE values
+%   measure the similarity of each ensemble member to the observations.
+%   Next, the method applies a weighting scheme to the SSE values to
+%   determine a weight for each ensemble member (the weight for each 
+%   particle). Finally, the method uses these particle weights to take a
+%   weighted mean across the ensemble. The final weighted mean is the
+%   updated state vector for that time step.
+% ----------
+%   Outputs:
+%       output (scalar struct): Output produced by the particle filter
+%           .A  (numeric matrix [nState x nTime]): The updated state vector
+%               for each assimilated time step. A numeric matrix, each
+%               column holds the state vector for an assimilated time step.
+%           .weights (numeric matrix [nMembers x nTime]): The particle 
+%               weights of each ensemble member for each assimilated time 
+%               step. A numeric matrix. Each row holds the weights of a
+%               specific ensemble member, and each column holds the weights
+%               for an assimilated time step.
+%
+% <a href="matlab:dash.doc('particleFilter.run')">Documentation Page</a>
 
-% Check for essential inputs. Set defaults
-pf = pf.finalize('run a particle filter');
-update = ~isempty(pf.X);
+% Setup
+header = "DASH:particleFilter:run";
+dash.assert.scalarObj(obj, header);
 
-% Preallocate
-out = struct();
-sse = NaN(pf.nEns, pf.nTime);
-if update
-    out.A = NaN(pf.nState, pf.nTime);
+% Require a finalized filter
+if ~obj.isfinalized
+    obj = obj.finalize;
 end
 
-% If using R variances, get the innovation for each prior
-if ~pf.Rcov
-    pf.Y = permute(pf.Y, [1 3 2]);
-    for p = 1:pf.nPrior
-        t = find(pf.whichPrior==p);
-        innov = pf.Y(:,:,t) - pf.Ye(:,:,p);
-        
-        % Vectorize the sum of squared errors
-        R = pf.R(:,pf.whichR(t));
-        R = permute(R, [1 3 2]);
-        sse(:,t) = squeeze( sum( (1./R).*(innov).^2, 1, 'omitnan') );
-    end
-    
-% For covariances, start by finding the unique R covariances
-else
-    sites = ~isnan(pf.Y)';
-    Rcovs = [sites, pf.whichR];
-    [Rcovs, ~, whichR] = unique(Rcovs, 'rows');
-    
-    % Invert each covariance
-    nCovs = size(Rcovs, 1);
-    for c = 1:nCovs
-        times = find(whichR==c);
-        s = sites(times(1),:);
-        Rinv = pf.Rcovariance(times(1), s)^-1;
-        
-        % Get the innovations for each time step
-        for k = 1:numel(times)
-            t = times(k);
-            p = pf.whichPrior(t);
-            innov = pf.Y(s,t) - pf.Ye(s,:,p);
-            
-            % Get the SSE for each ensemble member
-            for m = 1:pf.nEns
-                sse(m,t) = innov(:,m)' * Rinv * innov(:,m);
-            end
-        end
-    end
-end
-            
-% Compute the particle filter weights
-out.weights = pf.weights(sse);
+% Initialize output
+output = struct;
+output.A = NaN([obj.nState, obj.nTime], obj.priorPrecision);
 
-% Optionally update the prior
-if update
-    for p = 1:pf.nPrior
-        t = find(pf.whichPrior==p);
-        out.A(:,t) = pf.X(:,:,p) * out.weights(:, t);
-    end
+% Compute the particle weights
+weights = obj.computeWeights;
+output.weights = weights;
+
+% Update the state vector
+for p = 1:obj.nPrior
+    t = find(obj.whichPrior == p);
+    X = obj.loadPrior(p);
+    output.A(:,t) = X * weights(:,t);
 end
 
 end
