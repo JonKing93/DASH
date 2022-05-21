@@ -1,7 +1,7 @@
 function[obj] = observations(obj, Y, header)
-%% ensembleFilter.observations  Provide the observations for a filter
+%% dash.ensembleFilter.observations  Provide the observations for a filter
 % ----------
-%   obj = obj.observations(Y, header)
+%   obj = obj.observations(Y)
 %   Provides the proxy observations to an assimilation filter. The observations
 %   must be a numeric matrix. Each row is the observations for a particular
 %   site, and each column holds the observations is a particular time step.
@@ -14,6 +14,15 @@ function[obj] = observations(obj, Y, header)
 %   sites. If the user previously provided whichR or whichPrior arguments,
 %   then the number of time steps must match the current number of time
 %   steps.
+%
+%   Y = obj.observations('return')
+%   Returns the current observations for the assimilation filter.
+%
+%   obj = obj.observations('delete')
+%   Removes the current observations from the 
+%
+%   ... = obj.observations(..., header)
+%   Customize header in thrown error IDs
 % ----------
 %   Inputs:
 %       Y (numeric matrix [nSite x nTime]): The proxy observations to use
@@ -26,7 +35,7 @@ function[obj] = observations(obj, Y, header)
 %       obj (scalar ensembleFilter object): The ensembleFilter object with
 %           updated proxy observations
 %
-% <a href="matlab:dash.doc('ensembleFilter.observations')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.ensembleFilter.observations')">Documentation Page</a>
 
 % Default
 if ~exist('header','var')
