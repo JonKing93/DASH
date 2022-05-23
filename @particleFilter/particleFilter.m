@@ -89,6 +89,8 @@ classdef particleFilter < dash.ensembleFilter
     %   computeWeights  - Calculate the particle weights in each time step
     %   sse             - Calculate the sum of squared errors for each particle in each time step
     %
+    % 
+    %
     %
     % ==UTILITY METHODS==
     % Utility methods that help the class run. They do not implement error
