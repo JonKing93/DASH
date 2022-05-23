@@ -1,0 +1,34 @@
+function[kf] = variance(kf, tf)
+%% Specify whether to return the variance of a posterior ensemble. Default
+% is to return the variance.
+%
+% kf = kf.variance(tf)
+%
+% ----- Input -----
+%
+% tf: A scalar logical that indicates whether to return the variance of the
+%    posterior ensemble (true -- default) or not (false)
+%
+% ----- Outputs -----
+%
+% kf: The updated kalman filter object
+
+% Error check
+dash.assert.scalarType(tf, 'tf', 'logical', 'logical');
+
+% Check for an existing variance calculation
+name = dash.posteriorCalculation.variance.outputName;
+[hasvariance, k] = ismember(name, kf.Qname);
+
+% If returning variance and it doesn't exist, add to the calculation array
+if tf && ~hasvariance
+    kf.Q{end+1,1} = dash.posteriorCalculation.variance;
+    kf.Qname(end+1,1) = name;
+    
+% If removing variance and it exists, delete from the calculation array
+elseif ~tf && hasvariance
+    kf.Q(k,:) = [];
+    kf.Qname(k,:) = [];
+end
+
+end
