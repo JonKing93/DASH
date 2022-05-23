@@ -320,75 +320,19 @@ classdef stateVector
             % Header
             header = "DASH:stateVector";
 
-            % Parse inputs
-            nInputs = numel(varargin);
-            if nInputs > 2
-                dash.error.tooManyInputs;
-            elseif nInputs == 0
-                labels = "";
-            elseif nInputs==2
-                siz = varargin{1};
-                labels = varargin{2};
-
-            % Parse single input case
-            else
-                input = varargin{1};
-                if isnumeric(input)
-                    siz = input;
-                elseif dash.is.string(input)
-                    labels = input;
-                else
-                    id = sprintf('%s:invalidInput', header);
-                    error(id, 'The first input must either be a size vector or a set of labels.');
-                end
-            end
-
-            % Error check size
-            if exist('siz','var')
-                if ~isrow(siz) || numel(siz)<2
-                    id = sprintf('%s:invalidSizeVector',header);
-                    error(id, 'Size vector should be a row vector with at least 2 elements.');
-                end
-                dash.assert.integers(siz, 'Size vector', header);
-                if any(siz<0)
-                    bad = find(siz<0,1);
-                    id = sprintf('%s:negativeSize', header);
-                    error(id, ['Size vector cannot contain values less than 0, but element ',...
-                        '%.f (%.f) is negative.'], bad, siz(bad));
-                end
-                dash.assert.defined(siz, 1, 'Size vector', header);
-            end
-
-            % Default and error check labels
-            if ~exist('labels','var')
-                labels = strings(siz);
-            else
-                labels = dash.assert.string(labels, 'labels', header);
-
-                % Get default size
-                labelSize = size(labels);
-                if ~exist('siz','var')
-                    siz = labelSize;
-                end
-            end
+            % Parse the inputs
+            [siz, labels] = dash.parse.constructorInputs(varargin, header);
 
             % Initialize empty stateVectorVariable array
             variables = dash.stateVectorVariable;
             variables(1,:) = [];
             obj.variables_ = variables;
 
-            % Fill stateVector array
+            % Build stateVector array
             obj = repmat(obj, siz);
 
-            % Compare array size to labels
-            siz = size(obj);
-            if ~isequal(labelSize, siz)
-                id = sprintf('%s:differentLabelSize', header);
-                error(id, ['The size of the "labels" input (%s) is different than the size of the ',...
-                    'requested stateVector array (%s).'], dash.string.size(labelSize), dash.string.size(siz));
-            end
-
             % Apply labels
+            dash.assert.sameSize(labels, obj, 'the "labels" input', 'the requested stateVector array', header);
             labels = num2cell(labels);
             [obj.label_] = labels{:};
         end
