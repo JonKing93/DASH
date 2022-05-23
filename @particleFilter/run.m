@@ -66,7 +66,11 @@ returnSSE = dash.parse.nameValue(varargin, "sse", {false}, 0, header);
 
 % Initialize output
 output = struct;
-output.A = NaN([obj.nState, obj.nTime], obj.priorPrecision);
+try
+    output.A = NaN([obj.nState, obj.nTime], obj.priorPrecision);
+catch
+    outputTooLargeError(obj, header);
+end
 
 % Compute the particle weights. Optionally record SSE values
 [weights, sse] = obj.computeWeights;
@@ -82,4 +86,18 @@ for p = 1:obj.nPrior
     output.A(:,t) = X * weights(:,t);
 end
 
+end
+
+%% Error message
+function[] = outputTooLargeError(obj, header)
+siz = [obj.nState, obj.nTime];
+link = '<a href="matlab:doc matfile">matfile</a>';
+id = sprintf('%s:outputTooLarge', header);
+ME = MException(id, ['The output array for the updated state vector is too large to fit in ',...
+    'memory (Size: %s). Since the update for each state vector row is independent of all ',...
+    'the other rows, you may want to consider running the particle filter on ',...
+    'a few rows of the state vector at a time. The %s command may be useful ',...
+    'for saving/loading pieces of a state vector sequentially.'],...
+    dash.string.size(siz), link);
+throwAsCaller(ME);
 end

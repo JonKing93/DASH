@@ -44,6 +44,16 @@ classdef particleFilter < dash.ensembleFilter
     %     the computational expense of tasks that only require particle
     %     weights -- for example, testing a particle filter for degeneracy,
     %     or selecting ensemble members for use in an evolving prior.
+    %
+    %   Troubleshooting large state vectors:
+    %   Large state vector ensembles can overwhelm computer memory and may
+    %   prevent a particle filter assimilation from running. If this
+    %   occurs, it is useful to note that the update for each state vector
+    %   element is independent of all other state vector elements. Thus,
+    %   you can often circumvent memory issues by assimilating a portion of
+    %   the rows of the state vector, saving the results, and then
+    %   assimilating the remaining rows. The built-in "matfile" command can
+    %   be helpful for saving/loading pieces of large ensembles.
     % ----------
     % particleFilter Methods:
     %
