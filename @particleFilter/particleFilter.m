@@ -88,8 +88,13 @@ classdef particleFilter < dash.ensembleFilter
     %   bayesWeights    - Calculates particle weights using the classical Bayesian scheme
     %   bestNWeights    - Calculate weights that implement an average over the best N particles
     %
+    % Size Validation:
+    %   validateBestN   - Ensure that "Best N" weighting scheme is valid
+    %
+    % Tests:
+    %   tests           - Implement unit tests for the particleFilter class
+    %
     % <a href="matlab:dash.doc('particleFilter')">Documentation Page</a>
-    %   determining the differences between observations
 
     properties (SetAccess = private)
         weightType = 0;     % The weighting scheme: 0-Bayesian, 1-Best N particles
@@ -102,10 +107,10 @@ classdef particleFilter < dash.ensembleFilter
         varargout = label(obj, label);
 
         % Inputs
-        obj = observations(obj, Y);
-        obj = estimates(obj, Ye, whichPrior);
-        obj = prior(obj, X, whichPrior);
-        obj = uncertainties(obj, R, whichR)
+        varargout = observations(obj, Y);
+        varargout = estimates(obj, Ye, whichPrior);
+        varargout = prior(obj, X, whichPrior);
+        varargout = uncertainties(obj, R, whichR);
 
         % Select weighting scheme
         obj = weights(obj, type, varargin)
@@ -114,6 +119,9 @@ classdef particleFilter < dash.ensembleFilter
         sse = sse(obj);
         [weights, sse] = computeWeights(obj);
         output = run(obj, varargin);
+
+        % Validate sizes
+        obj = validateBestN(obj, type, name, header);
     end
 
     methods (Static)
