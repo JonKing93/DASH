@@ -17,7 +17,12 @@ function[siz, labels] = constructorInputs(inputs, header)
 %           object array.
 %       labels (string array): Labels for the objects in the array
 %
-% <a href="matlab:dash.doc('dash.parse.constructorInputs')">Documentation Page</a>   
+% <a href="matlab:dash.doc('dash.parse.constructorInputs')">Documentation Page</a>  
+
+% Default
+if ~exist('header','var')
+    header = "DASH:parse:constructorInputs";
+end
 
 % Parse inputs
 try
