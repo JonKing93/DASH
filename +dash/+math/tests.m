@@ -10,5 +10,6 @@ function[] = tests
 
 haversine;
 decompose;
+gaspariCohn2D;
 
 end
