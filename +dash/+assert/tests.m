@@ -25,6 +25,7 @@ scalarType;
 scalarObj;
 vectorTypeN;
 matrixTypeSize;
+sameSize;
 
 integers;
 positiveIntegers;

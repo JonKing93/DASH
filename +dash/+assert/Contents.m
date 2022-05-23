@@ -20,6 +20,7 @@
 %   scalarObj               - Throw error if method object is not scalar
 %   vectorTypeN             - Throw error if input is not a vector of required data type and length
 %   matrixTypeSize          - Throw error if input is not matrix of required data type and size
+%   sameSize                - Throw error if arrays are not the same size
 %
 % Numeric:
 %   integers                - Throw error if numeric array does not consist entirely of integers
