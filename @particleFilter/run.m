@@ -1,12 +1,13 @@
-function[output] = run(obj)
+function[output] = run(obj, varargin)
 %% particleFilter.run  Runs an offline particle filter assimilation
 % ----------
 %   output = obj.run
-%   Runs the offline particle filter assimilation. Requires the particle
-%   filter object to have observations, estimates, uncertainties, and a
-%   prior. The following is a brief sketch of the particle filter
-%   algorithm:
+%   Runs the offline particle filter assimilation. Returns the updated
+%   state vector and particle weights for each assimilated time step.
+%   Requires the particle filter object to have observations, estimates,
+%   uncertainties, and a prior.
 %
+%   The following is a brief sketch of the particle filter algorithm:
 %   For a given assimilated time step, the method begins by calculating the
 %   innovations between the observations and estimates. The innovatios are
 %   then weighted by the R uncertainties. The method then computes the sum
@@ -18,17 +19,36 @@ function[output] = run(obj)
 %   particle). Finally, the method uses these particle weights to take a
 %   weighted mean across the ensemble. The final weighted mean is the
 %   updated state vector for that time step.
+%
+%   output = obj.run(..., 'sse', returnSSE)
+%   output = obj.run(..., 'sse', "return"|"r"|true)
+%   output = obj.run(..., 'sse', "discard"|"d"|false)
+%   Indicate whether to include the sum of squared errors for each particle
+%   in the output. Default behavior is to not include the SSE values in the
+%   output. Use "return"|"r"|true to return these values.
 % ----------
+%   Inputs:
+%       returnSSE (string scalar | scalar logical): Indicates whether to
+%           return the sum of squared errors for each particle in the output.
+%           ["return"|"r"|true]: Returns the SSE values in the output
+%           ["discard"|"d"|false (default)]: Does not return SSE values
+%
 %   Outputs:
-%       output (scalar struct): Output produced by the particle filter
+%       output (scalar struct): Output produced by the particle filter.
+%           May include the following fields:
 %           .A  (numeric matrix [nState x nTime]): The updated state vector
 %               for each assimilated time step. A numeric matrix, each
-%               column holds the state vector for an assimilated time step.
+%               column holds the updated state vector for an assimilated time step.
 %           .weights (numeric matrix [nMembers x nTime]): The particle 
 %               weights of each ensemble member for each assimilated time 
 %               step. A numeric matrix. Each row holds the weights of a
 %               specific ensemble member, and each column holds the weights
 %               for an assimilated time step.
+%           .sse (numeric matrix [nMembers x nTime]): The SSE values for a
+%               particle filter. Each row holds the weights for a particular
+%               ensemble member. Each column holds weights for an assimilation
+%               time step. Lower values indicate greater similarity to the proxy
+%               observations.
 %
 % <a href="matlab:dash.doc('particleFilter.run')">Documentation Page</a>
 
@@ -41,13 +61,19 @@ if ~obj.isfinalized
     obj = obj.finalize;
 end
 
+% Parse the SSE option
+returnSSE = dash.parse.nameValue(varargin, "sse", {false}, 0, header);
+
 % Initialize output
 output = struct;
 output.A = NaN([obj.nState, obj.nTime], obj.priorPrecision);
 
-% Compute the particle weights
-weights = obj.computeWeights;
+% Compute the particle weights. Optionally record SSE values
+[weights, sse] = obj.computeWeights;
 output.weights = weights;
+if returnSSE
+    output.sse = sse;
+end
 
 % Update the state vector
 for p = 1:obj.nPrior
