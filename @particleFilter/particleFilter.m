@@ -134,6 +134,58 @@ classdef particleFilter < dash.ensembleFilter
     % Constructor
     methods
         function[obj] = particleFilter(varargin)
+            %% particleFilter.particleFilter  Create a new particleFilter object
+            % ----------
+            %   obj = particleFilter
+            %   Initializes a new particle filter object. The new object
+            %   does not have observations, estimates, uncertainties, or a
+            %   prior. The object uses a Bayesian particle weighting
+            %   scheme.
+            %
+            %   obj = particleFilter(label)
+            %   obj = particleFilter(labels)
+            %   Also applies a label to the particle filter object. If
+            %   unset, the label is set to an empty string. If labels is a
+            %   string array, returns an array of particle filter objects
+            %   and applies the corresponding label to each individual
+            %   particle filter.
+            %
+            %   obj = particleFilter(size)
+            %   obj = particleFilter(size, labels)
+            %   Initializes an array of particle filter objects of the
+            %   indicated size. Optionally also applies a label to each
+            %   object in the array. If applying labels, the size of the
+            %   "labels" array must match the requested size of the
+            %   particleFilter array.
+            % ----------
+            %   Inputs:
+            %       labels (string array | cellstring array | char row vector): Labels
+            %           for the elements of a particleFilter array. If the only input,
+            %           the output array will have the same size as labels. If combined
+            %           with the "size input, must be the size of the requested array.
+            %       size (row vector, positive integers): Indicates the size of the
+            %           requested array of particleFilter objects. Must have at least 2
+            %           elements, and all elements must be non-negative integers.
+            %
+            %   Outputs:
+            %       obj (scalar particleFilter object | particleFilter array): A new
+            %           particleFilter object or an array of particleFilter objects.
+            %
+            % <a href="matlab:dash.doc('particleFilter.particleFilter')">Documentation Page</a>
+            
+            % Header
+            header = "DASH:particleFilter";
 
+            % Parse inputs
+            [siz, labels] = dash.parse.constructorInputs(varargin, header);
+
+            % Build particle filter array
+            obj = repmat(obj, siz);
+
+            % Apply labels
+            dash.assert.sameSize(labels, obj, 'the "labels" input', 'the requested particleFilter array', header);
+            labels = num2cell(labels);
+            [obj.label_] = labels{:};
+        end
+    end
 end
-
