@@ -10,6 +10,9 @@
 %   stringsOrIndices        - Parse inputs that are either a list of strings, or a vector of indices
 %   switches                - Parse inputs that are logical, numeric, or string switches
 %
+% Object constructors:
+%   constructorInputs       - Parse inputs for an object constructor that accepts size and label parameters
+%
 % Unit tests:
 %   tests                   - Unit tests for the dash.parse package
 %

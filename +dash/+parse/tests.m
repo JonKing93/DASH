@@ -16,6 +16,8 @@ inputOrCell;
 stringsOrIndices;
 switches;
 
+constructorInputs;
+
 end
 
 function[] = vararginFlags
