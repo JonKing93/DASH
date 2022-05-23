@@ -9,5 +9,6 @@ function[] = tests
 % <a href="matlab:dash.doc('dash.math.tests')">Documentation Page</a>
 
 haversine;
+decompose;
 
 end
