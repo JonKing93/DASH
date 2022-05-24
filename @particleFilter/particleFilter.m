@@ -96,6 +96,9 @@ classdef particleFilter < dash.ensembleFilter
     % Utility methods that help the class run. They do not implement error
     % checking and are not intended for users.
     %
+    % Name:
+    %   name            - Returns a name for use in error messages
+    %
     % Weighting Schemes:
     %   bayesWeights    - Calculates particle weights using the classical Bayesian scheme
     %   bestNWeights    - Calculate weights that implement an average over the best N particles
@@ -117,6 +120,7 @@ classdef particleFilter < dash.ensembleFilter
 
         % Label
         varargout = label(obj, label);
+        name = name(obj);
 
         % Inputs
         varargout = observations(obj, Y);
