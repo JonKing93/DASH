@@ -1,5 +1,26 @@
 classdef kalmanFilter < dash.ensembleFilter
 
+    properties (SetAccess = private)
+
+        % Inflation
+        isinflated = false;
+        inflationFactor = [];
+        whichInflate = [];
+
+        % Localization
+        islocalized = false;
+        wloc = [];
+        yloc = [];
+        whichLoc = [];
+
+        % Blending
+        isblended = false;
+        blendC = [];
+        blendY = [];
+        blendWeights = [];
+
+        % Set covariance
+        
 
 
 
