@@ -28,6 +28,14 @@ function[varargout] = uncertainties(obj, R, whichR)
 %   assimilation time steps. This syntax allows the number of sets of R
 %   values to differ from the number of time steps.
 %
+%   obj = obj.uncertainties(R, whichR, type)
+%   obj = obj.uncertainties(R, whichR, "c"|"cov"|"covariance"|true)
+%   obj = obj.uncertainties(R, whichR, "v"|"var"|"variance"|false)
+%   Indicate the type of uncertainties being provided to the particle
+%   filter. If "c"|"cov"|"covariance"|true, treats the input uncertainties
+%   as covariances. If "v"|"var"|"variance"|false, treats the uncertainties
+%   as variances.
+%
 %   [R, whichR] = obj.uncertainties
 %   [R, whichR] = obj.uncertainties
 %   Returns the R uncertainties for the particle filter object, and
@@ -96,8 +104,10 @@ if ~exist('R','var')
     inputs = {};
 elseif ~exist('whichR','var')
     inputs = {R};
-else
+elseif ~exist('type','var')
     inputs = {R, whichR};
+else
+    inputs = {R, whichR, type};
 end
 
 % Parse the uncertainties
