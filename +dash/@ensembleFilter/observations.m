@@ -1,5 +1,5 @@
 function[outputs, type] = observations(obj, header, Y)
-%% dash.ensembleFilter.observations  Provide the observations for a filter object
+%% dash.ensembleFilter.observations  Process the observations for a filter object
 % ----------
 %   [outputs, type] = obj.observations(header, ...)
 %   Processes options for observations for a filter object. Returns the

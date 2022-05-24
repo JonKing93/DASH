@@ -1,13 +1,45 @@
 function[outputs, type] = estimates(obj, header, Ye, whichPrior)
-%% 
+%% dash.ensembleFilter.estimates  Process the estimates for a filter object
+% ----------
+%   [outputs, type] = obj.estimates(header, ...)
+%   Processes options for estimates for a filter. Returns the outputs for
+%   the operations collected in a cell. Also returns a string indicate the
+%   type of operation performed.
+%
+%   [estCell, 'return'] = obj.estimates(header)
+%   Returns the current estimates and whichPrior.
+%
+%   [objCell, 'set'] = obj.estimates(header, Ye)
+%   [objCell, 'set'] = obj.estimates(header, Ye, whichPrior)
+%   Error checks the input estimates and whichPrior and overwrites any
+%   previously existing estimates. Returns the updated filter object.
+%
+%   [objCell, 'delete'] = obj.estimates('delete')
+%   Deletes any current observations and returns the updated filter object.
+% ----------
+%   Inputs:
+%       header (string scalar): Header for thrown error IDs
+%       Ye (numeric array [nSite x nMembers x nPrior]): Estimates for the filter
+%       whichPrior (vector, linear indices [nTime]): Indicates which prior
+%           (set of estimates) to use in each time step.
+%       
+%   Outputs:
+%       outputs (cell scalar): Varargout-style outputs
+%       type ('return'|'set'|'delete'): Indicates the type of operation
+%       estCell (cell vector [2] {Y, whichPrior}): The current estimates and
+%           whichPrior in a cell
+%       objCell (cell scalar {obj}): The updated object in a cell
+% 
+% <a href="matlab:dash.doc('dash.ensembleFilter.estimates')">Documentation Page</a>
 
-% Default
-if ~exist('header','var') || isempty(header)
-    header = "DASH:ensembleFilter:estimates";
-end
-
-% Return estimates
+% Setup
 try
+    if ~exist('header','var') || isempty(header)
+        header = "DASH:ensembleFilter:estimates";
+    end
+    dash.assert.scalarObj(obj, header);
+
+    % Return estimates
     if ~exist('Ye','var')
         outputs = {obj.Ye, obj.whichPrior};
         type = 'return';
@@ -90,4 +122,11 @@ catch ME
     throwAsCaller(ME);
 end
 
+end
+
+% Error messages
+function[] = emptyEstimatesError(obj, header)
+id = sprintf('%s:emptyEstimates', header);
+ME = MException(id, 'The estimates for %s cannot be empty.', obj.name);
+throwAsCaller(ME);
 end
