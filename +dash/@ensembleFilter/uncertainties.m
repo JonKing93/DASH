@@ -77,7 +77,7 @@ try
     
         % Don't allow empty R
         if isempty(R)
-            emptyUncertaintiesError;
+            emptyUncertaintiesError(obj, header);
         end
 
         % Get sizes
@@ -172,7 +172,11 @@ try
 
 % Minimize error stack
 catch ME
-    throwAsCaller(ME);
+    if startsWith(ME.identifier, "DASH")
+        throwAsCaller(ME);
+    else
+        rethrow(ME);
+    end
 end
 
 end

@@ -76,7 +76,7 @@ try
 
         % Don't allow empty estimates
         if isempty(Ye)
-            emptyEstimatesError;
+            emptyEstimatesError(obj, header);
         end
 
         % Get sizes, optionally set sizes
@@ -119,7 +119,11 @@ try
 
 % Minimize error stack
 catch ME
-    throwAsCaller(ME);
+    if startsWith(ME.identifier, "DASH")
+        throwAsCaller(ME);
+    else
+        rethrow(ME);
+    end
 end
 
 end

@@ -55,7 +55,7 @@ try
     % Set observations matrix. Don't allow empty observations
     else
         if isempty(Y)
-            emptyObservationsError;
+            emptyObservationsError(obj, header);
         end
 
         % Do initial error checks
@@ -91,7 +91,11 @@ try
     
 % Minimize error stacks
 catch ME
-    throwAsCaller(ME);
+    if startsWith(ME.identifier, "DASH")
+        throwAsCaller(ME);
+    else
+        rethrow(ME);
+    end
 end
 
 end
