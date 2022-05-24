@@ -1,6 +1,36 @@
 classdef (Abstract) ensembleFilter
     %% ensembleFilter  Implement common utilities for ensemble-based data assimilation filters
     % ----------
+    %   The ensembleFilter class implements utilities that are used by both
+    %   the Kalman Filter, and the particle filter. The primary purpose of
+    %   this class is to parse and error check the essential data inputs to
+    %   these filters. Specifically, the observations, uncertainties,
+    %   estimates, and prior. The class also includes a utilities for
+    %   loading specific priors or R covariances, and also for checking that
+    %   a filter object has the inputs required to run an algorithm
+    % ----------
+    % ensembleFilter methods:
+    %   
+    % General:
+    %   label       - Set or return a label for the filter
+    %   name        - Return a name for use in error messages
+    %   finalize    - Ensure that a filter object has the required inputs to run an algorithm
+    %
+    % Inputs:
+    %   observations    - Parse and process observations for a filter
+    %   prior           - Parse and process priors for a filter
+    %   estimates       - Parse and process estimates for a filter
+    %   uncertainties   - Parse and process uncertainties for a filter
+    %
+    % Error checking:
+    %   parseWhich      - Processes whichR and whichPrior inputs
+    %   assertValidR    - Ensures that observations do not have NaN uncertainties
+    %
+    % Query:
+    %   Rcovariance     - Returns an R covariance matrix for queried time steps and sites
+    %   loadPrior       - Loads a prior from an evolving set
+    %
+    % <a href="matlab:dash.doc('dash.ensembleFilter')">Documentation Page</a>
 
     properties (SetAccess = protected)
         
