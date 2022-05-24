@@ -20,7 +20,7 @@ elseif dash.is.strflag(R) && strcmpi(R, 'delete')
     obj.R = [];
     obj.nR = 0;
     obj.whichR = [];
-    obj.Rtype = [];
+    obj.Rtype = NaN;
     if isempty(obj.Y) && isempty(obj.Ye)
         obj.nSite = 0;
     end
