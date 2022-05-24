@@ -117,7 +117,7 @@ throwAsCaller(ME);
 end
 function[] = notNumericError(obj, header)
 id = sprintf('%s:ensembleNotNumeric', header);
-ME = MException(id, ['The data field in the ensemble file:\n\t%s\nis not numeric. ',...
+ME = MException(id, ['The data field in the ensemble file:\n\t%s\nis neither a "single" nor a "double" data type.',...
     'The file may not be a valid .ens file, or may have been altered.'], obj.file);
 throwAsCaller(ME);
 end

@@ -103,9 +103,6 @@ else
     obj.nMembers = nMembers;
     obj.nPrior = nPrior;
 
-
-    %% Error check whichPrior
-
     % Note if whichPrior is already set by the estimates
     whichIsSet = false;
     if ~isempty(obj.Ye) && ~isempty(obj.whichPrior)
@@ -118,57 +115,12 @@ else
         timeIsSet = false;
     end
 
-    % User did not provide whichPrior. If already set by prior, use
-    % existing value. Otherwise if evolving, set time when unset. If set,
-    % require one prior per time step
-    if isempty(whichPrior)
-        if whichIsSet
-            whichPrior = obj.whichPrior;
-        elseif obj.nPrior > 1
-            if ~timeIsSet
-                obj.nTime = obj.nPrior;
-            end
-            if obj.nPrior ~= obj.nTime
-                wrongSizeError;
-            end
-            whichPrior = (1:obj.nTime)';
-        end
+    % Error check and process whichPrior
+    obj = obj.processWhich(whichPrior, 'whichPrior', obj.nPrior, 'priors',...
+                                            timeIsSet, whichIsSet, header);
 
-    % Parse user-provided whichPrior. If already set by the prior, require
-    % identical values
-    elseif whichIsSet
-        if isrow(whichPrior)
-            whichPrior = whichPrior';
-        end
-        if ~isequal(obj.whichPrior, whichPrior)
-            differentWhichError;
-        end
-
-    % Otherwise, user values can set whichPrior. If time is set, require
-    % one element per time step. If unset and evolving, set nTime to the
-    % number of priors
-    else
-        nRequired = [];
-        if timeIsSet
-            nRequired = obj.nTime;
-        elseif obj.nPrior > 1
-            obj.nTime = numel(whichPrior);
-        end
-        dash.assert.vectorTypeN(whichPrior, 'numeric', nRequired, 'whichPrior', header);
-        linearMax = 'the number of priors';
-        dash.assert.indices(whichPrior, obj.nPrior, 'whichPrior', [], linearMax, header);
-    end
-
-
-    %% Save and update
-
-    % Save
+    % Save and build output
     obj.X = X;
-    if obj.nPrior > 1
-        obj.whichPrior = whichPrior(:);
-    end
-
-    % Collect outputs
     outputs = {obj};
     type = 'set';
 end

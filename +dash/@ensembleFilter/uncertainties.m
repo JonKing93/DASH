@@ -39,9 +39,6 @@ else
     end
     [nRows, nCols, nPages] = size(R, 1:3);
 
-
-    %% Initial error checking
-
     % Detect variance vs covariance
     if ~ismatrix(R)
         iscovariance = true;
@@ -78,44 +75,14 @@ else
     end
     dash.assert.defined(R, 2, name, header);
 
-
-    %% Error check whichR
-
     % Note whether allowed to set nTime
     timeIsSet = true;
     if isempty(obj.Y) && isempty(obj.whichPrior)
         timeIsSet = false;
     end
 
-    % Unspecified whichR. Take no actions for static R. If evolving,
-    % set time when unset. If set, require one set of R values per time step
-    if isempty(whichR)
-        if nR > 1
-            if ~timeIsSet
-                obj.nTime = nR;
-            end
-            if nR ~= obj.nTime
-                wrongSizeError;
-            end
-            whichR = (1:obj.nTime)';
-        end
-
-    % Parse user whichR. If time is set, require one element per time step.
-    % If unset and evolving, set nTime to the number of whichR
-    else
-        nRequired = [];
-        if timeIsSet
-            nRequired = obj.nTime;
-        elseif nR > 1
-            obj.nTime = numel(whichR);
-        end
-        dash.assert.vectorTypeN(whichR, 'numeric', nRequired, 'whichR', header);
-        linearMax = sprintf('the number of sets of %s', name);
-        dash.assert.indices(whichR, nR, 'whichR', [], linearMax, header);
-    end
-
-
-    %% Additional error checking. Save values
+    % Error check and process whichR
+    obj = obj.processWhich(whichR, 'whichR', nR, name, timeIsSet, false, header);
 
     % Only allow positive variances
     if ~iscovariance
@@ -144,14 +111,9 @@ else
         end
     end
 
-    % Save uncertainties. Note type. Only record whichR if evolving
+    % Save, note type, build output
     obj.R = R;
     obj.Rtype = double(iscovariance);
-    if nR > 1
-        obj.whichR = whichR(:);
-    end
-
-    % Collect output
     outputs = {obj};
     type = 'set';
 end
