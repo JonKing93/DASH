@@ -79,16 +79,62 @@ if returnSSE
     output.sse = sse;
 end
 
-% Update the state vector
+% Get the time steps associated with each prior
 for p = 1:obj.nPrior
     t = find(obj.whichPrior == p);
-    X = obj.loadPrior(p);
+
+    % Load the prior, informative error if failed to load
+    try
+        X = obj.loadPrior(p);
+    catch cause
+        priorFailedError(obj, p, cause, header);
+    end
+
+    % Update the state vector
     output.A(:,t) = X * weights(:,t);
 end
 
 end
 
 %% Error message
+function[] = priorFailedError(obj, p, cause, header)
+
+% Too large to fit in memory
+if strcmp(cause, "DASH:ensemble:load:arrayTooLarge")
+    if p == 1
+        name = 'the prior';
+    else
+        name = sprintf('prior %.f', p);
+    end
+    link = '<a href="matlab:doc matfile">matfile</a>';
+    id = sprintf('%s:arrayTooLarge', header);
+    ME = MException(id, ['Cannot run %s because %s is too large ',...
+        'to load into memory. It''s useful noting that the updates for each state ',...
+        'vector element are independent of all the other state vector elements. Thus, ',...
+        'you can often circumvent memory issues by running the particle filter on ',...
+        'smaller portions of the state vector one at a time. The built-in %s command can be ',...
+        'particularly helpful for saving/loading pieces of large arrays sequentially.'],...
+        obj.name, name, link);
+    throwAsCaller(ME);
+
+% Other DASH errors - likely an issue with the ensemble's matfile
+elseif startsWith(cause.identifier, 'DASH')
+    if obj.nPrior == 1
+        name = 'the prior';
+    else
+        name = sprintf('prior %.f', p);
+    end
+    id = sprintf('%s:priorFailed', header);
+    ME = MException(id, 'Cannot run %s because %s failed to load.', obj.name, name);
+    ME = addCause(ME, cause);
+    throwAsCaller(ME);
+
+% Anything else is an true error, pass it along
+else
+    rethrow(cause);
+end
+
+end
 function[] = outputTooLargeError(obj, header)
 siz = [obj.nState, obj.nTime];
 link = '<a href="matlab:doc matfile">matfile</a>';
