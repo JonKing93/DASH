@@ -29,7 +29,7 @@ dash.assert.scalarObj(obj, header);
 
 % Require observations, estimates, uncertainties (but not prior)
 if ~obj.isfinalized
-    obj = obj.finalize(1);
+    obj = obj.finalize(false, 'computing particle weights', header);
 end
 
 % Compute the sum of squared errors

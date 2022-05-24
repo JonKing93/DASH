@@ -31,7 +31,7 @@ dash.assert.scalarObj(obj, header);
 
 % Require observations, estimates, uncertainties (but not prior)
 if ~obj.isfinalized
-    obj = obj.finalize(1);
+    obj = obj.finalize(false, 'computing particle SSEs', header);
 end
 
 % Preallocate sum of squared errors
@@ -72,7 +72,7 @@ else
         s = sites(t1, :);
 
         % Invert the covariance matrix
-        Rinv = obj.R(t1, s)^-1;
+        Rinv = obj.R(s,s,t1) ^ -1;
 
         % For each time step, get the innovations at all the sites
         for k = 1:numel(times)

@@ -58,7 +58,7 @@ dash.assert.scalarObj(obj, header);
 
 % Require a finalized filter
 if ~obj.isfinalized
-    obj = obj.finalize;
+    obj = obj.finalize(true, 'running a particle filter', header);
 end
 
 % Parse the SSE option

@@ -7,6 +7,7 @@ classdef (Abstract) ensembleFilter
         %% General
 
         label_;             % A label for the filter
+        isfinalized = 0;    % Indicates finalization status: 0-Not finalized, 1-Finalized excluding prior, 2-Finalized including prior
 
         %% Sizes
 
