@@ -2,7 +2,7 @@ classdef (Abstract) ensembleFilter
     %% ensembleFilter  Implement common utilities for ensemble-based data assimilation filters
     % ----------
 
-    properties %(SetAccess = protected)
+    properties (SetAccess = protected)
         
         %% General
 
@@ -37,9 +37,9 @@ classdef (Abstract) ensembleFilter
 
         % Essential inputs
         [outputs, type] = observations(obj, header, Y);
-        obj = prior(obj, X, whichPrior);
-        obj = estimates(obj, Ye, whichPrior);
-        obj = uncertainties(obj, R, whichR, Rtype)
+        [outputs, type] = prior(obj, header, X, whichPrior);
+        [outputs, type] = estimates(obj, header, Ye, whichPrior);
+        [outputs, type] = uncertainties(obj, header, R, whichR)
         
     end
 
