@@ -1,5 +1,5 @@
 function[varargout] = label(obj, label)
-%% ensembleFilter.label  Return or set the label of an filter object
+%% dash.ensembleFilter.label  Return or set the label of an filter object
 % ----------
 %   label = obj.label
 %   Returns the label of the current filter.
@@ -14,7 +14,7 @@ function[varargout] = label(obj, label)
 %       label (string scalar): The current label of the filter
 %       obj (scalar ensembleFilter object): The filter with an updated label.
 %
-% <a href="matlab:dash.doc('ensembleFilter.label')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.ensembleFilter.label')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleFilter:label";
