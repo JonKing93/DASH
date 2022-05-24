@@ -17,9 +17,12 @@
 % Size and Data Type:
 %   type                    - Throw error if input is not required type
 %   scalarType              - Throw error if input is not a scalar of a required data type
-%   scalarObj               - Throw error if method object is not scalar
 %   vectorTypeN             - Throw error if input is not a vector of required data type and length
 %   matrixTypeSize          - Throw error if input is not matrix of required data type and size
+%   blockTypeSize           - Throw error if input is not a 3D array of required data type and size
+%
+% Misc Size:
+%   scalarObj               - Throw error if method object is not scalar
 %   sameSize                - Throw error if arrays are not the same size
 %
 % Numeric:

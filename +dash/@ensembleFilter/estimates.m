@@ -58,7 +58,7 @@ try
         % Error check type and size. Require well defined values
         name = 'Observation estimates (Ye)';
         siz = [obj.nSite, obj.nMembers, obj.nPrior];
-        dash.assert.blockTypeN(Ye, 'numeric', siz, name, header);
+        dash.assert.blockTypeSize(Ye, 'numeric', siz, name, header);
         dash.assert.defined(Ye, 1, name, header);
     
     

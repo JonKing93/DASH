@@ -70,11 +70,11 @@ else
     if iscovariance
         name = 'R covariances';
         siz = [obj.nSite, obj.nSite, NaN];
-        dash.assert.blockTypeN(R, 'numeric', siz, name, header);
+        dash.assert.blockTypeSize(R, 'numeric', siz, name, header);
     else
         name = 'R variances';
         siz = [obj.nSite, NaN];
-        dash.assert.matrixTypeN(R, 'numeric', siz, name, header);
+        dash.assert.matrixTypeSize(R, 'numeric', siz, name, header);
     end
     dash.assert.defined(R, 2, name, header);
 

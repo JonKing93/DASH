@@ -22,9 +22,11 @@ strsInList;
 
 type;
 scalarType;
-scalarObj;
 vectorTypeN;
 matrixTypeSize;
+blockTypeSize;
+
+scalarObj;
 sameSize;
 
 integers;

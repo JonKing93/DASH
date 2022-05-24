@@ -47,7 +47,7 @@ else
     % Numeric array. Require 3D of correct size with well-defined values.
     % Get sizes
     if isnumeric(X)
-        dash.assert.blockTypeN(X, [], siz, 'X', header);
+        dash.assert.blockTypeSize(X, [], siz, 'X', header);
         dash.assert.defined(X, 2, 'X', header);
         [nState, nMembers, nPrior] = size(X, 1:3);
 
