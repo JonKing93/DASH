@@ -1,95 +1,67 @@
-function[obj] = observations(obj, Y, header)
+function[outputs, type] = observations(obj, header, Y)
 %% dash.ensembleFilter.observations  Provide the observations for a filter
 % ----------
-%   obj = obj.observations(Y)
-%   Provides the proxy observations to an assimilation filter. The observations
-%   must be a numeric matrix. Each row is the observations for a particular
-%   site, and each column holds the observations is a particular time step.
-%   Time steps without observations should use NaN values. Inf an complex
-%   values are not permitted. If Y is empty, deletes the current
-%   observations from the filter object.
-%
-%   If the user previously specified observation uncertainties or
-%   estimates, then the number of rows must match the current number of
-%   sites. If the user previously provided whichR or whichPrior arguments,
-%   then the number of time steps must match the current number of time
-%   steps.
-%
-%   Y = obj.observations('return')
-%   Returns the current observations for the assimilation filter.
-%
-%   obj = obj.observations('delete')
-%   Removes the current observations from the 
-%
-%   ... = obj.observations(..., header)
-%   Customize header in thrown error IDs
-% ----------
-%   Inputs:
-%       Y (numeric matrix [nSite x nTime]): The proxy observations to use
-%           in an assimilation filter. A numeric matrix with one row per
-%           proxy site, and one column per assimilated time steps. Use NaN
-%           for records that lack an observation in a particular time step.
-%       header (string scalar): Header for thrown error IDs.
-%
-%   Outputs:
-%       obj (scalar ensembleFilter object): The ensembleFilter object with
-%           updated proxy observations
-%
-% <a href="matlab:dash.doc('dash.ensembleFilter.observations')">Documentation Page</a>
 
 % Default
-if ~exist('header','var')
+if ~exist('header','var') || isempty(header)
     header = "DASH:ensembleFilter:observations";
 end
 
-% If empty, delete observations. Optionally reset sizes
-if isempty(Y)
-    obj = resetObservations(obj);
-    return
-end
-
-% Initial error checking
+% Return observations matrix
 try
-    name = 'Observations (Y)';
-    dash.assert.matrixTypeSize(Y, 'numeric', [], name, header);
-    dash.assert.defined(Y, 1, name, header);
+    if ~exist('Y','var')
+        outputs = {obj.Y};
+        type = 'return';
     
-    % Get size of matrix
-    [nSite, nTime] = size(Y);
+    % Delete current matrix
+    elseif dash.is.strflag(Y) && strcmpi(Y, 'delete')
+        obj.Y = [];
+        if isempty(obj.Ye) && isempty(obj.R)
+            obj.nSite = 0;
+        end
+        if isempty(obj.whichPrior) && isempty(obj.whichR)
+            obj.nTime = 0;
+        end
+        outputs = {obj};
+        type = 'delete';
     
-    % Check and set number of sites
-    if obj.nSite==0
-        obj.nSite = nSite;
-    elseif nSite~=obj.nSite
-        mismatchSitesError(obj, nSite, header);
-    end
-    
-    % Check and set number of time steps
-    if obj.nTime==0
-        obj.nTime = nTime;
-    elseif nTime~=obj.nTime
-        mismatchTimeError;
-    end
-    
-    % Validate observations have R uncertainties
-    obj.assertValidR;
+    % Set observations matrix. Do initial error checks
+    else
+        name = 'Observations (Y)';
+        dash.assert.matrixTypeSize(Y, 'numeric', [], name, header);
+        dash.assert.defined(Y, 1, name, header);
+        
+        % Get size of matrix
+        [nSite, nTime] = size(Y);
 
+        % Check and set number of sites
+        if isempty(obj.Ye) && isempty(obj.R)
+            obj.nSite = nSite;
+        elseif nSite ~= obj.nSite
+            mismatchSitesError(obj, nSite, header);
+        end
+
+        % Check and set number of time steps
+        if isempty(obj.whichPrior) && isempty(obj.whichR)
+            obj.nTime = nTime;
+        elseif nTime ~= obj.nTime
+            mismatchTimeError(obj, nTime, header);
+        end
+        
+        % Validate observations have R uncertainties
+        obj.assertValidR;
+
+        % Set matrix
+        obj.Y = Y;
+        outputs = {obj};
+        type = 'set';
+    end
+    
 % Minimize error stacks
 catch ME
     throwAsCaller(ME);
 end
 
-end
-
-%% Utilities
-function[obj] = resetObservations(obj)
-obj.Y = [];
-if isempty(obj.Ye) && isempty(obj.R)
-    obj.nSite = 0;
-end
-if isempty(obj.whichPrior) && isempty(whichR)
-    obj.nTime = 0;
-end
 end
 
 %% Error messages
