@@ -168,6 +168,9 @@ try
         obj.Rtype = double(iscovariance);
         outputs = {obj};
         type = 'set';
+
+        % Check that no observations have NaN uncertainties
+        obj.assertValidR(header);
     end
 
 % Minimize error stack

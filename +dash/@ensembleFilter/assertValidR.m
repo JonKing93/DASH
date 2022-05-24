@@ -1,21 +1,26 @@
 function[] = assertValidR(obj, header)
-%% ensembleFilter.assertValidR  Check that observations have an R variance or covariance in required time steps
+%% dash.ensembleFilter.assertValidR  Check that observations have an R variance or covariance in required time steps
 % ----------
-%   obj.validateR(header)
+%   obj.assertValidR(header)
 %   Throws an error if any observation lacks an R variance or covariance in
 %   a required time step.
 % ----------
 %   Inputs:
 %       header (string scalar): Header for thrown error IDs
 % 
-% <a href="matlab:dash.doc('ensembleFilter.validateR')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.ensembleFilter.assertValidR')">Documentation Page</a>
 
 % Only check values if the filter has both observations and uncertainties
 if isempty(obj.Y) || isempty(obj.R)
     return
 end
 
-% Fill empty whichR
+% Default
+if ~exist('header','var') || isempty(header)
+    header = "DASH:ensembleFilter:assertValidR";
+end
+
+% Get whichR, fill empty (static) values with ones
 if isempty(obj.whichR)
     obj.whichR = ones(obj.nTime, 1);
 end
@@ -69,7 +74,7 @@ for c = 1:obj.nR
                         'but there are time steps when neither site is NaN.'],...
                         site1(pair), site2(pair));
                 else
-                    ME = MExceptioN(id, ['The R covariance between sites %.f and %.f is NaN in time ',...
+                    ME = MException(id, ['The R covariance between sites %.f and %.f is NaN in time ',...
                         'step %.f, but neither observation site is NaN in that time step.',...
                         'Sites: %.f, %.f\nSet of R covariances: %.f'], sites1(pair), sites2(pair), ...
                         times(1), sites1(pair), sites2(pair), c);

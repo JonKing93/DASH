@@ -61,7 +61,7 @@ try
         % Do initial error checks
         name = 'Observations (Y)';
         dash.assert.matrixTypeSize(Y, ["single","double"], [], name, header);
-        dash.assert.defined(Y, 1, name, header);
+        dash.assert.defined(Y, 2, name, header);
         
         % Get size of matrix
         [nSite, nTime] = size(Y);
@@ -79,14 +79,15 @@ try
         elseif nTime ~= obj.nTime
             mismatchTimeError(obj, nTime, header);
         end
-        
-        % Validate observations have R uncertainties
-        obj.assertValidR;
 
         % Set matrix
         obj.Y = Y;
         outputs = {obj};
         type = 'set';
+
+        % Check that none of the observations have NaN uncertainties
+        obj.assertValidR(header);
+
     end
     
 % Minimize error stacks
