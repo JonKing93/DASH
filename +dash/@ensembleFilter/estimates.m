@@ -15,7 +15,7 @@ function[outputs, type] = estimates(obj, header, Ye, whichPrior)
 %   previously existing estimates. Returns the updated filter object.
 %
 %   [objCell, 'delete'] = obj.estimates('delete')
-%   Deletes any current observations and returns the updated filter object.
+%   Deletes any current estimates and returns the updated filter object.
 % ----------
 %   Inputs:
 %       header (string scalar): Header for thrown error IDs
