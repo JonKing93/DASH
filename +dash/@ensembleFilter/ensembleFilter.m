@@ -38,6 +38,7 @@ classdef (Abstract) ensembleFilter
 
         % General
         varargout = label(varargin);
+        name = name(obj);
         obj = finalize(obj, requirePrior, actionName, header);
 
         % Essential inputs
