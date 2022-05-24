@@ -18,9 +18,10 @@ elseif dash.is.strflag(R) && strcmpi(R, 'delete')
 
     % Delete and reset sizes
     obj.R = [];
-    obj.nR = 0;
-    obj.whichR = [];
     obj.Rtype = NaN;
+    obj.whichR = [];
+
+    obj.nR = 0;
     if isempty(obj.Y) && isempty(obj.Ye)
         obj.nSite = 0;
     end
@@ -72,7 +73,7 @@ else
     if iscovariance
         name = 'R covariances';
         siz = [obj.nSite, obj.nSite, NaN];
-        dash.assert.blockTypeSize(R, 'numeric', siz, name, header);
+        dash.assert.blockTypeSize(R, ["single","double"], siz, name, header);
     else
         name = 'R variances';
         siz = [obj.nSite, NaN];

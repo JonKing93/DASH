@@ -25,6 +25,7 @@ try
         end
         if isempty(obj.X)
             obj.nMembers = 0;
+            obj.nPrior = 0;
             obj.whichPrior = [];
         end
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior)
@@ -59,7 +60,7 @@ try
         % Error check type and size. Require well defined values
         name = 'Observation estimates (Ye)';
         siz = [obj.nSite, obj.nMembers, obj.nPrior];
-        dash.assert.blockTypeSize(Ye, 'numeric', siz, name, header);
+        dash.assert.blockTypeSize(Ye, ["single","double"], siz, name, header);
         dash.assert.defined(Ye, 1, name, header);
         
         % Note if whichPrior is already set by the prior

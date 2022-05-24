@@ -18,10 +18,16 @@ elseif dash.is.strflag(X) && strcmpi(X, 'delete')
 
     % Delete and reset sizes
     obj.X = [];
+    obj.Xtype = NaN;
+
     obj.nState = 0;
     if isempty(obj.Ye)
         obj.nMembers = 0;
         obj.nPrior = 0;
+        obj.whichPrior = [];
+    end
+    if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior)
+        obj.nTime = 0;
     end
 
     % Collect output
@@ -39,9 +45,6 @@ else
         emptyPriorError;
     end
 
-
-    %% Initial error checking
-
     % If estimates are set, require matching number of members and priors
     siz = NaN(1, 3);
     if ~isempty(obj.Ye)
@@ -52,9 +55,10 @@ else
     % Numeric array. Require 3D of correct size with well-defined values.
     % Get sizes
     if isnumeric(X)
-        dash.assert.blockTypeSize(X, [], siz, 'X', header);
+        dash.assert.blockTypeSize(X, ["single";"double"], siz, 'X', header);
         dash.assert.defined(X, 2, 'X', header);
         [nState, nMembers, nPrior] = size(X, 1:3);
+        Xtype = 0;
 
     % Ensemble object. Get sizes
     elseif isa(X, 'ensemble')
@@ -65,6 +69,7 @@ else
 
         % If scalar, optionally check nMembers and nPrior
         if isscalar(ens)
+            Xtype = 1;
             if ~isnan(siz(2))
                 if nMembers~=obj.nMembers
                     scalarEnsMembersError;
@@ -75,6 +80,7 @@ else
 
         % Otherwise, require a vector with an element per prior
         else
+            Xtype = 2;
             dash.assert.vectorTypeN(ens, [], siz(3), 'ens', header);
 
             % Require static ensembles with the same number of state vector
@@ -126,6 +132,7 @@ else
 
     % Save and build output
     obj.X = X;
+    obj.Xtype = Xtype;
     outputs = {obj};
     type = 'set';
 end
