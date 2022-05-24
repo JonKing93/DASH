@@ -1,115 +1,139 @@
-function[obj] = estimates(obj, Ye, whichPrior, header)
-%% dash.ensembleFilter.estimates  Provides the estimates to an assimilation filter
-% ----------
-%   obj = obj.estimates(Ye, whichPrior, header)
-%   Sets the observation estimates used by an assimilation filter. The
-%   estimates must be a 3D numeric array. NaN, Inf, and complex values are
-%   not allowed. Each row is the estimates for a particular observation
-%   site, and each column holds the estimates for a particular ensemble
-%   member. The third dimension holds the estimates for each ensemble in an
-%   evolving set. If the assimilation uses a static prior, this third
-%   dimension should be a singleton.
-%
-%   If the number of evolving ensembles does not match the number of time 
-%   steps, then use the whichPrior input to indicate which set of estimates
-%   to use in each time step. This input is only necessary if "whichPrior"
-%   was not already set by the ensembleFilter.prior method. If the filter
-%   uses a static prior, there is exactly one prior per time step, or
-%   whichPrior was already set, then whichPrior may be an empty array.
-%
-%   If Ye is empty, deletes the current estimates from the filter object.
-%   If the user previously specified observations or uncertainties, then
-%   the number of rows must match the current number of sites. If the user
-%   provided a prior, then dimensions 2 and 3 must match the number of
-%   ensemble members and evolving priors. If the user provided observations
-%   or whichR, then a non-empty whichPrior must match the number of
-%   assimilated time steps. If the user already provided whichPrior and a
-%   prior, then a non-empty whichPrior must match the previous value.
-% ----------
-%   Inputs:
-%       Ye (numeric 3D array): The observation estimates
-%       whichPrior (vector, positive integers [nTime] | []): Indicates
-%           which estimates to use in each time step.
-%       header (string scalar): Header for thrown error IDs
-%
-%   Outputs:
-%       obj (scalar ensembleFilter object): The filter object with updated
-%           estimates.
-%
-% <a href="matlab:dash.doc('dash.ensembleFilter.estimates')">Documentation Page</a>
+function[outputs, type] = estimates(obj, header, Ye, whichPrior)
+%% 
 
 % Default
-if ~exist('header','var')
+if ~exist('header','var') || isempty(header)
     header = "DASH:ensembleFilter:estimates";
 end
 
-% If empty, require empty whichPrior
-if isempty(Ye)
-    if ~isempty(whichPrior)
-        id = sprintf('%s:nonemptyWhichPrior', header);
-        error(id, 'Since the estimates (Ye) are empty, whichPrior must also be empty.');
+% Return estimates
+try
+    if ~exist('Ye','var')
+        outputs = {obj.Ye, obj.whichPrior};
+        type = 'return';
+    
+    % Delete current matrix. Don't allow second input
+    elseif dash.is.strflag(Ye) && strcmpi(Ye, 'delete')
+        if exist('whichPrior','var')
+            dash.error.tooManyInputs;
+        end
+    
+        % Delete and reset sizes
+        obj.Ye = [];
+        if isempty(obj.Y) && isempty(obj.R)
+            obj.nSite = 0;
+        end
+        if isempty(obj.X)
+            obj.nMembers = 0;
+            obj.whichPrior = [];
+        end
+        if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior)
+            obj.nTime = 0;
+        end
+    
+        % Collect output
+        outputs = {obj};
+        type = 'delete';
+    
+    % Set estimates. Get defaults and sizes
+    else
+        if ~exist('whichPrior','var') || isempty(whichPrior)
+            whichPrior = [];
+        end
+        [nRows, nCols, nPages] = size(Ye, 1:3);
+    
+        %% Initial error checking
+    
+        % Optionally set the number of sites
+        if isempty(obj.Y) && isempty(obj.R)
+            obj.nSite = nRows;
+        end
+    
+        % Optionally set the number of members and priors
+        if isempty(obj.X)
+            obj.nMembers = nCols;
+            obj.nPrior = nPages;
+        end
+    
+        % Error check type and size. Require well defined values
+        name = 'Observation estimates (Ye)';
+        siz = [obj.nSite, obj.nMembers, obj.nPrior];
+        dash.assert.blockTypeN(Ye, 'numeric', siz, name, header);
+        dash.assert.defined(Ye, 1, name, header);
+    
+    
+        %% Error check whichPrior
+    
+        % Note if whichPrior is already set by the prior
+        whichIsSet = false;
+        if ~isempty(obj.X) && ~isempty(obj.whichPrior)
+            whichIsSet = true;
+        end
+    
+        % Note whether allowed to set nTime
+        timeIsSet = true;
+        if isempty(obj.Y) && isempty(obj.whichR) && ~whichIsSet
+            timeIsSet = false;
+        end
+    
+        % User did not provide whichPrior. If already set by prior, use
+        % existing value. Otherwise if evolving, set time when unset. If set,
+        % require one prior per time step
+        if isempty(whichPrior)
+            if whichIsSet
+                whichPrior = obj.whichPrior;
+            elseif obj.nPrior > 1
+                if ~timeIsSet
+                    obj.nTime = obj.nPrior;
+                end
+                if obj.nPrior ~= obj.nTime
+                    wrongSizeError;
+                end
+                whichPrior = (1:obj.nTime)';
+            end
+    
+        % Parse user-provided whichPrior. If already set by the prior, require
+        % identical values
+        elseif whichIsSet
+            if isrow(whichPrior)
+                whichPrior = whichPrior';
+            end
+            if ~isequal(obj.whichPrior, whichPrior)
+                differentWhichError;
+            end
+    
+        % Otherwise, user values can set whichPrior. If time is set, require
+        % one element per time step. If unset and evolving, set nTime to the
+        % number of priors
+        else
+            nRequired = [];
+            if timeIsSet
+                nRequired = obj.nTime;
+            elseif obj.nPrior > 1
+                obj.nTime = numel(whichPrior);
+            end
+            dash.assert.vectorTypeN(whichPrior, 'numeric', nRequired, 'whichPrior', header);
+            linearMax = 'the number of priors';
+            dash.assert.indices(whichPrior, obj.nPrior, 'whichPrior', [], linearMax, header);
+        end
+    
+        
+        %% Save and update
+    
+        % Save
+        obj.Ye = Ye;
+        if obj.nPrior > 1
+            obj.whichPrior = whichPrior(:);
+        end
+    
+        % Collect outputs
+        outputs = {obj};
+        type = 'set';
     end
 
-    % Delete estimates, optionally reset sizes
-    obj = resetEstimates(obj);
-    return
-end
-
-% Initial error check
-name = 'Estimates (Ye)';
-dash.assert.blockTypeSize(Ye, 'numeric', [], name, header);
-dash.assert.defined(Ye, 1, name, header);
-
-% Get the size of the matrix
-[nSite, nMembers, nPrior] = size(Ye);
-
-% Check and set number of sites
-if obj.nSite==0
-    obj.nSite = nSite;
-elseif nSite~=obj.nSite
-    mismatchSitesError(obj, nSite, header);
-end
-
-% Check and set number of members
-if obj.nMembers==0
-    obj.nMembers = nMembers;
-elseif nMembers ~= obj.nMembers
-    mismatchMembersError(obj, nMembers, header);
-end
-
-% Check and set number of priors
-if obj.nPrior == 0
-    obj.nPrior = nPrior;
-elseif nPrior ~= obj.nPrior
-    mismatchPriorsError(obj, nPriors, header);
-end
-
-% Error check and parse whichPrior
-obj = obj.parseWhichPrior(obj, whichPrior, header);
-
-end
-
-%% Utilities
-function[obj] = resetEstimates(obj)
-
-% Delete estimates
-obj.Ye = [];
-
-% Reset sizes
-if isempty(obj.R) && isempty(obj.Y)
-    obj.nSite = 0;
-end
-if isempty(obj.X)
-    obj.nMembers = 0;
-    obj.nPrior = 0;
-    obj.whichPrior = 0;
-end
-if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior)
-    obj.nTime = 0;
+% Minimize error stack
+catch ME
+    throwAsCaller(ME);
 end
 
 end
-
-
-
-
