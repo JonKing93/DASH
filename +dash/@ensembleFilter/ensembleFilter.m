@@ -37,7 +37,7 @@ classdef (Abstract) ensembleFilter
     methods
 
         % General
-        varargout = label(varargin);
+        varargout = label(obj, varargin);
         name = name(obj);
         obj = finalize(obj, requirePrior, actionName, header);
 
@@ -53,8 +53,8 @@ classdef (Abstract) ensembleFilter
                                             timeIsSet, whichIsSet, header);
 
         % Query values
-        Rcov = Rcovariance(t, s);
-        X = loadPrior(p);
+        Rcov = Rcovariance(obj, t, s);
+        X = loadPrior(obj, p);
         
     end
 
