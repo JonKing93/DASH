@@ -1,7 +1,7 @@
-function[m, metadata] = validateMatfile(obj, header)
+function[m, metadata, precision] = validateMatfile(obj, header)
 %% ensemble.validateMatfile  Check that a .ens file is valid
 % ----------
-%   [m, metadata] = obj.validateMatfile
+%   [m, metadata, precision] = obj.validateMatfile
 %   Checks that the .ens file associated with an ensemble object is valid
 %   and matches the metadata stored in the ensemble object. Requires the
 %   .ens file to be a MAT file with X and stateVector fields that have
@@ -9,7 +9,8 @@ function[m, metadata] = validateMatfile(obj, header)
 %   stateVector. If the ensemble object has an ensembleMetadata object,
 %   checks that the metadata built from the file matches the current
 %   metadata. Returns a matfile object for the file, as well as the
-%   ensembleMetadata object.
+%   ensembleMetadata object. Also returns the numeric precision of the
+%   saved ensemble.
 %
 %   ... = obj.validateMatfile(header)
 %   Customize header in thrown error IDs
@@ -21,6 +22,7 @@ function[m, metadata] = validateMatfile(obj, header)
 %       m (scalar matfile object): A matfile object for the .ens file
 %       metadata (scalar ensembleMetadata object): The ensembleMetadata
 %           object for the ensemble object.
+%       precision ('single' | 'double'): The numeric precision of the saved ensemble
 %
 % <a href="matlab:dash.doc('ensemble.validateMatfile')">Documentation Page</a>
 
@@ -47,10 +49,10 @@ end
 
 % Check that the data matrix is a non-empty numeric matrix
 info = whos(m, 'X', 'stateVector');
-type = info(1).class;
+precision = info(1).class;
 siz = info(1).size;
 
-if ~ismember(type, ["single","double"])
+if ~ismember(precision, ["single","double"])
     notNumericError(obj, header);
 elseif numel(siz) ~= 2
     notMatrixError(obj, header);

@@ -77,12 +77,10 @@ end
 
 % Check the .ens file is still valid. Get numeric precision
 try
-    m = obj.validateMatfile(header);
+    [m, ~, precision] = obj.validateMatfile(header);
 catch
     matfileFailedError(obj, cause, header);
 end
-info = whos(m, 'X');
-precision = info.class;
 
 % Get sizes
 nRows = numel(rows);

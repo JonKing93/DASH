@@ -186,7 +186,7 @@ classdef ensemble
         % Matfile interactions
         obj = addMembers(obj, nMembers, strict);
         obj = update(obj);
-        [m, metadata] = validateMatfile(obj, header);
+        [m, metadata, precision] = validateMatfile(obj, header);
 
         % Console display
         disp(obj, showVariables, showEvolving);
