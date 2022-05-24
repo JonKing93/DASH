@@ -35,7 +35,7 @@ if ~obj.isfinalized
 end
 
 % Preallocate sum of squared errors
-sse = NaN(1, obj.nMembers, obj.nTime);
+sse = NaN(obj.nMembers, obj.nTime);
 
 % If using R variances, permute observations for singleton expansion of 
 % Y over members and Ye over time
@@ -54,13 +54,13 @@ if obj.Rtype == 0
         % Vectorize sum of squared errors for the prior
         sseP = (1./R) .* innovation.^2;
         sseP = sum(sseP, 1, 'omitnan');
-        sse(:,t) = reshape(sseP, nMembers, nTime);
+        sse(:,t) = reshape(sseP, obj.nMembers, numel(t));
     end
 
 % If using R covariance, find the unique R covariances. This will include
 % both different covariance matrices, and different sets of sites.
 else
-    sites = ~isnan(pf.T)';
+    sites = ~isnan(obj.Y)';
     Rcovs = [sites, obj.whichR];
     [Rcovs, ~, whichR] = unique(Rcovs, 'rows');
     nCovs = size(Rcovs, 1);
@@ -72,12 +72,13 @@ else
         s = sites(t1, :);
 
         % Invert the covariance matrix
-        Rinv = obj.R(s,s,t1) ^ -1;
+        Rcov = obj.Rcovariance(t1, s);
+        Rinv = Rcov ^ -1;
 
         % For each time step, get the innovations at all the sites
         for k = 1:numel(times)
             t = times(k);
-            p = pf.whichPrior(t);
+            p = obj.whichPrior(t);
             innovation = obj.Y(s,t) - obj.Ye(s,:,p);
 
             % Get the SSE for each ensemble member

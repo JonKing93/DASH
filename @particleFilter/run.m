@@ -67,7 +67,7 @@ returnSSE = dash.parse.nameValue(varargin, "sse", {false}, 0, header);
 % Initialize output
 output = struct;
 try
-    output.A = NaN([obj.nState, obj.nTime], obj.priorPrecision);
+    output.A = NaN([obj.nState, obj.nTime], obj.precision);
 catch
     outputTooLargeError(obj, header);
 end
