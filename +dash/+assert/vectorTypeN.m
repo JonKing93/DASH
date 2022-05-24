@@ -15,8 +15,8 @@ function[] = vectorTypeN(input, types, length, name, idHeader)
 %       input: The input being tested
 %       types (string vector | []): The allowed data types of the
 %           input. Use an empty array to allow any type
-%       length (scalar positive integer | []): The required length
-%           of the vector. Use an empty array to allow any length
+%       length (scalar positive integer | [] | NaN): The required length
+%           of the vector. Use an empty array or NaN to allow any length
 %       name (string scalar): The name of the input in the calling
 %           function for use in error messages. Default is "input"
 %       idHeader (string scalar): Header for thrown error IDs. Default is
@@ -50,7 +50,7 @@ try
     end
     
     % Length
-    if ~isempty(length) && numel(input)~=length
+    if ~isempty(length) && ~isnan(length) && numel(input)~=length
         id = sprintf('%s:inputWrongLength', idHeader);
         error(id, '%s must have %.f elements, but it has %.f elements instead.', ...
             name, length, numel(input));
