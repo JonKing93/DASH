@@ -32,14 +32,19 @@ elseif dash.is.strflag(R) && strcmpi(R, 'delete')
     outputs = {obj};
     type = 'delete';
 
-% Set uncertainties. Get defaults and sizes
+% Set uncertainties. Get defaults
 else
     if ~exist('whichR','var') || isempty(whichVar)
         whichR = [];
     end
-    [nRows, nCols, nPages] = size(R, 1:3);
 
-    % Detect variance vs covariance
+    % Don't allow empty R
+    if isempty(R)
+        emptyUncertaintiesError;
+    end
+
+    % Get sizes and detect variance vs covariance
+    [nRows, nCols, nPages] = size(R, 1:3);
     if ~ismatrix(R)
         iscovariance = true;
     elseif nRows ~= nCols

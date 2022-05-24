@@ -40,14 +40,17 @@ try
         if ~exist('whichPrior','var') || isempty(whichPrior)
             whichPrior = [];
         end
-        [nRows, nCols, nPages] = size(Ye, 1:3);
-       
-        % Optionally set the number of sites
+
+        % Don't allow empty estimates
+        if isempty(Ye)
+            emptyEstimatesError;
+        end
+
+        % Get sizes, optionally set sizes
+        [nRows, nCols, nPages] = size(Ye, 1:3);       
         if isempty(obj.Y) && isempty(obj.R)
             obj.nSite = nRows;
-        end
-    
-        % Optionally set the number of members and priors
+        end    
         if isempty(obj.X)
             obj.nMembers = nCols;
             obj.nPrior = nPages;

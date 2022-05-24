@@ -25,8 +25,13 @@ try
         outputs = {obj};
         type = 'delete';
     
-    % Set observations matrix. Do initial error checks
+    % Set observations matrix. Don't allow empty observations
     else
+        if isempty(Y)
+            emptyObservationsError;
+        end
+
+        % Do initial error checks
         name = 'Observations (Y)';
         dash.assert.matrixTypeSize(Y, 'numeric', [], name, header);
         dash.assert.defined(Y, 1, name, header);

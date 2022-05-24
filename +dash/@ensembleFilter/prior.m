@@ -34,6 +34,11 @@ else
         whichPrior = [];
     end
 
+    % Don't allow empty array
+    if isempty(X)
+        emptyPriorError;
+    end
+
 
     %% Initial error checking
 
