@@ -26,7 +26,7 @@ function[varargout] = estimates(obj, Ye, whichPrior)
 %   Deletes any current estimates from the particle filter object.
 % ----------
 %   Inputs:
-%       Ye (numeric matrix [nSite x nMembers x 1|nTime|nPrior]): Proxy
+%       Ye (numeric array [nSite x nMembers x 1|nTime|nPrior]): Proxy
 %           estimates for the particle filter. A numeric array with one row
 %           per site, and one column per ensemble member. Each element
 %           along the third dimension holds the estimates for a unique
