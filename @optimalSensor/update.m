@@ -7,10 +7,20 @@ function[variance, metric] = update(obj)
 %   initial and final metric itself. If the uncertainties are covariances,
 %   uses the full R uncertainty covariance to compute the update. Otherwise,
 %   uses the provided R variances.
+%
+%   The method proceeds by using a standard ensemble square root Kalman
+%   filter to update the ensemble deviations from the prior. A metric is then
+%   computed from the update prior. 
+% 
+%   **Important**
+%   Note that this method accounts for the covariance between the
+%   observation sites when updating the ensemble deviations. Thus, the
+%   final variance correctly reflects the variance reduction that results
+%   from assimilating a network with multiple observation sites.
 % ----------
 %   Outputs
-%       variance (scalar struct): Reports the variance of the metric. Has
-%           the following fields:
+%       variance (scalar struct): Reports the variance of the metric across
+%           the ensemble. Has the following fields:
 %           .initial (numeric scalar): The initial variance of the metric
 %           .final (numeric scalar): The variance of the metric after the update
 %       metric (scalar struct): Reports the metric itself. Has the
@@ -35,12 +45,12 @@ variance = struct;
 metric = struct;
 
 % Coefficient for unbiased estimator
-unbias = 1 / (obj.nMembers - 1);
+unbias = dash.math.unbias(obj.nMembers);
 
 % Get the metric, its deviations, and its variance
 J = obj.computeMetric;
 [~, Jdev] = dash.math.decompose(J);
-Jvar = unbias * sum(Jdev.^2, 2);
+Jvar = dash.math.variance(Jdev, unbias);
 
 metric.initial = J;
 variance.initial = Jvar;
@@ -51,22 +61,22 @@ variance.initial = Jvar;
 
 % Get R covariance
 R = obj.R;
-if Rtype == 0
+if obj.Rtype == 0
     R = diag(R);
 end
 
 % Update the deviations for the prior
-Knum = unbias .* (Xdev * Ydev');
-Kdenom = unbias .* (Ydev * Ydev') + R;
+Knum = dash.math.covariance(Xdev, Ydev, unbias);
+Kdenom = dash.kalman.denominator(Ydev, R, unbias);
 K = Knum / Kdenom;
-a = 1 / (1 + sqrt(R / Kdenom));
-Xdev = Xdev - a * K * Ydev;
+a = dash.kalman.adjusted(R, Kdenom);
+Xdev = dash.kalman.updateDeviations(Xdev, a, K, Ydev);
 X = Xmean + Xdev;
 
 % Compute the updated metric and variance
 J = obj.computeMetric(X);
 [~, Jdev] = dash.math.decompose(J);
-Jvar = unbias * sum(Jdev.^2, 2);
+Jvar = dash.math.variance(Jdev, unbias);
 
 metric.final = J;
 variance.final = Jvar;
