@@ -22,7 +22,7 @@ function[varargout] = inflate(obj, factor, whichFactor)
 %   Returns the inflation factor for the Kalman filter, and indicates which
 %   factor is used in each assimilation time step.
 %
-%   obj = obj.inflate('delete')
+%   obj = obj.inflate('reset')
 %   Deletes any current inflation factors from the Kalman Filter.
 % ----------
 %   Inputs:
@@ -60,7 +60,7 @@ try
         varargout = {obj.inflationFactor, obj.whichFactor};
 
     % Delete
-    elseif dash.is.strflag(factor) && strcmpi(factor, 'delete')
+    elseif dash.is.strflag(factor) && strcmpi(factor, 'reset')
         if exist('whichFactor','var')
             dash.error.tooManyInputs;
         end
@@ -106,7 +106,7 @@ try
                             'inflation factors', timeIsSet, false, header);
 
         % Save and build output
-        obj.inflationFactor = factor;
+        obj.inflationFactor = factor(:);
         varargout = {obj};
     end
 

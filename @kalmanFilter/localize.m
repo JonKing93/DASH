@@ -15,7 +15,7 @@ function[varargout] = localize(obj, wloc, yloc, whichLoc)
 %   per state vector element, and one column per observation site. The
 %   second input is the localization weights between the observation sites
 %   and each other. It should be a 3D array with one row and one column per
-%   observation site. Each element along the third dimension must be a
+%   observation site. Each element along the third dimension of yloc must be a
 %   symmetric matrix.
 %
 %   The two inputs must have the same number of elements along the third
@@ -33,7 +33,7 @@ function[varargout] = localize(obj, wloc, yloc, whichLoc)
 %   [wloc, yloc, whichLoc] = obj.localize
 %   Returns the current localization weights for the Kalman filter.
 %
-%   obj = obj.localize('delete')
+%   obj = obj.localize('reset')
 %   Deletes any current localization weights from the Kalman Filter.
 % ----------
 %   Inputs:
@@ -85,7 +85,7 @@ try
         varargout = {obj.wloc, obj.yloc, obj.whichLoc};
 
     % Delete
-    elseif dash.is.strflag(wloc) && strcmpi(wloc, 'delete')
+    elseif dash.is.strflag(wloc) && strcmpi(wloc, 'reset')
         if exist('yloc','var')
             dash.error.tooManyInputs;
         end
@@ -114,7 +114,7 @@ try
         end
 
         % Optionally set sizes
-        [nRows, nCols, nLoc] = size(wloc, 1:2);
+        [nRows, nCols, nLoc] = size(wloc, 1:3);
         if isempty(obj.X) && isempty(obj.Cblend)
             obj.nState = nRows;
         end
@@ -122,7 +122,7 @@ try
             obj.nSite = nCols;
         end
 
-        % Error check
+        % Initial error check
         siz = [obj.nState, obj.nSite, nLoc];
         dash.assert.blockTypeSize(wloc, ["single","double"], siz, 'wloc', header);
         dash.assert.defined(wloc, 1, 'wloc', header);
@@ -130,9 +130,10 @@ try
             negativeWlocError(wloc, header);
         end
 
-        siz = [obj.nSite, obj.nSite, NaN];
+        siz = [obj.nSite, obj.nSite, nLoc];
         dash.assert.blockTypeSize(yloc, ["single","double"], siz, 'yloc', header);
         dash.assert.defined(yloc, 1, 'yloc', header);
+        dash.assert.symmetricMatrices(yloc, 'yloc', header);
         if any(yloc<0, 'all')
             negativeYlocError(yloc, header);
         end
@@ -144,14 +145,13 @@ try
             timeIsSet = false;
         end
 
-        % Error check and process whichFactor
+        % Error check and process whichLoc
         obj = obj.processWhich(whichLoc, 'whichLoc', nLoc, ...
                             'sets of localization weights', timeIsSet, false, header);
 
         % Save and build output
         obj.wloc = wloc;
         obj.yloc = yloc;
-        obj.whichLoc = whichLoc;
         varargout = {obj};
     end
 
