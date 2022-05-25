@@ -20,7 +20,7 @@ classdef kalmanFilter < dash.ensembleFilter
         blendWeights = [];
 
         % Set covariance
-        
+    end
 
 
 

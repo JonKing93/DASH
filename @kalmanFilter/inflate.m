@@ -5,10 +5,13 @@ function[varargout] = inflate(obj, factor, whichFactor)
 %   Specifies a multiplicative covariance inflation factor for the Kalman
 %   Filter. The covariance term in the Kalman Gain numerator will be
 %   multiplied by the inflation factor in order to increase the apparent
-%   covariance for the filter. If factor is scalar, uses the same inflation
-%   factor for all time steps. Otherwise, must be a vector with one element
-%   per time step (although see the next syntax for relaxing this
-%   requirement).
+%   covariance for the filter. The inflation factor is applied before
+%   localization and blending. Inflation is not allowed for user-provided
+%   covariance matrices.
+% 
+%   If factor is scalar, uses the same inflation factor for all time steps.
+%   Otherwise, must be a vector with one element per time step (although 
+%   see the next syntax for relaxing this requirement).
 %
 %   obj = obj.inflate(factor, whichFactor)
 %   Specify which inflation factor to use in each assimilation time step.
@@ -66,7 +69,7 @@ try
         obj.factor = [];
         obj.whichFactor = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
-                && isempty(obj.whichLoc) && isempty(obj.whichBlend) && isempty(obj.whichSet)
+                && isempty(obj.whichLoc) && isempty(obj.whichBlend)
             obj.nTime = 0;
         end
         varargout = {obj};
@@ -77,9 +80,11 @@ try
             whichFactor = [];
         end
 
-        % Don't allow empty
+        % Don't allow empty. Also don't allow if covariance is set
         if isempty(factor)
             emptyFactorError(obj, header);
+        elseif ~isempty(obj.Cset)
+            covarianceSetError(obj, header);
         end
 
         % Error check
@@ -92,7 +97,7 @@ try
         % Note whether allowed to set time
         timeIsSet = true;
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
-                && isempty(obj.whichLoc) && isempty(obj.whichBlend) && isempty(obj.whichSet)
+                && isempty(obj.whichLoc) && isempty(obj.whichBlend)
             timeIsSet = false;
         end
 
@@ -120,6 +125,12 @@ end
 function[] = emptyFactorError(obj, header)
 id = sprintf('%s:emptyFactor', header);
 ME = MException(id, 'The inflation factors for %s cannot be empty.', obj.name);
+throwAsCaller(ME);
+end
+function[] = covarianceSetError(obj, header)
+id = sprintf('%s:covarianceAlreadySet', header);
+ME = MException(id, ['You cannot implement an inflation factor for %s because ',...
+    'you already provided a user-specified covariance matrix.'], obj.name);
 throwAsCaller(ME);
 end
 function[] = smallFactorError(factor, header)
