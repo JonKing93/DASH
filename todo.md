@@ -47,3 +47,5 @@ Add links to scalar disp for array objects (click on a gridfile in an array disp
 Add handling for <missing> strings
 Add serializer to ensembleMetadata (maybe do now)
 Scalar return values don't require scalarObjs (for example, returning a label)
+
+Add PSMs to optimal sensor
