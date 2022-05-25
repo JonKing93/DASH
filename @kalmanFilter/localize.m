@@ -95,7 +95,7 @@ try
         obj.yloc = [];
         obj.whichLoc = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
-                && isempty(obj.whichInflate) && isempty(obj.whichBlend)
+                && isempty(obj.whichInflate) && isempty(obj.whichBlend) && isempty(obj.whichSet)
             obj.nTime = 0;
         end
         varargout = {obj};

@@ -1,6 +1,6 @@
 TODO:
 
-0. Tests for failed cases should reference specific error ID, not DASH header
+0. Tests for failed cases should reference specific error ID, not just DASH header
 
 A. Should have a utility to break apart means for merged dimensions. For example,
 area weighted means of a 2D tripolar grid
@@ -12,11 +12,10 @@ When calling sv.addMembers - how to treat returned metadata?
     - gridfile.expand with gridfile.addDimension (in examples)
     - gridMetadata.edit with gridMetadata.editAttributes
 
-7. dataSourceFailed error in gridfile.load
-    - ??? This may be complete
+
 8. Misc sections, both for classes and functions
-   -Options to include graphics
-   -
+   -Options to include graphics in HTML doc
+   
 9. Remove "throws" from non-assert calls
     -Or treat throws in a more consistent way through the docs
 
@@ -49,3 +48,5 @@ Add serializer to ensembleMetadata (maybe do now)
 Scalar return values don't require scalarObjs (for example, returning a label)
 
 Add PSMs to optimal sensor
+Kalman filter localize, blend, and setCovariance could allow NaN values for sites that don't occur in the same time steps
+    - could generalize the ensembleFilter.assertValidR method

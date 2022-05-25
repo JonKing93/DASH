@@ -20,7 +20,7 @@ function[varargout] = blend(obj, C, Ycov, weight, whichBlend)
 %   state vector elements and the observation sites. It should be a 3D
 %   array with one row per state vector element, and one column per
 %   observation site. The second input provides the climatological
-%   covariance between the observation sites and one another. If should be
+%   covariance between the observation sites and one another. It should be
 %   a 3D array with one row and one column per observation site. Each
 %   element along the third dimension of Ycov must be a symmetric matrix.
 %
@@ -88,7 +88,7 @@ function[varargout] = blend(obj, C, Ycov, weight, whichBlend)
 %
 %   Outputs:
 %       obj (scalar kalmanFilter object): The kalmanFilter object with
-%           updated localization weights
+%           updated blending options
 %       C (numeric 3D array [nState x nSite x 1|nTime|nBlend] | []): The
 %           current blending covariances between the state vector
 %           elements and observation site for the filter. If blending has
@@ -111,9 +111,9 @@ try
     header = "DASH:kalmanFilter:blend";
     dash.assert.scalarObj(obj, header);
     
-    % Return factor
+    % Return
     if ~exist('C','var')
-        varargout = {obj.Cblend, obj.Yblend, obj.whichBlend};
+        varargout = {obj.Cblend, obj.Yblend, obj.blendingWeight, obj.whichBlend};
 
     % Delete
     elseif dash.is.strflag(C) && strcmpi(C, 'reset')
@@ -127,7 +127,7 @@ try
         obj.blendingWeight = [];
         obj.whichBlend = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
-                && isempty(obj.whichInflate) && isempty(obj.whichLoc)
+                && isempty(obj.whichInflate) && isempty(obj.whichLoc) && isempty(obj.whichSet)
             obj.nTime = 0;
         end
         varargout = {obj};

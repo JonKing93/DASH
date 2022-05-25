@@ -69,7 +69,7 @@ try
         obj.factor = [];
         obj.whichFactor = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
-                && isempty(obj.whichLoc) && isempty(obj.whichBlend)
+                && isempty(obj.whichLoc) && isempty(obj.whichBlend) && isempty(obj.whichSet)
             obj.nTime = 0;
         end
         varargout = {obj};
