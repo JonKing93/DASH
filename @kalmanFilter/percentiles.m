@@ -62,6 +62,7 @@ elseif dash.is.strflag(percentages) && strcmpi(percentages, 'reset')
     if hasCalculator
         obj.calculations(k,:) = [];
         obj.calculationNames(k,:) = [];
+        obj.calculationTypes(k,:) = [];
     end
     varargout = {obj};
 
@@ -85,6 +86,7 @@ else
     else
         obj.calculations{end+1,1} = calculator;
         obj.calculationNames(end+1,1) = name;
+        obj.calculationTypes(end+1,1) = 1;
     end
     varargout = {obj};
 end

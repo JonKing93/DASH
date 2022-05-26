@@ -134,7 +134,7 @@ else
 
     % Error check and update index based on type
     if strcmpi(type, 'mean')
-        obj = processMean(obj, header, varargin);
+        obj = processMean(obj, header, name, varargin);
     end
 
     % Update the name

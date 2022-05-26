@@ -61,11 +61,13 @@ returnVariance = dash.parse.switches(returnVariance, switches, 1, 'recognized op
 if returnVariance && ~hasCalculator
     obj.calculations{end+1,1} = dash.posteriorCalculation.variance;
     obj.calculationNames(end+1,1) = name;
+    obj.calculationTypes(end+1,1) = 0;
 
 % If removing an existing variance, delete from the calculation array
 elseif ~returnVariance && hasCalculator
     obj.calculations(k,:) = [];
     obj.calculationNames(k,:) = [];
+    obj.calculationTypes(k,:) = [];
 end
 varargout = {obj};
 
