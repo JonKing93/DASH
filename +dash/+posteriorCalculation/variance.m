@@ -9,11 +9,11 @@ classdef variance < dash.posteriorCalculation.Interface
     % <a href="matlab:dash.doc('dash.posteriorCalculation.variance')">Documentation Page</a>
 
     properties (SetAccess = immutable)
-        timeDim = 2;
+        timeDim = 2;    % The time dimension of the output array
     end
 
     methods (Static)
-        function[siz] = outputSize(nState, ~, nTime)
+        function[siz] = outputSize(~, nState, ~, nTime)
             %% dash.posteriorCalculation.variance.outputSize  Return the size of the variance output
             % ----------
             %   siz = obj.outputSize(nState, ~, nTime)
@@ -34,9 +34,6 @@ classdef variance < dash.posteriorCalculation.Interface
             % <a href="matlab:dash.doc('dash.posteriorCalculation.variance.outputsize')">Documentation Page</a> 
             siz = [nState, nTime];
         end
-    end
-
-    methods
         function[name] = outputName(~)
             %% dash.posteriorCalculation.variance.outputName  Return the name of the output field for posterior variance
             % ----------

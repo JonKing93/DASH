@@ -43,10 +43,8 @@ classdef (Abstract) Interface
         timeDim;  % The time dimension of the output array
     end
 
-    methods (Abstract, Static)
-        siz = outputSize(nState, nMembers, nTime);
-    end
     methods (Abstract)
+        siz = outputSize(obj, nState, nMembers, nTime);
         name = outputName(obj);
         value = calculate(obj, Adev, Amean);
     end
