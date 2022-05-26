@@ -14,7 +14,7 @@ function[repo, commit] = githubLocation(psmName)
 % commit: The commit hash for the PSM code. A string.
 
 % The Github location associated with each PSM. Order is 1. key (name for
-% DASH), 2. Github Repository, 3. Commit
+% DASH), 2. Github Repository, 3. Commit 
 info = [
     "bayspar", "https://github.com/jesstierney/BAYSPAR", "310e876513151bf01e7c39f5dbdde7b991ea7204";
     "bayspline", "https://github.com/jesstierney/BAYSPLINE", "1e6f9673bcc55b483422c6d6e1b1f63148636094";
