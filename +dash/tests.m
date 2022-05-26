@@ -32,5 +32,7 @@ dash.error.tests;
 dash.dataSource.tests;
 dash.gridfileSources.tests;
 dash.stateVectorVariable.tests;
+dash.ensembleFilter.tests;
+dash.posteriorCalculation.tests;
 
 end

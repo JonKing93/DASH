@@ -30,6 +30,9 @@ classdef (Abstract) ensembleFilter
     %   Rcovariance     - Returns an R covariance matrix for queried time steps and sites
     %   loadPrior       - Loads a prior from an evolving set
     %
+    % Tests:
+    %   tests           - Unit tests for the ensembleFilter class
+    %
     % <a href="matlab:dash.doc('dash.ensembleFilter')">Documentation Page</a>
 
     properties (SetAccess = protected)
@@ -85,7 +88,9 @@ classdef (Abstract) ensembleFilter
         % Query values
         Rcov = Rcovariance(obj, t, s);
         X = loadPrior(obj, p);
-        
     end
 
+    methods (Static)
+        tests;
+    end
 end
