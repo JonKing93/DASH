@@ -8,7 +8,7 @@ classdef variance < dash.posteriorCalculation.Interface
     %
     % <a href="matlab:dash.doc('dash.posteriorCalculation.variance')">Documentation Page</a>
 
-    properties (SetAccess = immutable)
+    properties (Constant)
         timeDim = 2;    % The time dimension of the output array
     end
 

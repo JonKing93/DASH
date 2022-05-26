@@ -1,17 +1,18 @@
 classdef percentiles < dash.posteriorCalculation.Interface
     %% dash.posteriorCalculation.percentiles  Calculates percentiles across a posterior ensemble
     % ----------
-    % precentiles methods:
+    % percentiles methods:
+    %   percentiles - Creates a new ensemble percentiles calculation object
     %   outputName  - Indicates that "Aperc" should be used as the name of the output field
     %   outputSize  - Indicates that output has a size of nState x nPercs x nTime
     %   calculate   - Calculates percentiles across posterior ensembles
     %
     % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles')">Documentation Page</a>
 
-    properties (SetAccess = immutable)
+    properties (Constant)
         timeDim = 3;    % The location of the time dimension in the output array
     end
-    properties
+    properties (SetAccess = private)
         percentiles_;   % The queried percentiles
     end
 
@@ -81,12 +82,13 @@ classdef percentiles < dash.posteriorCalculation.Interface
             % Propagate over means from different time steps
             Aperc = Aperc + permute(Amean, [1 3 2]);
         end
-        function[obj] = percentiles(percs, header)
+        function[obj] = percentiles(percs)
             %% dash.posteriorCalculation.percentiles.percentiles  Create a new ensemble percentile calculation object
             % ----------
             %   obj = dash.posteriorCalculation.percentiles(percs)
             %   Creates a posterior percentile calculation object for the
-            %   requested ensemble percentiles.
+            %   requested ensemble percentiles. Assumes that all error
+            %   checking occurs in kalmanFilter.percentiles
             % ----------
             %   Inputs:
             %       percs (numeric vector): The percentages for which to
@@ -98,29 +100,6 @@ classdef percentiles < dash.posteriorCalculation.Interface
             %           object for the specified percentages.
             %
             % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.percentiles')">Documentation Page</a> 
-
-            % Default
-            if ~exist("header",'var') || isempty(header)
-                header = 'DASH:posteriorCalculation:percentiles';
-            end
-
-            % Error check
-            try
-                dash.assert.vectorTypeN(percs, 'numeric', [], 'percentiles', header);
-                dash.assert.defined(percs, 1, 'percentiles', header);
-                if any(percs<0) || any(percs>100)
-                    bad = find(percs<0 | percs>100, 1);
-                    id = sprintf('%s:invalidPercentile', header);
-                    error(id, ['Percentiles must be between 0 and 100 ',...
-                        'but percentile %.f is not in this interval.'], bad);
-                end
-
-            % Minimize error stack
-            catch ME
-                throwAsCaller(ME);
-            end
-
-            % Save the percentiles
             obj.percentiles_ = percs;
         end
     end
