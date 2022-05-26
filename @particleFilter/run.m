@@ -100,7 +100,7 @@ end
 function[] = priorFailedError(obj, p, cause, header)
 
 % Too large to fit in memory
-if strcmp(cause, "DASH:ensemble:load:arrayTooLarge")
+if strcmp(cause.identifier, "DASH:ensemble:load:priorTooLarge")
     if p == 1
         name = 'the prior';
     else

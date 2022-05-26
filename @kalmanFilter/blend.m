@@ -113,7 +113,7 @@ try
     
     % Return
     if ~exist('C','var')
-        varargout = {obj.Cblend, obj.Yblend, obj.blendingWeight, obj.whichBlend};
+        varargout = {obj.Cblend, obj.Yblend, obj.blendingWeights(:,1), obj.whichBlend};
 
     % Delete
     elseif dash.is.strflag(C) && strcmpi(C, 'reset')
@@ -124,7 +124,7 @@ try
         % Delete and reset time
         obj.Cblend = [];
         obj.Yblend = [];
-        obj.blendingWeight = [];
+        obj.blendingWeights = [];
         obj.whichBlend = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
                 && isempty(obj.whichInflate) && isempty(obj.whichLoc) && isempty(obj.whichSet)
@@ -175,6 +175,7 @@ try
         if any(weight<=0) || any(weight>=1)
             invalidWeightError(weight, header);
         end
+        weight = weight(:);
 
         % Note whether allowed to set time
         timeIsSet = true;
@@ -190,7 +191,7 @@ try
         % Save and build output
         obj.Cblend = C;
         obj.Yblend = Ycov;
-        obj.blendingWeight = weight;
+        obj.blendingWeights = [weight, 1-weight];
         varargout = {obj};
     end
 
