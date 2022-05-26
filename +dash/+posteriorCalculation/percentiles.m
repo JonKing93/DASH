@@ -3,7 +3,6 @@ classdef percentiles < dash.posteriorCalculation.Interface
     % ----------
     % percentiles methods:
     %   percentiles - Creates a new ensemble percentiles calculation object
-    %   outputName  - Indicates that "Aperc" should be used as the name of the output field
     %   outputSize  - Indicates that output has a size of nState x nPercs x nTime
     %   calculate   - Calculates percentiles across posterior ensembles
     %
@@ -14,20 +13,6 @@ classdef percentiles < dash.posteriorCalculation.Interface
     end
     properties (SetAccess = private)
         percentages;   % The queried percentiles
-    end
-
-    methods (Static)
-        function[name] = outputName(~)
-            %% dash.posteriorCalculation.percentiles.outputName  Return the name of the output field for posterior percentiles
-            % ----------
-            %   "Aperc" = obj.outputName
-            %   Indicates that the name of the output field for posterior
-            %   percentiles is "Aperc".
-            % ----------
-            %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.outputName')">Documentation Page</a>
-            name = "Aperc";
-        end
     end
 
     methods

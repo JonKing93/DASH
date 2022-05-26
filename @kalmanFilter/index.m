@@ -86,6 +86,10 @@ function[varargout] = index(obj, name, type, varargin)
 %
 % <a href="matlab:dash.doc('kalmanFilter.index')">Documentation Page</a>
 
+%%%%% Parameter: Calculator name header
+nameHeader = "index_";
+%%%%%
+
 % Setup
 header = "DASH:kalmanFilter:index";
 dash.assert.scalarObj(obj, header);
@@ -93,7 +97,7 @@ dash.assert.scalarObj(obj, header);
 % Get the names of current indices. Strip "index_" header
 indices = obj.calculationType==2;
 names = obj.calculationNames(indices);
-names = eraseBetween(names, 1, 6);
+names = eraseBetween(names, 1, strlength(nameHeader));
 
 % Return names.
 if ~exist('name','var')
@@ -105,7 +109,7 @@ end
 % the name is already an index
 type = dash.assert.strflag(name, 'type', header);
 userName = dash.assert.strflag(name, 'name', header);
-name = strcat("index_", userName);
+name = strcat(nameHeader, userName);
 [isindex, k] = ismember(name, obj.calculationNames);
 
 % Delete. Check inputs
@@ -134,7 +138,7 @@ else
 
     % Error check and update index based on type
     if strcmpi(type, 'mean')
-        obj = processMean(obj, header, name, varargin);
+        obj = processMean(obj, header, varargin);
     end
 
     % Update the name

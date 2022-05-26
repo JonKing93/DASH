@@ -40,12 +40,15 @@ function[varargout] = percentiles(obj, percentages)
 %
 % <a href="matlab:dash.doc('kalmanFilter.percentiles')">Documentation Page</a>
 
+%%%%% Parameter: Calculator name
+name = "Aperc";
+%%%%%
+
 % Setup
 header = "DASH:kalmanFilter:percentiles";
 dash.assert.scalarObj(obj, header);
 
 % Check for an existing percentiles calculator
-name = dash.posteriorCalculation.percentiles.outputName;
 [hasCalculator, k] = ismember(name, obj.calculationNames);
 
 % Return status

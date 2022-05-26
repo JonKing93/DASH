@@ -3,7 +3,6 @@ classdef weightedMean < dash.posteriorCalculation.Interface
     % ----------
     % weightedMean methods:
     %   weightedMean    - Creates a new weighted mean index calculation object
-    %   outputName      - Returns the name of the output field for the weighted mean
     %   outputSize      - Indicates that output has a size of nMembers x nTime
     %   calculate       - Calculates a weighted mean for each member of a posterior ensemble
     %
@@ -13,7 +12,6 @@ classdef weightedMean < dash.posteriorCalculation.Interface
         timeDim = 2;    % The time dimension of the output array
     end
     properties (SetAccess = private)
-        name;       % The user-specified name of the index
         rows;       % State vector rows to use in a mean
         weights;    % Weights to use for a mean
         nanflag;    % Whether to include or exclude NaN elements
@@ -44,20 +42,6 @@ classdef weightedMean < dash.posteriorCalculation.Interface
     end
 
     methods
-        function[name] = outputName(obj)
-            %% dash.posteriorCalculation.weightedMean.outputName  Return the name of the output field for weighted mean index
-            % ----------
-            %   name = obj.outputName
-            %   Returns a name for the output field for the weighted mean
-            %   index.
-            % ----------
-            %   Outputs:
-            %       name (string scalar): The name for the output field for
-            %           the weighted mean index. Uses: index_<name>
-            %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean.outputName')">Documentation Page</a>
-            name = strcat("index_", obj.name);
-        end
         function[index] = calculate(obj, Adev, Amean)
             %% dash.posteriorCalculation.weightedMean.calculate  Calculate a weighted mean index over each member in a posterior ensemble
             % ----------
@@ -100,16 +84,15 @@ classdef weightedMean < dash.posteriorCalculation.Interface
             meanSum = sum(w.*Amean, 1, obj.nanflag) ./ denom;
             index = devSum' + meanSum;
         end
-        function[obj] = weightedMean(name, rows, weights, nanflag
+        function[obj] = weightedMean(rows, weights, nanflag
             %% dash.posteriorCalculation.weightedMean.weightedMean  Create a new weighted mean index calculation object
             % ----------
-            %   obj = dash.posteriorCalculation.weightedMean(name, rows, weights, nanflag)
+            %   obj = dash.posteriorCalculation.weightedMean(rows, weights, nanflag)
             %   Creates a new calculation object for a weighted mean index.
             %   Assumes that all error checking of inputs occurs in
             %   kalmanFilter.index
             % ----------
             %   Inputs:
-            %       name (string scalar): The name for the index
             %       rows (vector, linear indices): The state vector rows
             %           used in the mean
             %       weights (numeric vector [nRows]): Weights for a
@@ -122,7 +105,6 @@ classdef weightedMean < dash.posteriorCalculation.Interface
             %           index calculation object
             %
             % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean.weightedMean')">Documentation Page</a> 
-            obj.name = name;
             obj.rows = rows;
             obj.weights = weights;
             obj.nanflag = nanflag;

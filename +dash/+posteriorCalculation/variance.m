@@ -2,7 +2,6 @@ classdef variance < dash.posteriorCalculation.Interface
     %% dash.posteriorCalculation.variance  Calculates variance across a posterior ensemble
     % ----------
     % variance methods:
-    %   outputName  - Indicates that "Avar" should be used as the name of the output field
     %   outputSize  - Indicates that output has a size of nState x nTime
     %   calculate   - Calculates variance across posterior ensembles
     %
@@ -33,17 +32,6 @@ classdef variance < dash.posteriorCalculation.Interface
             %
             % <a href="matlab:dash.doc('dash.posteriorCalculation.variance.outputsize')">Documentation Page</a> 
             siz = [nState, nTime];
-        end
-        function[name] = outputName(~)
-            %% dash.posteriorCalculation.variance.outputName  Return the name of the output field for posterior variance
-            % ----------
-            %   "Avar" = obj.outputName
-            %   Indicates that the name of the output field for posterior
-            %   variance is "Avar".
-            % ----------
-            %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.variance.outputName')">Documentation Page</a>
-            name = "Avar";
         end
         function[Avar] = calculate(~, Adev, Amean)
             %% dash.posteriorCalculation.variance.calculate  Calculate the variance across a set of ensemble deviations

@@ -25,16 +25,12 @@ classdef (Abstract) Interface
     %      array corresponds to assimilation time steps. This allows the 
     %      Kalman filter to record calculated output for different time
     %      steps. 
-    %   4. Calculations must implement an "outputName" property which
-    %      indicates the name the kalman filter should assign the output
-    %      field for the calculation.
     % ----------
     % Interface properties:
     %   timeDim     - The index of the time dimension in the calculation output
     %
     % Interface methods:
     %   outputSize  - Indicates the size of the output array
-    %   outputName  - Indicates the name of the output field
     %   calculate   - Performs the calculation on a set of ensemble deviations
     %
     % <a href="matlab:dash.doc('dash.posteriorCalculation.Interface')>Documentation Page</a>
@@ -45,7 +41,6 @@ classdef (Abstract) Interface
 
     methods (Abstract)
         siz = outputSize(obj, nState, nMembers, nTime);
-        name = outputName(obj);
         value = calculate(obj, Adev, Amean);
     end
 end

@@ -39,12 +39,15 @@ function[varargout] = variance(obj, returnVariance)
 %
 % <a href="matlab:dash.doc('kalmanFilter.variance')">Documentation Page</a>
 
+%%%%% Parameter: Calculator name
+name = "Avar";
+%%%%%
+
 % Setup
 header = "DASH:kalmanFilter:variance";
 dash.assert.scalarObj(obj, header);
 
 % Check for an existing variance calculation
-name = dash.posteriorCalculation.variance.outputName;
 [hasCalculator, k] = ismember(name, obj.calculationNames);
 
 % Return current status
