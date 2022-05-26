@@ -13,7 +13,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
         timeDim = 3;    % The location of the time dimension in the output array
     end
     properties (SetAccess = private)
-        percentiles_;   % The queried percentiles
+        percentages;   % The queried percentiles
     end
 
     methods (Static)
@@ -77,21 +77,21 @@ classdef percentiles < dash.posteriorCalculation.Interface
             % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.calculate')">Documentation Page</a> 
 
             % Get deviation percentiles
-            Aperc = prctile(Adev, obj.percentiles_, 2);
+            Aperc = prctile(Adev, obj.percentages, 2);
 
             % Propagate over means from different time steps
             Aperc = Aperc + permute(Amean, [1 3 2]);
         end
-        function[obj] = percentiles(percs)
+        function[obj] = percentiles(percentages)
             %% dash.posteriorCalculation.percentiles.percentiles  Create a new ensemble percentile calculation object
             % ----------
-            %   obj = dash.posteriorCalculation.percentiles(percs)
+            %   obj = dash.posteriorCalculation.percentiles(percentages)
             %   Creates a posterior percentile calculation object for the
             %   requested ensemble percentiles. Assumes that all error
             %   checking occurs in kalmanFilter.percentiles
             % ----------
             %   Inputs:
-            %       percs (numeric vector): The percentages for which to
+            %       percentages (numeric vector): The percentages for which to
             %           compute percentiles. All values must be on the
             %           interval 0 <= percs <= 100.
             %
@@ -100,7 +100,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
             %           object for the specified percentages.
             %
             % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.percentiles')">Documentation Page</a> 
-            obj.percentiles_ = percs;
+            obj.percentages = percentages;
         end
     end
 end
