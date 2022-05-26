@@ -50,3 +50,4 @@ Scalar return values don't require scalarObjs (for example, returning a label)
 Add PSMs to optimal sensor
 Kalman filter localize, blend, and setCovariance could allow NaN values for sites that don't occur in the same time steps
     - could generalize the ensembleFilter.assertValidR method
+Method to calculate calibration ratio without updating ensemble
