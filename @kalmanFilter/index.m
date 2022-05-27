@@ -91,7 +91,7 @@ header = "DASH:kalmanFilter:index";
 dash.assert.scalarObj(obj, header);
 
 % Get the names of current indices. Strip "index_" header
-indices = obj.calculationType==2;
+indices = obj.calculationTypes==2;
 names = obj.calculationNames(indices);
 names = eraseBetween(names, 1, strlength(obj.indexHeader));
 
@@ -147,7 +147,7 @@ varargout = {obj};
 end
 
 %% Utility functions
-function[obj] = processMean(obj, header, varargin)
+function[obj] = processMean(obj, header, inputs)
 
 % Require a prior
 try
@@ -161,8 +161,8 @@ try
     
     % Parse the inputs
     flags = ["rows", "weights", "nanflag"];
-    defaults = {1:obj.nState, [], 'includenan'};
-    [rows, weights, nanflag] = dash.parse.nameValue(varargin, flags, defaults, 2, header);
+    defaults = {(1:obj.nState)', [], 'includenan'};
+    [rows, weights, nanflag] = dash.parse.nameValue(inputs, flags, defaults, 2, header);
     
     % Error check the rows
     logicalReq = 'have one element per state vector row';
