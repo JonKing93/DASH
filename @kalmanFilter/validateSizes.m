@@ -1,4 +1,4 @@
-function[varargout] = validateSizes(varargout, type, name, header)
+function[outputs] = validateSizes(outputs, type, name, header)
 
 % Nothing require if returning values
 if strcmp(type, 'return')
@@ -6,17 +6,17 @@ if strcmp(type, 'return')
 end
 
 % Otherwise, get the updated object and sizes set by covariance options
-obj = varargout{1};
+obj = outputs{1};
 [nSite, nState, nTime] = covarianceSizes(obj);
 
 % If deleting, restore sizes that are still set by covariance options
 if strcmp(type, 'delete')
     obj = restoreSizes(obj, nSite, nState, nTime);
-    varargout = {obj};
+    outputs = {obj};
 
 % If setting, check for size conflicts with covariance methods
 elseif strcmp(type, 'set')
-    ME = assertValidSizes(obj, name, header);
+    ME = assertValidSizes(obj, nSite, nState, nTime, name, header);
     if ~isempty(ME)
         throwAsCaller(ME);
     end
@@ -64,7 +64,7 @@ if nState > 0
     obj.nState = nState;
 end
 end
-function[ME] = assertValidSizes(obj, name, header)
+function[ME] = assertValidSizes(obj, nSite, nState, nTime, name, header)
 
 % Initialize output
 ME = [];

@@ -110,7 +110,7 @@ varargout = obj.validateSizes(varargout, type, 'prior(s)', header);
 % If deleting or setting, extract the updated object and locate posterior indices
 if strcmp(type,'delete') || strcmp(type, 'set')
     obj = varargout{1};
-    indices = find(obj.calculationTypes==3);
+    indices = find(obj.calculationTypes==2);
 
     % If deleting, remove all posterior indices
     if strcmp(type, 'delete')

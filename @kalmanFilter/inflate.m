@@ -66,7 +66,7 @@ try
         end
 
         % Delete and reset time
-        obj.factor = [];
+        obj.inflationFactor = [];
         obj.whichFactor = [];
         if isempty(obj.Y) && isempty(obj.whichR) && isempty(obj.whichPrior) ...
                 && isempty(obj.whichLoc) && isempty(obj.whichBlend) && isempty(obj.whichSet)
@@ -90,7 +90,7 @@ try
         % Error check
         dash.assert.vectorTypeN(factor, 'numeric', NaN, 'factor', header);
         dash.assert.defined(factor, 1, 'factor', header);
-        if any(factor<=1)
+        if any(factor<1)
             smallFactorError(factor, header);
         end
 
@@ -102,7 +102,7 @@ try
         end
 
         % Error check and process whichFactor
-        obj = obj.processWhich(whichFactor, 'whichFactor', numel(inflate), ...
+        obj = obj.processWhich(whichFactor, 'whichFactor', numel(factor), ...
                             'inflation factors', timeIsSet, false, header);
 
         % Save and build output
@@ -134,14 +134,14 @@ ME = MException(id, ['You cannot implement an inflation factor for %s because ',
 throwAsCaller(ME);
 end
 function[] = smallFactorError(factor, header)
-bad = find(factor<=1, 1);
+bad = find(factor<1, 1);
 if numel(factor)==1
     name = 'the factor';
 else
     name = sprintf('factor %.f', bad);
 end
 id = sprintf('%s:factorTooSmall', header);
-ME = MException(id, 'Inflation factors must be greater than 1, but %s is not ',...
-    'greater than 1.', name);
+ME = MException(id, ['Inflation factors must be greater than 1, but %s is not ',...
+    'greater than 1.'], name);
 throwAsCaller(ME);
 end

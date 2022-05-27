@@ -101,7 +101,7 @@ else
 end
 
 % Parse the uncertainties
-varargout = uncertainties@dash.ensembleFilter(obj, header, inputs{:});
+[varargout, type] = uncertainties@dash.ensembleFilter(obj, header, inputs{:});
 varargout = obj.validateSizes(varargout, type, 'uncertainties', header);
 
 end

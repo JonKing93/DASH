@@ -55,7 +55,7 @@ dash.assert.scalarObj(obj, header);
 if ~exist('percentages','var')
     percentages = [];
     if hasCalculator
-        percentages = obj.calculations{k}.percentiles_;
+        percentages = obj.calculations{k}.percentages;
     end
     varargout = {percentages};
     return
@@ -83,7 +83,7 @@ else
     end
 
     % Overwrite or create new calculator
-    calculator = dash.posteriorCalculaton.percentiles(percentages);
+    calculator = dash.posteriorCalculation.percentiles(percentages);
     if hasCalculator
         obj.calculations{k} = calculator;
     else
