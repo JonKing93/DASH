@@ -2,7 +2,7 @@ function[varargout] = estimates(obj, Ye, whichPrior)
 %% kalmanFilter.estimates  Set or return the estimates for a Kalman filter
 % ----------
 %   obj = obj.estimates(Ye)
-%   Provides a set of observation estimates (Ye) for a kalman filter.
+%   Provides a set of observation estimates (Ye) for a Kalman filter.
 %   Overwrites any previously input estimates. Each row hold the estimates
 %   for a particular site, and each column holds the estimates for an
 %   ensemble member. Each element along the third dimension holds the
@@ -26,7 +26,7 @@ function[varargout] = estimates(obj, Ye, whichPrior)
 %   Deletes any current estimates from the Kalman filter object.
 % ----------
 %   Inputs:
-%       Ye (numeric matrix [nSite x nMembers x 1|nTime|nPrior]): Proxy
+%       Ye (numeric array [nSite x nMembers x 1|nTime|nPrior]): Proxy
 %           estimates for the Kalman filter. A numeric array with one row
 %           per site, and one column per ensemble member. Each element
 %           along the third dimension holds the estimates for a unique
@@ -48,7 +48,7 @@ function[varargout] = estimates(obj, Ye, whichPrior)
 %       obj (scalar kalmanFilter object): The kalmanFilter object with
 %           updated estimates
 %       Ye (numeric matrix [nSite x nMembers x 1|nTime|nPrior]): The
-%           current estimates forthe kalmanFilter object. If you have not
+%           current estimates for the kalmanFilter object. If you have not
 %           provided estimates, an empty array.
 %       whichPrior (vector, positive integers [nTime] | []): Indicates
 %           which set of estimates (i.e. which prior) is used in each
@@ -70,6 +70,18 @@ else
 end
 
 % Parse the estimates
-varargout = estimates@dash.ensembleFilter(obj, header, inputs{:});
+[varargout, type] = estimates@dash.ensembleFilter(obj, header, inputs{:});
+
+% Restore deleted sizes that are still set by covariance options
+if strcmp(type, 'delete')
+    obj = varargout{1};
+    obj = obj.restoreSizes;
+    varargout = {obj};
+
+% Check for size conflicts with covariance settings
+elseif strcmp(type, 'set')
+    obj = varargout{1};
+    obj.assertValidSizes('estimates', header);
+end
 
 end

@@ -23,7 +23,7 @@ function[varargout] = observations(obj, Y)
 % ----------
 %   Inputs:
 %       Y (numeric matrix [nSite x nTime]): The proxy observations to use
-%           in an assimilation filter. A numeric matrix with one row per
+%           in a particle filter. A numeric matrix with one row per
 %           proxy site, and one column per assimilated time steps. Use NaN
 %           for records that lack an observation in a particular time step.
 %           Inf and complex values are not allowed.

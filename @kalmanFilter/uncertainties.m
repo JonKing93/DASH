@@ -103,4 +103,16 @@ end
 % Parse the uncertainties
 varargout = uncertainties@dash.ensembleFilter(obj, header, inputs{:});
 
+% Restore deleted sizes that are still set by covariance options
+if strcmp(type, 'delete')
+    obj = varargout{1};
+    obj = obj.restoreSizes;
+    varargout = {obj};
+
+% Check for size conflicts with covariance settings
+elseif strcmp(type, 'set')
+    obj = varargout{1};
+    obj.assertValidSizes('observations', header);
+end
+
 end
