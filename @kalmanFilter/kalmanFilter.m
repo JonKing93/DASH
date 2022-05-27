@@ -1,30 +1,92 @@
 classdef kalmanFilter < dash.ensembleFilter
+    %% kalmanFilter  Implement offline ensemble square root Kalman filters
+    % ----------
+    %   Intro
+    % ----------
+    %
+  
 
     properties (SetAccess = private)
 
-        % Inflation
-        isinflated = false;
-        inflationFactor = [];
-        whichInflate = [];
+        %% Inflation
 
-        % Localization
-        islocalized = false;
-        wloc = [];
-        yloc = [];
-        whichLoc = [];
+        inflationFactor;
+        whichFactor;
 
-        % Blending
-        isblended = false;
-        blendC = [];
-        blendY = [];
-        blendWeights = [];
+        %% Localization
 
-        % Set covariance
+        wloc;
+        yloc;
+        whichLoc;
+
+        %% Blending
+
+        Cblend;
+        Yblend;
+        blendingWeights;
+        whichBlend;
+
+        %% Set covariance
+
+        Cset;
+        Yset;
+        whichSet;
+
+        %% Deviations
+
+        returnDeviations = false;
+
+        %% Posterior calculators
+
+        calculations = cell(0,1);
+        calculationNames = strings(0,1);
+        calculationTypes = NaN(0,1);
     end
     properties (Constant)
         indexHeader = "index_";
     end
 
+    methods
+
+        % General
+        varargout = label(obj, varargout);
+        name = name(obj);
+
+        % Data Inputs
+        varargout = observations(obj, Y);
+        varargout = estimates(obj, Ye, whichPrior);
+        varargout = prior(obj, X, whichPrior);
+        varargout = uncertainties(obj, R, whichR);
+
+        % Covariance adjustments
+        [varargout] = inflate(obj, factor, whichFactor)
+        [varargout] = localize(obj, wloc, yloc, whichLoc)
+        [varargout] = blend(obj, C, Ycov, weight, whichBlend)
+        [varargout] = setCovariance(obj, C, Ycov, whichSet)
+
+        % General covariance
+        [varargout] = covariance(obj, t, s)
+        [Knum, Ycov] = estimateCovariance(obj, t, s, Xdev, Ydev)
+        [whichCov, nCov] = uniqueCovariances(obj, t)
+
+        % Outputs
+        [varargout] = deviations(obj, returnDeviations)
+        [varargout] = variance(obj, returnVariance)
+        [varargout] = percentiles(obj, percentages)
+        [varargout] = index(obj, name, type, varargin)
+
+        % Run
+        output = run(obj);
+
+        % Console display
+        % disp
+
+    end
+
+    methods (Static)
+        varargout = validateSizes(varargout, type, name, header);
+        tests;
+    end
 
 
     % Constructor
