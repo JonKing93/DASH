@@ -84,7 +84,7 @@ classdef weightedMean < dash.posteriorCalculation.Interface
             meanSum = sum(w.*Amean, 1, obj.nanflag) ./ denom;
             index = devSum' + meanSum;
         end
-        function[obj] = weightedMean(rows, weights, nanflag
+        function[obj] = weightedMean(rows, weights, nanflag)
             %% dash.posteriorCalculation.weightedMean.weightedMean  Create a new weighted mean index calculation object
             % ----------
             %   obj = dash.posteriorCalculation.weightedMean(rows, weights, nanflag)
