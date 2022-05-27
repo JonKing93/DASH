@@ -86,10 +86,6 @@ function[varargout] = index(obj, name, type, varargin)
 %
 % <a href="matlab:dash.doc('kalmanFilter.index')">Documentation Page</a>
 
-%%%%% Parameter: Calculator name header
-nameHeader = "index_";
-%%%%%
-
 % Setup
 header = "DASH:kalmanFilter:index";
 dash.assert.scalarObj(obj, header);
@@ -97,7 +93,7 @@ dash.assert.scalarObj(obj, header);
 % Get the names of current indices. Strip "index_" header
 indices = obj.calculationType==2;
 names = obj.calculationNames(indices);
-names = eraseBetween(names, 1, strlength(nameHeader));
+names = eraseBetween(names, 1, strlength(obj.indexHeader));
 
 % Return names.
 if ~exist('name','var')
@@ -107,9 +103,9 @@ end
 
 % Error check the name and type. Add "index_" header to name and check if
 % the name is already an index
-type = dash.assert.strflag(name, 'type', header);
+type = dash.assert.strflag(type, 'type', header);
 userName = dash.assert.strflag(name, 'name', header);
-name = strcat(nameHeader, userName);
+name = strcat(obj.indexHeader, userName);
 [isindex, k] = ismember(name, obj.calculationNames);
 
 % Delete. Check inputs
@@ -153,13 +149,13 @@ end
 %% Utility functions
 function[obj] = processMean(obj, header, varargin)
 
-% Require nState to be set
+% Require a prior
 try
-    if obj.nState==0
-        id = sprintf('%s:noStateVector', header);
-        ME = MException(id, ['Cannot implement a "mean" index until the number of ',...
-            'state vector elements has been set. Consider using the "kalmanFilter.prior" ',...
-            'command before specifying a mean index.']);
+    if isempty(obj.X)
+        link = '<a href="matlab:dash.doc(''kalmanFilter.prior'')">prior</a>';
+        id = sprintf('%s:noPrior', header);
+        ME = MException(id, ['Cannot implement a "mean" index until a prior has ',...
+            'been provided. Consider using the %s command first.'], link);
         throwAsCaller(ME);
     end
     

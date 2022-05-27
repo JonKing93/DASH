@@ -21,6 +21,9 @@ classdef kalmanFilter < dash.ensembleFilter
 
         % Set covariance
     end
+    properties (Constant)
+        indexHeader = "index_";
+    end
 
 
 
