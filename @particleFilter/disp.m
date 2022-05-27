@@ -21,17 +21,25 @@ function[] = disp(obj)
 % Get class documentation link
 link = '<a href="matlab:dash.doc(''particleFilter'')">particleFilter</a>';
 
-% Display the filter
-obj.dispFilter(link);
+% If scalar, get width parameters
+width = [];
+if isscalar(obj)
+    weightsName = 'Weighting Scheme';
+    width = strlength(weightsName);
+end
+
+% Display data inputs and sizes
+width = obj.dispFilter(link, width);
 
 % If scalar, also display the weighting Scheme
 if isscalar(obj)
+    format = sprintf('    %%%.fs: ', width);
     if obj.weightType==0
         details = 'Bayesian';
     else
         details = sprintf('Best %.f particles', obj.weightArgs{1});
     end
-    fprintf('    Weighting scheme: %s\n\n', details);
+    fprintf([format, '%s\n\n'], weightsName, details);
 end
 
 end
