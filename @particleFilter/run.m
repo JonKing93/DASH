@@ -115,6 +115,7 @@ if strcmp(cause.identifier, "DASH:ensemble:load:priorTooLarge")
         'smaller portions of the state vector one at a time. The built-in %s command can be ',...
         'particularly helpful for saving/loading pieces of large arrays sequentially.'],...
         obj.name, name, link);
+    ME = addCause(ME, cause);
     throwAsCaller(ME);
 
 % Other DASH errors - likely an issue with the ensemble's matfile
