@@ -63,6 +63,7 @@ classdef kalmanFilter < dash.ensembleFilter
         [varargout] = localize(obj, wloc, yloc, whichLoc)
         [varargout] = blend(obj, C, Ycov, weight, whichBlend)
         [varargout] = setCovariance(obj, C, Ycov, whichSet)
+        obj = processWhich(obj, whichArg, field, nIndex, indexType, timeIsSet, whichIsSet, header);
 
         % General covariance
         [varargout] = covariance(obj, t, s)
@@ -79,7 +80,7 @@ classdef kalmanFilter < dash.ensembleFilter
         output = run(obj);
 
         % Console display
-        % disp
+        disp(obj);
 
     end
 
