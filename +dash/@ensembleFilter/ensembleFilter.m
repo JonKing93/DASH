@@ -30,6 +30,9 @@ classdef (Abstract) ensembleFilter
     %   Rcovariance     - Returns an R covariance matrix for queried time steps and sites
     %   loadPrior       - Loads a prior from an evolving set
     %
+    % Console Display:
+    %   dispFilter      - Display details about a filter object in the console
+    %
     % Tests:
     %   tests           - Unit tests for the ensembleFilter class
     %
@@ -88,6 +91,9 @@ classdef (Abstract) ensembleFilter
         % Query values
         Rcov = Rcovariance(obj, t, s);
         X = loadPrior(obj, p);
+
+        % Console display
+        dispFilter(obj, link);
     end
 
     methods (Static)
