@@ -93,7 +93,7 @@ classdef (Abstract) ensembleFilter
         X = loadPrior(obj, p);
 
         % Console display
-        dispFilter(obj, link);
+        width = dispFilter(obj, link, width);
     end
 
     methods (Static)

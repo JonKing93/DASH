@@ -1,12 +1,13 @@
-function[] = dispFilter(obj, link)
+function[width] = dispFilter(obj, link, width)
 %% ensembleFilter.dispFilter  Displays details about an ensembleFilter in the console
 % ----------
-%   obj.dispFilter(link)
+%   width = obj.dispFilter(link, width)
 %   Displays details about an ensembleFilter object in the console. Begins
 %   by displaying a link to the class documentation. If the object
 %   is scalar, displays the label (if there is one). Also displays the current
 %   status of the observations, estimates, uncertainties, and prior.
-%   Displays assimilation sizes as they are set.
+%   Displays assimilation sizes as they are set. Aligns labels to match the
+%   same width.
 %
 %   If the object is an array, displays the array size. If any of the
 %   objects in the array have labels, displays the labels. Any object
@@ -14,7 +15,13 @@ function[] = dispFilter(obj, link)
 %   declares that the array is empty.
 % ----------
 %   Inputs:
-%       link (string scalar): Class docuementation link
+%       link (string scalar): Class documentation link
+%       width (scalar positive integer | []): The maximum width of labels
+%           in subclass disp methods. Only used for scalar display.
+%
+%   Outputs:
+%       width (scalar positive integer): The maximum width for aligning
+%           fields after also considering dispFilter fields.
 %
 %   Outputs:
 %       Displays the object in the console
@@ -30,9 +37,48 @@ end
 % Title
 fprintf('%s with properties:\n\n', link);
 
+% Names for field labels
+label = "Label";
+observations = "Observations";
+uncertainties = "Uncertainties";
+prior = "Prior";
+estimates = "Estimates";
+
+nSite = "Observation Sites";
+nState = "State Vector Length";
+nMembers = "Ensemble Members";
+nPrior = "Priors";
+nTime = "Time Steps";
+
+% Get the maximum width of the displayed fields
+maxWidth = max(strlength([observations, uncertainties, prior, estimates]));
+if ~strcmp(obj.label_, "")
+    maxWidth = max(maxWidth, strlength(label));
+end
+if obj.nSite > 0
+    maxWidth = max(maxWidth, strlength(nSite));
+end
+if obj.nState > 0
+    maxWidth = max(maxWidth, strlength(nState));
+end
+if obj.nMembers > 0
+    maxWidth = max(maxWidth, strlength(nMembers));
+end
+if obj.nPrior > 0
+    maxWidth = max(maxWidth, strlength(nPrior));
+end
+if obj.nTime > 0
+    maxWidth = max(maxWidth, strlength(nTime));
+end
+width = max(width, maxWidth);
+
+% Get the labeling format for the widths
+format = sprintf('    %%%.fs: %%s\\n', width);
+
 % Label
 if ~strcmp(obj.label_, "")
-    fprintf('            Label: %s\n\n', obj.label_);
+    fprintf(format, label, obj.label_); %#ok<*CTPCT> 
+    fprintf('\n');
 end
 
 % Observations
@@ -41,7 +87,7 @@ if isempty(obj.Y)
 else
     details = 'set';
 end
-fprintf('     Observations: %s\n', details);
+fprintf(format, observations, details);
 
 % Prior
 if isempty(obj.X)
@@ -53,7 +99,7 @@ elseif isequal(obj.whichPrior(:), (1:obj.nTime)')
 else
     details = sprintf('evolving  (%.f priors)', obj.nPrior);
 end
-fprintf('            Prior: %s\n', details);
+fprintf(format, prior, details);
 
 % Estimates
 if isempty(obj.Ye)
@@ -65,7 +111,7 @@ elseif isequal(obj.whichPrior(:), (1:obj.nTime)')
 else
     details = sprintf('evolving  (%.f priors)', obj.nPrior);
 end
-fprintf('        Estimates: %s\n', details);
+fprintf(format, estimates, details);
 
 % Uncertainties
 if isempty(obj.R)
@@ -82,25 +128,27 @@ if obj.nR>1
         details = sprintf('%s  (%.f sets)', details, obj.nR);
     end
 end
-fprintf('    Uncertainties: %s\n\n', details);
+fprintf(format, uncertainties, details);
+fprintf('\n');
 
 % Sizes
+format = sprintf('    %%%.fs: %%.f\\n', width);
 siz = [obj.nSite, obj.nState, obj.nMembers, obj.nPrior, obj.nTime];
 if any(siz>0)
     if obj.nSite>0
-        fprintf('      Observation Sites: %.f\n', obj.nSite);
+        fprintf(format, nSite, obj.nSite);
     end
     if obj.nState>0
-        fprintf('    State Vector Length: %.f\n', obj.nState);
+        fprintf(format, nState, obj.nState);
     end
     if obj.nMembers>0
-        fprintf('       Ensemble Members: %.f\n', obj.nMembers);
+        fprintf(format, nMembers, obj.nMembers);
     end
     if obj.nPrior>0
-        fprintf('                 Priors: %.f\n', obj.nPrior);
+        fprintf(format, nPrior, obj.nPrior);
     end
     if obj.nTime>0
-        fprintf('             Time Steps: %.f\n', obj.nTime);
+        fprintf(format, nTime, obj.nTime);
     end
     fprintf('\n');
 end
