@@ -7,18 +7,10 @@ function[output] = run(obj, varargin)
 %   Requires the particle filter object to have observations, estimates,
 %   uncertainties, and a prior.
 %
-%   The following is a brief sketch of the particle filter algorithm:
-%   For a given assimilated time step, the method begins by calculating the
-%   innovations between the observations and estimates. The innovatios are
-%   then weighted by the R uncertainties. The method then computes the sum
-%   of the weighted innovations for each ensemble member. The result is the
-%   sum of squared errors (SSE) for each ensemble member - the SSE values
-%   measure the similarity of each ensemble member to the observations.
-%   Next, the method applies a weighting scheme to the SSE values to
-%   determine a weight for each ensemble member (the weight for each 
-%   particle). Finally, the method uses these particle weights to take a
-%   weighted mean across the ensemble. The final weighted mean is the
-%   updated state vector for that time step.
+%   If you would like details on the implementation of the algorithm, or
+%   for advice on troubleshooting large state vectors, please see the help
+%   text for the particleFilter class:
+%     >> help particleFilter
 %
 %   output = obj.run(..., 'sse', returnSSE)
 %   output = obj.run(..., 'sse', "return"|"r"|true)
@@ -111,8 +103,9 @@ if strcmp(cause.identifier, "DASH:ensemble:load:priorTooLarge")
     ME = MException(id, ['Cannot run %s because %s is too large ',...
         'to load into memory. It''s useful noting that the updates for each state ',...
         'vector element are independent of all the other state vector elements. Thus, ',...
-        'you can often circumvent memory issues by running the particle filter on ',...
-        'smaller portions of the state vector one at a time. The built-in %s command can be ',...
+        'you can often circumvent memory issues by dividing the state vector ',...
+        'into sevearl smaller peices, and running the particle filter on ',...
+        'each piece individually. The built-in %s command can be ',...
         'particularly helpful for saving/loading pieces of large arrays sequentially.'],...
         obj.name, name, link);
     ME = addCause(ME, cause);
