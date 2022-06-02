@@ -2,17 +2,13 @@ classdef particleFilter < dash.ensembleFilter
     %% particleFilter  Implement a particle filter assimilation
     % ----------
     %   The particleFilter class provides objects that perform particle
-    %   filter assimilations. The following is a brief sketch of the
-    %   particle filter algorithm: For an assimilated time step, the method
-    %   determines the differences between proxy observations and estimates
-    %   (known as the innovations). These innovations are then weighted by the
-    %   proxy uncertainties. The algorithm then calculates the sum of these
-    %   weighted innovations for each member of an ensemble. The smaller
-    %   the sum, the more closely the ensemble member resembles the
-    %   observation. The algorithm then uses these sums to compute a weight
-    %   for each ensemble member, and takes a weighted mean of the ensemble
-    %   members. This weighted mean is the updated state vector for that
-    %   time step.
+    %   filter assimilations. This assimilation method uses a Bayesian
+    %   formula to quantify the similarity of ensemble members (particles)
+    %   to a set of proxy observations. The state vector is then updated
+    %   using a weighted mean of the ensemble members. The weight of each
+    %   ensemble member is a function of its similarity to the proxy
+    %   observations. A more detailed sketch of the algorithm is provided
+    %   below.
     %
     %   Classical particle filters are often degenerate in paleoclimate
     %   contexts. Essentially, the best ensemble member receives a weight
@@ -27,7 +23,7 @@ classdef particleFilter < dash.ensembleFilter
     %   help implement the particle filter algorithm. These objects provide
     %   methods that allow users to provide data inputs (such as
     %   observations) to the filter, select algorithm parameters (such as
-    %   the weighting scheme), and run particle filter algorithms.
+    %   the weighting scheme), and run particle filter algorithms. 
     %
     %   OUTLINE:
     %   The following is a sketch for using the particleFilter class:   
@@ -45,15 +41,30 @@ classdef particleFilter < dash.ensembleFilter
     %     weights -- for example, testing a particle filter for degeneracy,
     %     or selecting ensemble members for use in an evolving prior.
     %
+    % The following is a sketch of the particle filter algorithm:
+    %   For an assimilated time step, the method determines the differences
+    %   between proxy observations and estimates (known as the innovations). 
+    %   These innovations are then weighted by the proxy uncertainties, and
+    %   the algorithm computes the sum of these weighted innovations for
+    %   each member of the ensemble. The result is the sum of squared
+    %   errors (SSE) for each ensemble member. The SSE values measure the
+    %   similarity of each ensemble member to the observations - the lower
+    %   its SSE value, the more closesly an ensemble member resembles the
+    %   observations. Next, the method applies a weighting scheme to the 
+    %   SSE values to determine a weight for each ensemble member. Finally,
+    %   the method uses these weights to take a weighted mean across the
+    %   ensemble. The final weighted mean is the updated state vector for
+    %   that time step.
+    %
     %   Troubleshooting large state vectors:
-    %   Large state vector ensembles can overwhelm computer memory and may
-    %   prevent a particle filter assimilation from running. If this
-    %   occurs, it is useful to note that the update for each state vector
-    %   element is independent of all other state vector elements. Thus,
-    %   you can often circumvent memory issues by assimilating a portion of
-    %   the rows of the state vector, saving the results, and then
-    %   assimilating the remaining rows. The built-in "matfile" command can
-    %   be helpful for saving/loading pieces of large ensembles.
+    %     Large state vector ensembles can overwhelm computer memory and may
+    %     prevent a particle filter assimilation from running. If this
+    %     occurs, it is useful to note that the update for each state vector
+    %     element is independent of all other state vector elements. Thus,
+    %     you can often circumvent memory issues by assimilating a portion of
+    %     the rows of the state vector, saving the results, and then
+    %     assimilating the remaining rows. The built-in "matfile" command can
+    %     be helpful for saving/loading pieces of large ensembles.
     % ----------
     % particleFilter Methods:
     %
@@ -88,8 +99,6 @@ classdef particleFilter < dash.ensembleFilter
     %   run             - Runs a particle filter assimilation
     %   computeWeights  - Calculate the particle weights in each time step
     %   sse             - Calculate the sum of squared errors for each particle in each time step
-    %
-    % 
     %
     %
     % ==UTILITY METHODS==
