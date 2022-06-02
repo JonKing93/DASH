@@ -9,7 +9,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
     % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles')">Documentation Page</a>
 
     properties (Constant)
-        timeDim = 3;    % The location of the time dimension in the output array
+        timeDimension = 3;    % The location of the time dimension in the output array
     end
     properties (SetAccess = private)
         percentages;   % The queried percentiles

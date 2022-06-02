@@ -9,7 +9,7 @@ classdef weightedMean < dash.posteriorCalculation.Interface
     % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean')">Documentation Page</a>
 
     properties (Constant)
-        timeDim = 2;    % The time dimension of the output array
+        timeDimension = 2;    % The time dimension of the output array
     end
     properties (SetAccess = private)
         rows;       % State vector rows to use in a mean

@@ -36,7 +36,7 @@ classdef (Abstract) Interface
     % <a href="matlab:dash.doc('dash.posteriorCalculation.Interface')>Documentation Page</a>
 
     properties (Abstract, Constant)
-        timeDim;  % The time dimension of the output array
+        timeDimension;  % The time dimension of the output array
     end
 
     methods (Abstract)
