@@ -24,6 +24,10 @@ function[outputs, type] = uncertainties(obj, header, R, whichR, type)
 %           Uncertainties for the filter
 %       whichR (vector, linear indices [nTime]): Indicates which set of
 %           uncertainties to use in each time step
+%       type (string scalar | scalar logical): Indicates whether the
+%           uncertainties are variances or covariances
+%           ["v"|"var"|"variance"|false]: Error variances
+%           ["c"|"cov"|"covariance"|true]: Error covariances
 %       
 %   Outputs:
 %       outputs (cell scalar): Varargout-style outputs
@@ -143,24 +147,9 @@ try
                 negativeVarianceError(R, isnegative, header);
             end
     
-        % Covariances sets must be symmetric matrices. Infill NaN with 1s to
-        % allow matrix comparison
+        % Covariances sets must be symmetric matrices with positive diagonals
         else
-            for c = 1:nR
-                Rc = R(:,:,c);
-                Rnan = isnan(Rc);
-                Rc(Rnan) = 1;
-                if ~issymmetric(Rnan) || ~issymmetric(Rc)
-                    notSymmetricError(c, header);
-                end
-    
-                % Also require diagonals to be NaN or positive
-                Rdiag = diag(Rc);
-                isnegative = Rdiag <= 0;
-                if any(isnegative)
-                    negativeDiagonalError(c, header);
-                end
-            end
+            dash.assert.covariances(R, 'R covariances', header);
         end
     
         % Save, note type, build output
@@ -203,19 +192,5 @@ badValue = R(bad);
 id = sprintf('%s:negativeVariance', header);
 ME = MException(id, ['R variances must be greater than 0, but element %.f ',...
     'of Rvar (%f) is not.'], bad, badValue);
-throwAsCaller(ME);
-end
-function[] = notSymmetricError(c, header)
-id = sprintf('%s:nonsymmetricCovariance', header);
-ME = MException(id, ['Each set of R covariances (elements along the third ',...
-    'dimension of Rcov) must be a symmetric matrix. However, covariance set %.f is not ',...
-    'a symmetric matrix.'], c);
-throwAsCaller(ME);
-end
-function[] = negativeDiagonalError(c, header)
-id = sprintf('%s:negativeVariance', header);
-ME = MException(id, ['R variances (the diagonal elements of each set of R ',...
-    'covariances) must be greater than zero, but the diagonal elements of ',...
-    'covariance set %.f are not all greater than zero.'], c);
 throwAsCaller(ME);
 end
