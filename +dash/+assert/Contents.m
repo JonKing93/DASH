@@ -30,6 +30,11 @@
 %   positiveIntegers        - Throw error if numeric array does not consist entirely of positive integers
 %   defined                 - Throw error if numeric array contains NaN, Inf, or complex values
 %
+% Covariances:
+%   symmetricMatrices       - Throw error if element along third dimension are not symmetric matrices
+%   positiveDiagonals       - Throw error if diagonal elements of matrices along the third dimension are not positive
+%   covariances             - Throw error if matrices along third dimensions are not symmetric with positive diagonals
+%
 % Indices:
 %   indices                 - Throw error if input is neither logical indices nor linear indices
 %   indexCollection         - Throw error if input is not a collection of indices

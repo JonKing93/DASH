@@ -33,6 +33,10 @@ integers;
 positiveIntegers;
 defined;
 
+symmetricMatrices;
+positiveDiagonals;
+covariances;
+
 indices;
 indexCollection;
 additiveIndices;
