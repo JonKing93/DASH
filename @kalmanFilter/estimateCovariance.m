@@ -40,7 +40,7 @@ if ~isempty(obj.Cset)
 
 % Otherwise, estimate covariance from ensemble deviations
 else
-    Ydev = Ydev(s,s);
+    Ydev = Ydev(s,:);
     unbias = dash.math.unbias(obj.nMembers);
     Knum = dash.math.covariance(Xdev, Ydev, unbias);
     Ycov = dash.math.covariance(Ydev, Ydev, unbias);
