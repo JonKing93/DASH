@@ -11,7 +11,7 @@ classdef variance < dash.posteriorCalculation.Interface
         timeDimension = 2;    % The time dimension of the output array
     end
 
-    methods (Static)
+    methods
         function[siz] = outputSize(~, nState, ~, nTime)
             %% dash.posteriorCalculation.variance.outputSize  Return the size of the variance output
             % ----------

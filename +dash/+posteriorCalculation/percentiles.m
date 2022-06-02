@@ -35,7 +35,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
             %           is nPercs, third element is nTime
             %
             % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.outputsize')">Documentation Page</a> 
-            nPercs = numel(obj.percentiles_);
+            nPercs = numel(obj.percentages);
             siz = [nState, nPercs, nTime];
         end
         function[Aperc] = calculate(obj, Adev, Amean)

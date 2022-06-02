@@ -17,7 +17,7 @@ classdef weightedMean < dash.posteriorCalculation.Interface
         nanflag;    % Whether to include or exclude NaN elements
     end
 
-    methods (Static)
+    methods
         function[siz] = outputSize(~, ~, nMembers, nTime)
             %% dash.posteriorCalculation.weightedMean.outputSize  Return the size of the output
             % ----------
@@ -39,9 +39,6 @@ classdef weightedMean < dash.posteriorCalculation.Interface
             % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean.outputsize')">Documentation Page</a> 
             siz = [nMembers, nTime];
         end
-    end
-
-    methods
         function[index] = calculate(obj, Adev, Amean)
             %% dash.posteriorCalculation.weightedMean.calculate  Calculate a weighted mean index over each member in a posterior ensemble
             % ----------
