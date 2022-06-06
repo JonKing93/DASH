@@ -55,6 +55,9 @@ end
 
 % Parse the SSE option
 returnSSE = dash.parse.nameValue(varargin, "sse", {false}, 0, header);
+switches = {["discard","d"], ["return","r"]};
+returnSSE = dash.parse.switches(returnSSE, switches, 1, ...
+                                 'returnSSE', 'recognized option', header);
 
 % Initialize output
 output = struct;
