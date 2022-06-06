@@ -28,7 +28,29 @@ function[output] = run(obj, varargin)
 %   for advice on troubleshooting large state vectors, please see the help
 %   text for the kalmanFilter class:
 %       >> help kalmanFilter
+%
+%   output = obj.run(..., 'complex', complexResponse)
+%   output = obj.run(..., 'complex', "error"|"e"|false)
+%   output = obj.run(..., 'complex', "skip"|"s"|true)
+%   Indicates how the method should respond if the adjusted Kalman gain
+%   becomes complex valued. This most often occurs because the R uncertainty
+%   covariances have negative eigenvalues. This option indicates how the
+%   method should respond if the adjusted gain becomes complex valued. If
+%   "error"|"e"|false, the method throws an error (this is the default
+%   behavior). If "skip"|"s"|true, the method will continue and will use a
+%   NaN update for ensemble deviations associated with a complex adjusted
+%   Kalman gain. The output will contain the "updatedDeviations" field,
+%   which indicates which assimilation time steps received a normal update
+%   to the ensemble deviations, and which time steps received a NaN update.
 % ----------
+%   Inputs:
+%       complexResponse (string scalar | scalar logical): Indicates how the
+%           method should respond if the adjusted Kalman gain is complex valued
+%           ["error"|"e"|false (default)]: Throws an error if the adjusted
+%               Kalman gain becomes complex valued
+%           ["skip"|"s"|true]: Uses a NaN update for ensemble deviations
+%               with a complex valued adjusted Kalman gain
+%
 %   Outputs:
 %       output (scalar struct): Output produced by the Kalman filter. 
 %           May include the following fields:
@@ -47,6 +69,13 @@ function[output] = run(obj, varargin)
 %           .index_<name> (numeric matrix [nMembers x nTime]): The full
 %               posterior of a given climate index calculated from the
 %               updated ensemble.
+%           .updatedDeviations (logical vector [nTime]): Included in the
+%               output if the adjusted Kalman gain becomes complex in any
+%               assimilation time steps. If the value for a time step is 
+%               true, the gain for the time step was real valued and the 
+%               ensemble deviations were updated. If the value is false,
+%               the gain for the time step was complex valued, and the
+%               ensemble deviations were given a NaN update.
 %
 % <a href="matlab:dash.doc('kalmanFilter.run')">Documentation Page</a>
 
@@ -63,6 +92,13 @@ for f = 1:numel(whichFields)
         obj.(field) = ones(obj.nTime, 1);
     end
 end
+
+% Parse the complex error options
+complexResponse = dash.parse.nameValue(varargin, "complex", {'error'}, 0, header);
+switches = {["error","e"], ["skip","s"]};
+allowComplex = dash.parse.switches(complexResponse, switches, 1, ...
+                              'complexResponse', 'allowed option', header);
+issuedComplexWarning = false;
 
 % Preallocate
 output = preallocateOutput(obj, header);
@@ -127,20 +163,29 @@ for p = 1:obj.nPrior
             s = sites(:, gt(1));
             R = obj.Rcovariance(timesGain(1), s);
 
-            % Compute the Kalman Gain
+            % Compute the Kalman Gain and adjusted gain
             Kdenom = Ycov(s,s) + R;
             K = Knum(:,s) / Kdenom;
             if updateDeviations
-                Ksqrt = sqrtm(Kdenom);
-                Ka = Knum(:,s) * (Ksqrt^(-1))' * (Ksqrt + sqrtm(R))^(-1);
+                Ka = dash.kalman.adjusted(Knum(:,s), Kdenom, R);
+
+                % Check the adjusted gain is not complex valued. If so,
+                % throw error or warn user once
+                if ~isreal(Ka)
+                    if ~allowComplex
+                        complexGainError(obj, timesGain(1), header);
+                    elseif ~issuedComplexWarning
+                        complexGainWarning;
+                        issuedComplexWarning = true;
+
+                        % If permitting the complex gain, initialize the
+                        % "updatedDeviations" output
+                        output.updatedDeviations = true(obj.nTime, 1);
+                    end
+                end
             end
 
-            % Check the adjusted gain is not complex valued
-            if ~isreal(Ka) && complexError
-                complexGainError;
-            end
-
-            % Initialize values for unupdated case
+            % Initialize values for no update (no observations) case
             nTimeUpdate = numel(timesGain);
             Amean = repmat(Xmean, [1, nTimeUpdate]);
             calibrationRatio = NaN(numel(s), nTimeUpdate);
@@ -157,9 +202,10 @@ for p = 1:obj.nPrior
                 % Update the deviations. Infill with NaN if Ka is complex
                 if updateDeviations
                     if isreal(Ka)
-                        Adev = Adev - Ka * Ydev(s,:);
+                        Adev = dash.kalman.updateDeviations(Adev, Ka, Ydev(s,:));
                     else
                         Adev(:) = NaN;
+                        output.updatedDeviations(timesGain) = false;
                     end
                 end
             end
@@ -265,5 +311,34 @@ catch cause
     ME = addCause(ME, cause);
     throwAsCaller(ME);
 end
+
+end
+function[] = complexGainError(obj, t, header)
+
+details = '';
+if obj.nR > 1
+    r = obj.whichR(t);
+    details = sprintf(['Time step %.f is associated with R covariance ',...
+        'matrix %.f. '], t, r);
+end
+
+id = sprintf('%s:complexGain', header);
+ME = MException(id, ['The adjusted gain for time step %.f is complex valued. ',...
+    'This most often occurs when the R covariance matrix for the time step ',...
+    'has negative eigenvalues. %sConsider adjusting the eigenvalues of the ',...
+    'R covariance matrix, or using a different covariance altogether.'],...
+    t, details);
+throwAsCaller(ME);
+
+end
+function[] = complexGainWarning(header)
+
+id = sprintf('%s:complexGain', header);
+warning(id, ['The adjusted Kalman Gain is complex valued in some time steps. ',...
+    'The ensemble deviations will receive a NaN update in those time steps. ',...
+    'The output struct will include the "updatedDeviations" field, which indicates ',...
+    'which assimilation time steps received normal updates, and which time steps ',...
+    'received NaN updates. True values indicate a normal update, and false values ',...
+    'indicate a NaN update.']);
 
 end
