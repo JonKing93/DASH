@@ -1,8 +1,8 @@
 function[] = disp(obj)
-%% kalmanFilter.disp  Displays a particle filter in the console
+%% kalmanFilter.disp  Displays a Kalman filter in the console
 % ----------
 %   obj.disp
-%   Displays a particle filter object in the console. If the object is
+%   Displays a Kalman filter object in the console. If the object is
 %   scalar, displays the label (if there is one). Also displays the current
 %   status of the observations, estimates, uncertainties, and prior.
 %   Displays assimilation sizes as they are set. Lists covariance options
