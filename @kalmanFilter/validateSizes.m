@@ -1,8 +1,50 @@
 function[outputs] = validateSizes(outputs, type, name, header)
+%% kalmanFilter.validateSizes  Preserve assimilation sizes set by covariance options
+% ----------
+%   ... = kalmanFilter.validateSizes(outputs, type)
+%   When using a dash.ensembleFilter data input method (such as
+%   observations, prior, estimates, or uncertainties), the method checks
+%   that all essential data inputs have compatible sizes. However,
+%   kalmanFilter objects can also set sizes via covariance options. This
+%   method ensures that covariance options have compatible sizes and is
+%   intended for use after the dash.ensembleFilter method.
+%
+%   outputs = kalmanFilter.validateSizes(outputs, 'delete')
+%   When performing a delete operation, maintains assimilation sizes that
+%   are set by the covariance options.
+%
+%   kalmanFilter.validateSizes(outputs, 'set')
+%   When performing a set operation, checks that new sizes are compatible
+%   with any sizes set by covariance options.
+%
+%   ... = kalmanFilter.validateSizes(..., name, header)
+%   Customize error messages and IDs.
+% ----------
+%   Inputs:
+%       outputs (cell vector): The output of a dash.ensembleFilter data
+%           input method (observations, prior, estimates, uncertainties)
+%       type ('delete' | 'set'): Indicates the type of operation performed
+%           by the dash.ensembleFilter data input method.
+%       name (string scalar): An identifying name for the data input
+%       header (string scalar): Header for thrown error IDs.
+%
+%   Outputs:
+%       outputs (cell vector): The kalmanFilter object output by a delete
+%           operation, but updated to include any sizes set by covariance options.
+%       
+% <a href="matlab:dash.doc('kalmanFilter.validateSizes')">Documentation Page</a>
 
-% Nothing require if returning values
+% Nothing required if returning values
 if strcmp(type, 'return')
     return
+end
+
+% Defaults
+if ~exist('name','var')
+    name = 'inputs';
+end
+if ~exist('header','var')
+    header = "DASH:kalmanFilter:validateSizes";
 end
 
 % Otherwise, get the updated object and sizes set by covariance options
