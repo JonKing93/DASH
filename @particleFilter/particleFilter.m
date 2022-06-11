@@ -41,7 +41,8 @@ classdef particleFilter < dash.ensembleFilter
     %     weights -- for example, testing a particle filter for degeneracy,
     %     or selecting ensemble members for use in an evolving prior.
     %
-    % The following is a sketch of the particle filter algorithm:
+    %   ALGORITHM SKETCH:
+    %   The following is a sketch of the particle filter algorithm:
     %   For an assimilated time step, the method determines the differences
     %   between proxy observations and estimates (known as the innovations). 
     %   These innovations are then weighted by the proxy uncertainties, and
@@ -56,15 +57,15 @@ classdef particleFilter < dash.ensembleFilter
     %   ensemble. The final weighted mean is the updated state vector for
     %   that time step.
     %
-    %   Troubleshooting large state vectors:
-    %     Large state vector ensembles can overwhelm computer memory and may
-    %     prevent a particle filter assimilation from running. If this
-    %     occurs, it is useful to note that the update for each state vector
-    %     element is independent of all other state vector elements. Thus,
-    %     you can often circumvent memory issues by assimilating a portion of
-    %     the rows of the state vector, saving the results, and then
-    %     assimilating the remaining rows. The built-in "matfile" command can
-    %     be helpful for saving/loading pieces of large ensembles.
+    %   TROUBLESHOOTING LARGE STATE VECTORS:
+    %   Large state vector ensembles can overwhelm computer memory and may
+    %   prevent a particle filter assimilation from running. If this
+    %   occurs, it is useful to note that the update for each state vector
+    %   element is independent of all other state vector elements. Thus,
+    %   you can often circumvent memory issues by splitting the state vector
+    %   into several smaller pieces and then assimilating each piece
+    %   individually. The built-in "matfile" command can be helpful for
+    %   saving/loading pieces of large ensembles iteratively.
     % ----------
     % particleFilter Methods:
     %
@@ -99,6 +100,9 @@ classdef particleFilter < dash.ensembleFilter
     %   run             - Runs a particle filter assimilation
     %   computeWeights  - Calculate the particle weights in each time step
     %   sse             - Calculate the sum of squared errors for each particle in each time step
+    %
+    % Console Display:
+    %   disp            - Display a particleFilter object in the console
     %
     %
     % ==UTILITY METHODS==
@@ -137,16 +141,17 @@ classdef particleFilter < dash.ensembleFilter
         varargout = prior(obj, X, whichPrior);
         varargout = uncertainties(obj, R, whichR);
 
-        % Select weighting scheme
+        % Weighting scheme
         obj = weights(obj, type, varargin)
+        obj = validateBestN(obj, type, name, header);
 
         % Calculations
         sse = sse(obj);
         [weights, sse] = computeWeights(obj);
         output = run(obj, varargin);
 
-        % Validate sizes
-        obj = validateBestN(obj, type, name, header);
+        % Console display
+        disp(obj);
     end
 
     methods (Static)
