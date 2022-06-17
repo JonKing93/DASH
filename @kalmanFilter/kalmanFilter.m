@@ -170,6 +170,16 @@ classdef kalmanFilter < dash.ensembleFilter
     %   validateSizes       - Preserves Kalman filter sizes set by covariance options
     %   finalizeCovariance  - Finalize empty which* covariance properties
     %
+    % Inherited:
+    %   dispFilter      - Display size and data input details in the console
+    %   assertValidR    - Throw error if observations are missing R values in required time steps
+    %   finalize        - Ensure essential data inputs are present for an analysis
+    %   loadPrior       - Load the requested prior from an evolving set
+    %   Rcovariance     - Return R uncertainty covariances for queried time steps and sites
+    %
+    % Tests:
+    %   tests           - Implement unit tests for the kalmanFilter class
+    %
     % <a href="matlab:dash.doc('kalmanFilter')">Documentation Page</a>
     
     properties (SetAccess = private)
