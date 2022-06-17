@@ -169,9 +169,9 @@ try
             weight = 0.5;
         end
         if isscalar(weight)
-            weight = repmat(weight, nLoc, 1);
+            weight = repmat(weight, nBlend, 1);
         end
-        dash.assert.vectorTypeN(weight, 'numeric', nLoc, 'weight', header);
+        dash.assert.vectorTypeN(weight, 'numeric', nBlend, 'weight', header);
         if any(weight<=0) || any(weight>=1)
             invalidWeightError(weight, header);
         end

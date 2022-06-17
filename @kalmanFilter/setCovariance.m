@@ -105,6 +105,7 @@ try
                 && isempty(obj.whichFactor) && isempty(obj.whichBlend) && isempty(obj.whichSet);
             obj.nTime = 0;
         end
+        varargout = {obj};
 
     % Set. Get default
     else

@@ -95,6 +95,7 @@ elseif obj.nSite==0
 % If t is empty, require time-independent covariance
 elseif isempty(t)
     checkTimeIndependence(obj, header);
+    t = 1;
 
 % If not empty, require time steps and check indices
 else
@@ -112,15 +113,11 @@ if isempty(obj.Cset) && (isempty(obj.X) || isempty(obj.Ye))
 end
 
 % If the filter does not have time steps, treat as a 1 time step filter.
+% Finalize empty covariance options
 if obj.nTime == 0
-    t = 1;
     obj.nTime = 1;
-    obj.whichSet = 1;
-    obj.whichPrior = 1;
-    obj.whichFactor = 1;
-    obj.whichLoc = 1;
-    obj.whichBlend = 1;
 end
+obj = obj.finalizeCovariance;
 
 % Default and error check the queried sites
 if ~exist('s','var') || isempty(s)
@@ -142,6 +139,7 @@ Ycov = NaN(nSite, nSite, nTime);
 [whichCov, nCov] = obj.uniqueCovariances(t);
 for c = 1:nCov
     times = whichCov == c;
+    nTimes = numel(times);
     t1 = find(times, 1);
     inputs = {t1, s};
 
@@ -161,8 +159,11 @@ for c = 1:nCov
     end
 
     % Estimate unique covariance for associated time steps
-    [C(:,:,times), Ycov(:,:,times)] = obj.estimateCovariance(inputs{:});
+    [Ct, Yt] = obj.estimateCovariance(inputs{:});
+    C(:,:,times) = repmat(Ct, [1 1 nTimes]);
+    Ycov(:,:,times) = repmat(Yt, [1 1 nTimes]);
 end
+varargout = {C, Ycov};
 
 end
 

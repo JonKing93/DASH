@@ -34,8 +34,8 @@ function[Knum, Ycov] = estimateCovariance(obj, t, s, Xdev, Ydev)
 
 % Load covariance directly if set by user
 if ~isempty(obj.Cset)
-    c = obj.whichCov(t);
-    Knum = obj.Cset(s,s,c);
+    c = obj.whichSet(t);
+    Knum = obj.Cset(:,s,c);
     Ycov = obj.Yset(s,s,c);
 
 % Otherwise, estimate covariance from ensemble deviations

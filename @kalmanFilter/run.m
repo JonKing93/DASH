@@ -85,13 +85,7 @@ dash.assert.scalarObj(obj, header);
 
 % Require a finalized filter
 obj = obj.finalize(true, 'running a Kalman filter', header);
-whichFields = ["whichFactor","whichLoc","whichBlend","whichSet"];
-for f = 1:numel(whichFields)
-    field = whichFields(f);
-    if isempty(obj.(field))
-        obj.(field) = ones(obj.nTime, 1);
-    end
-end
+obj = obj.finalizeCovariance;
 
 % Parse the complex error options
 complexResponse = dash.parse.nameValue(varargin, "complex", {'error'}, 0, header);

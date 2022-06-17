@@ -235,6 +235,7 @@ classdef kalmanFilter < dash.ensembleFilter
         [varargout] = covariance(obj, t, s)
         [Knum, Ycov] = estimateCovariance(obj, t, s, Xdev, Ydev)
         [whichCov, nCov] = uniqueCovariances(obj, t)
+        obj = finalizeCovariance(obj)
 
         % Outputs
         [varargout] = deviations(obj, returnDeviations)
