@@ -168,6 +168,7 @@ classdef kalmanFilter < dash.ensembleFilter
     %   estimateCovariance  - Estimate covariance for a set of ensemble deviations
     %   uniqueCovariances   - Locate unique covariance estimates for a given set of time steps
     %   validateSizes       - Preserves Kalman filter sizes set by covariance options
+    %   finalizeCovariance  - Finalize empty which* covariance properties
     %
     % <a href="matlab:dash.doc('kalmanFilter')">Documentation Page</a>
     
