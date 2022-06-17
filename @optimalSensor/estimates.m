@@ -114,25 +114,41 @@ else
 
     % Require positive variances
     if ~iscovariance
-        if any(R <= 0)
-            negativeVarianceError(R, header);
+        isnegative = R <= 0;
+        if any(isnegative)
+            negativeVarianceError(R, isnegative, header);
         end
 
     % Covariances must be a symmetric matrix with positive diagonals
     else
-        if ~issymmetric(R)
-            notSymmetricError(header);
-        end
-        Rdiag = diag(R);
-        if any(Rdiag <= 0 )
-            negativeDiagonalError(header);
-        end
+        dash.assert.covariances(R, 'R covariances', header);
     end
 
     % Save and build output
     obj.Ye = Ye;
     obj.R = R;
+    obj.Rtype = double(iscovariance);
     varargout = {obj};
 end
 
+end
+
+%% Error messages
+function[] = emptyEstimatesError(obj, header)
+id = sprintf('%s:emptyEstimates', header);
+ME = MException(id, 'The estimates for %s cannot be empty.', obj.name);
+throwAsCaller(ME);
+end
+function[] = emptyUncertaintiesError(obj, header)
+id = sprintf('%s:emptyUncertainties', header);
+ME = MException(id, 'The uncertainties for %s cannot be empty.', obj.name);
+throwAsCaller(ME);
+end
+function[] = negativeVarianceError(R, isnegative, header)
+bad = find(isnegative, 1);
+badValue = R(bad);
+id = sprintf('%s:negativeVariance', header);
+ME = MException(id, ['R variances must be greater than 0, but element %.f ',...
+    'of Rvar (%f) is not.'], bad, badValue);
+throwAsCaller(ME);
 end
