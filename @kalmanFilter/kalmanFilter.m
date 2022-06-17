@@ -216,7 +216,7 @@ classdef kalmanFilter < dash.ensembleFilter
     methods
 
         % General
-        varargout = label(obj, varargout);
+        varargout = label(obj, label);
         name = name(obj);
         obj = processWhich(obj, whichArg, field, nIndex, indexType, timeIsSet, whichIsSet, header);
 
