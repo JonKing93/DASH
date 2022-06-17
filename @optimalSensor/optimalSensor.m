@@ -46,10 +46,10 @@ classdef optimalSensor
         [optimalSites, variance, metric] = run(obj, N);
 
         % Utilities
-        R = Rvariances(obj);
+        Rvar = Rvariances(obj);
     end
     methods (Static)
-        deltaVar = varianceReduction(Jdev, Ydev, R, unbias);
+        deltaVar = varianceReduction(Jdev, Ydev, Rvar, unbias);
     end
 
     % Constructor
