@@ -68,7 +68,7 @@ try
         outputs = {obj};
         type = 'delete';
     
-    % Set estimates. Get defaults.
+    % Set prior. Get defaults.
     else
         if ~exist('whichPrior','var') || isempty(whichPrior)
             whichPrior = [];
@@ -195,11 +195,11 @@ ME = MException(id, ['The number of ensemble members implemented by %s ',...
     ens.name, nMembers, obj.name, obj.nMembers);
 throwAsCaller(ME);
 end
-function[] = scalarEnsPriorError(obj, nPrior, header)
+function[] = scalarEnsPriorError(ens, nPrior, obj, header)
 id = sprintf('%s:wrongNumberPriors', header);
-ME = MException(id, ['The number of evolving priors implemented by the ',...
-    'ensemble object (%.f) does not match the number of priors for %s (%.f).'],...
-    nPrior, obj.name, obj.nPrior);
+ME = MException(id, ['The number of evolving priors implemented by %s (%.f) ',...
+    'does not match the number of priors for %s (%.f).'],...
+    ens.name, nPrior, obj.name, obj.nPrior);
 throwAsCaller(ME);
 end
 function[] = vectorEnsMembersError(nMembers, obj, header)

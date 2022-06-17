@@ -19,11 +19,11 @@ if obj.Xtype == 0
 
 % Scalar ensemble object
 elseif obj.Xtype == 1
-    X = obj.load(p);
+    X = obj.X.load(p);
 
 % Vector of ensemble objects
 else
-    X = obj(p).load;
+    X = obj.X(p).load;
 end
 
 end

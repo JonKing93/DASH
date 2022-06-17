@@ -35,7 +35,7 @@ scope = obj.parseScope(scope, header);
 % Count rows
 nRows = NaN(size(obj));
 for k = 1:numel(obj)
-    nRows(k) = obj.length(0, scope);
+    nRows(k) = obj(k).length(0, scope);
 end
 
 end
