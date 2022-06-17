@@ -51,3 +51,7 @@ Add PSMs to optimal sensor
 Kalman filter localize, blend, and setCovariance could allow NaN values for sites that don't occur in the same time steps
     - could generalize the ensembleFilter.assertValidR method
 Method to calculate calibration ratio without updating ensemble
+
+Could write an optimized KF.run for the case when the covariance is set and there are multiple priors.
+    - In this case, the Kalman gain calculations are likely more expensive than prior decompositions,
+    - so might want to iterate over covariance first, priors second.
