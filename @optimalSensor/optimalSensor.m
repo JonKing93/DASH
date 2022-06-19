@@ -10,23 +10,26 @@ classdef optimalSensor
     properties
         %% General
         
-        label_;     % A label for the optimal sensor
+        label_ = "";        % A label for the optimal sensor
 
         %% Inputs
 
-        Ye;         % Observation estimates
-        R;          % Observation uncertainties
-        Rtype;      % The type of uncertainties: NaN-Unset, 0-Variances, 1-Covariances
+        Ye = [];            % Observation estimates
+        R = [];             % Observation uncertainties
+        Rtype = NaN;        % The type of uncertainties: NaN-Unset, 0-Variances, 1-Covariances
 
-        X;          % The prior
-        Xtype;      % The type of prior: NaN-Unset, 0-Numeric Array, 1-Ensemble object
-        precision;  % The numerical precision of the prior
+        X = [];             % The prior
+        Xtype = NaN;        % The type of prior: NaN-Unset, 0-Numeric Array, 1-Ensemble object
+        precision = "";     % The numerical precision of the prior
+
+        metricType = NaN;   % The type of calculation used to determine the metric: NaN-Unset, 0-direct, 1-mean
+        metricArgs = {};    % Additional arguments for metric calculations
 
         %% Sizes
 
-        nSite = 0;      % The number of observation sites
-        nState = 0;     % The number of state vector elements in the prior
-        nMembers = 0;   % The number of ensemble members
+        nSite = 0;          % The number of observation sites
+        nState = 0;         % The number of state vector elements in the prior
+        nMembers = 0;       % The number of ensemble members
     end
 
     methods
