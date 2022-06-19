@@ -87,19 +87,24 @@ if ~exist('type','var')
     % Optionally include details
     if nargout>1
         details = struct;
+
+        % Direct metric details
         if obj.metricType==0
-            details.type = 'direct';
+            details.type = "direct";
+
+        % Mean metric details
         elseif obj.metricType==1
-            details.type = 'mean';
-            [rows, weights, nanflag] = obj.metricArgs{1:3};
-            if ~isempty(rows)
-                details.rows = rows;
+            details.type = "mean";
+            if ~obj.metricDetails.defaultRows
+                details.rows = obj.metricDetails.rows;
             end
-            if ~isempty(weights)
-                details.weights = weights;
+            if ~obj.metricDetails.defaultWeights
+                details.weights = obj.metricDetails.weights;
             end
-            details.nanflag = nanflag;
+            details.nanflag = obj.metricDetails.nanflag;
         end
+
+        % Return metric and details. Exit
         varargout{2} = details;
     end
     return
@@ -110,41 +115,40 @@ type = dash.assert.strflag(type, 'The first input', header);
 allowed = ["reset", "direct", "mean"];
 dash.assert.strsInList(type, allowed, 'The first input', 'recognized option', header);
 
-% Reset
+% Reset. Don't allow following inputs
 if strcmpi(type, 'reset')
     if numel(varargin)>0
         dash.error.tooManyInputs;
     end
     
+    % Reset metric and exit
     obj.metricType = NaN;
-    obj.metricArgs = {};
+    obj.metricDetails = struct;
+    obj.userMetric = true;
     varargout = {obj};
     return
 end
 
 % Require a prior when setting the metric. Get the number of rows
 if isnan(obj.Xtype)
-    noPriorError;
+    noPriorError(obj, header);
 elseif obj.Xtype == 0
     nRows = size(obj.X, 1);
 elseif obj.Xtype == 1
     nRows = obj.X.length;
 end
 
-% Direct metric
+% Direct metric. Don't allow additional inputs and require a single row
 if strcmpi(type, 'direct')
     if numel(varargin)>0
         dash.error.tooManyInputs;
+    elseif nRows ~= 1
+        tooManyRowsError(obj, nRows, header);
     end
 
-    % Only allow a single row
-    if nRows ~= 1
-        tooManyRowsError;
-    end
-
-    % Set the metric
-    obj.metricType = 0;
-    obj.metricArgs = {};
+    % Get the type and details
+    type = 0;
+    details = struct;
 
 % Mean metric. Parse inputs
 elseif strcmpi(type, 'mean')
@@ -152,38 +156,50 @@ elseif strcmpi(type, 'mean')
     defaults = {[], [], 'includenan'};
     [rows, weights, nanflag] = dash.parse.nameValue(varargin, flags, defaults, 1, header);
 
-    % Initialize the metric
-    obj.metricType = 1;
-    obj.metricArgs = cell(1, 3);
+    % Get type, initialize details
+    type = 1;
+    details = struct('rows',[], 'weights',[], 'nanflag',[], 'defaultRows',[], 'defaultWeights',[]);
 
-    % Error check the rows
-    if ~isempty(rows)
+    % Default or error check rows
+    if isempty(rows)
+        isdefault = true;
+        rows = [];
+    else
+        isdefault = false;
         logicalReq = 'have one element per state vector row';
         linearMax = 'the number of rows in the state vector';
         rows = dash.assert.indices(rows, nRows, 'rows', logicalReq, linearMax, header);
-        obj.metricArgs{1} = rows(:);
-        nRows = numel(rows);
     end
+    details.rows = rows;
+    details.defaultRows = isdefault;
 
-    % Error check the weights
-    if ~isempty(weights)
+    % Deafult or error check weights
+    if isempty(weights)
+        isdefault = true;
+        weights = [];
+    else
+        isdefault = false;
         dash.assert.vectorTypeN(weights, 'numeric', nRows, 'weights', header);
         dash.assert.defined(weights, 2, 'weights', header);
-        obj.metricArgs{2} = weights(:);
     end
+    details.weights = weights;
+    details.defaultWeights = isdefault;
 
-    % Parse the nanflag, save string
+    % Parse the nanflag, save as string
     switches = {"omitnan","includenan"}; %#ok<CLARRSTR> 
     includenan = dash.parse.switches(nanflag, switches, 1, 'nanOption', header);
     if includenan
-        nanoption = "includenan";
+        nanflag = "includenan";
     else
-        nanoption = "omitnan";
+        nanflag = "omitnan";
     end
-    obj.metricArgs{3} = nanoption;
+    details.nanflag = nanflag;
 end
 
-% Return the updated object
+% Update the object and return as output
+obj.metricType = type;
+obj.metricDetails = details;
+obj.userMetric = true;
 varargout = {obj};
 
 end
