@@ -76,9 +76,9 @@ dash.asserrt.scalarObj(obj, header);
 % Calculate and return metric. Require prior and metric type
 if ~exist('type','var')
     if isempty(obj.X)
-        noPriorError;
+        noPriorForCalculationError(obj, header);
     elseif isnan(obj.metricType)
-        unspecifiedMetricError;
+        unspecifiedMetricError(obj, header);
     end
 
     % Compute the metric
@@ -186,4 +186,35 @@ end
 % Return the updated object
 varargout = {obj};
 
+end
+
+%% Error messages
+function[] = noPriorForCalculationError(obj, header)
+link = '<a href="matlab:dash.doc(''optimalSensor.prior'')">optimalSensor.prior</a>';
+id = sprintf('%s:noPrior', header);
+ME = MException(id, ['Cannot calculate the initial sensor metric because ',...
+    'you have not yet provided a prior for %s. See the %s command to provide ',...
+    'a prior.'], obj.name, link);
+throwAsCaller(ME);
+end
+function[] = unspecifiedMetricError(obj, header)
+id = sprintf('%s:unspecifiedMetric', header);
+ME = MException(id, ['Cannot calculate the initial sensor metric because ',...
+    'you have not yet specified the type of metric for %s.'], obj.name);
+throwAsCaller(ME);
+end
+function[] = noPriorError(obj, header)
+link = '<a href="matlab:dash.doc(''optimalSensor.prior'')">optimalSensor.prior</a>';
+id = sprintf('%s:noPrior', header);
+ME = MException(id, ['You cannot specify a metric for %s because you have ',...
+    'not yet provided a prior. See the %s command to provide a prior.'], ...
+    obj.name, link);
+throwAsCaller(ME);
+end
+function[] = tooManyRowsError(obj, nRows, header)
+id = sprintf('%s:tooManyRows', header);
+ME = MException(id, ['The "direct" metric option is only allowed for priors ',...
+    'with a single state vector row. However, the prior for %s has %.f rows.'],...
+    obj.name, nRows);
+throwAsCaller(ME);
 end
