@@ -28,9 +28,9 @@ function[varargout] = uncertainties(obj, R, whichR)
 %   assimilation time steps. This syntax allows the number of sets of R
 %   values to differ from the number of time steps.
 %
-%   [R, whichR] = obj.uncertainties
-%   [R, whichR] = obj.uncertainties
-%   Returns the R uncertainties for the Kalman filter object, and
+%   [Rvar, whichR] = obj.uncertainties
+%   [Rcov, whichR] = obj.uncertainties
+%   Returns the current R uncertainties for the Kalman filter object, and
 %   indicates which set of R variances or covariances is used in each
 %   assimilation time step.
 %

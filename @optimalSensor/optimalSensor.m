@@ -10,27 +10,19 @@ classdef optimalSensor
     properties
         %% General
         
-        label_ = "";                % A label for the optimal sensor
+        label_ = "";    % A label for the optimal sensor
 
-        %% Inputs and metric
+        %% Essential inputs
 
-        Ye = [];                    % Observation estimates
-        R = [];                     % Observation uncertainties
-        Rtype = NaN;                % The type of uncertainties: NaN-Unset, 0-Variances, 1-Covariances
-
-        X = [];                     % The prior
-        Xtype = NaN;                % The type of prior: NaN-Unset, 0-Numeric Array, 1-Ensemble object
-        precision = "";             % The numerical precision of the prior
-
-        metricType = NaN;           % The type of calculation used to determine the metric: NaN-Unset, 0-direct, 1-mean
-        metricDetails = struct;     % Details about the calculation used to determine the metric
-        userMetric = false;         % Whether the metric was set by the user (true) or by default (false)
+        J = [];         % The sensor metric
+        Ye = [];        % Observation estimates
+        R = [];         % Observation uncertainties
+        Rtype = NaN;    % The type of uncertainties: NaN-Unset, 0-Variances, 1-Covariances
 
         %% Sizes
 
-        nSite = 0;                  % The number of observation sites
-        nState = 0;                 % The number of state vector elements in the prior
-        nMembers = 0;               % The number of ensemble members
+        nSite = 0;      % The number of observation sites
+        nMembers = 0;   % The number of ensemble members
     end
 
     methods
@@ -40,9 +32,9 @@ classdef optimalSensor
         name = name(obj);
 
         % Essential inputs
-        varargout = prior(obj, X);
-        obj = metric(obj, type, varargin);
-        varargout = estimates(obj, Ye, R);
+        varargout = metric(obj, J);
+        varargout = estimates(obj, Ye);
+        varargout = uncertainties(obj, R)
 
         % Analyses
         [variance, metric] = update(obj);
