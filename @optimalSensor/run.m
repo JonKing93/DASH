@@ -72,7 +72,7 @@ header = "DASH:optimalSensor:run";
 dash.assert.scalarObj(obj, header);
 
 % Require essential inputs
-obj.assertFinalized;
+obj.assertFinalized('running the optimal sensor algorithm', header);
 
 % Default and error check N
 if ~exist('N','var') || isempty(N)

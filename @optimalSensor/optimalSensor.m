@@ -43,6 +43,7 @@ classdef optimalSensor
 
         % Utilities
         Rvar = Rvariances(obj);
+        assertFinalized(obj, actionName, header);
     end
     methods (Static)
         deltaVar = varianceReduction(Jdev, Ydev, Rvar, unbias);

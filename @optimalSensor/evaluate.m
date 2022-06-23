@@ -27,7 +27,7 @@ header = "DASH:optimalSensor:evaluate";
 dash.assert.scalarObj(obj, header);
 
 % Require essential data inputs
-obj.assertFinalized;
+obj.assertFinalized('evaluating sensor sites', header);
 
 % Decompose the metric and the estimates.
 [~, Jdev] = dash.math.decompose(obj.J);

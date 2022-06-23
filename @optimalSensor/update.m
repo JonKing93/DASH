@@ -32,7 +32,7 @@ header = "DASH:optimalSensor:update";
 dash.assert.scalarObj(obj, header);
 
 % Require essential data inputs
-obj.assertFinalized;
+obj.assertFinalized("updating the metric's ensemble deviations", header);
 
 % Coefficient for unbiased estimator
 unbias = dash.math.unbias(obj.nMembers);
