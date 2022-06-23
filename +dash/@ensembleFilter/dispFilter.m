@@ -23,9 +23,6 @@ function[width] = dispFilter(obj, link, width)
 %       width (scalar positive integer): The maximum width for aligning
 %           fields after also considering dispFilter fields.
 %
-%   Outputs:
-%       Displays the object in the console
-%
 % <a href="matlab:dash.doc('ensembleFilter.dispFilter')">Documentation Page</a>
 
 % If not scalar, display array size/labels and exit

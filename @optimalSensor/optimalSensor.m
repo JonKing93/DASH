@@ -41,6 +41,9 @@ classdef optimalSensor
         [variance, metric] = evaluate(obj);
         [optimalSites, variance, metric] = run(obj, N);
 
+        % Console display
+        disp(obj);
+
         % Utilities
         Rvar = Rvariances(obj);
         assertFinalized(obj, actionName, header);
