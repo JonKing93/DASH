@@ -1,13 +1,93 @@
 classdef optimalSensor
-    %% optimalSensor  Implement optimal sensor assimilations
+    %% optimalSensor  Implement optimal sensor analyses
     % ----------
-    %   Introduction
-    % ----------
+    %   The optimalSensor class provides objects that implement an optimal
+    %   sensor algorithm and related analyses. These analyses help to
+    %   evaluate the influence of different observation sites on a Kalman
+    %   filter assimilation, and can also help determine ideal locations
+    %   for future proxy record development. Here we implement the optimal
+    %   sensor algorithm described by Comboul et al., 2015. In this method,
+    %   potential observation sites are ranked by their ability to
+    %   constrain a metric. The metric is distributed across an ensemble,
+    %   and the rankings are determined using each site's ability to reduce
+    %   the variance of the metric across the ensemble.
     %
-    % Create
+    %   Note that the optimal sensor algorithm does not assimilate
+    %   observations in order to produce a reconstruction. Instead, the
+    %   algorithm helps quantify the effects of individual observation on
+    %   an assimilation. As such, optimal sensor analyses can help 
+    %   characterize recpmstructions produced using Kalman filters. Because
+    %   they do not produce a reconstruction, optimal sensor analyses do
+    %   not require observations. Aside from the sensor metric, they only
+    %   require estimates and uncertainties.
+    %
+    %   In the classical optimal sensor algorithm, the sites are ranked and
+    %   the site that most strongly constrains the metric (i.e. most
+    %   strongly reduces metric variance) is deemed the "optimal sensor".
+    %   This observation site is used to update the variance of the metric,
+    %   and also the observation estimates. After updating, the optimal
+    %   site is removed from the observation network, and the analysis
+    %   repeats using the remaining observation sites. This algorithm
+    %   iterates until the desired number of optimal sites have been
+    %   selected. This algorithm is implemented using the "run" method.
+    %
+    %   The optimalSensor class also provides two auxiliary methods for
+    %   implementing optimal sensors. In many cases, it can be useful to
+    %   quantify the influence of the observation sites relative to one
+    %   another without implementing the iterative algorithm. The
+    %   "evaluate" method provides this analysis. Additionally, the
+    %   classical optimal sensor algorithm neglects the effects of
+    %   covarying error uncertainties (R covariances). When observation
+    %   records *do* have covarying error uncertainties, the classical
+    %   algorithm will overestimate the total variance constrained by the
+    %   proxy network. You can instead use the "update" method to update
+    %   metric variance in a manner that accounts for these covariances.
+    %
+    %   OUTLINE:
+    %   The following is a sketch for using the optimalSensor class:
+    %     1. Use the "optimalSensor" method to initialize a new optimalSensor object
+    %     2. Use the "estimates", "uncertainties", and "metric" methods to
+    %        provide essential data inputs for the optimal sensor.
+    %     3. Use the "run", "evaluate", and "update" methods to implement
+    %        optimal sensor analyses.
+    % ----------
+    % optimalSensor Methods:
+    %
+    % **USER METHODS**
+    %
+    % Create:
+    %   optimalSensor       - Initializes a new optimalSensor object
+    %   label               - Return or apply a label to an optimalSensor
+    %
+    % Data Inputs:
+    %   metric              - Provide the metric for an optimal sensor
+    %   estimates           - Provide the observation estimates for an optimal sensor
+    %   uncertainties       - Provide the observation uncertainties for an optimal sensor
+    %
+    % Analyses:
+    %   run                 - Iteratively identify optimal sites and update metric variance
+    %   evaluate            - Return the variance constrained by each site when assimilated alone
+    %   update              - Update metric variance for a network of covarying observation records
+    %
+    % Console Display:
+    %   disp                - Display an optimalSensor object in the console
+    %
+    %
+    % ==UTILITY METHODS==
+    % Utility methods that help the class run. They do not implement error
+    % checking and are not intended for users.
+    %
+    % Misc:
+    %   Rvariances          - Return the error uncertainty variances for the observation sites
+    %   assertFinalized     - Throw error if an optimal sensor does not have estimates, uncertainties, and a metric
+    %   varianceReduction   - Calculate the metric variance reduced by each observation site
+    %   
+    % Tests:
+    %   tests               - Implement unit tests for the optimalSensor class
+    %
+    % <a href="matlab:dash.doc('kalmanFilter')">Documentation Page</a>
 
-
-    properties
+    properties (SetAccess = private)
         %% General
         
         label_ = "";    % A label for the optimal sensor

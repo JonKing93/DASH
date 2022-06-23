@@ -127,7 +127,7 @@ classdef kalmanFilter < dash.ensembleFilter
     % **ALL USER METHODS**
     %
     % Create:
-    %   kalmanFilter  - Initializes a new kalmanFilter object
+    %   kalmanFilter    - Initializes a new kalmanFilter object
     %   label           - Return or apply a label for a kalmanFilter
     %
     % Data Inputs:
