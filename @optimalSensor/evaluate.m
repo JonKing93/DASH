@@ -29,7 +29,7 @@ dash.assert.scalarObj(obj, header);
 % Require essential data inputs
 obj.assertFinalized;
 
-% Decompose the metric and the estimates
+% Decompose the metric and the estimates.
 [~, Jdev] = dash.math.decompose(obj.J);
 [~, Ydev] = dash.math.decompose(obj.Ye);
 
