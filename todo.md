@@ -19,7 +19,7 @@ When calling sv.addMembers - how to treat returned metadata?
 9. Remove "throws" from non-assert calls
     -Or treat throws in a more consistent way through the docs
 
-Add properties parsing to class file autodoc
+10. Add properties parsing to class file autodoc
 
 
 STATE VECTOR
@@ -48,6 +48,7 @@ Add serializer to ensembleMetadata (maybe do now)
 Scalar return values don't require scalarObjs (for example, returning a label)
 
 Add PSMs to optimal sensor
+
 Kalman filter localize, blend, and setCovariance could allow NaN values for sites that don't occur in the same time steps
     - could generalize the ensembleFilter.assertValidR method
 Method to calculate calibration ratio without updating ensemble
