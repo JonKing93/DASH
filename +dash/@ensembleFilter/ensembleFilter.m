@@ -81,7 +81,7 @@ classdef (Abstract) ensembleFilter
         [outputs, type] = observations(obj, header, Y);
         [outputs, type] = prior(obj, header, X, whichPrior);
         [outputs, type] = estimates(obj, header, Ye, whichPrior);
-        [outputs, type] = uncertainties(obj, header, R, whichR)
+        [outputs, type] = uncertainties(obj, header, R, whichR, type)
 
         % Input utilities
         assertValidR(obj, header);

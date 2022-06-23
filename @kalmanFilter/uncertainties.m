@@ -1,4 +1,4 @@
-function[varargout] = uncertainties(obj, R, whichR)
+function[varargout] = uncertainties(obj, R, whichR, type)
 %% kalmanFilter.uncertainties  Set or return the proxy uncertainties for a Kalman filter
 % ----------
 %   obj = obj.uncertainties(Rvar)
@@ -27,6 +27,14 @@ function[varargout] = uncertainties(obj, R, whichR)
 %   Specify which set of R variances or covariances to use in each
 %   assimilation time steps. This syntax allows the number of sets of R
 %   values to differ from the number of time steps.
+%
+%   obj = obj.uncertainties(R, whichR, type)
+%   obj = obj.uncertainties(R, whichR, "c"|"cov"|"covariance"|true)
+%   obj = obj.uncertainties(R, whichR, "v"|"var"|"variance"|false)
+%   Indicate the type of uncertainties being provided to the particle
+%   filter. If "c"|"cov"|"covariance"|true, treats the input uncertainties
+%   as covariances. If "v"|"var"|"variance"|false, treats the uncertainties
+%   as variances.
 %
 %   [Rvar, whichR] = obj.uncertainties
 %   [Rcov, whichR] = obj.uncertainties
@@ -71,6 +79,10 @@ function[varargout] = uncertainties(obj, R, whichR)
 %           is the index of a set of R variances or covariances. If using R
 %           variances, these indices are for the columns of Rvar. If using
 %           R covariances, these indices are for the thrid dimension of Rcov.
+%       type (string scalar | scalar logical): Indicates whether the
+%           uncertainties are variances or covariances
+%           ["v"|"var"|"variance"|false]: Error variances
+%           ["c"|"cov"|"covariance"|true]: Error covariances
 %   
 %   Outputs:
 %       obj (scalar kalmanFilter object): The kalmanFilter object with
@@ -96,8 +108,10 @@ if ~exist('R','var')
     inputs = {};
 elseif ~exist('whichR','var')
     inputs = {R};
-else
+elseif ~exist('type','var')
     inputs = {R, whichR};
+else
+    inputs = {R, whichR, type};
 end
 
 % Parse the uncertainties

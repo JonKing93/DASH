@@ -147,7 +147,7 @@ classdef particleFilter < dash.ensembleFilter
         varargout = observations(obj, Y);
         varargout = estimates(obj, Ye, whichPrior);
         varargout = prior(obj, X, whichPrior);
-        varargout = uncertainties(obj, R, whichR);
+        varargout = uncertainties(obj, R, whichR, type);
 
         % Weighting scheme
         obj = weights(obj, type, varargin)

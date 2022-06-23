@@ -1,4 +1,4 @@
-function[varargout] = uncertainties(obj, R, whichR)
+function[varargout] = uncertainties(obj, R, whichR, type)
 %% particleFilter.uncertainties  Set or return the proxy uncertainties for a particle filter
 % ----------
 %   obj = obj.uncertainties(Rvar)
@@ -79,6 +79,10 @@ function[varargout] = uncertainties(obj, R, whichR)
 %           is the index of a set of R variances or covariances. If using R
 %           variances, these indices are for the columns of Rvar. If using
 %           R covariances, these indices are for the thrid dimension of Rcov.
+%       type (string scalar | scalar logical): Indicates whether the
+%           uncertainties are variances or covariances
+%           ["v"|"var"|"variance"|false]: Error variances
+%           ["c"|"cov"|"covariance"|true]: Error covariances
 %   
 %   Outputs:
 %       obj (scalar particleFilter object): The particleFilter object with
