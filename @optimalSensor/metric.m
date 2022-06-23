@@ -4,7 +4,10 @@ function[varargout] = metric(obj, type, varargin)
 %   [J, details] = obj.metric
 %   Calculates and returns the initial sensor metric from the prior. Also
 %   returns details about the type of calculation used to calculate the
-%   metric, and any additional parameters for the calculation.
+%   metric, and any additional parameters for the calculation. This syntax
+%   will return the initial sensor metric even when the metric contains NaN
+%   values. Thus, this method can be used to search for NaN values in the
+%   computed sensor metric.
 %
 %   obj = obj.metric(type, ...)
 %   Indicate how the optimal sensor should calculate a test metric from
@@ -82,7 +85,8 @@ if ~exist('type','var')
     end
 
     % Compute the metric
-    varargout = {obj.computeMetric};
+    J = obj.computeMetric(true);
+    varargout = {J};
 
     % Optionally include details
     if nargout>1

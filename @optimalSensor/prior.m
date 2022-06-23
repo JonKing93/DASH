@@ -2,14 +2,14 @@ function[varargout] = prior(obj, X)
 %% optimalSensor.prior  Set or return the prior for an optimal sensor
 % ----------
 %   obj = obj.prior(X)
-%   Provide the prior for an optimal sensor directly as a numeric array. 
-%   Overwrites any previously specified prior. Each row is a state vector
-%   element, and each column is an ensemble member.
-%
 %   obj = obj.prior(ens)
-%   Provide the prior for an optimal sensor as an ensemble object.
-%   Overwrites any previously specified prior. The ensemble object must be
-%   a scalar object, and must implement a static prior.
+%   Provide the prior for an optimal sensor object. Overwrites any
+%   previously specified prior. If the prior has exactly 1 state vector
+%   row, uses the prior directly as the initial sensor metric unless
+%   otherwise specified. The prior may either be a numeric matrix or a
+%   scalar ensemble object. If a numeric matrix, each row is a state vector
+%   element, and each column is an ensemble member. If using an ensemble
+%   object, the ensemble must implement a static ensemble.
 %
 %   X = obj.prior
 %   ens = obj.prior
