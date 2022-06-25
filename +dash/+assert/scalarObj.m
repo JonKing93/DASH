@@ -52,7 +52,9 @@ try
     
     % Otherwise, report the command name.
     else
-        [~, command] = fileparts(stack(2).file);
+        name = stack(2).name;
+        name = string(split(name, '.'));
+        command = name(end);
     
         % Add suggestion if not empty
         suggestion = '';
