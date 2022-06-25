@@ -78,16 +78,17 @@ classdef bayspar < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.bayspar.bayspar')">Documentation Page</a>
 
-            % Default
-            if ~exist('options', 'var')
-                options = {};
-            end
-
             % Error check
             header = "DASH:PSM:bayspar";
             dash.assert.scalarType(latitude, 'numeric', header);
             dash.assert.scalarType(longitude, 'numeric', header);
-            dash.assert.vectorTypeN(options, 'cell', [], 'options', header);
+
+            % Parse optional inputs
+            if ~exist('options', 'var')
+                options = {};
+            else
+                dash.assert.vectorTypeN(options, 'cell', [], 'options', header);
+            end
 
             % Record parameters
             obj.latitude = latitude;

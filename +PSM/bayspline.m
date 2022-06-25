@@ -50,7 +50,7 @@ classdef bayspline < PSM.Interface
 
     % Forward model parameters
     properties (SetAccess = private)
-        bayes = [];     % Name of the file holding the Bayesian posterior for calibration
+        bayes = {};     % Name of the file holding the Bayesian posterior for calibration
     end
 
     methods
@@ -75,7 +75,7 @@ classdef bayspline < PSM.Interface
 
             if exist('bayesFile','var')
                 header = "DASH:PSM:bayspline";
-                obj.bayes = dash.assert.strflag(bayesFile, 'bayesFile', header);
+                obj.bayes = {dash.assert.strflag(bayesFile, 'bayesFile', header)};
             end
 
         end
@@ -168,9 +168,10 @@ classdef bayspline < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.bayspline.estimate')">Documentation Page</a>
 
-            % Run the forward model. Use the mean of the posterior as the
-            % final estimate. Use posterior variance as uncertainty.
-            ukPosterior = UK_forward(SST, obj.bayes);
+            % Run the forward model
+            ukPosterior = UK_forward(SST, obj.bayes{:});
+
+            % Use the mean and variance of the posterior
             UK37 = mean(ukPosterior, 2);
             R = var(ukPosterior, [], 2);
 
