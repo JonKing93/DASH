@@ -45,7 +45,7 @@ classdef baymag < PSM.Interface
     end
 
     % Forward model parameters
-    properties
+    properties (SetAccess = private)
         age;        % Ages
         omega;      % Bottom water saturation state
         salinity;   % Salinity (psu)
