@@ -5,19 +5,19 @@ classdef bayspar < PSM.Interface
     %   values from sea-surface temperatures. The forward model is
     %   described in the paper:
     %
-    % Tierney, J.E. & Tingley, M.P. (2014) A Bayesian, spatially-varying 
-    % calibration model for the TEX86 proxy. Geochimica et Cosmochimica 
-    % Acta, 127, 83-106. 
-    % DOI:  https://doi.org/10.1016/j.gca.2013.11.026.
+    %   Tierney, J.E. & Tingley, M.P. (2014) A Bayesian, spatially-varying 
+    %   calibration model for the TEX86 proxy. Geochimica et Cosmochimica 
+    %   Acta, 127, 83-106. 
+    %   DOI:  https://doi.org/10.1016/j.gca.2013.11.026.
     %
-    % Github Repository: https://github.com/jesstierney/BAYSPAR
+    %   Github Repository:  https://github.com/jesstierney/BAYSPAR
     % ----------
     % bayspar Methods:
     %
     % **ALL USER METHODS**
     %
     % Create:
-    %   bayspar   - Creates a new BaySPAR PSM object
+    %   bayspar     - Creates a new BaySPAR PSM object
     %   label       - Apply a label to a BaySPAR object
     %
     % Estimate:
@@ -99,7 +99,7 @@ classdef bayspar < PSM.Interface
             %% PSM.bayspar.rows  Indicate the stateVector rows used to run a BaySPAR PSM
             % ----------
             %   obj = obj.rows(row)
-            %   Indicate the state vector row that should be used as the 
+            %   Indicate the state vector row that should be used as the SST
             %   input for the BaySPAR PSM when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector
             %   row for each ensemble member and each ensemble in an

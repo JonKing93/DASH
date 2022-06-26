@@ -83,7 +83,7 @@ classdef bayspline < PSM.Interface
             %% PSM.bayspline.rows  Indicate the stateVector rows used to run a BaySpline PSM
             % ----------
             %   obj = obj.rows(row)
-            %   Indicate the state vector row that should be used as the 
+            %   Indicate the state vector row that should be used as the SST
             %   input for the BaySpline PSM when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector
             %   row for each ensemble member and each ensemble in an
