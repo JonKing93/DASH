@@ -38,7 +38,7 @@ classdef bayspar < PSM.Interface
     % <a href="matlab:dash.doc('PSM.bayspar')">Documentation Page</a>
 
     % Information about the forward model codebase
-    properties (Constant, Hidden)
+    properties (Constant)
         estimatesR = true;                                      % The BaySpline PSM can estimate R uncertainties       
         description = "Baysian model for TEX86";                % Description of the PSM
         repository = "jesstierney/BAYSPAR";                     % Github Repository holding the PSM
@@ -153,14 +153,12 @@ classdef bayspar < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.bayspar.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                inputs = {rows, 1};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:bayspar";
-            output = obj.parseRows(rows, 1, header);
+            output = obj.parseRows(inputs{:});
         end
         function[TEX86, R] = estimate(obj, SST)
             %% PSM.bayspar.estimate  Estimates TEX86 values from sea surface temperatures

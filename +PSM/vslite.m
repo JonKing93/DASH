@@ -175,14 +175,13 @@ classdef vslite < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.vslite.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                inputs = {rows, 24};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:vslite";
-            output = obj.parseRows(rows, 24, header);
+            output = obj.parseRows(inputs{:});
+            
         end
         function[TRW] = estimate(obj, X)
             %% PSM.vslite.estimate  Estimates tree-ring widths from monthly temperatures and precipitation

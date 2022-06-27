@@ -79,14 +79,14 @@ classdef (Abstract) Interface
                 name = sprintf('The "%s" %s PSM', type);
             end
         end  
-        function[output] = parseRows(obj, rows, nRequired, header)
+        function[output] = parseRows(obj, rows, nRequired)
             %% PSM.Interface.parseRows  Parse rows for a PSM object
             % ----------
-            %   obj = obj.parseRows(rows, nRequired, header)
+            %   obj = obj.parseRows(rows, nRequired)
             %   Error checks and records rows for a PSM object. Throws an error if the
             %   rows are not valid.
             %
-            %   rows = obj.rows([])
+            %   rows = obj.rows
             %   Returns the current rows of the PSM object.
             %
             %   obj = obj.rows('delete')
@@ -95,6 +95,8 @@ classdef (Abstract) Interface
             %   Inputs:
             %       rows (numeric array [1 x nMembers x nEvolving]): The state vector
             %           rows that hold the inputs for the PSMs.
+            %       nRequired (numeric scalar): The number of state vector
+            %           rows required to run the PSM
             %
             %   Outputs:
             %       obj (scalar PSM object): The PSM with updated rows
@@ -102,11 +104,11 @@ classdef (Abstract) Interface
             %           for the PSM object.
             %
             % <a href="matlab:dash.doc('PSM.Interface.parseRows')">Documentation Page</a>
-            
-            % Default
-            if ~exist('header','var')
-                header = "DASH:PSM:rows";
-            end
+
+            % Get the header
+            header = class(obj);
+            header = replace(header, '.', ':');
+            header = sprintf('DASH:%s', header);
             
             % Require a scalar PSM object
             try
@@ -119,7 +121,7 @@ classdef (Abstract) Interface
             end
             
             % Return values
-            if isempty(rows)
+            if ~exist('rows', 'var')
                 output = obj.rows_;
             
             % Delete

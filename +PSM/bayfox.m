@@ -136,14 +136,12 @@ classdef bayfox < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.bayfox.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                inputs = {rows, 2};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:bayfox";
-            output = obj.parseRows(rows, 2, header);
+            output = obj.parseRows(inputs{:});
         end
         function[d18Oc, R] = estimate(obj, X)
             %% PSM.bayfox.estimate  Estimates d18Oc values from SSTs and d18O_seawater

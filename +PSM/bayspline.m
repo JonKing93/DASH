@@ -137,14 +137,12 @@ classdef bayspline < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.bayspline.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                inputs = {rows, 1};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:bayspline";
-            output = obj.parseRows(rows, 1, header);
+            output = obj.parseRows(inputs{:});
         end
         function[UK37, R] = estimate(obj, SST)
             %% PSM.bayspline.estimate  Estimates UK37 values from sea surface temperatures

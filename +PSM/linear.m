@@ -159,15 +159,13 @@ classdef linear < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.linear.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                N = numel(obj.slopes);
+                inputs = {rows, N};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:linear:rows";
-            N = numel(obj.slopes);
-            output = obj.parseRows(rows, N, header);
+            output = obj.parseRows(inputs{:});
         end
         function[Y] = estimate(obj, X)
             %% PSM.linear.estimate  Estimates observations using a general linear model

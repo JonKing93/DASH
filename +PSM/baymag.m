@@ -164,14 +164,12 @@ classdef baymag < PSM.Interface
             %
             % <a href="matlab:dash.doc('PSM.baymag.rows')">Documentation Page</a>
 
-            % Default
-            if ~exist('rows','var')
-                rows = [];
+            % Parse the rows
+            inputs = {};
+            if exist('rows', 'var')
+                inputs = {rows, 1};
             end
-
-            % Require 1 row to run the PSM
-            header = "DASH:PSM:baymag";
-            output = obj.parseRows(rows, 1, header);
+            output = obj.parseRows(inputs{:});
         end
         function[MgCa, R] = estimate(obj, SST)
             %% PSM.baymag.estimate  Estimates Mg/Ca values from sea surface temperatures
