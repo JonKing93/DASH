@@ -41,11 +41,11 @@ classdef vslite < PSM.Interface
 
     % Description and repository
     properties (Constant)
-        estimatesR = false;
-        description = "Vaganov-Shashkin Lite tree ring model";
-        repository = "suztolwinskiward/VSLite";
-        commit = "f86cc33ee0eb9a2b9818994542d3c4179e618631";
-        commitComment = "";
+        estimatesR = false;                                     % VS-Lite cannot estimate R uncertainties
+        description = "Vaganov-Shashkin Lite tree ring model";  % Description of the PSM
+        repository = "suztolwinskiward/VSLite";                 % Github repository for the PSM
+        commit = "f86cc33ee0eb9a2b9818994542d3c4179e618631";    % The commit hash of the supported version
+        commitComment = "";                                     % Details about the commit
     end
 
     % Forward model parameters
