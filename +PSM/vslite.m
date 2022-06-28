@@ -9,7 +9,7 @@ classdef vslite < PSM.Interface
     %   Anchukaitis, K.J. (2011) An efficient forward model of the climate 
     %   controls on interannual variation in tree-ring width, Clim. Dynam.,
     %   36, 2419–2439.
-    %   DOI:  
+    %   DOI:  https://doi.org/10.1007/s00382-010-0945-5
     %
     %   Github Repository:  https://github.com/suztolwinskiward/VSLite
     % ----------
@@ -46,7 +46,7 @@ classdef vslite < PSM.Interface
         description = "Vaganov-Shashkin Lite tree ring model";  % Description of the PSM
         repository = "suztolwinskiward/VSLite";                 % Github repository for the PSM
         commit = "f86cc33ee0eb9a2b9818994542d3c4179e618631";    % The commit hash of the supported version
-        commitComment = "";                                     % Details about the commit
+        commitComment = "Most recent as of June 28, 2022. Code updated July 5, 2019. ";       % Details about the commit
     end
 
     % Forward model parameters
