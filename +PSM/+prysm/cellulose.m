@@ -204,9 +204,9 @@ classdef cellulose < PSM.prysm
 
             % For each evolving ensemble, convert variables to numpy arrays
             for k = 1:nEvolving
-                Tpy = py.numpy.array(T(:,:,k));
-                Ppy = py.numpy.array(P(:,:,k));
-                RHpy = py.numpy.array(RH(:,:,k));
+%                 Tpy = py.numpy.array(T(:,:,k));
+%                 Ppy = py.numpy.array(P(:,:,k));
+%                 RHpy = py.numpy.array(RH(:,:,k));
 
                 % Run the forward model. Convert output back to Matlab
                 d18Opy = py.psm.cellulose.sensor.cellulose_sensor(...

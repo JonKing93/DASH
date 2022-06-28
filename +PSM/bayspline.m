@@ -46,7 +46,7 @@ classdef bayspline < PSM.Interface
         description = "Baysian model for UK'37";                % Description of the PSM
         repository = "jesstierney/BAYSPLINE";                   % Github Repository holding the PSM
         commit = "1e6f9673bcc55b483422c6d6e1b1f63148636094";    % The Github commit of the PSM that is supported by DASH
-        commitComment = "Most recent as of November 24, 2020";  % Details about the supported commit
+        commitComment = "Most recent as of Jan. 1, 2021. Code updated November 24, 2020";  % Details about the supported commit
     end
 
     % Forward model parameters

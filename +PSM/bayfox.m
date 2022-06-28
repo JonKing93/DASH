@@ -44,7 +44,7 @@ classdef bayfox < PSM.Interface
         description = "Bayesian model for d18Oc of planktic foraminifera";
         repository = "jesstierney/bayfoxm";
         commit = "cb98a5259c7340c3b19669c45a599799b9a491c2";
-        commitComment = "";
+        commitComment = "Most recent as of June 28, 2022. Code updated on March 6, 2020.";
     end
 
     % Forward model parameters
