@@ -8,13 +8,22 @@
 %       B. Downloads the codebases of supported models from Github, and
 %       C. Applies forward models to state vector ensembles.
 %
+%   At its core, the PSM package provides an interface that allows users to
+%   run a variety of proxy forward models using the same set of commands.
+%   You can learn about the commen set of commands by reading the
+%   documentation for PSM.Interface.
+%
 %   OUTLINE:
 %   The following is a outline for using the PSM package.
 %       1. Use "info" to learn about the forward models supported by DASH
 %       2. Use "download" to download the code for the desired forward models
-%       3. Use the forward models classes to design forward models for the
-%          proxy observation records.
-%       4. Use "estimate" to apply the forward models to a state vector
+%       3. Use the forward model interface to design a forward model for 
+%          each of the proxy observation sites.
+%           a. Use PSM.<model name> to create a new PSM object for a site
+%           b. Optionally use "label" to label the forward model
+%           c. Use "rows" to indicate which state vector rows hold the
+%              inputs for the forward model
+%       4. Use "estimate" to apply all the forward models to a state vector
 %          ensemble and produce proxy observation estimates.
 %
 %   Supported Forward models:

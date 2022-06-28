@@ -1,4 +1,68 @@
 classdef (Abstract) Interface
+    %% PSM.Interface  Defines a common interface for working with forward models
+    % ----------
+    %   The PSM.Interface defines an interface that allows users to work
+    %   with a variety of forward models using a common set of commands.
+    %   This interface is specifically designed to facilitate use of the
+    %   "PSM.estimate" command, which allows users to apply a collection
+    %   of forward models to a state vector ensemble.
+    %
+    %   For users, the key commands in the interface are as follows:
+    %   1. You can create an object for a particular type of forward model
+    %      using PSM.<model type> For example, "PSM.linear" creates new
+    %      linear forward model, and "PSM.bayspline" creates an object that
+    %      implements the BaySPAR forward model.
+    %   2. You can optionally label a forward model object by calling
+    %      the "label" command on the object. You can also return the
+    %      current label of a forward model using this command.
+    %   3. Indicate which state vector rows contain the inputs required to
+    %      run the forward model by calling the "rows" command on the
+    %      object. In addition to a fixed set of state vector rows, the
+    %      "rows" command also allows users to optionally assign different
+    %      state vector rows to different ensemble members and/or ensembles
+    %      in an evolving set.
+    %
+    %   In addition to these user commands, the PSM interface also requires
+    %   PSM objects to implement an "estimate" command, which runs the
+    %   forward model on inputs extracted from a state vector ensemble.
+    %   These estimate methods are essentially wrappers to whatever
+    %   external code actually runs the forward model, and they are used by
+    %   the "PSM.estimate" method to run any input forward models. The
+    %   interface also requires PSM objects to indicate whether they can
+    %   estimate R uncertainties or not. This is also used to help run the
+    %   PSM.estimate method.
+    %
+    %   The interface requires PSM classes to also define several constant
+    %   properties that relate to the location of the forward model
+    %   codebase on Github, and also a description of the forward model.
+    %   These properties are used to implement the PSM.info,
+    %   PSM.githubInfo, and PSM.download commands.
+    %
+    %   Finally, the interface implements several common utilities for
+    %   working with PSM objects. These utilities allow developers to
+    %   quickly develop new PSMs with a minimum of new code.
+    % ----------
+    % Interface Methods:
+    %
+    % **ALL USER METHODS**
+    %
+    % Interface:
+    %   label   - Optionally apply a label to a PSM object
+    %   rows    - Indicate the state vector rows required to run a forward model
+    %   disp    - Display a PSM object in the console
+    %
+    % ==UTILITIES==
+    % Utility methods that help the class run. They are not intended for
+    % users and do not implement error checking.
+    %
+    % Estimate:
+    %   estimate    - Run a forward model on inputs extracted from a state vector ensemble
+    %
+    % Utilities:
+    %   name        - Return a name for a PSM object for use in error messages
+    %   parseRows   - Process and error check the inputs to the "rows" command
+    %
+    % <a href="matlab:dash.doc('PSM.Interface')">Documentation Page</a>
 
     % Information about a forward model's codebase
     properties (Abstract, Constant)
