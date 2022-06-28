@@ -47,6 +47,9 @@ AFTER NEXT RELEASE
 Static PSM.run to implement forward model with any parameters
 More detailed documentation of PSM inputs
 (Low priority) Error check PSM parameters
+PSM.estimate that shares loaded data among PSMs
+    - Might not be necessary as most PSMs probably do not share data
+    - Then again, might be nice to use a single load operation
 
 ensemble.addMembers
 Write examples for user facing methods
