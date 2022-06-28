@@ -34,6 +34,7 @@ classdef linear < PSM.Interface
     % Inherited:
     %   name        - Returns an identifying name for use in error messages
     %   parseRows   - Error checks and parses state vector rows
+    %   disp        - Display the PSM in the console
     %
     % <a href="matlab:dash.doc('PSM.linear')">Documentation Page</a>
 

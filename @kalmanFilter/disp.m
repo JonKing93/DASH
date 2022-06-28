@@ -22,13 +22,17 @@ function[] = disp(obj)
 link = '<a href="matlab:dash.doc(''kalmanFilter'')">kalmanFilter</a>';
 
 % Get width of displayed labels
-returning = "Returning";
-covariance = "Covariance";
-labels = returning;
-if ~isempty(obj.inflationFactor) || ~isempty(obj.wloc) || ~isempty(obj.Cblend) || ~isempty(obj.Cset)
-    labels = [labels, covariance];
+if isscalar(obj)
+    returning = "Returning";
+    covariance = "Covariance";
+    labels = returning;
+    if ~isempty(obj.inflationFactor) || ~isempty(obj.wloc) || ~isempty(obj.Cblend) || ~isempty(obj.Cset)
+        labels = [labels, covariance];
+    end
+    width = max(strlength(labels));
+else
+    width = 0;
 end
-width = max(strlength(labels));
 
 % Display data inputs and sizes
 width = obj.dispFilter(link, width);

@@ -155,5 +155,101 @@ classdef (Abstract) Interface
                 output = obj;
             end    
         end
+        function[] = disp(obj)
+            %% PSM.Interface.disp  Display a PSM object in the console
+            % ----------
+            %   obj.disp
+            %   Displays a PSM object in the console. Begins by displaying
+            %   a link to the class documentation. If the object is scalar,
+            %   displays the label (if there is one). Also displays the
+            %   status of assigned state vector rows. Displays any model
+            %   parameters.
+            %
+            %   If the object is an array, displays the array size. If any
+            %   of the objects in the array have labels, displays the
+            %   labels. Any object without a label is listed as "<no
+            %   label>". If the array is empty, declares that the array is
+            %   empty.
+            % ----------
+            %   Outputs:
+            %       Displays the object in the console.
+            %
+            % <a href="matlab:dash.doc('PSM.Interface.disp')">Documentation Page</a>
+            
+            % Class documentation link
+            type = class(obj);
+            link = sprintf('<a href="matlab:dash.doc(''%s'')">%s PSM</a>', type, type(5:end));
+            
+            % If not scalar, display array size
+            if ~isscalar(obj)
+                info = dash.string.nonscalarObj(obj, link);
+                fprintf(info);
+
+                % Exit if empty
+                if isempty(obj)
+                    return
+                end
+
+                % Collect labels
+                labels = strings(size(obj));
+                for k = 1:numel(obj)
+                    labels(k) = obj(k).label_;
+                end
+                
+                % Display labels
+                unlabeled = strcmp(labels, "");
+                if ~all(unlabeled, 'all')
+                    fprintf('    Labels:\n');
+                    labels(unlabeled) = "<no label>";
+                    if ismatrix(labels)
+                        fprintf('\n');
+                    end
+                    disp(labels);
+                end
+
+            % Scalar object, start with title
+            else
+                fprintf('%s with properties:\n\n', link);
+
+                % Label
+                pad = '';
+                if ~strcmp(obj.label_, "")
+                    fprintf('    Label: %s\n', obj.label);
+                    pad = ' ';
+                end
+                
+                % Rows
+                if isempty(obj.rows_)
+                    details = 'none';
+                else
+                    details = 'set';
+                end
+                fprintf('%s    Rows: %s\n', pad, details);
+                [nMembers, nEvolving] = size(obj.rows_, 2:3);
+                if nMembers>1
+                    fprintf('%s\t\tFor %.f ensemble members\n', pad, nMembers);
+                end
+                if nEvolving>1
+                    fprintf('%s\t\tFor %.f evolving ensembles\n', pad, nEvolving);
+                end
+                fprintf('\n');
+
+                % Get parameter fields
+                interfaceProps = properties('PSM.Interface');
+                objProps = properties(obj);
+                isparameter = ~ismember(objProps, interfaceProps);
+                parameterNames = objProps(isparameter);
+
+                % Build and display parameter structure
+                s = struct;
+                for p = 1:numel(parameterNames)
+                    name = parameterNames{p};
+                    s.(name) = obj.(name);
+                end
+                fprintf('    Parameters:\n');
+                disp(s);
+            end
+        end
     end
+
 end
