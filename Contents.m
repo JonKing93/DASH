@@ -43,7 +43,7 @@
 % You can also display documentation directy in the console using the "help"
 % command. For example:
 % >> help gridfile.new
-% ***---------***
+%
 %
 %
 %% OTHER

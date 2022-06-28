@@ -1,5 +1,11 @@
 TODO:
 
+Fix Python installation for PRYSM forward models
+
+Add notice of how to access help to help DASH and help dash
+
+Write readme and getting started markdowns
+
 0. Tests for failed cases should reference specific error ID, not just DASH header
 
 A. Should have a utility to break apart means for merged dimensions. For example,
@@ -38,6 +44,10 @@ Write buildTestdata methods
 
 AFTER NEXT RELEASE
 
+Static PSM.run to implement forward model with any parameters
+More detailed documentation of PSM inputs
+(Low priority) Error check PSM parameters
+
 ensemble.addMembers
 Write examples for user facing methods
 Write examples for internal methods (lower priority)
@@ -46,6 +56,8 @@ Add links to scalar disp for array objects (click on a gridfile in an array disp
 Add handling for <missing> strings
 Add serializer to ensembleMetadata (maybe do now)
 Scalar return values don't require scalarObjs (for example, returning a label)
+
+Utility to convert MAT files to v7.3
 
 Add PSMs to optimal sensor
 
