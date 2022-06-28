@@ -16,10 +16,11 @@ names = [...
     "bayspar"
     "bayspline"
     "linear"
-    "prysm.cellulose"
-    "prysm.coral"
-    "prysm.icecore"
-    "prysm.speleothem"
+%    "prysm"
+%    "prysm.cellulose"
+%    "prysm.coral"
+%    "prysm.icecore"
+%    "prysm.speleothem"
     "vslite"
     ];
 
