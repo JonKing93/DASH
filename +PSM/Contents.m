@@ -57,6 +57,9 @@
 % Estimate:
 %   estimate            - Use PSMs to estimate proxy observations from a state vector ensemble
 %
+% Forwad model interface:
+%   Interface           - Defines a common interface for working with forward models
+%
 % Forward models:
 %   bayfox              - A Bayesian model for d18Oc of planktic foraminifera
 %   baymag              - A Bayesian model for Mg/Ca ratios of planktic foraminifera
