@@ -7,7 +7,7 @@ classdef cellulose < PSM.prysm
     %   Dee, S. G., Russell, J. M., Morrill, C., Chen, Z., & Neary, A. 
     %   (2018). PRYSM v2. 0: A proxy system model for lacustrine archives. 
     %   Paleoceanography and Paleoclimatology, 33(11), 1250-1269.
-    %   DOI:
+    %   DOI:  https://doi.org/10.1029/2018PA003413
     %
     %   Github Repository: https://github.com/sylvia-dee/PRYSM
     %

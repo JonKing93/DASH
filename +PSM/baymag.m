@@ -5,8 +5,11 @@ classdef baymag < PSM.Interface
     %   ratios of planktic foraminifera. The forward model is described in
     %   the paper:
     %
-    %   ...
-    %   DOI:
+    %   Tierney, J. E., Malevich, S. B., Gray, W., Vetter, L., and
+    %   Thirumalai, K. (2019)  Bayesian calibration of the Mg/Ca paleothermometer
+    %   in planktic foraminifera. Paleoceanography and Paleoclimatology, 
+    %   34(12), 2005-2030
+    %   DOI:  https://doi.org/10.1029/2019PA003744
     %   
     %   Github Repository:  https://github.com/jesstierney/BAYMAG
     % ----------

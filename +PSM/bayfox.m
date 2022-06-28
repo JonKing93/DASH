@@ -8,7 +8,7 @@ classdef bayfox < PSM.Interface
     %   Malevich, S. B., Vetter, L., & Tierney, J. E. (2019). Global Core Top
     %   Calibration of δ18O in Planktic Foraminifera to Sea Surface 
     %   Temperature. Paleoceanography and Paleoclimatology, 34(8), 1292-1315.
-    %   DOI:  
+    %   DOI:  https://doi.org/10.1029/2019PA003576
     %
     %   Github Repository:  https://github.com/jesstierney/bayfoxm
     % ----------
