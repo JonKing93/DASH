@@ -151,7 +151,7 @@ indices = obj.indices;
 if source.isloaded
     for d = 1:nDims
         if obj.isState(d)
-            indices{d} = indices{d} - parameters.indexLimits(d,1) + 1;
+            indices{d} = indices{d} - source.limits(d,1) + 1;
         end
     end
 

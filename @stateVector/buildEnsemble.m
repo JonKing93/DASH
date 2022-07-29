@@ -19,7 +19,7 @@ function[X, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, pr
 %           the new ensemble members.
 %       header (string scalar): Header for thrown error IDs
 %
-% Outputs:
+%   Outputs:
 %       X (numeric array | []): If loading new members directly, the new
 %           ensemble members. If writing to file, an empty array.
 %       obj (scalar stateVector object): The object updated with the new
@@ -293,9 +293,9 @@ nGrids = numel(grids);
 sources = struct('isloaded',false, 'data', [], 'limits', [], 'dataSources', [], 'indices', []);
 sources = repmat(sources, [nGrids 1]);
 
-nVars = obj.nVariables;
-loadAllMembers = false(nVars, 1);
-indexLimits = cell(nVars, 1);
+nVarsInVector = obj.nVariables;
+loadAllMembers = false(nVarsInVector, 1);
+indexLimits = cell(nVarsInVector, 1);
 
 % Track precision of loaded data
 getPrecision = false;
@@ -316,7 +316,7 @@ for g = 1:nGrids
 
         dims = coupling.variables(v).dims;
         newMembers = obj.subMembers{cs}(newIndices,:);
-        indexLimits{k} = obj.variables_(v).indexLimits(dims, newMembers, nVars>1);
+        indexLimits{v} = obj.variables_(v).indexLimits(dims, newMembers, nVars>1);
     end
 
     % If there are multiple variables, get index limits for the full set
