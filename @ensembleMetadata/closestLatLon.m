@@ -120,7 +120,7 @@ if useSite
     site = dimensions(4);
     variableCoordinates = obj.getLatLon(v, variableRows, site, columns);
 else
-    latlon = dimensions(1:2);
+    latlon = dimensions([2 1]);
     variableCoordinates = obj.getLatLon(v, variableRows, latlon);
 end
 
