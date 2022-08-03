@@ -9,6 +9,9 @@ old/**
 **.grid
 **.ens
 
+# Packaged toolbox
+DASH.mltbx
+
 # But enable the small data files in testdata
 !/testdata/gridfile/**
 
