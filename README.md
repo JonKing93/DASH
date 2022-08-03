@@ -11,6 +11,25 @@ DASH is a Matlab package to help implement paleoclimate data assimilation. It in
 The documentation is currently being finalized, but will be available at: [https://jonking93.github.io/DASH](https://jonking93.github.io/DASH)
 
 
+## Getting Started
+
+To get started with the DASH toolbox:
+
+1. Download the most recent stable release: [Latest Release](https://github.com/JonKing93/DASH/releases/latest)
+2. Open the downloaded DASH.mltbx file. This should install the DASH toolbox in your MATLAB environment.
+3. That's it you're done! For additional help, enter:
+>> dash.doc
+in the MATLAB console. This will open the DASH documentation set, which includes resources for starting with DASH.
+
+
+## Feedback / Contributions
+
+Find a bug, or have an idea for a cool new feature? We welcome feedback! 
+For bug reports, suggestions, or anything else - send us an email at DASH.toolbox@gmail.com
+
+Interested in contributing? Either send us an email, or submit a pull request to the DASH repository to get started.
+
+
 ## Branches
 The following is an overview of the branches of DASH
 
