@@ -1,0 +1,105 @@
+gridMetadata.dimensions
+=======================
+Return the list of supported gridMetadata dimensions
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dimensions = gridMetadata.dimensions <gridMetadata.dimensions.syntax1>`
+| :ref:`[dimensions, attributes] = gridMetadata.dimensions <gridMetadata.dimensions.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.dimensions.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`dimensions <gridMetadata.dimensions.output.dimensions>` = gridMetadata.dimensions
+
+.. raw:: html
+
+    </pre>
+
+Returns the list of data dimensions recognized by gridMetadata.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.dimensions.syntax2:
+
+.. rst-class:: syntax
+
+| [:ref:`dimensions <gridMetadata.dimensions.output.dimensions>`, :ref:`attributes <gridMetadata.dimensions.output.attributes>`] = gridMetadata.dimensions
+
+.. raw:: html
+
+    </pre>
+
+Also returns the name of the attributes property.
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.dimensions.output.dimensions:
+
+dimensions
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>dimensions</strong></label><div class="content">
+
+| *string* *vector*
+| The list of dimensions recognized by gridMetadata
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.dimensions.output.attributes:
+
+attributes
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>attributes</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of the metadata attributes property
+
+.. raw:: html
+
+    </div></section>
+
+

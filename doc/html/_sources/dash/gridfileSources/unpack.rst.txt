@@ -1,0 +1,171 @@
+dash.gridfileSources.unpack
+===========================
+Convert catalogued values to their original data types
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`[dims, size, mergedDims, mergedSize, mergeMap] = obj.unpack(s) <dash.gridfileSources.unpack.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.gridfileSources.unpack.syntax1:
+
+.. rst-class:: syntax
+
+| [:ref:`dims <dash.gridfileSources.unpack.output.dims>`, :ref:`size <dash.gridfileSources.unpack.output.size>`, :ref:`mergedDims <dash.gridfileSources.unpack.output.mergedDims>`, :ref:`mergedSize <dash.gridfileSources.unpack.output.mergedSize>`, :ref:`mergeMap <dash.gridfileSources.unpack.output.mergeMap>`] = obj.unpack(:ref:`s <dash.gridfileSources.unpack.input.s>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns recorded values for a data source in the catalogue. Converts recorded values from optimized save/load data types to original data types.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>s</strong></label><div class="content">
+
+| *numeric* *scalar*
+| The index of a data source in the catalogue.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.output.dims:
+
+dims
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>dims</strong></label><div class="content">
+
+| *string* *vector* [*nNonTS*]
+| The list of non-trailing-singleton dimensions in the data source.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.output.size:
+
+size
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>size</strong></label><div class="content">
+
+| *numeric* *vector* [*nNonTS*]
+| The size of each nonTS dimension in the data source.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.output.mergedDims:
+
+mergedDims
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output3" checked="checked"><label for="output3"><strong>mergedDims</strong></label><div class="content">
+
+| *string* *vector* [*nMerged*]
+| The list of merged nonTS dimensions for the data source.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.output.mergedSize:
+
+mergedSize
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output4" checked="checked"><label for="output4"><strong>mergedSize</strong></label><div class="content">
+
+| *string* *vector* [*nMerged*]
+| The size of each merged dimension for the data source.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.gridfileSources.unpack.output.mergeMap:
+
+mergeMap
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output5" checked="checked"><label for="output5"><strong>mergeMap</strong></label><div class="content">
+
+| *numeric* *vector* [*nNonTS*]
+| A vector mapping each original dimension to the merged dimension that includes it. Has one element per original dimension. Each element holds the index of the merged dimension that includes the original dimension.
+
+.. raw:: html
+
+    </div></section>
+
+

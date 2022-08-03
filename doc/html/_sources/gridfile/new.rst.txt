@@ -1,0 +1,149 @@
+gridfile.new
+============
+Create a new, empty .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj = gridfile.new(filename, metadata) <gridfile.new.syntax1>`
+| :ref:`obj = gridfile.new(filename, metadata, overwrite) <gridfile.new.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.new.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridfile.new.output.obj>` = gridfile.new(:ref:`filename <gridfile.new.input.filename>`, :ref:`metadata <gridfile.new.input.metadata>`)
+
+.. raw:: html
+
+    </pre>
+
+Initializes a new (empty) .grid file. The new file manages an N-dimensional grid that spans the provided metadata. Adds a ".grid" extension to the filename if it does not already have one.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.new.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridfile.new.output.obj>` = gridfile.new(:ref:`filename <gridfile.new.input.filename>`, :ref:`metadata <gridfile.new.input.metadata>`, :ref:`overwrite <gridfile.new.input.overwrite>`)
+
+.. raw:: html
+
+    </pre>
+
+Specify whether the method may overwrite pre-existing .grid files. By default, the method will not overwrite files.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.new.input.filename:
+
+filename
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>filename</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of the new .grid file. May be a filename, relative path, or absolute path. If not an absolute path, saves the new file relative to the current directory.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.new.input.metadata:
+
+metadata
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>metadata</strong></label><div class="content">
+
+| *gridMetadata* *object*
+| Metadata for the gridded dataset. Metadata rows must be unique for each dimension. If the metadata has a set dimension order, the order will be ignored.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.new.input.overwrite:
+
+overwrite
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>overwrite</strong></label><div class="content">
+
+| *scalar* *logical*
+| Whether to overwrite existing files (true) or not (false). Default is false.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.new.output.obj:
+
+obj
++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>obj</strong></label><div class="content">
+
+| *gridfile* *object*
+| A gridfile object for the new .grid file.
+
+.. raw:: html
+
+    </div></section>
+
+

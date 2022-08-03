@@ -1,0 +1,10 @@
+# This is an example description
+# of a delimited text file
+Name--Site--Var
+1,2,3,5
+2,3,4,5
+6,7,8,5
+9,10,11,5
+100,101,102,5
+115,116,117,5
+119,120,121,5

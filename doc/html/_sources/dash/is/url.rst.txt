@@ -1,0 +1,157 @@
+dash.is.url
+===========
+Test if a name is a URL
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`tf = dash.is.url(name) <dash.is.url.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.url.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`tf <dash.is.url.output.tf>` = dash.is.url(:ref:`name <dash.is.url.input.name>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if name is a URL. Otherwise, returns false.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Test if string is URL
++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Test if string is URL</strong></label><div class="content">
+
+
+A string is considered a URL if it begins with http:// or https://
+
+Strings that pass the test:
+
+.. rst-class:: no-margin
+
+::
+
+    myURL = 'http://some/web/page';
+    isurl = dash.is.url(myURL)
+    
+    myURL2 = "https://some/web/page";
+    isurl = dash.is.url(myURL2)
+
+
+.. rst-class:: example-output
+
+::
+
+    isurl =
+           true
+
+
+Strings that fail the test:
+
+.. rst-class:: no-margin
+
+::
+
+    string1 = 'here is some text that is not a URL';
+    isurl = dash.is.url(string1);
+    
+    string2 = "text that contains https:// but does not begin with it"
+    isurl = dash.is.url(string2);
+
+
+.. rst-class:: example-output
+
+::
+
+    isurl =
+           false
+
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.url.input.name:
+
+name
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>name</strong></label><div class="content">
+
+| *string* *scalar*
+| The name being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.url.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *scalar* *logical*
+| True if the name is a URL. Otherwise false.
+
+.. raw:: html
+
+    </div></section>
+
+

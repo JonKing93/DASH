@@ -1,0 +1,151 @@
+gridMetadata.edit
+=================
+Edit the metadata for a gridded dataset
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj = obj.edit(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN) <gridMetadata.edit.syntax1>`
+| :ref:`obj = obj.edit(..., 'attributes', attributes) <gridMetadata.edit.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.edit.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.edit.output.obj>` = obj.edit(dimension1, metadata1, dimension2, metadata2, .., :ref:`dimensionN <gridMetadata.edit.input.dimensionN>`, :ref:`metadataN <gridMetadata.edit.input.metadataN>`)
+
+.. raw:: html
+
+    </pre>
+
+Replace the metadata for the named dimensions with the specified values.
+
+If the gridMetadata has a set dimension order, and the defined dimensions change, also removes the dimension order from the object.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.edit.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`obj <gridMetadata.edit.output.obj>` = obj.edit(..., 'attributes', :ref:`attributes <gridMetadata.edit.input.attributes>`)
+
+.. raw:: html
+
+    </pre>
+
+Replace the non-dimensional attributes with the specified values
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.edit.input.dimensionN:
+
+dimensionN
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dimensionN</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of a dimension of a gridded dataset. Must be a recognized grid dimension. (See gridMetadata.dimensions for a list of available dimensions)
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.edit.input.metadataN:
+
+metadataN
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>metadataN</strong></label><div class="content">
+
+| *matrix*, *numeric* | *logical* | *char* | *string* | *cellstring* | *datetime*
+| The metadata for the dimension. Cannot have NaN or NaT elements. All rows must be unique.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.edit.input.attributes:
+
+attributes
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>attributes</strong></label><div class="content">
+
+| *scalar* *struct*
+| Non-dimensional metadata attributes for a gridded dataset. May contain any fields or contents useful for the user.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.edit.output.obj:
+
+obj
++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>obj</strong></label><div class="content">
+
+| *gridMetadata* *object*
+| The updated gridMetadata object.
+
+.. raw:: html
+
+    </div></section>
+
+

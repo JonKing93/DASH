@@ -1,0 +1,43 @@
+gridMetadata.tests
+==================
+Unit tests for the gridMetadata class
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`gridMetadata.tests <gridMetadata.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.tests.syntax1:
+
+.. rst-class:: syntax
+
+| gridMetadata.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. Otherwise, throws error at the first failed tests.
+
+

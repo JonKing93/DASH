@@ -1,0 +1,173 @@
+gridfile.arithmetic
+===================
+Arithmetic operations across two gridfiles
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.arithmetic(operation, grid2, filename, overwrite, atts, type) <gridfile.arithmetic.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.arithmetic.syntax1:
+
+.. rst-class:: syntax
+
+| obj.arithmetic(:ref:`operation <gridfile.arithmetic.input.operation>`, :ref:`grid2 <gridfile.arithmetic.input.grid2>`, :ref:`filename <gridfile.arithmetic.input.filename>`, :ref:`overwrite <gridfile.arithmetic.input.overwrite>`, atts, :ref:`type <gridfile.arithmetic.input.type>`)
+
+.. raw:: html
+
+    </pre>
+
+Implement an arithmetic operation on the data in two .grid files. Saves the result of the operation to a .mat file and catalogues the result in a new .grid file.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.operation:
+
+operation
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>operation</strong></label><div class="content">
+
+| '*plus*' | '*minus*' | '*times*' | '*divide*'
+| The arithmetic operation to apply to the two gridfiles
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.grid2:
+
+grid2
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>grid2</strong></label><div class="content">
+
+| *string* *scalar* | *gridfile* *object*
+| The second gridfile to use in the arithmetic operation.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.filename:
+
+filename
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>filename</strong></label><div class="content">
+
+| *string* *scalar* | *string* *vector* [2]
+| The name to use for the new .mat and .grid files. If a single file name, the name will be used for both files. If two file names, the first name is used for the .mat file, and the second name is used for the .grid file.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.overwrite:
+
+overwrite
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>overwrite</strong></label><div class="content">
+
+| *scalar* *logical* | *logical* *vector* [2]
+| Whether to overwrite existing .mat and .grid files. True allows overwriting, false does not. If scalar, uses the same option for both files. If two elements, uses the first option for the .mat file, and the second option for the .grid file. Default is false.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.attributes:
+
+attributes
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>attributes</strong></label><div class="content">
+
+| 1 | 2 | *scalar* *struct* | *empty* *array*
+| Options for setting metadata attributes in the new .grid file. If 1, copies the attributes from the first gridfile to the new file. If 2, copies the attributes from grid2 to the new file. If a scalar struct, uses the struct directly as the attributes. If unset or an empty array, the new file will have no metadata attributes.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.arithmetic.input.type:
+
+type
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input6" checked="checked"><label for="input6"><strong>type</strong></label><div class="content">
+
+| 1 | 2 | 3
+| Options for matching gridfile metadata and sizes.
+
+[1 (default)]: requires data dimensions to have compatible sizes AND have the same metadata along each non-singleton dimension. Does arithmetic on all data elements.
+
+[2]: Searches for data elements with matching elements in non-singleton dimensions. Only does arithmetic at these elements. Does not require data dimensions to have compatible sizes.
+
+[3]: Does not compare dimensional metadata. Loads all data elements from both files and applies arithmetic directly. Requires data dimensions to have compatible sizes.
+
+.. raw:: html
+
+    </div></section>
+
+

@@ -1,0 +1,509 @@
+gridfile.validRange
+===================
+Specify a valid range for data catalogued in a .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`range = obj.validRange <gridfile.validRange.syntax1>`
+| :ref:`range = obj.validRange('default') <gridfile.validRange.syntax1>`
+| :ref:`sourceRanges = obj.validRange('sources') <gridfile.validRange.syntax2>`
+| :ref:`sourceRanges = obj.validRange('sources', s) <gridfile.validRange.syntax2>`
+| :ref:`sourceRanges = obj.validRange('sources', sourceNames) <gridfile.validRange.syntax2>`
+| :ref:`obj.validRange(range) <gridfile.validRange.syntax3>`
+| :ref:`obj.validRange(range, s) <gridfile.validRange.syntax4>`
+| :ref:`obj.validRange(range, sourceNames) <gridfile.validRange.syntax4>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.validRange.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`range <gridfile.validRange.output.range>` = obj.validRange
+| :ref:`range <gridfile.validRange.output.range>` = obj.validRange('default')
+
+.. raw:: html
+
+    </pre>
+
+Return the default valid range for a gridfile.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.validRange.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`sourceRanges <gridfile.validRange.output.sourceRanges>` = obj.validRange('sources')
+| :ref:`sourceRanges <gridfile.validRange.output.sourceRanges>` = obj.validRange('sources', :ref:`s <gridfile.validRange.input.s>`)
+| :ref:`sourceRanges <gridfile.validRange.output.sourceRanges>` = obj.validRange('sources', sourceNames)
+
+.. raw:: html
+
+    </pre>
+
+Return the valid ranges for the specified data sources. If no data sources are specified, returns the valid range for all data sources in the gridfile.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.validRange.syntax3:
+
+.. rst-class:: syntax
+
+| obj.validRange(:ref:`range <gridfile.validRange.input.range>`)
+
+.. raw:: html
+
+    </pre>
+
+Specify a valid range for data catalogued in a .grid file. Data outside of the valid range are converted to NaN when loaded. This syntax sets the valid range for all data sources currently in the gridfile, and applies the valid range any data sources added to the .grid file in the future.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.validRange.syntax4:
+
+.. rst-class:: syntax
+
+| obj.validRange(:ref:`range <gridfile.validRange.input.range>`, :ref:`s <gridfile.validRange.input.s>`)
+| obj.validRange(:ref:`range <gridfile.validRange.input.range>`, sourceNames)
+
+.. raw:: html
+
+    </pre>
+
+Implements a valid range for the specified data sources. Overrides any valid range values previously applied to the data sources.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Return the default valid range
+++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Return the default valid range</strong></label><div class="content">
+
+
+This valid range is applied to any new data sources added to the gridfile.
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    range = grid.validRange
+
+
+.. rst-class:: example-output
+
+::
+
+    range =
+           [-Inf Inf]
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Return data source valid ranges
++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Return data source valid ranges</strong></label><div class="content">
+
+
+Use the 'sources' to return the valid range for each data source:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    nSource = numel(grid.sources)
+    sourceRanges = grid.validRange('sources')
+
+
+.. rst-class:: example-output
+
+::
+
+    nSource =
+             5
+    
+    sourceRanges =
+                  -Inf   Inf
+                  -Inf   Inf
+                     0   100
+                  -Inf   Inf
+                  -999  1000
+
+
+Alternatively, specify which sources to return valid ranges for. Either provide source names:
+
+.. rst-class:: no-margin
+
+::
+
+    sourceNames = ["my-source-2.mat", "my-source-3.nc", "my-source-5.txt"];
+    sourceFills = grid.validRange('sources', sourceNames)
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceFills = 
+                  -Inf   Inf
+                     0   100
+                  -999  1000
+
+
+Or the indices of sources in the gridfile:
+
+.. rst-class:: no-margin
+
+::
+
+    sourceIndices = [2 3 5]
+    sourceFills = grid.validRange('sources', sourceIndices)
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceFills = 
+                  -Inf   Inf
+                     0   100
+                  -999  1000
+
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Set the default valid range
++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Set the default valid range</strong></label><div class="content">
+
+
+The new valid range is applied to all data sources in the gridfile, and to any data sources added to the gridfile in the future.
+
+Create a new gridfile and examine the default valid range.
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    defaultRange = grid.validRange
+
+
+.. rst-class:: example-output
+
+::
+
+    defaultRange =
+                  -Inf  Inf
+
+
+Also examine the valid range for a data source. Note that the valid range for individual data sources can differ from the default range.
+
+.. rst-class:: no-margin
+
+::
+
+    sourceRange = grid.validRange('sources', 'my-data-source.mat')
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceRange =
+                 -999  999
+
+
+Change the default valid range.
+
+.. rst-class:: no-margin
+
+::
+
+    newRange = [0 1000]
+    grid.validRange(newRange)
+    defaultRange = grid.validRange
+
+
+.. rst-class:: example-output
+
+::
+
+    defaultRange =
+                  0  1000
+
+
+Note that the valid range for the data source is updated to this new default value
+
+.. rst-class:: no-margin
+
+::
+
+    sourceRange = grid.validRange('sources', 'my-data-source.mat')
+
+
+.. rst-class:: example-output
+
+::
+
+    sourceRange =
+                 0  1000
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+Set data source valid ranges
+++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example4"><label for="example4"><strong>Set data source valid ranges</strong></label><div class="content">
+
+
+Use the second input to apply a valid range to specific data sources. This syntax can override default gridfile valid range:
+
+Start by creating a gridfile object. Examine default valid range, and the valid range of individual data sources:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid');
+    
+    defaultRange = grid.validRange
+    sourceRange = grid.validRange('sources')
+
+
+.. rst-class:: example-output
+
+::
+
+    defaultRange =
+                  -Inf  Inf
+                  
+    sourceRange =
+                 -Inf  Inf
+                 -Inf  Inf
+                 -Inf  Inf
+
+
+So far, the valid range for each data source matches the gridfile's default range. Next change the fill value for some of the data sources. To specify which sources to change, either provide source names or the indices of sources in the gridfile:
+
+::
+
+    newRange = [0 1000];
+    
+    % Using source names
+    sourceNames = ["my-source-1.mat", "my-source-2.nc"];
+    grid.validRange(newRange, sourceNames);
+    
+    % Using source indices
+    sourceIndices = [1 2];
+    grid.validRange(newRange, sourceIndices);
+
+
+Now re-examine the gridfile's default valid range and the range for each source:
+
+.. rst-class:: no-margin
+
+::
+
+    defaultRange = grid.validRange
+    sourceRange = grid.validRange('sources')
+
+
+.. rst-class:: example-output
+
+::
+
+    defaultRange =
+                  [-Inf  Inf]
+                  
+    sourceRange =
+                    0  1000
+                    0  1000
+                 -Inf   Inf
+
+
+The valid ranges for the two specified sources have been altered. However, the default valid range and the range for the third data source have not changed.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.validRange.input.range:
+
+range
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>range</strong></label><div class="content">
+
+| *numeric* *vector* [2]
+| The valid range. The first element is the lower bound, and the second element is the upper bound. Data values outside this (open) interval are converted to NaN when loaded.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.validRange.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>s</strong></label><div class="content">
+
+| *logical* *vector* [*nSources*] | *vector*, *linear* *indices*
+| The indices of the data sources that should be assigned the valid range.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.validRange.input.sourceName:
+
+sourceName
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>sourceName</strong></label><div class="content">
+
+| *string* *vector*
+| The names of the data sources that should be assigned a valid range.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.validRange.output.range:
+
+range
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>range</strong></label><div class="content">
+
+| *numeric* *vector* [2]
+| The default valid range for the gridfile
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.validRange.output.sourceRanges:
+
+sourceRanges
+++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>sourceRanges</strong></label><div class="content">
+
+| *numeric* *matrix* [*nSource*, 2]
+| The valid ranges for the specified data sources
+
+.. raw:: html
+
+    </div></section>
+
+

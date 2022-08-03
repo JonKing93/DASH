@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.vector &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.indices" href="indices.html" />
+    <link rel="prev" title="dash.assert.scalarType" href="scalarType.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="strflag.html">strflag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strlist.html">strlist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strsInList.html">strsInList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="type.html">type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalarType.html">scalarType</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">vectorTypeN</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#assert-input-is-a-vector-with-required-data-type-and-length">Assert input is a vector with required data type and length</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ignore-data-type">Ignore data type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ignore-vector-length">Ignore vector length</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#customize-error-message">Customize error message</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#input">input</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#type">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#length">length</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#dash-assert-vector-input-idheader">idHeader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="indices.html">indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="indexCollection.html">indexCollection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fileExists.html">fileExists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nameValue.html">nameValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniqueSet.html">uniqueSet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.vector</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-vector">
+<h1>dash.assert.vector<a class="headerlink" href="#dash-assert-vector" title="Permalink to this headline"></a></h1>
+<p>Throws error if input is not a vector of a specified format</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-vector-syntax1"><span class="std std-ref">dash.assert.vectorTypeN(input, type, length)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-vector-syntax2"><span class="std std-ref">dash.assert.vectorTypeN(input, type, length, name)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-vector-syntax3"><span class="std std-ref">dash.assert.vectorTypeN(input, type, length, name, idHeader)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-assert-vector-syntax1">
+<div class="line">dash.assert.vectorTypeN(<a class="reference internal" href="#dash-assert-vector-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-vector-input-type"><span class="std std-ref">type</span></a>, <a class="reference internal" href="#dash-assert-vector-input-length"><span class="std std-ref">length</span></a>)</div>
+</div>
+</pre><p>Checks if an input is a vector of the required data type and length. If not, throws an error</p>
+<pre><div class="syntax line-block" id="dash-assert-vector-syntax2">
+<div class="line">dash.assert.vectorTypeN(<a class="reference internal" href="#dash-assert-vector-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-vector-input-type"><span class="std std-ref">type</span></a>, <a class="reference internal" href="#dash-assert-vector-input-length"><span class="std std-ref">length</span></a>, <a class="reference internal" href="#dash-assert-vector-input-name"><span class="std std-ref">name</span></a>)</div>
+</div>
+</pre><p>Use a custom name to refer to the input in error messages.</p>
+<pre><div class="syntax line-block" id="dash-assert-vector-syntax3">
+<div class="line">dash.assert.vectorTypeN(<a class="reference internal" href="#dash-assert-vector-input-input"><span class="std std-ref">input</span></a>, <a class="reference internal" href="#dash-assert-vector-input-type"><span class="std std-ref">type</span></a>, <a class="reference internal" href="#dash-assert-vector-input-length"><span class="std std-ref">length</span></a>, <a class="reference internal" href="#dash-assert-vector-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-vector-input-idheader"><span class="std std-ref">idHeader</span></a>)</div>
+</div>
+</pre><p>Use a custom header for thrown error IDs.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="assert-input-is-a-vector-with-required-data-type-and-length">
+<h3>Assert input is a vector with required data type and length<a class="headerlink" href="#assert-input-is-a-vector-with-required-data-type-and-length" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Assert input is a vector with required data type and length</strong></label><div class="content"><p>Examples that pass the assertion:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;double&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">true</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;logical&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="s">&quot;string&quot;</span><span class="p">,</span><span class="s">&quot;vector&quot;</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;string&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examples that fail the assertion</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">vector</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">true</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">numeric</span><span class="w"> </span><span class="n">vector</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="nb">logical</span><span class="w"> </span><span class="n">vector</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ignore-data-type">
+<h3>Ignore data type<a class="headerlink" href="#ignore-data-type" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Ignore data type</strong></label><div class="content"><p>Use an empty array for the second input to not require a data type:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ignore-vector-length">
+<h3>Ignore vector length<a class="headerlink" href="#ignore-vector-length" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Ignore vector length</strong></label><div class="content"><p>Use an empty array for the third input to not require a vector length:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[])</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="customize-error-message">
+<h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example4"><label for="example4"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message so it appears to originate from a calling function:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my variable&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">idHeader</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;my:error:header&quot;</span><span class="p">;</span><span class="w"></span>
+
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">vectorTypeN</span><span class="p">(</span><span class="nb">rand</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span><span class="w"> </span><span class="s">&#39;numeric&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">vector</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Also examine the error ID:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;my:error:header:inputNotVector&#39;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="input">
+<span id="dash-assert-vector-input-input"></span><h3>input<a class="headerlink" href="#input" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>input</strong></label><div class="content"><div class="line-block">
+<div class="line">The input being tested</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="type">
+<span id="dash-assert-vector-input-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>type</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>empty</em> <em>array</em></div>
+<div class="line">The required data type of the input. Use an empty array to allow any type</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="length">
+<span id="dash-assert-vector-input-length"></span><h3>length<a class="headerlink" href="#length" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>length</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em> | <em>empty</em> <em>array</em></div>
+<div class="line">The required length of the vector. Use an empty array to allow any length</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="dash-assert-vector-input-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the input in the calling function for use in error messages. Default is “input”</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dash-assert-vector-input-idheader">
+<span id="idheader"></span><h3>idHeader<a class="headerlink" href="#dash-assert-vector-input-idheader" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>idHeader</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs. Default is “DASH:assert:vectorTypeN”</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scalarType.html" class="btn btn-neutral float-left" title="dash.assert.scalarType" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="indices.html" class="btn btn-neutral float-right" title="dash.assert.indices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

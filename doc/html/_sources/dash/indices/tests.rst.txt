@@ -1,0 +1,43 @@
+dash.indices.tests
+==================
+Unit tests for the dash.indices subpackage
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.indices.tests <dash.indices.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.indices.tests.syntax1:
+
+.. rst-class:: syntax
+
+| dash.indices.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the units tests. If the tests pass, exits silently. If the tests fail, prints the first failed test to the console.
+
+

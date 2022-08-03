@@ -1,0 +1,15 @@
+1. Unit testing
+    - Add any new commands to the "tests" methods
+    - Add any new classes/packages to the testToolbox command
+    - Run the DASH.testToolbox command to ensure that everything works
+
+2. Version
+    - Update the version string in dash.version
+
+3. Documentation
+    - Add in-function documentation to any new commands
+    - Write examples for new functionality
+    - Run "buildDocs" to build the HTML documentation set
+
+4. Toolbox
+    - Build the .mtlbx file for the release and push to Github

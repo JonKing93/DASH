@@ -1,0 +1,46 @@
+dash.is
+=======
+Functions that test th data type of inputs
+
+
+.. raw:: html
+
+    <h3>Strings</h3>
+
+.. rst-class:: package-links
+
+| :doc:`strflag <is/strflag>` - True for string scalar or char row vector.
+| :doc:`strlist <is/strlist>` - True for a string vector, cellstring vector, or character row vector
+
+
+
+.. raw:: html
+
+    <h3>Misc</h3>
+
+.. rst-class:: package-links
+
+| :doc:`url <is/url>` - True if string begins with http:// or https://
+| :doc:`uniqueSet <is/uniqueSet>` - Test if input contains repeated values
+| :doc:`positiveIntegers <is/positiveIntegers>` - Test if numeric array consists of positive integers
+
+
+
+.. raw:: html
+
+    <h3>Tests</h3>
+
+.. rst-class:: package-links
+
+| :doc:`tests <is/tests>` - Unit tests for the dash.is package
+
+.. toctree::
+    :hidden:
+
+    strflag <is/strflag>
+    strlist <is/strlist>
+    url <is/url>
+    uniqueSet <is/uniqueSet>
+    positiveIntegers <is/positiveIntegers>
+    tests <is/tests>
+

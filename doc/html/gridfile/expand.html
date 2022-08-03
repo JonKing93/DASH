@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.expand &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.addDimension" href="addDimension.html" />
+    <link rel="prev" title="gridfile.edit" href="edit.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#metadata">Metadata</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metadata.html">metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="edit.html">edit</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">expand</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#increase-the-length-of-a-dimension-in-a-gridfile">Increase the length of a dimension in a gridfile</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#dimension">dimension</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="addDimension.html">addDimension</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata-attributes">Metadata attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-sources">Data sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-adjustments">Data adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#summary-information">Summary Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.expand</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-expand">
+<h1>gridfile.expand<a class="headerlink" href="#gridfile-expand" title="Permalink to this headline"></a></h1>
+<p>Increase the length of a dimension in a .grid file</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-expand-syntax1"><span class="std std-ref">obj.expand(dimension, metadata)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-expand-syntax1">
+<div class="line">obj.expand(<a class="reference internal" href="#gridfile-expand-input-dimension"><span class="std std-ref">dimension</span></a>, <a class="reference internal" href="#gridfile-expand-input-metadata"><span class="std std-ref">metadata</span></a>)</div>
+</div>
+</pre><p>Increases the length of a dimension. Appends new metadata values to the existing metadata for the dimension. The number of rows in the new metadata will determine the amount by which the dimension’s length is increased.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="increase-the-length-of-a-dimension-in-a-gridfile">
+<h3>Increase the length of a dimension in a gridfile<a class="headerlink" href="#increase-the-length-of-a-dimension-in-a-gridfile" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Increase the length of a dimension in a gridfile</strong></label><div class="content"><p>Create a gridfile:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;my-gridfile.grid&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">      </span><span class="k">...</span><span class="w"></span>
+<span class="w">      </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="p">:</span><span class="w"></span>
+<span class="w">           </span><span class="n">lon</span><span class="p">:</span><span class="w"> </span><span class="mi">360</span><span class="w">    </span><span class="p">(</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">359</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">           </span><span class="n">lat</span><span class="p">:</span><span class="w"> </span><span class="mi">181</span><span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="mi">90</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">90</span><span class="w">  </span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">156</span><span class="w">    </span><span class="p">(</span><span class="mi">1850</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2005</span><span class="p">)</span><span class="w"></span>
+<span class="w">           </span><span class="nb">run</span><span class="p">:</span><span class="w">   </span><span class="mi">3</span><span class="w">    </span><span class="p">(</span><span class="w">   </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">3</span><span class="w">   </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can see this gridfile manages a multi-dimensional dataset. This dataset includes a “run” dimension, which indexes 3 runs / ensemble members.</p>
+<p>Let’s expand the “run” dimension to include space for 10 runs / ensemble members:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">newRuns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="mi">4</span><span class="p">:</span><span class="mi">10</span><span class="p">)</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="nb">grid</span><span class="p">.</span><span class="n">expand</span><span class="p">(</span><span class="s">&#39;run&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">newRuns</span><span class="p">);</span><span class="w"></span>
+<span class="nb">disp</span><span class="p">(</span><span class="nb">grid</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">      </span><span class="k">...</span><span class="w"></span>
+<span class="w">      </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="p">:</span><span class="w"></span>
+<span class="w">           </span><span class="n">lon</span><span class="p">:</span><span class="w"> </span><span class="mi">360</span><span class="w">    </span><span class="p">(</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">359</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<span class="w">           </span><span class="n">lat</span><span class="p">:</span><span class="w"> </span><span class="mi">181</span><span class="w">    </span><span class="p">(</span><span class="w"> </span><span class="o">-</span><span class="mi">90</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">90</span><span class="w">  </span><span class="p">)</span><span class="w"></span>
+<span class="w">          </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">156</span><span class="w">    </span><span class="p">(</span><span class="mi">1850</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2005</span><span class="p">)</span><span class="w"></span>
+<span class="w">           </span><span class="nb">run</span><span class="p">:</span><span class="w">   </span><span class="mi">3</span><span class="w">    </span><span class="p">(</span><span class="w">   </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">10</span><span class="w">  </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">...</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The gridfile now has 10 elements along the “run” dimension.</p>
+<p>Note that you can only expand existing dimensions in the gridfile. Non-existent dimensions will throw an error. For example:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="p">.</span><span class="n">expand</span><span class="p">(</span><span class="s">&#39;lev&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;lev&quot;</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="w"> </span><span class="n">Allowed</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="n">are</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="s">&quot;run&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="dimension">
+<span id="gridfile-expand-input-dimension"></span><h3>dimension<a class="headerlink" href="#dimension" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dimension</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the dimension whose length should be increased. May be any recognized dimension name (See gridMetadata.dimensions for a list of recognized dimensions)</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadata">
+<span id="gridfile-expand-input-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>numeric</em> | <em>logical</em> | <em>char</em> | <em>string</em> | <em>cellstring</em> | <em>datetime</em></div>
+<div class="line">The metadata values that should be appended to the dimension. Each row is one new element along the dimension. Cellstring metadata will be converted to string.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="edit.html" class="btn btn-neutral float-left" title="gridfile.edit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="addDimension.html" class="btn btn-neutral float-right" title="gridfile.addDimension" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

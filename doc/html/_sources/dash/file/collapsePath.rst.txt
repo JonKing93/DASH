@@ -1,0 +1,165 @@
+dash.file.collapsePath
+======================
+Collapse . and .. entries in a file path
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`path = dash.file.collapsePath(path) <dash.file.collapsePath.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.file.collapsePath.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`path <dash.file.collapsePath.output.path>` = dash.file.collapsePath(:ref:`path <dash.file.collapsePath.input.path>`)
+
+.. raw:: html
+
+    </pre>
+
+Removes . entries from a file path. Also removes .. entries and associated subfolders. Returns the final file path using url-style file separators (/).
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Collapse . and .. entries
++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Collapse . and .. entries</strong></label><div class="content">
+
+
+Any "." entries on a file path are removed
+
+.. rst-class:: no-margin
+
+::
+
+    mypath = './has/./on/./path';
+    path = dash.file.collapsePath(mypath)
+
+
+.. rst-class:: example-output
+
+::
+
+    path =
+          'has/on/path'
+
+
+Any ".." entries are removed along with their associate subfolders:
+
+.. rst-class:: no-margin
+
+::
+
+    mypath = 'a/path/with/../and/nested/../../entries';
+    path = dash.file.collapsePath(mypath)
+
+
+.. rst-class:: example-output
+
+::
+
+    path = 
+          'a/path/entries'
+
+
+Combination of both . and .. entries:
+
+.. rst-class:: no-margin
+
+::
+
+    mypath = 'path/to/folder/then/./../../relative/file/path.txt';
+    path = dash.file.collapsePath(mypath)
+
+
+.. rst-class:: example-output
+
+::
+
+    path = 
+          'path/to/relative/file/path.txt'
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.file.collapsePath.input.path:
+
+path
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>path</strong></label><div class="content">
+
+| *string* *scalar*
+| A file path containing . and/or .. entries.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.file.collapsePath.output.path:
+
+path
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>path</strong></label><div class="content">
+
+| *string* *scalar*
+| The file path without . or .. entries.
+
+.. raw:: html
+
+    </div></section>
+
+

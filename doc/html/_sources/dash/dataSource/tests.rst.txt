@@ -1,0 +1,43 @@
+dash.dataSource.tests
+=====================
+Unit tests for classes in the dash.dataSource package
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.dataSource.tests <dash.dataSource.tests.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.dataSource.tests.syntax1:
+
+.. rst-class:: syntax
+
+| dash.dataSource.tests
+
+.. raw:: html
+
+    </pre>
+
+Runs the tests. If successful, exits silently. Otherwise, throws an error message at the first failed test.
+
+

@@ -1,0 +1,176 @@
+gridfile.expand
+===============
+Increase the length of a dimension in a .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.expand(dimension, metadata) <gridfile.expand.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.expand.syntax1:
+
+.. rst-class:: syntax
+
+| obj.expand(:ref:`dimension <gridfile.expand.input.dimension>`, :ref:`metadata <gridfile.expand.input.metadata>`)
+
+.. raw:: html
+
+    </pre>
+
+Increases the length of a dimension. Appends new metadata values to the existing metadata for the dimension. The number of rows in the new metadata will determine the amount by which the dimension's length is increased.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Increase the length of a dimension in a gridfile
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Increase the length of a dimension in a gridfile</strong></label><div class="content">
+
+
+Create a gridfile:
+
+.. rst-class:: no-margin
+
+::
+
+    grid = gridfile('my-gridfile.grid')
+
+
+.. rst-class:: example-output
+
+::
+
+    grid = 
+          ...
+          Dimension Sizes:
+               lon: 360    (   0 to 359 )    
+               lat: 181    ( -90 to 90  )
+              time: 156    (1850 to 2005)
+               run:   3    (   1 to 3   )
+          ...
+
+
+We can see this gridfile manages a multi-dimensional dataset. This dataset includes a "run" dimension, which indexes 3 runs / ensemble members.
+
+Let's expand the "run" dimension to include space for 10 runs / ensemble members:
+
+.. rst-class:: no-margin
+
+::
+
+    newRuns = (4:10)';
+    grid.expand('run', newRuns);
+    disp(grid)
+
+
+.. rst-class:: example-output
+
+::
+
+    grid = 
+          ...
+          Dimension Sizes:
+               lon: 360    (   0 to 359 )    
+               lat: 181    ( -90 to 90  )
+              time: 156    (1850 to 2005)
+               run:   3    (   1 to 10  )
+          ...
+
+
+The gridfile now has 10 elements along the "run" dimension.
+
+Note that you can only expand existing dimensions in the gridfile. Non-existent dimensions will throw an error. For example:
+
+.. rst-class:: no-margin
+
+::
+
+    grid.expand('lev', 1)
+
+
+.. rst-class:: example-output error-message 
+
+::
+
+    "lev" is not a dimension in the gridfile. Allowed values are: "lon", "lat", "time", and "run"
+
+
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.expand.input.dimension:
+
+dimension
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>dimension</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of the dimension whose length should be increased. May be any recognized dimension name (See gridMetadata.dimensions for a list of recognized dimensions)
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.expand.input.metadata:
+
+metadata
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>metadata</strong></label><div class="content">
+
+| *matrix*, *numeric* | *logical* | *char* | *string* | *cellstring* | *datetime*
+| The metadata values that should be appended to the dimension. Each row is one new element along the dimension. Cellstring metadata will be converted to string.
+
+.. raw:: html
+
+    </div></section>
+
+

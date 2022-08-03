@@ -1,7 +1,28 @@
 # DASH
 A package for paleoclimate data assimilation workflow.
+[Website](https://jonking93.github.io/DASH)
 
-# **Notice** (Hello, AGU!)
-This package is under development and the newest version (v4.0) is nearly complete. If you are new to DASH, we **STRONGLY** recommend waiting for the v4.0 release. 
+DASH is a Matlab package to help implement paleoclimate data assimilation. It includes modules to help
+1. Catalogue and organize climate data
+2. Design state vector ensembles
+3. Implement proxy system modles
+4. Kalman Filters
+5. Particle Filters, and
+6. Optimal Sensors
+and automate other workflow tasks.
 
-However, if you're anxious to try it out, you should use the [most recent v4.0 alpha release](https://github.com/JonKing93/DASH/releases/tag/v4.0.0-alpha-5.0.6). This is a mostly-complete, fully-functional version of the new release, and it significantly improves on the old V3.0 release listed on this repository's main branch.
+You can find comprehensive documentation for DASH at: [https://jonking93.github.io/DASH](https://jonking93.github.io/DASH)
+
+
+### Branches
+The following is an overview of the branches of DASH
+
+main: This branch holds the most recent release of DASH. Any code on the main branch (following the v4.0.0 release) should run succesfully.
+
+dev: This is the branch for active development of the DASH code. This branch may have the most cutting edge updates to DASH, but may change and/or break without warning.
+
+gh-pages: This branch holds the source code for the DASH website
+
+gh-pages-dev: Use this branch for website development before pushing to production.
+
+

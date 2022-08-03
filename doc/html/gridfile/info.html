@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.info &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.name" href="name.html" />
+    <link rel="prev" title="gridfile.sources" href="sources.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata-attributes">Metadata attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-sources">Data sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-adjustments">Data adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#summary-information">Summary Information</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sources.html">sources</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">info</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#sourcenames">sourceNames</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#gridinfo">gridInfo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="name.html">name</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.info</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-info">
+<h1>gridfile.info<a class="headerlink" href="#gridfile-info" title="Permalink to this headline"></a></h1>
+<p>Return information about a gridfile object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax1"><span class="std std-ref">gridInfo = obj.info</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax1"><span class="std std-ref">gridInfo = obj.info(0)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax2"><span class="std std-ref">sourceInfo = obj.info([])</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax2"><span class="std std-ref">sourceInfo = obj.info(-1)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax3"><span class="std std-ref">sourceInfo = obj.info(s)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-info-syntax3"><span class="std std-ref">sourceInfo = obj.info(sourceNames)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-info-syntax1">
+<div class="line"><a class="reference internal" href="#gridfile-info-output-gridinfo"><span class="std std-ref">gridInfo</span></a> = obj.info</div>
+<div class="line"><a class="reference internal" href="#gridfile-info-output-gridinfo"><span class="std std-ref">gridInfo</span></a> = obj.info(0)</div>
+</div>
+</pre><p>Returns a structure with information about the gridfile. The structure only includes fields pertinent to the entire gridfile. The details of different data sources are not included.</p>
+<pre><div class="syntax line-block" id="gridfile-info-syntax2">
+<div class="line">sourceInfo = obj.info([])</div>
+<div class="line">sourceInfo = obj.info(-1)</div>
+</div>
+</pre><p>Returns a structure array with information about all the data sources in the gridfile. Each element holds details about one data source in the gridfile. The index of each element in the structure array corresponds the the data source’s index in the gridfile.</p>
+<pre><div class="syntax line-block" id="gridfile-info-syntax3">
+<div class="line">sourceInfo = obj.info(<a class="reference internal" href="#gridfile-info-input-s"><span class="std std-ref">s</span></a>)</div>
+<div class="line">sourceInfo = obj.info(<a class="reference internal" href="#gridfile-info-input-sourcenames"><span class="std std-ref">sourceNames</span></a>)</div>
+</div>
+</pre><p>Returns a structure array with information about the specified data sources. Each element holds details about one data source. The order of data sources in the info array matches the input order.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="s">
+<span id="gridfile-info-input-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> [<em>nSources</em>] | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of the data sources about which to return information.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sourcenames">
+<span id="gridfile-info-input-sourcenames"></span><h3>sourceNames<a class="headerlink" href="#sourcenames" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>sourceNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of the data sources about which to return information.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="gridinfo">
+<span id="gridfile-info-output-gridinfo"></span><h3>gridInfo<a class="headerlink" href="#gridinfo" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>gridInfo</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>struct</em></div>
+<div class="line">A struct with information pertinent to the entire gridfile. Includes the following fields: .file (string scalar): Absolute path to the .grid file .dimensions (string vector [nDims]): The names of the dimensions in the gridfile .dimension_sizes (numeric vector [nDims]): The length of each dimension in the gridfile. Lengths are in the same order as the gridfile dimensions. .metadata (gridMetadata object): Metadata for the gridfile .nSources (numeric scalar): The number of data sources in the gridfile .prefer_relative_paths (scalar logical): True if the gridfile attempts to record the relative paths to data sources by default. False if it always records absolute paths. .fill_value (numeric scalar): The default fill value. .valid_range (numeric vector [2]): The default valid range .transform (string scalar): The default data transformation .transform_parameters (numeric vector [2]): Any parameters needed to implement the default transformation.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sources.html" class="btn btn-neutral float-left" title="gridfile.sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="name.html" class="btn btn-neutral float-right" title="gridfile.name" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

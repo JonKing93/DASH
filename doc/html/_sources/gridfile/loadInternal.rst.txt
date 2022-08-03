@@ -1,0 +1,170 @@
+gridfile.loadInternal
+=====================
+Load requested data from pre-built dataSource objects
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources) <gridfile.loadInternal.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.loadInternal.syntax1:
+
+.. rst-class:: syntax
+
+| [:ref:`X <gridfile.loadInternal.output.X>`, :ref:`meta <gridfile.loadInternal.output.meta>`] = obj.loadInternal(:ref:`userDimOrder <gridfile.loadInternal.input.userDimOrder>`, :ref:`loadIndices <gridfile.loadInternal.input.loadIndices>`, :ref:`s <gridfile.loadInternal.input.s>`, :ref:`dataSources <gridfile.loadInternal.input.dataSources>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns a loaded output array and associated metadata given load parameters and pre-built dataSource objects.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.input.userDimOrder:
+
+userDimOrder
+++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>userDimOrder</strong></label><div class="content">
+
+| *vector*, *linear* *indices* [*nUserDims*]
+| The locations of the user-requested output dimensions in the full set of gridfile dimensions.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.input.loadIndices:
+
+loadIndices
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>loadIndices</strong></label><div class="content">
+
+| *cell* *vector* [*nGridDims*] {*vector*, *linear* *indices*}
+| The elements along each gridfile dimension that are required to implement the load operation. Includes all gridfile dimensions in the gridfile's dimension order.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.input.s:
+
+s
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>s</strong></label><div class="content">
+
+| *vector*, *linear* *indices* [*nSource*]
+| The indices of data sources that are required in order to load the requested data.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.input.dataSources:
+
+dataSources
++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>dataSources</strong></label><div class="content">
+
+| *cell* *vector* [*nSources*] {*scalar* *dataSource* *object*}
+| dataSource objects for the data sources at the specified indices.
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.output.X:
+
+X
++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>X</strong></label><div class="content">
+
+| The loaded data array
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.loadInternal.output.meta:
+
+meta
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output2" checked="checked"><label for="output2"><strong>meta</strong></label><div class="content">
+
+| *scalar* *gridMetadata* *object*
+| Metadata for the loaded array.
+
+.. raw:: html
+
+    </div></section>
+
+

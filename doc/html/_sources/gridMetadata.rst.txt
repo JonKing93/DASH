@@ -1,0 +1,142 @@
+gridMetadata
+============
+Organize metadata for gridded datasets
+
+gridMetadata objects help define the metadata for an N-dimensional gridded dataset. Each object supports metadata for the following dimensions:
+
+
+1. lon: longitude / x-coordinate
+2. lat: latitude / y-coordinate
+3. lev: level / height / z-coordinate
+4. site: non-cartesian spatial coordinate
+5. time: time
+6. run: run / ensemble member
+7. var: climate variable
+
+
+although datasets are not required to implement all 7 dimensions. The class can also be customized to include additional dimensions or to rename the default dimensions.
+
+gridMetadata objects also include support for non-dimensional metadata via an "attributes" field, which can include data of any type.
+
+
+.. toctree::
+    :hidden:
+
+
+
+
+
+Key Methods
+-----------
+The following are the most essential methods for users.
+
+.. rst-class:: package-links
+
+| :doc:`gridMetadata <gridMetadata/gridMetadata>` - Create a new gridMetdata object
+| :doc:`edit <gridMetadata/edit>` - Edit the metadata for a gridded dataset
+| :doc:`index <gridMetadata/index>` - Return metadata at specified indices
+
+
+
+
+All User Methods
+----------------
+The complete list of gridMetadata methods for users.
+
+Create / Edit
++++++++++++++
+
+.. rst-class:: package-links
+
+| :doc:`gridMetadata <gridMetadata/gridMetadata>` - Create a new gridMetdata object
+| :doc:`edit <gridMetadata/edit>` - Edit the metadata for a gridded dataset
+| :doc:`index <gridMetadata/index>` - Return metadata at specified indices
+| :doc:`setOrder <gridMetadata/setOrder>` - Specify a dimension order for a gridded dataset
+
+.. toctree::
+    :hidden:
+
+    gridMetadata <gridMetadata/gridMetadata>
+    edit <gridMetadata/edit>
+    index <gridMetadata/index>
+    setOrder <gridMetadata/setOrder>
+
+
+Attribute Manipulation
+++++++++++++++++++++++
+
+.. rst-class:: package-links
+
+| :doc:`addAttributes <gridMetadata/addAttributes>` - Add non-dimensional attributes to the metadata for a gridded dataset
+| :doc:`removeAttributes <gridMetadata/removeAttributes>` - Remove attributes from the metadata of a gridded dataset
+| :doc:`editAttributes <gridMetadata/editAttributes>` - Replace non-dimensional attributes with new values
+
+.. toctree::
+    :hidden:
+
+    addAttributes <gridMetadata/addAttributes>
+    removeAttributes <gridMetadata/removeAttributes>
+    editAttributes <gridMetadata/editAttributes>
+
+
+List Dimensions
++++++++++++++++
+
+.. rst-class:: package-links
+
+| :doc:`dimensions <gridMetadata/dimensions>` - Return the list of supported gridMetadata dimensions
+| :doc:`defined <gridMetadata/defined>` - Return a list of dimensions with defined metadata
+
+.. toctree::
+    :hidden:
+
+    dimensions <gridMetadata/dimensions>
+    defined <gridMetadata/defined>
+
+
+
+Utilities
+---------
+Under the hood methods that help the class run. These are not intended for most users.
+
+.. raw:: html
+
+    <h3>Console Display</h3>
+
+.. rst-class:: package-links
+
+| :doc:`disp <gridMetadata/disp>` - Display gridMetadata object in console
+| :doc:`dispAttributes <gridMetadata/dispAttributes>` - Display metadata attributes in the console
+
+
+
+.. raw:: html
+
+    <h3>Assertions</h3>
+
+.. rst-class:: package-links
+
+| :doc:`assertField <gridMetadata/assertField>` - Throw error if input is not a valid metadata field
+| :doc:`assertUnique <gridMetadata/assertUnique>` - Throw error if metadata rows are not unique
+| :doc:`assertScalar <gridMetadata/assertScalar>` - Throw error if gridMetadata object is not scalar
+
+
+
+.. raw:: html
+
+    <h3>Unit Tests</h3>
+
+.. rst-class:: package-links
+
+| :doc:`tests <gridMetadata/tests>` - Implement unit tests for the gridMetadata class
+
+.. toctree::
+    :hidden:
+
+    disp <gridMetadata/disp>
+    dispAttributes <gridMetadata/dispAttributes>
+    assertField <gridMetadata/assertField>
+    assertUnique <gridMetadata/assertUnique>
+    assertScalar <gridMetadata/assertScalar>
+    tests <gridMetadata/tests>
+

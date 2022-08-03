@@ -1,0 +1,85 @@
+gridMetadata.assertScalar
+=========================
+Throw error if gridMetadata object is not scalar
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.assertScalar <gridMetadata.assertScalar.syntax1>`
+| :ref:`obj.assertScalar(header) <gridMetadata.assertScalar.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.assertScalar.syntax1:
+
+.. rst-class:: syntax
+
+| obj.assertScalar
+
+.. raw:: html
+
+    </pre>
+
+Throws an error if the calling gridMetadata object is not scalar.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridMetadata.assertScalar.syntax2:
+
+.. rst-class:: syntax
+
+| obj.assertScalar(:ref:`header <gridMetadata.assertScalar.input.header>`)
+
+.. raw:: html
+
+    </pre>
+
+Customize thrown error IDs.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridMetadata.assertScalar.input.header:
+
+header
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>header</strong></label><div class="content">
+
+| *string* *scalar*
+| Header for thrown error IDs
+
+.. raw:: html
+
+    </div></section>
+
+

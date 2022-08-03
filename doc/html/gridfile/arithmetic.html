@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.arithmetic &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dash" href="../dash.html" />
+    <link rel="prev" title="gridfile.loadInternal" href="loadInternal.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="update.html">update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="save.html">save</a></li>
+<li class="toctree-l3"><a class="reference internal" href="disp.html">disp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dispSources.html">dispSources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getLoadIndices.html">getLoadIndices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sourcesForLoad.html">sourcesForLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buildSources.html">buildSources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="loadInternal.html">loadInternal</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">arithmetic</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#operation">operation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#grid2">grid2</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#filename">filename</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#overwrite">overwrite</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#attributes">attributes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#type">type</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.arithmetic</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-arithmetic">
+<h1>gridfile.arithmetic<a class="headerlink" href="#gridfile-arithmetic" title="Permalink to this headline"></a></h1>
+<p>Arithmetic operations across two gridfiles</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-arithmetic-syntax1"><span class="std std-ref">obj.arithmetic(operation, grid2, filename, overwrite, atts, type)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-arithmetic-syntax1">
+<div class="line">obj.arithmetic(<a class="reference internal" href="#gridfile-arithmetic-input-operation"><span class="std std-ref">operation</span></a>, <a class="reference internal" href="#gridfile-arithmetic-input-grid2"><span class="std std-ref">grid2</span></a>, <a class="reference internal" href="#gridfile-arithmetic-input-filename"><span class="std std-ref">filename</span></a>, <a class="reference internal" href="#gridfile-arithmetic-input-overwrite"><span class="std std-ref">overwrite</span></a>, atts, <a class="reference internal" href="#gridfile-arithmetic-input-type"><span class="std std-ref">type</span></a>)</div>
+</div>
+</pre><p>Implement an arithmetic operation on the data in two .grid files. Saves the result of the operation to a .mat file and catalogues the result in a new .grid file.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="operation">
+<span id="gridfile-arithmetic-input-operation"></span><h3>operation<a class="headerlink" href="#operation" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>operation</strong></label><div class="content"><div class="line-block">
+<div class="line">‘<em>plus</em>’ | ‘<em>minus</em>’ | ‘<em>times</em>’ | ‘<em>divide</em>’</div>
+<div class="line">The arithmetic operation to apply to the two gridfiles</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="grid2">
+<span id="gridfile-arithmetic-input-grid2"></span><h3>grid2<a class="headerlink" href="#grid2" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>grid2</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>gridfile</em> <em>object</em></div>
+<div class="line">The second gridfile to use in the arithmetic operation.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="filename">
+<span id="gridfile-arithmetic-input-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>filename</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>string</em> <em>vector</em> [2]</div>
+<div class="line">The name to use for the new .mat and .grid files. If a single file name, the name will be used for both files. If two file names, the first name is used for the .mat file, and the second name is used for the .grid file.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="overwrite">
+<span id="gridfile-arithmetic-input-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>overwrite</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em> | <em>logical</em> <em>vector</em> [2]</div>
+<div class="line">Whether to overwrite existing .mat and .grid files. True allows overwriting, false does not. If scalar, uses the same option for both files. If two elements, uses the first option for the .mat file, and the second option for the .grid file. Default is false.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="attributes">
+<span id="gridfile-arithmetic-input-attributes"></span><h3>attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>attributes</strong></label><div class="content"><div class="line-block">
+<div class="line">1 | 2 | <em>scalar</em> <em>struct</em> | <em>empty</em> <em>array</em></div>
+<div class="line">Options for setting metadata attributes in the new .grid file. If 1, copies the attributes from the first gridfile to the new file. If 2, copies the attributes from grid2 to the new file. If a scalar struct, uses the struct directly as the attributes. If unset or an empty array, the new file will have no metadata attributes.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="type">
+<span id="gridfile-arithmetic-input-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input6" checked="checked"><label for="input6"><strong>type</strong></label><div class="content"><div class="line-block">
+<div class="line">1 | 2 | 3</div>
+<div class="line">Options for matching gridfile metadata and sizes.</div>
+</div>
+<p>[1 (default)]: requires data dimensions to have compatible sizes AND have the same metadata along each non-singleton dimension. Does arithmetic on all data elements.</p>
+<p>[2]: Searches for data elements with matching elements in non-singleton dimensions. Only does arithmetic at these elements. Does not require data dimensions to have compatible sizes.</p>
+<p>[3]: Does not compare dimensional metadata. Loads all data elements from both files and applies arithmetic directly. Requires data dimensions to have compatible sizes.</p>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadInternal.html" class="btn btn-neutral float-left" title="gridfile.loadInternal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../dash.html" class="btn btn-neutral float-right" title="dash" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

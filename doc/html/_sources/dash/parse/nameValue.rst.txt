@@ -1,0 +1,189 @@
+dash.parse.nameValue
+====================
+Parse flagged options from Name,Value pairs
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`values = dash.parse.nameValue(inputs, flags, defaults) <dash.parse.nameValue.syntax1>`
+| :ref:`values = dash.parse.nameValue(inputs, flags, defaults, nPrevious, header) <dash.parse.nameValue.syntax2>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.parse.nameValue.syntax1:
+
+.. rst-class:: syntax
+
+| :ref:`values <dash.parse.nameValue.output.values>` = dash.parse.nameValue(:ref:`inputs <dash.parse.nameValue.input.inputs>`, :ref:`flags <dash.parse.nameValue.input.flags>`, :ref:`defaults <dash.parse.nameValue.input.defaults>`)
+
+.. raw:: html
+
+    </pre>
+
+Parses a set of flagged options given Name,Value input pairs. If a flag is not provided, returns a specified default argument for the flag. Throws an error if any inputs are not Flag,Value pairs, or if any flags are repeated.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.parse.nameValue.syntax2:
+
+.. rst-class:: syntax
+
+| :ref:`values <dash.parse.nameValue.output.values>` = dash.parse.nameValue(:ref:`inputs <dash.parse.nameValue.input.inputs>`, :ref:`flags <dash.parse.nameValue.input.flags>`, :ref:`defaults <dash.parse.nameValue.input.defaults>`, :ref:`nPrevious <dash.parse.nameValue.input.nPrevious>`, :ref:`header <dash.parse.nameValue.input.header>`)
+
+.. raw:: html
+
+    </pre>
+
+Customize error messages an IDs.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.input.inputs:
+
+inputs
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>inputs</strong></label><div class="content">
+
+| *cell* *vector*
+| A collection of name-value pairs. Usually varargin from a calling function
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.input.flags:
+
+flags
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>flags</strong></label><div class="content">
+
+| *string* *vector* [*nFlags*]
+| The list of recognized option flags
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.input.defaults:
+
+defaults
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>defaults</strong></label><div class="content">
+
+| *cell* *vector* [*nFlags*]
+| The default value for each flag
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.input.nPrevious:
+
+nPrevious
++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>nPrevious</strong></label><div class="content">
+
+| *scalar* *positive* *integer*
+| The number of inputs before varargin in the calling function
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.input.header:
+
+header
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>header</strong></label><div class="content">
+
+| *string* *scalar*
+| Header for thrown error IDs
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.parse.nameValue.output.values:
+
+values
+++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>values</strong></label><div class="content">
+
+| *cell* *vector* [*nFlags*]
+| The parsed value for each flag
+
+.. raw:: html
+
+    </div></section>
+
+

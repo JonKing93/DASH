@@ -1,0 +1,228 @@
+gridfile.add
+============
+Catalogue a data source in a .grid file
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`obj.add('nc', file, variable, dimensions, metadata) <gridfile.add.syntax1>`
+| :ref:`obj.add('nc', opendapURL, variable, dimensions, metadata) <gridfile.add.syntax1>`
+| :ref:`obj.add('mat', file, variable, dimensions, metadata) <gridfile.add.syntax2>`
+| :ref:`obj.add('text', file, dimensions, metadata) <gridfile.add.syntax3>`
+| :ref:`obj.add(..., opts) <gridfile.add.syntax3>`
+| :ref:`obj.add(..., Name, Value) <gridfile.add.syntax3>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.add.syntax1:
+
+.. rst-class:: syntax
+
+| obj.add('nc', :ref:`file <gridfile.add.input.file>`, :ref:`variable <gridfile.add.input.variable>`, :ref:`dimensions <gridfile.add.input.dimensions>`, :ref:`metadata <gridfile.add.input.metadata>`)
+| obj.add('nc', :ref:`opendapURL <gridfile.add.input.opendapURL>`, :ref:`variable <gridfile.add.input.variable>`, :ref:`dimensions <gridfile.add.input.dimensions>`, :ref:`metadata <gridfile.add.input.metadata>`)
+
+.. raw:: html
+
+    </pre>
+
+Adds a NetCDF variable to the .grid file catalogue. The NetCDF can be accessed either via a local file, or opendap URL.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.add.syntax2:
+
+.. rst-class:: syntax
+
+| obj.add('mat', :ref:`file <gridfile.add.input.file>`, :ref:`variable <gridfile.add.input.variable>`, :ref:`dimensions <gridfile.add.input.dimensions>`, :ref:`metadata <gridfile.add.input.metadata>`)
+
+.. raw:: html
+
+    </pre>
+
+Adds a variable saved in a MAT-file to the .grid file catalogue.
+
+
+.. raw:: html
+
+    <pre>
+
+.. _gridfile.add.syntax3:
+
+.. rst-class:: syntax
+
+| obj.add('text', :ref:`file <gridfile.add.input.file>`, :ref:`dimensions <gridfile.add.input.dimensions>`, :ref:`metadata <gridfile.add.input.metadata>`)
+| obj.add(..., :ref:`opts <gridfile.add.input.opts>`)
+| obj.add(..., Name, Value)
+
+.. raw:: html
+
+    </pre>
+
+Adds data stored in a delimited text file to the .grid file catalogue.
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.file:
+
+file
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>file</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of a data source file. Name may either be an absolute file path, or the name of a file on the active path.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.opendapURL:
+
+opendapURL
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>opendapURL</strong></label><div class="content">
+
+| *string* *scalar*
+| An OPENDAP url to a data source file
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.variable:
+
+variable
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>variable</strong></label><div class="content">
+
+| *string* *scalar*
+| The name of a variable in a NetCDF or MAT-file. Only this variable is catalogued in the gridfile.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.dimensions:
+
+dimensions
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>dimensions</strong></label><div class="content">
+
+| *string* *vector*
+| The order of dimensions for data in the data source. Dimensions with repeated names are merged when loading data from the gridfile.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.metadata:
+
+metadata
+++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>metadata</strong></label><div class="content">
+
+| *scalar* *gridMetadata* *object*
+| Dimensional metadata for the data source. The number of rows must match the length the size of the dimension in the data source. Must include metadata for all non-singleton dimensions in both the gridfile and data source. Metadata values for gridfile dimensions must exactly match a sequence of gridfile metadata for the dimension. If the metadata has non-dimensional attributes and/or a set dimension order, the attributes and/or dimension order will be ignored.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.opts:
+
+opts
+++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input6" checked="checked"><label for="input6"><strong>opts</strong></label><div class="content">
+
+| *ImportOptions* *object*
+| Additional options for importing data from delimited text files using the builtin "readmatrix" function.
+
+.. raw:: html
+
+    </div></section>
+
+
+
+.. rst-class:: collapse-examples
+
+.. _gridfile.add.input.Name,Value:
+
+Name,Value
+++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input7" checked="checked"><label for="input7"><strong>Name,Value</strong></label><div class="content">
+
+| Additional import options for reading data from a delimited text file using the builtin "readmatrix" functions. (See the readmatrix reference page for supported pairs.)
+
+.. raw:: html
+
+    </div></section>
+
+

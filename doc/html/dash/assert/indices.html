@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.indices &mdash; DASH Docs 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.indexCollection" href="indexCollection.html" />
+    <link rel="prev" title="dash.assert.vector" href="vectorTypeN.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../doc.html">doc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../version.html">version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="strflag.html">strflag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strlist.html">strlist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strsInList.html">strsInList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="type.html">type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalarType.html">scalarType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vectorTypeN.html">vectorTypeN</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">indices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#linear-indices">Linear indices</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#logical-indices">Logical indices</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#customize-error-message">Customize error message</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#indices">indices</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#length">length</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#logicallengthname">logicalLengthName</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#linearmaxname">linearMaxName</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#dash-assert-indices-output-indices">indices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="indexCollection.html">indexCollection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="fileExists.html">fileExists</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nameValue.html">nameValue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniqueSet.html">uniqueSet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../parse.html">parse</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../indices.html">indices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../string.html">string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../file.html">file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.indices</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-indices">
+<h1>dash.assert.indices<a class="headerlink" href="#dash-assert-indices" title="Permalink to this headline"></a></h1>
+<p>Throw error if inputs are neither logical indices nor linear indices</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-syntax1"><span class="std std-ref">indices = dash.assert.indices(indices, length)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-indices-syntax2"><span class="std std-ref">indices = dash.assert.indices(indices, length, name, logicalLengthName, linearMaxName, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-assert-indices-syntax1">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-output-indices"><span class="std std-ref">indices</span></a> = dash.assert.indices(<a class="reference internal" href="#dash-assert-indices-input-indices"><span class="std std-ref">indices</span></a>, <a class="reference internal" href="#dash-assert-indices-input-length"><span class="std std-ref">length</span></a>)</div>
+</div>
+</pre><p>Checks if input is a valid vector of logical indices or linear indices for an array dimension. To be valid, logical indices must match the length of the array dimension, and linear indices must be positive integers that do not exceed the length of the dimension. If these criteria are not met, throws an error message. If so, returns the input as linear indices.</p>
+<pre><div class="syntax line-block" id="dash-assert-indices-syntax2">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-output-indices"><span class="std std-ref">indices</span></a> = dash.assert.indices(<a class="reference internal" href="#dash-assert-indices-input-indices"><span class="std std-ref">indices</span></a>, <a class="reference internal" href="#dash-assert-indices-input-length"><span class="std std-ref">length</span></a>, <a class="reference internal" href="#dash-assert-indices-input-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-indices-input-logicallengthname"><span class="std std-ref">logicalLengthName</span></a>, <a class="reference internal" href="#dash-assert-indices-input-linearmaxname"><span class="std std-ref">linearMaxName</span></a>, <a class="reference internal" href="#dash-assert-indices-input-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Customize the error message and error ID.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="linear-indices">
+<h3>Linear indices<a class="headerlink" href="#linear-indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Linear indices</strong></label><div class="content"><p>Linear indices must be positive scalar integers that do not exceed the length of the indexed array dimension. They can contain repeated elements. An examples that passes the assertion:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">         </span><span class="p">[</span><span class="mi">2</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examples that fail the assertion:</p>
+<p>Values less than 1:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">3</span><span class="p">];</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">3</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">positive</span><span class="w"> </span><span class="s">integer</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Non-integer values:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mf">2.2</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">3</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">not</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">positive</span><span class="w"> </span><span class="s">integer</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Values greater than the dimension length:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="mi">6</span><span class="p">]</span><span class="w"></span>
+
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">4</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">greater</span><span class="w"> </span><span class="s">than</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">length</span><span class="w"> </span><span class="s">of</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">dimension</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="logical-indices">
+<h3>Logical indices<a class="headerlink" href="#logical-indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example2"><label for="example2"><strong>Logical indices</strong></label><div class="content"><p>Logical indices must be the a vector the length of the dimension. If valid, they are returned as linear indices in the function output. An example that passes the assertion:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="w"> </span><span class="nb">true</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">false</span><span class="w"> </span><span class="nb">true</span><span class="p">];</span><span class="w"></span>
+
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">         </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>An example that fails the assertion:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="w"> </span><span class="nb">false</span><span class="p">];</span><span class="w"></span>
+
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">input</span><span class="w"> </span><span class="n">must</span><span class="w"> </span><span class="n">have</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">elements</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">has</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">elements</span><span class="w"> </span><span class="n">instead</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="customize-error-message">
+<h3>Customize error message<a class="headerlink" href="#customize-error-message" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="example3"><label for="example3"><strong>Customize error message</strong></label><div class="content"><p>Customize the error message to enhance information about input requirements:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Set some phrases for use in error messages.</span><span class="w"></span>
+<span class="n">inputName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;my variable&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">logicalLengthName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;one element per XYZ&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">linearMaxName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;the number of Ps in Q&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">header</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;my:error:header&#39;</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Failed logical indices:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">true</span><span class="w"> </span><span class="nb">false</span><span class="p">];</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">,</span><span class="w"> </span><span class="n">inputName</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">logicalLengthName</span><span class="p">,</span><span class="w"> </span><span class="n">linearMaxName</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">a</span><span class="w"> </span><span class="s">logical</span><span class="w"> </span><span class="s">vector,</span><span class="w"> </span><span class="s">so</span><span class="w"> </span><span class="s">it</span><span class="w"> </span><span class="s">must</span><span class="w"> </span><span class="s">have</span><span class="w"> </span><span class="s">one</span><span class="w"> </span><span class="s">element</span><span class="w"> </span><span class="s">per</span><span class="w"> </span><span class="s">XYZ</span><span class="w"> </span><span class="s">(5),</span><span class="w"> </span><span class="s">but</span><span class="w"> </span><span class="s">it</span><span class="w"> </span><span class="s">has</span><span class="w"> </span><span class="s">2</span><span class="w"> </span><span class="s">elements</span><span class="w"> </span><span class="s">instead</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Failed linear indices:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensionLength</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">7</span><span class="p">]</span><span class="o">&#39;</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">assert</span><span class="p">.</span><span class="n">indices</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span><span class="w"> </span><span class="n">dimensionLength</span><span class="p">,</span><span class="w"> </span><span class="n">inputName</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="n">logicalLengthName</span><span class="p">,</span><span class="w"> </span><span class="n">linearMaxName</span><span class="p">,</span><span class="w"> </span><span class="n">header</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output error-message highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">Element</span><span class="w"> </span><span class="s">3</span><span class="w"> </span><span class="s">of</span><span class="w"> </span><span class="s">my</span><span class="w"> </span><span class="s">variable</span><span class="w"> </span><span class="s">is</span><span class="w"> </span><span class="s">greater</span><span class="w"> </span><span class="s">than</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">number</span><span class="w"> </span><span class="s">of</span><span class="w"> </span><span class="s">Ps</span><span class="w"> </span><span class="s">in</span><span class="w"> </span><span class="s">Q</span><span class="w"> </span><span class="s">(5)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Also examine the error ID:</p>
+<div class="no-margin highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ME</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">lasterror</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ME</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="example-output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="s">&#39;my:error:header&#39;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="indices">
+<span id="dash-assert-indices-input-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line">The input being tested.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="length">
+<span id="dash-assert-indices-input-length"></span><h3>length<a class="headerlink" href="#length" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input2" checked="checked"><label for="input2"><strong>length</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em></div>
+<div class="line">The length of the array dimension that the indices are for. Logical indices must be a vector of this length, and linear indices cannot exceed this length.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="dash-assert-indices-input-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input3" checked="checked"><label for="input3"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name to use for the input in error messages Default is “input”.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="logicallengthname">
+<span id="dash-assert-indices-input-logicallengthname"></span><h3>logicalLengthName<a class="headerlink" href="#logicallengthname" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input4" checked="checked"><label for="input4"><strong>logicalLengthName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name to use for the length of logical index vectors in error messages. Default is “the length of the dimension”</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="linearmaxname">
+<span id="dash-assert-indices-input-linearmaxname"></span><h3>linearMaxName<a class="headerlink" href="#linearmaxname" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input5" checked="checked"><label for="input5"><strong>linearMaxName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | []</div>
+<div class="line">A name to use for the maximum linear index. If an empty array, uses the same value as logicalLengthName. Default is an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="dash-assert-indices-input-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="input6" checked="checked"><label for="input6"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for error IDs. Default is “DASH:assert:indices”</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="dash-assert-indices-output-indices">
+<span id="id1"></span><h3>indices<a class="headerlink" href="#dash-assert-indices-output-indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The input as linear indices.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vectorTypeN.html" class="btn btn-neutral float-left" title="dash.assert.vector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="indexCollection.html" class="btn btn-neutral float-right" title="dash.assert.indexCollection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Jonthan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

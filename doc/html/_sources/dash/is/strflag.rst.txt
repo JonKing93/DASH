@@ -1,0 +1,147 @@
+dash.is.strflag
+===============
+True for string scalar or char row vector.
+
+----
+
+Syntax
+------
+
+.. raw:: html
+
+    <pre>
+
+.. rst-class:: syntax
+
+| :ref:`dash.is.strflag(input) <dash.is.strflag.syntax1>`
+
+.. raw:: html
+
+    </pre>
+
+----
+
+Description
+-----------
+
+.. raw:: html
+
+    <pre>
+
+.. _dash.is.strflag.syntax1:
+
+.. rst-class:: syntax
+
+| dash.is.strflag(:ref:`input <dash.is.strflag.input.input>`)
+
+.. raw:: html
+
+    </pre>
+
+Returns true if input is a string scalar or char row vector and false otherwise.
+
+
+----
+
+Examples
+--------
+
+.. rst-class:: collapse-examples
+
+Test if input is strflag
+++++++++++++++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="example1"><label for="example1"><strong>Test if input is strflag</strong></label><div class="content">
+
+
+When the input is a strflag:
+
+.. rst-class:: no-margin
+
+::
+
+    tf = dash.is.strflag('A char row vector')
+    tf = dash.is.strflag("A string scalar")
+
+
+.. rst-class:: example-output
+
+::
+
+    tf =
+        true
+
+
+When the input is not a strflag:
+
+.. rst-class:: no-margin
+
+::
+
+    tf = dash.is.strflag(5)
+    tf = dash.is.strflag({'A cellstring'})
+    tf = dash.is.strflag(["A","string","vector"])
+    tf = dash.is.strflag(true)
+
+
+.. rst-class:: example-output
+
+::
+
+    tf =
+        false
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Input Arguments
+---------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.strflag.input.input:
+
+input
++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="input1" checked="checked"><label for="input1"><strong>input</strong></label><div class="content">
+
+| The input being tested
+
+.. raw:: html
+
+    </div></section>
+
+
+----
+
+Output Arguments
+----------------
+
+.. rst-class:: collapse-examples
+
+.. _dash.is.strflag.output.tf:
+
+tf
+++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="output1" checked="checked"><label for="output1"><strong>tf</strong></label><div class="content">
+
+| *scalar* *logical*
+| True if input is a string scalar or char row vector
+
+.. raw:: html
+
+    </div></section>
+
+

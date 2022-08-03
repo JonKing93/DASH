@@ -1,0 +1,80 @@
+dash.assert
+===========
+Functions that assert inputs meet required conditions
+
+The dash.assert subpackage facilitates the creation of informative error messages and helps provide consistent error ID handling for common input error checks. These functions produce error messages that appear to originate from higher level calling functions.
+
+Some functions also return inputs converted to specific formats to ensure consistent internal handling of different input types.
+
+
+.. raw:: html
+
+    <h3>Strings</h3>
+
+.. rst-class:: package-links
+
+| :doc:`strflag <assert/strflag>` - Throw error if input is not a string flag.
+| :doc:`strlist <assert/strlist>` - Throw error if input is not a string vector, cellstring vector, or char row vector
+| :doc:`strsInList <assert/strsInList>` - Throw error if strings are not in a list of allowed strings
+
+
+
+.. raw:: html
+
+    <h3>Size and Data Type</h3>
+
+.. rst-class:: package-links
+
+| :doc:`type <assert/type>` - Throw error if input is not required type
+| :doc:`scalarType <assert/scalarType>` - Throw error if input is not a scalar of a required data type
+| :doc:`vectorTypeN <assert/vectorTypeN>` - Throw error if input is not a vector of required data type and length
+
+
+
+.. raw:: html
+
+    <h3>Indices</h3>
+
+.. rst-class:: package-links
+
+| :doc:`indices <assert/indices>` - Throw error if inputs are neither logical indices nor linear indices
+| :doc:`indexCollection <assert/indexCollection>` - Throw error if input is not a collection of indices
+
+
+
+.. raw:: html
+
+    <h3>Misc</h3>
+
+.. rst-class:: package-links
+
+| :doc:`fileExists <assert/fileExists>` - Throw error if a file does not exist
+| :doc:`nameValue <assert/nameValue>` - Throw error if inputs are not Name,Value pairs
+| :doc:`uniqueSet <assert/uniqueSet>` - Throw error if vector has repeated values
+
+
+
+.. raw:: html
+
+    <h3>Unit tests</h3>
+
+.. rst-class:: package-links
+
+| :doc:`tests <assert/tests>` - Unit testing for the dash.assert subpackage
+
+.. toctree::
+    :hidden:
+
+    strflag <assert/strflag>
+    strlist <assert/strlist>
+    strsInList <assert/strsInList>
+    type <assert/type>
+    scalarType <assert/scalarType>
+    vectorTypeN <assert/vectorTypeN>
+    indices <assert/indices>
+    indexCollection <assert/indexCollection>
+    fileExists <assert/fileExists>
+    nameValue <assert/nameValue>
+    uniqueSet <assert/uniqueSet>
+    tests <assert/tests>
+
