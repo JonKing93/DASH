@@ -3,26 +3,26 @@ A package for paleoclimate data assimilation workflow.
 [Website](https://jonking93.github.io/DASH)
 
 DASH is a Matlab package to help implement paleoclimate data assimilation. It includes modules to help
-1. Catalogue and organize climate data
-2. Design state vector ensembles
-3. Implement proxy system modles
-4. Kalman Filters
-5. Particle Filters, and
-6. Optimal Sensors
-and automate other workflow tasks.
+1. Catalogue and organize climate data, 
+2. Design state vector ensembles,
+3. Implement proxy system models, and
+4. Run Kalman filter, particle filter, and optimal sensor algorithms.
 
-You can find comprehensive documentation for DASH at: [https://jonking93.github.io/DASH](https://jonking93.github.io/DASH)
+The documentation is currently being finalized, but will be available at: [https://jonking93.github.io/DASH](https://jonking93.github.io/DASH)
 
 
-### Branches
+## Branches
 The following is an overview of the branches of DASH
 
-main: This branch holds the most recent release of DASH. Any code on the main branch (following the v4.0.0 release) should run succesfully.
+#### Permanent
+main: This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
-dev: This is the branch for active development of the DASH code. This branch may have the most cutting edge updates to DASH, but may change and/or break without warning.
+releases: This branch holds the Matlab Toolbox file that can be used to install a supported release of the DASH toolbox. The branch holds a packaged DASH.mltbx file, but it does not hold the raw source code.
 
-gh-pages: This branch holds the source code for the DASH website
-
-gh-pages-dev: Use this branch for website development before pushing to production.
+gh-pages: This branch holds the source code used to implement the DASH documentation website.
 
 
+#### Defunct
+v4-build: This branch was used to develop version 4. It will be removed once version 4 is validated on the main branch.
+
+Tutorials: This branch holds Tutorials used to introduce users to version 2. It will be removed upon the completion of the version 4 documentation set.
