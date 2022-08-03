@@ -56,8 +56,10 @@ coordinates2 = coordinates2';
 dLat = coordinates1(:,1) - coordinates2(1,:);
 dLon = coordinates1(:,2) - coordinates2(2,:);
 
-% Get haversine function of the central angle
-a = sin(dLat/2).^2 + ( cos(coordinates1(:,1)) .* cos(coordinates2(1,:)) .* sin(dLon/2).^2);
+% Get haversine function of the central angle. (Account for rounding errors
+% that might allow *a* to become greater than 1)
+a = sin(dLat/2).^2 + ( cos(coordinates1(:,1)) .* cos(coordinates2(1,:)) .* sin(dLon/2).^2 );
+a(a>1) = 1;
 c = 2 * atan2( sqrt(a), sqrt(1-a) );
 
 % Get the distance
