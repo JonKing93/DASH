@@ -39,17 +39,17 @@ The following is an overview of the branches of DASH
 
 ### Permanent
 
-##### [main](https://github.com/JonKing93/DASH/tree/main)
+#### [main](https://github.com/JonKing93/DASH/tree/main)
 This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
-##### [gh-pages](https://github.com/JonKing93/DASH/tree/v4_build)
+#### [gh-pages](https://github.com/JonKing93/DASH/tree/v4_build)
 This branch holds the source code used to implement the DASH documentation website.
 
 
 ### Defunct
 
-##### [v4_build](https://github.com/JonKing93/DASH/tree/v4_build)
+#### [v4_build](https://github.com/JonKing93/DASH/tree/v4_build)
 This branch was used to develop version 4. It will be removed once version 4 is validated on the main branch.
 
-##### [Tutorials](https://github.com/JonKing93/DASH/tree/Tutorials)
+#### [Tutorials](https://github.com/JonKing93/DASH/tree/Tutorials)
 This branch holds Tutorials used to introduce users to version 2. It will be removed upon the completion of the version 4 documentation set.
