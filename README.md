@@ -16,8 +16,8 @@ The documentation is currently being finalized, but will be available at: [https
 To get started with the DASH toolbox:
 
 1. Navigate to the most recent stable release: [Latest Release](https://github.com/JonKing93/DASH/releases/latest)
-2. Under the release assets, download the file: DASH-\<version\>.mltbx
-3. Open the downloaded DASH-\<version\>.mltbx file. This should automatically install the DASH toolbox in your MATLAB environment. 
+2. Under the release assets, download the file:    DASH-\<version\>.mltbx
+3. Open the downloaded file. This should automatically install the DASH toolbox in your MATLAB environment. 
 (If you previously installed a DASH toolbox using a .mltbx file, this will update your toolbox to the latest version)
 4. That's it, you're done! For additional help, enter:
 ```
