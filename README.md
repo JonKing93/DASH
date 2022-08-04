@@ -16,7 +16,7 @@ The documentation is currently being finalized, but will be available at: [https
 To get started with the DASH toolbox:
 
 1. Navigate to the most recent stable release: [Latest Release](https://github.com/JonKing93/DASH/releases/latest)
-2. Under the release assets, download the file:    DASH-\<version\>.mltbx
+2. Under the release assets, download the file: `DASH-<version>.mltbx`
 3. Open the downloaded file. This should automatically install the DASH toolbox in your MATLAB environment. 
 (If you previously installed a DASH toolbox using a .mltbx file, this will update your toolbox to the latest version)
 4. That's it, you're done! For additional help, enter:
@@ -40,7 +40,7 @@ The following is an overview of the branches of DASH
 ### Permanent
 
 #### [main](https://github.com/JonKing93/DASH/tree/main)
-This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading and opening the DASH-\<version\>.mltbx file from [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
+This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading and opening the `DASH-<version>.mltbx` file from [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
 #### [gh-pages](https://github.com/JonKing93/DASH/tree/v4_build)
 This branch holds the source code used to implement the DASH documentation website.
