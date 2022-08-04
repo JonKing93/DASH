@@ -15,9 +15,11 @@ The documentation is currently being finalized, but will be available at: [https
 
 To get started with the DASH toolbox:
 
-1. Download the most recent stable release: [Latest Release](https://github.com/JonKing93/DASH/releases/latest)
-2. Open the downloaded DASH.mltbx file. This should install the DASH toolbox in your MATLAB environment.
-3. That's it you're done! For additional help, enter:
+1. Navigate to the most recent stable release: [Latest Release](https://github.com/JonKing93/DASH/releases/latest)
+2. Under the release assets, download the file: DASH-<version>.mltbx
+3. Open the downloaded DASH-<version>.mltbx file. This should automatically install the DASH toolbox in your MATLAB environment. 
+(If you previously installed a DASH toolbox using a .mltbx file, this will update your toolbox to the latest version)
+4. That's it, you're done! For additional help, enter:
 ```
 >> dash.doc
 ```
@@ -36,14 +38,18 @@ Interested in contributing? Either send us an email, or submit a pull request to
 The following is an overview of the branches of DASH
 
 ### Permanent
-[main](https://github.com/JonKing93/DASH/tree/main): This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
-[releases](https://github.com/JonKing93/DASH/tree/releases): This branch holds the Matlab Toolbox file that can be used to install a supported release of the DASH toolbox. The branch holds a packaged DASH.mltbx file, but it does not hold the raw source code.
+##### [main](https://github.com/JonKing93/DASH/tree/main)
+This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
-[gh-pages](https://github.com/JonKing93/DASH/tree/v4_build): This branch holds the source code used to implement the DASH documentation website.
+##### [gh-pages](https://github.com/JonKing93/DASH/tree/v4_build)
+This branch holds the source code used to implement the DASH documentation website.
 
 
 ### Defunct
-[v4_build](https://github.com/JonKing93/DASH/tree/v4_build): This branch was used to develop version 4. It will be removed once version 4 is validated on the main branch.
 
-[Tutorials](https://github.com/JonKing93/DASH/tree/Tutorials): This branch holds Tutorials used to introduce users to version 2. It will be removed upon the completion of the version 4 documentation set.
+##### [v4_build](https://github.com/JonKing93/DASH/tree/v4_build)
+This branch was used to develop version 4. It will be removed once version 4 is validated on the main branch.
+
+##### [Tutorials](https://github.com/JonKing93/DASH/tree/Tutorials)
+This branch holds Tutorials used to introduce users to version 2. It will be removed upon the completion of the version 4 documentation set.
