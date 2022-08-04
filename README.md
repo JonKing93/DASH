@@ -1,6 +1,5 @@
 # DASH
 A package for paleoclimate data assimilation workflow.
-[Website](https://jonking93.github.io/DASH)
 
 DASH is a Matlab package to help implement paleoclimate data assimilation. It includes modules to help
 1. Catalogue and organize climate data, 
@@ -39,10 +38,10 @@ The following is an overview of the branches of DASH
 
 ### Permanent
 
-#### [**main**](https://github.com/JonKing93/DASH/tree/main)
+#### [main](https://github.com/JonKing93/DASH/tree/main)
 This branch holds the most up-to-date source code for the DASH toolbox. This branch is intended for developers rather than users. It may contain active development and may not be stable. If you are looking to use the DASH toolbox, we recommend downloading and opening the `DASH-<version>.mltbx` file from [the most recent stable release](https://github.com/JonKing93/DASH/releases/latest).
 
-#### [**gh-pages**](https://github.com/JonKing93/DASH/tree/v4_build)
+#### [gh-pages](https://github.com/JonKing93/DASH/tree/v4_build)
 This branch holds the source code used to implement the DASH documentation website.
 
 
