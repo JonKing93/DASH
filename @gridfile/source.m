@@ -20,8 +20,8 @@ function[] = source(obj, source, detailed)
 %           [true | "c" | "concise"]: (default) Display a concise set of details
 %           [false | "d" | "detailed"]: Display all data source details
 %
-%   Outputs:
-%       Prints information about the data source to the console.
+%   Prints:
+%       Displays information about the data source to the console.
 %
 % <a href="matlab:dash.doc('gridfile.source')">Documentation Page</a>
 

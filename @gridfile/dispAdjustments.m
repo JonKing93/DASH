@@ -15,8 +15,8 @@ function[] = dispAdjustments(obj, s)
 %           If 0, prints default data adjustments for the full gridfile. If an
 %           index, print data adjustments for the corresponding data source.
 %
-%   Outputs:
-%       Prints information about data adjustments to the console.
+%   Prints:
+%       Displays information about data adjustments to the console.
 %
 % <a href="matlab:dash.doc('gridfile.dispAdjustments')">Documentation Page</a>
 

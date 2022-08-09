@@ -11,7 +11,7 @@ function[] = assertValid(obj, header)
 %   Inputs:
 %       header (string scalar): Header for thrown error IDs
 %
-%   <a href="matlab:dash.doc('gridfile.assertValid')">Documentation Page</a>
+% <a href="matlab:dash.doc('gridfile.assertValid')">Documentation Page</a>
 
 % Default header
 if ~exist('header','var') || isempty(header)

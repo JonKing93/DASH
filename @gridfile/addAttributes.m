@@ -16,7 +16,7 @@ function[] = addAttributes(obj, varargin)
 %       fieldN (string scalar): The name of a new field for the attributes
 %           structure. Must be a valid Matlab variable name and cannot
 %           duplicate any fields already in the attributes.
-%       valueN: The value associated with the new attributes fields.
+%       valueN (any data type): The value associated with the new attributes fields.
 %
 % <a href="matlab:dash.doc('gridfile.addAttributes')">Documentation Page</a>
 

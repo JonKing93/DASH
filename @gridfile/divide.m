@@ -105,7 +105,7 @@ function[] = divide(obj, grid2, filename, varargin)
 %       DASH:gridfile:divide:noMatchingMetadata  when type is 2 and
 %           there is no matching metadata along a non-singleton dimension
 %
-% <a href="matlab:dash.doc('gridfile.divide')">Online Documentation</a>
+% <a href="matlab:dash.doc('gridfile.divide')">Documentation Page</a>
 
 % Parse optional inputs
 [overwrite, atts, type, precision] = dash.parse.nameValue(varargin, ...

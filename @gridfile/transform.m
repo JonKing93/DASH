@@ -70,9 +70,11 @@ function[transform, parameters] = transform(obj, type, params, sources)
 %           ['times' | 'multiply' | '*']: Multiply data by value
 %           ['linear']: Linear transformation
 %           ['none']: No data transformation
-%       params: The parameters for the transformation. Use an empty array
-%           when applying transformation with no parameters 
-%           (ln, log, log10, exp, none) to specific data sources.
+%       params (numeric scalar | numeric vector | []): The parameters for
+%           the transformation. Use an empty array when applying transformation
+%           with no parameters (e.g. ln, log, log10, exp, or none) to
+%           specific data sources. See the entries on the "power", "plus",
+%           "times", and "coeffs" inputs for more details.
 %       power (numeric scalar): The exponent that should be applied to data
 %       plus (numeric scalar): A value that should be added to data
 %       times (numeric scalar): A value that data should be multiplied by

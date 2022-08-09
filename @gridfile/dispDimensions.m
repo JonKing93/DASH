@@ -15,7 +15,7 @@ function[] = dispDimensions(obj, s)
 %           If 0, prints dimension information for the full gridfile. If an
 %           index, print dimension information for the corresponding data source.
 %
-%   Outputs:
+%   Prints:
 %       Prints dimension names, sizes, and metadata limits to the console.
 %
 % <a href="matlab:dash.doc('gridfile.dispDimensions')">Documentation Page</a>

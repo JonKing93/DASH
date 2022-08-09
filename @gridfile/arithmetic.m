@@ -44,7 +44,7 @@ function[] = arithmetic(obj, operation, grid2, filename, overwrite, attributes, 
 %   Saves:
 %       A .mat and .grid file with the specified names.
 %
-% <a href="matlab:dash.doc('gridfile.arithmetic')">Online Documentation</a>
+% <a href="matlab:dash.doc('gridfile.arithmetic')">Documentation Page</a>
 
 %% Operation specific details
 

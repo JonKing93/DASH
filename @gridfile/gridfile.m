@@ -32,7 +32,7 @@ classdef gridfile < handle
     %   The class also includes many methods for accessing and editing
     %   metadata, which are summarized in the methods list.
     % ----------
-    % gridfile methods:
+    % gridfile Methods:
     %
     % **KEY METHODS**
     % The following methods are the most essential methods for users.
@@ -101,6 +101,7 @@ classdef gridfile < handle
     % File interactions:
     %   update           - Update a gridfile object to match the contents of its .grid file
     %   save             - Save a gridfile object to a .grid file
+    %   assertValid      - Throw error if gridfile array has deleted elements
     %
     % Console Display:
     %   dispDimensions   - Print dimension sizes and metadata to the console
@@ -216,10 +217,10 @@ classdef gridfile < handle
         function[obj] = gridfile(filenames)
         %% gridfile.gridfile  Return a gridfile object for a .grid file
         % ----------
-        %   obj = gridfile(filename)
+        %   obj = <strong>gridfile</strong>(filename)
         %   Builds a gridfile object for the specified file.
         %
-        %   obj = gridfile(filenames)
+        %   obj = <strong>gridfile</strong>(filenames)
         %   Builds an array of gridfiles for the specified files. The
         %   output array will have the same size as the "filenames" input,
         %   and each element will be the gridfile object for the

@@ -39,8 +39,8 @@ function[] = disp(obj, showSources)
 %           [false|"h"|"hide"]: (default) Does not display data sources
 %           [true|"s"|"show"]: Displays data sources.
 %
-%   Outputs:
-%       Prints the contents of a gridfile object or array to the console.
+%   Prints:
+%       Displays the contents of a gridfile object or array in the console.
 %
 % <a href="matlab:dash.doc('gridfile.disp')">Documentation Page</a>
 

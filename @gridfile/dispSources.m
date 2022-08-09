@@ -13,7 +13,7 @@ function[] = dispSources(obj, objName)
 %       objName (string scalar): The name of the object to use when linking
 %           to source details.
 %
-%   Outputs:
+%   Prints:
 %       Prints a list of gridfile data source files to the console.
 % 
 % <a href="matlab:dash.doc('gridfile.dispSources')">Documentation Page</a>

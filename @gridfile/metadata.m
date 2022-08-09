@@ -14,7 +14,7 @@ function[metadata] = metadata(obj, sources)
 %   Inputs:
 %       s (logical vector [nSources] | vector, linear indices): The indices
 %           of the data sources for which to return metadata.
-%       sourceName (string vector): The names of the data sources for which
+%       sourceNames (string vector): The names of the data sources for which
 %           to return metadata.
 %
 %   Outputs:

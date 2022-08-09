@@ -49,7 +49,7 @@ function[] = add(obj, type, source, varargin)
 %           ignored.
 %       opts (ImportOptions object): Additional options for importing data
 %           from delimited text files using the builtin "readmatrix" function.
-%       Name,Value: Additional import options for reading data from a
+%       Name,Value (name-value pairs): Additional import options for reading data from a
 %           delimited text file using the builtin "readmatrix" functions.
 %           (See the readmatrix reference page for supported pairs.)
 %

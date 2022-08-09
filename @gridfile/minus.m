@@ -91,7 +91,7 @@ function[] = minus(obj, grid2, filename, varargin)
 %   Saves:
 %       A .mat and .grid file with the specified names
 %
-% <a href="matlab:dash.doc('gridfile.minus')">Online Documentation</a>
+% <a href="matlab:dash.doc('gridfile.minus')">Documentation Page</a>
 
 % Parse optional inputs
 [overwrite, atts, type, precision] = dash.parse.nameValue(varargin, ...
