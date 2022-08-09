@@ -59,7 +59,7 @@ classdef ensembleMetadata
     %   ensembleMetadata    - Build an ensembleMetadata object for a stateVector object
     %   label               - Return and apply labels for a metadata object
     %
-    % Coordinates
+    % Coordinates:
     %   closestLatLon       - Locate data values closest to a set of coordinates
     %   latlon              - Return latitude-longitude coordinates for all state vector elements
     %
@@ -193,7 +193,7 @@ classdef ensembleMetadata
         function[obj] = ensembleMetadata(svs, labels)
             %% ensembleMetadata.ensembleMetadata  Create a new ensembleMetadata object
             % ----------
-            %   obj = ensembleMetadata(sv)
+            %   obj = <strong>ensembleMetadata</strong>(sv)
             %   Returns an array of ensembleMetadata objects for an array of stateVector objects.
             %   Each ensembleMetadata object organizes the metadata down the state vector, as well
             %   as the metadata for any built ensemble members. (Note that only stateVector objects
@@ -202,7 +202,7 @@ classdef ensembleMetadata
             %   stateVector objects. The label of each ensembleMetadata object will match the
             %   label of the associated stateVector object.
             %
-            %   obj = ensembleMetadata(sv, labels)
+            %   obj = <strong>ensembleMetadata</strong>(sv, labels)
             %   Specify the label that should be applied to the ensembleMetadata object
             % ----------
             %   Inputs:

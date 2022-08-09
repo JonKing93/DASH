@@ -1,7 +1,7 @@
 function[members] = members(obj, ensembles)
 %% ensemble.members  Return the ensemble members for an ensemble
 % ----------
-%   members = obj.members
+%   members = <strong>obj.members</strong>
 %   Returns the ensemble members being used by the ensemble object. The
 %   elements of the output array list the indices of ensembles members
 %   saved in the .ens file. If the ensemble object implements a static
@@ -11,16 +11,16 @@ function[members] = members(obj, ensembles)
 %   particular ensemble in the evolving set, and the order of columns will
 %   match the order of ensembles in the evolving set.
 %
-%   members = obj.members(labels)
-%   members = obj.members(e)
-%   members = obj.members(-1)
+%   members = <strong>obj.members</strong>(labels)
+%   members = <strong>obj.members</strong>(e)
+%   members = <strong>obj.members</strong>(-1)
 %   Returns the ensemble members for the specified ensembles in an evolving
 %   ensemble. Each column of the output array holds the ensemble members
 %   for a specified matrix, and the order of columns matches the order of
 %   specified ensembles. If the index is -1, returns the ensemble members
 %   for all ensembles in the evolving set.
 %
-%   members = obj.members(0)
+%   members = <strong>obj.members</strong>(0)
 %   Returns the indices of all ensemble members saved in the .ens file.
 % ----------
 %   Inputs:

@@ -1,7 +1,7 @@
 function[name] = name(obj)
 %% ensemble.name  Returns a name for an ensemble for use in messages
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns a name for the ensemble object. If the object has a label,
 %   references the label. Otherwise, refers to the object as "the ensemble
 %   object".

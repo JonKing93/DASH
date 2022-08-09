@@ -1,7 +1,7 @@
 function[name] = name(obj)
 %% ensembleMetadata.name  Return a name for an ensembleMetadata object for use in error messages
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns a name for the ensembleMetadata object. If unlabeled, uses: the
 %   state vector ensemble. Otherwise, uses: state vector ensemble "label"
 % ----------

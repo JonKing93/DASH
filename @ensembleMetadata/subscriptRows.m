@@ -1,7 +1,7 @@
 function[indices] = subscriptRows(obj, v, variableRows)
 %% ensembleMetadata.subscriptRows  Return subscripted state dimension indices for rows of a variable
 % ----------
-%   indices = obj.subscriptRows(v, variableRows)
+%   indices = <strong>obj.subscriptRows</strong>(v, variableRows)
 %   Given the rows of a variable in the state vector, returns the
 %   subscript indices of the rows for each state dimension of the variable.
 % ----------

@@ -107,7 +107,7 @@ classdef ensemble
     %   variableIndices         - Parse variables and return indices in state vector
     %   evolvingIndices         - Parse ensembles and return indices in the evolving set
     %
-    % Console Display
+    % Console Display:
     %   dispEvolving            - Display the labels of evolving ensembles in the console
     %   dispVariables           - Display the names and lengths of variables in an ensemble
     %
@@ -205,14 +205,14 @@ classdef ensemble
         function[obj] = ensemble(filenames, labels)
             %% ensemble.ensemble  Create an ensemble object for a saved state vector ensemble
             % ----------
-            %   obj = ensemble(filenames)
+            %   obj = <strong>ensemble</strong>(filenames)
             %   Creates an array of ensemble objects for the specified .ens files. Each
             %   ensemble object can be used to manipulate and load subsets of a saved
             %   ensemble while limiting use of computer memory. The label of each
             %   ensemble object will match the label of the stateVector object used
             %   to build the ensemble.
             %
-            %   obj = ensemble(filenames, labels)
+            %   obj = <strong>ensemble</strong>(filenames, labels)
             %   Specify the labels to apply to each ensemble object.
             % ----------
             %   Inputs:

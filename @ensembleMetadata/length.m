@@ -1,13 +1,13 @@
 function[length] = length(obj, variables)
 %% ensembleMetadata.length  Return the lengths of a state vector and its variables
 % ----------
-%   length = obj.length
-%   length = obj.length(0)
+%   length = <strong>obj.length</strong>
+%   length = <strong>obj.length</strong>(0)
 %   Return the total length of a state vector.
 %
-%   lengths = obj.length(variableNames)
-%   lengths = obj.length(v)
-%   lengths = obj.length(-1)
+%   lengths = <strong>obj.length</strong>(variableNames)
+%   lengths = <strong>obj.length</strong>(v)
+%   lengths = <strong>obj.length</strong>(-1)
 %   Returns the length of the specified variables in a state vector.
 % ----------
 %   Inputs:

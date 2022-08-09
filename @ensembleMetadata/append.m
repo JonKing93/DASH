@@ -1,17 +1,17 @@
 function[obj] = append(obj, meta2, responseToRepeats)
 %% ensembleMetadata.append  Add variables to an ensembleMetadata object
 % ----------
-%   obj = obj.append(ensMeta2)
+%   obj = <strong>obj.append</strong>(ensMeta2)
 %   Adds the variables in a second ensembleMetadata object to the current
 %   object. The second ensembleMetadata object must have the same number of
 %   ensemble members as the current object. By default, throws an error if
 %   the second object has any variables with the same name as a variable in
 %   the current object.
 %
-%   obj = obj.append(ensMeta2, responseToRepeats)
-%   obj = obj.append(ensMeta2, "error"|"e"|0)
-%   obj = obj.append(ensMeta2, "first"|"f"|1)
-%   obj = obj.append(ensMeta2, "second"|"s"|2)
+%   obj = <strong>obj.append</strong>(ensMeta2, responseToRepeats)
+%   obj = <strong>obj.append</strong>(ensMeta2, "error"|"e"|0)
+%   obj = <strong>obj.append</strong>(ensMeta2, "first"|"f"|1)
+%   obj = <strong>obj.append</strong>(ensMeta2, "second"|"s"|2)
 %   Indicate how to treat variable names that are repeated in the current
 %   and second ensembleMetadata objects. If "error"|"e"|0, throws an error
 %   when duplicate variable names occur. If "first"|"f"|1, retains the

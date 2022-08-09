@@ -1,13 +1,13 @@
 function[variableNames, v] = identify(obj, rows)
 %% ensembleMetadata.identify  Identifies the variables associated with rows of a state vector
 % ----------
-%   [variableNames, v] = obj.identify
+%   [variableNames, v] = <strong>obj.identify</strong>
 %   Returns the name of the variable associated with each row of a state
 %   vector. Also returns the index of each variable as the second output.
 %   The outputs will have one element per row in the state vector.
 %
-%   ... = obj.identify(rows)
-%   ... = obj.identify(-1)
+%   ... = <strong>obj.identify</strong>(rows)
+%   ... = <strong>obj.identify</strong>(-1)
 %   Returns the names and indices of the variables associated with the
 %   specified rows. If the input is -1, selects all rows. The outputs will
 %   have one element per listed row.

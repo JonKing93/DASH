@@ -1,13 +1,13 @@
 function[obj] = static(obj, members)
 %% ensemble.static  Design static ensembles
 % ----------
-%   obj = obj.static
-%   obj = obj.static(-1)
-%   obj = obj.static('all')
+%   obj = <strong>obj.static</strong>
+%   obj = <strong>obj.static</strong>(-1)
+%   obj = <strong>obj.static</strong>('all')
 %   Implements a static ensemble that uses every ensemble member saved in
 %   the .ens file.
 %
-%   obj = obj.static(members)
+%   obj = <strong>obj.static</strong>(members)
 %   Implements a static ensemble that uses the specified ensemble members.
 % ----------
 %   Inputs:

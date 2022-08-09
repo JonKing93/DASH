@@ -1,13 +1,11 @@
 function[] = addMembers(obj, nMembers, varargin)
 %% ensemble.addMembers  Add more ensemble members to the ensemble saved in a .ens file
 % ----------
-%   obj = obj.addMembers(nMembers)
-%
-%   obj = obj.addMembers('all')
-%
-%   obj = obj.addMembers(..., 'strict', strict)
-%   obj = obj.addMembers(..., 'strict', true|false)
+%   ensemble.addMembers
+%   This method is incomplete.
 % ----------
+%
+% <a href="matlab:dash.doc('ensemble.addMembers')">Documentation Page</a>
 
 
 % Setup

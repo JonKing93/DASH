@@ -1,12 +1,12 @@
 function[] = dispVariables(obj)
 %% ensembleMetadata.dispVariables  Prints the variables in a state vector to the console
 % ----------
-%   obj.dispVariables
+%   <strong>obj.dispVariables</strong>
 %   Prints the variables in the state vector to the console. Prints the
 %   name of each variable, its length, and the details of its state
 %   dimensions.
 % ----------
-%   Outputs:
+%   Prints:
 %       Prints a list of variables, lengths, and state dimensions to the console.
 %
 % <a href="matlab:dash.doc('ensembleMetadata.dispVariables')">Documentation Page</a>

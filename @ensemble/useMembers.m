@@ -1,7 +1,7 @@
 function[obj] = useMembers(obj, varargin)
 %% ensemble.useMembers  Select which ensemble members should be used by an ensemble
 % ----------
-%   obj = obj.useMembers(staticMembers)
+%   obj = <strong>obj.useMembers</strong>(staticMembers)
 %   Indicates which ensemble members should be used by a static ensemble.
 %   The elements of "members" list the indices of ensemble members saved in
 %   the .ens file. After using this command, the ensemble will only load
@@ -11,13 +11,13 @@ function[obj] = useMembers(obj, varargin)
 %   .ens file, so use this command when you want to load a subset of the
 %   saved ensemble members.
 %
-%   obj = obj.useMembers(-1)
-%   obj = obj.useMembers('all')
+%   obj = <strong>obj.useMembers</strong>(-1)
+%   obj = <strong>obj.useMembers</strong>('all')
 %   Indicates that a static ensemble should use all ensemble members saved 
 %   in the .ens file. This syntax cannot be used if the ensemble object
 %   implements an evolving ensemble.
 %
-%   obj = obj.useMembers(evolvingMembers)
+%   obj = <strong>obj.useMembers</strong>(evolvingMembers)
 %   Select the ensemble members that should be used by an evolving
 %   ensemble. Note that this syntax cannot be used to initialize an
 %   evolving ensemble - instead, it updates the ensemble members used by an
@@ -27,9 +27,9 @@ function[obj] = useMembers(obj, varargin)
 %   rows must match the current number of ensemble members used by each
 %   ensemble in the existing evolving set.
 %
-%   obj = obj.useMembers(labels, evolvingMembers)
-%   obj = obj.useMembers(e, evolvingMembers)
-%   obj = obj.useMembers(-1, evolvingMembers)
+%   obj = <strong>obj.useMembers</strong>(labels, evolvingMembers)
+%   obj = <strong>obj.useMembers</strong>(e, evolvingMembers)
+%   obj = <strong>obj.useMembers</strong>(-1, evolvingMembers)
 %   Select ensemble members for specific ensembles in the evolving set. The
 %   second input must have one column per selected ensemble. If the first
 %   input is -1, selects all ensembles in the evolving set. This syntax is

@@ -1,8 +1,8 @@
 function[X, metadata, members, labels] = loadGrid(obj, variable, ensembles)
 %% ensemble.loadGrid  Load a gridded variable from a saved state vector ensemble
 % ----------
-%   [X, metadata] = obj.loadGrid(variableName)
-%   [X, metadata] = obj.loadGrid(v)
+%   [X, metadata] = <strong>obj.loadGrid</strong>(variableName)
+%   [X, metadata] = <strong>obj.loadGrid</strong>(v)
 %   Loads a variable from a saved ensemble into memory. Regrids the state
 %   vector for the variable into a gridded dataset. The regridded variable will
 %   be an N-dimensional array. The leading dimensions of the array will be
@@ -34,13 +34,13 @@ function[X, metadata, members, labels] = loadGrid(obj, variable, ensembles)
 %   2. Use "ensemble.load" to load the variable and an associated ensembleMetadata object, then 
 %   3. Use the ensembleMetadata object and its "regrid" command to regrid the variable.
 %
-%   [X, metadata, members, evolvingLabels] = obj.loadGrid(variable)
+%   [X, metadata, members, evolvingLabels] = <strong>obj.loadGrid</strong>(variable)
 %   Also returns the ensemble members and labels of any evolving ensembles
 %   in the regridded dataset.
 %
-%   ... = obj.loadGrid(variable, labels)
-%   ... = obj.loadGrid(variable, e)
-%   ... = obj.loadGrid(variable, -1)
+%   ... = <strong>obj.loadGrid</strong>(variable, labels)
+%   ... = <strong>obj.loadGrid</strong>(variable, e)
+%   ... = <strong>obj.loadGrid</strong>(variable, -1)
 %   Loads specific ensembles in the evolving set. If the second input is -1,
 %   selects all ensembles in the evolving set. The dimension of the
 %   regridded dataset that corresponds to evolving ensembles is the

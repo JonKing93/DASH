@@ -1,7 +1,7 @@
 function[X, members, labels] = loadRows(obj, rows, ensembles)
 %% ensemble.loadRows  Load specific rows of the used subset of a saved ensemble
 % ----------
-%   X = obj.loadRows(rows)
+%   X = <strong>obj.loadRows</strong>(rows)
 %   Loads specific rows of the ensemble into memory. The rows are
 %   determined relative to the subset of the saved ensemble that is being
 %   used by the ensemble object. Only the elements of variables being used
@@ -15,13 +15,13 @@ function[X, members, labels] = loadRows(obj, rows, ensembles)
 %   then the output array is a 3D array, and the third dimension holds the
 %   requested rows for different ensembles in the evolving set.
 %
-%   [X, members, labels] = obj.loadRows(rows)
+%   [X, members, labels] = <strong>obj.loadRows</strong>(rows)
 %   Also returns the ensemble members and evolving labels associated with
 %   the loaded datast.
 % 
-%   ... = obj.loadRows(rows, labels)
-%   ... = obj.loadRows(rows, e)
-%   ... = obj.loadRows(rows, -1)
+%   ... = <strong>obj.loadRows</strong>(rows, labels)
+%   ... = <strong>obj.loadRows</strong>(rows, e)
+%   ... = <strong>obj.loadRows</strong>(rows, -1)
 %   Load rows for specific ensembles in the evolving set. The output array
 %   will be a 3D matrix and the length of the third dimension will match
 %   the number of requested ensembles. If the second input is -1, selects

@@ -1,7 +1,7 @@
 function[v] = variableIndices(obj, variables, scope, header)
 %% ensemble.variableIndices  Parse the indices of variables in an ensemble
 % ----------
-%   v = obj.variableIndices(variables, scope)
+%   v = <strong>obj.variableIndices</strong>(variables, scope)
 %   Parse the indices of variables in an ensemble. Error checks logical or
 %   linear indices and locates variable names. Returns linear indices to
 %   the specified variables. Throws error if variables are an unrecognized
@@ -12,12 +12,12 @@ function[v] = variableIndices(obj, variables, scope, header)
 %   used by the ensemble object. If the scope is file variables, error
 %   checks and parses relative to the variables saved in the .ens file.
 %
-%   v = obj.variableIndices(variables, scope, header)
+%   v = <strong>obj.variableIndices</strong>(variables, scope, header)
 %   Customize header in thrown error IDs
 % ----------
 %   Inputs:
-%       variables: The input being parsed. Either a set of indices or
-%           variable names.
+%       variables (any data type): The input being parsed. If valid, either
+%           a set of indices or variable names.
 %       scope (string scalar | scalar logical): The scope in which to interpret the variables
 %           ["used"|"u"|false]: The variables used by the ensemble object
 %           ["file"|"f"|true]: The variables saved in the .ens file

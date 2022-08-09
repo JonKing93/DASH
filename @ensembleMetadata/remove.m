@@ -1,8 +1,8 @@
 function[obj] = remove(obj, variables)
 %% ensembleMetadata.remove  Remove variables from an ensembleMetadata object
 % ----------
-%   obj = obj.remove(variableNames)
-%   obj = obj.remove(v)
+%   obj = <strong>obj.remove</strong>(variableNames)
+%   obj = <strong>obj.remove</strong>(v)
 %   Removes the indicated variables from an ensembleMetadata object. All
 %   other variables are retained in the metadata.
 % ----------

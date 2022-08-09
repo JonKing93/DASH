@@ -1,7 +1,7 @@
 function[X, metadata] = load(obj, ensembles)
 %% ensemble.load  Load the used variables and members of a saved ensemble
 % ----------
-%   [X, metadata] = obj.load
+%   [X, metadata] = <strong>obj.load</strong>
 %   Loads a saved ensemble into memory. Only loads the variables and
 %   ensemble members being used by the ensemble object. By default, the
 %   ensemble object uses all variables and ensemble members saved in the
@@ -20,9 +20,9 @@ function[X, metadata] = load(obj, ensembles)
 %   objects, each holding the metadata for a particular ensemble in the
 %   evolving set.
 %
-%   [X, metadata] = obj.load(labels)
-%   [X, metadata] = obj.load(e)
-%   [X, metadata] = obj.load(-1)
+%   [X, metadata] = <strong>obj.load</strong>(labels)
+%   [X, metadata] = <strong>obj.load</strong>(e)
+%   [X, metadata] = <strong>obj.load</strong>(-1)
 %   Loads specific ensembles in the evolving set. The first output will be a
 %   3D matrix and the length of the third dimension will match the number
 %   of requested ensembles. The second output will be a vector with one

@@ -1,7 +1,7 @@
 function[nEvolving] = nEvolving(obj)
 %% ensemble.nEvolving  Return the number of evolving ensembles implemented by ensemble objects in an array
 % ----------
-%   nEvolving = obj.nEvolving
+%   nEvolving = <strong>obj.nEvolving</strong>
 %   Returns the number of evolving ensembles implemented by each element of
 %   an ensemble array. For static ensembles, this value is always 1. For
 %   evolving ensembles, this is the number of ensembles in the evolving set.

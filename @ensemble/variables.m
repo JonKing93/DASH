@@ -1,22 +1,22 @@
 function[variableNames] = variables(obj, v, scope)
 %% ensemble.variables  Return the names of variables in an ensemble
 % ----------
-%   variableNames = obj.variables
+%   variableNames = <strong>obj.variables</strong>
 %   Returns the ordered list of variables in the ensemble. The index of
 %   each variable in the list corresponds to the index of the variable in
 %   the ensemble. If the "useVariables" command has been applied to the
 %   ensemble, only returns the names and indices of the variables being
 %   used by the ensemble object.
 %
-%   variableNames = obj.variables(v)
-%   variableNames = obj.variables(-1)
+%   variableNames = <strong>obj.variables</strong>(v)
+%   variableNames = <strong>obj.variables</strong>(-1)
 %   Returns the list of variables at the specified variable indices. The
 %   order of variables in the list corresponds to the order of input
 %   indices. Variable indices are interpreted in the context of variables
 %   being used by the ensemble. If the index is -1, selects all used
 %   variables.
 %
-%   variableNames = obj.variables(v, scope)
+%   variableNames = <strong>obj.variables</strong>(v, scope)
 %   Indicate the scope in which to interpret variable indices. If
 %   false|"u"|"used", behaves identically to the previous syntax and
 %   interprets indices in the context of variables being used by the

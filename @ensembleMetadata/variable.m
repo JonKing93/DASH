@@ -1,8 +1,8 @@
 function[metadata] = variable(obj, variable, dimension, varargin)
 %% ensembleMetadata.variable  Return metadata for a variable in a state vector ensemble
 % ----------
-%   metadata = obj.variable(v, dimension)
-%   metadata = obj.variable(variableName, dimension)
+%   metadata = <strong>obj.variable</strong>(v, dimension)
+%   metadata = <strong>obj.variable</strong>(variableName, dimension)
 %   Returns the metadata for a particular dimension of a variable. If the
 %   dimension is a state dimension, returns the metadata down the rows of
 %   the state vector. If the dimension is an ensemble dimension, returns
@@ -10,26 +10,26 @@ function[metadata] = variable(obj, variable, dimension, varargin)
 %   ensemble dimension with a sequence, returns the sequence metadata down
 %   the rows of the state vector.
 %
-%   metadata = obj.variable(variable, dimension, variableRows)
-%   metadata = obj.variable(variable, dimension, members)
+%   metadata = <strong>obj.variable</strong>(variable, dimension, variableRows)
+%   metadata = <strong>obj.variable</strong>(variable, dimension, members)
 %   Return metadata at the specified rows or ensemble members. Here, rows
 %   are interpreted relative to the variable's rows, rather than all the
 %   rows in the state vector. For example, setting variableRows=1 will return
 %   metadata for the first row of the variable, regardless of the
 %   variable's overall position in the state vector.
 %
-%   metadata = obj.variable(variable, dimension, type)
-%   metadata = obj.variable(variable, dimension, "members"|"m")
-%   metadata = obj.variable(variable, dimension, "rows"|"r")
-%   metadata = obj.variable(variable, dimension, "default"|"d")
+%   metadata = <strong>obj.variable</strong>(variable, dimension, type)
+%   metadata = <strong>obj.variable</strong>(variable, dimension, "members"|"m")
+%   metadata = <strong>obj.variable</strong>(variable, dimension, "rows"|"r")
+%   metadata = <strong>obj.variable</strong>(variable, dimension, "default"|"d")
 %   Specify which type of metadata to return the for the dimension. If
 %   "members"|"m", returns metadata across the ensemble members. If
 %   "rows"|"r", returns metadata down the rows of the state vector. If
 %   "default"|"d", behaves identically to the first syntax and decides
 %   internally which metadata to return.
 %
-%   metadata = obj.variable(variable, dimension, type, rows)
-%   metadata = obj.variable(variable, dimension, type, members)
+%   metadata = <strong>obj.variable</strong>(variable, dimension, type, rows)
+%   metadata = <strong>obj.variable</strong>(variable, dimension, type, members)
 %   Specify both the type of metadata to return, and also the rows or
 %   ensemble members.
 % ----------

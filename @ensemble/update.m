@@ -1,7 +1,7 @@
 function[obj] = update(obj)
 %% ensemble.update  Updates an ensemble object to include any new ensemble members added to the .ens file
 % ----------
-%   obj = obj.update
+%   obj = <strong>obj.update</strong>
 %   Updates an ensemble object. If ensemble members are added to a .ens
 %   file (using the "addMembers" command) after the creation of an ensemble
 %   object, the ensemble object will not include the new ensemble members. 

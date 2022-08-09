@@ -1,7 +1,7 @@
 function[coordinates] = getLatLon(obj, v, variableRows, dimensions, columns)
 %% ensembleMetadata.getLatLon  Return latitude-longitude coordinates for a variable
 % ----------
-%   coordinates = obj.getLatLon(v, variableRows, ...)
+%   coordinates = <strong>obj.getLatLon</strong>(v, variableRows, ...)
 %   Obtains latitude-longitude coordinates at the specified rows of avariable in a state
 %   vector. Extracts coordinates from either the lat and lon dimensions, or
 %   from the site dimension. If the variable is missing the required
@@ -14,10 +14,10 @@ function[coordinates] = getLatLon(obj, v, variableRows, dimensions, columns)
 %   "str2double" function. If the coordinate cannot be converted, uses a
 %   NaN coordinate for the row.
 %
-%   coordinates = obj.getLatLon(v, variableRows, latlonDimensions)
+%   coordinates = <strong>obj.getLatLon</strong>(v, variableRows, latlonDimensions)
 %   Extracts coordinate metadata from the lat and lon dimensions.
 %
-%   coordinates = obj.getLatLon(v, variableRows, siteDimension, columns)
+%   coordinates = <strong>obj.getLatLon</strong>(v, variableRows, siteDimension, columns)
 %   Extracts coordinate metadata from the site dimension. Coordinates are
 %   extracted from the indicated columns of the metadata. If the site
 %   metadata is missing a column, returns NaN for that coordinate.

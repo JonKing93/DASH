@@ -1,9 +1,9 @@
 function[varargout] = evolvingLabels(obj, varargin)
 %% ensemble.evolvingLabels  Set or return labels for an evolving ensemble
 % ----------
-%   labels = obj.evolvingLabels
-%   labels = obj.evolvingLabels(-1)
-%   labels = obj.evolvingLabels(e)
+%   labels = <strong>obj.evolvingLabels</strong>
+%   labels = <strong>obj.evolvingLabels</strong>(-1)
+%   labels = <strong>obj.evolvingLabels</strong>(e)
 %   Returns the labels for the specified ensembles in an evolving ensemble.
 %   If ensembles are not specified or -1, returns the labels for all
 %   ensembles in the evolving set. Note that evolving labels are distinct
@@ -12,12 +12,12 @@ function[varargout] = evolvingLabels(obj, varargin)
 %   accessed via the "ensemble.label" command -- refer instead to the
 %   ensemble object.
 %
-%   obj = obj.evolvingLabels(newLabels)
+%   obj = <strong>obj.evolvingLabels</strong>(newLabels)
 %   Applies new labels to each of the ensembles in the evolving set.
 %
-%   obj = obj.evolvingLabels(-1, newLabels)
-%   obj = obj.evolvingLabels(e, newLabels)
-%   obj = obj.evolvingLabels(labels, newLabels)
+%   obj = <strong>obj.evolvingLabels</strong>(-1, newLabels)
+%   obj = <strong>obj.evolvingLabels</strong>(e, newLabels)
+%   obj = <strong>obj.evolvingLabels</strong>(labels, newLabels)
 %   Applies new labels to the specified ensembles in an evolving ensemble.
 % ----------
 %   Inputs:

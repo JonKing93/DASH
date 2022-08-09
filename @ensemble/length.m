@@ -1,30 +1,30 @@
 function[lengths] = length(obj, variables, scope)
 %% ensemble.length  Returns the number of state vector rows for an ensemble
 % ----------
-%   length = obj.length
-%   length = obj.length(0)
+%   length = <strong>obj.length</strong>
+%   length = <strong>obj.length</strong>(0)
 %   Returns the number of elements in the state vector for the ensemble. If
 %   the "useVariables" command has been applied to the ensemble, only
 %   counts elements of the variables being used by the ensemble.
 %
-%   lengths = obj.length(variableNames)
-%   lengths = obj.length(v)
-%   lengths = obj.length(-1)
+%   lengths = <strong>obj.length</strong>(variableNames)
+%   lengths = <strong>obj.length</strong>(v)
+%   lengths = <strong>obj.length</strong>(-1)
 %   Returns the lengths of the specified variables. Variable names and
 %   indices are interpreted in the context of variables being used by the
 %   ensemble. If the index is -1, selects all variables being used.
 %
-%   length = obj.length(0, scope)
-%   ... = obj.length(0, "used"|"u"|false)
-%   ... = obj.length(0, "file"|"f"|true)
+%   length = <strong>obj.length</strong>(0, scope)
+%   ... = <strong>obj.length</strong>(0, "used"|"u"|false)
+%   ... = <strong>obj.length</strong>(0, "file"|"f"|true)
 %   Indicate the scope in which to return the length of the state vector.
 %   If "used"|"u"|false, counts elements in variables being used by the
 %   ensemble. If "file"|"f"|true, counts elements in all variables saved in
 %   the .ens file.
 %
-%   lengths = obj.length(variables, scope)
-%   ... = obj.length(variables, "used"|"u"|false)
-%   ... = obj.length(variables, "file"|"f"|true)
+%   lengths = <strong>obj.length</strong>(variables, scope)
+%   ... = <strong>obj.length</strong>(variables, "used"|"u"|false)
+%   ... = <strong>obj.length</strong>(variables, "file"|"f"|true)
 %   Indicate the scope in which to interpret variable names and indices. If
 %   "used"|"u"|false, interprets names and indices in the context of
 %   variables being used by the state vector. If "file"|"f"|true,

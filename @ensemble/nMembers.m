@@ -1,14 +1,14 @@
 function[nMembers] = nMembers(obj, scope)
 %% ensemble.nMembers  Return the number of members used by the ensemble objects in an array
 % ----------
-%   nMembers = obj.nMembers
+%   nMembers = <strong>obj.nMembers</strong>
 %   Returns the number of state vector rows being used for each element of
 %   an ensemble array. For evolving ensembles, the number of members is the
 %   number of ensemble members per ensemble in an evolving set.
 %
-%   nMembers = obj.nRows(scope)
-%   ... = obj.nRows(false|"u"|"used")
-%   ... = obj.nRows( true|"f"|"file")
+%   nMembers = <strong>obj.nMembers</strong>(scope)
+%   ... = <strong>obj.nMembers</strong>(false|"u"|"used")
+%   ... = <strong>obj.nMembers</strong>( true|"f"|"file")
 %   Indicate the scope in which to count members. If "used"|"u"|false, behaves
 %   identically to the previous syntax and counts the number of members
 %   used by each ensemble. If "file"|"f"|true, counts the number of

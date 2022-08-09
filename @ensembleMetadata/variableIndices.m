@@ -1,19 +1,19 @@
 function[v] = variableIndices(obj, variables, allowRepeats, header)
 %% ensembleMetadata.variableIndices  Parse and return indices of variables in a state vector ensemble
 % ----------
-%   v = obj.variableIndices(variables)
+%   v = <strong>obj.variableIndices</strong>(variables)
 %   Parses the indices of input variables. Returns linear indices to input
 %   variables.
 %
-%   v = obj.variableIndices(variables, allowRepeats)
+%   v = <strong>obj.variableIndices</strong>(variables, allowRepeats)
 %   Indicate whether to throw an error when repeated variables occur.
 % 
-%   v = obj.variableIndices(variables, allowRepeats, header)
+%   v = <strong>obj.variableIndices</strong>(variables, allowRepeats, header)
 %   Customize header in thrown error IDs
 % ----------
 %   Inputs:
-%       variables: The input being parse. A set of variable names or
-%           indices of variables in the state vector.
+%       variables (any data type): The input being parsed. If valid, a set
+%           of variable names or indices of variables in the state vector.
 %       allowRepeats (scalar logical): Whether to allow repeated variables
 %           (true - default) or to throw an error when repeats occur (false)
 %       header (string scalar): Header for thrown error IDs

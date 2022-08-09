@@ -1,13 +1,13 @@
 function[variableNames] = variables(obj, v)
 %% ensembleMetadata.variables  Return the names of variables in a state vector ensemble
 % ----------
-%   variableNames = obj.variables
-%   variableNames = obj.variables(-1)
+%   variableNames = <strong>obj.variables</strong>
+%   variableNames = <strong>obj.variables</strong>(-1)
 %   Returns the ordered list of variables in a state vector ensemble. The
 %   index of each variable in the list corresponds to the index of the
 %   variable in the state vector.
 %
-%   variableNames = obj.variables(v)
+%   variableNames = <strong>obj.variables</strong>(v)
 %   Returns the list of variables at the specified variable indices. The
 %   order of variables in the lsit corresponds to the order of input indices.
 % ----------

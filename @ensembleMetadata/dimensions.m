@@ -1,27 +1,27 @@
 function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %% ensembleMetadata.dimensions  Return the dimensions associated with variables in a state vector ensemble
 % ----------
-%   dimensions = obj.dimensions
-%   dimensions = obj.dimensions(-1)
+%   dimensions = <strong>obj.dimensions</strong>
+%   dimensions = <strong>obj.dimensions</strong>(-1)
 %   Return the names of dimensions associated with each variable in the
 %   state vector.
 %
-%   dimensions = obj.dimensions(v)
-%   dimensions = obj.dimensions(variableNames)
+%   dimensions = <strong>obj.dimensions</strong>(v)
+%   dimensions = <strong>obj.dimensions</strong>(variableNames)
 %   Return the names of dimensions associated with the specified state
 %   vector variables.
 %
-%   dimensions = obj.dimensions(..., type)
-%   dimensions = obj.dimensions(..., 0|'a'|'all'|[])
-%   dimensions = obj.dimensions(..., 1|'s'|'state')
-%   dimensions = obj.dimensions(..., 2|'e'|'ens'|'ensemble')
+%   dimensions = <strong>obj.dimensions</strong>(..., type)
+%   dimensions = <strong>obj.dimensions</strong>(..., 0|'a'|'all'|[])
+%   dimensions = <strong>obj.dimensions</strong>(..., 1|'s'|'state')
+%   dimensions = <strong>obj.dimensions</strong>(..., 2|'e'|'ens'|'ensemble')
 %   Specify the type of dimension to return for each variable. Options are
 %   all dimensions, state dimensions, or ensemble dimensions. By default,
 %   returns all dimensions for each variable.
 %
-%   dimensions = obj.dimensions(..., type, cellOutput)
-%   dimensions = obj.dimensions(..., type, true|'c'|'cell')
-%   dimensions = obj.dimensions(..., type, false|'d'|'default')
+%   dimensions = <strong>obj.dimensions</strong>(..., type, cellOutput)
+%   dimensions = <strong>obj.dimensions</strong>(..., type, true|'c'|'cell')
+%   dimensions = <strong>obj.dimensions</strong>(..., type, false|'d'|'default')
 %   Specify whether output should always be organized in a cell. If false
 %   (default), dimensions for a single variable are returned as a string row
 %   vector. If true, dimensions for a single variable are returned as a
@@ -48,7 +48,7 @@ function[dimensions] = dimensions(obj, variables, type, cellOutput)
 %               returned directly as a string vector.
 %
 %   Outputs:
-%       dimensions (string vector | cell vector [nVariables] {string vector}:
+%       dimensions (string vector | cell vector [nVariables] {string vector}):
 %           The names of the dimensions for the listed variables. If a
 %           single variable is listed and cellOutput is on the default
 %           setting, a string vector with one element per listed dimension.

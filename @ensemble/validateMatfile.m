@@ -1,7 +1,7 @@
 function[m, metadata, precision] = validateMatfile(obj, header)
 %% ensemble.validateMatfile  Check that a .ens file is valid
 % ----------
-%   [m, metadata, precision] = obj.validateMatfile
+%   [m, metadata, precision] = <strong>obj.validateMatfile</strong>
 %   Checks that the .ens file associated with an ensemble object is valid
 %   and matches the metadata stored in the ensemble object. Requires the
 %   .ens file to be a MAT file with X and stateVector fields that have
@@ -12,7 +12,7 @@ function[m, metadata, precision] = validateMatfile(obj, header)
 %   ensembleMetadata object. Also returns the numeric precision of the
 %   saved ensemble.
 %
-%   ... = obj.validateMatfile(header)
+%   ... = <strong>obj.validateMatfile</strong>(header)
 %   Customize header in thrown error IDs
 % ----------
 %   Inputs:

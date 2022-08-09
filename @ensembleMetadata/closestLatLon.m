@@ -1,8 +1,8 @@
 function[rows] = closestLatLon(obj, variable, coordinates, varargin)
 %% ensembleMetadata.closestLatLon  Locate the rows of a variable that are closest to a latitude-longitude coordinate
 % ----------
-%   rows = obj.closestLatLon(variableName, coordinates)
-%   rows = obj.closestLatLon(v, coordinates)
+%   rows = <strong>obj.closestLatLon</strong>(variableName, coordinates)
+%   rows = <strong>obj.closestLatLon</strong>(v, coordinates)
 %   Given a variable in the state vector, locates the rows of the variable
 %   that are closest to a given latitude-longitude coordinate. Returns the
 %   indices of these rows in the overall state vector. If multiple rows are
@@ -23,7 +23,7 @@ function[rows] = closestLatLon(obj, variable, coordinates, varargin)
 %   well-defined. If all extracted coordinates include NaN or Inf values, 
 %   throws an error.
 %
-%   rows = obj.closestLatLon(..., 'site', columns)
+%   rows = <strong>obj.closestLatLon</strong>(..., 'site', columns)
 %   Indicates that the method should extract latitude-longitude coordinates
 %   from the columns of the "site" dimension, rather than the "lat" and
 %   "lon" dimensions. Here, the "columns" input is a vector with two
@@ -33,7 +33,7 @@ function[rows] = closestLatLon(obj, variable, coordinates, varargin)
 %   "ensembleMetadata.latlon" for additional details on how coordinates are
 %   determined from "site" metadata.
 %
-%   rows = obj.closestLatLon(..., 'exclude', variableRows)
+%   rows = <strong>obj.closestLatLon</strong>(..., 'exclude', variableRows)
 %   Indicate rows of the variable that should be excluded from
 %   consideration. Note that variableRows are interpreted relative to the
 %   variable, rather than the overall state vector. For example, if

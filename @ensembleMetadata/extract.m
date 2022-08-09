@@ -1,8 +1,8 @@
 function[obj] = extract(obj, variables)
 %% ensembleMetadata.extract  Limit ensemble metadata to specific variables
 % ----------
-%   obj = obj.extract(variableNames)
-%   obj = obj.extract(v)
+%   obj = <strong>obj.extract</strong>(variableNames)
+%   obj = <strong>obj.extract</strong>(v)
 %   Updates the ensembleMetadata object to only include metadata for the
 %   listed variables. All unlisted variables are removed from the
 %   ensembleMetadata object.

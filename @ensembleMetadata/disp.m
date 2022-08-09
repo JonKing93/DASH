@@ -1,7 +1,8 @@
 function[] = disp(obj)
 %% ensembleMetadata.disp  Displays an ensembleMetadata object in the console
 % ----------
-%   obj.disp
+%   <strong>disp</strong>(obj)
+%   <strong>obj.disp</strong>
 %   Displays an ensembleMetadata object in the console. If scalar,
 %   indicates the size of the described state vector ensemble, and the
 %   variables in the ensemble. Includes a link to display the ensemble
@@ -12,7 +13,11 @@ function[] = disp(obj)
 %   labels of the ensembleMetadata objects. Unlabeled elements are marked as
 %   "<no label>". Does not print labels if every object is unlabeled.
 % ----------
-%   Outputs:
+%   Inputs:
+%       obj (ensembleMetadata object): The ensembleMetadata object to
+%           display in the console
+%
+%   Prints:
 %       Prints the contents of an ensembleMetadata array to the console
 %
 % <a href="matlab:dash.doc('ensembleMetadata.disp')">Documentation Page</a>

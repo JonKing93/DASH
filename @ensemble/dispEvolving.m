@@ -1,12 +1,12 @@
 function[] = dispEvolving(obj)
 %% ensemble.dispEvolving  Display the labels of evolving ensembles in the console
 % ----------
-%   obj.dispEvolving
+%   <strong>obj.dispEvolving</strong>
 %   Prints a numbered list of evolving ensemble labels to the console. If
 %   an evolving ensemble has no label uses <no label> for that ensemble. If
 %   none of the ensembles have labels, does not print anything.
 % ----------
-%   Outputs:
+%   Prints:
 %       Prints a numbered list of evolving ensemble labels to the console.
 %
 % <a href="matlab:dash.doc('ensemble.dispEvolving')">Documentation Page</a>

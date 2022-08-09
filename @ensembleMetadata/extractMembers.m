@@ -1,7 +1,7 @@
 function[obj] = extractMembers(obj, members)
 %% ensembleMetadata.extractMembers  Limit ensemble metadata to specific ensemble members
 % ----------
-%   obj = obj.extractMembers(members)
+%   obj = <strong>obj.extractMembers</strong>(members)
 %   Updates an ensemble metadata object to only include the specified
 %   members. All unlisted members are removed from the ensembleMetadata
 %   object.

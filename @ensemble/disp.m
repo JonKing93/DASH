@@ -1,7 +1,8 @@
 function[] = disp(obj, scope)
 %% ensemble.disp  Display an ensemble object in the console
 % ----------
-%   obj.disp
+%   <strong>disp</strong>(obj)
+%   <strong>obj.disp</strong>
 %   Displays the ensemble object in the console. If scalar, indicates
 %   whether the ensemble is static or evolving. Also indicates the size of
 %   used variables and ensemble members, and any evolving ensembles.
@@ -14,7 +15,8 @@ function[] = disp(obj, scope)
 %   "<no label>". If all the ensemble objects are unlabeled, displays the
 %   .ens files instead.
 %
-%   obj.disp(scope)
+%   <strong>disp</strong>(obj, scope)
+%   <strong>obj.disp</strong>(scope)
 %   Indicate whether to display contents saved in the .ens file, or values
 %   used by the ensemble object. If printing file contents, prints the
 %   details and size of all variables saved in the .ens file. Includes a
@@ -29,7 +31,7 @@ function[] = disp(obj, scope)
 %           ["file"|"f|false]: Print information about the saved contents
 %               of the .ens file.
 %
-%   Outputs:
+%   Prints:
 %       Prints information about an ensemble object to the console.
 %
 % <a href="matlab:dash.doc('ensemble.disp')">Documentation Page</a>

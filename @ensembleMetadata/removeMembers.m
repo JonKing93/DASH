@@ -1,7 +1,7 @@
 function[obj] = removeMembers(obj, members)
 %% ensembleMetadata.removeMembers  Remove ensemble members from an ensembleMetadata object
 % ----------
-%   obj = obj.removeMembers(members)
+%   obj = <strong>obj.removeMembers</strong>(members)
 %   Removes the indicated ensemble members from an ensembleMetadata object.
 %   All other ensemble members are retained in the metadata.
 % ----------
@@ -15,7 +15,7 @@ function[obj] = removeMembers(obj, members)
 %       obj (scalar ensembleMetadata object): The ensembleMetadata object
 %           with updated ensemble members.
 %   
-%  <a href="matlab:dash.doc('ensembleMetadata.removeMembers')">Documentation Page</a>
+% <a href="matlab:dash.doc('ensembleMetadata.removeMembers')">Documentation Page</a>
 
 % Setup
 header = "DASH:ensembleMetadata:removeMembers";

@@ -1,16 +1,17 @@
 function[members] = assertStaticMembers(obj, members, name, header)
 %% ensemble.assertStaticMembers  Throw error if input is not members for a static ensemble
 % ----------
-%   members = obj.assertStaticMembers(members)
+%   members = <strong>obj.assertStaticMembers</strong>(members)
 %   Throw error if input is not a vector of indices for members of a static
 %   ensemble. If the input passes the assertion, returns ensemble members
 %   as linear indices.
 %
-%   members = obj.assertStaticMembers(members, name, header)
+%   members = <strong>obj.assertStaticMembers</strong>(members, name, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:
-%       members: The input being checked
+%       members (any data type): The input being checked. Valid members
+%           should be a vector of linear indices for ensemble members
 %       name (string scalar): The name of the input for error messages.
 %       header (string scalar): Header for thrown error IDs
 %

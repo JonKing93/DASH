@@ -1,8 +1,8 @@
 function[X, metadata] = regrid(obj, variable, X, varargin)
 %% ensembleMetadata.regrid  Regrids a variable in a state vector ensemble
 % ----------
-%   [V, metadata] = obj.regrid(variableName, X)
-%   [V, metadata] = obj.regrid(v, X)
+%   [V, metadata] = <strong>obj.regrid</strong>(variableName, X)
+%   [V, metadata] = <strong>obj.regrid</strong>(v, X)
 %   Regrids a variable in a state vector ensemble. The variable is
 %   extracted from the overall state vector, and then reshaped into a
 %   gridded dataset. The method also returns metadata for the dimensions of
@@ -29,7 +29,7 @@ function[X, metadata] = regrid(obj, variable, X, varargin)
 %   the length of the regridded state vector dimension will be 1, but the
 %   metadata will not contain information on any dimension.
 %
-%   ... = obj.regrid(..., 'order', dimensions)
+%   ... = <strong>obj.regrid</strong>(..., 'order', dimensions)
 %   Returns the regridded data in a custom dimension order. The order of
 %   dimensions in the regridded dataset will match the order specified in
 %   the dimensions list. If the state vector has state dimensions or
@@ -38,14 +38,14 @@ function[X, metadata] = regrid(obj, variable, X, varargin)
 %   singleton dimension is specified in the dimensions list, the singleton
 %   dimension will not be removed from the regridded dataset and metadata.
 %
-%   ... = obj.regrid(..., 'dim', d)
+%   ... = <strong>obj.regrid</strong>(..., 'dim', d)
 %   Indicate the dimension of X that should be used as the state vector
 %   dimension. The length of the dimension must match the length of the
 %   state vector.
 %
-%   ... = obj.regrid(..., 'singletons', singletons)
-%   ... = obj.regrid(..., 'singletons', "keep"|"k"|true)
-%   ... = obj.regrid(..., 'singletons', "remove"|"r"|false)
+%   ... = <strong>obj.regrid</strong>(..., 'singletons', singletons)
+%   ... = <strong>obj.regrid</strong>(..., 'singletons', "keep"|"k"|true)
+%   ... = <strong>obj.regrid</strong>(..., 'singletons', "remove"|"r"|false)
 %   Specify how to treat regridded singleton dimensions. By default,
 %   singleton dimensions are removed from the regridded output unless they
 %   are listed in the dimension order. Use "keep"|"k"|true to keep all

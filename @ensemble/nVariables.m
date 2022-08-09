@@ -1,13 +1,13 @@
 function[nVariables] = nVariables(obj, scope)
 %% ensemble.nVariables  Returns the number of variables for the elements of an ensemble array
 % ----------
-%   nVariables = obj.nVariables
+%   nVariables = <strong>obj.nVariables</strong>
 %   Returns the number of used variables for each element of an ensemble
 %   array.
 %
-%   nVariables = obj.nVariables(scope)
-%   ... = obj.nVariables(false|"u"|"used")
-%   ... = obj.nVariables( true|"f"|"file")
+%   nVariables = <strong>obj.nVariables</strong>(scope)
+%   ... = <strong>obj.nVariables</strong>(false|"u"|"used")
+%   ... = <strong>obj.nVariables</strong>( true|"f"|"file")
 %   Indicate the scope in which to count variables. If "used"|"u"|false, 
 %   behaves identically to the previous syntax and returns the number of used
 %   variables for each element of an ensemble array. If "file"|"f"|true, returns the

@@ -1,12 +1,12 @@
 function[] = dispVariables(obj, showFile)
 %% ensemble.dispVariables  Prints the variables in an ensemble object to the console
 % ----------
-%   obj.dispVariable
+%   <strong>obj.dispVariables</strong>
 %   Prints the variables being used by the ensemble object to the console.
 %   Prints the state vector length of each variable in addition to its
 %   name.
 %
-%   obj.dispVariables(showFile)
+%   <strong>obj.dispVariables</strong>(showFile)
 %   Indicate whether to print the variables used by the ensemble object
 %   (false - default), or the variables saved in the .ens file.
 % ----------
@@ -15,7 +15,7 @@ function[] = dispVariables(obj, showFile)
 %           in the .ens file (true), or the variables used by the ensemble
 %           object (false - Default).
 %
-%   Outputs:
+%   Prints:
 %       Prints a list of variables and their lengths to the console.
 %
 % <a href="matlab:dash.doc('ensemble.dispVariables')">Documentation Page</a>

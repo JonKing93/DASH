@@ -1,7 +1,7 @@
 function[coordinates] = latlon(obj, siteColumns, variables)
 %% ensembleMetadata.latlon  Return latitude-longitude coordinates for state vector elements
 % ----------
-%   coordinates = obj.latlon
+%   coordinates = <strong>obj.latlon</strong>
 %   Returns a latitude-longitude coordinate for each row of a state vector.
 %   The output is a matrix with two columns - the first column holds the
 %   latitude coordinate for each state vector row, and the second holds the
@@ -28,7 +28,7 @@ function[coordinates] = latlon(obj, siteColumns, variables)
 %   implements a mean over the "lat" or "lon" dimension, then the
 %   coordinate for the dimension is also set to NaN.
 %
-%   coordinates = obj.latlon(siteColumns)
+%   coordinates = <strong>obj.latlon</strong>(siteColumns)
 %   This syntax allows the method to also extract coordinates that are
 %   stored along the "site" dimension. The input is a row vector with two
 %   elements. The two elements indicate which columns of the "site"
@@ -43,8 +43,8 @@ function[coordinates] = latlon(obj, siteColumns, variables)
 %   over the "site" dimension, then the latitude-longitude coordinate is
 %   returned as NaN.
 %
-%   coordinates = obj.latlon(siteColumns, variableNames)
-%   coordinates = obj.latlon(siteColumns, v)
+%   coordinates = <strong>obj.latlon</strong>(siteColumns, variableNames)
+%   coordinates = <strong>obj.latlon</strong>(siteColumns, v)
 %   Indicate which columns of "site" metadata to use for specific
 %   variables. If the first input has a single row, then uses the same
 %   columns for all listed variables. Otherwise, the first input should

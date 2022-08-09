@@ -1,7 +1,7 @@
 function[metadata] = rows(obj, dimension, rows, cellOutput)
 %% ensembleMetadata.rows  Return the metadata for rows of a state vector ensemble
 % ----------
-%   metadata = obj.rows(dimension)
+%   metadata = <strong>obj.rows</strong>(dimension)
 %   Return metadata for each row of an ensemble. The first input
 %   indicates the dimension for which to return metadata. The dimension
 %   must be a state dimension for at least variable in the ensemble.
@@ -24,19 +24,19 @@ function[metadata] = rows(obj, dimension, rows, cellOutput)
 %   for the variables is not compatible and returned as a cell vector, the
 %   contents of the cells of the missing elements will be NaN.
 %
-%   metadata = obj.metadata(0)
+%   metadata = <strong>obj.metadata</strong>(0)
 %   Returns the name of the variable associated with each state vector
 %   element.
 %
-%   metadata = obj.metadata(dimension, rows)
-%   metadata = obj.metadata(dimension, -1)
+%   metadata = <strong>obj.metadata</strong>(dimension, rows)
+%   metadata = <strong>obj.metadata</strong>(dimension, -1)
 %   Return metadata at the specified rows of the state vector ensemble. If the
 %   second input is -1, selects all rows of ensemble. The returned metadata
 %   will have one row per selected state vector row.
 %
-%   metadata = obj.metadata(dimension, rows, cellOutput)
-%   metadata = obj.metadata(dimension, rows, false|"d"|"default")
-%   metadata = obj.metadata(dimension, rows, true|"c"|"cell")
+%   metadata = <strong>obj.metadata</strong>(dimension, rows, cellOutput)
+%   metadata = <strong>obj.metadata</strong>(dimension, rows, false|"d"|"default")
+%   metadata = <strong>obj.metadata</strong>(dimension, rows, true|"c"|"cell")
 %   Specify whether output should always be returned as a cell. If false
 %   (default), metadata is returned directly as a matrix when the variables
 %   have compatible metadata. If true, metadata is always returned as a

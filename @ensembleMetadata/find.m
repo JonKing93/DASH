@@ -1,40 +1,40 @@
 function[varargout] = find(obj, variables, type)
 %% ensembleMetadata.find  Locate the rows corresponding to specific variables in a state vector
 % ----------
-%   ... = obj.find(variableNames)
-%   ... = obj.find(v)
-%   ... = obj.find(-1)
+%   ... = <strong>obj.find</strong>(variableNames)
+%   ... = <strong>obj.find</strong>(v)
+%   ... = <strong>obj.find</strong>(-1)
 %   Locate state vector rows/elements associated with the listed variables.
 %   If the input is -1, selects all variables in the state vector. The
 %   output of the method will depend on the number of variables selected.
 %   See syntaxes below for details.
 %
-%   rows = obj.find(variable)
+%   rows = <strong>obj.find</strong>(variable)
 %   If a single variable is selected, returns the indices of all rows
 %   associated with the variable. The output will be a column vector
 %   matching the length of the variable in the state vector.
 %
-%   rowLimits = obj.find(variables)
+%   rowLimits = <strong>obj.find</strong>(variables)
 %   If multiple variables are selected, returns the indices of the first
 %   and last row for each variable. The output is a matrix with one row per
 %   selected variable and two columns. The two columns list the first and last
 %   row of each variable, respectively.
 %
-%   ... = obj.find(variables, type)
+%   ... = <strong>obj.find</strong>(variables, type)
 %   Indicate the type of output to return for the selected variables. See
 %   syntaxes below for details.
 %
-%   rows = obj.find(variable, 'all'|'a'|0)
+%   rows = <strong>obj.find</strong>(variable, 'all'|'a'|0)
 %   Return the indices of all the rows associated with a particular variable.
 %   You can only specify a single variable when selecting this option.
 %
-%   startRows = obj.find(variables, 'start'|'s'|1)
+%   startRows = <strong>obj.find</strong>(variables, 'start'|'s'|1)
 %   Return the index of the first row for each of the listed variables.
 %
-%   endRows = obj.find(variables, 'end'|'e'|2)
+%   endRows = <strong>obj.find</strong>(variables, 'end'|'e'|2)
 %   Return the index of the last row for each of the listed variables.
 %
-%   rowLimits = obj.find(variables, 'limits'|'l'|3)
+%   rowLimits = <strong>obj.find</strong>(variables, 'limits'|'l'|3)
 %   Return the indices of the first and the last row for each of the
 %   selected variables.
 % ----------

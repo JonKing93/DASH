@@ -1,7 +1,7 @@
 function[members] = assertEvolvingMembers(obj, members, nRows, nCols, name, header)
 %% ensemble.assertEvolvingMembers  Throw error if input is not members for an evolving ensemble
 % ----------
-%   members = ensemble.assertEvolvingMembers(members, nRows, nCols)
+%   members = <strong>obj.assertEvolvingMembers</strong>(members, nRows, nCols)
 %   Checks that the input members is a matrix of indices, where each column
 %   describes a set of indices. Requires the same number of indices along
 %   each column. Converts logical indices to linear indices for each
@@ -9,11 +9,11 @@ function[members] = assertEvolvingMembers(obj, members, nRows, nCols, name, head
 %   current number of members, and that the number of evolving ensembles
 %   matches the current number of evolving ensembles.
 %
-%   members = ensemble.assertEvolvingMembers(member, nRows, nCols, name, header)
+%   members = <strong>obj.assertEvolvingMembers</strong>(member, nRows, nCols, name, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:
-%       members: The input being checked
+%       members (any data type): The input being checked
 %       nRows (scalar positive integer | []): The required number of members per
 %           column. If empty, allows any number.
 %       nCols (scalar positive integer | []): The required number of

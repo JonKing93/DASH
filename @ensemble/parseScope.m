@@ -6,7 +6,7 @@ function[useFile] = parseScope(scope, header)
 %   error if the input is not valid.
 % ----------
 %   Inputs:
-%       scope: The input being checked
+%       scope (any data type): The input being checked
 %
 %   Outputs:
 %       useFile (scalar logical): Indicates whether to interpret values in

@@ -1,7 +1,7 @@
 function[obj] = appendMembers(obj, ensMeta2)
 %% ensembleMetadata.appendMembers  Add members to an ensembleMetadata object
 % ----------
-%   obj = obj.appendMembers(ensMeta2)
+%   obj = <strong>obj.appendMembers</strong>(ensMeta2)
 %   Add the ensemble members in a second ensembleMetadata object to the
 %   current ensembleMetadata object. The second ensembleMetadata object
 %   must have the same variables as the current object.

@@ -1,21 +1,21 @@
 function[metadata] = members(obj, dimension, members, variable)
 %% ensembleMetadata.members  Return the metadata for ensemble members in a state vector ensemble
 % ----------
-%   metadata = obj.members(dimension)
+%   metadata = <strong>obj.members</strong>(dimension)
 %   Return metadata for each member of an ensemble. The metadata will have
 %   one row per member in the ensemble. The first input indicates the
 %   ensemble dimension for which to return metadata. If multiple variables
 %   use the ensemble dimension, returns the metadata for the first variable
 %   that uses the ensemble dimension.
 %
-%   metadata = obj.members(dimension, members)
-%   metadata = obj.members(dimension, -1)
+%   metadata = <strong>obj.members</strong>(dimension, members)
+%   metadata = <strong>obj.members</strong>(dimension, -1)
 %   Returns metadata at the specified ensemble members. If the second input
 %   is -1, selects all members in the ensemble. The returned metadata will
 %   have one row per listed ensemble member.
 %
-%   metadata = obj.members(dimension, members, variableName)
-%   metadata = obj.members(dimension, members, v)
+%   metadata = <strong>obj.members</strong>(dimension, members, variableName)
+%   metadata = <strong>obj.members</strong>(dimension, members, v)
 %   Indicate which variable's metadata to return. The variable must use the
 %   listed dimension as an ensemble dimension.
 % ----------

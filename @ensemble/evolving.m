@@ -1,26 +1,25 @@
 function[obj] = evolving(obj, varargin)
 %% ensemble.evolving  Design evolving ensembles
 % ----------
-%   obj = obj.evolving(members)
+%   obj = <strong>obj.evolving</strong>(members)
 %   Designs a new evolving ensemble. Each column of the "members" input
 %   indicates the ensemble members that should be used in a particular
 %   ensemble, so the number of evolving ensembles will match the number of
 %   columns. If the ensemble object previously implemented an evolving
 %   ensemble, the evolving labels will all be reset.
 %
-%   obj = obj.evolving(members, newLabels)
+%   obj = <strong>obj.evolving</strong>(members, newLabels)
 %   Also applies labels to the ensembles in the evolving ensemble. You must
 %   provide one label per evolving ensemble (one label per column of "members").
 %   These evolving labels are distinct from any global label applied to the
-%   ensemble object. The evolving labels -- accessed via the 
-%   "ensemble.evolvingLabels" command -- refer to individual ensembles
-%   within the evolving ensemble. By contrast, the global label -- accessed
-%   via the "ensemble.label" command -- refers to the ensemble object as a
-%   whole.
+%   ensemble object. The evolving labels -- accessed via the "evolvingLabels"
+%   command -- refer to individual ensembles within the evolving ensemble. 
+%   By contrast, the global label -- accessed via the "ensemble.label"
+%   command -- refers to the ensemble object as a whole.
 %
-%   obj = obj.evolving(-1, members)
-%   obj = obj.evolving(e, members)
-%   obj = obj.evolving(labels, members)
+%   obj = <strong>obj.evolving</strong>(-1, members)
+%   obj = <strong>obj.evolving</strong>(e, members)
+%   obj = <strong>obj.evolving</strong>(labels, members)
 %   Replaces the ensemble members used for specific ensembles in an
 %   existing evolving ensemble. If the first input is -1, sets new ensemble
 %   members for all the ensembles in the current evolving ensemble. Unlike
@@ -32,11 +31,11 @@ function[obj] = evolving(obj, varargin)
 %   same evolving label, then you will need to specify those ensembles
 %   using their indices.
 %
-%   obj = obj.evolving(..., members, newLabels)
+%   obj = <strong>obj.evolving</strong>(..., members, newLabels)
 %   In addition to replacing ensemble members, also updates the evolving
 %   labels of the specified ensembles.
 %
-%   obj = obj.evolving(eNew, members)
+%   obj = <strong>obj.evolving</strong>(eNew, members)
 %   Adds additional ensembles to an evolving ensemble. As usual, the
 %   columns of "members" indicate the ensemble members to use for different
 %   ensembles. The first input indicates the indices of these new ensembles
@@ -49,7 +48,7 @@ function[obj] = evolving(obj, varargin)
 %   The "eNew" input may also include the indices of existing ensembles,
 %   and these ensembles will have their ensemble members updated.
 %
-%   obj = obj.evolving(eNew, members, newLabels)
+%   obj = <strong>obj.evolving</strong>(eNew, members, newLabels)
 %   Also applies evolving labels to the new ensembles in the evolving
 %   ensemble. If the "eNew" input contains the indices of existing
 %   ensembles, updates the labels of those ensembles.

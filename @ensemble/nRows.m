@@ -1,13 +1,13 @@
 function[nRows] = nRows(obj, scope)
 %% ensemble.nRows  Return the number of rows for the ensemble objects in an array
 % ----------
-%   nRows = obj.nRows
+%   nRows = <strong>obj.nRows</strong>
 %   Returns the number of state vector rows being used for each element of
 %   an ensemble array.
 %
-%   nRows = obj.nRows(scope)
-%   ... = obj.nRows(false|"u"|"used")
-%   ... = obj.nRows( true|"f"|"file")
+%   nRows = <strong>obj.nRows</strong>(scope)
+%   ... = <strong>obj.nRows</strong>(false|"u"|"used")
+%   ... = <strong>obj.nRows</strong>( true|"f"|"file")
 %   Indicate the scope in which to count rows. If "used"|"u"|false, behaves
 %   identically to the previous syntax and counts the rows of variables
 %   being used by each ensemble. If "file"|"f"|true, counts the rows of

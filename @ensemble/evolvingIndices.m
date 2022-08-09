@@ -1,19 +1,19 @@
 function[e] = evolvingIndices(obj, ensembles, allowRepeats, header)
 %% ensemble.evolvingIndices  Return the indices of ensembles in an evolving set
 % ----------
-%   e = obj.evolvingIndices(ensembles, allowRepeats)
+%   e = <strong>obj.evolvingIndices</strong>(ensembles, allowRepeats)
 %   Parse the indices of ensembles in an evolving set. Error checks logical
 %   or linear indices and locates evolving labels. Returns linear indices
 %   to the specified ensembles. Requires labels refer to unique ensembles.
 %   Throw error if ensembles are unrecognized. Optionally throw error if
 %   the ensembles include repeated elements
 %
-%   e = obj.evolvingIndices(ensembles, allowRepeats, header)
+%   e = <strong>obj.evolvingIndices</strong>(ensembles, allowRepeats, header)
 %   Customize header in thrown error IDs.
 % ----------
 %   Inputs:
-%       ensembles: The input being parsed. Either array indices or a list
-%           of evolving labels.
+%       ensembles (any data type): The input being parsed. Valid inputs are
+%           either array indices or a list of evolving labels.
 %       allowRepeats (scalar logical): Whether to allow repeat elements
 %           (true), or throw an error for repeat elements (false).
 %       header (string scalar): Header for thrown error IDs

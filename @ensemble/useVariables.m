@@ -1,9 +1,9 @@
 function[obj] = useVariables(obj, variables, scope)
 %% ensemble.useVariables  Indicate which variables should be used by an ensemble object
 % ----------
-%   obj = obj.useVariables(variableNames)
-%   obj = obj.useVariables(v)
-%   obj = obj.useVariables(-1)
+%   obj = <strong>obj.useVariables</strong>(variableNames)
+%   obj = <strong>obj.useVariables</strong>(v)
+%   obj = <strong>obj.useVariables</strong>(-1)
 %   Indicates which variables should be used by the ensemble. The listed
 %   variables and indices are interpreted in the context of variables saved
 %   in the .ens file. If the index is -1, selects all variables saved in
@@ -38,9 +38,9 @@ function[obj] = useVariables(obj, variables, scope)
 %   to the subset of used/loaded variables, rather than the full set of
 %   variables saved in the .ens file.
 %
-%   obj = obj.useVariables(variables, scope)
-%   obj = obj.useVariables(variables, "file"|"f"|true)
-%   obj = obj.useVariables(variables, "used"|"u"|false)
+%   obj = <strong>obj.useVariables</strong>(variables, scope)
+%   obj = <strong>obj.useVariables</strong>(variables, "file"|"f"|true)
+%   obj = <strong>obj.useVariables</strong>(variables, "used"|"u"|false)
 %   Indicate the scope in which to interpret the input variables. If
 %   "file"|"f"|true, behaves identically to the previous syntax and
 %   interprets inputs in the context of variables saved in the .ens file.
