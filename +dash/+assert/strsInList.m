@@ -12,7 +12,7 @@ function[k] = strsInList(strings, list, name, listName, idHeader)
 %   Use a custom header in thrown error IDs.
 % ----------
 %   Inputs:
-%       strings (string vector)[nStrings]: The set of strings being checked
+%       strings (string vector [nStrings]): The set of strings being checked
 %       list (string vector): The set of allowed strings
 %       name (string scalar): The name of strings in the calling function.
 %           Default is "strings"
@@ -22,13 +22,13 @@ function[k] = strsInList(strings, list, name, listName, idHeader)
 %           Default is "DASH:assert:strsInList"
 %
 %   Outputs:
-%       k (vector, linear indices)[nStrings]: The index of each element of
+%       k (vector, linear indices [nStrings]): The index of each element of
 %           strings in the list of allowed values
 %
 %   Throws:
 %       <idHeader>:stringsNotInList
 %
-%   <a href="matlab:dash.doc('dash.assert.strsInList')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.strsInList')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)

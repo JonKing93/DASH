@@ -18,7 +18,7 @@ function[indices] = indexCollection(indices, nDims, dimLengths, dimNames, header
 %   Customize the error messages and IDs.
 % ----------
 %   Inputs:
-%       indices: The input being checked
+%       indices (any data type): The input being checked
 %       nDims (scalar positive integer): The number of dimensions being indexed
 %       dimLengths (vector, positive integers [nDims] | []): The length of each
 %           dimension being indexed. If empty, does not check indices

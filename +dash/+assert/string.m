@@ -10,7 +10,7 @@ function[str] = string(input, name, header)
 %   Customize message and header of thrown errors.
 % ----------
 %   Inputs:
-%       input: The input being checked
+%       input (any data type): The input being checked
 %       name (string scalar): The name of the input in the calling
 %           function. Default is "input".
 %       header (string scalar): Header for thrown error IDs. Default is

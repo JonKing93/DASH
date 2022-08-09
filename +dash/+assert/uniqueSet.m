@@ -8,7 +8,7 @@ function[] = uniqueSet(input, inputName, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:
-%       input: The input vector being tested
+%       input (any data type): The input vector being tested
 %       inputName (string scalar): The name of the input
 %       header (string scalar): Header for thrown error IDs
 %

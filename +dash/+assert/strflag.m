@@ -13,7 +13,7 @@ function[str] = strflag(input, name, idHeader)
 %   Uses a custom header for thrown error IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       name (string scalar): Name of the input in the calling function.
 %           Default is "input".
 %       idHeader (string scalar): Header for thrown error IDs. Default is

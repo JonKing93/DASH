@@ -24,7 +24,7 @@ function[abspath] = fileExists(filename, ext, idHeader)
 %   Throws:
 %       <idHeader>:fileNotFound  when the file cannot be found
 %
-%   <a href="matlab:dash.doc('dash.assert.fileExists')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.fileExists')">Documentation Page</a>
 
 % Default
 if ~exist('idHeader','var') || isempty(idHeader)

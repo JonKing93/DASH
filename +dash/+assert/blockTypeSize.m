@@ -9,7 +9,7 @@ function[] = blockTypeSize(input, types, siz, name, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       types (string vector | []): The allowed data types of the input.
 %           Use an empty array to allow any type.
 %       siz (vector, positive integers [3] | []): The required size of the

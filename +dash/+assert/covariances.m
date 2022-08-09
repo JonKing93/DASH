@@ -18,7 +18,7 @@ function[] = covariances(X, name, header)
 %       name (string scalar): The name of the input
 %       header (string scalar): Header for thrown error IDs.
 %
-% <a href="matlab:dash.doc('dash.assert.symmetricMatrices')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.assert.covariances')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var')

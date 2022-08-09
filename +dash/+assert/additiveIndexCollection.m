@@ -11,7 +11,7 @@ function[indices] = additiveIndexCollection(indices, nDims, dimNames, header)
 %   Customize thrown error messages and IDs.
 % ----------
 %   Inputs:
-%       indices: The input being checked
+%       indices (any data type): The input being checked
 %       nDims (scalar positive integer): The number of dimensions being indexed
 %       dimNames (string vector [nDims]): The name of each dimension being indexed
 %       header (string scalar): Header for thrown error IDs.

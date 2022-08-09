@@ -15,7 +15,7 @@ function[indices] = indices(indices, length, name, logicalRequirement, linearMax
 %   Customize the error message and error ID.
 % ----------
 %   Inputs:
-%       indices: The input being tested.
+%       indices (any data type): The input being tested.
 %       length (scalar positive integer | []): The length of the array dimension
 %           that the indices are for. Logical indices must be a vector of
 %           this length, and linear indices cannot exceed this length. If

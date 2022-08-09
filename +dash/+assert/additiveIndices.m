@@ -10,7 +10,7 @@ function[indices] = additiveIndices(indices, name, header)
 %   Customize thrown error messages and IDs.
 % ----------
 %   Inputs:
-%       indices: The input being tested
+%       indices (any data type): The input being tested
 %       name (string scalar): The name to use for the input in error messages
 %       header (string scalar): Header for thrown error IDs.
 %

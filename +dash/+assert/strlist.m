@@ -12,7 +12,7 @@ function[list] = strlist(input, name, idHeader)
 %   Use a custom header for thrown error IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       name (string scalar): The name of the input in the calling
 %           function. Default is "input"
 %       idHeader (string scalar): A header for thrown error IDs. Default is
@@ -24,7 +24,7 @@ function[list] = strlist(input, name, idHeader)
 %   Throws:
 %       <idHeader>:inputNotStrlist  when input is not a strlist
 %
-%   <a href="matlab:dash.doc('dash.assert.strlist')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.strlist')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)

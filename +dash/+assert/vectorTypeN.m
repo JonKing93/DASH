@@ -12,7 +12,7 @@ function[] = vectorTypeN(input, types, length, name, idHeader)
 %   Use a custom header for thrown error IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       types (string vector | []): The allowed data types of the
 %           input. Use an empty array to allow any type
 %       length (scalar positive integer | [] | NaN): The required length
@@ -27,7 +27,7 @@ function[] = vectorTypeN(input, types, length, name, idHeader)
 %       <idHeader>:inputWrongType  when input is not the required type
 %       <idHeader>:inputWrongLength  when input is not the required length
 %
-%   <a href="matlab:dash.doc('dash.assert.vectorTypeN')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.vectorTypeN')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)

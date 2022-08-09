@@ -1,17 +1,17 @@
 function[] = type(input, types, name, descriptor, idHeader)
 %% dash.assert.type  Throw error if input is not an allowed data type
 % ----------
-%   dash.assert.type(input, types)  checks if input is the required data
-%   type. If not, throws an error.
+%   dash.assert.type(input, types)
+%   Checks if input is the required data type. If not, throws an error.
 %
-%   dash.assert.type(input, types, name, descriptor)  uses a custom name and
-%   data type descriptor in thrown error messages.
+%   dash.assert.type(input, types, name, descriptor)  
+%   Uses a custom name and data type descriptor in thrown error messages.
 %
-%   dash.assert.type(input, types, name, descriptor, idHeader)  uses a custom
-%   header in thrown error IDs.
+%   dash.assert.type(input, types, name, descriptor, idHeader)  
+%   Uses a custom header in thrown error IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       types (string vector): The allowed data types
 %       name (string scalar): The name of the input in the calling
 %           function for use in error messages. Default is "input"
@@ -23,7 +23,7 @@ function[] = type(input, types, name, descriptor, idHeader)
 %   Throws:
 %       <idHeader>:inputWrongType  if input is not the required type
 %
-%   <a href="matlab:dash.doc('dash.assert.type')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.type')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)

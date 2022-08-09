@@ -1,14 +1,14 @@
 function[] = positiveIntegers(X, name, header)
-%% dash.assert.postiveIntegers  Throw error if numeric array does not consist entirely of positive integers
+%% dash.assert.positiveIntegers  Throw error if numeric array does not consist entirely of positive integers
 % ----------
-%   dash.assert.integers(X)
+%   dash.assert.positiveIntegers(X)
 %   Throws an error if the input is not an array consisting only of positive
 %   integers. Here, "integer" does not refer to the underlying data type of
 %   the array, but rather the values of the array elements. An array of
 %   type "double" will pass the assertion if all elements are positive integers.
 %   Values of NaN and Inf are not considered integers here.
 %
-%   dash.assert.integers(X, name, header)
+%   dash.assert.positiveIntegers(X, name, header)
 %   Customize thrown error message and ID.
 % ----------
 %   Inputs:

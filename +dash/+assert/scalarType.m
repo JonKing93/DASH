@@ -11,7 +11,7 @@ function[] = scalarType(input, types, name, idHeader)
 %   Uses a custom  header for thrown error IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       types (string vector | []): The allowed data types of the
 %           input. Use an empty array to not require a data type
 %       name (string scalar): The name of the input in the calling
@@ -23,7 +23,7 @@ function[] = scalarType(input, types, name, idHeader)
 %       <idHeader>:inputNotScalar  if input is not a scalar
 %       <idHeader>:inputWrongType  if input is not the required data type
 %
-%   <a href="matlab:dash.doc('dash.assert.scalarType')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.assert.scalarType')">Documentation Page</a>
 
 % Defaults
 if ~exist('name','var') || isempty(name)
