@@ -1,17 +1,17 @@
 function[obj] = add(obj, variableNames, grids, autocouple)
 %% stateVector.add  Adds variables to a stateVector
 % ----------
-%   obj = obj.add(variableNames, grid)
+%   obj = <strong>obj.add</strong>(variableNames, grid)
 %   Adds variables to a state vector and specifies a single .grid file that
 %   contains the data for all the different variables.
 %
-%   obj = obj.add(variableNames, grids)
+%   obj = <strong>obj.add</strong>(variableNames, grids)
 %   Specify different .grid files for the variables being added to the
 %   state vector. Each .grid file should contain the data for the
 %   corresponding new variable. You may repeat .grid files when several
 %   state vector variables are derived from the same .grid file.
 %
-%   obj = obj.add(..., autocouple)
+%   obj = <strong>obj.add</strong>(..., autocouple)
 %   Specify auto-coupling settings for the new variables. Use true, "a",
 %   "auto", or "automatic" to automatically couple the new variables to
 %   existing variables in the state vector (default); note that the new

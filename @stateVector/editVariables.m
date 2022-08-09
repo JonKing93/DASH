@@ -1,11 +1,12 @@
 function[obj] = editVariables(obj, vars, d, method, inputs, task)
 %% stateVector.editVariables  Edit the design parameters of state vector variables
 % ----------
-%   obj = obj.editVariables(vars, d, method, inputs, task)
+%   obj = <strong>obj.editVariables</strong>(vars, d, method, inputs, task)
 %   Applies the specified method to the given variables using indicated
 %   inputs. Throws informative error message if the method fails.
 %
-%   ***Note: In general, the purpose of this method is to provide a common
+%   ***Note***
+%   In general, the purpose of this method is to provide a common
 %   error-handling framework for methods that edit variable design
 %   parameters.
 % ----------

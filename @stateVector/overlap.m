@@ -1,17 +1,17 @@
 function[varargout] = overlap(obj, variables, allowOverlap)
 %% stateVector.overlap  Set whether ensemble members of variable can use overlapping, non-duplicate information
 % ----------
-%   allowOverlap = obj.overlap
-%   allowOverlap = obj.overlap(-1)
+%   allowOverlap = <strong>obj.overlap</strong>
+%   allowOverlap = <strong>obj.overlap</strong>(-1)
 %   Return the overlap permissions of all variables in the state vector.
 %
-%   allowOverlap = obj.overlap(v)
-%   allowOverlap = obj.overlap(variableNames)
+%   allowOverlap = <strong>obj.overlap</strong>(v)
+%   allowOverlap = <strong>obj.overlap</strong>(variableNames)
 %   Returns the overlap permissions for the indicated variables.
 %
-%   obj = obj.overlap(variables, allowOverlap)
-%   obj = obj.overlap(variables, true|"a"|"allow")
-%   obj = obj.overlap(variables, false|"p"|"prohibit")
+%   obj = <strong>obj.overlap</strong>(variables, allowOverlap)
+%   obj = <strong>obj.overlap</strong>(variables, true|"a"|"allow")
+%   obj = <strong>obj.overlap</strong>(variables, false|"p"|"prohibit")
 %   Specify whether the ensemble members of indicated variables can use 
 %   overlapping (but non-duplicate) information. Default is to prohibit
 %   overlap.

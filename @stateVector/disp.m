@@ -27,8 +27,8 @@ function[] = disp(obj, showVariables)
 %           [true|"s"|"show"]: Displays variables in the console
 %           [false|"h"|"hide"]: Does not display variables in the console
 %
-%   Outputs:
-%       Prints the contents of a stateVector object or array to the console
+%   Prints:
+%       Displays the contents of a stateVector object or array to the console
 %
 % <a href="matlab:dash.doc('stateVector.disp')">Documentation Page</a>
 

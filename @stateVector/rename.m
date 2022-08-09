@@ -1,9 +1,9 @@
 function[obj] = rename(obj, variables, newNames)
 %% stateVector.rename  Renames variables in a state vector
 % ----------
-%   obj = obj.rename(-1, newNames)
-%   obj = obj.rename(v, newNames)
-%   obj = obj.rename(variableNames, newNames)
+%   obj = <strong>obj.rename</strong>(-1, newNames)
+%   obj = <strong>obj.rename</strong>(v, newNames)
+%   obj = <strong>obj.rename</strong>(variableNames, newNames)
 %   Renames the specified variables to the provided new names. If the first
 %   input is -1, selects all the variables in the state vector.
 % ----------

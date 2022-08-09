@@ -1,14 +1,14 @@
 function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %% stateVector.metadata  Specify how to process metadata along dimensions of state vector variables
 % ----------
-%   obj = obj.metadata(-1, ...)
-%   obj = obj.metadata(v, ...)
-%   obj = obj.metadata(variableNames, ...)
+%   obj = <strong>obj.metadata</strong>(-1, ...)
+%   obj = <strong>obj.metadata</strong>(v, ...)
+%   obj = <strong>obj.metadata</strong>(variableNames, ...)
 %   Specifies how to process metadata for the listed variables. If the
 %   first input is -1, applies the settings to all variables currently in
 %   the state vector.
 %
-%   obj = obj.metadata(variables, dimensions, metadataType, ...)
+%   obj = <strong>obj.metadata</strong>(variables, dimensions, metadataType, ...)
 %   Specify how to process metadata for the indicated dimensions of the
 %   listed variables. This metadata is used when building ensemble members
 %   of a state vector ensemble. The metadata is used to ensure that coupled
@@ -29,19 +29,19 @@ function[obj] = metadata(obj, variables, dimensions, metadataType, varargin)
 %   HOW-TO page on combining annual and seasonal data, which is located in
 %   the documentation.
 %
-%   obj = obj.metadata(variables, dimensions, 0|"r"|"raw")
+%   obj = <strong>obj.metadata</strong>(variables, dimensions, 0|"r"|"raw")
 %   Use raw gridfile metadata for the indicated dimensions of the
 %   variables. Metadata for each dimension is extracted from the gridfile
 %   metadata for the dimension. This is the default behavior.
 %
-%   obj = obj.metadata(variables, dimensions, 1|"s"|"set", alternateMetadata)
+%   obj = <strong>obj.metadata</strong>(variables, dimensions, 1|"s"|"set", alternateMetadata)
 %   Specify an alternate set of metadata to use for a dimension, which will
 %   be used instead of the gridfile metadata. The metadata must be a
 %   matrix, and the number of rows must match the number of state/reference
 %   indices for the dimension.
 %
-%   obj = obj.metadata(variables, dimensions, 2|"c"|"convert", conversionFunction)
-%   obj = obj.metadata(variables, dimensions, 2|"c"|"convert", conversionFunction, conversionArgs)
+%   obj = <strong>obj.metadata</strong>(variables, dimensions, 2|"c"|"convert", conversionFunction)
+%   obj = <strong>obj.metadata</strong>(variables, dimensions, 2|"c"|"convert", conversionFunction, conversionArgs)
 %   Specify a function that can be used to convert gridfile metadata to a
 %   different format. The function must accept the metadata being converted
 %   as its first argument. You may use any built-in or user-defined

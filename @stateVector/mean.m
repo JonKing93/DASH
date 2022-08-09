@@ -1,19 +1,19 @@
 function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %% stateVector.mean  Take a mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.mean(-1, ...)
-%   obj = obj.mean(v, ...)
-%   obj = obj.mean(variableNames, ...)
+%   obj = <strong>obj.mean</strong>(-1, ...)
+%   obj = <strong>obj.mean</strong>(v, ...)
+%   obj = <strong>obj.mean</strong>(variableNames, ...)
 %   Updates the settings for means for the listed variables. If the first
 %   input is -1, applies the settings to all variables currently in the state
 %   vector.
 %
-%   obj = obj.mean(variables, stateDimension)
+%   obj = <strong>obj.mean</strong>(variables, stateDimension)
 %   Takes a mean over the indicated state dimension. The mean is taken over
 %   all elements of the dimension that are included in the state vector
 %   (i.e. over all state indices for the dimension).
 %
-%   obj = obj.mean(variables, ensembleDimension, indices)
+%   obj = <strong>obj.mean</strong>(variables, ensembleDimension, indices)
 %   Takes a mean over the indicated ensemble dimension. The mean is
 %   implemented using the specified mean indices. The mean for the
 %   dimension is calculated over elements located by applying the mean
@@ -22,24 +22,24 @@ function[obj] = mean(obj, variables, dimensions, indices, nanflag)
 %   element. If the dimension has a sequence, applies the mean indices to
 %   each individual sequence element.
 %
-%   obj = obj.mean(variables, dimensions, indices)
+%   obj = <strong>obj.mean</strong>(variables, dimensions, indices)
 %   Takes a mean over multiple dimesions. If every listed dimension is a
 %   state dimension, you do not need to provide the third input (the mean indices).
 %   Specify mean indices if the dimensions list contains any ensemble dimensions.
 %   Use an empty array for the indices of any state dimensions.
 %
-%   obj = obj.mean(..., omitnan)
-%   obj = obj.mean(..., true|"omitnan")
-%   obj = obj.mean(..., false|"includenan")
+%   obj = <strong>obj.mean</strong>(..., omitnan)
+%   obj = <strong>obj.mean</strong>(..., true|"omitnan")
+%   obj = <strong>obj.mean</strong>(..., false|"includenan")
 %   Specify how to treat NaN elements along each dimension. Default is to
 %   include NaN values.
 %
-%   obj = obj.mean(variables, dimensions, "none")
+%   obj = <strong>obj.mean</strong>(variables, dimensions, "none")
 %   Discards any previously-specified options for taking a mean for the
 %   listed dimensions. No mean will be taken over the dimensions when
 %   building state vector ensembles.
 %
-%   obj = obj.mean(variables, dimensions, "unweighted")
+%   obj = <strong>obj.mean</strong>(variables, dimensions, "unweighted")
 %   Discards any previously-specified weights for use in a weighted mean
 %   for the listed dimensions. The state vector will still take a mean over
 %   the listed dimensions, but the mean will be unweighted. This option is

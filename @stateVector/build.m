@@ -1,7 +1,7 @@
 function[X, metadata, obj] = build(obj, nMembers, varargin)
 %% stateVector.build  Build a state vector ensemble
 % ----------
-%   [X, metadata, obj] = obj.build(nMembers)
+%   [X, metadata, obj] = <strong>obj.build</strong>(nMembers)
 %   Builds a state vector ensemble with the specified number of ensemble
 %   members and returns the ensemble as output. If the state vector
 %   includes sequences or means, the method ensures that only ensemble
@@ -13,19 +13,19 @@ function[X, metadata, obj] = build(obj, nMembers, varargin)
 %   final output is the state vector object for the built ensemble, which
 %   can be used to add more members to the ensemble if necessary.
 %
-%   ... = obj.build('all')
+%   ... = <strong>obj.build</strong>('all')
 %   Builds a state vector ensemble with as many ensemble members as
 %   possible. Reports the number of ensemble members being built to the
 %   console.
 %
-%   ... = obj.build(..., 'sequential', true | false)
-%   ... = obj.build(..., 'sequential', buildSequentially)
+%   ... = <strong>obj.build</strong>(..., 'sequential', true | false)
+%   ... = <strong>obj.build</strong>(..., 'sequential', buildSequentially)
 %   Specify whether ensemble members should be selected sequentially along
 %   the ensemble dimensions, or at random. The default behavior is random
 %   selection. Use this option if, for example, you want the ensemble
 %   members to remain ordered in time.
 %
-%   [ens, metadata, obj] = obj.build(..., 'file', filename)
+%   [ens, metadata, obj] = <strong>obj.build</strong>(..., 'file', filename)
 %   Saves the state vector ensemble to a .ens file of the specified name.
 %   The saved ensemble can then be accessed at any time using the
 %   "ensemble" class. This option allows you to build ensembles that are
@@ -33,13 +33,13 @@ function[X, metadata, obj] = build(obj, nMembers, varargin)
 %   the first output is an ensemble object, which can be used to interact
 %   with the ensemble saved in the file.
 %
-%   ... = obj.build(..., 'file', filename, 'overwrite', true | false)
-%   ... = obj.build(..., 'file', filename, 'overwrite', overwrite)
+%   ... = <strong>obj.build</strong>(..., 'file', filename, 'overwrite', true | false)
+%   ... = <strong>obj.build</strong>(..., 'file', filename, 'overwrite', overwrite)
 %   Specify whether the new .ens file can overwrite an existing file.
 %   Default is to not overwrite existing files.
 %
-%   ... = obj.build(..., 'strict', true | false)
-%   ... = obj.build(..., 'strict', strict)
+%   ... = <strong>obj.build</strong>(..., 'strict', true | false)
+%   ... = <strong>obj.build</strong>(..., 'strict', strict)
 %   Specify how the method should respond if it cannot build the requested
 %   number of ensemble members. If true (default), throws an error when the
 %   requested number of ensemble members cannot be built. If false, issues
@@ -47,8 +47,8 @@ function[X, metadata, obj] = build(obj, nMembers, varargin)
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
 %
-%   ... = obj.build(..., 'precision', 'single' | 'double')
-%   ... = obj.build(..., 'precision', precision)
+%   ... = <strong>obj.build</strong>(..., 'precision', 'single' | 'double')
+%   ... = <strong>obj.build</strong>(..., 'precision', precision)
 %   Specify the numerical precision of the ensemble. If no precision is
 %   specified, selects a precision based on the precision of the data used
 %   to build the ensemble.

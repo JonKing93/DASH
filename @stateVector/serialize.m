@@ -1,7 +1,7 @@
 function[obj] = serialize(obj)
 %% stateVector.serialize  Convert stateVector object to a struct that supports fast saving/loading
 % ----------
-%   obj = obj.serialize
+%   obj = <strong>obj.serialize</strong>
 %   Converts a state vector object to a stuct that supports fast save and
 %   load operations.
 % ----------

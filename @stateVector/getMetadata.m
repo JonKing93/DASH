@@ -1,8 +1,8 @@
 function[metadata] = getMetadata(obj, variable, dimension)
 %% stateVector.getMetadata  Return the metadata along a dimension of a state vector variable
 % ----------
-%   metadata = obj.getMetadata(v, dimension)
-%   metadata = obj.getMetadata(variableName, dimension)
+%   metadata = <strong>obj.getMetadata</strong>(v, dimension)
+%   metadata = <strong>obj.getMetadata</strong>(variableName, dimension)
 %   Returns the metadata that will be used along a dimension of a variable.
 %   If the dimension is a state dimension, returns the gridfile metadata at
 %   the specified state indices. If the dimension is an ensemble dimension,
@@ -18,7 +18,7 @@ function[metadata] = getMetadata(obj, variable, dimension)
 %           linear index or a logical vector with one element per state
 %           vector variable. If a logical vector, must have exactly one
 %           true element.
-%       variableNames (string scalar): The name of a variable in the state
+%       variableName (string scalar): The name of a variable in the state
 %           vector for which to return metadata.
 %       dimension (string scalar): The name of a dimension of the variable
 %           for which to return metadata.

@@ -1,7 +1,7 @@
 function[grids, failed, cause] = prepareGrids(obj, header)
 %% stateVector.prepareGrids  Build and validate gridfile objects for variables in a state vector
 % ----------
-%   [grids, failed, cause] = obj.prepareGrids(header)
+%   [grids, failed, cause] = <strong>obj.prepareGrids</strong>(header)
 %   Builds and validate the gridfile objects saved for the variables
 %   currently in the state vector. If successful, returns the unique
 %   gridfile objects for the set of variables. If failed, returns the index

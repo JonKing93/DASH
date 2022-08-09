@@ -1,11 +1,11 @@
 function[obj] = remove(obj, variables)
 %% stateVector.remove  Remove variables from a state vector
 % ----------
-%   obj = obj.remove(v)
-%   obj = obj.remove(variableNames)
+%   obj = <strong>obj.remove</strong>(v)
+%   obj = <strong>obj.remove</strong>(variableNames)
 %   Removes the specified variables from a state vector.
 %
-%   obj = obj.remove(-1)
+%   obj = <strong>obj.remove</strong>(-1)
 %   Removes all variables from a state vector.
 % ----------
 %   Inputs:

@@ -1,7 +1,7 @@
 function[info] = couplingInfo(obj)
 %% stateVector.couplingInfo  Return organized information about coupled variables
 % ----------
-%   info = obj.couplingInfo
+%   info = <strong>obj.couplingInfo</strong>
 %   Returns a struct with information about coupled variables in the
 %   current state vector
 % ----------

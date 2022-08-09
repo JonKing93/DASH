@@ -1,8 +1,8 @@
 function[obj] = couple(obj, variables, template)
 %% stateVector.couple  Couple variables in a state vector
 % ----------
-%   obj = obj.couple
-%   obj = obj.couple(-1)
+%   obj = <strong>obj.couple</strong>
+%   obj = <strong>obj.couple</strong>(-1)
 %   Couples all the variables in the state vector to one another. Coupled
 %   variables are required to have matching metadata within ensemble
 %   members of a state vector ensemble. This ensures that, within an
@@ -20,16 +20,16 @@ function[obj] = couple(obj, variables, template)
 %   settings of all other variables will be updated to match those of the
 %   template.
 %
-%   obj = obj.couple(v)
-%   obj = obj.couple(variableNames)
+%   obj = <strong>obj.couple</strong>(v)
+%   obj = <strong>obj.couple</strong>(variableNames)
 %   Couples the listed variables to one another. Coupling is transitive,
 %   so any unlisted variables that are already coupled to the listed variables will
 %   also be coupled. The first listed variable is used as the template
 %   variable; the ensemble dimensions and autocoupling settings of all
 %   variables being coupled will be updated to match this template.
 %
-%   obj = obj.couple(variables, t)
-%   obj = obj.couple(variables, templateName)
+%   obj = <strong>obj.couple</strong>(variables, t)
+%   obj = <strong>obj.couple</strong>(variables, templateName)
 %   Specify the variable to use as a template. All listed variables, as
 %   well as unlisted variables already coupled to the listed variables,
 %   will be coupled to this template. The ensemble dimensions and

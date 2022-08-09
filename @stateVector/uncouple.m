@@ -1,15 +1,15 @@
 function[obj] = uncouple(obj, variables)
 %% stateVector.uncouple  Uncouple variables in a state vector
 % ----------
-%   obj = obj.uncouple
-%   obj = obj.uncouple(-1)
+%   obj = <strong>obj.uncouple</strong>
+%   obj = <strong>obj.uncouple</strong>(-1)
 %   Uncouples all the variables in the state vector from on another. The
 %   variables are not required to have matching metadata within individual
 %   ensemble members. Variables will also no longer be automatically
 %   coupled to new variables added to the state vector.
 %
-%   obj = obj.uncouple(v)
-%   obj = obj.uncouple(variableNames)
+%   obj = <strong>obj.uncouple</strong>(v)
+%   obj = <strong>obj.uncouple</strong>(variableNames)
 %   Uncouples each of the listed variables from all other variables in the
 %   state vector. The uncoupled variables are not required to match the 
 %   metadata of other variables within individual ensemble members. The

@@ -10,7 +10,7 @@ function[varargout] = label(obj, label)
 %   Inputs:
 %       label (string scalar): The new label to apply to a stateVector object.
 %
-%   Outputs
+%   Outputs:
 %       label (string scalar): The current label of a stateVector object.
 %       obj (scalar stateVector object): The stateVector object with an
 %           updated label.

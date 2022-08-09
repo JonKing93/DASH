@@ -1,13 +1,13 @@
 function[failed, cause] = validateGrids(obj, grids, vars, header)
 %% stateVector.validateGrids  Check that gridfiles match values recorded for variables in a state vector
 % ----------
-%   [failed, cause] = obj.validateGrids(grids, vars)
+%   [failed, cause] = <strong>obj.validateGrids</strong>(grids, vars)
 %   Checks if the provided gridfile objects match the gridfile parameters
 %   recorded for specified variables in a state vector. If not, returns the
 %   index of the first failed variable and reports the cause of the
 %   failure.
 %
-%   ... = obj.validateGrids(grids, vars, header)
+%   ... = <strong>obj.validateGrids</strong>(grids, vars, header)
 %   Customize the header in returned error IDs.
 % ----------
 %   Inputs:

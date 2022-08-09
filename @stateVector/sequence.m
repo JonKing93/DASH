@@ -1,18 +1,18 @@
 function[obj] = sequence(obj, variables, dimensions, indices, metadata)
 %% stateVector.sequence  Use a sequence of data along ensemble dimensions
 % ----------
-%   obj = obj.sequence(-1, ...)
-%   obj = obj.sequence(v, ...)
-%   obj = obj.sequence(variableNames, ...)
+%   obj = <strong>obj.sequence</strong>(-1, ...)
+%   obj = <strong>obj.sequence</strong>(v, ...)
+%   obj = <strong>obj.sequence</strong>(variableNames, ...)
 %   Creates sequences for the listed variables. If the first input is -1,
 %   applies a sequence to every variable currently in the state vector.
 % 
-%   obj = obj.sequence(variables, dimensions, indices, metadata)
+%   obj = <strong>obj.sequence</strong>(variables, dimensions, indices, metadata)
 %   Design sequences for the listed ensemble dimensions.
 %   Sequences are built using the provided sequence indices. Each set of
 %   sequence indices is associated with a provided set of metadata.
 %
-%   obj = obj.sequence(variables, dimensions, "none")
+%   obj = <strong>obj.sequence</strong>(variables, dimensions, "none")
 %   Removes any sequences from the listed dimensions.
 % ----------
 %   Inputs:

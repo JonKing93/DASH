@@ -1,8 +1,8 @@
 function[obj] = extract(obj, variables)
 %% stateVector.extract  Only include specified variables in a state vector
 % ----------
-%   obj = obj.extract(v)
-%   obj = obj.extract(variableNames)
+%   obj = <strong>obj.extract</strong>(v)
+%   obj = <strong>obj.extract</strong>(variableNames)
 %   Extracts the specified variables from the state vector. All unspecified
 %   variables are removed from the updated state vector.
 % ----------

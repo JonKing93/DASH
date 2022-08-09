@@ -54,7 +54,7 @@ classdef stateVector
     %       If this occurs, use the "metadata" command to allow comparison
     %       of the variables with different metadata formats.
     % ----------
-    % stateVector methods:
+    % stateVector Methods:
     %
     % **KEY METHODS**
     % The following methods are the most essential for users.
@@ -88,7 +88,10 @@ classdef stateVector
     %   mean                - Take means over dimensions of variables
     %   weightedMean        - Take weighted means over dimensions of variables
     %   sequence            - Use a sequence over ensemble dimensions of variables
+    %
+    % Metadata:
     %   metadata            - Specify metadata options for dimensions of variables
+    %   getMetadata         - Return the metadata that will be used along a dimension of a state vector variable
     %
     % Overlap:
     %   overlap             - Update the overlap settings of variables in a state vector
@@ -227,10 +230,13 @@ classdef stateVector
         % Design
         obj = design(obj, variables, dimensions, types, indices);
         obj = sequence(obj, variables, dimensions, indices, metadata);
-        obj = metadata(obj, variables, dimensions, metadataType, varargin);
         obj = mean(obj, variables, dimensions, indices, NaNoptions);
         obj = weightedMean(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
+
+        % Metadata
+        obj = metadata(obj, variables, dimensions, metadataType, varargin);
+        metadata = getMetadata(obj, variable, dimension);
 
         % Overlap
         varargout = overlap(obj, variables, allowOverlap);
@@ -281,19 +287,19 @@ classdef stateVector
         function[obj] = stateVector(varargin)
             %% stateVector.stateVector  Return a new, empty stateVector object
             % ----------
-            %   obj = stateVector
+            %   obj = <strong>stateVector</strong>
             %   Returns a new, empty state vector object. The new stateVector has no
             %   variables associated with it.
             %
-            %   obj = stateVector(label)
-            %   obj = stateVector(labels)
+            %   obj = <strong>stateVector</strong>(label)
+            %   obj = <strong>stateVector</strong>(labels)
             %   Also applies a label to the state vector object. If unset, the label is
             %   set to an empty string. If labels is a string array, returns an array of
             %   state vector objects and applies the corresponding label to each 
             %   individual state vector.
             %
-            %   obj = stateVector(size)
-            %   obj = stateVector(size, labels)
+            %   obj = <strong>stateVector</strong>(size)
+            %   obj = <strong>stateVector</strong>(size, labels)
             %   Initializes an array of state vector objects of the indicated size.
             %   Optionally also applies a label to each object in the array.
             %   If applying labels, the size of the "labels" array must

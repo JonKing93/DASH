@@ -1,24 +1,24 @@
 function[obj] = weightedMean(obj, variables, dimensions, weights)
 %% stateVector.weightedMean  Take a weighted mean over dimensions of variables in a state vector
 % ----------
-%   obj = obj.weightedMean(-1, ...)
-%   obj = obj.weightedMean(v, ...)
-%   obj = obj.weightedMean(variableNames, ...)
+%   obj = <strong>obj.weightedMean</strong>(-1, ...)
+%   obj = <strong>obj.weightedMean</strong>(v, ...)
+%   obj = <strong>obj.weightedMean</strong>(variableNames, ...)
 %   Updates weighted mean settings for the listed variables. If the first
 %   input is -1, applies the settings to every variable currently in the
 %   state vector.
 %
-%   obj = obj.weightedMean(variables, stateDimension, weights)
+%   obj = <strong>obj.weightedMean</strong>(variables, stateDimension, weights)
 %   Takes a weighted mean over the indicated state dimension. You must
 %   provide a weight for each state index along the dimension.
 %
-%   obj = obj.weightedMean(variables, ensembleDimension, weights)
+%   obj = <strong>obj.weightedMean</strong>(variables, ensembleDimension, weights)
 %   Takes a weighted mean over the indicated ensemble dimension. Before
 %   using this method, you must first use the "stateVector.mean" method
 %   to provide mean indices for the ensemble dimension. You must provide a
 %   weight for each mean index.
 %
-%   obj = obj.weightedMean(variables, dimensions, weights)
+%   obj = <strong>obj.weightedMean</strong>(variables, dimensions, weights)
 %   Take a weighted mean over multiple dimensions. If the dimension list
 %   contains ensemble dimensions, you must have first called the
 %   "stateVector.mean" method on the ensemble dimensions.

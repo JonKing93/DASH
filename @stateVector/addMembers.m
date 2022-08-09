@@ -1,7 +1,7 @@
 function[X, meta, obj] = addMembers(obj, nMembers)
 %% stateVector.addMembers  Add more ensemble members to an existing state vector ensemble
 % ----------
-%   [X, metadata, obj] = obj.addMembers(nMembers)
+%   [X, metadata, obj] = <strong>obj.addMembers</strong>(nMembers)
 %   Adds the specified number of ensemble members to an existing ensemble
 %   and returns the additional ensemble members as output. Also returns the
 %   ensembleMetadata object for the new ensemble members. (Note that the
@@ -15,17 +15,17 @@ function[X, meta, obj] = addMembers(obj, nMembers)
 %   ensemble stored in a .ens file. If this is your objective, see the
 %   method "ensemble.addMembers" instead.
 %
-%   ... = obj.addMembers('all')
+%   ... = <strong>obj.addMembers</strong>('all')
 %   Adds as many new ensemble members as possible to the existing ensemble.
 %   Reports the number of ensemble members being built to the console.
 %
-%   ... = obj.addMembers(..., 'showprogress', true|false
-%   ... = obj.addMembers(..., 'showprogres', showprogress)
+%   ... = <strong>obj.addMembers</strong>(..., 'showprogress', true|false)
+%   ... = <strong>obj.addMembers</strong>(..., 'showprogres', showprogress)
 %   Specify whether to display a progress bar. Default is to not display a
 %   progress bar.
 %
-%   ... = obj.addMembers(..., 'strict', true|false)
-%   ... = obj.addMembers(..., 'strict', strict)
+%   ... = <strong>obj.addMembers</strong>(..., 'strict', true|false)
+%   ... = <strong>obj.addMembers</strong>(..., 'strict', strict)
 %   Specify how the method should respond if it cannot build the requested
 %   number of ensemble members. If true (default), throws an error when the
 %   requested number of ensemble members cannot be built. If false, issues
@@ -33,8 +33,8 @@ function[X, meta, obj] = addMembers(obj, nMembers)
 %   members cannot be built. If this occurs, the output ensemble will have
 %   fewer columns than the requested number of ensemble members.
 %
-%   ... = obj.addMembers(..., 'precision', 'single'|'double')
-%   ... = obj.addMembers(..., 'precision', precision)
+%   ... = <strong>obj.addMembers</strong>(..., 'precision', 'single'|'double')
+%   ... = <strong>obj.addMembers</strong>(..., 'precision', precision)
 %   Specify the numerical precision of the new ensemble members. If no
 %   precision is specified, selects a precision based on the precision of
 %   the data used to build the ensemble.

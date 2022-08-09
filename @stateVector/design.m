@@ -1,17 +1,17 @@
 function[obj] = design(obj, variables, dimensions, types, indices)
 %% stateVector.design  Design the dimensions of variables in a state vector
 % ----------
-%   obj = obj.design(-1, ...)
-%   obj = obj.design(v, ...)
-%   obj = obj.design(variableNames, ...)
+%   obj = <strong>obj.design</strong>(-1, ...)
+%   obj = <strong>obj.design</strong>(v, ...)
+%   obj = <strong>obj.design</strong>(variableNames, ...)
 %   Designs the dimensions of the listed variables. If the first input is
 %   -1, applies the design settings to all variables currently in the state
 %   vector.
 %
-%   obj = obj.design(variables, dimensions, types)
-%   obj = obj.design(variables, dimensions, 0|"c"|"current"|[])
-%   obj = obj.design(variables, dimensions, 1|"s"|"state")
-%   obj = obj.design(variables, dimensions, 2|"e"|"ens"|"ensemble")
+%   obj = <strong>obj.design</strong>(variables, dimensions, types)
+%   obj = <strong>obj.design</strong>(variables, dimensions, 0|"c"|"current"|[])
+%   obj = <strong>obj.design</strong>(variables, dimensions, 1|"s"|"state")
+%   obj = <strong>obj.design</strong>(variables, dimensions, 2|"e"|"ens"|"ensemble")
 %   Specifies the types of the listed dimensions. The listed dimensions
 %   will be set as ensemble dimensions, state dimensions, or kept in their
 %   current state. Ensemble dimensions are used to select the members of a
@@ -24,7 +24,7 @@ function[obj] = design(obj, variables, dimensions, types, indices)
 %   to all listed dimensions. Otherwise, provide multiple dimension type
 %   options to select different settings for different dimensions.
 %
-%   obj = obj.design(..., indices)
+%   obj = <strong>obj.design</strong>(..., indices)
 %   Specify state and/or reference indices for the indices dimensions.
 %   Indices for state dimensions (state indices) indicate which elements
 %   along the dimension should be used in the state vector. Indices for

@@ -1,7 +1,7 @@
 function[X, obj] = buildEnsemble(obj, ens, nMembers, strict, grids, coupling, precision, header)
 %% stateVector.buildEnsemble  Builds members of a state vector ensemble
 % ----------
-%   [X, obj] = obj.buildEnsemble(ens, nMembers, strict, grids, coupling, precision, header)
+%   [X, obj] = <strong>obj.buildEnsemble</strong>(ens, nMembers, strict, grids, coupling, precision, header)
 %   Builds N new members for a state vector ensemble.
 % ----------
 %   Inputs:

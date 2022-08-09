@@ -1,24 +1,24 @@
 function[obj] = autocouple(obj, setting, variables, template)
 %% stateVector.autocouple  Set whether variables are automatically coupled to new variables in the state vector
 % ----------
-%   obj = obj.autocouple
+%   obj = <strong>obj.autocouple</strong>
 %   Indicate that all variables currently in the state vector should be
 %   automatically coupled to new variables added to the state vector.
 %   Coupling is transitive, so all variables in the state vector will also
 %   be coupled to one another.
 %
-%   obj = obj.autocouple(setting)
-%   obj = obj.autocouple(true|"a"|"auto"|"automatic")
-%   obj = obj.autocouple(false|"m"|"man"|"manual")
+%   obj = <strong>obj.autocouple</strong>(setting)
+%   obj = <strong>obj.autocouple</strong>(true|"a"|"auto"|"automatic")
+%   obj = <strong>obj.autocouple</strong>(false|"m"|"man"|"manual")
 %   Indicate whether the variables in the state vector should be
 %   automatically coupled to new variables or not. If indicating that the
 %   current variables should automatically be coupled to new variables,
 %   then the all variables currently in the state vector will also be
 %   coupled to one another.
 %
-%   obj = obj.autocouple(setting, -1)
-%   obj = obj.autocouple(setting, v)
-%   obj = obj.autocouple(setting, variableNames)
+%   obj = <strong>obj.autocouple</strong>(setting, -1)
+%   obj = <strong>obj.autocouple</strong>(setting, v)
+%   obj = <strong>obj.autocouple</strong>(setting, variableNames)
 %   Specify whether the listed variables should be automatically coupled to
 %   new variables added to the state vector. Coupling is transitive, so
 %   changes to autocouple settings can change the coupling status of other
@@ -38,8 +38,8 @@ function[obj] = autocouple(obj, setting, variables, template)
 %   existing autocoupled variables, then the first listed variable will be
 %   used as the coupling template.
 %
-%   obj = obj.autocouple(true, variables, t)
-%   obj = obj.autocouple(true, variables, templateName)
+%   obj = <strong>obj.autocouple</strong>(true, variables, t)
+%   obj = <strong>obj.autocouple</strong>(true, variables, templateName)
 %   Specify the coupling template to use when initializing a set of coupled
 %   variables. This syntax can only be used when there are no previously
 %   existing autocoupling variables.
@@ -63,6 +63,10 @@ function[obj] = autocouple(obj, setting, variables, template)
 %       templateName (string scalar): The name of a variable that should be
 %           used as the coupling template for a new set of autocoupled
 %           variables.
+%
+%   Outputs:
+%       obj (scalar stateVector object): The state vector with updated
+%           autocoupling settings.
 %
 % <a href="matlab:dash.doc('stateVector.autocouple')">Documentation Page</a>
 

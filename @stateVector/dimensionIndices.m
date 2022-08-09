@@ -1,15 +1,15 @@
 function[indices, dimensions] = dimensionIndices(obj, v, dimensions, header)
 %% stateVector.dimensionIndices  Return the indices of named dimensions in state vector variables
 % ----------
-%   indices = obj.dimensionIndices(v, dimensions)
+%   indices = <strong>obj.dimensionIndices</strong>(v, dimensions)
 %   Return the indices of the named dimensions in the specified state
 %   vector variables. Throws an error if a named dimension is not associated
 %   with any of the listed variables.
 %
-%   [indices, dimensions] = obj.dimensionIndices(v, dimensions)
+%   [indices, dimensions] = <strong>obj.dimensionIndices</strong>(v, dimensions)
 %   Also return the dimension names as a "string" data type.
 %
-%   ... = obj.dimensionIndices(v, dimensions, header)
+%   ... = <strong>obj.dimensionIndices</strong>(v, dimensions, header)
 %   Customize thrown error IDs.
 % ----------
 %   Inputs:

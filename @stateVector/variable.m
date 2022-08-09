@@ -1,31 +1,51 @@
 function[] = variable(obj, variable, dimensions, detailed, suppressVariable)
 %% stateVector.variable  Display state vector variable in console
 % ----------
-%   obj.variable(v)
-%   obj.variable(variableName)
-%   obj.variable(..., 0)
+%   <strong>obj.variable</strong>(v)
+%   <strong>obj.variable</strong>(variableName)
+%   <strong>obj.variable</strong>(..., 0)
 %   Prints concise information about a variable to the console. Links to
 %   more detailed information about the variable. Also links to information
 %   about each dimension.
 %
-%   obj.variable(variable, dimensions)
-%   obj.variable(variable, -1)
+%   <strong>obj.variable</strong>(variable, dimensions)
+%   <strong>obj.variable</strong>(variable, -1)
 %   Also displays information about the listed dimensions in the console.
 %   If -1 is used as the second input, displays information about all
 %   dimensions in the variable.
 %
-%   obj.variable(variable, dimensions, detailed)
+%   <strong>obj.variable</strong>(variable, dimensions, detailed)
 %   Specify whether to print detailed, or concise information about the
 %   variable and dimensions in the console. By default, displays concise
 %   information.
 %
-%   obj.variable(variable, dimensions, detailed, suppressVariable)
+%   <strong>obj.variable</strong>(variable, dimensions, detailed, suppressVariable)
 %   Specify whether to suppress information about the variable. If
 %   dimensions are specified and the variable is suppressed, only prints
 %   information about the dimensions to the console. If no dimensions are
 %   specified, prints the variable as usual. By default, the variable's
 %   information is not suppressed.
 % ----------
+%   Inputs:
+%       v (scalar linear index): The index of the variable to display in the console
+%       variableName (string scalar): The name of a variable to display in the console
+%       dimensions (string vector): The names of dimensions that should
+%           have extra information displayed in the console
+%       detailed (scalar logical | logical vector [2]): Indicates whether
+%           to display detailed information about the variable and
+%           dimensions. True displays detailed information. False (default)
+%           displays concise information. If a vector with two elements,
+%           the first element indicates the level of detail to use for the
+%           variable, and the second element is the level of detail to use
+%           for the dimensions.
+%       suppressVariable (scalar logical): Indicates whether to suppress
+%           variable information and just display dimensions (true), or
+%           whether to display variable information (false -- default).
+%
+%   Prints:
+%       Displays information about a variable and its dimensions to the console
+%
+% <a href="matlab:dash.doc('stateVector.variable')">Documentation Page</a>
 
 % Setup
 header = "DASH:stateVector:variable";

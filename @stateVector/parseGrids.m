@@ -18,8 +18,8 @@ function[grids, failed, cause] = parseGrids(grids, nVariables, header)
 %   Customize header in thrown error IDs.
 % ----------
 %   Inputs:
-%       grids: The input being parsed. If valid, should be a string or gridfile
-%           scalar, or a vector with one element per variable.
+%       grids (any data type): The input being parsed. If valid, should be 
+%           a string or gridfile scalar, or a vector with one element per variable.
 %       nVariables (scalar positive integer): The number of variables that
 %           the gridfile input is for.
 %       header (string scalar): Header for thrown error IDs

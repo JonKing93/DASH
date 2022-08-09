@@ -1,7 +1,7 @@
 function[indexSets, nSets] = coupledIndices(obj)
 %% stateVector.coupledIndices  Return sets of coupled variable indices
 % ----------
-%   [indexSets, nSets] = obj.coupledIndices
+%   [indexSets, nSets] = <strong>obj.coupledIndices</strong>
 %   Returns the variable indices for sets of coupled variables in a state
 %   vector. Also returns the total number of coupling sets.
 % ----------

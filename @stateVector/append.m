@@ -1,11 +1,11 @@
 function[obj] = append(obj, vector2, responseToRepeats)
 %% stateVector.append  Appends a second state vector to the end of the current state vector
 % ----------
-%   obj = obj.append(vector2)
+%   obj = <strong>obj.append</strong>(vector2)
 %   Appends the variables in a second stateVector object to the end of the
 %   current stateVector object.
 %
-%   obj = obj.append(vector2, responseToRepeats)
+%   obj = <strong>obj.append</strong>(vector2, responseToRepeats)
 %   Specify how to respond when variable names are repeated across the two
 %   state vectors.
 % ----------

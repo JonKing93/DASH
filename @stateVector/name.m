@@ -1,13 +1,13 @@
 function[name] = name(obj, capitalize)
 %% stateVector.name  Return an identifying name for a stateVector object
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns an identifying name for a stateVector object (typically used for error
 %   messages). If the stateVector does not have a label, the name is "the
 %   state vector". If the stateVector has a label, the name is of form:
 %   state vector "<label>".
 %
-%   name = obj.name(captalize)
+%   name = <strong>obj.name</strong>(captalize)
 %   Indicate whether to capitalize the first letter of the returned name.
 %   Default is to not capitalize (first letter is lowercase).
 % ----------

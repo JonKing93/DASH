@@ -15,8 +15,8 @@ function[v] = variableIndices(obj, variables, allowRepeats, header)
 %   Customize the header of thrown error IDs.
 % ----------
 %   Inputs:
-%       variables: The input being parsed. Should either be array indices
-%           or a list of variable names.
+%       variables (any data type): The input being parsed. If valid, should
+%           either be array indices or a list of variable names.
 %       allowRepeats (scalar logical): Set to true to allow repeat
 %           variables. Set to false to require unique variables. Default is true.
 %       header (string scalar): Header for thrown error IDs.

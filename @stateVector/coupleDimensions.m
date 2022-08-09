@@ -1,7 +1,7 @@
 function[obj, failed, cause] = coupleDimensions(obj, t, vars, header)
 %% stateVector.coupleDimensions  Update state and ensemble dimensions of variables to match a template variable
 % ----------
-%   [obj, failed, cause] = obj.coupleDimensions(t, vars, header)
+%   [obj, failed, cause] = <strong>obj.coupleDimensions</strong>(t, vars, header)
 %   Couples the dimensions of indicated variables to match a template
 %   variable. If unsuccessful, indicates that the operation failed and
 %   returns the cause of the failure.
@@ -21,7 +21,7 @@ function[obj, failed, cause] = coupleDimensions(obj, t, vars, header)
 %       cause (scalar MException | []): The cause of the failed update, or
 %           an empty array if the coupling was successful.
 %
-% <a href="matlab: dash.doc('stateVector.coupleDimensions')">Documentation Page</a>
+% <a href="matlab:dash.doc('stateVector.coupleDimensions')">Documentation Page</a>
 
 % Initialize error handling
 failed = 0;

@@ -1,7 +1,7 @@
 function[obj] = deserialize(obj)
 %% stateVector.deserialize  Deserialize a state vector object
 % ----------
-%   obj = obj.deserialize
+%   obj = <strong>obj.deserialize</strong>
 %   Rebuilds a stateVector object from a serialized object. The
 %   deserialized object is valid for stateVector methods.
 % ----------
