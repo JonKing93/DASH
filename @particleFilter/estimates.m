@@ -1,7 +1,7 @@
 function[varargout] = estimates(obj, Ye, whichPrior)
 %% particleFilter.estimates  Set or return the estimates for a particle filter
 % ----------
-%   obj = obj.estimates(Ye)
+%   obj = <strong>obj.estimates</strong>(Ye)
 %   Provides a set of observation estimates (Ye) for a particle filter.
 %   Overwrites any previously input estimates. Each row hold the estimates
 %   for a particular site, and each column holds the estimates for an
@@ -12,17 +12,17 @@ function[varargout] = estimates(obj, Ye, whichPrior)
 %   in this case, the particle filter will use the indicated set of
 %   estimates for each assimilated time step.
 %
-%   obj = obj.estimates(Ye, whichPrior)
+%   obj = <strong>obj.estimates</strong>(Ye, whichPrior)
 %   Indicate which set of estimates to use in each assimilation time step.
 %   This syntax allows the number of sets of estimates (i.e. the number of
 %   priors) to differ from the number of time steps.
 %
-%   [Ye, whichPrior] = obj.estimates
+%   [Ye, whichPrior] = <strong>obj.estimates</strong>
 %   Returns the current estimates for the particle filter object, and
 %   indicates which set of estimates (i.e. which prior) is used in each
 %   assimilation time step.
 %
-%   obj = obj.estimates('delete')
+%   obj = <strong>obj.estimates</strong>('delete')
 %   Deletes any current estimates from the particle filter object.
 % ----------
 %   Inputs:

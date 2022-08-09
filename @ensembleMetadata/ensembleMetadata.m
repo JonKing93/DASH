@@ -187,6 +187,9 @@ classdef ensembleMetadata
         dispEnsemble(obj);
 
     end
+    methods (Static)
+        tests;
+    end
 
     % Constructor
     methods

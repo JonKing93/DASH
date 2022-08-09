@@ -1,7 +1,7 @@
 function[sse] = sse(obj)
 %% particleFilter.sse  Compute the sum of squared errors for particles
 % ----------
-%   sse = obj.sse
+%   sse = <strong>obj.sse</strong>
 %   Computes the sum of squared errors for each ensemble member in each
 %   time step. The sum of squared errors evaluate the similarity of each
 %   ensemble member to the observations. Lower SSE values indicate 

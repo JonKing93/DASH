@@ -79,7 +79,6 @@ classdef ensemble
     %   length                  - Return the state vector length of an ensemble and its variables
     %   variables               - List the variables used in an ensemble
     %   members                 - List the ensemble members used in an ensemble
-    %   info                    - Return information about an ensemble as a struct
     %
     % Sizes:
     %   nRows                   - Return the number of state vector rows for one or more ensemble objects

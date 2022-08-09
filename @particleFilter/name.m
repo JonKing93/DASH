@@ -1,11 +1,11 @@
 function[name] = name(obj)
 %% particleFilter.name  Return a name for use in error messages
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns a name for the particle filter object.
 % ----------
 %   Outputs:
-%      name (string scalar): An identifying name for a particle filter
+%       name (string scalar): An identifying name for a particle filter
 %
 % <a href="matlab:dash.doc('particleFilter.name')">Documentation Page</a>
 

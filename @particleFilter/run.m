@@ -1,7 +1,7 @@
 function[output] = run(obj, varargin)
 %% particleFilter.run  Runs an offline particle filter assimilation
 % ----------
-%   output = obj.run
+%   output = <strong>obj.run</strong>
 %   Runs the offline particle filter assimilation. Returns the updated
 %   state vector and particle weights for each assimilated time step.
 %   Requires the particle filter object to have observations, estimates,
@@ -12,9 +12,9 @@ function[output] = run(obj, varargin)
 %   text for the particleFilter class:
 %     >> help particleFilter
 %
-%   output = obj.run(..., 'sse', returnSSE)
-%   output = obj.run(..., 'sse', "return"|"r"|true)
-%   output = obj.run(..., 'sse', "discard"|"d"|false)
+%   output = <strong>obj.run</strong>(..., 'sse', returnSSE)
+%   output = <strong>obj.run</strong>(..., 'sse', "return"|"r"|true)
+%   output = <strong>obj.run</strong>(..., 'sse', "discard"|"d"|false)
 %   Indicate whether to include the sum of squared errors for each particle
 %   in the output. Default behavior is to not include the SSE values in the
 %   output. Use "return"|"r"|true to return these values.

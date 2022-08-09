@@ -69,7 +69,7 @@ classdef particleFilter < dash.ensembleFilter
     % ----------
     % particleFilter Methods:
     %
-    % *KEY METHODS*
+    % **KEY METHODS**
     % These methods are the most essential for users.
     %
     %   particleFilter  - Initializes a new particleFilter object
@@ -81,7 +81,7 @@ classdef particleFilter < dash.ensembleFilter
     %   run             - Runs a particle filter assimilation    
     %
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %   
     % Create:
     %   particleFilter  - Initializes a new particleFilter object
@@ -174,22 +174,22 @@ classdef particleFilter < dash.ensembleFilter
         function[obj] = particleFilter(varargin)
             %% particleFilter.particleFilter  Create a new particleFilter object
             % ----------
-            %   obj = particleFilter
+            %   obj = <strong>particleFilter</strong>
             %   Initializes a new particle filter object. The new object
             %   does not have observations, estimates, uncertainties, or a
             %   prior. The object uses a Bayesian particle weighting
             %   scheme.
             %
-            %   obj = particleFilter(label)
-            %   obj = particleFilter(labels)
+            %   obj = <strong>particleFilter</strong>(label)
+            %   obj = <strong>particleFilter</strong>(labels)
             %   Also applies a label to the particle filter object. If
             %   unset, the label is set to an empty string. If labels is a
             %   string array, returns an array of particle filter objects
             %   and applies the corresponding label to each individual
             %   particle filter.
             %
-            %   obj = particleFilter(size)
-            %   obj = particleFilter(size, labels)
+            %   obj = <strong>particleFilter</strong>(size)
+            %   obj = <strong>particleFilter</strong>(size, labels)
             %   Initializes an array of particle filter objects of the
             %   indicated size. Optionally also applies a label to each
             %   object in the array. If applying labels, the size of the

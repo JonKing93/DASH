@@ -85,6 +85,9 @@ function[X, metadata, obj] = build(obj, nMembers, varargin)
 %           built ensemble. Can be used to add additional members to the
 %           ensemble. Cannot be edited in any way.
 %
+%   Saves:
+%       Optionally saves a .ens file holding the state vector ensemble.
+%
 % <a href="matlab:dash.doc('stateVector.build')">Documentation Page</a>       
 
 %% Error checking

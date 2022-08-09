@@ -1,12 +1,12 @@
 function[weights, sse] = computeWeights(obj)
 %% particleFilter.computeWeights  Return the weights for a particle filter
 % ----------
-%   weights = obj.computeWeights
+%   weights = <strong>obj.computeWeights</strong>
 %   Computes particle filter weights for an assimilation. Requires the
 %   particle filter object to have observations, estimates, and 
 %   uncertainties. Does not require a prior.
 %
-%   [weights, sse] = obj.computeWeights
+%   [weights, sse] = <strong>obj.computeWeights</strong>
 %   Also returns the sum of squared errors for each particle.
 % ----------
 %   Outputs:

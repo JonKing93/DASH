@@ -1,11 +1,11 @@
 function[obj] = weights(obj, type, varargin)
 %% particleFilter.weights  Select the weighting scheme for a particle filter
 % ----------
-%   obj = obj.weights('bayes')
+%   obj = <strong>obj.weights</strong>('bayes')
 %   Computes particle filter weights using Bayes's formula. This is the
 %   default weighting scheme for the particle filter.
 %
-%   obj = obj.weights('best', N)
+%   obj = <strong>obj.weights</strong>('best', N)
 %   Computes particle filter weights to implement an average over the best
 %   N particles. The N best particles receive a weight of 1/N, all other
 %   particles receive a weight of 0.

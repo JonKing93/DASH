@@ -78,6 +78,7 @@ classdef optimalSensor
     % checking and are not intended for users.
     %
     % Misc:
+    %   name                - Return an identifying name for use in error messages
     %   Rvariances          - Return the error uncertainty variances for the observation sites
     %   assertFinalized     - Throw error if an optimal sensor does not have estimates, uncertainties, and a metric
     %   varianceReduction   - Calculate the metric variance reduced by each observation site
@@ -130,6 +131,7 @@ classdef optimalSensor
     end
     methods (Static)
         deltaVar = varianceReduction(Jdev, Ydev, Rvar, unbias);
+        tests;
     end
 
     % Constructor

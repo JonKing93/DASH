@@ -1,7 +1,7 @@
 function[varargout] = observations(obj, Y)
 %% particleFilter.observations  Set or return the observations for a particle filter
-% ---------
-%   obj = obj.observations(Y)
+% ----------
+%   obj = <strong>obj.observations</strong>(Y)
 %   Provides the observation matrix (Y) to the particle filter object.
 %   Overwrites any previously existing observation matrix. Each row holds
 %   the observations for a particular site, and each column holds
@@ -15,10 +15,10 @@ function[varargout] = observations(obj, Y)
 %   evolving uncertainties, then the number of columns must match the
 %   current number of assimilation time steps for the object.
 %
-%   Y = obj.observations
+%   Y = <strong>obj.observations</strong>
 %   Returns the current observation matrix for the particle filter object.
 %
-%   obj = obj.observations('delete')
+%   obj = <strong>obj.observations</strong>('delete')
 %   Deletes any current observation matrix from the particle filter object.
 % ----------
 %   Inputs:

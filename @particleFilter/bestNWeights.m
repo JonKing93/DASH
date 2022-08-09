@@ -6,7 +6,7 @@ function[weights] = bestNWeights(sse, N)
 %   particles with the highest weights. Applies equal weighting to these N
 %   particles, and 0 weight to all other particles. The weight for each of
 %   the N particles will be 1/N and the sum of all weights will be 1.
-% ---------
+% ----------
 %   Inputs:
 %       sse (numeric matrix [nMembers x nTime]): The sum of squared errors
 %           from a particle filter.
