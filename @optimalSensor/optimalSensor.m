@@ -53,7 +53,7 @@ classdef optimalSensor
     % ----------
     % optimalSensor Methods:
     %
-    % **USER METHODS**
+    % *USER METHODS*
     %
     % Create:
     %   optimalSensor       - Initializes a new optimalSensor object
@@ -85,7 +85,7 @@ classdef optimalSensor
     % Tests:
     %   tests               - Implement unit tests for the optimalSensor class
     %
-    % <a href="matlab:dash.doc('kalmanFilter')">Documentation Page</a>
+    % <a href="matlab:dash.doc('optimalSensor')">Documentation Page</a>
 
     properties (SetAccess = private)
         %% General
@@ -137,20 +137,20 @@ classdef optimalSensor
         function[obj] = optimalSensor(varargin)
             %% optimalSensor.optimalSensor  Create a new optimalSensor object
             % ----------
-            %   obj = optimalSensor
+            %   obj = <strong>optimalSensor</strong>
             %   Initializes a new optimalSensor object. The new object does
             %   not have a prior, metric, or estimates.
             %
-            %   obj = optimalSensor(label)
-            %   obj = optimalSensor(labels)
+            %   obj = <strong>optimalSensor</strong>(label)
+            %   obj = <strong>optimalSensor</strong>(labels)
             %   Also applies a label to the optimal sensor object. If
             %   unset, the label is set to an empty string. If labels is a
             %   string array, returns an array of optimal sensor objects
             %   and applies the corresponding label to each individual
             %   optimal sensor.
             %
-            %   obj = optimalSensor(size)
-            %   obj = optimalSensor(size, labels)
+            %   obj = <strong>optimalSensor</strong>(size)
+            %   obj = <strong>optimalSensor</strong>(size, labels)
             %   Initializes an array of optimal sensor objects of the
             %   indicated size. Optionally also applies a label to each
             %   object in the array. If applying labels, the size of the

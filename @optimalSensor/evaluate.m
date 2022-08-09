@@ -1,7 +1,7 @@
 function[deltaVariance] = evaluate(obj)
 %% optimalSensor.evaluate  Evaluates the variance reduced by individual proxies in a network
 % ----------
-%   deltaVariance = obj.evaluate
+%   deltaVariance = <strong>obj.evaluate</strong>
 %   For each observation site, evaluates the amount of the metric's
 %   variance that is reduced when the site is assimilated alone. Evaluates
 %   the *individual* influence of each proxy observation on an assmilation.
@@ -20,7 +20,7 @@ function[deltaVariance] = evaluate(obj)
 %       deltaVariance (numeric vector [nSites]): The reduction of variance
 %           that occurs when assimilating each site individually.
 %   
-% <a href="matlab:dash.doc('optimalSensor.evalute')">Documentation Page</a>
+% <a href="matlab:dash.doc('optimalSensor.evaluate')">Documentation Page</a>
 
 % Setup
 header = "DASH:optimalSensor:evaluate";

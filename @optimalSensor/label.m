@@ -1,10 +1,10 @@
 function[varargout] = label(obj, label)
 %% optimalSensor.label  Return or set the label of an optimal sensor
 % ----------
-%   label = obj.label
+%   label = <strong>obj.label</strong>
 %   Returns the label of the current optimalSensor object.
 %
-%   obj = obj.label(label)
+%   obj = <strong>obj.label</strong>(label)
 %   Applies a new label to the optimalSensor object
 % ----------
 %   Inputs:

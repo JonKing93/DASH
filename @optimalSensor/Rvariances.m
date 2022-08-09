@@ -1,7 +1,7 @@
 function[Rvar] = Rvariances(obj)
 %% optimalSensor.Rvariances  Returns the R uncertainty variances for the optimal sensor sites
 % ----------
-%   Rvar = obj.Rvariances
+%   Rvar = <strong>obj.Rvariances</strong>
 %   Returns the R uncertainty variance for each site in an optimal sensor.
 %   If the sensor uses R covariances, extracts variances from the diagonal
 %   of the covariance matrix and neglects all inter-site covariances.

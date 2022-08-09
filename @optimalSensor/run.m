@@ -1,11 +1,11 @@
 function[optimalSites, variance, metric] = run(obj, N)
 %% optimalSensor.run  Runs the optimal sensor algorithm
 % ----------
-%   [optimalSites, variance, metric] = obj.run
+%   [optimalSites, variance, metric] = <strong>obj.run</strong>
 %   Runs the optimal sensor algorithm. Runs the algorithm until every
 %   observation site has been ranked and used to update the metric.
 %
-%   [optimalSites, variance, metric] = obj.run(N)
+%   [optimalSites, variance, metric] = <strong>obj.run</strong>(N)
 %   Runs the optimal sensor algorithm for the N best sensors. The number of
 %   sensors cannot exceed the number of sites for the object.
 %

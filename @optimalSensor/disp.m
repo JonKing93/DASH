@@ -1,7 +1,8 @@
 function[] = disp(obj)
 %% optimalSensor.disp  Displays an optimalSensor object in the console
 % ----------
-%   obj.disp
+%   <strong>disp</strong>(obj)
+%   <strong>obj.disp</strong>
 %   Displays details about an optimal sensor object in the console. Begins
 %   by displaying a link to the class documentation. If the object is
 %   scalar, displays the label (if there is one). Also displays the current
@@ -13,7 +14,11 @@ function[] = disp(obj)
 %   without a label is listed as "<no label>". If the array is empty,
 %   declares that the array is empty.
 % ----------
-%   Outputs:
+%   Inputs:
+%       obj (optimalSensor object): The optimalSensor object to display in
+%           the console
+%
+%   Prints:
 %       Displays the object in the console.
 %
 % <a href="matlab:dash.doc('optimalSensor.disp')">Documentation Page</a>

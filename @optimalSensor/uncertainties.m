@@ -1,22 +1,22 @@
 function[varargout] = uncertainties(obj, R)
 %% optimalSensor.uncertainties  Provide error uncertaities for an optimal sensor
 % ----------
-%   obj = obj.uncertainties(Rvar)
+%   obj = <strong>obj.uncertainties</strong>(Rvar)
 %   Provide error variances for an optimal sensor. The uncertainties should
 %   be a numeric vector with one element per observation site. The
 %   variances cannot be negative and cannot contain NaN values.
 %
-%   obj = obj.uncertainties(Rcov)
+%   obj = <strong>obj.uncertainties</strong>(Rcov)
 %   Provide error covariances for an optimal sensor. The unceratinties
 %   should be a symmetric matrix with one row and one column per site. The
 %   matrix cannot contain NaN values, and the diagonal elements (the error
 %   variances) cannot be negative.
 %
-%   Rvar = obj.uncertainties
-%   Rcov = obj.uncertainties
+%   Rvar = <strong>obj.uncertainties</strong>
+%   Rcov = <strong>obj.uncertainties</strong>
 %   Returns the current R uncertainties for an optimal sensor object.
 %
-%   obj = obj.uncertainties('delete')
+%   obj = <strong>obj.uncertainties</strong>('delete')
 %   Deletes the current R error uncertainties from the optimal sensor
 %   object.
 % ----------

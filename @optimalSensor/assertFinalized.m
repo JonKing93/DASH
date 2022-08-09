@@ -1,11 +1,11 @@
 function[] = assertFinalized(obj, actionName, header)
 %% optimalSensor.assertFinalized  Throw error if an optimal sensor does not have essential data inputs
 % ----------
-%   obj.assertFinalized
+%   <strong>obj.assertFinalized</strong>
 %   Checks that the optimal sensor object has estimates, uncertainties, and
 %   a metric. If not, throws an error.
 %
-%   obj.assertFinalized(actionName, header)
+%   <strong>obj.assertFinalized</strong>(actionName, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:

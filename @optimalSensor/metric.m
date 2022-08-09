@@ -1,7 +1,7 @@
 function[varargout] = metric2(obj, J)
 %% optimalSensor.metric  Specify the metric for an optimal sensor
 % ----------
-%   obj = obj.metric(J)
+%   obj = <strong>obj.metric</strong>(J)
 %   Provide the initial sensor metric for optimal sensor algorithms. The
 %   metric is a scalar value assessed across an ensemble. The ability of
 %   observation sites to reduce the variance of the metric across the
@@ -9,10 +9,10 @@ function[varargout] = metric2(obj, J)
 %   metric should be a vector with one element per ensemble member and
 %   cannot contain NaN values.
 %
-%   J = obj.metric
+%   J = <strong>obj.metric</strong>
 %   Returns the current metric for the optimal sensor object.
 %
-%   obj = obj.metric('delete')
+%   obj = <strong>obj.metric</strong>('delete')
 %   Deletes any current metric from the optimal sensor object.f
 % ----------
 %   Inputs:
@@ -20,7 +20,7 @@ function[varargout] = metric2(obj, J)
 %           optimal sensor algorithms. A numeric vector with one element
 %           per ensemble member.
 %       
-%   Ouptuts:
+%   Outputs:
 %       obj (scalar optimalSensor object): The optimalSensor object with
 %           an updated metric
 %       J (numeric row vector [1 x nMembers]): The current metric for the

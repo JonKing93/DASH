@@ -1,7 +1,7 @@
 function[variance, metric] = update(obj)
 %% optimalSensor.update  Updates the metric's deviations using the proxy estimates
 % ----------
-%   [variance, metric] = obj.update
+%   [variance, metric] = <strong>obj.update</strong>
 %   Uses the proxy estimates and uncertainties to update the metric.
 %   Returns the final variance of the metric, as well as the final metric
 %   metric itself. If the uncertainties are covariances, uses the full R 
@@ -17,7 +17,7 @@ function[variance, metric] = update(obj)
 %   final variance correctly reflects the variance reduction that results
 %   from assimilating a network with multiple observation sites.
 % ----------
-%   Outputs
+%   Outputs:
 %       variance (numeric scalar): The variance of the metric after the
 %           update has been applied.
 %       metric (numeric vector [nMembers]): The metric after the update has

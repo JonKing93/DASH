@@ -1,16 +1,16 @@
 function[varargout] = estimates2(obj, Ye)
 %% optimalSensor.estimates  Provide observation estimates for an optimal sensor
 % ----------
-%   obj = obj.estimates(Ye)
+%   obj = <strong>obj.estimates</strong>(Ye)
 %   Provide a set of observation estimates (Ye) to an optimal sensor. The
 %   estimates should be a numeric matrix. Each row holds the estimates for
 %   a particular observation site, and each column holds the estimates for
 %   a particular ensemble members. The estimates cannot contain NaN values.
 %
-%   Ye = obj.estimates
+%   Ye = <strong>obj.estimates</strong>
 %   Returns the current estimates for an optimal sensor object.
 %
-%   obj = obj.estimates('delete')
+%   obj = <strong>obj.estimates</strong>('delete')
 %   Deletes any current estimates from the optimal sensor.
 % ----------
 %   Inputs:
