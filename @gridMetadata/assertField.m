@@ -12,16 +12,16 @@ function[meta] = assertField(meta, dim, idHeader)
 %   have NaT values.
 % ----------
 %   Inputs:
-%       meta: The metadata input being tested
+%       meta (any data type): The metadata input being tested
 %       dim (string scalar): The name of the dimension associated with the
 %           metadata
 %       idHeader (string scalar): Header for thrown error IDs
 %
 %   Outputs:
-%       meta: The metadata field. If the input value was a cellstring data
+%       meta (metadata matrix): The metadata field. If the input value was a cellstring data
 %           type, converts it to a string data type.
 %
-%   <a href="matlab:dash.doc('dash.metadata.assertField')">Documentation Page</a>
+% <a href="matlab:dash.doc('gridMetadata.assertField')">Documentation Page</a>
 
 % Defaults
 if ~exist('idHeader','var') || isempty(idHeader)

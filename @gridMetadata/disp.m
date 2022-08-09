@@ -15,6 +15,10 @@ function[] = disp(obj, showAttributes)
 %   default, attributes fields are not displayed. This setting only affects
 %   the display of scalar object that have non-dimensional attributes.
 % ----------
+%   Inputs:
+%       showAttributes (scalar logical): True if non-dimensional attributes fields
+%           should be displayed in the console. False (default) if
+%           non-dimensional attributes should not be displayed
 % 
 % <a href="matlab:dash.doc('gridMetadata.disp')">Documentation Page</a>
 

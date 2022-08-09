@@ -14,7 +14,7 @@ function[obj] = index(obj, varargin)
 %       dimensions (string vector [nDims]): The names of the dimensions
 %           that should be indexed. Can only include dimensions that are
 %           defined in the gridMetadata object.
-%       indices (cell vector [nDims] {vector, linear indices | logical vector [dimension length]}:
+%       indices (cell vector [nDims] {vector, linear indices | logical vector [dimension length]}):
 %           The indices of metadata rows to return along the specified
 %           dimensions. Should be a cell vector with one cell per named
 %           dimension. Each cell holds a vector of indices for the

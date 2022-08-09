@@ -16,10 +16,10 @@ function[obj] = addAttributes(obj, varargin)
 %       fieldN (string scalar): The name of a new field for the attributes
 %           structure. Must be a valid Matlab variable name and cannot
 %           duplicate any fields already in the attributes.
-%       valueN: The value associated with the new attributes field.
+%       valueN (any data type): The value associated with the new attributes field.
 %
 %   Outputs:
-%      obj (gridMetadata object): The updated gridMetadata object
+%       obj (gridMetadata object): The updated gridMetadata object
 %
 % <a href="matlab:dash.doc('gridMetadata.addAttributes')">Documentation Page</a>
 

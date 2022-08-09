@@ -31,7 +31,7 @@ function[obj] = setOrder(obj, varargin)
 %           specified order. The dimension order can also be returned via
 %           the .order property.
 %
-% <a href="matlab:dash.doc('gridfile.setOrder')">Documentation Page</a>
+% <a href="matlab:dash.doc('gridMetadata.setOrder')">Documentation Page</a>
 
 % Header
 header = "DASH:gridMetadata:setOrder";
