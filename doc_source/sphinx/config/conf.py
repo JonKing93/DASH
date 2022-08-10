@@ -18,11 +18,11 @@
 # -- Project information -----------------------------------------------------
 
 project = 'DASH Docs'
-copyright = '2021, Jonthan King'
+copyright = '2022, Jonathan King'
 author = 'Jonathan King'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '4.0.0-beta-3'
 
 
 # -- General configuration ---------------------------------------------------
