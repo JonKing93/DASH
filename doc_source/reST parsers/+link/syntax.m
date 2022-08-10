@@ -1,14 +1,15 @@
 function[links] = syntax(title, nSyntax)
-%% Get the links to descriptions of function signatures. (From sytnax to description)
+%% link.syntax  Gets the links from the syntax signature blocks to their usage details
 % ----------
 %   links = link.syntax(title, nSyntax)
+%   Gets the link to the usage details for each syntax signature block.
 % ----------
 %   Inputs:
-%       title (char vector): Title of a function
-%       nSyntax (scalar integer): The number of syntaxes in the docs
+%       title (string scalar): The title of the function
+%       nSyntax (scalar positive integer): The number of syntaxes in the help text
 %
 %   Outputs:
-%       links (string vector): A link for the description of each syntax.
+%       links (string vector [nSyntax]): The link to the usage details for each syntax
 
 links = strings(nSyntax, 1);
 for k = 1:nSyntax

@@ -1,8 +1,15 @@
-function[labels, details] = examples(file)
-
-% Read file, remove carriage returns
-text = fileread(file);
-text(text==13) = [];
+function[labels, details] = examples(text)
+%% parse.examples  Extract example labels and content from examples file text
+% ----------
+%   [labels, details] = parse.examples(text)
+%   Scans through example file text and collects example labels and content
+% ----------
+%   Inputs:
+%       text (char vector): The text of the examples file
+%
+%   Outputs:
+%       labels (string vector [nExamples]): The label for each example
+%       details (string vector [nExamples]): The content for each example
 
 % Labels and sections
 labels = strings(0,1);

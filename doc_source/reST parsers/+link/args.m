@@ -1,5 +1,5 @@
 function[links] = args(title, type, args)
-%% Get the input / output links from a set of signatures
+%% link.args  Get the input / output links from a set of signatures
 % ----------
 %   links = link.args(title, type, args)
 % ----------

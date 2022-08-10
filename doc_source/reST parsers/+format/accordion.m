@@ -1,5 +1,5 @@
 function[rst] = accordion(label, content, handle, checked)
-%% reST markup for a collapsible accordion
+%% format.accordion  reST markup for a collapsible accordion
 % ----------
 %   rst = format.accordion(label, content, handle, checked)
 % ----------

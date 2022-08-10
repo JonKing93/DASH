@@ -1,38 +1,49 @@
-function[text] = aboveLink(helpText)
-%% get.aboveLink  Get help text above the documentation link
+function[details] = aboveLink(title, details)
+%% get.aboveLink  Returns all text above the documentation link
 % ----------
-%   text = get.aboveLink(helpText)
-%   Returns all help text above the final documentation link.
+%   details = get.aboveLink(title, details)
+%   Given the details section of help text, returns all text above the
+%   documentation link. Throws an error if the link is missing or invalid.
 % ----------
 %   Inputs:
-%       helpText (char vector): Help text for an item
+%       title (string scalar): The full dot-indexing title of the item
+%       details (char vector): The details section of the help text for the item
 %
 %   Outputs:
-%       text (char vector): The text above the documentation link.
-
-% Determine the title of the item
-title = parse.h1(helpText);
+%       details (char vector): The portion of the details text above the
+%           documentation link through the end-of-line character
+%           preceding the documentation link line.
 
 % Locate the documentation link
-doclink = sprintf('\n%% <a href="matlab:dash.doc(''%s'')">Documentation Page</a>', title);
-linkIndex = strfind(helpText, doclink);
-nLink = numel(linkIndex);
-
-% Check for newlines following the link
-eol = find(helpText==10);
-eolAfterLink = eol(eol>linkIndex);
-
-% Throw error if there are no links, more than one link, or the link is not
-% the final line of help text
-if nLink==0
-    error('The help text is missing the documentation link');
-elseif nLink>1
-    error('The help text has multiple documentation links');
-elseif numel(eolAfterLink)>1
-    error('The documentation link is not the final line of the help text');
+doclink = sprintf('<a href="matlab:dash.doc(''%s'')">Documentation Page</a>', title);
+linkLocation = strfind(details, doclink);
+nLink = numel(linkLocation);
+if nLink == 0
+    error('rst:parser', 'Could not locate the documentation link');
+elseif nLink > 1
+    error('rst:parser', 'The help text has %.f documentation links, but it can only have 1', nLink);
 end
 
-% Get the text
-text = helpText(1:linkIndex-1);
+% Determine the line that holds the documentation link
+eol = find(details==10);
+linkLine = find(eol>linkLocation, 1);
+if linkLine == 1
+    error('rst:parser', 'The documentation link cannot be on the first line of the details');
+end
+
+% Check that the link line is formatted correctly
+line = get.line(linkLine, details, eol, 3);
+line = char(line);
+if line(2)~=' '
+    error('rst:parser', 'The documentation link line must begin with a space');
+elseif strfind(line, doclink)~=3
+    error('rst:parser', 'The doumentation link must begin on the second character of its line');
+elseif numel(line)~=numel(doclink)+2
+    error('rst:parser', 'The documentation link line has additional characters after the link.');
+end
+
+% Extract the details above the link
+stop = eol(linkLine-1);
+details = details(1:stop);
 
 end
