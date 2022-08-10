@@ -7,6 +7,7 @@ A directory holding the examples for the documentation pages. Examples are writt
 
 2. reST parsers
 Packages and functions used to convert DASH help text and example markdown into restructured text (reST) files for use with Sphinx.
+Note that you don't need to run these parsers directly. Instead, use the documentDASH function (item 4 below).
 
 3. sphinx
 Resources needed for sphinx (v4.2.0) to build the documentation pages. This includes
@@ -27,10 +28,10 @@ Resources needed for sphinx (v4.2.0) to build the documentation pages. This incl
         theme.css added collapsible accordion sections and improved formatting of example code blocks. Place in <python path>/Python/Lib/site-packages/sphinx-rtd-theme/static/css
         breadcrumbs.html hardcodes the DASH Github Page into the top-right Github link. Place in <python path>/Python/Lib/site-packages/sphinx-rtd-theme
 
-4. buildDocs.m
+4. documentDASH.m
 Runs the documentation parsers, builds the sphinx .rst files, then runs sphinx to build html help pages.
 
-4. build
+5. build
 Built documentation resources. Includes:
 
     A. html
