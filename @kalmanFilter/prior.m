@@ -1,7 +1,7 @@
 function[varargout] = prior(obj, X, whichPrior)
 %% kalmanFilter.prior  Set or return the prior for a Kalman filter
 % ----------
-%   obj = obj.prior(X)
+%   obj = <strong>obj.prior</strong>(X)
 %   Provide the prior for a Kalman filter direclty as a numeric array. 
 %   Overwrites any previously specified prior. Each row is a state vector
 %   element, and each column is an ensemble member. Each element along the
@@ -11,7 +11,7 @@ function[varargout] = prior(obj, X, whichPrior)
 %   assimilation time step. In this case, the Kalman filter will use the
 %   indicated prior for each assimilated time step.
 %
-%   obj = obj.prior(ens)
+%   obj = <strong>obj.prior</strong>(ens)
 %   Provide the prior using ensemble objects. To implement a static prior,
 %   the input should be a scalar ensemble object that implements a static
 %   prior. 
@@ -28,17 +28,17 @@ function[varargout] = prior(obj, X, whichPrior)
 %   objects, all the objects must implement ensembles with the same number
 %   of state vector elements (nRows) and ensemble members (nMembers).
 %
-%   obj = obj.prior(  X, whichPrior)
-%   obj = obj.prior(ens, whichPrior)
+%   obj = <strong>obj.prior</strong>(  X, whichPrior)
+%   obj = <strong>obj.prior</strong>(ens, whichPrior)
 %   Indicate which prior to use in each assimilation time step. This syntax
 %   allows the number of priors to differ from the number of time steps.
 %
-%   [  X, whichPrior] = obj.prior
-%   [ens, whichPrior] = obj.prior
+%   [  X, whichPrior] = <strong>obj.prior</strong>
+%   [ens, whichPrior] = <strong>obj.prior</strong>
 %   Returns the current prior for the Kalman filter object, and indicates
 %   which prior is used in each assimilation time step.
 %
-%   obj = obj.prior('delete')
+%   obj = <strong>obj.prior</strong>('delete')
 %   Deletes the current prior(s) from the Kalman filter object.
 % ----------
 %   Inputs:
@@ -54,8 +54,7 @@ function[varargout] = prior(obj, X, whichPrior)
 %           assimilation time step. If the prior for a state vector element
 %           includes NaN values in a particular time step, then the updated
 %           state vector element will be NaN in that time step.
-%       ens (scalar ensemble object <static | evolving [nPrior]> | 
-%            vector, <static> ensemble objects [nPrior]):
+%       ens (scalar ensemble object <static | evolving [nPrior]> | vector, <static> ensemble objects [nPrior]):
 %           The prior for the Kalman filter, provided via ensemble
 %           objects. For a static prior, a scalar ensemble object that
 %           implements a static ensemble. For an evolving ensemble, either
@@ -81,8 +80,7 @@ function[varargout] = prior(obj, X, whichPrior)
 %       X (numeric matrix [nState x nMembers x 1|nTime|nPrior]): The current
 %           prior for the kalmanFilter object. If you have not provided a
 %           prior, returns an empty array.
-%       ens (scalar ensemble object <static | evolving [nPrior]> | 
-%            vector, <static> ensemble objects [nPrior]):
+%       ens (scalar ensemble object <static | evolving [nPrior]> | vector, <static> ensemble objects [nPrior]):
 %           The current prior for the kalmanFilter object. If you have not
 %           provided a prior, returns an empty array.
 %       whichPrior (vector, positive integers [nTime] | []): Indicates which

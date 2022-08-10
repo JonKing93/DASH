@@ -1,7 +1,7 @@
 function[varargout] = setCovariance(obj, C, Ycov, whichSet)
 %% kalmanFilter.setCovariance  Directly set the covariance for the Kalman filter
 % ----------
-%   obj = obj.setCovariance(C, Ycov)
+%   obj = <strong>obj.setCovariance</strong>(C, Ycov)
 %   Directly sets the covariance used by the Kalman Filter. If directly
 %   setting the covariance, the Kalman filter will not calculate the
 %   covariances between the ensemble and observation estimates. Instead, it
@@ -28,16 +28,16 @@ function[varargout] = setCovariance(obj, C, Ycov, whichSet)
 %   at any state vector rows with a NaN covariance. Ycov cannot include NaN
 %   elements.
 %
-%   obj = obj.setCovariance(C, Ycov, whichSet)
+%   obj = <strong>obj.setCovariance</strong>(C, Ycov, whichSet)
 %   Indicates which set of covariances to use as the covariance in each
 %   assimilated time step. This syntax allows the number of specified
 %   covariances to differ from the number of time steps.
 %
-%   [C, Ycov, whichSet] = obj.setCovariance
+%   [C, Ycov, whichSet] = <strong>obj.setCovariance</strong>
 %   Returns the current set of directly specified covariances for the
 %   filter.
 %
-%   obj = obj.setCovariance('reset')
+%   obj = <strong>obj.setCovariance</strong>('reset')
 %   Deletes any directly specified covariances from the current filter.
 % ----------
 %   Inputs:

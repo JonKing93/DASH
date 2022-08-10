@@ -1,7 +1,7 @@
 function[varargout] = percentiles(obj, percentages)
 %% kalmanFilter.percentiles  Indicate whether to return ensemble percentiles when running a Kalman Filter
 % ----------
-%   obj = obj.percentiles(percentages)
+%   obj = <strong>obj.percentiles</strong>(percentages)
 %   Indicates that the Kalman filter should return the specified
 %   percentiles of the posterior ensemble. Overwrites any previously
 %   specified percentiles. When using the kalmanFilter.run command, the
@@ -18,10 +18,10 @@ function[varargout] = percentiles(obj, percentages)
 %   mean, so exploratory efforts that only require the updated ensemble
 %   mean may wish to refrain from calculating posterior percentiles.
 %
-%   percentages = obj.percentiles
+%   percentages = <strong>obj.percentiles</strong>
 %   Returns the current percentile percentages for the Kalman filter object.
 %
-%   obj = obj.percentiles('reset')
+%   obj = <strong>obj.percentiles</strong>('reset')
 %   Resets the ensemble percentiles for the Kalman filter. The Kalman
 %   filter will no longer compute ensemble percentiles, and the output of
 %   the kalmanFilter.run command will not include the Aperc field.

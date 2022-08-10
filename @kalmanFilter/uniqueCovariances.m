@@ -1,7 +1,7 @@
 function[whichCov, nCov] = uniqueCovariances(obj, t)
 %% kalmanFilter.uniqueCovariances  Locates unique covariances in a set of queried time steps
 % ----------
-%   [whichCov, nCov] = obj.uniqueCovariances(t)
+%   [whichCov, nCov] = <strong>obj.uniqueCovariances</strong>(t)
 %   Given a set of queried assimilation time steps, determines which of the
 %   queried time steps share a unique covariance estimate. Also returns the
 %   total number of unique covariance estimates across the time steps.

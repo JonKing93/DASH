@@ -1,7 +1,7 @@
 function[obj] = finalizeCovariance(obj)
 %% kalmanFilter.finalizeCovariance  Finalizes which* properties for covariance options
 % ----------
-%   obj = obj.finalizeCovariance
+%   obj = <strong>obj.finalizeCovariance</strong>
 %   Fills empty which* properties for covariance options. Each which*
 %   property is given a value of 1 for each assimilation time step. The
 %   finalized covariance properties are whichPrior, whichFactor, whichLoc,

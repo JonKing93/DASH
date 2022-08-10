@@ -1,7 +1,7 @@
 function[output] = run(obj, varargin)
 %% kalmanFilter.run  Runs a offline ensemble square root Kalman Filter
 % ----------
-%   output = obj.run
+%   output = <strong>obj.run</strong>
 %   Runs the Kalman filter. When calculating the Kalman Gain, implements
 %   any covariance adjustments implemented by the "inflate", "localize",
 %   "blend", and/or "setCovariance" methods. 
@@ -29,9 +29,9 @@ function[output] = run(obj, varargin)
 %   text for the kalmanFilter class:
 %       >> help kalmanFilter
 %
-%   output = obj.run(..., 'complex', complexResponse)
-%   output = obj.run(..., 'complex', "error"|"e"|false)
-%   output = obj.run(..., 'complex', "skip"|"s"|true)
+%   output = <strong>obj.run</strong>(..., 'complex', complexResponse)
+%   output = <strong>obj.run</strong>(..., 'complex', "error"|"e"|false)
+%   output = <strong>obj.run</strong>(..., 'complex', "skip"|"s"|true)
 %   Indicates how the method should respond if the adjusted Kalman gain
 %   becomes complex valued. This most often occurs because the R uncertainty
 %   covariances have negative eigenvalues. This option indicates how the

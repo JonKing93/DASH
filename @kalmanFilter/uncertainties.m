@@ -1,7 +1,7 @@
 function[varargout] = uncertainties(obj, R, whichR, type)
 %% kalmanFilter.uncertainties  Set or return the proxy uncertainties for a Kalman filter
 % ----------
-%   obj = obj.uncertainties(Rvar)
+%   obj = <strong>obj.uncertainties</strong>(Rvar)
 %   Provides error variances to the Kalman filter object. Overwrites any
 %   previous set of uncertainties. Each row holds the uncertainties for a
 %   particular site. Each column holds a unique set of error variances. If
@@ -11,7 +11,7 @@ function[varargout] = uncertainties(obj, R, whichR, type)
 %   step. For a given set of variances, a NaN value is permitted for a site
 %   if the site has no observations in that time step.
 %
-%   obj = obj.uncertainties(Rcov)
+%   obj = <strong>obj.uncertainties</strong>(Rcov)
 %   Provides error covariances to the Kalman filter object. Overwrites
 %   any previous set of uncertainties. Rcov should have one row and one
 %   column for each observation site. Each element along the third
@@ -23,26 +23,26 @@ function[varargout] = uncertainties(obj, R, whichR, type)
 %   covariances, NaN values are permitted between two sites if at least one
 %   of the two sites is missing an observation in that time step.
 %
-%   obj = obj.uncertainties(R, whichR)
+%   obj = <strong>obj.uncertainties</strong>(R, whichR)
 %   Specify which set of R variances or covariances to use in each
 %   assimilation time steps. This syntax allows the number of sets of R
 %   values to differ from the number of time steps.
 %
-%   obj = obj.uncertainties(R, whichR, type)
-%   obj = obj.uncertainties(R, whichR, "c"|"cov"|"covariance"|true)
-%   obj = obj.uncertainties(R, whichR, "v"|"var"|"variance"|false)
+%   obj = <strong>obj.uncertainties</strong>(R, whichR, type)
+%   obj = <strong>obj.uncertainties</strong>(R, whichR, "c"|"cov"|"covariance"|true)
+%   obj = <strong>obj.uncertainties</strong>(R, whichR, "v"|"var"|"variance"|false)
 %   Indicate the type of uncertainties being provided to the particle
 %   filter. If "c"|"cov"|"covariance"|true, treats the input uncertainties
 %   as covariances. If "v"|"var"|"variance"|false, treats the uncertainties
 %   as variances.
 %
-%   [Rvar, whichR] = obj.uncertainties
-%   [Rcov, whichR] = obj.uncertainties
+%   [Rvar, whichR] = <strong>obj.uncertainties</strong>
+%   [Rcov, whichR] = <strong>obj.uncertainties</strong>
 %   Returns the current R uncertainties for the Kalman filter object, and
 %   indicates which set of R variances or covariances is used in each
 %   assimilation time step.
 %
-%   obj = obj.uncertainties('delete')
+%   obj = <strong>obj.uncertainties</strong>('delete')
 %   Deletes any current uncertainties from the Kalman filter object.
 % ----------
 %   Inputs:

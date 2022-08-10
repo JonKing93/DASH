@@ -1,7 +1,7 @@
 function[varargout] = index(obj, name, type, varargin)
 %% kalmanFilter.index  Specify climate indices to calculate from the posterior of a Kalman Filter
 % ----------
-%   obj = obj.index(...)
+%   obj = <strong>obj.index</strong>(...)
 %   Calculates a climate index from a posterior climate field for each
 %   member of a posterior ensemble. Returns the full posterior for the
 %   calculated index, without needing to save the (often very large) full
@@ -19,7 +19,7 @@ function[varargout] = index(obj, name, type, varargin)
 %   index from the posterior fields, saving the full posterior for the
 %   climate index, and then discarding the large posterior field.
 %
-%   obj = obj.index(name, type, ...)
+%   obj = <strong>obj.index</strong>(name, type, ...)
 %   Calculates an index when the Kalman filter is run. The first input is
 %   an identifying name that the filter should use for the index. You can
 %   specify multiple indices that should be calculated, so long as they use
@@ -31,19 +31,19 @@ function[varargout] = index(obj, name, type, varargin)
 %   calculation being used. The syntaxes for different types of
 %   calculations are detailed below.
 %
-%   names = obj.index
+%   names = <strong>obj.index</strong>
 %   Returns the names of the indices that will be calculated from the 
 %   posterior when the Kalman filter is run.
 %
-%   obj = obj.index(name, 'delete')
+%   obj = <strong>obj.index</strong>(name, 'delete')
 %   Deletes the index with the specified name from the Kalman Filter
 %   object. These indices will no longer be calculated when the Kalman
 %   filter is run.
 %
-%   obj = obj.index(name, 'mean', ...)
-%   obj = obj.index(..., 'rows', rows)
-%   obj = obj.index(..., 'weights', weights)
-%   obj = obj.index(..., 'nanflag', nanOption)
+%   obj = <strong>obj.index</strong>(name, 'mean', ...)
+%   obj = <strong>obj.index</strong>(..., 'rows', rows)
+%   obj = <strong>obj.index</strong>(..., 'weights', weights)
+%   obj = <strong>obj.index</strong>(..., 'nanflag', nanOption)
 %   Calculates the index using a mean over state vector elements. Use the
 %   "rows" flag to only implement the mean over specific state vector rows.
 %   If you do not provide the "rows" flag, takes a mean

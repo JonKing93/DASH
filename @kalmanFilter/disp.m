@@ -1,7 +1,8 @@
 function[] = disp(obj)
 %% kalmanFilter.disp  Displays a Kalman filter in the console
 % ----------
-%   obj.disp
+%   <strong>disp</strong>(obj)
+%   <strong>obj.disp</strong>
 %   Displays a Kalman filter object in the console. If the object is
 %   scalar, displays the label (if there is one). Also displays the current
 %   status of the observations, estimates, uncertainties, and prior.
@@ -13,7 +14,11 @@ function[] = disp(obj)
 %   without a label is listed as "<no label>". If the array is empty,
 %   declares that the array is empty.
 % ----------
-%   Outputs:
+%   Inputs:
+%       obj (kalmanFilter object): The kalmanFilter object to display in
+%           the console
+%
+%   Prints:
 %       Displays the Kalman filter object in the console.
 %
 % <a href="matlab:dash.doc('kalmanFilter.disp')">Documentation Page</a>

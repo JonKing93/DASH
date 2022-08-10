@@ -1,8 +1,8 @@
 function[varargout] = covariance(obj, t, s)
 %% kalmanFilter.covariance  Return the current covariance for assimilated time steps
 % ----------
-%   [C, Ycov] = obj.covariance
-%   [C, Ycov] = obj.covariance([])
+%   [C, Ycov] = <strong>obj.covariance</strong>
+%   [C, Ycov] = <strong>obj.covariance</strong>([])
 %   Returns the current Kalman Filter covariance. If using directly-set
 %   covariances, returns the directly set values. Otherwise, calculates
 %   covariances using the prior and observation estimates, and then applies
@@ -17,20 +17,20 @@ function[varargout] = covariance(obj, t, s)
 %   time-independent covariance between the observation sites and each
 %   other.
 %
-%   [C, Ycov] = obj.covariance(t)
+%   [C, Ycov] = <strong>obj.covariance</strong>(t)
 %   Returns the Kalman filter covariances calculated for the queried time
 %   steps. Each element along the third dimension of C and Ycov holds the
 %   covariances for a queried time step. This syntax requires that the
 %   filter has a defined number of time steps. If not, use the above syntax.
 %
-%   [C, Ycov] = obj.covariance([], s)
-%   [C, Ycov] = obj.covariance( t, s)
+%   [C, Ycov] = <strong>obj.covariance</strong>([], s)
+%   [C, Ycov] = <strong>obj.covariance</strong>( t, s)
 %   Only returns covariance values for the queried observation sites. The
 %   number of columns of C will match the number of queried sites. Both the
 %   number of rows and number of columns of Ycov will match the number of
 %   queried sites.
 %
-%   obj = obj.covariance('reset')
+%   obj = <strong>obj.covariance</strong>('reset')
 %   Resets all covariance options for the Kalman filter. Deletes any
 %   inflation factors, covariance localization, covariance blending, and
 %   directly-set covariance values. The resulting filter will only

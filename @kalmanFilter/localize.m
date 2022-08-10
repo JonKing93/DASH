@@ -1,7 +1,7 @@
 function[varargout] = localize(obj, wloc, yloc, whichLoc)
 %% kalmanFilter.localize  Implement covariance localization for a Kalman Filter
 % ----------
-%   obj = obj.localize(wloc, yloc)
+%   obj = <strong>obj.localize</strong>(wloc, yloc)
 %   Implements covariance localization for a Kalman Filter. Covariance
 %   localization reduces the covariance of observation sites with state
 %   vector elements. Often, the localization is implemented so that
@@ -25,15 +25,15 @@ function[varargout] = localize(obj, wloc, yloc, whichLoc)
 %   (although see the next syntax for relaxing this requirement). The
 %   localization weights cannot include NaN values or negative values.
 %
-%   obj = obj.localize(wloc, yloc, whichLoc)
+%   obj = <strong>obj.localize</strong>(wloc, yloc, whichLoc)
 %   Indicates which set of localization weights to use in each assimilation
 %   time step. This syntax allows the number of sets of localization
 %   weights to differ from the number of time steps.
 %
-%   [wloc, yloc, whichLoc] = obj.localize
+%   [wloc, yloc, whichLoc] = <strong>obj.localize</strong>
 %   Returns the current localization weights for the Kalman filter.
 %
-%   obj = obj.localize('reset')
+%   obj = <strong>obj.localize</strong>('reset')
 %   Deletes any current localization weights from the Kalman Filter.
 % ----------
 %   Inputs:

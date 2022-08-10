@@ -1,9 +1,9 @@
 function[varargout] = variance(obj, returnVariance)
 %% kalmanFilter.variance  Indicate whether to return posterior variance when running a Kalman Filter
 % ----------
-%   obj = obj.variance(returnVariance)
-%   obj = obj.variance("return"|"r"|true)
-%   obj = obj.variance("discard"|"d"|false)
+%   obj = <strong>obj.variance</strong>(returnVariance)
+%   obj = <strong>obj.variance</strong>("return"|"r"|true)
+%   obj = <strong>obj.variance</strong>("discard"|"d"|false)
 %   Indicate whether to return the variance of the posterior ensemble when
 %   running a Kalman Filter. If "return"|"r"|true, the output of the
 %   kalmanFilter.run command will include the variance of the posterior
@@ -21,7 +21,7 @@ function[varargout] = variance(obj, returnVariance)
 %   the ensemble mean, so exploratory efforts that only require the updated
 %   ensemble mean may wish to refrain from calculating posterior variance.
 %
-%   returnVariance = obj.variance
+%   returnVariance = <strong>obj.variance</strong>
 %   Returns true if the current Kalman filter object will return ensemble
 %   variance. Otherwise, returns false.
 % ----------

@@ -1,7 +1,7 @@
 function[varargout] = observations(obj, Y)
 %% kalmanFilter.observations  Set or return the observations for a Kalman filter
 % ----------
-%   obj = obj.observations(Y)
+%   obj = <strong>obj.observations</strong>(Y)
 %   Provides the observation matrix (Y) to the Kalman filter object.
 %   Overwrites any previously existing observation matrix. Each row holds
 %   the observations for a particular site, and each column holds
@@ -9,10 +9,10 @@ function[varargout] = observations(obj, Y)
 %   does not have an observations in a particular time step. Inf and
 %   complex values are not allowed.
 %
-%   Y = obj.observations
+%   Y = <strong>obj.observations</strong>
 %   Returns the current observation matrix for the Kalman filter object.
 %
-%   obj = obj.observations('delete')
+%   obj = <strong>obj.observations</strong>('delete')
 %   Deletes any current observation matrix from the Kalman filter object.
 % ----------
 %   Inputs:

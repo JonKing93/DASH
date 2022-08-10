@@ -1,9 +1,9 @@
 function[varargout] = deviations(obj, returnDeviations)
 %% kalmanFilter.deviations  Specify whether to return ensemble deviations
 % ----------
-%   obj = obj.deviations(returnDeviations)
-%   obj = obj.deviations("return"|"r"|true)
-%   obj = obj.deviations("discard"|"d"|false)
+%   obj = <strong>obj.deviations</strong>(returnDeviations)
+%   obj = <strong>obj.deviations</strong>("return"|"r"|true)
+%   obj = <strong>obj.deviations</strong>("discard"|"d"|false)
 %   Indicate whether to return updated ensemble deviations in the output of
 %   "kalmanFilter.run". If "return"|"r"|true, returns the deviations in the
 %   output as the field named "Adev". If "discard"|"d"|false, does not
@@ -18,7 +18,7 @@ function[varargout] = deviations(obj, returnDeviations)
 %   "kalmanFilter.index" method to calculate climate indices from the
 %   updated posterior without needing to save the full posterior as output.
 %
-%   returnDeviations = obj.deviations
+%   returnDeviations = <strong>obj.deviations</strong>
 %   Return whether the current Kalman filter will return the ensemble
 %   deviations of the posterior.
 % ----------

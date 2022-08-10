@@ -1,11 +1,11 @@
 function[name] = name(obj)
 %% kalmanFilter.name  Return a name for use in error messages
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns a name for the Kalman filter object.
 % ----------
 %   Outputs:
-%      name (string scalar): An identifying name for a Kalman filter
+%       name (string scalar): An identifying name for a Kalman filter
 %
 % <a href="matlab:dash.doc('kalmanFilter.name')">Documentation Page</a>
 

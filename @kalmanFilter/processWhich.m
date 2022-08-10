@@ -1,14 +1,14 @@
 function[obj] = processWhich(obj, whichArg, field, nIndex, indexType, timeIsSet, whichIsSet, header)
 %% kalmanFilter.processWhich  Parses and processes which inputs for priors, R, and covariance options
 % ----------
-%   obj = obj.processWhich(whichArg, field, nIndex, indexType, timeIsSet, whichIsSet, header)
+%   obj = <strong>obj.processWhich</strong>(whichArg, field, nIndex, indexType, timeIsSet, whichIsSet, header)
 %   Interprets whichR and whichPrior inputs. Error checks to ensure that
 %   which arguments are the correct length and valid indices. Sets nTime if
 %   appropriate. Saves the which argument for evolving values. Records an
 %   empty array for static values.
 % ----------
 %   Inputs:
-%       whichArg: The whichR or whichPrior argument being parsed
+%       whichArg (any data type): The whichR or whichPrior argument being parsed
 %       field (string scalar): Indicates which field to update
 %       nIndex (nR | nPrior): Indicates the number of R uncertainties or
 %           number of priors that the which argument can index into

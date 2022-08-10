@@ -1,11 +1,11 @@
 function[Knum, Ycov] = estimateCovariance(obj, t, s, Xdev, Ydev)
 %% kalmanFilter.estimateCovariance  Estimates Kalman filter covariance for a queried time step
 % ----------
-%   [Knum, Ycov] = obj.estimateCovariance(t, s)
+%   [Knum, Ycov] = <strong>obj.estimateCovariance</strong>(t, s)
 %   Returns the user-specified covariance estimate for a queried time step
 %   a requested observation sites.
 %
-%   [Knum, Ycov] = obj.estimateCovariance(t, s, Xdev, Ydev)
+%   [Knum, Ycov] = <strong>obj.estimateCovariance</strong>(t, s, Xdev, Ydev)
 %   Estimates covariance from ensemble deviations and applies inflation,
 %   localization, and blending (in that order) as appropriate.
 % ----------

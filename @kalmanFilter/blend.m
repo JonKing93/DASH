@@ -1,7 +1,7 @@
 function[varargout] = blend(obj, C, Ycov, weight, whichBlend)
 %% kalmanFilter.blend  Blends ensemble covariance with a climatological covariance
 % ----------
-%   obj = obj.blend(C, Ycov)
+%   obj = <strong>obj.blend</strong>(C, Ycov)
 %   Blends the ensemble covariance with a climatological covariance using a
 %   weighting of 50% of each covariance. When covariance is blended, the
 %   Kalman filter first calculates the usual covariance between the
@@ -33,7 +33,7 @@ function[varargout] = blend(obj, C, Ycov, weight, whichBlend)
 %   any state vector rows with a NaN covariance. Ycov cannot include NaN
 %   elements.
 %
-%   obj = obj.blend(C, Ycov, weight)
+%   obj = <strong>obj.blend</strong>(C, Ycov, weight)
 %   Specify the blending weight to use for each climatological covariance.
 %   By default, uses a blending weight of 0.5. The blending weight for the
 %   ensemble covariance is calculated as 1 - weight. Blending weights must
@@ -41,16 +41,16 @@ function[varargout] = blend(obj, C, Ycov, weight, whichBlend)
 %   the same weight for each set of covariances. Otherwise, the number of
 %   weights must match the number of sets of covariances.
 %
-%   obj = obj.blend(C, Ycov, weight, whichBlend)
+%   obj = <strong>obj.blend</strong>(C, Ycov, weight, whichBlend)
 %   Indicate which set of climatological covariances to use in each time
 %   step. This syntax allows the number of climatological covariances to
 %   differ from the number of assimilation time steps.
 %
-%   [C, Ycov, weight, whichBlend] = obj.blend
+%   [C, Ycov, weight, whichBlend] = <strong>obj.blend</strong>
 %   Returns the current climatological covariances and blending weights for
 %   the Kalman Filter.
 %
-%   obj = obj.blend('reset')
+%   obj = <strong>obj.blend</strong>('reset')
 %   Deletes any existing climatological covariances and blending weights
 %   from the Kalman filter.
 % ----------

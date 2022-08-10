@@ -41,7 +41,7 @@ classdef particleFilter < dash.ensembleFilter
     %     weights -- for example, testing a particle filter for degeneracy,
     %     or selecting ensemble members for use in an evolving prior.
     %
-    %   ALGORITHM SKETCH:
+    %   ALGORITHM:
     %   The following is a sketch of the particle filter algorithm:
     %   For an assimilated time step, the method determines the differences
     %   between proxy observations and estimates (known as the innovations). 
@@ -167,6 +167,9 @@ classdef particleFilter < dash.ensembleFilter
         % Weighting schemes
         weights = bayesWeights(sse);
         weights = bestNWeights(sse, N);
+
+        % Unit tests
+        tests;
     end
 
     % Constructor

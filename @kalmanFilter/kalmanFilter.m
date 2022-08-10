@@ -54,7 +54,7 @@ classdef kalmanFilter < dash.ensembleFilter
     %        ensemble deviations.
     %     5. Use the "run" method to run the Kalman filter algorithm
     %
-    %   ALGORITHM SKETCH:
+    %   ALGORITHM:
     %   The following is a sketch of the Kalman filter algorithm.
     %   For an assimilated time step, the method first decomposes the prior
     %   ensemble and the observation estimates into their ensemble means
@@ -113,47 +113,47 @@ classdef kalmanFilter < dash.ensembleFilter
     % ----------
     % kalmanFilter Methods:
     %
-    % *KEY METHODS*
+    % **KEY METHODS**
     % These methods are the most essential for users.
     %
-    %   kalmanFilter    - Initializes a new kalmanFilter object
-    %   observations    - Provide the observations for a Kalman filter
-    %   estimates       - Provide the observation estimates for a Kalman filter
-    %   uncertainties   - Provide the observation uncertainties for a Kalman filter
-    %   prior           - Provide the prior for a Kalman filter
-    %   run             - Run the Kalman filter algorithm on the data inputs
+    %   kalmanFilter        - Initializes a new kalmanFilter object
+    %   observations        - Provide the observations for a Kalman filter
+    %   estimates           - Provide the observation estimates for a Kalman filter
+    %   uncertainties       - Provide the observation uncertainties for a Kalman filter
+    %   prior               - Provide the prior for a Kalman filter
+    %   run                 - Run the Kalman filter algorithm on the data inputs
     %
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
-    %   kalmanFilter    - Initializes a new kalmanFilter object
-    %   label           - Return or apply a label for a kalmanFilter
+    %   kalmanFilter        - Initializes a new kalmanFilter object
+    %   label               - Return or apply a label for a kalmanFilter
     %
     % Data Inputs:
-    %   observations    - Provide the observations for a particle filter
-    %   estimates       - Provide the observation estimates for a particle filter
-    %   uncertainties   - Provide the observation uncertainties for a particle filter
-    %   prior           - Provide the prior for a particle filter
+    %   observations        - Provide the observations for a particle filter
+    %   estimates           - Provide the observation estimates for a particle filter
+    %   uncertainties       - Provide the observation uncertainties for a particle filter
+    %   prior               - Provide the prior for a particle filter
     %
     % Covariance:
-    %   inflate         - Implement covariance inflation
-    %   localize        - Implement covariance localization
-    %   blend           - Implement covariance blending
-    %   setCovariance   - Directly set the covariance estimate
-    %   covariance      - Return the covariance estimate used in a given time step
+    %   inflate             - Implement covariance inflation
+    %   localize            - Implement covariance localization
+    %   blend               - Implement covariance blending
+    %   setCovariance       - Directly set the covariance estimate
+    %   covariance          - Return the covariance estimate used in a given time step
     %
     % Output options:
-    %   variance        - Return the variance across the updated ensemble
-    %   percentiles     - Return percentiles of the updated ensemble
-    %   deviations      - Return the updated ensemble deviations
-    %   index           - Calculate and return a climate index over each member of the updated ensemble
+    %   variance            - Return the variance across the updated ensemble
+    %   percentiles         - Return percentiles of the updated ensemble
+    %   deviations          - Return the updated ensemble deviations
+    %   index               - Calculate and return a climate index over each member of the updated ensemble
     %
     % Run:
-    %   run             - Runs a Kalman filter assimilation
+    %   run                 - Runs a Kalman filter assimilation
     %
     % Console Display:
-    %   disp            - Display a Kalman filter object in the console
+    %   disp                - Display a Kalman filter object in the console
     %
     %
     % ==UTILITY METHODS==
@@ -161,8 +161,8 @@ classdef kalmanFilter < dash.ensembleFilter
     % checking and are not intended for users.
     %
     % General:
-    %   name            - Returns a name for use in error messages
-    %   processWhich    - Parse and process which* arguments for a Kalman filter
+    %   name                - Returns a name for use in error messages
+    %   processWhich        - Parse and process which* arguments for a Kalman filter
     %
     % Covariances:
     %   estimateCovariance  - Estimate covariance for a set of ensemble deviations
@@ -171,14 +171,14 @@ classdef kalmanFilter < dash.ensembleFilter
     %   finalizeCovariance  - Finalize empty which* covariance properties
     %
     % Inherited:
-    %   dispFilter      - Display size and data input details in the console
-    %   assertValidR    - Throw error if observations are missing R values in required time steps
-    %   finalize        - Ensure essential data inputs are present for an analysis
-    %   loadPrior       - Load the requested prior from an evolving set
-    %   Rcovariance     - Return R uncertainty covariances for queried time steps and sites
+    %   dispFilter          - Display size and data input details in the console
+    %   assertValidR        - Throw error if observations are missing R values in required time steps
+    %   finalize            - Ensure essential data inputs are present for an analysis
+    %   loadPrior           - Load the requested prior from an evolving set
+    %   Rcovariance         - Return R uncertainty covariances for queried time steps and sites
     %
     % Tests:
-    %   tests           - Implement unit tests for the kalmanFilter class
+    %   tests               - Implement unit tests for the kalmanFilter class
     %
     % <a href="matlab:dash.doc('kalmanFilter')">Documentation Page</a>
     
@@ -273,22 +273,22 @@ classdef kalmanFilter < dash.ensembleFilter
         function[obj] = kalmanFilter(varargin)
             %% kalmanFilter.kalmanFilter  Create a new kalmanFilter object
             % ----------
-            %   obj = kalmanFilter
+            %   obj = <strong>kalmanFilter</strong>
             %   Initializes a new Kalman filter object. The new object
             %   does not have observations, estimates, uncertainties, or a
             %   prior. The algorithm will only return the ensemble mean
             %   when run.
             %
-            %   obj = kalmanFilter(label)
-            %   obj = kalmanFilter(labels)
+            %   obj = <strong>kalmanFilter</strong>(label)
+            %   obj = <strong>kalmanFilter</strong>(labels)
             %   Also applies a label to the Kalman filter object. If
             %   unset, the label is set to an empty string. If labels is a
             %   string array, returns an array of Kalman filter objects
             %   and applies the corresponding label to each individual
             %   Kalman filter.
             %
-            %   obj = kalmanFilter(size)
-            %   obj = kalmanFilter(size, labels)
+            %   obj = <strong>kalmanFilter</strong>(size)
+            %   obj = <strong>kalmanFilter</strong>(size, labels)
             %   Initializes an array of Kalman filter objects of the
             %   indicated size. Optionally also applies a label to each
             %   object in the array. If applying labels, the size of the

@@ -1,7 +1,7 @@
 function[varargout] = inflate(obj, factor, whichFactor)
 %% kalmanFilter.inflate  Provide inflation factors for a Kalman Filter
 % ----------
-%   obj = obj.inflate(factor)
+%   obj = <strong>obj.inflate</strong>(factor)
 %   Specifies a multiplicative covariance inflation factor for the Kalman
 %   Filter. The covariance term in the Kalman Gain numerator will be
 %   multiplied by the inflation factor in order to increase the apparent
@@ -13,16 +13,16 @@ function[varargout] = inflate(obj, factor, whichFactor)
 %   Otherwise, must be a vector with one element per time step (although 
 %   see the next syntax for relaxing this requirement).
 %
-%   obj = obj.inflate(factor, whichFactor)
+%   obj = <strong>obj.inflate</strong>(factor, whichFactor)
 %   Specify which inflation factor to use in each assimilation time step.
 %   This syntax allows the number of inflation factors to differ from the
 %   number of time steps.
 %
-%   [factor, whichFactor] = obj.inflate
+%   [factor, whichFactor] = <strong>obj.inflate</strong>
 %   Returns the inflation factor for the Kalman filter, and indicates which
 %   factor is used in each assimilation time step.
 %
-%   obj = obj.inflate('reset')
+%   obj = <strong>obj.inflate</strong>('reset')
 %   Deletes any current inflation factors from the Kalman Filter.
 % ----------
 %   Inputs:
