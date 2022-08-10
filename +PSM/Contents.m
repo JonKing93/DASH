@@ -66,14 +66,8 @@
 %   bayspar             - A Baysian model for TEX86
 %   bayspline           - A Baysian model for UK'37
 %   linear              - General linear models of form:  Y = a1*X1 + a2*X2 + ... an*Xn + b
-%   vslite              - The Vaganov-Shashkin Lite model of tree ring width
-%
-% PRYSM forward models:
 %   prysm               - The PRYSM suite of Python forward models
-%   prysm.cellulose     - Implement the PRYSM cellulose sensor module
-%   prysm.coral         - Implement the PRYSM coral sensor module
-%   prysm.icecore       - Implement the PRYSM icecore sensor module
-%   prysm.speleothem    - Implement the PRYSM speleothm sensor module
+%   vslite              - The Vaganov-Shashkin Lite model of tree ring width
 %
 % Template:
 %   template            - A template file for developing new PSMs
