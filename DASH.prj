@@ -34,10 +34,14 @@
 % **/*.bak
 %
 
-% Git component
+% Git components
 .git
 .gitattributes
 .gitignore
+
+% Documentation builds
+doc/html/_sources
+doc/html/.doctrees
 
 % Development tools
 doc_source

@@ -12,10 +12,11 @@
 !/testdata/gridfile/**
 
 # Packaged toolbox
-DASH.mltbx
+**.mltbx
 
 # Documentation builds
 doc/html/_sources/**
+doc/html/.doctrees/**
 doc_source/sphinx/source/**
 doc_source/build/html/**
 
