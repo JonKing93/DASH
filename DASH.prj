@@ -7,7 +7,7 @@
     <param.summary>A Matlab toolbox for paleoclimate data assimilation.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>4.0.0.2</param.version>
+    <param.version>4.0.0.3</param.version>
     <param.output>${PROJECT_ROOT}\DASH.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -34,11 +34,14 @@
 % **/*.bak
 %
 
-.git/*
-doc_source/*
-testdata/*
+% Git component
+.git
 .gitattributes
 .gitignore
+
+% Development tools
+doc_source
+testdata
 new-release-checklist.txt
 todo.md</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
@@ -106,7 +109,6 @@ todo.md</param.exclude.filters>
     <fileset.rootfiles>
       <file>${PROJECT_ROOT}\+dash</file>
       <file>${PROJECT_ROOT}\+PSM</file>
-      <file>${PROJECT_ROOT}\.git</file>
       <file>${PROJECT_ROOT}\@ensemble</file>
       <file>${PROJECT_ROOT}\@ensembleMetadata</file>
       <file>${PROJECT_ROOT}\@gridfile</file>
@@ -117,9 +119,7 @@ todo.md</param.exclude.filters>
       <file>${PROJECT_ROOT}\@stateVector</file>
       <file>${PROJECT_ROOT}\Contents.m</file>
       <file>${PROJECT_ROOT}\doc</file>
-      <file>${PROJECT_ROOT}\doc_source</file>
       <file>${PROJECT_ROOT}\README.md</file>
-      <file>${PROJECT_ROOT}\testdata</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
     <fileset.depfun.excluded />
