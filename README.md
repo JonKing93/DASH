@@ -7,8 +7,6 @@ DASH is a Matlab package to help implement paleoclimate data assimilation. It in
 3. Implement proxy system models, and
 4. Run Kalman filter, particle filter, and optimal sensor algorithms.
 
-The documentation is currently being finalized, but will be available at: [https://jonking93.github.io/DASH](https://jonking93.github.io/DASH)
-
 
 ## Getting Started
 
