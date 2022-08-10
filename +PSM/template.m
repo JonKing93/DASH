@@ -1,4 +1,6 @@
 %% PSM.template  This file provides a template for developing new PSM classes
+%
+% <a href="matlab:dash.doc('PSM.template')">Documentation Page</a>
 
 % This first line indicates that we a creating a new PSM class that
 % conforms to the PSM interface.

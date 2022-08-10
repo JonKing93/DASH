@@ -3,17 +3,16 @@
 # To prevent uploading giant data files
 **.mat
 **.nc
-old/**
 
 # Dash data file extensions
 **.grid
 **.ens
 
-# Packaged toolbox
-DASH.mltbx
-
 # But enable the small data files in testdata
 !/testdata/gridfile/**
+
+# Packaged toolbox
+DASH.mltbx
 
 # Documentation builds
 doc/html/_sources/**
