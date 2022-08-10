@@ -1,5 +1,5 @@
 function[parameters] = parametersForBuild(obj)
-%% dash.stateVector.parametersForBuild  Organize and return parameters needed to build ensemble members for a variable
+%% dash.stateVectorVariable.parametersForBuild  Organize and return parameters needed to build ensemble members for a variable
 % ----------
 %   parameters = <strong>obj.parametersForBuild</strong>
 %   Organizes parameters needed to build ensemble members for a state

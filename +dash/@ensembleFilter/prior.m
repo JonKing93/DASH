@@ -1,20 +1,20 @@
 function[outputs, type] = prior(obj, header, X, whichPrior)
 %% dash.ensembleFilter.prior  Process the prior for a filter object
 % ----------
-%   [outputs, type] = obj.prior(header, ...)
+%   [outputs, type] = <strong>obj.prior</strong>(header, ...)
 %   Processes options for priors for a filter. Returns the outputs for
 %   the operations collected in a cell. Also returns a string indicate the
 %   type of operation performed.
 %
-%   [priorCell, 'return'] = obj.prior(header)
+%   [priorCell, 'return'] = <strong>obj.prior</strong>(header)
 %   Returns the current prior and whichPrior.
 %
-%   [objCell, 'set'] = obj.prior(header, Ye)
-%   [objCell, 'set'] = obj.prior(header, Ye, whichPrior)
+%   [objCell, 'set'] = <strong>obj.prior</strong>(header, Ye)
+%   [objCell, 'set'] = <strong>obj.prior</strong>(header, Ye, whichPrior)
 %   Error checks the input prior and whichPrior and overwrites any
 %   previously existing prior. Returns the updated filter object.
 %
-%   [objCell, 'delete'] = obj.prior('delete')
+%   [objCell, 'delete'] = <strong>obj.prior</strong>('delete')
 %   Deletes any current prior and returns the updated filter object.
 % ----------
 %   Inputs:

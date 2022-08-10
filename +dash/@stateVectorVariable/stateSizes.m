@@ -18,7 +18,7 @@ function[sizes, types] = stateSizes(obj)
 %       types (string vector [nDimensions]): Dimension name and details
 %           associated with each state vector length.
 %
-% <a href="matlab:dash.stateVectorVariable.stateSizes">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.stateVectorVariable.stateSizes')">Documentation Page</a>
 
 % Get non-trivial state dimensions
 d = find(obj.isState | obj.hasSequence);

@@ -1,22 +1,22 @@
 function[obj] = finalize(obj, requirePrior, actionName, header)
 %% dash.ensembleFilter.finalize  Check that essential data inputs are present for a filter algorithm
 % ----------
-%   obj = obj.finalize(requirePrior)
+%   obj = <strong>obj.finalize</strong>(requirePrior)
 %   Requires the filter object to have observations, estimates, and
 %   uncertainties. Optionally requires the filter to have a prior. Throws
 %   error if these conditions are met. Sets static/empty whichR and
 %   whichPrior fields to vectors of 1s. Also sets the "isfinalized"
 %   property to a value depending on whether a prior was required.
 %
-%   obj = obj.finalize(true)
+%   obj = <strong>obj.finalize</strong>(true)
 %   Requires a prior. Sets the "isfinalized" property to 2. If the prior is
 %   provided via ensemble objects, validates the associated matfiles.
 %   Also records the numerical precision of the prior.
 %
-%   obj = obj.finalize(false)
+%   obj = <strong>obj.finalize</strong>(false)
 %   Does not require a prior. Sets the "isfinalized" property to 1.
 %
-%   obj = obj.finalize(requirePrior, actionName, header)
+%   obj = <strong>obj.finalize</strong>(requirePrior, actionName, header)
 %   Customize error messages and IDs.
 % ----------
 %   Inputs:

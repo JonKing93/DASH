@@ -1,7 +1,9 @@
 classdef percentiles < dash.posteriorCalculation.Interface
     %% dash.posteriorCalculation.percentiles  Calculates percentiles across a posterior ensemble
     % ----------
-    % percentiles methods:
+    % percentiles Methods:
+    %
+    % General:
     %   percentiles - Creates a new ensemble percentiles calculation object
     %   outputSize  - Indicates that output has a size of nState x nPercs x nTime
     %   calculate   - Calculates percentiles across posterior ensembles
@@ -19,7 +21,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
         function[siz] = outputSize(obj, nState, ~, nTime)
             %% dash.posteriorCalculation.percentiles.outputSize  Return the size of the percentiles output
             % ----------
-            %   siz = obj.outputSize(nState, ~, nTime)
+            %   siz = <strong>obj.outputSize</strong>(nState, ~, nTime)
             %   Returns the size of the output array for the posterior
             %   percentiles, which is nState x nPercs x nTime.
             % ----------
@@ -34,14 +36,15 @@ classdef percentiles < dash.posteriorCalculation.Interface
             %           output array. First element is nState, second element
             %           is nPercs, third element is nTime
             %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.outputsize')">Documentation Page</a> 
+            % <a href="matlab:dash.doc('dash.posteriorCalculation.percentiles.outputSize')">Documentation Page</a>
+
             nPercs = numel(obj.percentages);
             siz = [nState, nPercs, nTime];
         end
         function[Aperc] = calculate(obj, Adev, Amean)
             %% dash.posteriorCalculation.percentiles.calculate  Calculate percentiles across a set of ensemble deviations
             % ----------
-            %   Aperc = obj.calculate(Adev, Amean)
+            %   Aperc = <strong>obj.calculate</strong>(Adev, Amean)
             %   Calculates percentiles across a set of ensemble deviations.
             %   Propagates the deviation percentiles across posterior means
             %   in order to propagate percentiles across multiple
@@ -70,7 +73,7 @@ classdef percentiles < dash.posteriorCalculation.Interface
         function[obj] = percentiles(percentages)
             %% dash.posteriorCalculation.percentiles.percentiles  Create a new ensemble percentile calculation object
             % ----------
-            %   obj = dash.posteriorCalculation.percentiles(percentages)
+            %   obj = <strong>dash.posteriorCalculation.percentiles</strong>(percentages)
             %   Creates a posterior percentile calculation object for the
             %   requested ensemble percentiles. Assumes that all error
             %   checking occurs in kalmanFilter.percentiles

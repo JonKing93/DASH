@@ -5,15 +5,17 @@
 %   a few contents that may be useful to users. In particular, we think
 %   users may be interested in:
 %
-%   dash.doc       The fuction that opens the documentation browser
-%   dash.closest   Can help users locate points close to specific coordinates
-%   dash.localize  Functions that calculate covariance localization weights
-%   dash.version   Reports the current version of the DASH toolbox.
-% ----------
-% **FOR USERS**
-% These functions and packages are intended for users. They hold a few
-% miscellaneous methods that can facilitate assimilation workflows.
+%   dash.doc        - The function that opens the documentation browser
 %
+%   dash.closest    - Can help users locate points close to specific coordinates
+%
+%   dash.localize   - Functions that calculate covariance localization weights
+%
+%   dash.version    - Reports the current version of the DASH toolbox.
+%
+%   Alternatively, see the "Documentation" and "Miscellaneous" sections
+%   below for user functions.
+% ----------
 % Documentation:
 %   doc                     - Open DASH documentation pages
 %   version                 - Return the current version of the DASH toolbox
@@ -21,11 +23,6 @@
 % Miscellaneous:
 %   closest                 - Functions that find points closest to specified coordinates
 %   localize                - Functions that calculation covariance localization weights
-%
-%
-% ==UTILITIES==
-% Various utilities that help the DASH toolbox run. Most utilites are used
-% by multiple classes and packages in the toolbox.
 %
 % Input Utilities:
 %   is                      - Functions that test whether an input is a particular type
@@ -41,7 +38,7 @@
 %   math                    - Functions that implement mathematical equations
 %   kalman                  - Functions that implement the Kalman Filter equation
 %
-% Console Notifications
+% Console Notifications:
 %   warning                 - Functions that manipulate warnings
 %   error                   - Functions that throw errors
 %

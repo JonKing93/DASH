@@ -20,7 +20,7 @@ function[list] = list(list, conjunction)
 %       list (char row vector): The elements of the list formatted as a
 %           single char string.
 %
-%   <a href="matlab:dash.doc('dash.string.list')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.string.list')">Documentation Page</a>
 
 % Default
 if ~exist('conjunction','var') || isempty(conjunction)

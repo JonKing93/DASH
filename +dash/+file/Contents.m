@@ -6,7 +6,7 @@
 % File paths:
 %   relativePath  - Determine the relative path to a file from a folder
 %   collapsePath  - Collapse . and .. entries in a file path
-%   urlSeparators -  Replace windows-style (\) file separators with url-style (/) separators
+%   urlSeparators - Replace windows-style (\) file separators with url-style (/) separators
 %
 % Unit tests:
 %   tests         - Implement unit tests for the dash.file package

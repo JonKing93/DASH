@@ -1,20 +1,20 @@
 function[outputs, type] = estimates(obj, header, Ye, whichPrior)
 %% dash.ensembleFilter.estimates  Process the estimates for a filter object
 % ----------
-%   [outputs, type] = obj.estimates(header, ...)
+%   [outputs, type] = <strong>obj.estimates</strong>(header, ...)
 %   Processes options for estimates for a filter. Returns the outputs for
 %   the operations collected in a cell. Also returns a string indicate the
 %   type of operation performed.
 %
-%   [estCell, 'return'] = obj.estimates(header)
+%   [estCell, 'return'] = <strong>obj.estimates</strong>(header)
 %   Returns the current estimates and whichPrior.
 %
-%   [objCell, 'set'] = obj.estimates(header, Ye)
-%   [objCell, 'set'] = obj.estimates(header, Ye, whichPrior)
+%   [objCell, 'set'] = <strong>obj.estimates</strong>(header, Ye)
+%   [objCell, 'set'] = <strong>obj.estimates</strong>(header, Ye, whichPrior)
 %   Error checks the input estimates and whichPrior and overwrites any
 %   previously existing estimates. Returns the updated filter object.
 %
-%   [objCell, 'delete'] = obj.estimates('delete')
+%   [objCell, 'delete'] = <strong>obj.estimates</strong>('delete')
 %   Deletes any current estimates and returns the updated filter object.
 % ----------
 %   Inputs:

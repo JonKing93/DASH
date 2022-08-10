@@ -2,6 +2,8 @@ classdef nc < dash.dataSource.hdf
     %% dash.dataSource.nc  Objects that read data from NetCDF files
     % ----------
     % nc Methods:
+    %
+    % General:
     %   nc          - Create a new dash.dataSource.nc object
     %   loadStrided - Load data from a NetCDF file at strided indices
     %
@@ -15,10 +17,10 @@ classdef nc < dash.dataSource.hdf
         function[obj] = nc(source, var)
         %% dash.dataSource.nc.nc  Create a new dash.dataSource.nc object
         % ----------
-        %   obj = dash.dataSource.nc(file, var)
+        %   obj = <strong>dash.dataSource.nc</strong>(file, var)
         %   Creates a nc object to read data from a variable in a NetCDF file
         %
-        %   obj = dash.dataSource.nc(opendapURL, var)
+        %   obj = <strong>dash.dataSource.nc</strong>(opendapURL, var)
         %   Creates an nc object to read data from a variable stored in a
         %   NetCDF file accessed via an OPENDAP url.
         % ----------
@@ -28,12 +30,12 @@ classdef nc < dash.dataSource.hdf
         %       var (string scalar): The name of the variable in the file
         %
         %   Outputs:
-        %       obj: A new dash.dataSource.nc object
+        %       obj (scalar dash.dataSource.nc object): The new nc object
         %
         %   Throws:
         %       DASH:dataSource:nc:invalidNetCDF  when file is not a valid NetCDF
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.nc.nc')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.nc.nc')">Documentation Page</a>
             
             % Error check
             header = "DASH:dataSource:nc";
@@ -80,7 +82,7 @@ classdef nc < dash.dataSource.hdf
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Documentation Page</a>
             
             % Add any missing indices for trailing singletons
             nMissing = numel(obj.size) - numel(indices);

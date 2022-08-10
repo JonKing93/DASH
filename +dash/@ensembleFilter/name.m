@@ -1,11 +1,11 @@
 function[name] = name(obj)
 %% dash.ensembleFilter.name  Return a name for use in error messages
 % ----------
-%   name = obj.name
+%   name = <strong>obj.name</strong>
 %   Returns a name for the filter object.
 % ----------
 %   Outputs:
-%      name (string scalar): An identifying name for a filter objectf
+%       name (string scalar): An identifying name for a filter objectf
 %
 % <a href="matlab:dash.doc('dash.ensembleFilter.name')">Documentation Page</a>
 

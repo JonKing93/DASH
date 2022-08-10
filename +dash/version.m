@@ -1,6 +1,6 @@
 function[varargout] = version
 %% dash.version  Return the current version of the DASH toolbox
-% ----------
+% ----------    
 %   dash.version
 %   Prints the current version to the console
 %
@@ -12,7 +12,7 @@ function[varargout] = version
 %
 % <a href="matlab:dash.doc('dash.version')">Documentation Page</a>
 
-version = "v4.0.0-beta-1.1";
+version = "v4.0.0-beta-2";
 if nargout==0
     disp(version);
 else

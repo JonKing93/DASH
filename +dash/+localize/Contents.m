@@ -9,3 +9,5 @@
 %
 % Tests:
 %   tests   - Implements unit tests for the dash.localize package
+%
+% <a href="matlab:dash.doc('dash.localize')">Documentation Page</a>

@@ -18,7 +18,7 @@ function[] = doc(name)
 %       name (string scalar): The full name of a method, package, or class
 %           in the DASH toolbox.
 %
-%   <a href="matlab:dash.doc('dash.doc')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.doc')">Documentation Page</a>
 
 % Open default page if no contents
 if nargin==0

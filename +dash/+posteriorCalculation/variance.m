@@ -1,7 +1,9 @@
 classdef variance < dash.posteriorCalculation.Interface
     %% dash.posteriorCalculation.variance  Calculates variance across a posterior ensemble
     % ----------
-    % variance methods:
+    % variance Methods:
+    %
+    % General:
     %   outputSize  - Indicates that output has a size of nState x nTime
     %   calculate   - Calculates variance across posterior ensembles
     %
@@ -15,7 +17,7 @@ classdef variance < dash.posteriorCalculation.Interface
         function[siz] = outputSize(~, nState, ~, nTime)
             %% dash.posteriorCalculation.variance.outputSize  Return the size of the variance output
             % ----------
-            %   siz = obj.outputSize(nState, ~, nTime)
+            %   siz = <strong>obj.outputSize</strong>(nState, ~, nTime)
             %   Returns the size of the output array for the posterior variance,
             %   which is nState x nTime.
             % ----------
@@ -30,13 +32,13 @@ classdef variance < dash.posteriorCalculation.Interface
             %           output array. First element is nState, second element
             %           is nTime.
             %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.variance.outputsize')">Documentation Page</a> 
+            % <a href="matlab:dash.doc('dash.posteriorCalculation.variance.outputSize')">Documentation Page</a> 
             siz = [nState, nTime];
         end
         function[Avar] = calculate(~, Adev, Amean)
             %% dash.posteriorCalculation.variance.calculate  Calculate the variance across a set of ensemble deviations
             % ----------
-            %   Avar = obj.calculate(Adev, Amean)
+            %   Avar = <strong>obj.calculate</strong>(Adev, Amean)
             %   Calculates the variance across a set of ensemble
             %   deviations. Propagates calculated variances over the number
             %   of assimilation time steps indicated by Amean.

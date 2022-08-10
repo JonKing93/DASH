@@ -1,7 +1,7 @@
 classdef gridfileSources
     %% dash.gridfileSources  Implement a gridfile's catalogue of data sources
     % ----------
-    % dash.gridfileSources methods:
+    % gridfileSources Methods:
     %
     % Catalogue Management:
     %   add           - Add a new data source to the catalogue

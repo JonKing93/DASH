@@ -1,7 +1,7 @@
 function[width] = dispFilter(obj, link, width)
-%% ensembleFilter.dispFilter  Displays details about an ensembleFilter in the console
+%% dash.ensembleFilter.dispFilter  Displays details about an ensembleFilter in the console
 % ----------
-%   width = obj.dispFilter(link, width)
+%   width = <strong>obj.dispFilter</strong>(link, width)
 %   Displays details about an ensembleFilter object in the console. Begins
 %   by displaying a link to the class documentation. If the object
 %   is scalar, displays the label (if there is one). Also displays the current
@@ -23,7 +23,7 @@ function[width] = dispFilter(obj, link, width)
 %       width (scalar positive integer): The maximum width for aligning
 %           fields after also considering dispFilter fields.
 %
-% <a href="matlab:dash.doc('ensembleFilter.dispFilter')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.ensembleFilter.dispFilter')">Documentation Page</a>
 
 % If not scalar, display array size/labels and exit
 if ~isscalar(obj)

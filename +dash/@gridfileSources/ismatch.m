@@ -21,10 +21,10 @@ function[tf, property, objValue, catalogueValue] = ismatch(obj, dataSource, s)
 %           entry. Otherwise, false.
 %       property (string scalar): If not a match, the name of the property
 %           that did not match the catalogue. Otherwise, an empty char.
-%       objValue: If not a match, the value of the property in the
-%           dataSource object. Otherwise, an empty array.
-%       catalogueValue: If not a match, the value of the property in the
-%           catalogue. Otherwise, an empty array.
+%       objValue (array | []): If not a match, the value of the property in
+%           the dataSource object. Otherwise, an empty array.
+%       catalogueValue (array | []): If not a match, the value of the
+%           property in the catalogue. Otherwise, an empty array.
 %
 % <a href="matlab:dash.doc('dash.gridfileSources.ismatch')">Documentation Page</a>
 

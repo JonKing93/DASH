@@ -1,7 +1,7 @@
 function[X] = loadPrior(obj, p)
 %% dash.ensembleFilter.loadPrior  Load prior from an evolving set for a filter object
 % ----------
-%   X = obj.loadPrior(p)
+%   X = <strong>obj.loadPrior</strong>(p)
 %   Loads the requested prior in the evolving set.
 % ----------
 %   Inputs:

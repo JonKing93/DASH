@@ -1,21 +1,21 @@
 function[outputs, type] = uncertainties(obj, header, R, whichR, type)
 %% dash.ensembleFilter.uncertainties  Process the uncertainties for a filter object
 % ----------
-%   [outputs, type] = obj.uncertainties(header, ...)
+%   [outputs, type] = <strong>obj.uncertainties</strong>(header, ...)
 %   Processes options for uncertainties for a filter. Returns the outputs for
 %   the operations collected in a cell. Also returns a string indicate the
 %   type of operation performed.
 %
-%   [uncCell, 'return'] = obj.uncertainties(header)
+%   [uncCell, 'return'] = <strong>obj.uncertainties</strong>(header)
 %   Returns the current uncertainties and whichR.
 %
-%   [objCell, 'set'] = obj.uncertainties(header, R)
-%   [objCell, 'set'] = obj.uncertainties(header, R, whichR)
-%   [objCell, 'set'] = obj.uncertainties(header, R, whichR, type)
+%   [objCell, 'set'] = <strong>obj.uncertainties</strong>(header, R)
+%   [objCell, 'set'] = <strong>obj.uncertainties</strong>(header, R, whichR)
+%   [objCell, 'set'] = <strong>obj.uncertainties</strong>(header, R, whichR, type)
 %   Error checks the input uncertainties and whichR and overwrites any
 %   previously existing uncertainties. Returns the updated filter object.
 %
-%   [objCell, 'delete'] = obj.uncertainties('delete')
+%   [objCell, 'delete'] = <strong>obj.uncertainties</strong>('delete')
 %   Deletes any current uncertainties and returns the updated filter object.
 % ----------
 %   Inputs:

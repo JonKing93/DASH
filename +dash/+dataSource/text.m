@@ -2,6 +2,8 @@ classdef text < dash.dataSource.Interface
     %% dash.dataSource.text  Objects that read data from delimited text files
     % ----------
     % text Methods:
+    %
+    % General:
     %   text - Create a new dash.dataSource.text object
     %   load - Load data from a delimited text file
     %
@@ -15,13 +17,13 @@ classdef text < dash.dataSource.Interface
         function[obj] = text(file, varargin)
         %% dash.dataSource.text.text  Create a new dash.dataSource.text object
         % ----------
-        %   obj = dash.dataSource.text(file)
+        %   obj = <strong>dash.dataSource.text</strong>(file)
         %   Creates an object to read data from a delimited text file
         %
-        %   obj = dash.dataSource.text(..., opts)
+        %   obj = <strong>dash.dataSource.text</strong>(..., opts)
         %   Reads data from the file using the provided ImportOptions object
         %
-        %   obj = dash.dataSource.text(..., Name, Value)
+        %   obj = <strong>dash.dataSource.text</strong>(..., Name, Value)
         %   Specifies additional import options using name-value pair arguments.
         %   Supported Name-Value pairs are those in Matlab's "readmatrix"
         %   function. See the documentation page for "readmatrix" for
@@ -30,17 +32,17 @@ classdef text < dash.dataSource.Interface
         %   Inputs:
         %       file (string scalar): The name of a delimited text file
         %       opts (ImportOptions): Additional options for importing data from the file
-        %       Name,Value: Additional import options for reading data from the
+        %       Name,Value (name-value pair): Additional import options for reading data from the
         %           file. Supported pairs are those for the "readmatrix" function
         %
         %   Outputs:
-        %       obj: The new dash.dataSource.text object
+        %       obj (scalar dash.dataSource.text object): The new text object
         %
         %   Throws:
         %       DASH:dataSource:text:invalidTextFile  if data cannot be imported
         %           from the file
         %
-        %   <a href="dash.doc('dash.dataSource.text.text')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.text.text')">Documentation Page</a>
             
             % Error check
             header = 'DASH:dataSource:text';
@@ -89,7 +91,7 @@ classdef text < dash.dataSource.Interface
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.text.load')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.text.load')">Documentation Page</a>
  
             X = readmatrix(obj.source, obj.importOptions{:});
             X = X(indices{:});

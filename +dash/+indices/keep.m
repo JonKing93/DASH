@@ -16,7 +16,7 @@ function[keep] = keep(requested, loaded)
 %       keep (vector, linear indices): Indices of requested data elements
 %           within the loaded data set
 %
-%   <a href="matlab:dash.doc('dash.indices.keep')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.indices.keep')">Documentation Page</a>
 
 [~, keep] = ismember(requested, loaded);
 

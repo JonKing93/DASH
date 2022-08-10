@@ -6,6 +6,8 @@ classdef (Abstract) hdf < dash.dataSource.Interface
     %   exists in the file. It also enables strided loading.
     % ----------
     % hdf Methods:
+    %
+    % Concrete:
     %   setVariable - Ensure a variable exists in an HDF file
     %   load        - Load data from a HDF5 source
     %
@@ -32,13 +34,14 @@ classdef (Abstract) hdf < dash.dataSource.Interface
         %       fileVars (string vector): List of variables in the file
         %
         %   Outputs:
-        %       obj: Updated with the saved variable name
+        %       obj (scalar dash.dataSource.hdf object): The object with an
+        %           updated variable name
         %
         %   Throws:
         %       DASH:dataSource:hdf:variableNotInFile -  when the named variable is
         %           not in the file
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.hdf.setVariable')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.hdf.setVariable')">Documentation Page</a>
         
             if ~ismember(var, fileVars)
                 ME = MException('DASH:dataSource:hdf:variableNotInFile', ...
@@ -66,7 +69,7 @@ classdef (Abstract) hdf < dash.dataSource.Interface
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.hdf.load')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.hdf.load')">Documentation Page</a>
             
             % Preallocate
             nDims = numel(indices);
@@ -101,7 +104,7 @@ classdef (Abstract) hdf < dash.dataSource.Interface
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.hdf.loadStrided')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.hdf.loadStrided')">Documentation Page</a>
         X = loadStrided(obj, indices)
         
     end

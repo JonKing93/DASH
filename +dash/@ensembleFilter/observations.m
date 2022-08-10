@@ -1,19 +1,19 @@
 function[outputs, type] = observations(obj, header, Y)
 %% dash.ensembleFilter.observations  Process the observations for a filter object
 % ----------
-%   [outputs, type] = obj.observations(header, ...)
+%   [outputs, type] = <strong>obj.observations</strong>(header, ...)
 %   Processes options for observations for a filter object. Returns the
 %   appropriate outputs collected in a cell, and a string indicating the
 %   type of operation performed.
 %
-%   [obsCell, 'return'] = obj.observations(header)
+%   [obsCell, 'return'] = <strong>obj.observations</strong>(header)
 %   Returns the current observation matrix.
 %
-%   [objCell, 'set'] = obj.observations(header, Y)
+%   [objCell, 'set'] = <strong>obj.observations</strong>(header, Y)
 %   Error checks the input observation matrix and overwrites any previously
 %   existing observations. Returns the updated filter object.
 %
-%   [objCell, 'delete'] = obj.observations(header, 'delete')
+%   [objCell, 'delete'] = <strong>obj.observations</strong>(header, 'delete')
 %   Deletes any current observations and returns the updated filter object.
 % ----------
 %   Inputs:

@@ -12,7 +12,7 @@ function[indices] = stringsOrIndices(input, strings, name, elementName, collecti
 %   Customized error messages and IDs.
 % ----------
 %   Inputs:
-%       input: The input being parsed.
+%       input (any data type): The input being parsed.
 %       strings (string vector [nElements]): The list of strings associated with
 %           elements in a collection.
 %       name (string scalar): The name of the input being parsed. Default

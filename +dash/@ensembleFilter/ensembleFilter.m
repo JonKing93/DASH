@@ -1,5 +1,5 @@
 classdef (Abstract) ensembleFilter
-    %% ensembleFilter  Implement common utilities for ensemble-based data assimilation filters
+    %% dash.ensembleFilter  Implement common utilities for ensemble-based data assimilation filters
     % ----------
     %   The ensembleFilter class implements utilities that are used by both
     %   the Kalman Filter, and the particle filter. The primary purpose of
@@ -9,12 +9,12 @@ classdef (Abstract) ensembleFilter
     %   loading specific priors or R covariances, and also for checking that
     %   a filter object has the inputs required to run an algorithm
     % ----------
-    % ensembleFilter methods:
+    % ensembleFilter Methods:
     %   
     % General:
-    %   label       - Set or return a label for the filter
-    %   name        - Return a name for use in error messages
-    %   finalize    - Ensure that a filter object has the required inputs to run an algorithm
+    %   label           - Set or return a label for the filter
+    %   name            - Return a name for use in error messages
+    %   finalize        - Ensure that a filter object has the required inputs to run an algorithm
     %
     % Inputs:
     %   observations    - Parse and process observations for a filter
@@ -23,7 +23,7 @@ classdef (Abstract) ensembleFilter
     %   uncertainties   - Parse and process uncertainties for a filter
     %
     % Error checking:
-    %   parseWhich      - Processes whichR and whichPrior inputs
+    %   processWhich    - Processes whichR and whichPrior inputs
     %   assertValidR    - Ensures that observations do not have NaN uncertainties
     %
     % Query:

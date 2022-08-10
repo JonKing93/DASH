@@ -11,7 +11,7 @@ function[obj] = design(obj, dims, types, indices, header)
 %       types (vector, integers [nDimensions]): 0 if a dimension should
 %           maintain its current state. 1 if a state dimension. 2 if an
 %           ensemble dimension.
-%       indices (cell vector [nDimensions] {[] | logical vector | vector, linear indices}:
+%       indices (cell vector [nDimensions] {[] | logical vector | vector, linear indices}):
 %           State or reference indices for each dimension.
 %       header (string scalar): Header for thrown error IDs
 %

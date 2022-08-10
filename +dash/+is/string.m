@@ -6,7 +6,7 @@ function[tf] = string(input)
 %   Otherwise, returns false.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %
 %   Outputs:
 %       tf (scalar logical): True if the input is a string, cellstring, or

@@ -1,7 +1,7 @@
 function[] = assertValidR(obj, header)
 %% dash.ensembleFilter.assertValidR  Check that observations have an R variance or covariance in required time steps
 % ----------
-%   obj.assertValidR(header)
+%   <strong>obj.assertValidR</strong>(header)
 %   Throws an error if any observation lacks an R variance or covariance in
 %   a required time step.
 % ----------

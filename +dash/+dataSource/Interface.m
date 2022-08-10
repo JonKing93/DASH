@@ -3,9 +3,13 @@ classdef (Abstract) Interface
     % ----------
     %   dash.dataSource.Interface is an abstract interface. It requires concrete
     %   subclasses to implement a "load" method that reads data from a 
-    %   source file.
+    %   source file. These subclasses can implement the load method in
+    %   different manners in order to allow gridfiles to load data from
+    %   diverse data sources.
     % ----------
-    % Interface methods:
+    % Interface Methods:
+    %
+    % Interface:
     %   load - Load data from a source file
     %
     % <a href="matlab:dash.doc('dash.dataSource.Interface')">Documentation Page</a>
@@ -32,7 +36,7 @@ classdef (Abstract) Interface
         %   Outputs:
         %       X (array): The loaded dataset
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.Interface.load')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.Interface.load')">Documentation Page</a>
         X = load(obj, indices)
         
     end

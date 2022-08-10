@@ -8,8 +8,8 @@ function[indices] = indices(obj, sources, header)
 %   type.
 % ----------
 %   Inputs:
-%       sources: The input being parsed. Should either be array indices or
-%           source names.
+%       sources (any data type): The input being parsed. If valid, should
+%           either be array indices or source names.
 %       header (string scalar): Header for thrown error IDs.
 %
 %   Outputs:

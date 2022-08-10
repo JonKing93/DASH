@@ -6,7 +6,7 @@ function[] = tests
 %   error at the first failed test.
 % ----------
 % 
-% <a href="matlab:dash.doc('dash.ensembleFilter.tests')">Online Documentation</a>
+% <a href="matlab:dash.doc('dash.ensembleFilter.tests')">Documentation Page</a>
 
 
 constructor;

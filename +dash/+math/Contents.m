@@ -10,4 +10,7 @@
 %   covariance      - Computes the cross covariance over two sets of ensemble deviations
 %   variance        - Computes the variance across a set of ensemble deviations
 %
+% Tests:
+%   tests           - Unit tests for the dash.math package
+%
 % <a href="matlab:dash.doc('dash.math')">Documentation Page</a>

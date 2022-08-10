@@ -10,10 +10,9 @@ function[info] = nonscalarObj(obj, type)
 %       type (string scalar): The data type of the object
 %
 %   Outputs:
-%       info (string scalar): The header of the object as printed by a
-%           "disp" command.
+%       info (string scalar): The header of the object as printed by a "disp" command.
 %
-%   <a href="matlab:dash.doc('dash.string.nonscalarObj')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.string.nonscalarObj')">Documentation Page</a>
 
 %%% Parameter
 maxDims = 4;

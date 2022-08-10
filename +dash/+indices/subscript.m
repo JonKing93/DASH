@@ -20,13 +20,13 @@ function[subscriptIndices] = subscript(siz, linearIndices)
 %           which to return subscript indices.
 %
 %   Outputs:
-%       subscriptIndices (cell vector [nDimensions] {linear subscript indices}:
+%       subscriptIndices (cell vector [nDimensions] {linear subscript indices}):
 %           Subscript indices for elements in the array. If no linear
 %           indices are specified, includes the subscript indices for each
 %           array element in order. If linear indices are provided,
 %           includes subscript indices for each listed linear index.
 %
-% <a href="matlab:dash.doc('dash.indices.subscript')">Documenation Page</a>
+% <a href="matlab:dash.doc('dash.indices.subscript')">Documentation Page</a>
 
 % Default is all linear indices. Use column vector of linear indices
 if ~exist('linearIndices','var')

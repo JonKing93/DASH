@@ -1,10 +1,10 @@
 function[outputs] = label(obj, header, label)
 %% dash.ensembleFilter.label  Return or set the label of an filter object
 % ----------
-%   labelCell = obj.label(header)
+%   labelCell = <strong>obj.label</strong>(header)
 %   Returns the label of the current filter.
 %
-%   objCell = obj.label(header, label)
+%   objCell = <strong>obj.label</strong>(header, label)
 %   Applies a new label to the filter.
 % ----------
 %   Inputs:

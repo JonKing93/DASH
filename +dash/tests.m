@@ -1,5 +1,5 @@
 function[] = tests
-%% dash.tests Implements unit testing for the dash package
+%% dash.tests  Implements unit testing for the dash package
 % ----------
 %   dash.tests
 %   Runs the units tests. If the tests pass, exits silently.

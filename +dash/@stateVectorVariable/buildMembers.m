@@ -31,14 +31,30 @@ function[X] = buildMembers(obj, dims, subMembers, grid, source, parameters, prec
 %           .indices (vector, linear indices [nBuilt]): The indices of the
 %               built dataSource objects within the full set of gridfile sources
 %       parameters (scalar struct): Build-parameters for the variable.
-%           Created in stateVector.buildEnsemble.
-%           .rawSize 
-%           .meanDims
-%           .nState
-%           .indexLimits
-%           .loadAllMembers
-%           .whichSet   (not used here)
-%           .dims       (not used here)
+%           Created in stateVector.buildEnsemble
+%           .rawSize (vector, positive integers): The size of a raw ensemble
+%               member. This is the size of the ensemble member before any
+%               means are taken. Mean and sequence elements are separated
+%               from one another.
+%           .meanDims (vector, linear index): The index of the dimension
+%               containing mean elements in the raw ensemble member.
+%               (Because mean and sequence elements are separated from one
+%               another, variable dimensions may actually span 2 dimensions
+%               of the loaded ensemble member).
+%           .nState (scalar positive integer): The number of state vector
+%               elements in the final ensemble member
+%           .indexLimits (cell vector [nVariables] {index limits [nDims x 2]}):
+%               The index limits along each gridfile dimension required to load
+%               all ensemble members for a variable.
+%           .loadAllMembers (logical vector [nVariables]): Whether each variable
+%               has the data sources necessary to load all members at once.
+%               Note that this does not guarantee that a variable *actually
+%               will* load all members at once, only that a variable should
+%               attempt the load.
+%           .whichSet (scalar, linear index): The index of the coupling
+%               set to which the variable belongs
+%           .dims (vector, linear indices [nDimensions]): The indices
+%               of the ensemble dimensions in the variable
 %       precision ('single' | 'double'): The numerical precision of the
 %           output data array
 %

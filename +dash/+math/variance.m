@@ -19,7 +19,7 @@ function[Xvar] = variance(Xdev, unbias)
 %   Outputs:
 %       Xvar (numeric vector [N]): The variances across the ensemble
 %
-% <a href="matlab:dash.doc('dash.math.unbias')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.math.variance')">Documentation Page</a>
 
 % Coefficient of unbiased estimation
 if ~exist('unbias','var') || isempty(unbias)

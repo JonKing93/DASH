@@ -12,7 +12,7 @@ function[input, wasCell] = inputOrCell(input, nEls, name, header)
 %   Customize thrown error messages and IDs.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %       nEls (numeric scalar): The number of arrays required.
 %       name (string scalar): A name to refer to the input in error
 %           messages. Default is "input".

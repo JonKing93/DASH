@@ -28,7 +28,7 @@ classdef stateVectorVariable
 %   deserialized upon load. See the "serialize" and "deserialize" commands
 %   to implement these options.
 % ----------
-% dash.stateVectorVariable methods:
+% stateVectorVariable Methods:
 %
 % Create:
 %   stateVectorVariable - Create a new stateVectorVariable object
@@ -63,6 +63,9 @@ classdef stateVectorVariable
 %   indexLimits         - Return limits of gridfile dimension indices required to load ensemble members
 %   parametersForBuild  - Return parameters used for building ensemble members
 %   buildMembers        - Build a set of ensemble members
+%
+% Info:
+%   info                - Return information about a stateVectorVariable
 %
 % Serialization:
 %   serialize           - Convert variables to a struct that supports fast saving / loading
@@ -159,11 +162,11 @@ methods
     function[obj] = stateVectorVariable(grid)
     %% dash.stateVectorVariable.stateVectorVariable  Create a new stateVectorVariable object
     % ----------
-    %   obj = dash.stateVectorVariable
+    %   obj = <strong>dash.stateVectorVariable</strong>
     %   Returns a new, empty stateVectorVariable object. The object is not
     %   linked to a gridfile, so has no dimensions.
     %
-    %   obj = dash.stateVectorVariable(grid)
+    %   obj = <strong>dash.stateVectorVariable</strong>(grid)
     %   Creates a new stateVectorVariable object linked to a gridfile. By
     %   default, all dimensions are set as state dimensions, and all indices
     %   are selected for inclusion in the state vector.
@@ -174,7 +177,7 @@ methods
     %   Outputs:
     %       obj (scalar stateVectorVariable): The new stateVectorVariable object
     %
-    % <a href="matlab:dash.doc('dash.stateVectorVariable.stateVectorVariable
+    % <a href="matlab:dash.doc('dash.stateVectorVariable.stateVectorVariable')">Documentation Page</a>
 
     % Empty call syntax
     if nargin==0

@@ -3,7 +3,7 @@
 % State:
 %   state   - Set the state of a warning and restore original state
 %
-% Tests
+% Tests:
 %   tests   - Unit tests for the dash.warning package
 %
-% <a href="matlab:dash.doc('dash.warning.toggle')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.warning')">Documentation Page</a>

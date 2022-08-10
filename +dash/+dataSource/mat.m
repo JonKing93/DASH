@@ -7,7 +7,7 @@ classdef mat < dash.dataSource.hdf
     %   mat           - Create a new dash.dataSource.mat object
     %   loadStrided   - Load data from a MAT-file at strided indices
     %
-    % v73 Matfile Warnings:
+    % Disable Warnings:
     %   v73warning    - Issue informative warning if the .mat file for a dataSource is not version 7.3
     %
     % Inherited:
@@ -27,21 +27,21 @@ classdef mat < dash.dataSource.hdf
         function[obj] = mat(file, var)
         %% dash.dataSource.mat.mat  Create a new dash.dataSource.mat object
         % ----------
-        %   obj = dash.dataSource.mat(file, var)
+        %   obj = <strong>dash.dataSource.mat</strong>(file, var)
         %   Creates a mat object to read data from a variable in a MAT-file
         % ----------
         %   Inputs:
         %       file (string scalar): The name of a MAT-file
         %       var (string scalar): The name of the variable to load from
-        %          the file. The variable in the file must not be empty.
+        %           the file. The variable in the file must not be empty.
         %
         %   Outputs:
-        %       obj: A new dash.dataSource.mat object
+        %       obj (scalar dash.dataSource.mat object): The new mat object
         %
         %   Throws:
         %       DASH:dataSource:mat:invalidMatfile  if file is not a valid .mat file
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.mat')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.mat.mat')">Documentation Page</a>
             
         % Error check
         header = 'DASH:dataSource:mat';
@@ -107,7 +107,7 @@ classdef mat < dash.dataSource.hdf
         %   Outputs:
         %       X (array): The loaded data
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.mat.loadStrided')">Documentation Page</a>
         
         % Disable the partial load warning (it will reset state by default)
         reset = dash.warning.state('off', obj.warnID); %#ok<NASGU> 
@@ -132,7 +132,7 @@ classdef mat < dash.dataSource.hdf
         %   Warnings:
         %       Prints a warning to the console if the MAT-file is not v7.3
         %
-        %   <a href="matlab:dash.doc('dash.dataSource.mat.v73warning')>Documentation Page</a>
+        % <a href="matlab:dash.doc('dash.dataSource.mat.v73warning')">Documentation Page</a>
         
         [~,name,ext] = fileparts(obj.source);
         file = strcat(name, ext);

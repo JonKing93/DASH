@@ -5,7 +5,7 @@ function[tf] = charrow(input)
 %   Return true if the input is a char row vector. Otherwise, return false.
 % ----------
 %   Inputs:
-%       input: The input being tested
+%       input (any data type): The input being tested
 %   
 %   Outputs:
 %       tf (scalar logical): True if the input is a char row vector or

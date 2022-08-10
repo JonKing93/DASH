@@ -1,12 +1,12 @@
 function[Rcov] = Rcovariance(obj, t, s)
 %% dash.ensembleFilter.Rcovariance  Returns R uncertainty covariance for a time steps and sites
 % ----------
-%   Rcov = obj.Rcovariance(t)
+%   Rcov = <strong>obj.Rcovariance</strong>(t)
 %   Returns the R covariance matrix for the queried time steps. If the filter
 %   has saved R variances, builds a diagonal covariance matrix from the
 %   variances.
 %
-%   Rcov = obj.Rcovariance(t, s)
+%   Rcov = <strong>obj.Rcovariance</strong>(t, s)
 %   Returns the R covariance matrix at the queried time steps and
 %   observation sites. Only includes covariance elements for the requested
 %   sites.

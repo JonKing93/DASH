@@ -12,7 +12,7 @@ function[switches] = switches(input, typeStrings, nSwitches, name, listName, hea
 %   Customize thrown error messages and identifiers.
 % ----------
 %   Inputs:
-%       input: The input being parsed
+%       input (any data type): The input being parsed
 %       typeStrings (cell vector [nStates] {string vector}): Strings
 %           corresponding to the possible states of the switch. A cell
 %           vector with one element per state. Each cell holds a string

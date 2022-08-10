@@ -1,7 +1,9 @@
 classdef weightedMean < dash.posteriorCalculation.Interface
     %% dash.posteriorCalculation.weightedMean  Calculates a weightedMean on each member of a posterior ensemble
     % ----------
-    % weightedMean methods:
+    % weightedMean Methods:
+    %
+    % General:
     %   weightedMean    - Creates a new weighted mean index calculation object
     %   outputSize      - Indicates that output has a size of nMembers x nTime
     %   calculate       - Calculates a weighted mean for each member of a posterior ensemble
@@ -21,7 +23,7 @@ classdef weightedMean < dash.posteriorCalculation.Interface
         function[siz] = outputSize(~, ~, nMembers, nTime)
             %% dash.posteriorCalculation.weightedMean.outputSize  Return the size of the output
             % ----------
-            %   siz = obj.outputSize(~, nMembers, nTime)
+            %   siz = <strong>obj.outputSize</strong>(~, nMembers, nTime)
             %   Returns the size of the output array for a weighted mean
             %   calculated over ensemble members, which is nMembers x nTime
             % ----------
@@ -36,13 +38,13 @@ classdef weightedMean < dash.posteriorCalculation.Interface
             %           output array. First element is nMembers, second element
             %           is nTime.
             %
-            % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean.outputsize')">Documentation Page</a> 
+            % <a href="matlab:dash.doc('dash.posteriorCalculation.weightedMean.outputSize')">Documentation Page</a> 
             siz = [nMembers, nTime];
         end
         function[index] = calculate(obj, Adev, Amean)
             %% dash.posteriorCalculation.weightedMean.calculate  Calculate a weighted mean index over each member in a posterior ensemble
             % ----------
-            %   index = obj.calculate(Adev, Amean)
+            %   index = <strong>obj.calculate</strong>(Adev, Amean)
             %   Calculates a weighted mean index over each member of a 
             %   posterior ensemble. Propagates weighted means for the
             %   deviations over ensemble means for multiple time steps that
@@ -84,7 +86,7 @@ classdef weightedMean < dash.posteriorCalculation.Interface
         function[obj] = weightedMean(rows, weights, nanflag)
             %% dash.posteriorCalculation.weightedMean.weightedMean  Create a new weighted mean index calculation object
             % ----------
-            %   obj = dash.posteriorCalculation.weightedMean(rows, weights, nanflag)
+            %   obj = <strong>dash.posteriorCalculation.weightedMean</strong>(rows, weights, nanflag)
             %   Creates a new calculation object for a weighted mean index.
             %   Assumes that all error checking of inputs occurs in
             %   kalmanFilter.index
