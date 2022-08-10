@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM.estimate &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PSM.Interface" href="Interface.html" />
+    <link rel="prev" title="PSM.download" href="download.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../PSM.html">PSM</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#information">Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#download">Download</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../PSM.html#estimate">Estimate</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">estimate</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#f">F</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#ens">ens</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#failureresponse">failureResponse</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#reportstatus">reportStatus</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#ye">Ye</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#r">R</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#status">status</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-models">Forward Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#template">Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../PSM.html">PSM</a> &raquo;</li>
+      <li>PSM.estimate</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm-estimate">
+<h1>PSM.estimate<a class="headerlink" href="#psm-estimate" title="Permalink to this headline"></a></h1>
+<p>Compute observation estimates by applying forward models to a state vector ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax1"><span class="std std-ref">Ye = PSM.estimate(F, X)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax1"><span class="std std-ref">Ye = PSM.estimate(F, ens)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax2"><span class="std std-ref">[Ye, R] = PSM.estimate(…)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax3"><span class="std std-ref">… = PSM.estimate(…, ‘fail’, failureResponse)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax3"><span class="std std-ref">… = PSM.estimate(…, ‘fail’, 0|’e’|’error’)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax3"><span class="std std-ref">… = PSM.estimate(…, ‘fail’, 1|’s’|’skip’)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax3"><span class="std std-ref">… = PSM.estimate(…, ‘fail’, 2|’w’|’warn’)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax4"><span class="std std-ref">… = PSM.estimate(…, ‘status’, reportStatus)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax4"><span class="std std-ref">[status, Ye, R] = PSM.estimate(…, ‘status’, true|’r’|’report’)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-estimate-syntax4"><span class="std std-ref">[Ye, R] = PSM.estimate(…, ‘status’, false|’d’|’discard’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="psm-estimate-syntax1">
+<div class="line"><a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a> = PSM.estimate(<a class="reference internal" href="#psm-estimate-inputs-f"><span class="std std-ref">F</span></a>, <a class="reference internal" href="#psm-estimate-inputs-x"><span class="std std-ref">X</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a> = PSM.estimate(<a class="reference internal" href="#psm-estimate-inputs-f"><span class="std std-ref">F</span></a>, <a class="reference internal" href="#psm-estimate-inputs-ens"><span class="std std-ref">ens</span></a>)</div>
+</div>
+</pre><p>Computes observation estimates for a set of PSMs / forward models. For each PSM, uses the PSM’s rows to extract forward model inputs from the state vector ensemble. These inputs are used to run the PSM, and the PSM outputs are added to the output array of observation estimates.</p>
+<p>Forward models should be provided either as a cell vector, where each element holds a scalar PSM object. If all the PSM objects are the same type of PSM, you may alternatively provide the PSM objects directly as PSM vector. Each PSM object is used to produce estimates for a particular observation site. Each row of the output array Ye holds the estimates for a particular PSM / observation site. The order of rows of Ye will match the order of input PSMs.</p>
+<p>You can provide the state vector ensemble either directly as a numeric array, or as an ensemble object. If using a numeric array, the rows are treated as state vector elements and the columns are ensemble members. Any elements along the third dimension are treated as individual ensembles in an evolving set. If using an ensemble object, the object may implement either a static or an evolving ensemble. The number of columns of Ye will match the number of ensemble members, and the number of elements along the third dimension of Ye will match the number of evolving ensembles.</p>
+<p>The method uses PSM rows to extract forward model inputs from the state vector ensemble. Thus, you must call the “rows” command on each input PSM object before using the “estimate” command. If any of the PSM objects defines different rows for different ensemble members, then all of the PSM objects must either 1. Define rows for the same number of ensemble members, or 2. Use the same rows for all ensemble members. Likewise, if any of the PSM objects defines different rows for different ensembles in an evolving set, then all of the PSM objects must either 1. Define rows for the same number of evolving ensembles, or 2. Use the same rows for all evolving ensembles.</p>
+<p>If a PSM fails, the method issues a warning that the PSM failed in the console. The Ye values for the PSM will all be NaN.</p>
+<pre><div class="syntax line-block" id="psm-estimate-syntax2">
+<div class="line">[<a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a>, <a class="reference internal" href="#psm-estimate-outputs-r"><span class="std std-ref">R</span></a>] = PSM.estimate(…)</div>
+</div>
+</pre><p>Also estimates R error-variances from the PSMs whenever possible. Each row of the output array holds the estimated R error-variances for a particular site. If a forward model does not have the ability to estimate R variances, the R variances for the observation site will all be NaN. If a PSM fails, the R values for the PSM will all be NaN.</p>
+<pre><div class="syntax line-block" id="psm-estimate-syntax3">
+<div class="line">= PSM.estimate(…, ‘fail’, <a class="reference internal" href="#psm-estimate-inputs-failureresponse"><span class="std std-ref">failureResponse</span></a>)</div>
+<div class="line">= PSM.estimate(…, ‘fail’, 0|’e’|’error’)</div>
+<div class="line">= PSM.estimate(…, ‘fail’, 1|’s’|’skip’)</div>
+<div class="line">= PSM.estimate(…, ‘fail’, 2|’w’|’warn’)</div>
+</div>
+</pre><p>Indicate how the method should respond when a PSM fails to run. If 0|’e’|’error’, throws an error when a PSM fails. If 1|’s’|’skip’, skips over the failed PSM. If 2|’w’|’warn’, skips over the failed PSM and displays a warning in the console.</p>
+<pre><div class="syntax line-block" id="psm-estimate-syntax4">
+<div class="line">= PSM.estimate(…, ‘status’, <a class="reference internal" href="#psm-estimate-inputs-reportstatus"><span class="std std-ref">reportStatus</span></a>)</div>
+<div class="line">[<a class="reference internal" href="#psm-estimate-outputs-status"><span class="std std-ref">status</span></a>, <a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a>, <a class="reference internal" href="#psm-estimate-outputs-r"><span class="std std-ref">R</span></a>] = PSM.estimate(…, ‘status’, true|’r’|’report’)</div>
+<div class="line">[<a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a>, <a class="reference internal" href="#psm-estimate-outputs-r"><span class="std std-ref">R</span></a>] = PSM.estimate(…, ‘status’, false|’d’|’discard’)</div>
+</div>
+</pre><p>Indicate if the method should return a status report for each of the PSMs. The status report returns additional information about any PSMs that failed to run. This option allows users to obtain more information for troubleshooting PSMs that have failed. If true|’r’|’report’, returns a status report as the first output of the method. The status report is a struct with two fields: “.failed” and “.cause”. The “.failed” field whether each PSM ran successfully or failed. If the PSM ran successfully, .failed is 0 for the PSM. Otherwise, .failed is an integer that reports the type of failure that occurred. The “.cause” field reports the errors that caused any PSMs to failed. This field is a cell vector with one element per PSM. If the PSM ran successfully, the associated element is empty. If the PSM failed, the associated element contains the error that caused the failure.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="f">
+<span id="psm-estimate-inputs-f"></span><h3>F<a class="headerlink" href="#f" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>F</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> | <em>PSM</em> <em>vector</em> [<em>nSite</em>]</div>
+<div class="line">The forward models for the observation sites. Either a cell vector or a PSM vector with one element per observation site. If a cell vector, each element must hold a scalar PSM object. The PSM objects must all have previously used the “rows” command to define the state vector rows that hold the forward model inputs.</div>
+</div>
+<p>If any PSM objects define different rows for different ensemble members, then all PSM objects must either 1. Define rows for the same number of ensemnble members, or 2. Use the same rows for all ensemble members. If any PSM object define different rows for different ensembles in an evolving set, then all PSM objects must either 1. Define rows for the same number of evolving ensembles, or 2. Use the same rows for all evolving ensembles.</p>
+</div></section></section>
+<section class="collapse-examples" id="x">
+<span id="psm-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">The state vector ensemble provided directly as a numeric array. Each row is a state vector element, each column is an ensemble member, and each element along the third dimension is an ensemble in an evolving set.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ens">
+<span id="psm-estimate-inputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>ens</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
+<div class="line">The state vector ensemble provided as an ensemble object. May implement either a static or an evolving ensemble.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="failureresponse">
+<span id="psm-estimate-inputs-failureresponse"></span><h3>failureResponse<a class="headerlink" href="#failureresponse" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>failureResponse</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>numeric</em> <em>scalar</em></div>
+<div class="line">Indicates how the method should respond when a PSM fails to run.</div>
+</div>
+<p>[0|’e’|’error’]: Throw an error</p>
+<p>[1|’s’|’skip’]: Skip the failed PSM, but do not issue a warning in the console</p>
+<p>[2|’w’|’warn’]: Issue a warning in the console and skip the PSM</p>
+</div></section></section>
+<section class="collapse-examples" id="reportstatus">
+<span id="psm-estimate-inputs-reportstatus"></span><h3>reportStatus<a class="headerlink" href="#reportstatus" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>reportStatus</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
+<div class="line">Indicates whether the method should return a status report for the PSMs.</div>
+</div>
+<p>[true|’r’|’report’]: Return a status report as the first output</p>
+<p>[false|’d’|’discard’]: Do not return a status report</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="ye">
+<span id="psm-estimate-outputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>Ye</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">The observation estimates generated by applying the forward models to the state vector ensemble.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="r">
+<span id="psm-estimate-outputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>R</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">The R error variances estimated by the forward models.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="status">
+<span id="psm-estimate-outputs-status"></span><h3>status<a class="headerlink" href="#status" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>status</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>struct</em></div>
+<div class="line">A status report for the PSMs</div>
+</div>
+<p><strong>.failed</strong> (numeric vector [nSite]): Indicates the status of each forward model run [0]: The forward model ran successfully [1]: The inputs for the forward model failed to load [2]: The forward model issued an error while running [3]: The Ye outputs from the forward model were not valid [4]: The R uncertainties from the forward model were not valid</p>
+<p><strong>.cause</strong> (cell vector [nSite] {[] | scalar MException}): Reports the error that caused a PSM to fail. If the PSM ran successfully, the associated element is empty.</p>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="download.html" class="btn btn-neutral float-left" title="PSM.download" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Interface.html" class="btn btn-neutral float-right" title="PSM.Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

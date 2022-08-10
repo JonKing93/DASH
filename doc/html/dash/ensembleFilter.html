@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.ensembleFilter &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dash.ensembleFilter.label" href="ensembleFilter/label.html" />
+    <link rel="prev" title="dash.stateVectorVariable.tests" href="stateVectorVariable/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../dash.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataSource.html">dataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stateVectorVariable.html">stateVectorVariable</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ensembleFilter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/label.html">label</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/name.html">name</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/finalize.html">finalize</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#inputs">Inputs</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/observations.html">observations</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/prior.html">prior</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/estimates.html">estimates</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/uncertainties.html">uncertainties</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#error-checking">Error Checking</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/processWhich.html">processWhich</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/assertValidR.html">assertValidR</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#query">Query</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/Rcovariance.html">Rcovariance</a></li>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/loadPrior.html">loadPrior</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#console-display">Console Display</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/dispFilter.html">dispFilter</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="ensembleFilter/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../dash.html">dash</a> &raquo;</li>
+      <li>dash.ensembleFilter</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-ensemblefilter">
+<h1>dash.ensembleFilter<a class="headerlink" href="#dash-ensemblefilter" title="Permalink to this headline"></a></h1>
+<p>Implement common utilities for ensemble-based data assimilation filters</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p>The ensembleFilter class implements utilities that are used by both the Kalman Filter, and the particle filter. The primary purpose of this class is to parse and error check the essential data inputs to these filters. Specifically, the observations, uncertainties, estimates, and prior. The class also includes a utilities for loading specific priors or R covariances, and also for checking that a filter object has the inputs required to run an algorithm</p>
+</section>
+<hr class="docutils" />
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h2>
+<section id="general">
+<h3>General<a class="headerlink" href="#general" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/label.html"><span class="doc">label</span></a> - Set or return a label for the filter</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/name.html"><span class="doc">name</span></a> - Return a name for use in error messages</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/finalize.html"><span class="doc">finalize</span></a> - Ensure that a filter object has the required inputs to run an algorithm</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="inputs">
+<h3>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/observations.html"><span class="doc">observations</span></a> - Parse and process observations for a filter</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/prior.html"><span class="doc">prior</span></a> - Parse and process priors for a filter</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/estimates.html"><span class="doc">estimates</span></a> - Parse and process estimates for a filter</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/uncertainties.html"><span class="doc">uncertainties</span></a> - Parse and process uncertainties for a filter</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="error-checking">
+<h3>Error Checking<a class="headerlink" href="#error-checking" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/processWhich.html"><span class="doc">processWhich</span></a> - Processes whichR and whichPrior inputs</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/assertValidR.html"><span class="doc">assertValidR</span></a> - Ensures that observations do not have NaN uncertainties</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="query">
+<h3>Query<a class="headerlink" href="#query" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/Rcovariance.html"><span class="doc">Rcovariance</span></a> - Returns an R covariance matrix for queried time steps and sites</div>
+<div class="line"><a class="reference internal" href="ensembleFilter/loadPrior.html"><span class="doc">loadPrior</span></a> - Loads a prior from an evolving set</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="console-display">
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/dispFilter.html"><span class="doc">dispFilter</span></a> - Display details about a filter object in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleFilter/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensembleFilter class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stateVectorVariable/tests.html" class="btn btn-neutral float-left" title="dash.stateVectorVariable.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensembleFilter/label.html" class="btn btn-neutral float-right" title="dash.ensembleFilter.label" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

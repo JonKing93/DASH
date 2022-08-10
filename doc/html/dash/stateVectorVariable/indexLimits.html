@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.stateVectorVariable.indexLimits &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.stateVectorVariable.parametersForBuild" href="parametersForBuild.html" />
+    <link rel="prev" title="dash.stateVectorVariable.removeOverlap" href="removeOverlap.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVectorVariable.html">stateVectorVariable</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../stateVectorVariable.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../stateVectorVariable.html#methods">Methods</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#create">Create</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#design">Design</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#dimensions-and-sizes">Dimensions And Sizes</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#gridfile-interactions">Gridfile Interactions</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#utilities-for-build">Utilities For Build</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#select-ensemble-members">Select Ensemble Members</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="../stateVectorVariable.html#build-members">Build Members</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">indexLimits</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#dims">dims</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#submembers">subMembers</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#includestate">includeState</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#alllimits">allLimits</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#enslimits">ensLimits</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="parametersForBuild.html">parametersForBuild</a></li>
+<li class="toctree-l6"><a class="reference internal" href="buildMembers.html">buildMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#info">Info</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#serialization">Serialization</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleFilter.html">ensembleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../stateVectorVariable.html">dash.stateVectorVariable</a> &raquo;</li>
+      <li>dash.stateVectorVariable.indexLimits</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-statevectorvariable-indexlimits">
+<h1>dash.stateVectorVariable.indexLimits<a class="headerlink" href="#dash-statevectorvariable-indexlimits" title="Permalink to this headline"></a></h1>
+<p>Return the gridfile index limits required to load a set of ensemble members</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-indexlimits-syntax1"><span class="std std-ref">limits = obj.indexLimits(dims, subMembers, includeState)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-indexlimits-syntax2"><span class="std std-ref">allLimits = obj.indexLimits(dims, subMembers, true)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-indexlimits-syntax3"><span class="std std-ref">ensLimits = obj.indexLimits(dims, subMembers, false)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-statevectorvariable-indexlimits-syntax1">
+<div class="line">limits = obj.indexLimits(<a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-dims"><span class="std std-ref">dims</span></a>, <a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-submembers"><span class="std std-ref">subMembers</span></a>, <a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-includestate"><span class="std std-ref">includeState</span></a>)</div>
+</div>
+</pre><p>Returns index limits along dimensions of a variable. Size of the output and dimension order of limits will depend on whether state dimension limits are required or not.</p>
+<p><strong>Note</strong>: This method should only be called after the variable has been finalized.</p>
+<pre><div class="syntax line-block" id="dash-statevectorvariable-indexlimits-syntax2">
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-indexlimits-outputs-alllimits"><span class="std std-ref">allLimits</span></a> = obj.indexLimits(<a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-dims"><span class="std std-ref">dims</span></a>, <a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-submembers"><span class="std std-ref">subMembers</span></a>, true)</div>
+</div>
+</pre><p>Determines the gridfile indices needed to load all the indicated ensemble members. Includes limits for all dimensions in the variable. The order of limits is the order of dimensions in the variable.</p>
+<pre><div class="syntax line-block" id="dash-statevectorvariable-indexlimits-syntax3">
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-indexlimits-outputs-enslimits"><span class="std std-ref">ensLimits</span></a> = obj.indexLimits(<a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-dims"><span class="std std-ref">dims</span></a>, <a class="reference internal" href="#dash-statevectorvariable-indexlimits-inputs-submembers"><span class="std std-ref">subMembers</span></a>, false)</div>
+</div>
+</pre><p>Determines the index limits along ensemble dimensions required to load the indicated ensemble members. Only includes limits for ensemble dimensions. The order of limits is the order of columns of subMembers (the ensemble dimension order for the coupling set).</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="dims">
+<span id="dash-statevectorvariable-indexlimits-inputs-dims"></span><h3>dims<a class="headerlink" href="#dims" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>dims</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nEnsDims</em>]</div>
+<div class="line">The dimension indices that correspond to the columns of subMembers.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="submembers">
+<span id="dash-statevectorvariable-indexlimits-inputs-submembers"></span><h3>subMembers<a class="headerlink" href="#submembers" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>subMembers</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nMembers</em> <em>x</em> <em>nEnsDims</em>]</div>
+<div class="line">A set of dimensionally-subscripted ensemble members for the variable.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="includestate">
+<span id="dash-statevectorvariable-indexlimits-inputs-includestate"></span><h3>includeState<a class="headerlink" href="#includestate" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>includeState</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">Set to true if the method should determine the limits of state dimensions. Set to false to only determine limits of ensemble dimensions.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="alllimits">
+<span id="dash-statevectorvariable-indexlimits-outputs-alllimits"></span><h3>allLimits<a class="headerlink" href="#alllimits" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>allLimits</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nDims</em> <em>x</em> 2]</div>
+<div class="line">The limits of the indices required to load the ensemble members along each ensemble dimension. The rows of limits are in the same dimension order as the dimensions of the variable</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="enslimits">
+<span id="dash-statevectorvariable-indexlimits-outputs-enslimits"></span><h3>ensLimits<a class="headerlink" href="#enslimits" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>ensLimits</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nEnsDims</em> <em>x</em> 2]</div>
+<div class="line">The limits along the ensemble dimensions of the coupling set. Limits are in the same order as the columns of subMembers.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="removeOverlap.html" class="btn btn-neutral float-left" title="dash.stateVectorVariable.removeOverlap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parametersForBuild.html" class="btn btn-neutral float-right" title="dash.stateVectorVariable.parametersForBuild" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

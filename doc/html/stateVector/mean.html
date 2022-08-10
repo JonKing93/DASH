@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stateVector.mean &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stateVector.weightedMean" href="weightedMean.html" />
+    <link rel="prev" title="stateVector.design" href="design.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stateVector.html">stateVector</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stateVector.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variables">Variables</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVector.html#design">Design</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="design.html">design</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">mean</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#dimensions">dimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#indices">indices</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#omitnan">omitnan</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sequence.html">sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#overlap">Overlap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#coupling">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#build">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#size-information">Size Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#general-information">General Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stateVector.html">stateVector</a> &raquo;</li>
+      <li>stateVector.mean</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statevector-mean">
+<h1>stateVector.mean<a class="headerlink" href="#statevector-mean" title="Permalink to this headline"></a></h1>
+<p>Take a mean over dimensions of variables in a state vector</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax1"><span class="std std-ref">obj = obj.mean(-1, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax1"><span class="std std-ref">obj = obj.mean(v, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax1"><span class="std std-ref">obj = obj.mean(variableNames, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax2"><span class="std std-ref">obj = obj.mean(variables, stateDimension)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax3"><span class="std std-ref">obj = obj.mean(variables, ensembleDimension, indices)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax4"><span class="std std-ref">obj = obj.mean(variables, dimensions, indices)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax5"><span class="std std-ref">obj = obj.mean(…, omitnan)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax5"><span class="std std-ref">obj = obj.mean(…, true|”omitnan”)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax5"><span class="std std-ref">obj = obj.mean(…, false|”includenan”)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax6"><span class="std std-ref">obj = obj.mean(variables, dimensions, “none”)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-mean-syntax7"><span class="std std-ref">obj = obj.mean(variables, dimensions, “unweighted”)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="statevector-mean-syntax1">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(-1, …)</div>
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(<a class="reference internal" href="#statevector-mean-inputs-v"><span class="std std-ref">v</span></a>, …)</div>
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(<a class="reference internal" href="#statevector-mean-inputs-variablenames"><span class="std std-ref">variableNames</span></a>, …)</div>
+</div>
+</pre><p>Updates the settings for means for the listed variables. If the first input is -1, applies the settings to all variables currently in the state vector.</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax2">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(variables, stateDimension)</div>
+</div>
+</pre><p>Takes a mean over the indicated state dimension. The mean is taken over all elements of the dimension that are included in the state vector (i.e. over all state indices for the dimension).</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax3">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(variables, ensembleDimension, <a class="reference internal" href="#statevector-mean-inputs-indices"><span class="std std-ref">indices</span></a>)</div>
+</div>
+</pre><p>Takes a mean over the indicated ensemble dimension. The mean is implemented using the specified mean indices. The mean for the dimension is calculated over elements located by applying the mean indices to particular elements along the dimension. If the dimension does not have a sequence, the mean indices are applied to the reference element. If the dimension has a sequence, applies the mean indices to each individual sequence element.</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax4">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(variables, <a class="reference internal" href="#statevector-mean-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, <a class="reference internal" href="#statevector-mean-inputs-indices"><span class="std std-ref">indices</span></a>)</div>
+</div>
+</pre><p>Takes a mean over multiple dimesions. If every listed dimension is a state dimension, you do not need to provide the third input (the mean indices). Specify mean indices if the dimensions list contains any ensemble dimensions. Use an empty array for the indices of any state dimensions.</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax5">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(…, <a class="reference internal" href="#statevector-mean-inputs-omitnan"><span class="std std-ref">omitnan</span></a>)</div>
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(…, true|”omitnan”)</div>
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(…, false|”includenan”)</div>
+</div>
+</pre><p>Specify how to treat NaN elements along each dimension. Default is to include NaN values.</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax6">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(variables, <a class="reference internal" href="#statevector-mean-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, “none”)</div>
+</div>
+</pre><p>Discards any previously-specified options for taking a mean for the listed dimensions. No mean will be taken over the dimensions when building state vector ensembles.</p>
+<pre><div class="syntax line-block" id="statevector-mean-syntax7">
+<div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(variables, <a class="reference internal" href="#statevector-mean-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, “unweighted”)</div>
+</div>
+</pre><p>Discards any previously-specified weights for use in a weighted mean for the listed dimensions. The state vector will still take a mean over the listed dimensions, but the mean will be unweighted. This option is only valid for dimensions that take either a mean or a weighted mean. The dimensions list should not include dimensions that do not take a mean at all.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="v">
+<span id="statevector-mean-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em> | -1</div>
+<div class="line">The indices of variables in the state vector over which to take a mean. Either a logical vector with one element per state vector variable, or a vector of linear indices. If linear indices, may not contain repeated indices. If -1, selects every variable in the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="variablenames">
+<span id="statevector-mean-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of variables in the state vector over which to take a mean. May not contain repeated variable names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dimensions">
+<span id="statevector-mean-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
+<div class="line">The names of the dimensions over which to take a mean. Cannot have repeated dimension names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="indices">
+<span id="statevector-mean-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {[] | <em>mean</em> <em>indices</em>}</div>
+<div class="line">Mean indices for ensemble dimensions. A cell vector with one element per listed dimension. Each element should hold either an empty array (if the dimension is a state dimension), or a vector of mean indices (if the dimension is an ensemble dimension). Mean indices are 0-indexed from the reference elements of each ensemble member.</div>
+</div>
+<p>The mean indices show how to locate elements used in a mean over an ensemble dimension. If the dimension does not use a sequence, the mean indices are added to the reference element of each ensemble member. The mean is then taken over the resulting data elements. If the dimension uses a sequence, a mean will be taken over each sequence element. First, sequence indices are added to the reference element to give a set of sequence elements. Then, the mean indices are added to each sequence element and a mean is taken over <em>each set</em> of resulting data elements.</p>
+<p>If a single dimension is listed, and the dimension is a state dimension, you do not need to provide mean indices as an input. If the single dimension is an ensemble dimension, you may provide the mean indices directly as a vector, rather than in a scalar cell. However, the scalar cell syntax is also permitted.</p>
+</div></section></section>
+<section class="collapse-examples" id="omitnan">
+<span id="statevector-mean-inputs-omitnan"></span><h3>omitnan<a class="headerlink" href="#omitnan" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>omitnan</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> | <em>string</em>, <em>scalar</em> | <em>vector</em> [<em>nDimensions</em>]</div>
+<div class="line">Indicates how to treat NaN elements when taking means. If a scalar, applies the same setting to all listed dimensions. Use a vector with one element per listed dimension to specify different settings for the different dimensions.</div>
+</div>
+<p>[true|”omitnan”]: Omit NaN values when taking means</p>
+<p>[false|”includenan” (default)]: Include NaN values in means.</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="statevector-mean-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
+<div class="line">The state vector updated with the specified dimensional means.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="design.html" class="btn btn-neutral float-left" title="stateVector.design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="weightedMean.html" class="btn btn-neutral float-right" title="stateVector.weightedMean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

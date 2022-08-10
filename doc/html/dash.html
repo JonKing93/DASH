@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dash.doc" href="dash/doc.html" />
+    <link rel="prev" title="optimalSensor.tests" href="optimalSensor/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dash</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/doc.html">doc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/version.html">version</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/closest.html">closest</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/localize.html">localize</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#input-utilities">Input Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/is.html">is</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/assert.html">assert</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/parse.html">parse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-specific-utilities">Data Specific Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/indices.html">indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/string.html">string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/file.html">file</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#math">Math</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/math.html">math</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/kalman.html">kalman</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#console-notifications">Console Notifications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/warning.html">warning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/error.html">error</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#classes">Classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/dataSource.html">dataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/stateVectorVariable.html">stateVectorVariable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/ensembleFilter.html">ensembleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dash/tests.html">tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dash/testToolbox.html">testToolbox</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>dash</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash">
+<h1>dash<a class="headerlink" href="#dash" title="Permalink to this headline"></a></h1>
+<p>Utilities for the DASH toolbox</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<p>This package contains various utilities that help the DASH toolbox run. Most of the contents here are “under-the-hood” functions, but there are a few contents that may be useful to users. In particular, we think users may be interested in:</p>
+<p>dash.doc        - The function that opens the documentation browser</p>
+<p>dash.closest    - Can help users locate points close to specific coordinates</p>
+<p>dash.localize   - Functions that calculate covariance localization weights</p>
+<p>dash.version    - Reports the current version of the DASH toolbox.</p>
+<p>Alternatively, see the “Documentation” and “Miscellaneous” sections below for user functions.</p>
+</section>
+<hr class="docutils" />
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/doc.html"><span class="doc">doc</span></a> - Open DASH documentation pages</div>
+<div class="line"><a class="reference internal" href="dash/version.html"><span class="doc">version</span></a> - Return the current version of the DASH toolbox</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/closest.html"><span class="doc">closest</span></a> - Functions that find points closest to specified coordinates</div>
+<div class="line"><a class="reference internal" href="dash/localize.html"><span class="doc">localize</span></a> - Functions that calculation covariance localization weights</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="input-utilities">
+<h2>Input Utilities<a class="headerlink" href="#input-utilities" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/is.html"><span class="doc">is</span></a> - Functions that test whether an input is a particular type</div>
+<div class="line"><a class="reference internal" href="dash/assert.html"><span class="doc">assert</span></a> - Functions that throw errors when an input does not match required criteria</div>
+<div class="line"><a class="reference internal" href="dash/parse.html"><span class="doc">parse</span></a> - Functions that parse user inputs</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="data-specific-utilities">
+<h2>Data Specific Utilities<a class="headerlink" href="#data-specific-utilities" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/indices.html"><span class="doc">indices</span></a> - Functions that manipulate array indices</div>
+<div class="line"><a class="reference internal" href="dash/string.html"><span class="doc">string</span></a> - Functions that manipulate strings</div>
+<div class="line"><a class="reference internal" href="dash/file.html"><span class="doc">file</span></a> - Functions that facilitate file manipulation</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="math">
+<h2>Math<a class="headerlink" href="#math" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/math.html"><span class="doc">math</span></a> - Functions that implement mathematical equations</div>
+<div class="line"><a class="reference internal" href="dash/kalman.html"><span class="doc">kalman</span></a> - Functions that implement the Kalman Filter equation</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="console-notifications">
+<h2>Console Notifications<a class="headerlink" href="#console-notifications" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/warning.html"><span class="doc">warning</span></a> - Functions that manipulate warnings</div>
+<div class="line"><a class="reference internal" href="dash/error.html"><span class="doc">error</span></a> - Functions that throw errors</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/dataSource.html"><span class="doc">dataSource</span></a> - Classes that read data from source files</div>
+<div class="line"><a class="reference internal" href="dash/gridfileSources.html"><span class="doc">gridfileSources</span></a> - A class to manage gridfile data source catalogues</div>
+<div class="line"><a class="reference internal" href="dash/stateVectorVariable.html"><span class="doc">stateVectorVariable</span></a> - Implements a variable in a state vector</div>
+<div class="line"><a class="reference internal" href="dash/ensembleFilter.html"><span class="doc">ensembleFilter</span></a> - A class that implement common operations for Kalman and particle filters</div>
+<div class="line"><a class="reference internal" href="dash/posteriorCalculation.html"><span class="doc">posteriorCalculation</span></a> - Classes that perform calculations on Kalman Filter posterior deviations</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="dash/tests.html"><span class="doc">tests</span></a> - Implement unit tests for functions, classes, and sub-packages in the dash utility package</div>
+<div class="line"><a class="reference internal" href="dash/testToolbox.html"><span class="doc">testToolbox</span></a> - Implement unit tests for all components of the DASH toolbox</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="optimalSensor/tests.html" class="btn btn-neutral float-left" title="optimalSensor.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dash/doc.html" class="btn btn-neutral float-right" title="dash.doc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

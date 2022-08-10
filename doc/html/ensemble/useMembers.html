@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.useMembers &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.static" href="static.html" />
+    <link rel="prev" title="ensemble.useVariables" href="useVariables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#subset">Subset</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="useVariables.html">useVariables</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">useMembers</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#staticmembers">staticMembers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#evolvingmembers">evolvingMembers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#e">e</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#labels">labels</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#information">Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#sizes">Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#add-members">Add Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.useMembers</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-usemembers">
+<h1>ensemble.useMembers<a class="headerlink" href="#ensemble-usemembers" title="Permalink to this headline"></a></h1>
+<p>Select which ensemble members should be used by an ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax1"><span class="std std-ref">obj = obj.useMembers(staticMembers)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax2"><span class="std std-ref">obj = obj.useMembers(-1)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax2"><span class="std std-ref">obj = obj.useMembers(‘all’)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax3"><span class="std std-ref">obj = obj.useMembers(evolvingMembers)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax4"><span class="std std-ref">obj = obj.useMembers(labels, evolvingMembers)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax4"><span class="std std-ref">obj = obj.useMembers(e, evolvingMembers)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-syntax4"><span class="std std-ref">obj = obj.useMembers(-1, evolvingMembers)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-usemembers-syntax1">
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(<a class="reference internal" href="#ensemble-usemembers-inputs-staticmembers"><span class="std std-ref">staticMembers</span></a>)</div>
+</div>
+</pre><p>Indicates which ensemble members should be used by a static ensemble. The elements of “members” list the indices of ensemble members saved in the .ens file. After using this command, the ensemble will only load these specified ensemble members when using the “ensemble.load” command. Unused ensemble members will not be loaded into memory. By default, ensemble objects load all the ensemble members saved in the .ens file, so use this command when you want to load a subset of the saved ensemble members.</p>
+<pre><div class="syntax line-block" id="ensemble-usemembers-syntax2">
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(-1)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(‘all’)</div>
+</div>
+</pre><p>Indicates that a static ensemble should use all ensemble members saved in the .ens file. This syntax cannot be used if the ensemble object implements an evolving ensemble.</p>
+<pre><div class="syntax line-block" id="ensemble-usemembers-syntax3">
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(<a class="reference internal" href="#ensemble-usemembers-inputs-evolvingmembers"><span class="std std-ref">evolvingMembers</span></a>)</div>
+</div>
+</pre><p>Select the ensemble members that should be used by an evolving ensemble. Note that this syntax cannot be used to initialize an evolving ensemble - instead, it updates the ensemble members used by an existing evolving ensemble. (See the “ensemble.evolving” command to initialize a new evolving ensemble). Each column of the input holds the ensemble members for an ensemble in the evolving set. The number of rows must match the current number of ensemble members used by each ensemble in the existing evolving set.</p>
+<pre><div class="syntax line-block" id="ensemble-usemembers-syntax4">
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(<a class="reference internal" href="#ensemble-usemembers-inputs-labels"><span class="std std-ref">labels</span></a>, <a class="reference internal" href="#ensemble-usemembers-inputs-evolvingmembers"><span class="std std-ref">evolvingMembers</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(<a class="reference internal" href="#ensemble-usemembers-inputs-e"><span class="std std-ref">e</span></a>, <a class="reference internal" href="#ensemble-usemembers-inputs-evolvingmembers"><span class="std std-ref">evolvingMembers</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usemembers-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useMembers(-1, <a class="reference internal" href="#ensemble-usemembers-inputs-evolvingmembers"><span class="std std-ref">evolvingMembers</span></a>)</div>
+</div>
+</pre><p>Select ensemble members for specific ensembles in the evolving set. The second input must have one column per selected ensemble. If the first input is -1, selects all ensembles in the evolving set. This syntax is provided as a convenience, but in general, we recommend instead using the “ensemble.evolving” command to select members for an evolving ensemble.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="staticmembers">
+<span id="ensemble-usemembers-inputs-staticmembers"></span><h3>staticMembers<a class="headerlink" href="#staticmembers" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>staticMembers</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">Indicates which ensemble members should be used by the ensemble. If a logical vector, must have one element per saved ensemble member. If using linear indices, elements should list the indices of ensemble members saved in the .ens file.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="evolvingmembers">
+<span id="ensemble-usemembers-inputs-evolvingmembers"></span><h3>evolvingMembers<a class="headerlink" href="#evolvingmembers" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>evolvingMembers</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nMembers</em> <em>x</em> <em>nEnsembles</em>] | <em>logical</em> [<em>nSavedMembers</em> <em>x</em> <em>nEnsembles</em>]</div>
+<div class="line">The ensemble members to use for the ensembles in the evolving set. Each column indicates the ensemble members to use for a particular ensemble. If using linear indices, elemebts list the indices of ensemble members saved in the .ens file. If using logical indices, must have one row per saved ensemble members, and the sum of each column must be the same.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="e">
+<span id="ensemble-usemembers-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>e</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of ensembles in an existing evolving ensemble. If a logical vector, must have one element per ensemble in the evolving set. If a linear vector, cannot include repeat indices. If -1, selects all ensemble members in the current evolving set.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="labels">
+<span id="ensemble-usemembers-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>labels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nEnsembles</em>]</div>
+<div class="line">The labels of ensembles in the evolving set. Must have one element per column in members and cannot contain duplicate elements. You can only use labels to select ensembles that have unique labels. If multiple ensembles in the evolving set share the same label, reference them using indices instead.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="ensemble-usemembers-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
+<div class="line">The ensemble with updated ensemble members</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="useVariables.html" class="btn btn-neutral float-left" title="ensemble.useVariables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="static.html" class="btn btn-neutral float-right" title="ensemble.static" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

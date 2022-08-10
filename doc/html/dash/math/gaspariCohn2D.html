@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.math.gaspariCohn2D &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.math.unbias" href="unbias.html" />
+    <link rel="prev" title="dash.math.haversine" href="haversine.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#math">Math</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../math.html">math</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../math.html#equations">Equations</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="haversine.html">haversine</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">gaspariCohn2D</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#distances">distances</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#r">R</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#scale">scale</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#weights">weights</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="unbias.html">unbias</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../math.html#ensembles">Ensembles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalman.html">kalman</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../math.html">dash.math</a> &raquo;</li>
+      <li>dash.math.gaspariCohn2D</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-math-gasparicohn2d">
+<h1>dash.math.gaspariCohn2D<a class="headerlink" href="#dash-math-gasparicohn2d" title="Permalink to this headline"></a></h1>
+<p>Implements a Gaspari-Cohn 5th order polynomial in 2 dimensions</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-syntax1"><span class="std std-ref">weights = dash.math.gaspariCohn2D(distances, R)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-syntax2"><span class="std std-ref">weights = dash.math.gaspariCohn2D(distances, R, scale)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-syntax3"><span class="std std-ref">weights = dash.math.gaspariCohn2D(distances, R, ‘optimal’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-math-gasparicohn2d-syntax1">
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-outputs-weights"><span class="std std-ref">weights</span></a> = dash.math.gaspariCohn2D(<a class="reference internal" href="#dash-math-gasparicohn2d-inputs-distances"><span class="std std-ref">distances</span></a>, <a class="reference internal" href="#dash-math-gasparicohn2d-inputs-r"><span class="std std-ref">R</span></a>)</div>
+</div>
+</pre><p>Calculates covariance localization weights for a set of distances given a specified cutoff radius. Uses a length scale of 0.5.</p>
+<pre><div class="syntax line-block" id="dash-math-gasparicohn2d-syntax2">
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-outputs-weights"><span class="std std-ref">weights</span></a> = dash.math.gaspariCohn2D(<a class="reference internal" href="#dash-math-gasparicohn2d-inputs-distances"><span class="std std-ref">distances</span></a>, <a class="reference internal" href="#dash-math-gasparicohn2d-inputs-r"><span class="std std-ref">R</span></a>, <a class="reference internal" href="#dash-math-gasparicohn2d-inputs-scale"><span class="std std-ref">scale</span></a>)</div>
+</div>
+</pre><p>Specify the length scale to use for the Gaspari-Cohn polynomial.</p>
+<pre><div class="syntax line-block" id="dash-math-gasparicohn2d-syntax3">
+<div class="line"><a class="reference internal" href="#dash-math-gasparicohn2d-outputs-weights"><span class="std std-ref">weights</span></a> = dash.math.gaspariCohn2D(<a class="reference internal" href="#dash-math-gasparicohn2d-inputs-distances"><span class="std std-ref">distances</span></a>, <a class="reference internal" href="#dash-math-gasparicohn2d-inputs-r"><span class="std std-ref">R</span></a>, ‘optimal’)</div>
+</div>
+</pre><p>Uses a length scale of sqrt(10/3), which was described as optimal by Lorenc (2003).</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="distances">
+<span id="dash-math-gasparicohn2d-inputs-distances"></span><h3>distances<a class="headerlink" href="#distances" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>distances</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>array</em></div>
+<div class="line">A set of distances. The distances may be in any units, and should not contain negative values. NaN values are permitted.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="r">
+<span id="dash-math-gasparicohn2d-inputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>R</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>positive</em> <em>numeric</em> <em>scalar</em></div>
+<div class="line">The curoff radius. Must use the same units as the distances.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="scale">
+<span id="dash-math-gasparicohn2d-inputs-scale"></span><h3>scale<a class="headerlink" href="#scale" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>scale</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em> | ‘<em>optimal</em>’</div>
+<div class="line">The length scale for the polynomial. Must be a value on the interval 0 &lt; scale &lt;= 0.5. By default, uses a length scale of 0.5, which sets the localization radius equal to R.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="weights">
+<span id="dash-math-gasparicohn2d-outputs-weights"></span><h3>weights<a class="headerlink" href="#weights" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>weights</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>array</em></div>
+<div class="line">Covariance localization weights. Will have the same size as the distances input.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="haversine.html" class="btn btn-neutral float-left" title="dash.math.haversine" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="unbias.html" class="btn btn-neutral float-right" title="dash.math.unbias" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

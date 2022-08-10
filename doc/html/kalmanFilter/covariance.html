@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.covariance &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.variance" href="variance.html" />
+    <link rel="prev" title="kalmanFilter.setCovariance" href="setCovariance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#covariance">Covariance</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="inflate.html">inflate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="localize.html">localize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="blend.html">blend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setCovariance.html">setCovariance</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">covariance</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#t">t</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#c">C</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#ycov">Ycov</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#output-options">Output Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.covariance</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-covariance">
+<h1>kalmanFilter.covariance<a class="headerlink" href="#kalmanfilter-covariance" title="Permalink to this headline"></a></h1>
+<p>Return the current covariance for assimilated time steps</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax1"><span class="std std-ref">[C, Ycov] = obj.covariance</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax1"><span class="std std-ref">[C, Ycov] = obj.covariance([])</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax2"><span class="std std-ref">[C, Ycov] = obj.covariance(t)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax3"><span class="std std-ref">[C, Ycov] = obj.covariance([], s)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax3"><span class="std std-ref">[C, Ycov] = obj.covariance( t, s)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax4"><span class="std std-ref">obj = obj.covariance(‘reset’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-covariance-syntax1">
+<div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance</div>
+<div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance([])</div>
+</div>
+</pre><p>Returns the current Kalman Filter covariance. If using directly-set covariances, returns the directly set values. Otherwise, calculates covariances using the prior and observation estimates, and then applies any inflation, localization, and blending in that order. When calculating covariances, the method requires the filter object to have both a prior and proxy estimates. This syntax also requires the filter to implement a static prior and/or time-independent covariance options. Use the next syntax if the prior or covariance values vary through time.</p>
+<p>The first output is the time-independent covariance between the state vector elements and observation sites. The second output is the time-independent covariance between the observation sites and each other.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-covariance-syntax2">
+<div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance(<a class="reference internal" href="#kalmanfilter-covariance-inputs-t"><span class="std std-ref">t</span></a>)</div>
+</div>
+</pre><p>Returns the Kalman filter covariances calculated for the queried time steps. Each element along the third dimension of C and Ycov holds the covariances for a queried time step. This syntax requires that the filter has a defined number of time steps. If not, use the above syntax.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-covariance-syntax3">
+<div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance([], <a class="reference internal" href="#kalmanfilter-covariance-inputs-s"><span class="std std-ref">s</span></a>)</div>
+<div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance( <a class="reference internal" href="#kalmanfilter-covariance-inputs-t"><span class="std std-ref">t</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-inputs-s"><span class="std std-ref">s</span></a>)</div>
+</div>
+</pre><p>Only returns covariance values for the queried observation sites. The number of columns of C will match the number of queried sites. Both the number of rows and number of columns of Ycov will match the number of queried sites.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-covariance-syntax4">
+<div class="line">obj = obj.covariance(‘reset’)</div>
+</div>
+</pre><p>Resets all covariance options for the Kalman filter. Deletes any inflation factors, covariance localization, covariance blending, and directly-set covariance values. The resulting filter will only estimate covariance using the prior ensemble and proxy estimates.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="t">
+<span id="kalmanfilter-covariance-inputs-t"></span><h3>t<a class="headerlink" href="#t" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>t</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>] | <em>logical</em> <em>vector</em> | []</div>
+<div class="line">The indices of assimilation time steps for which to return covariance values. If a vector of linear indices, elements should refer to specific time steps in the assimilation. If a logical vector, must have one element per assimilation time step. An empty array is only permitted if the filter uses a static prior and/or time-independent covariance options.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="s">
+<span id="kalmanfilter-covariance-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nSite</em>] | <em>logical</em> <em>vector</em></div>
+<div class="line">The indices of observation sites for which to return covariance values. If a vector of linear indices, elements should refer to specific observation sites in the assimilation. If a logical vector, must have one element per site.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="c">
+<span id="kalmanfilter-covariance-outputs-c"></span><h3>C<a class="headerlink" href="#c" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>C</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nSite</em> <em>x</em> <em>nTime</em>]</div>
+<div class="line">The covariance between the state vector elements and observation sites in the queried time steps.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ycov">
+<span id="kalmanfilter-covariance-outputs-ycov"></span><h3>Ycov<a class="headerlink" href="#ycov" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>Ycov</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> <em>nTime</em>]</div>
+<div class="line">The covariance between the observation sites and one another in the queried time steps.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="setCovariance.html" class="btn btn-neutral float-left" title="kalmanFilter.setCovariance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="variance.html" class="btn btn-neutral float-right" title="kalmanFilter.variance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.loadRows &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.length" href="length.html" />
+    <link rel="prev" title="ensemble.loadGrid" href="loadGrid.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#subset">Subset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#metadata">Metadata</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#load">Load</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="load.html">load</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadGrid.html">loadGrid</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">loadRows</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#rows">rows</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#e">e</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#labels">labels</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#members">members</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#ensemble-loadrows-outputs-labels">labels</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#information">Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#sizes">Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#add-members">Add Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.loadRows</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-loadrows">
+<h1>ensemble.loadRows<a class="headerlink" href="#ensemble-loadrows" title="Permalink to this headline"></a></h1>
+<p>Load specific rows of the used subset of a saved ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-syntax1"><span class="std std-ref">X = obj.loadRows(rows)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-syntax2"><span class="std std-ref">[X, members, labels] = obj.loadRows(rows)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-syntax3"><span class="std std-ref">… = obj.loadRows(rows, labels)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-syntax3"><span class="std std-ref">… = obj.loadRows(rows, e)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-syntax3"><span class="std std-ref">… = obj.loadRows(rows, -1)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-loadrows-syntax1">
+<div class="line"><a class="reference internal" href="#ensemble-loadrows-outputs-x"><span class="std std-ref">X</span></a> = obj.loadRows(<a class="reference internal" href="#ensemble-loadrows-inputs-rows"><span class="std std-ref">rows</span></a>)</div>
+</div>
+</pre><p>Loads specific rows of the ensemble into memory. The rows are determined relative to the subset of the saved ensemble that is being used by the ensemble object. Only the elements of variables being used by the ensemble are counted as state vector rows. By default, the ensemble object uses all variables saved in the .ens file. Use the “useVariables” command to instead load a subset of the saved variables.</p>
+<p>If the ensemble object implements a static ensemble, then the output array is a matrix with one row per requested row, and one column per used ensemble member. If the object implements an evolving ensemble, then the output array is a 3D array, and the third dimension holds the requested rows for different ensembles in the evolving set.</p>
+<pre><div class="syntax line-block" id="ensemble-loadrows-syntax2">
+<div class="line">[<a class="reference internal" href="#ensemble-loadrows-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#ensemble-loadrows-outputs-members"><span class="std std-ref">members</span></a>, <a class="reference internal" href="#ensemble-loadrows-outputs-labels"><span class="std std-ref">labels</span></a>] = obj.loadRows(<a class="reference internal" href="#ensemble-loadrows-inputs-rows"><span class="std std-ref">rows</span></a>)</div>
+</div>
+</pre><p>Also returns the ensemble members and evolving labels associated with the loaded datast.</p>
+<pre><div class="syntax line-block" id="ensemble-loadrows-syntax3">
+<div class="line">= obj.loadRows(<a class="reference internal" href="#ensemble-loadrows-inputs-rows"><span class="std std-ref">rows</span></a>, <a class="reference internal" href="#ensemble-loadrows-inputs-labels"><span class="std std-ref">labels</span></a>)</div>
+<div class="line">= obj.loadRows(<a class="reference internal" href="#ensemble-loadrows-inputs-rows"><span class="std std-ref">rows</span></a>, <a class="reference internal" href="#ensemble-loadrows-inputs-e"><span class="std std-ref">e</span></a>)</div>
+<div class="line">= obj.loadRows(<a class="reference internal" href="#ensemble-loadrows-inputs-rows"><span class="std std-ref">rows</span></a>, -1)</div>
+</div>
+</pre><p>Load rows for specific ensembles in the evolving set. The output array will be a 3D matrix and the length of the third dimension will match the number of requested ensembles. If the second input is -1, selects all ensembles in the evolving set.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="rows">
+<span id="ensemble-loadrows-inputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>rows</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The state vector rows that should be loaded into memory. These rows are interpreted in the context of the variables being used by the ensemble object. Variables that are not used are not counted towards the total number of state vector rows. If a logical vector, must have one element per row of the used variables. Otherwise, use the linear indices of the rows of the used variables.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="e">
+<span id="ensemble-loadrows-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>e</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>vector</em>, <em>linear</em> <em>indices</em> | <em>logical</em> <em>vector</em></div>
+<div class="line">Indicates the ensembles to load. If -1, loads all ensembles in the evolving set. If a logical vector, must have one element per ensemble in the evolving set. Otherwise, use the linear indices of ensembles in the evolving set.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="labels">
+<span id="ensemble-loadrows-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>labels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The labels of specific ensembles in the evolving set. You can only use labels to reference ensembles that have unique labels. Use linear indices to reference ensembles that share the same label.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="x">
+<span id="ensemble-loadrows-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>array</em> [<em>nRows</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">The loaded data for the specified rows. Values for different ensemble members and evoving ensembles are organized along dimensions 2 and 3.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="members">
+<span id="ensemble-loadrows-outputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>members</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>array</em>, <em>positive</em> <em>integers</em>, [<em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">The ensemble members for the loaded ensembles. Each element of “members” lists the index of an ensemble member saved in the</div>
+</div>
+<p><strong>.ens</strong> file. The columns of “members” list the ensemble members for different loaded evolving ensembles.</p>
+</div></section></section>
+<section class="collapse-examples" id="ensemble-loadrows-outputs-labels">
+<span id="id1"></span><h3>labels<a class="headerlink" href="#ensemble-loadrows-outputs-labels" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>labels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nEvolving</em>]</div>
+<div class="line">The labels of the loaded ensembles in the evolving set.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadGrid.html" class="btn btn-neutral float-left" title="ensemble.loadGrid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="length.html" class="btn btn-neutral float-right" title="ensemble.length" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

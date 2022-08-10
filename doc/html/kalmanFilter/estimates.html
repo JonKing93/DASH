@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.estimates &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.uncertainties" href="uncertainties.html" />
+    <link rel="prev" title="kalmanFilter.observations" href="observations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#data-inputs">Data Inputs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="observations.html">observations</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">estimates</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#ye">Ye</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#whichprior">whichPrior</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-estimates-outputs-ye">Ye</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-estimates-outputs-whichprior">whichPrior</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="uncertainties.html">uncertainties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prior.html">prior</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#covariance">Covariance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#output-options">Output Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.estimates</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-estimates">
+<h1>kalmanFilter.estimates<a class="headerlink" href="#kalmanfilter-estimates" title="Permalink to this headline"></a></h1>
+<p>Set or return the estimates for a Kalman filter</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-syntax1"><span class="std std-ref">obj = obj.estimates(Ye)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-syntax2"><span class="std std-ref">obj = obj.estimates(Ye, whichPrior)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-syntax3"><span class="std std-ref">[Ye, whichPrior] = obj.estimates</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-syntax4"><span class="std std-ref">obj = obj.estimates(‘delete’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-estimates-syntax1">
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-outputs-obj"><span class="std std-ref">obj</span></a> = obj.estimates(<a class="reference internal" href="#kalmanfilter-estimates-inputs-ye"><span class="std std-ref">Ye</span></a>)</div>
+</div>
+</pre><p>Provides a set of observation estimates (Ye) for a Kalman filter. Overwrites any previously input estimates. Each row hold the estimates for a particular site, and each column holds the estimates for an ensemble member. Each element along the third dimension holds the estimates for a particular prior in an evolving set. If using a static prior, Ye should have a single element along the third dimension. Otherwise, Ye must have one element along the third dimension per assimilation time step - in this case, the Kalman filter will use the indicated set of estimates for each assimilated time step.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-estimates-syntax2">
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-outputs-obj"><span class="std std-ref">obj</span></a> = obj.estimates(<a class="reference internal" href="#kalmanfilter-estimates-inputs-ye"><span class="std std-ref">Ye</span></a>, <a class="reference internal" href="#kalmanfilter-estimates-inputs-whichprior"><span class="std std-ref">whichPrior</span></a>)</div>
+</div>
+</pre><p>Indicate which set of estimates to use in each assimilation time step. This syntax allows the number of sets of estimates (i.e. the number of priors) to differ from the number of time steps.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-estimates-syntax3">
+<div class="line">[<a class="reference internal" href="#kalmanfilter-estimates-outputs-ye"><span class="std std-ref">Ye</span></a>, <a class="reference internal" href="#kalmanfilter-estimates-outputs-whichprior"><span class="std std-ref">whichPrior</span></a>] = obj.estimates</div>
+</div>
+</pre><p>Returns the current estimates for the Kalman filter object, and indicates which set of estimates (i.e. which prior) is used in each assimilation time step.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-estimates-syntax4">
+<div class="line"><a class="reference internal" href="#kalmanfilter-estimates-outputs-obj"><span class="std std-ref">obj</span></a> = obj.estimates(‘delete’)</div>
+</div>
+</pre><p>Deletes any current estimates from the Kalman filter object.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="ye">
+<span id="kalmanfilter-estimates-inputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>Ye</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> 1|*nTime*|*nPrior*]</div>
+<div class="line">Proxy estimates for the Kalman filter. A numeric array with one row per site, and one column per ensemble member. Each element along the third dimension holds the estimates for a unique prior. If using a static prior, Ye should have one element along the third dimension. If the number of elements along the third dimension matches the number of time steps, uses the appropriate set of estimates for each time step. If the number of priors is neither 1 nor the number of time steps, use the whichPrior input to indicate which set of estimates to use in each assimilation time step. NaN values are not permitted.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="whichprior">
+<span id="kalmanfilter-estimates-inputs-whichprior"></span><h3>whichPrior<a class="headerlink" href="#whichprior" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>whichPrior</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>positive</em> <em>integers</em> [<em>nTime</em>]</div>
+<div class="line">Indicates which set of estimates to use in each assimilation time step. Must have one element per assimilation time step. Each element of whichPrior is the index of a particular prior - essentially, the index of an element along the third dimension of Ye.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="kalmanfilter-estimates-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
+<div class="line">The kalmanFilter object with updated estimates</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-estimates-outputs-ye">
+<span id="id1"></span><h3>Ye<a class="headerlink" href="#kalmanfilter-estimates-outputs-ye" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>Ye</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> 1|*nTime*|*nPrior*]</div>
+<div class="line">The current estimates for the kalmanFilter object. If you have not provided estimates, an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-estimates-outputs-whichprior">
+<span id="id2"></span><h3>whichPrior<a class="headerlink" href="#kalmanfilter-estimates-outputs-whichprior" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>whichPrior</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>positive</em> <em>integers</em> [<em>nTime</em>] | []</div>
+<div class="line">Indicates which set of estimates (i.e. which prior) is used in each assimilation time step. If there is a static prior, returns an empty array.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="observations.html" class="btn btn-neutral float-left" title="kalmanFilter.observations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="uncertainties.html" class="btn btn-neutral float-right" title="kalmanFilter.uncertainties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

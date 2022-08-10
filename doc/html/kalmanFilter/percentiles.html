@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.percentiles &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.deviations" href="deviations.html" />
+    <link rel="prev" title="kalmanFilter.variance" href="variance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#covariance">Covariance</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#output-options">Output Options</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="variance.html">variance</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">percentiles</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#percentages">percentages</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-percentiles-outputs-percentages">percentages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="deviations.html">deviations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html">index</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.percentiles</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-percentiles">
+<h1>kalmanFilter.percentiles<a class="headerlink" href="#kalmanfilter-percentiles" title="Permalink to this headline"></a></h1>
+<p>Indicate whether to return ensemble percentiles when running a Kalman Filter</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-syntax1"><span class="std std-ref">obj = obj.percentiles(percentages)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-syntax2"><span class="std std-ref">percentages = obj.percentiles</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-syntax3"><span class="std std-ref">obj = obj.percentiles(‘reset’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-percentiles-syntax1">
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-outputs-obj"><span class="std std-ref">obj</span></a> = obj.percentiles(<a class="reference internal" href="#kalmanfilter-percentiles-inputs-percentages"><span class="std std-ref">percentages</span></a>)</div>
+</div>
+</pre><p>Indicates that the Kalman filter should return the specified percentiles of the posterior ensemble. Overwrites any previously specified percentiles. When using the kalmanFilter.run command, the output structure will include ensemble percentiles in a field named “Aperc”.</p>
+<p>Calculating posterior percentiles can be an effective way to evaluate the distribution of a posterior ensemble and evaluate reconstruction uncertainty. Notably, returning a few percentiles often requires much less memory than saving and returning the (often very large) full posterior ensemble. Note that calculating posterior percentiles requires the Kalman filter to update the ensemble deviations. This incurs a higher computational cost than just updating the ensemble mean, so exploratory efforts that only require the updated ensemble mean may wish to refrain from calculating posterior percentiles.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-percentiles-syntax2">
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-outputs-percentages"><span class="std std-ref">percentages</span></a> = obj.percentiles</div>
+</div>
+</pre><p>Returns the current percentile percentages for the Kalman filter object.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-percentiles-syntax3">
+<div class="line"><a class="reference internal" href="#kalmanfilter-percentiles-outputs-obj"><span class="std std-ref">obj</span></a> = obj.percentiles(‘reset’)</div>
+</div>
+</pre><p>Resets the ensemble percentiles for the Kalman filter. The Kalman filter will no longer compute ensemble percentiles, and the output of the kalmanFilter.run command will not include the Aperc field.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="percentages">
+<span id="kalmanfilter-percentiles-inputs-percentages"></span><h3>percentages<a class="headerlink" href="#percentages" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>percentages</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em></div>
+<div class="line">A vector listing the percentages for which to calculate posterior percentiles. Each element should be on the interval 0 &lt;= percentile &lt;= 100</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="kalmanfilter-percentiles-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
+<div class="line">The Kalman filter object with updated percentile preferences</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-percentiles-outputs-percentages">
+<span id="id1"></span><h3>percentages<a class="headerlink" href="#kalmanfilter-percentiles-outputs-percentages" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>percentages</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> | []</div>
+<div class="line">The percentages for which ensemble percentiles will be calculated. If there are no percentiles, returns an empty array.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="variance.html" class="btn btn-neutral float-left" title="kalmanFilter.variance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deviations.html" class="btn btn-neutral float-right" title="kalmanFilter.deviations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.loadInternal &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.arithmetic" href="arithmetic.html" />
+    <link rel="prev" title="gridfile.loadedPrecision" href="loadedPrecision.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#file-interactions">File Interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#console-display">Console Display</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#id1">Load</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="getLoadIndices.html">getLoadIndices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sourcesForLoad.html">sourcesForLoad</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buildSources.html">buildSources</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadedPrecision.html">loadedPrecision</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">loadInternal</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#userdimorder">userDimOrder</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#loadindices">loadIndices</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#datasources">dataSources</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#precision">precision</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#meta">meta</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#id2">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.loadInternal</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-loadinternal">
+<h1>gridfile.loadInternal<a class="headerlink" href="#gridfile-loadinternal" title="Permalink to this headline"></a></h1>
+<p>Load requested data from pre-built dataSource objects</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-loadinternal-syntax1"><span class="std std-ref">[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-loadinternal-syntax2"><span class="std std-ref">… = obj.loadInternal(…, precision)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-loadinternal-syntax1">
+<div class="line">[<a class="reference internal" href="#gridfile-loadinternal-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#gridfile-loadinternal-outputs-meta"><span class="std std-ref">meta</span></a>] = obj.loadInternal(<a class="reference internal" href="#gridfile-loadinternal-inputs-userdimorder"><span class="std std-ref">userDimOrder</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-loadindices"><span class="std std-ref">loadIndices</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-s"><span class="std std-ref">s</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-datasources"><span class="std std-ref">dataSources</span></a>)</div>
+</div>
+</pre><p>Returns a loaded output array and associated metadata given load parameters and pre-built dataSource objects.</p>
+<pre><div class="syntax line-block" id="gridfile-loadinternal-syntax2">
+<div class="line">= obj.loadInternal(…, <a class="reference internal" href="#gridfile-loadinternal-inputs-precision"><span class="std std-ref">precision</span></a>)</div>
+</div>
+</pre><p>Specify whether the loaded array should be single or double precision. If unspecified, uses a double array when either 1. Requested data is not in any data source, or 2. Requested data includes double, (u)int32, or (u)int64 data types. Uses a single array if all requested data is a of single, char, logical, (u)int8, or (u)int16 data types.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="userdimorder">
+<span id="gridfile-loadinternal-inputs-userdimorder"></span><h3>userDimOrder<a class="headerlink" href="#userdimorder" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>userDimOrder</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nUserDims</em>]</div>
+<div class="line">The locations of the user-requested output dimensions in the full set of gridfile dimensions.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="loadindices">
+<span id="gridfile-loadinternal-inputs-loadindices"></span><h3>loadIndices<a class="headerlink" href="#loadindices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>loadIndices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nGridDims</em>] {<em>vector</em>, <em>linear</em> <em>indices</em>}</div>
+<div class="line">The elements along each gridfile dimension that are required to implement the load operation. Includes all gridfile dimensions in the gridfile’s dimension order.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="s">
+<span id="gridfile-loadinternal-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nSource</em>]</div>
+<div class="line">The indices of data sources that are required in order to load the requested data.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="datasources">
+<span id="gridfile-loadinternal-inputs-datasources"></span><h3>dataSources<a class="headerlink" href="#datasources" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>dataSources</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nSource</em>] {<em>scalar</em> <em>dataSource</em> <em>object</em>}</div>
+<div class="line">dataSource objects for the data sources at the specified indices.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="precision">
+<span id="gridfile-loadinternal-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>precision</strong></label><div class="content"><div class="line-block">
+<div class="line">[] | ‘<em>single</em>’ | ‘<em>double</em>’</div>
+<div class="line">Indicates the required numeric precision of the loaded data. If ‘single’ or ‘double’, uses the specified type. If unset or an empty array, uses double unless all requested data has a single, char, logical, (u)int8, or (u)int16 data type.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="x">
+<span id="gridfile-loadinternal-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>double</em> <em>array</em> | <em>single</em> <em>array</em></div>
+<div class="line">The loaded data array</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="meta">
+<span id="gridfile-loadinternal-outputs-meta"></span><h3>meta<a class="headerlink" href="#meta" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>meta</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>gridMetadata</em> <em>object</em></div>
+<div class="line">Metadata for the loaded array.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="loadedPrecision.html" class="btn btn-neutral float-left" title="gridfile.loadedPrecision" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="arithmetic.html" class="btn btn-neutral float-right" title="gridfile.arithmetic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

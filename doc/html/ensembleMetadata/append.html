@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata.append &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensembleMetadata.extractMembers" href="extractMembers.html" />
+    <link rel="prev" title="ensembleMetadata.remove" href="remove.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensembleMetadata.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#coordinates">Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#regrid">Regrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#locate-variables">Locate Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensembleMetadata.html#manipulate-varaibles">Manipulate Varaibles</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="extract.html">extract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remove.html">remove</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">append</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#ensmeta2">ensMeta2</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#responsetorepeats">responseToRepeats</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-members">Manipulate Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensembleMetadata.html">ensembleMetadata</a> &raquo;</li>
+      <li>ensembleMetadata.append</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata-append">
+<h1>ensembleMetadata.append<a class="headerlink" href="#ensemblemetadata-append" title="Permalink to this headline"></a></h1>
+<p>Add variables to an ensembleMetadata object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-syntax1"><span class="std std-ref">obj = obj.append(ensMeta2)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-syntax2"><span class="std std-ref">obj = obj.append(ensMeta2, responseToRepeats)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-syntax2"><span class="std std-ref">obj = obj.append(ensMeta2, “error”|”e”|0)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-syntax2"><span class="std std-ref">obj = obj.append(ensMeta2, “first”|”f”|1)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-syntax2"><span class="std std-ref">obj = obj.append(ensMeta2, “second”|”s”|2)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemblemetadata-append-syntax1">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-outputs-obj"><span class="std std-ref">obj</span></a> = obj.append(<a class="reference internal" href="#ensemblemetadata-append-inputs-ensmeta2"><span class="std std-ref">ensMeta2</span></a>)</div>
+</div>
+</pre><p>Adds the variables in a second ensembleMetadata object to the current object. The second ensembleMetadata object must have the same number of ensemble members as the current object. By default, throws an error if the second object has any variables with the same name as a variable in the current object.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-append-syntax2">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-outputs-obj"><span class="std std-ref">obj</span></a> = obj.append(<a class="reference internal" href="#ensemblemetadata-append-inputs-ensmeta2"><span class="std std-ref">ensMeta2</span></a>, <a class="reference internal" href="#ensemblemetadata-append-inputs-responsetorepeats"><span class="std std-ref">responseToRepeats</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-outputs-obj"><span class="std std-ref">obj</span></a> = obj.append(<a class="reference internal" href="#ensemblemetadata-append-inputs-ensmeta2"><span class="std std-ref">ensMeta2</span></a>, “error”|”e”|0)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-outputs-obj"><span class="std std-ref">obj</span></a> = obj.append(<a class="reference internal" href="#ensemblemetadata-append-inputs-ensmeta2"><span class="std std-ref">ensMeta2</span></a>, “first”|”f”|1)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-append-outputs-obj"><span class="std std-ref">obj</span></a> = obj.append(<a class="reference internal" href="#ensemblemetadata-append-inputs-ensmeta2"><span class="std std-ref">ensMeta2</span></a>, “second”|”s”|2)</div>
+</div>
+</pre><p>Indicate how to treat variable names that are repeated in the current and second ensembleMetadata objects. If “error”|”e”|0, throws an error when duplicate variable names occur. If “first”|”f”|1, retains the variable in the current ensembleMetadata object and discards the variable in the second object. If “second”|”s”|2, discards the variable in the current object, and retains the variable in the second object.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="ensmeta2">
+<span id="ensemblemetadata-append-inputs-ensmeta2"></span><h3>ensMeta2<a class="headerlink" href="#ensmeta2" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>ensMeta2</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensembleMetadata</em> <em>object</em></div>
+<div class="line">A second ensembleMetadata object whose variables should be added to the current object.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="responsetorepeats">
+<span id="ensemblemetadata-append-inputs-responsetorepeats"></span><h3>responseToRepeats<a class="headerlink" href="#responsetorepeats" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>responseToRepeats</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>integer</em></div>
+<div class="line">Indicates how to treat variables with duplicate names across the current and second ensembleMetadata objects.</div>
+</div>
+<p>[0|”e”|”error” (default)]: Throws an error when duplicate names occur</p>
+<p>[1|”f”|”first”]: Uses the variables in the current object</p>
+<p>[2|”s”|”second”]: Uses the variables in the second object</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="ensemblemetadata-append-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensembleMetadata</em> <em>object</em></div>
+<div class="line">The ensembleMetadta object with updated variables.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="remove.html" class="btn btn-neutral float-left" title="ensembleMetadata.remove" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extractMembers.html" class="btn btn-neutral float-right" title="ensembleMetadata.extractMembers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

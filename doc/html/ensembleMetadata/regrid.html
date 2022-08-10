@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata.regrid &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensembleMetadata.rows" href="rows.html" />
+    <link rel="prev" title="ensembleMetadata.latlon" href="latlon.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensembleMetadata.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#coordinates">Coordinates</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensembleMetadata.html#regrid">Regrid</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">regrid</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#variablename">variableName</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#dimensions">dimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#d">d</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#singletons">singletons</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#ensemblemetadata-regrid-outputs-v">V</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#locate-variables">Locate Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-varaibles">Manipulate Varaibles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-members">Manipulate Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensembleMetadata.html">ensembleMetadata</a> &raquo;</li>
+      <li>ensembleMetadata.regrid</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata-regrid">
+<h1>ensembleMetadata.regrid<a class="headerlink" href="#ensemblemetadata-regrid" title="Permalink to this headline"></a></h1>
+<p>Regrids a variable in a state vector ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax1"><span class="std std-ref">[V, metadata] = obj.regrid(variableName, X)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax1"><span class="std std-ref">[V, metadata] = obj.regrid(v, X)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax2"><span class="std std-ref">… = obj.regrid(…, ‘order’, dimensions)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax3"><span class="std std-ref">… = obj.regrid(…, ‘dim’, d)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax4"><span class="std std-ref">… = obj.regrid(…, ‘singletons’, singletons)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax4"><span class="std std-ref">… = obj.regrid(…, ‘singletons’, “keep”|”k”|true)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-regrid-syntax4"><span class="std std-ref">… = obj.regrid(…, ‘singletons’, “remove”|”r”|false)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemblemetadata-regrid-syntax1">
+<div class="line">[<a class="reference internal" href="#ensemblemetadata-regrid-outputs-v"><span class="std std-ref">V</span></a>, <a class="reference internal" href="#ensemblemetadata-regrid-outputs-metadata"><span class="std std-ref">metadata</span></a>] = obj.regrid(<a class="reference internal" href="#ensemblemetadata-regrid-inputs-variablename"><span class="std std-ref">variableName</span></a>, <a class="reference internal" href="#ensemblemetadata-regrid-inputs-x"><span class="std std-ref">X</span></a>)</div>
+<div class="line">[<a class="reference internal" href="#ensemblemetadata-regrid-outputs-v"><span class="std std-ref">V</span></a>, <a class="reference internal" href="#ensemblemetadata-regrid-outputs-metadata"><span class="std std-ref">metadata</span></a>] = obj.regrid(<a class="reference internal" href="#ensemblemetadata-regrid-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-regrid-inputs-x"><span class="std std-ref">X</span></a>)</div>
+</div>
+</pre><p>Regrids a variable in a state vector ensemble. The variable is extracted from the overall state vector, and then reshaped into a gridded dataset. The method also returns metadata for the dimensions of the regridded dataset. This metadata will include metadata for any state dimensions or sequences used in the state vector. The metadata for sequence and standard state dimensions will have one row per element along the dimension. The metadata for state dimensions that implement a mean will have one row per data element used in the mean.</p>
+<p>This method works on N-dimensional data arrays X. X can have any number of dimensions, but at least one dimension must have the same length as the state vector. By default, the method acts along the the first dimension with this length. Only this state vector dimension is reshaped into a gridded dataset. The dimensions before and after the state vector dimension are not reshaped. The returned metadata only includes information for the reshaped state vector dimensions. It does not include information for the other dimensions of X.</p>
+<p>By default, the method removes any singleton regridded state vector dimensions (regridded state vector dimensions that have a length of 1). Neither the returned array nor the returned metadata will include these removed singleton dimensions. If all the regridded state vector dimensions are singleton (i.e. the variable has a length of 1), then the length of the regridded state vector dimension will be 1, but the metadata will not contain information on any dimension.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-regrid-syntax2">
+<div class="line">= obj.regrid(…, ‘order’, <a class="reference internal" href="#ensemblemetadata-regrid-inputs-dimensions"><span class="std std-ref">dimensions</span></a>)</div>
+</div>
+</pre><p>Returns the regridded data in a custom dimension order. The order of dimensions in the regridded dataset will match the order specified in the dimensions list. If the state vector has state dimensions or sequences that are not specified in the dimensions list, the unspecified dimensions are moved to the end of the order. If a singleton dimension is specified in the dimensions list, the singleton dimension will not be removed from the regridded dataset and metadata.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-regrid-syntax3">
+<div class="line">= obj.regrid(…, ‘dim’, <a class="reference internal" href="#ensemblemetadata-regrid-inputs-d"><span class="std std-ref">d</span></a>)</div>
+</div>
+</pre><p>Indicate the dimension of X that should be used as the state vector dimension. The length of the dimension must match the length of the state vector.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-regrid-syntax4">
+<div class="line">= obj.regrid(…, ‘singletons’, <a class="reference internal" href="#ensemblemetadata-regrid-inputs-singletons"><span class="std std-ref">singletons</span></a>)</div>
+<div class="line">= obj.regrid(…, ‘singletons’, “keep”|”k”|true)</div>
+<div class="line">= obj.regrid(…, ‘singletons’, “remove”|”r”|false)</div>
+</div>
+</pre><p>Specify how to treat regridded singleton dimensions. By default, singleton dimensions are removed from the regridded output unless they are listed in the dimension order. Use “keep”|”k”|true to keep all singleton dimensions in the regridded dataset. Using “remove”|”r”|false enacts the default behavior and removes singleton dimensions that are not listed in the dimension order.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="variablename">
+<span id="ensemblemetadata-regrid-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the variable to regrid</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="v">
+<span id="ensemblemetadata-regrid-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>linear</em> <em>index</em> | <em>logical</em> <em>vector</em></div>
+<div class="line">The index of the variable to regrid. If a logical vector, must have one element per variable in the state vector and exactly one true element.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="x">
+<span id="ensemblemetadata-regrid-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>N</em>-<em>dimensional</em> <em>array</em> [<em>leading</em> <em>dimensions</em> <em>x</em> <em>state</em> <em>vector</em> <em>dimension</em> <em>x</em> <em>trailing</em> <em>dimensions</em>]</div>
+<div class="line">An N-dimensional array that includes the state vector containing the variable being regridded. Must have at least one dimension that matches the length of the state vector. If the “dim” input is specified, the length of that dimension must match the length of the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dimensions">
+<span id="ensemblemetadata-regrid-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>dimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of state dimensions in the order they should appear in the regridded variable.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="d">
+<span id="ensemblemetadata-regrid-inputs-d"></span><h3>d<a class="headerlink" href="#d" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>d</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em></div>
+<div class="line">The index of the dimension for input “X” that contains the state vector. If specified, the length of this dimension in X must match the length of the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="singletons">
+<span id="ensemblemetadata-regrid-inputs-singletons"></span><h3>singletons<a class="headerlink" href="#singletons" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>singletons</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
+<div class="line">Specifies how to treat regridded singleton dimensions that are not listed in the “dimensions” input.</div>
+</div>
+<p>[“remove”|”r”|false (default)]: Unlisted singleton dimensions are removed from the regridded dataset.</p>
+<p>[“keep”|”k”|true]: All singleton dimension are retained in the regridded dataset.</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="ensemblemetadata-regrid-outputs-v">
+<span id="id1"></span><h3>V<a class="headerlink" href="#ensemblemetadata-regrid-outputs-v" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>V</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>N</em>-<em>dimensional</em> <em>array</em> [<em>leading</em> <em>dimensions</em> <em>x</em> <em>regridded</em> <em>dimensions</em> <em>x</em> <em>trailing</em> <em>dimensions</em>]</div>
+<div class="line">The regridded variable. An N-dimensional array. The state vector dimension has been reshaped into a gridded dataset. Any dimensions preceding or following the state vector dimension are left unaltered. If the variable has no state dimensions (i.e. a singleton variable), the state vector dimension is retained as a singleton.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadata">
+<span id="ensemblemetadata-regrid-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>gridMetadata</em> <em>object</em></div>
+<div class="line">A gridMetadata object describing the regridded state dimensions for the variable. The metadata for each dimension includes one row per element along the dimension. The order of dimensions in the metadata matches the order of dimensions for the regridded dataset. If a regridded dimension implements a mean, the metadata for the dimension will include one row per element used in the mean.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="latlon.html" class="btn btn-neutral float-left" title="ensembleMetadata.latlon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rows.html" class="btn btn-neutral float-right" title="ensembleMetadata.rows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

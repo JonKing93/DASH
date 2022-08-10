@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.blend &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.setCovariance" href="setCovariance.html" />
+    <link rel="prev" title="kalmanFilter.localize" href="localize.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#covariance">Covariance</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="inflate.html">inflate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="localize.html">localize</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">blend</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#c">C</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#ycov">Ycov</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#weight">weight</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#whichblend">whichBlend</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-blend-outputs-c">C</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-blend-outputs-ycov">Ycov</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-blend-outputs-weight">weight</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-blend-outputs-whichblend">whichBlend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="setCovariance.html">setCovariance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="covariance.html">covariance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#output-options">Output Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.blend</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-blend">
+<h1>kalmanFilter.blend<a class="headerlink" href="#kalmanfilter-blend" title="Permalink to this headline"></a></h1>
+<p>Blends ensemble covariance with a climatological covariance</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-syntax1"><span class="std std-ref">obj = obj.blend(C, Ycov)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-syntax2"><span class="std std-ref">obj = obj.blend(C, Ycov, weight)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-syntax3"><span class="std std-ref">obj = obj.blend(C, Ycov, weight, whichBlend)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-syntax4"><span class="std std-ref">[C, Ycov, weight, whichBlend] = obj.blend</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-syntax5"><span class="std std-ref">obj = obj.blend(‘reset’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-blend-syntax1">
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-outputs-obj"><span class="std std-ref">obj</span></a> = obj.blend(<a class="reference internal" href="#kalmanfilter-blend-inputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-ycov"><span class="std std-ref">Ycov</span></a>)</div>
+</div>
+</pre><p>Blends the ensemble covariance with a climatological covariance using a weighting of 50% of each covariance. When covariance is blended, the Kalman filter first calculates the usual covariance between the ensemble and the observation estimates. Next, the filter computes the weighted sum of this ensemble covariance and a fixed climatological covariance. The weighted sum of the two covariances is then used to update the ensemble. This technique is often used with offline evolving priors: the resulting covariance reflects both the evolving covariance from the ensemble, while the climatological covariance can help reduce sampling errors for small ensembles. Blending is applied after inflation and localization are applied to the ensemble covariance. Neither inflation nor localization are applied to the climatological covariance.</p>
+<p>The first input provides the climatological covariance between the state vector elements and the observation sites. It should be a 3D array with one row per state vector element, and one column per observation site. The second input provides the climatological covariance between the observation sites and one another. It should be a 3D array with one row and one column per observation site. Each element along the third dimension of Ycov must be a symmetric matrix.</p>
+<p>The two inputs must have the same number of elements along the third dimension. If the third dimension has one element (i.e. both inputs are matrices), then blends the same climatological covariances in all time steps.  Otherwise, the third dimension must have one element per time step (although see the thrid syntax for relaxing this requirement). C may contain NaN elements, although the filter will return a NaN update at any state vector rows with a NaN covariance. Ycov cannot include NaN elements.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-blend-syntax2">
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-outputs-obj"><span class="std std-ref">obj</span></a> = obj.blend(<a class="reference internal" href="#kalmanfilter-blend-inputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-ycov"><span class="std std-ref">Ycov</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-weight"><span class="std std-ref">weight</span></a>)</div>
+</div>
+</pre><p>Specify the blending weight to use for each climatological covariance. By default, uses a blending weight of 0.5. The blending weight for the ensemble covariance is calculated as 1 - weight. Blending weights must be on the interval 0 &lt; weight &lt; 1. If you provide a single weight, uses the same weight for each set of covariances. Otherwise, the number of weights must match the number of sets of covariances.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-blend-syntax3">
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-outputs-obj"><span class="std std-ref">obj</span></a> = obj.blend(<a class="reference internal" href="#kalmanfilter-blend-inputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-ycov"><span class="std std-ref">Ycov</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-weight"><span class="std std-ref">weight</span></a>, <a class="reference internal" href="#kalmanfilter-blend-inputs-whichblend"><span class="std std-ref">whichBlend</span></a>)</div>
+</div>
+</pre><p>Indicate which set of climatological covariances to use in each time step. This syntax allows the number of climatological covariances to differ from the number of assimilation time steps.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-blend-syntax4">
+<div class="line">[<a class="reference internal" href="#kalmanfilter-blend-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-blend-outputs-ycov"><span class="std std-ref">Ycov</span></a>, <a class="reference internal" href="#kalmanfilter-blend-outputs-weight"><span class="std std-ref">weight</span></a>, <a class="reference internal" href="#kalmanfilter-blend-outputs-whichblend"><span class="std std-ref">whichBlend</span></a>] = obj.blend</div>
+</div>
+</pre><p>Returns the current climatological covariances and blending weights for the Kalman Filter.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-blend-syntax5">
+<div class="line"><a class="reference internal" href="#kalmanfilter-blend-outputs-obj"><span class="std std-ref">obj</span></a> = obj.blend(‘reset’)</div>
+</div>
+</pre><p>Deletes any existing climatological covariances and blending weights from the Kalman filter.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="c">
+<span id="kalmanfilter-blend-inputs-c"></span><h3>C<a class="headerlink" href="#c" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>C</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nLoc*]</div>
+<div class="line">The climatological covariance between the state vector elements and observation sites. If using a single set of covariances, should have a single element along the third dimension. If the number of elements along the third dimension matches the number of time steps, uses the indicated set of covariances in each time step. If the number of elements is neither 1 nor the number of time steps, use the whichBlend input to indicate which climatological covariance to use in each time step. May include NaN values, but the filter will return a NaN update for state vector elements with NaN covariances.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ycov">
+<span id="kalmanfilter-blend-inputs-ycov"></span><h3>Ycov<a class="headerlink" href="#ycov" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>Ycov</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nLoc*]</div>
+<div class="line">The climatological covariance between the observation sites and one another. A 3D array with one site and one column per observation site. The number of elements along the third dimension must match the number of elements for the C input. Cannot include NaN values. Each element along the third dimension must be a symmetric matrix and the diagonal elements of these matrices must all be positive.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="weight">
+<span id="kalmanfilter-blend-inputs-weight"></span><h3>weight<a class="headerlink" href="#weight" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>weight</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [1 | <em>nLoc</em>]</div>
+<div class="line">The blending weight to use for the climatological covariance. Must be on the interval 0 &lt; weight &lt; 1. The blending weight for the ensemble covariance is calculated as 1 - weight. If you provide a single weight, uses the same blending weight for all covariances. Otherwise, must have one element per covariance. By default, the blending weight is set to 0.5.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="whichblend">
+<span id="kalmanfilter-blend-inputs-whichblend"></span><h3>whichBlend<a class="headerlink" href="#whichblend" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>whichBlend</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>]</div>
+<div class="line">Indicates which set of covariances to blend in each time step. Must have one element per assimilation time step. Each element is the index of one of the sets of climatological covariances.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="kalmanfilter-blend-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
+<div class="line">The kalmanFilter object with updated blending options</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-blend-outputs-c">
+<span id="id1"></span><h3>C<a class="headerlink" href="#kalmanfilter-blend-outputs-c" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>C</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nBlend*] | []</div>
+<div class="line">The current blending covariances between the state vector elements and observation site for the filter. If blending has not been implemented, returns an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-blend-outputs-ycov">
+<span id="id2"></span><h3>Ycov<a class="headerlink" href="#kalmanfilter-blend-outputs-ycov" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>Ycov</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nLoc*] | []</div>
+<div class="line">The current blending covariances between the observation sites and each other for the filter. If blending has not been implemented, returns an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-blend-outputs-weight">
+<span id="id3"></span><h3>weight<a class="headerlink" href="#kalmanfilter-blend-outputs-weight" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>weight</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>nLoc</em>] | []</div>
+<div class="line">The current blending weight for each climatological covariance. If blending has not been implemented, returns an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="kalmanfilter-blend-outputs-whichblend">
+<span id="id4"></span><h3>whichBlend<a class="headerlink" href="#kalmanfilter-blend-outputs-whichblend" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs5" checked="checked"><label for="outputs5"><strong>whichBlend</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>] | []</div>
+<div class="line">Indicates which set of covariances will be blended in each time step. If there is a single set of covariances, returns an empty array.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="localize.html" class="btn btn-neutral float-left" title="kalmanFilter.localize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="setCovariance.html" class="btn btn-neutral float-right" title="kalmanFilter.setCovariance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

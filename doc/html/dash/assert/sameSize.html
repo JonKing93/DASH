@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.sameSize &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.integers" href="integers.html" />
+    <link rel="prev" title="dash.assert.scalarObj" href="scalarObj.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#strings">Strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#size-and-data-type">Size And Data Type</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../assert.html#misc-size">Misc Size</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="scalarObj.html">scalarObj</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">sameSize</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#a">A</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#b">B</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#namea">nameA</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#nameb">nameB</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#numeric">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#covariances">Covariances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#indices">Indices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#misc">Misc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../parse.html">parse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.sameSize</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-samesize">
+<h1>dash.assert.sameSize<a class="headerlink" href="#dash-assert-samesize" title="Permalink to this headline"></a></h1>
+<p>Throw error if two arrays are not the same size</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-samesize-syntax1"><span class="std std-ref">dash.assert.sameSize(A, B)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-samesize-syntax2"><span class="std std-ref">dash.assert.sameSize(A, B, nameA, nameB, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="dash-assert-samesize-syntax1">
+<div class="line">dash.assert.sameSize(<a class="reference internal" href="#dash-assert-samesize-inputs-a"><span class="std std-ref">A</span></a>, <a class="reference internal" href="#dash-assert-samesize-inputs-b"><span class="std std-ref">B</span></a>)</div>
+</div>
+</pre><p>Throws an error if A and B are arrays with different sizes.</p>
+<pre><div class="syntax line-block" id="dash-assert-samesize-syntax2">
+<div class="line">dash.assert.sameSize(<a class="reference internal" href="#dash-assert-samesize-inputs-a"><span class="std std-ref">A</span></a>, <a class="reference internal" href="#dash-assert-samesize-inputs-b"><span class="std std-ref">B</span></a>, <a class="reference internal" href="#dash-assert-samesize-inputs-namea"><span class="std std-ref">nameA</span></a>, <a class="reference internal" href="#dash-assert-samesize-inputs-nameb"><span class="std std-ref">nameB</span></a>, <a class="reference internal" href="#dash-assert-samesize-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Customize error messages and headers.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="a">
+<span id="dash-assert-samesize-inputs-a"></span><h3>A<a class="headerlink" href="#a" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>A</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>array</em>, <em>any</em> <em>data</em> <em>type</em></div>
+<div class="line">The first array</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="b">
+<span id="dash-assert-samesize-inputs-b"></span><h3>B<a class="headerlink" href="#b" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>B</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>array</em>, <em>any</em> <em>data</em> <em>type</em></div>
+<div class="line">The second array</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="namea">
+<span id="dash-assert-samesize-inputs-namea"></span><h3>nameA<a class="headerlink" href="#namea" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>nameA</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name for A in error messages</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="nameb">
+<span id="dash-assert-samesize-inputs-nameb"></span><h3>nameB<a class="headerlink" href="#nameb" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>nameB</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name of B in error messages</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="dash-assert-samesize-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scalarObj.html" class="btn btn-neutral float-left" title="dash.assert.scalarObj" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="integers.html" class="btn btn-neutral float-right" title="dash.assert.integers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.addAttributes &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.removeAttributes" href="removeAttributes.html" />
+    <link rel="prev" title="gridfile.attributes" href="attributes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#metadata">Metadata</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#metadata-attributes">Metadata Attributes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="attributes.html">attributes</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">addAttributes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#fields">fields</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#values">values</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#fieldn">fieldN</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#valuen">valueN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="removeAttributes.html">removeAttributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="editAttributes.html">editAttributes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-sources">Data Sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#data-adjustments">Data Adjustments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#arithmetic">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#return-information">Return Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#print-information">Print Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.addAttributes</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-addattributes">
+<h1>gridfile.addAttributes<a class="headerlink" href="#gridfile-addattributes" title="Permalink to this headline"></a></h1>
+<p>Add attributes to gridfile metadata</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-addattributes-syntax1"><span class="std std-ref">obj.addAttributes(fields, values)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-addattributes-syntax2"><span class="std std-ref">obj.addAttributes(field1, value1, field2, value2, .., fieldN, valueN)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-addattributes-syntax1">
+<div class="line">obj.addAttributes(<a class="reference internal" href="#gridfile-addattributes-inputs-fields"><span class="std std-ref">fields</span></a>, <a class="reference internal" href="#gridfile-addattributes-inputs-values"><span class="std std-ref">values</span></a>)</div>
+</div>
+</pre><p>Adds the named fields and associated values to the metadata attributes of the current gridfile.</p>
+<pre><div class="syntax line-block" id="gridfile-addattributes-syntax2">
+<div class="line">obj.addAttributes(field1, value1, field2, value2, .., <a class="reference internal" href="#gridfile-addattributes-inputs-fieldn"><span class="std std-ref">fieldN</span></a>, <a class="reference internal" href="#gridfile-addattributes-inputs-valuen"><span class="std std-ref">valueN</span></a>)</div>
+</div>
+</pre><p>Uses a Name,Value syntax to add attributes.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="fields">
+<span id="gridfile-addattributes-inputs-fields"></span><h3>fields<a class="headerlink" href="#fields" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>fields</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nFields</em>]</div>
+<div class="line">A list of fields to add to the attributes structure.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="values">
+<span id="gridfile-addattributes-inputs-values"></span><h3>values<a class="headerlink" href="#values" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>values</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nFields</em>]</div>
+<div class="line">The values associated with each new attributes field.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="fieldn">
+<span id="gridfile-addattributes-inputs-fieldn"></span><h3>fieldN<a class="headerlink" href="#fieldn" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>fieldN</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of a new field for the attributes structure. Must be a valid Matlab variable name and cannot duplicate any fields already in the attributes.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="valuen">
+<span id="gridfile-addattributes-inputs-valuen"></span><h3>valueN<a class="headerlink" href="#valuen" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>valueN</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>any</em> <em>data</em> <em>type</em></div>
+<div class="line">The value associated with the new attributes fields.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="attributes.html" class="btn btn-neutral float-left" title="gridfile.attributes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="removeAttributes.html" class="btn btn-neutral float-right" title="gridfile.removeAttributes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

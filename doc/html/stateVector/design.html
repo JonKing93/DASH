@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stateVector.design &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stateVector.mean" href="mean.html" />
+    <link rel="prev" title="stateVector.relocate" href="relocate.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stateVector.html">stateVector</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stateVector.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variables">Variables</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVector.html#design">Design</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">design</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#dimensions">dimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#types">types</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#indices">indices</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="mean.html">mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sequence.html">sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#overlap">Overlap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#coupling">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#build">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#size-information">Size Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#general-information">General Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stateVector.html">stateVector</a> &raquo;</li>
+      <li>stateVector.design</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statevector-design">
+<h1>stateVector.design<a class="headerlink" href="#statevector-design" title="Permalink to this headline"></a></h1>
+<p>Design the dimensions of variables in a state vector</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#statevector-design-syntax1"><span class="std std-ref">obj = obj.design(-1, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax1"><span class="std std-ref">obj = obj.design(v, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax1"><span class="std std-ref">obj = obj.design(variableNames, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax2"><span class="std std-ref">obj = obj.design(variables, dimensions, types)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax2"><span class="std std-ref">obj = obj.design(variables, dimensions, 0|”c”|”current”|[])</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax2"><span class="std std-ref">obj = obj.design(variables, dimensions, 1|”s”|”state”)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax2"><span class="std std-ref">obj = obj.design(variables, dimensions, 2|”e”|”ens”|”ensemble”)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-design-syntax3"><span class="std std-ref">obj = obj.design(…, indices)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="statevector-design-syntax1">
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(-1, …)</div>
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(<a class="reference internal" href="#statevector-design-inputs-v"><span class="std std-ref">v</span></a>, …)</div>
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(<a class="reference internal" href="#statevector-design-inputs-variablenames"><span class="std std-ref">variableNames</span></a>, …)</div>
+</div>
+</pre><p>Designs the dimensions of the listed variables. If the first input is -1, applies the design settings to all variables currently in the state vector.</p>
+<pre><div class="syntax line-block" id="statevector-design-syntax2">
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(variables, <a class="reference internal" href="#statevector-design-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, <a class="reference internal" href="#statevector-design-inputs-types"><span class="std std-ref">types</span></a>)</div>
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(variables, <a class="reference internal" href="#statevector-design-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, 0|”c”|”current”|[])</div>
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(variables, <a class="reference internal" href="#statevector-design-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, 1|”s”|”state”)</div>
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(variables, <a class="reference internal" href="#statevector-design-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, 2|”e”|”ens”|”ensemble”)</div>
+</div>
+</pre><p>Specifies the types of the listed dimensions. The listed dimensions will be set as ensemble dimensions, state dimensions, or kept in their current state. Ensemble dimensions are used to select the members of a state vector ensemble. State dimensions are used to select data elements along each state vector. When variables are first initialized, all dimensions are set to state dimensions. You must select at least one ensemble dimension in order to build a state vector ensemble.</p>
+<p>If a single dimension type option is provided, applies the same setting to all listed dimensions. Otherwise, provide multiple dimension type options to select different settings for different dimensions.</p>
+<pre><div class="syntax line-block" id="statevector-design-syntax3">
+<div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(…, <a class="reference internal" href="#statevector-design-inputs-indices"><span class="std std-ref">indices</span></a>)</div>
+</div>
+</pre><p>Specify state and/or reference indices for the indices dimensions. Indices for state dimensions (state indices) indicate which elements along the dimension should be used in the state vector. Indices for ensemble dimensions (reference indices) are use as the reference points for selecting ensemble members.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="v">
+<span id="statevector-design-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em> | -1</div>
+<div class="line">The indices of variables in the state vector that should be designed. Either a logical vector with one element per state vector variable, or a vector of linear indices. If linear indices, may not contain repeated indices. If -1, selects all variables in the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="variablenames">
+<span id="statevector-design-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of variables in the state vector whose dimensions should be designed. May not contain repeated variable names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dimensions">
+<span id="statevector-design-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
+<div class="line">The names of dimensions that should be designed. Each dimension must occur in all listed variables. Cannot have repeated dimension names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="types">
+<span id="statevector-design-inputs-types"></span><h3>types<a class="headerlink" href="#types" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>types</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> | <em>vector</em> [<em>nDimensions</em>], <em>string</em> | <em>integer</em></div>
+<div class="line">The type of each dimension. Options are:</div>
+</div>
+<p>[0|”c”|”current”|[]]: (default) Leave in current state</p>
+<p>[1|”s”|”state”]: State dimension</p>
+<p>[2|”e”|”ens”|”ensemble”]: Ensemble dimension</p>
+<p>If types is scalar, uses the same setting for all indicated dimensions. Otherwise, types must have one element per listed dimension.</p>
+</div></section></section>
+<section class="collapse-examples" id="indices">
+<span id="statevector-design-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {[] | <em>logical</em> <em>vector</em> [<em>dimension</em> <em>length</em>] | <em>vector</em>, <em>linear</em> <em>indices</em>}</div>
+<div class="line">State and reference indices for the designed dimensions. State indices are used for state dimensions; they indicate which elements along the dimension should be included in the state vector. Reference indices are used for ensemble dimensions; they indicate the elements along the dimension that can be used as reference elements for ensemble members.%</div>
+</div>
+<p>In most cases, indices should be a vector with a set of indices for each listed dimension. Each set of indices must either be a logical vector the length of the dimension, a set of linear indices, or an empty array. If the indices for a dimension are an empty array, selects all elements along the dimension as state/reference dimensions. If indices are linear indices, they cannot contain repeat elements.</p>
+<p>If only a single dimension is listed, the dimension’s indices may be provided directly as a vector, instead of in a scalar cell. However, the scalar cell syntax is also permitted.</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="statevector-design-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
+<div class="line">The state vector updated with the designed variables and dimensions.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="relocate.html" class="btn btn-neutral float-left" title="stateVector.relocate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="mean.html" class="btn btn-neutral float-right" title="stateVector.mean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

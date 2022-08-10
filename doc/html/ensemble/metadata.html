@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.metadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.load" href="load.html" />
+    <link rel="prev" title="ensemble.evolvingLabels" href="evolvingLabels.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#subset">Subset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#design">Design</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#metadata">Metadata</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">metadata</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#e">e</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#labels">labels</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#information">Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#sizes">Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#add-members">Add Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.metadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-metadata">
+<h1>ensemble.metadata<a class="headerlink" href="#ensemble-metadata" title="Permalink to this headline"></a></h1>
+<p>Return the ensembleMetadata object for a saved ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-metadata-syntax1"><span class="std std-ref">metadata = obj.metadata</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-syntax2"><span class="std std-ref">metadata = obj.metadata(labels)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-syntax2"><span class="std std-ref">metadata = obj.metadata(e)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-syntax2"><span class="std std-ref">metadata = obj.metadata(-1)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-syntax3"><span class="std std-ref">metadata = obj.metadata(0)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-metadata-syntax1">
+<div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata</div>
+</div>
+</pre><p>Returns the metadata for the variables and ensemble members being used by the ensemble. Variables and ensemble members that are not used by the ensemble are not in the metadata. Essentially, this method returns metadata for the ensemble that will be loaded when the “ensemble.load” command is used. If the ensemble implements a static ensemble, the output will be a scalar ensembleMetadata object. If the ensemble implements an evolving ensembleMetadata object, then the output will be a vector of ensembleMetadata objects with one element per ensemble in the evolving set.</p>
+<pre><div class="syntax line-block" id="ensemble-metadata-syntax2">
+<div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata(<a class="reference internal" href="#ensemble-metadata-inputs-labels"><span class="std std-ref">labels</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata(<a class="reference internal" href="#ensemble-metadata-inputs-e"><span class="std std-ref">e</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata(-1)</div>
+</div>
+</pre><p>Returns the metadata for the specified ensembles in an evolving set. The output will be a vector of ensembleMetadata objects with one element per specified ensemble. If the input is -1, returns the metadata for all ensembles in the evolving set.</p>
+<pre><div class="syntax line-block" id="ensemble-metadata-syntax3">
+<div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata(0)</div>
+</div>
+</pre><p>Returns the ensembleMetadata object for the ensemble saved in the .ens file. This object includes metadata for all variables and ensemble members saved in the file, regardless of whether they are used by the ensemble object.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="e">
+<span id="ensemble-metadata-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>e</strong></label><div class="content"><div class="line-block">
+<div class="line">0 | -1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">If 0, returns the metadata for the data saved in the .ens file. Otherwise, indicates which ensembles in the evolving set to return metadata for. If -1, selects all evolving ensembles. If a logical vector, must have one element per evolving ensemble.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="labels">
+<span id="ensemble-metadata-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>labels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nEvolving</em>]</div>
+<div class="line">The labels of ensembles in an evolving set. You can only use labels to refer to ensembles that have unique labels. If multiple ensembles share the same label, reference them using ensemble indices instead.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="metadata">
+<span id="ensemble-metadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>ensembleMetadata</em> <em>objects</em></div>
+<div class="line">The ensembleMetadata objects for the indicated ensembles. Has one element per listed ensemble. Each metadata object holds information on the used variables and ensemble members for a particular ensemble.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="evolvingLabels.html" class="btn btn-neutral float-left" title="ensemble.evolvingLabels" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="load.html" class="btn btn-neutral float-right" title="ensemble.load" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

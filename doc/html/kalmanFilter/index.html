@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.index &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.run" href="run.html" />
+    <link rel="prev" title="kalmanFilter.deviations" href="deviations.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#covariance">Covariance</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#output-options">Output Options</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="variance.html">variance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="percentiles.html">percentiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="deviations.html">deviations</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">index</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#type">type</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#rows">rows</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#weights">weights</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#nanoption">nanOption</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#names">names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#run">Run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.index</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-index">
+<h1>kalmanFilter.index<a class="headerlink" href="#kalmanfilter-index" title="Permalink to this headline"></a></h1>
+<p>Specify climate indices to calculate from the posterior of a Kalman Filter</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax1"><span class="std std-ref">obj = obj.index(…)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax2"><span class="std std-ref">obj = obj.index(name, type, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax3"><span class="std std-ref">names = obj.index</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax4"><span class="std std-ref">obj = obj.index(name, ‘delete’)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax5"><span class="std std-ref">obj = obj.index(name, ‘mean’, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax5"><span class="std std-ref">obj = obj.index(…, ‘rows’, rows)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax5"><span class="std std-ref">obj = obj.index(…, ‘weights’, weights)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-syntax5"><span class="std std-ref">obj = obj.index(…, ‘nanflag’, nanOption)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-index-syntax1">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(…)</div>
+</div>
+</pre><p>Calculates a climate index from a posterior climate field for each member of a posterior ensemble. Returns the full posterior for the calculated index, without needing to save the (often very large) full posterior of the entire climate field.</p>
+<p>A common motivation for data assimilation is to reconstruct a climate index of some sort, and having the full posterior of the climate index is useful for quantifying reconstruction uncertainty. Often, climate indices are calculated using values across a large spatial field. In order to calculate the full posterior of such climate indices, data values are needed for the full posterior of the associated spatial field. However, this present a problem, because the full posteriors of spatial fields are often too large for computer memory. This method allows you to circumvent these memory issues by calculating a climate index from the posterior fields, saving the full posterior for the climate index, and then discarding the large posterior field.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-index-syntax2">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(<a class="reference internal" href="#kalmanfilter-index-inputs-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#kalmanfilter-index-inputs-type"><span class="std std-ref">type</span></a>, …)</div>
+</div>
+</pre><p>Calculates an index when the Kalman filter is run. The first input is an identifying name that the filter should use for the index. You can specify multiple indices that should be calculated, so long as they use different names. When using the kalmanFilter.run method, the output struct will hold the posterior for the index in a field named: index_&lt;name&gt;</p>
+<p>The second input indicates the type of calculation that should be used to compute the index. All subsequent inputs will depend on the type of calculation being used. The syntaxes for different types of calculations are detailed below.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-index-syntax3">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-names"><span class="std std-ref">names</span></a> = obj.index</div>
+</div>
+</pre><p>Returns the names of the indices that will be calculated from the posterior when the Kalman filter is run.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-index-syntax4">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(<a class="reference internal" href="#kalmanfilter-index-inputs-name"><span class="std std-ref">name</span></a>, ‘delete’)</div>
+</div>
+</pre><p>Deletes the index with the specified name from the Kalman Filter object. These indices will no longer be calculated when the Kalman filter is run.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-index-syntax5">
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(<a class="reference internal" href="#kalmanfilter-index-inputs-name"><span class="std std-ref">name</span></a>, ‘mean’, …)</div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(…, ‘rows’, <a class="reference internal" href="#kalmanfilter-index-inputs-rows"><span class="std std-ref">rows</span></a>)</div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(…, ‘weights’, <a class="reference internal" href="#kalmanfilter-index-inputs-weights"><span class="std std-ref">weights</span></a>)</div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-index-outputs-obj"><span class="std std-ref">obj</span></a> = obj.index(…, ‘nanflag’, <a class="reference internal" href="#kalmanfilter-index-inputs-nanoption"><span class="std std-ref">nanOption</span></a>)</div>
+</div>
+</pre><p>Calculates the index using a mean over state vector elements. Use the “rows” flag to only implement the mean over specific state vector rows. If you do not provide the “rows” flag, takes a mean over all the elements in the state vector. Use the “weights” flag to implement a weighted mean over the selected state vector elements. If you do not provide the “weights” flag, implements an unweighted mean. Use the “nanflag” flag to indicate how to treat NaN values in the state vector when taking a mean. If you do not specify the “nanflag” flag, includes NaN elements in the mean.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="name">
+<span id="kalmanfilter-index-inputs-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">An identifying name for the calculated index. The name must be a valid Matlab variable name. It must start with a letter, and can only contain letters, numbers, and underscores.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="type">
+<span id="kalmanfilter-index-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>type</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Indicates the type of calculation to use to compute the climate index.</div>
+</div>
+<p>[‘mean’]: Implements a mean over state vector elements in each posterior ensemble member.</p>
+</div></section></section>
+<section class="collapse-examples" id="rows">
+<span id="kalmanfilter-index-inputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>rows</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>logical</em> <em>vector</em> [<em>nState</em>] | <em>vector</em> <em>linear</em> <em>indices</em> [<em>nRows</em>]</div>
+<div class="line">Indicates which state vector rows to use in the weighted mean. If a logical vector, must have one element per state vector row. If not set, selects every row in the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="weights">
+<span id="kalmanfilter-index-inputs-weights"></span><h3>weights<a class="headerlink" href="#weights" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>weights</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>nRows</em>]</div>
+<div class="line">The weights to use for a weighted mean of the selected state vector elements. Must have one element per state vector row used in the mean. If you provided a “rows” input, the order of weights must match the order of input rows. Otherwise, the order of weights should match the order of elements in the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="nanoption">
+<span id="kalmanfilter-index-inputs-nanoption"></span><h3>nanOption<a class="headerlink" href="#nanoption" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>nanOption</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
+<div class="line">Indicates how to treat NaN elements in a state vector when taking a mean.</div>
+</div>
+<p>[“omitnan”|false]: Omits NaN values when taking means</p>
+<p>[“includenan”|true (default)]: Includes NaN values when taking means</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="kalmanfilter-index-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
+<div class="line">The object with updated posterior index calculations.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="names">
+<span id="kalmanfilter-index-outputs-names"></span><h3>names<a class="headerlink" href="#names" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>names</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of the indices that will be calculated when the Kalman filter is run.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="deviations.html" class="btn btn-neutral float-left" title="kalmanFilter.deviations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="run.html" class="btn btn-neutral float-right" title="kalmanFilter.run" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

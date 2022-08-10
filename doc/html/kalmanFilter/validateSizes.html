@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter.validateSizes &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kalmanFilter.finalizeCovariance" href="finalizeCovariance.html" />
+    <link rel="prev" title="kalmanFilter.uniqueCovariances" href="uniqueCovariances.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../kalmanFilter.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../kalmanFilter.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#general">General</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../kalmanFilter.html#covariances">Covariances</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="estimateCovariance.html">estimateCovariance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniqueCovariances.html">uniqueCovariances</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">validateSizes</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#outputs">outputs</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#type">type</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#kalmanfilter-validatesizes-outputs-outputs">outputs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="finalizeCovariance.html">finalizeCovariance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#inherited">Inherited</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../kalmanFilter.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../kalmanFilter.html">kalmanFilter</a> &raquo;</li>
+      <li>kalmanFilter.validateSizes</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter-validatesizes">
+<h1>kalmanFilter.validateSizes<a class="headerlink" href="#kalmanfilter-validatesizes" title="Permalink to this headline"></a></h1>
+<p>Preserve assimilation sizes set by covariance options</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#kalmanfilter-validatesizes-syntax1"><span class="std std-ref">… = kalmanFilter.validateSizes(outputs, type)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-validatesizes-syntax2"><span class="std std-ref">outputs = kalmanFilter.validateSizes(outputs, ‘delete’)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-validatesizes-syntax3"><span class="std std-ref">kalmanFilter.validateSizes(outputs, ‘set’)</span></a></div>
+<div class="line"><a class="reference internal" href="#kalmanfilter-validatesizes-syntax4"><span class="std std-ref">… = kalmanFilter.validateSizes(…, name, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="kalmanfilter-validatesizes-syntax1">
+<div class="line">= kalmanFilter.validateSizes(<a class="reference internal" href="#kalmanfilter-validatesizes-inputs-outputs"><span class="std std-ref">outputs</span></a>, <a class="reference internal" href="#kalmanfilter-validatesizes-inputs-type"><span class="std std-ref">type</span></a>)</div>
+</div>
+</pre><p>When using a dash.ensembleFilter data input method (such as observations, prior, estimates, or uncertainties), the method checks that all essential data inputs have compatible sizes. However, kalmanFilter objects can also set sizes via covariance options. This method ensures that covariance options have compatible sizes and is intended for use after the dash.ensembleFilter method.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-validatesizes-syntax2">
+<div class="line"><a class="reference internal" href="#kalmanfilter-validatesizes-outputs-outputs"><span class="std std-ref">outputs</span></a> = kalmanFilter.validateSizes(<a class="reference internal" href="#kalmanfilter-validatesizes-inputs-outputs"><span class="std std-ref">outputs</span></a>, ‘delete’)</div>
+</div>
+</pre><p>When performing a delete operation, maintains assimilation sizes that are set by the covariance options.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-validatesizes-syntax3">
+<div class="line">kalmanFilter.validateSizes(<a class="reference internal" href="#kalmanfilter-validatesizes-inputs-outputs"><span class="std std-ref">outputs</span></a>, ‘set’)</div>
+</div>
+</pre><p>When performing a set operation, checks that new sizes are compatible with any sizes set by covariance options.</p>
+<pre><div class="syntax line-block" id="kalmanfilter-validatesizes-syntax4">
+<div class="line">= kalmanFilter.validateSizes(…, <a class="reference internal" href="#kalmanfilter-validatesizes-inputs-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#kalmanfilter-validatesizes-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Customize error messages and IDs.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="outputs">
+<span id="kalmanfilter-validatesizes-inputs-outputs"></span><h3>outputs<a class="headerlink" href="#outputs" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>outputs</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em></div>
+<div class="line">The output of a dash.ensembleFilter data input method (observations, prior, estimates, uncertainties)</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="type">
+<span id="kalmanfilter-validatesizes-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>type</strong></label><div class="content"><div class="line-block">
+<div class="line">‘<em>delete</em>’ | ‘<em>set</em>’</div>
+<div class="line">Indicates the type of operation performed by the dash.ensembleFilter data input method.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="kalmanfilter-validatesizes-inputs-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">An identifying name for the data input</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="kalmanfilter-validatesizes-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="kalmanfilter-validatesizes-outputs-outputs">
+<span id="id1"></span><h3>outputs<a class="headerlink" href="#kalmanfilter-validatesizes-outputs-outputs" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>outputs</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em></div>
+<div class="line">The kalmanFilter object output by a delete operation, but updated to include any sizes set by covariance options.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uniqueCovariances.html" class="btn btn-neutral float-left" title="kalmanFilter.uniqueCovariances" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="finalizeCovariance.html" class="btn btn-neutral float-right" title="kalmanFilter.finalizeCovariance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

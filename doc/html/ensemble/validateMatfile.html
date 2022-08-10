@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.validateMatfile &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.tests" href="tests.html" />
+    <link rel="prev" title="ensemble.parseScope" href="parseScope.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#assertions">Assertions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#indices">Indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#id1">Console Display</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#misc">Misc</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="name.html">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parseScope.html">parseScope</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">validateMatfile</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#m">m</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#precision">precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.validateMatfile</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-validatematfile">
+<h1>ensemble.validateMatfile<a class="headerlink" href="#ensemble-validatematfile" title="Permalink to this headline"></a></h1>
+<p>Check that a .ens file is valid</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-validatematfile-syntax1"><span class="std std-ref">[m, metadata, precision] = obj.validateMatfile</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-validatematfile-syntax2"><span class="std std-ref">… = obj.validateMatfile(header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-validatematfile-syntax1">
+<div class="line">[<a class="reference internal" href="#ensemble-validatematfile-outputs-m"><span class="std std-ref">m</span></a>, <a class="reference internal" href="#ensemble-validatematfile-outputs-metadata"><span class="std std-ref">metadata</span></a>, <a class="reference internal" href="#ensemble-validatematfile-outputs-precision"><span class="std std-ref">precision</span></a>] = obj.validateMatfile</div>
+</div>
+</pre><p>Checks that the .ens file associated with an ensemble object is valid and matches the metadata stored in the ensemble object. Requires the .ens file to be a MAT file with X and stateVector fields that have matching sizes. Builds an ensembleMetadata object from the saved stateVector. If the ensemble object has an ensembleMetadata object, checks that the metadata built from the file matches the current metadata. Returns a matfile object for the file, as well as the ensembleMetadata object. Also returns the numeric precision of the saved ensemble.</p>
+<pre><div class="syntax line-block" id="ensemble-validatematfile-syntax2">
+<div class="line">= obj.validateMatfile(<a class="reference internal" href="#ensemble-validatematfile-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Customize header in thrown error IDs</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="header">
+<span id="ensemble-validatematfile-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="m">
+<span id="ensemble-validatematfile-outputs-m"></span><h3>m<a class="headerlink" href="#m" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>m</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>matfile</em> <em>object</em></div>
+<div class="line">A matfile object for the .ens file</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadata">
+<span id="ensemble-validatematfile-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensembleMetadata</em> <em>object</em></div>
+<div class="line">The ensembleMetadata object for the ensemble object.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="precision">
+<span id="ensemble-validatematfile-outputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>precision</strong></label><div class="content"><div class="line-block">
+<div class="line">‘<em>single</em>’ | ‘<em>double</em>’</div>
+<div class="line">The numeric precision of the saved ensemble</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="parseScope.html" class="btn btn-neutral float-left" title="ensemble.parseScope" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="ensemble.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

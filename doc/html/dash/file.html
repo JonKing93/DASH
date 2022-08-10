@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.file &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dash.file.new" href="file/new.html" />
+    <link rel="prev" title="dash.string.tests" href="string/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../dash.html#data-specific-utilities">Data Specific Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="indices.html">indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="string.html">string</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#file-creation">File Creation</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="file/new.html">new</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#file-paths">File Paths</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="file/relativePath.html">relativePath</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file/collapsePath.html">collapsePath</a></li>
+<li class="toctree-l5"><a class="reference internal" href="file/urlSeparators.html">urlSeparators</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#unit-tests">Unit Tests</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="file/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../dash.html">dash</a> &raquo;</li>
+      <li>dash.file</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-file">
+<h1>dash.file<a class="headerlink" href="#dash-file" title="Permalink to this headline"></a></h1>
+<p>Functions that facilitate file manipulation</p>
+<hr class="docutils" />
+<section id="file-creation">
+<h2>File Creation<a class="headerlink" href="#file-creation" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="file/new.html"><span class="doc">new</span></a> - Do setup tasks for new files</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="file-paths">
+<h2>File Paths<a class="headerlink" href="#file-paths" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="file/relativePath.html"><span class="doc">relativePath</span></a> - Determine the relative path to a file from a folder</div>
+<div class="line"><a class="reference internal" href="file/collapsePath.html"><span class="doc">collapsePath</span></a> - Collapse . and .. entries in a file path</div>
+<div class="line"><a class="reference internal" href="file/urlSeparators.html"><span class="doc">urlSeparators</span></a> - Replace windows-style () file separators with url-style (/) separators</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="unit-tests">
+<h2>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="file/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the dash.file package</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="string/tests.html" class="btn btn-neutral float-left" title="dash.string.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="file/new.html" class="btn btn-neutral float-right" title="dash.file.new" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

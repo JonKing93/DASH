@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata.latlon &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensembleMetadata.regrid" href="regrid.html" />
+    <link rel="prev" title="ensembleMetadata.closestLatLon" href="closestLatLon.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensembleMetadata.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensembleMetadata.html#coordinates">Coordinates</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="closestLatLon.html">closestLatLon</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">latlon</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#sitecolumns">siteColumns</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#coordinates">coordinates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#regrid">Regrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#locate-variables">Locate Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-varaibles">Manipulate Varaibles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-members">Manipulate Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensembleMetadata.html">ensembleMetadata</a> &raquo;</li>
+      <li>ensembleMetadata.latlon</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata-latlon">
+<h1>ensembleMetadata.latlon<a class="headerlink" href="#ensemblemetadata-latlon" title="Permalink to this headline"></a></h1>
+<p>Return latitude-longitude coordinates for state vector elements</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax1"><span class="std std-ref">coordinates = obj.latlon</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax2"><span class="std std-ref">coordinates = obj.latlon(siteColumns)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax3"><span class="std std-ref">coordinates = obj.latlon(siteColumns, variableNames)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax3"><span class="std std-ref">coordinates = obj.latlon(siteColumns, v)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="ensemblemetadata-latlon-syntax1">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.latlon</div>
+</div>
+</pre><p>Returns a latitude-longitude coordinate for each row of a state vector. The output is a matrix with two columns - the first column holds the latitude coordinate for each state vector row, and the second holds the longitude coordinate. This method is a convenience function intended to facilitate covariance localization. It prioritizes returning outputs suitable for covariance localization over strictly reporting metadata. Consider the “ensembleMetadata.rows” method for more rigorous metadata, or if covariance localization is not your intent.</p>
+<p>This method is designed for the case where latitude-longitude metadata is stored along the “lat”, “lon”, and/or “site” dimensions. Coordinates that are not well-described by numeric scalars are returned as NaN.</p>
+<p>The method acts by obtaining “lat” and “lon” metadata for each state vector element. To return a non-NaN coordinate for a state vector element, the “lat” and “lon” metadata for the element must be numeric scalars, string scalars, or char row vectors. In the case of string scalars or char rows vectors, the strings are converted to numeric coordinates using Matlab’s “str2double” function. If the state vector element does not have “lat” or “lon” metadata, the metadata is not one of the described formats, or the metadata cannot be converted to numeric coordinates, then the coordinates for the state vector element are returned as NaN. If a state vector element implements a mean over the “lat” or “lon” dimension, then the coordinate for the dimension is also set to NaN.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-latlon-syntax2">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.latlon(<a class="reference internal" href="#ensemblemetadata-latlon-inputs-sitecolumns"><span class="std std-ref">siteColumns</span></a>)</div>
+</div>
+</pre><p>This syntax allows the method to also extract coordinates that are stored along the “site” dimension. The input is a row vector with two elements. The two elements indicate which columns of the “site” metadata should be used for latitude and longitude coordinates.</p>
+<p>Note that this syntax prioritizes “lat” and “lon” metadata over “site” metadata. The metadata will only extract coordinates from the “site” dimension when a state vector element has neither “lat” nor “lon” as a state dimension. If the element also does not have “site” metadata, the “site” metadata does not have the specified columns, the “site” metadata cannot be converted to numeric coordinates, or there is a mean over the “site” dimension, then the latitude-longitude coordinate is returned as NaN.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-latlon-syntax3">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.latlon(<a class="reference internal" href="#ensemblemetadata-latlon-inputs-sitecolumns"><span class="std std-ref">siteColumns</span></a>, <a class="reference internal" href="#ensemblemetadata-latlon-inputs-variablenames"><span class="std std-ref">variableNames</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.latlon(<a class="reference internal" href="#ensemblemetadata-latlon-inputs-sitecolumns"><span class="std std-ref">siteColumns</span></a>, <a class="reference internal" href="#ensemblemetadata-latlon-inputs-v"><span class="std std-ref">v</span></a>)</div>
+</div>
+</pre><p>Indicate which columns of “site” metadata to use for specific variables. If the first input has a single row, then uses the same columns for all listed variables. Otherwise, the first input should have one row per listed variable.</p>
+<p>This syntax prioritizes “site” metadata for the listed variables. For these variables, the method will only extract coordinates from “site” metadata and will ignore “lat” and “lon” metadata even if the state vector element does not have “site” as a state dimension. For all other variables, the method will only extract coordinates from “lat” and “lon”, even if the other variables have “site” as a state dimension.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="sitecolumns">
+<span id="ensemblemetadata-latlon-inputs-sitecolumns"></span><h3>siteColumns<a class="headerlink" href="#sitecolumns" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>siteColumns</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>positive</em> <em>integers</em>, <em>vector</em> [2] | <em>matrix</em> [<em>nVariables</em> <em>x</em> 2]</div>
+<div class="line">Indicates the columns of “site” metadata that should be used as latitude and longitude coordinates. If a vector, uses the same columns for all variables with “site” metadata. The first element is the latitude column, and the second element is the longitude column. siteColumns must be vector when no variables are specified.</div>
+</div>
+<p>If site variables are also listed, siteColumns may either be a vector or a matrix. If a matrix, must have one row per listed variable and two columns. The first column lists latitude columns in the site metadata, and the second column lists longitude columns for each variable.</p>
+</div></section></section>
+<section class="collapse-examples" id="variablenames">
+<span id="ensemblemetadata-latlon-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nVariables</em>]</div>
+<div class="line">The names of variables that should use “site” metadata to determine latitude-longitude coordinates. Cannot have repeated names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="v">
+<span id="ensemblemetadata-latlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of variable that should use “site” metadata to determine latitude-longitude coordinates. If -1, selects all variables. If a logical vector, must have one element per variable in the state vector. If linear indices, cannot have repeated elements.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="coordinates">
+<span id="ensemblemetadata-latlon-outputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nRows</em> <em>x</em> 2]</div>
+<div class="line">Latitude-longtidue coordinates for each row of the state vector. First column is latitude and second column is longitude. If coordinate metadata for a row is not an expected format, returns a NaN coordinate for that row. NaN coordinates are returned for rows that: are missing a required dimension, implement a mean over a dimension, use coordinates that are not numeric scalars / string scalars / char row vectors, or have string metadata that cannot be converted to numeric values.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="closestLatLon.html" class="btn btn-neutral float-left" title="ensembleMetadata.closestLatLon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="regrid.html" class="btn btn-neutral float-right" title="ensembleMetadata.regrid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

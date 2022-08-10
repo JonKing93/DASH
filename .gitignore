@@ -16,6 +16,7 @@ DASH.mltbx
 !/testdata/gridfile/**
 
 # Documentation builds
+doc/html/_sources/**
 doc_source/sphinx/source/**
 doc_source/build/html/**
 

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM.linear.linear &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PSM.linear.rows" href="rows.html" />
+    <link rel="prev" title="PSM.linear" href="../linear.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../PSM.html">PSM</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../linear.html">linear</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../linear.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../linear.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../linear.html#create">Create</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">linear</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#slopes">slopes</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#intercept">intercept</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../linear.html#estimate">Estimate</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../linear.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../prysm.html">prysm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vslite.html">vslite</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#template">Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../PSM.html">PSM</a> &raquo;</li>
+          <li><a href="../linear.html">PSM.linear</a> &raquo;</li>
+      <li>PSM.linear.linear</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm-linear-linear">
+<h1>PSM.linear.linear<a class="headerlink" href="#psm-linear-linear" title="Permalink to this headline"></a></h1>
+<p>Creates a new linear PSM object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#psm-linear-linear-syntax1"><span class="std std-ref">obj = PSM.linear(slopes)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-linear-linear-syntax2"><span class="std std-ref">obj = PSM.linear(slopes, intercept)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<pre><div class="syntax line-block" id="psm-linear-linear-syntax1">
+<div class="line"><a class="reference internal" href="#psm-linear-linear-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.linear(<a class="reference internal" href="#psm-linear-linear-inputs-slopes"><span class="std std-ref">slopes</span></a>)</div>
+</div>
+</pre><p>Initializes a new linear PSM object. The “slopes” input should have one element per variable in the linear model. The order of slopes should match the order of state vector rows / the order in which state vector variables are passed into the linear model. Uses an intercept of 0.</p>
+<p>The subsequent linear forward model will use the form Y = slopes(1)*X1 + slopes(2)*X2 + … slopes(N)*XN</p>
+<pre><div class="syntax line-block" id="psm-linear-linear-syntax2">
+<div class="line"><a class="reference internal" href="#psm-linear-linear-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.linear(<a class="reference internal" href="#psm-linear-linear-inputs-slopes"><span class="std std-ref">slopes</span></a>, <a class="reference internal" href="#psm-linear-linear-inputs-intercept"><span class="std std-ref">intercept</span></a>)</div>
+</div>
+</pre><p>Specify an intercept for the linear model. The subsequent linear model will have form: Y = slopes(1)*X1 + slopes(2)*X2 + … slopes(N)*XN + intercept</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="slopes">
+<span id="psm-linear-linear-inputs-slopes"></span><h3>slopes<a class="headerlink" href="#slopes" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>slopes</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>nVariables</em>]</div>
+<div class="line">The slopes / linear coefficients for the variables in the linear model. The number of slopes determines the number of variables used in the model.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="intercept">
+<span id="psm-linear-linear-inputs-intercept"></span><h3>intercept<a class="headerlink" href="#intercept" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>intercept</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">An intercept for the linear model. By default, uses an intercept of 0.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="psm-linear-linear-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>PSM</em>.*linear* <em>object</em></div>
+<div class="line">The new linear PSM object</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../linear.html" class="btn btn-neutral float-left" title="PSM.linear" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rows.html" class="btn btn-neutral float-right" title="PSM.linear.rows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
