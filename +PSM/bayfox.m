@@ -14,7 +14,7 @@ classdef bayfox < PSM.Interface
     % ----------
     % bayfox Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   bayfox      - Creates a new BayFOX PSM object
@@ -56,7 +56,7 @@ classdef bayfox < PSM.Interface
         function[obj] = bayfox(species)
             %% PSM.bayfox.bayfox  Creates a new BayFOX PSM object
             % ----------
-            %   obj = PSM.bayfox(species)
+            %   obj = <strong>PSM.bayfox</strong>(species)
             %   Initializes a new BayFOX PSM object. Please see the
             %   documentation of bayfox_forward.m in the BayFOX
             %   repository for details about the inputs.
@@ -79,21 +79,21 @@ classdef bayfox < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.bayfox.rows  Indicate the stateVector rows used to run a BayFOX PSM
             % ----------
-            %   obj = obj.rows(rows)
+            %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vector rows that should be used as input
             %   for the BayFOX PSM when calling "PSM.estimate". The input
             %   is a column vector with two elements. The first element is
             %   the row of the SST input, and the second element is the row
             %   of the d18O (seawater) input.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with 2 rows and
             %   one column per ensemble member. The first row is for the
             %   SST inputs, and the second row is the d18O (seawater) inputs.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -103,10 +103,10 @@ classdef bayfox < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the BayFOX PSM object.
             % ----------
             %   Inputs:
@@ -147,7 +147,7 @@ classdef bayfox < PSM.Interface
         function[d18Oc, R] = estimate(obj, X)
             %% PSM.bayfox.estimate  Estimates d18Oc values from SSTs and d18O_seawater
             % ----------
-            %   [d18Oc, R] = obj.estimate(X)
+            %   [d18Oc, R] = <strong>obj.estimate</strong>(X)
             %   Runs the BayFOX forward model on data extracted from a
             %   state vector ensemble. Returns an estimate of d18Oc values 
             %   and optionally estimates uncertainties for the estimated values.

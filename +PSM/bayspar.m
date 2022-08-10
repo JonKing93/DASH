@@ -14,7 +14,7 @@ classdef bayspar < PSM.Interface
     % ----------
     % bayspar Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   bayspar     - Creates a new BaySPAR PSM object
@@ -58,12 +58,12 @@ classdef bayspar < PSM.Interface
         function[obj] = bayspar(latitude, longitude, options)
             %% PSM.bayspar.bayspar  Creates a new BaySPAR PSM object
             % ----------
-            %   obj = PSM.bayspar(latitude, longitude)
+            %   obj = <strong>PSM.bayspar</strong>(latitude, longitude)
             %   Initializes a new BaySPAR PSM object. Please see the
             %   documentation of TEX_forward.m in the BaySPAR repository
             %   for details about the inputs.
             %
-            %   obj = PSM.bayspar(latitude, longitude, options)
+            %   obj = <strong>PSM.bayspar</strong>(latitude, longitude, options)
             %   Provide optional arguments to the BaySPAR forward model.
             % ----------
             %   Inputs:
@@ -99,20 +99,20 @@ classdef bayspar < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.bayspar.rows  Indicate the stateVector rows used to run a BaySPAR PSM
             % ----------
-            %   obj = obj.rows(row)
+            %   obj = <strong>obj.rows</strong>(row)
             %   Indicate the state vector row that should be used as the SST
             %   input for the BaySPAR PSM when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector
             %   row for each ensemble member and each ensemble in an
             %   evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector row to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a row vector with one element per
             %   ensemble member.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -122,10 +122,10 @@ classdef bayspar < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the BaySPAR PSM object.
             % ----------
             %   Inputs:
@@ -164,7 +164,7 @@ classdef bayspar < PSM.Interface
         function[TEX86, R] = estimate(obj, SST)
             %% PSM.bayspar.estimate  Estimates TEX86 values from sea surface temperatures
             % ----------
-            %   [TEX86, R] = obj.estimate(SST)
+            %   [TEX86, R] = <strong>obj.estimate</strong>(SST)
             %   Runs the BaySPAR forward model on a set of SSTs. Returns
             %   an estimate of TEX86 values and optionally estimates
             %   uncertainties for the estimated values.

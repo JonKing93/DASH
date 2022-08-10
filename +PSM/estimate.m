@@ -28,7 +28,7 @@ function[varargout] = estimate(F, X, varargin)
 %
 %   The method uses PSM rows to extract forward model inputs from the state
 %   vector ensemble. Thus, you must call the "rows" command on each input
-%   PSM object before using PSM.estimate. If any of the PSM objects defines
+%   PSM object before using the "estimate" command. If any of the PSM objects defines
 %   different rows for different ensemble members, then all of the PSM
 %   objects must either 1. Define rows for the same number of ensemble
 %   members, or 2. Use the same rows for all ensemble members. Likewise, if

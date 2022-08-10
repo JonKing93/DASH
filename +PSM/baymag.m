@@ -15,7 +15,7 @@ classdef baymag < PSM.Interface
     % ----------
     % baymag Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   baymag      - Creates a new BayMAG PSM object
@@ -63,12 +63,12 @@ classdef baymag < PSM.Interface
         function[obj] = baymag(age, omega, salinity, pH, clean, species, options)
             %% PSM.baymag.baymag  Creates a new BayMAG PSM object
             % ----------
-            %   obj = PSM.baymag(age, omega, salinity, pH, clean, species)
+            %   obj = <strong>PSM.baymag</strong>(age, omega, salinity, pH, clean, species)
             %   Initializes a new BayMAG PSM object. Please see the
             %   documentation of baymag_forward_ln.m in the BayMAG
             %   repository for details about the inputs.
             %
-            %   obj = PSM.baymag(..., options)
+            %   obj = <strong>PSM.baymag</strong>(..., options)
             %   Provide optional arguments to the BayMAG forward model.
             % ----------
             %   Inputs:
@@ -113,20 +113,20 @@ classdef baymag < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.baymag.rows  Indicate the stateVector rows used to run a BayMAG PSM
             % ----------
-            %   obj = obj.rows(row)
+            %   obj = <strong>obj.rows</strong>(row)
             %   Indicate the state vector row that should be used as the SST
             %   input for the BayMAG PSM when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector
             %   row for each ensemble member and each ensemble in an
             %   evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector row to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a row vector with one element per
             %   ensemble member.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -136,10 +136,10 @@ classdef baymag < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the BayMAG PSM object.
             % ----------
             %   Inputs:
@@ -178,7 +178,7 @@ classdef baymag < PSM.Interface
         function[MgCa, R] = estimate(obj, SST)
             %% PSM.baymag.estimate  Estimates Mg/Ca values from sea surface temperatures
             % ----------
-            %   [MgCa, R] = obj.estimate(SST)
+            %   [MgCa, R] = <strong>obj.estimate</strong>(SST)
             %   Runs the BayMAG forward model on a set of SSTs. Returns
             %   an estimate of Mg/Ca values and optionally estimates
             %   uncertainties for the estimated values.

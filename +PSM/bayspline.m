@@ -16,7 +16,7 @@ classdef bayspline < PSM.Interface
     % ----------
     % bayspline Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   bayspline   - Creates a new BaySpline PSM object
@@ -58,10 +58,10 @@ classdef bayspline < PSM.Interface
         function[obj] = bayspline(bayesFile)
             %% PSM.bayspline.bayspline  Creates a new BaySpline PSM object
             % ----------
-            %   obj = PSM.bayspline
+            %   obj = <strong>PSM.bayspline</strong>
             %   Initializes a new BaySpline PSM object.
             %
-            %   obj = PSM.bayspline(bayesFile)
+            %   obj = <strong>PSM.bayspline</strong>(bayesFile)
             %   Optionally specifies a file to use as the Bayesian
             %   posterior for the calibration.
             % ----------
@@ -83,20 +83,20 @@ classdef bayspline < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.bayspline.rows  Indicate the stateVector rows used to run a BaySpline PSM
             % ----------
-            %   obj = obj.rows(row)
+            %   obj = <strong>obj.rows</strong>(row)
             %   Indicate the state vector row that should be used as the SST
             %   input for the BaySpline PSM when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector
             %   row for each ensemble member and each ensemble in an
             %   evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector row to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a row vector with one element per
             %   ensemble member.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -106,10 +106,10 @@ classdef bayspline < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the BaySpline PSM object.
             % ----------
             %   Inputs:
@@ -148,7 +148,7 @@ classdef bayspline < PSM.Interface
         function[UK37, R] = estimate(obj, SST)
             %% PSM.bayspline.estimate  Estimates UK37 values from sea surface temperatures
             % ----------
-            %   [UK37, R] = obj.estimate(SST)
+            %   [UK37, R] = <strong>obj.estimate</strong>(SST)
             %   Runs the BaySpline forward model on a set of SSTs. Returns
             %   an estimate of UK37 values and optionally estimates
             %   uncertainties for the estimated values.

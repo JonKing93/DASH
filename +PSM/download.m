@@ -32,7 +32,7 @@ function[] = download(psmName, path)
 %           which to download the repository code. The folder must be
 %           empty. By default, uses the current folder.
 %
-%   Outputs:
+%   Downloads:
 %       Downloads the specified repository to the indicated folder and adds
 %       the repository to the Matlab active path.
 %

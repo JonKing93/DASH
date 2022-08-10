@@ -1,7 +1,8 @@
 classdef linear < PSM.Interface
     %% PSM.linear  Implements a general linear model of form:  Y = Y = a1*X1 + a2*X2 + ... an*Xn + b
     % ----------
-    %   The linear PSM implements a general linear forward model of form:
+    %   The linear PSM implements a general linear forward model. The
+    %   linear model uses the following form:
     %       Y = a1*X1 + a2*X2 + ... an*Xn + b
     %
     %   Each linear PSM can be customized for any N number of variables. 
@@ -11,9 +12,9 @@ classdef linear < PSM.Interface
     %   The linear PSM is directly built-in to the DASH toolbox, so does
     %   not need to be donwloaded from an external Github repository.
     % ----------
-    %   linear Methods:
+    % linear Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   linear      - Creates a new linear PSM object
@@ -58,16 +59,16 @@ classdef linear < PSM.Interface
         function[obj] = linear(slopes, intercept)
             %% PSM.linear.linear  Creates a new linear PSM object
             % ----------
-            %   obj = PSM.linear(slopes)
+            %   obj = <strong>PSM.linear</strong>(slopes)
             %   Initializes a new linear PSM object. The "slopes" input should have one
             %   element per variable in the linear model. The order of slopes should
             %   match the order of state vector rows / the order in which state vector
             %   variables are passed into the linear model. Uses an intercept of 0.
             %
-            %   The subsequent linear forward model will use the form:
+            %   The subsequent linear forward model will use the form
             %       Y = slopes(1)*X1 + slopes(2)*X2 + ... slopes(N)*XN
             %
-            %   obj = PSM.linear(slopes, intercept)
+            %   obj = <strong>PSM.linear</strong>(slopes, intercept)
             %   Specify an intercept for the linear model. The subsequent linear model
             %   will have form:
             %       Y = slopes(1)*X1 + slopes(2)*X2 + ... slopes(N)*XN + intercept
@@ -102,7 +103,7 @@ classdef linear < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.linear.rows  Indicate the stateVector rows used to run a linear PSM
             % ----------
-            %   obj = obj.rows(rows)
+            %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vector row that should be used as the SST
             %   input for the linear PSM when calling the "PSM.estimate"
             %   command. The input is a column vector with one element
@@ -110,13 +111,13 @@ classdef linear < PSM.Interface
             %   same state vector rows for each ensemble member and each 
             %   ensemble in an evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with one row per linear slope,
             %   and one column per ensemble member.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector rows to use for different ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -126,10 +127,10 @@ classdef linear < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use differents row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the linear PSM object.
             % ----------
             %   Inputs:
@@ -171,7 +172,7 @@ classdef linear < PSM.Interface
         function[Y] = estimate(obj, X)
             %% PSM.linear.estimate  Estimates observations using a general linear model
             % ----------
-            %   Y = obj.estimate(X)
+            %   Y = <strong>obj.estimate</strong>(X)
             %   Runs the linear forward model on variable extracted from a
             %   state vector ensemble.
             % ----------

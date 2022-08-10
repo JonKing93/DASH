@@ -15,8 +15,7 @@ classdef vslite < PSM.Interface
     % ----------
     % vslite Methods:
     %
-    % **ALL USER METHODS**
-    %
+    % *USER METHODS*
     %
     % Create:
     %   vslite      - Creates a new VS-Lite PSM object
@@ -63,12 +62,12 @@ classdef vslite < PSM.Interface
         function[obj] = vslite(phi, T1, T2, M1, M2, options)
             %% PSM.vslite.vslite  Creates a new VSLite PSM object
             % ----------
-            %   obj = PSM.vslite(phi, T1, T2, M1, M2)
+            %   obj = <strong>PSM.vslite</strong>(phi, T1, T2, M1, M2)
             %   Initializes a new VS-Lite PSM object. Please see the
             %   documentatation of "VSLite_v2_3.m" in the VSLite repository
             %   for details about the inputs.
             %
-            %   obj = PSM.vslite(phi, T1, T2, M1, M2, options)
+            %   obj = <strong>PSM.vslite</strong>(phi, T1, T2, M1, M2, options)
             %   Provide optional arguments to the VS-Lite model.
             % ----------
             %   Inputs:
@@ -115,7 +114,7 @@ classdef vslite < PSM.Interface
         function[output] = rows(obj, rows)
             %% PSM.vslite.rows  Indicate the stateVector rows used to run a VS-Lite PSM
             % ----------
-            %   obj = obj.rows(rows)
+            %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vector rows that should be used as the monthly
             %   temperature and monthly precipitation inputs to the VS-Lite PSM. The
             %   input is a column vector with 24 elements. The first 12 elements should
@@ -123,14 +122,14 @@ classdef vslite < PSM.Interface
             %   last 12 elements should be monthly temperatures from January to
             %   December (also in that order).
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector row to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with 24 rows and one element
             %   per ensemble member. The 24 rows should correspond to the climate
             %   variables described in the previous syntax.
             % 
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
@@ -140,10 +139,10 @@ classdef vslite < PSM.Interface
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the VS-Lite PSM object.
             % ----------
             %   Inputs:
@@ -187,7 +186,7 @@ classdef vslite < PSM.Interface
         function[TRW] = estimate(obj, X)
             %% PSM.vslite.estimate  Estimates tree-ring widths from monthly temperatures and precipitation
             % ----------
-            %   TRW = obj.estimate(X)
+            %   TRW = <strong>obj.estimate</strong>(X)
             %   Runs the VS-Lite forward model on monthly temperatures and
             %   precipitation extracted from a state vector ensemble.
             % ----------
