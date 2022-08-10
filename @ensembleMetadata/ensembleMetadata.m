@@ -14,7 +14,7 @@ classdef ensembleMetadata
     %   ensemble, the class can help facilitate miscellaneous scientific
     %   tasks not explicitly supported by the DASH toolbox. 
     %
-    %   The following is an overview for using the ensembleMetadata class:
+    %   The following is an overview for using the ensembleMetadata class
     %     1. Use the "ensemble.metadata" command to return an
     %        ensembleMetadata object for a saved state vector ensemble.
     %        Alternatively, use the "ensembleMetadata" command to build a

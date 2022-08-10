@@ -132,18 +132,18 @@ classdef gridMetadata
         function[obj] = gridMetadata(varargin)
         %% gridMetadata.gridMetadata  Creates a new gridMetadata object
         % ----------
-        %   obj = gridMetadata(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
+        %   obj = <strong>gridMetadata</strong>(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)
         %   Creates a metadata object for a gridded dataset.
         %
-        %   obj = gridMetadata(..., 'attributes', attributes)
+        %   obj = <strong>gridMetadata</strong>(..., 'attributes', attributes)
         %   Include non-dimensional metadata attributes in the metadata object
         %
-        %   obj = gridMetadata(dimensions, metadata)
+        %   obj = <strong>gridMetadata</strong>(dimensions, metadata)
         %   Uses an alternate syntax to create a metadata object. In this
         %   syntax, collect all dimension names into a string vector, and
         %   corresponding metadata/attributes in a cell vector.
         %
-        %   obj = gridMetadata(s)
+        %   obj = <strong>gridMetadata</strong>(s)
         %   Creates a metadata object from a struct template. Fields of the
         %   struct that match dimension names or 'attributes' are copied as
         %   metadata.

@@ -18,6 +18,7 @@ classdef ensemble
     %   so that even very large ensembles can be used to estimate proxies
     %   or used for assimilation.
     %
+    %   OUTLINE:
     %   The following is an outline for using the ensemble class.
     %     0. Use "stateVector.build" with the 'file' option to save a state
     %        vector ensemble in a .ens file.
@@ -46,7 +47,7 @@ classdef ensemble
     %   useVariables            - Use a subset of saved variables
     %   useMembers              - Use a subset of saved ensemble members
     %   evolving                - Implement an evolving ensemble
-    %   metadata                - Return the metadata for an ensemble object
+    %   metadata                - Return the metadata for an ensemble
     %   load                    - Load portions of a state vector ensemble into memory
     %   loadGrid                - Load a variable in a state vector ensemble as a gridded field
     %

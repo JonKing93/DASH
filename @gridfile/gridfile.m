@@ -18,7 +18,7 @@ classdef gridfile < handle
     %   with dimensional metadata. This allows data to be accessed using
     %   human-readable metadata, rather than array indices.
     %
-    %   The following is an outline for using the gridfile class:
+    %   The following is an outline for using the gridfile class.
     %     1. Use the "new" command to initialize a new .grid file
     %     2. Use "add" to add data source file to the gridfile's catalogue
     %     3. Use "fillValue", "validRange", and "transform" to apply data
