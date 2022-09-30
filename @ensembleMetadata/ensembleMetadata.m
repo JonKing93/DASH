@@ -389,8 +389,7 @@ classdef ensembleMetadata
         
                             % Record metadata for the ensemble members
                             members = subMembers(1:nMembers, k);
-                            rows = svv.indices{d}(members, :);
-                            metadata = metadata(rows,:);
+                            metadata = metadata(members, :);
                             obj(q).ensemble{s}{k} = metadata;
                         end
                     end
