@@ -20,13 +20,15 @@ function[] = doc(name)
 %
 % <a href="matlab:dash.doc('dash.doc')">Documentation Page</a>
 
-% Open default page if no contents
+% Open default page if no contents. OTherwise, error check name
 if nargin==0
-    name = 'index';
+    name = "index";
+else
+    name = dash.assert.strflag(name, 'name');
 end
 
 % Reference page header
-path = mfilename('fullpath');
+path = string(mfilename('fullpath'));
 folders = strsplit(path, filesep);
 docs = [folders(1:end-2), 'doc', 'html'];
 header = strjoin(docs, filesep);
@@ -34,8 +36,8 @@ header = strjoin(docs, filesep);
 % Parse the package headings into the url
 folders = strsplit(name, '.');
 docPath = strjoin(folders, filesep);
-docPath = [docPath, '.html'];
-url = strjoin({header, docPath}, filesep);
+docPath = strcat(docPath, '.html');
+url = strjoin([header, docPath], filesep);
 
 % Open in browser
 web(url);%, '-browser');
