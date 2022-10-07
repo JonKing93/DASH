@@ -237,13 +237,13 @@ classdef linear < PSM.Interface
                 dash.assert.scalarType(intercept, 'numeric', 'intercept', header);
             end
 
-            % Ensure slopes are column vector for singleton expansion
-            if isrow(slopes)
+            % Ensure slopes are a row vector for linear model
+            if iscolumn(slopes)
                 slopes = slopes';
             end
 
             % Implement a linear model
-            Y = slopes .* X + intercept;
+            Y = slopes * X + intercept;
         end
     end
 
