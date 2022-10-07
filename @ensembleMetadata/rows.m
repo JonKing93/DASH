@@ -141,24 +141,32 @@ for k = 1:numel(uniqueVars)
     isvariable = vars==v;
     variableRows = rows(isvariable);
 
-    % Note if the variable is missing the state dimension
+    % Note if the variable is missing the state dimension. Use NaN as the metadata
     if ~ismember(dimension, obj.stateDimensions{v})
         ismissing(variableRows) = true;
+        variableMetadata = repmat({NaN}, numel(variableRows), 1);
 
     % Otherwise, get the metadata for the variable
     else
         adjustedRows = variableRows - startRows(k) + 1;
         variableMetadata = obj.variable(v, dimension, 'rows', adjustedRows);
 
-        % Convert metadata array to cell column and collect in output
+        % Convert metadata array to cell column
         [nOnes, nCols, nMean] = size(variableMetadata, 1:3);
         variableMetadata = mat2cell(variableMetadata, ones(nOnes,1), nCols, nMean);
-        metadata(isvariable) = variableMetadata;
     end
+
+    % Record the metadata for the variable
+    metadata(isvariable) = variableMetadata;
 end
 
-% Attempt to concatenate the non-missing rows
+% If all variables are missing, can join into single NaN vector
 if ~cellOutput
+    if all(ismissing)
+        ismissing(:) = false;
+    end
+
+    % Attempt to concatenate
     try
         catMetadata = cat(1, metadata{~ismissing});
         concatenated = true;
