@@ -125,10 +125,10 @@ function[] = cleanup(home, path, newFolder)
 % Return to initial folder
 cd(home);
 
-% Delete new folder
-if newFolder && isfolder(path)
-    rmdir(path, 's');
-end
+% % Delete new folder
+% if newFolder && isfolder(path)
+%     rmdir(path, 's');
+% end
 
 end
 
