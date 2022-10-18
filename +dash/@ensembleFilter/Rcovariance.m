@@ -13,7 +13,9 @@ function[Rcov] = Rcovariance(obj, t, s)
 % ----------
 %   Inputs:
 %       t (vector, linear indices [nTime]): The indices of time steps for a filter 
-%       s (vector, linear indices [nSite]): The indices of observation sites for a filter
+%       s (vector, linear indices [nSite] | logical indices): The indices
+%           of observation sites for a filter. If s is logical, converts it
+%           to linear indices.
 %
 %   Outputs:
 %       Rcov (numeric 3D array, [nSite x nSite x nTime]): The covariance
@@ -32,7 +34,11 @@ c = obj.whichR(t);
 
 % Preallocate if builing covariance matrices from variances
 if obj.Rtype==0
-    nSite = numel(s);
+    if islogical(s)
+        nSite = sum(s);
+    else
+        nSite = numel(s);
+    end
     nTime = numel(t);
     Rcov = NaN(nSite, nSite, nTime);
 
