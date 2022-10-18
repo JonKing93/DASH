@@ -52,7 +52,7 @@ X = distances / c;
 weights(outsideRadius) = 0;
 weights(insideScale) = polyval([-.25,.5,.625,-5/3,0,1], X(insideScale));
 
-tapered = X(outsideScale) - 2 ./ (3 * X(outsideScale));
+tapered = X(inBetween) - 2 ./ (3 * X(inBetween));
 weights(inBetween) = polyval([1/12,-.5,.625,5/3,-5,4], tapered);
 
 % Weights should never be negative. Remove near-zero negative weights
