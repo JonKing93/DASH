@@ -220,7 +220,9 @@ for p = 1:obj.nPrior
 
             % Record output
             output.Amean(:, timesGain) = Amean;
-            output.calibrationRatio(s, timesGain) = calibrationRatio;
+            if any(s)
+                output.calibrationRatio(s, timesGain) = calibrationRatio;
+            end
             if obj.returnDeviations
                 output.Adev(:,:,timesGain) = repmat(Adev, 1, 1, nTimeUpdate);
             end
