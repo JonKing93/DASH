@@ -40,8 +40,8 @@ c = scale * R;
 Rloc = 2*c;  % Note that, depending on scale, Rloc <= R -- they are not strictly equal
 
 % Find points inside and outside the radius and length scale
-outsideRadius = X > Rloc;
-insideScale = X <= c;
+outsideRadius = distances > Rloc;
+insideScale = distances <= c;
 inBetween = ~insideScale & ~outsideRadius;
 
 % Preallocate the weights
