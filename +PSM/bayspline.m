@@ -45,8 +45,8 @@ classdef bayspline < PSM.Interface
         estimatesR = true;                                      % The BaySpline PSM can estimate R uncertainties       
         description = "Baysian model for UK'37";                % Description of the PSM
         repository = "jesstierney/BAYSPLINE";                   % Github Repository holding the PSM
-        commit = "1e6f9673bcc55b483422c6d6e1b1f63148636094";    % The Github commit of the PSM that is supported by DASH
-        commitComment = "Most recent as of Jan. 1, 2021. Code updated November 24, 2020";  % Details about the supported commit
+        commit = "3f0de3915a54f9fd539a67e242489491ddc6409c";    % The Github commit of the PSM that is supported by DASH
+        commitComment = "Most recent as of Oct 19, 2022. Code updated Sept 22, 2022";  % Details about the supported commit
     end
 
     % Forward model parameters
