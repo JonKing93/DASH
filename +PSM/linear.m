@@ -10,7 +10,7 @@ classdef linear < PSM.Interface
     %   determines N, the number of variables.
     %
     %   The linear PSM is directly built-in to the DASH toolbox, so does
-    %   not need to be donwloaded from an external Github repository.
+    %   not need to be downloaded from an external Github repository.
     % ----------
     % linear Methods:
     %
@@ -104,7 +104,7 @@ classdef linear < PSM.Interface
             %% PSM.linear.rows  Indicate the stateVector rows used to run a linear PSM
             % ----------
             %   obj = <strong>obj.rows</strong>(rows)
-            %   Indicate the state vector row that should be used as the SST
+            %   Indicate the state vector rows that should be used as
             %   input for the linear PSM when calling the "PSM.estimate"
             %   command. The input is a column vector with one element
             %   per slope/linear coefficient in the forward model. Uses the

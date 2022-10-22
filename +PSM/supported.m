@@ -15,6 +15,7 @@ names = [...
     "baymag"
     "bayspar"
     "bayspline"
+    "identity"
     "linear"
 %    "prysm"
 %    "prysm.cellulose"
