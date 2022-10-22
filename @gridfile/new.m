@@ -6,7 +6,9 @@ function[obj] = new(filename, metadata, overwrite)
 %   N-dimensional grid that spans the provided metadata. Adds a ".grid"
 %   extension to the filename if it does not already have one.
 %
-%   obj = gridfile.new(filename, metadata, overwrite)
+%   obj = gridfile.new(..., overwrite)
+%   obj = gridfile.new(..., true|"o"|"overwrite")
+%   obj = gridfile.new(..., false|"p"|"preserve")
 %   Specify whether the method may overwrite pre-existing .grid files. By
 %   default, the method will not overwrite files.
 % ----------
@@ -19,8 +21,9 @@ function[obj] = new(filename, metadata, overwrite)
 %           If the metadata has a set dimension order, the order will be ignored.
 %           The metadata object must have at least one dimension with
 %           metadata (at least 1 defined dimension).
-%       overwrite (scalar logical): Whether to overwrite existing files
-%           (true) or not (false). Default is false.
+%       overwrite (scalar, logical | string): Whether to overwrite existing files
+%           [true|"o"|"overwrite"]: Overwrite any existing file
+%           [false|"p"|"preserve" (Default)]: Do not overwrite an existing file
 %
 %   Outputs:
 %       obj (gridfile object): A gridfile object for the new .grid file.
@@ -36,6 +39,8 @@ end
 header = "DASH:gridfile:new";
 
 % Error check
+flags = {["p","preserve"], ["o","overwrite"]};
+overwrite = dash.parse.switches(overwrite, flags, 1, 'overwrite', "allowed option", header);
 dash.assert.scalarType(overwrite, 'logical', 'overwrite', header);
 filename = dash.assert.strflag(filename, 'filename', header);
 filename = dash.file.new(filename, ".grid", overwrite, header);
