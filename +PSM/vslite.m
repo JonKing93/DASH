@@ -44,6 +44,8 @@ classdef vslite < PSM.Interface
     properties (Constant)
         estimatesR = false;                                     % VS-Lite cannot estimate R uncertainties
         description = "Vaganov-Shashkin Lite tree ring model";  % Description of the PSM
+        hasMemory = true;                                       % Has memory via the soil moisture model
+
         repository = "suztolwinskiward/VSLite";                 % Github repository for the PSM
         commit = "f86cc33ee0eb9a2b9818994542d3c4179e618631";    % The commit hash of the supported version
         commitComment = "Most recent as of June 28, 2022. Code updated July 5, 2019. ";       % Details about the commit

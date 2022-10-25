@@ -36,16 +36,18 @@ end
 nNames = numel(psmNames);
 descriptions = strings(nNames, 1);
 estimatesR = false(nNames, 1);
+hasMemory = false(nNames, 1);
 
 % Get information
 for n = 1:nNames
     name = psmNames(n);
     descriptions(n) = PSM.(name).description;
     estimatesR(n) = PSM.(name).estimatesR;
+    hasMemory(n) = PSM.(name).hasMemory;
 end
 
 % Organize as a table
-info = table(psmNames(:), descriptions, estimatesR);
-info.Properties.VariableNames = ["Name", "Description","Can_Estimate_R"];
+info = table(psmNames(:), descriptions, estimatesR, hasMemory);
+info.Properties.VariableNames = ["Name", "Description","Can_Estimate_R","Has_Memory"];
 
 end

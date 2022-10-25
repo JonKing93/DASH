@@ -44,6 +44,8 @@ classdef linear < PSM.Interface
         estimatesR = false;             % The linear PSM cannot estimate R uncertainties       
         description = ...               % Description of the PSM
             "General linear model of form:  Y = Y = a1*X1 + a2*X2 + ... an*Xn + b"; 
+        hasMemory = false;              % No memory of previous time steps
+
         repository = "DASH built-in";   % The linear PSM is built-in directly to DASH
         commit = "";                    % No repository = no commit
         commitComment = "";             % No commit = no comment

@@ -39,6 +39,8 @@ classdef identity < PSM.Interface
         estimatesR = false;             % The identity PSM cannot estimate R
         description = ...               % Description of the PSM
             "Returns inputs directly as outputs. Does not run any forward model.";
+        hasMemory = false;              % No memory of previous time steps
+        
         repository = "DASH built-in";   % The identity PSM is built-in to DASH
         commit = "";                    % No repository = no commit
         commitComment = "";             % No commit = no comment

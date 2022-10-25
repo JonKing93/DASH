@@ -70,6 +70,8 @@ classdef (Abstract) Interface
     properties (Abstract, Constant)
         estimatesR;         % Whether the forward model can estimate R uncertainties
         description;        % A description of the forward model
+        hasMemory;          % Whether the forward model maintains memory between time steps
+
         repository;         % The Github repository holding the code
         commit;             % The git commit for the version of the forward model supported by DASH
         commitComment;      % Details about the supported commit

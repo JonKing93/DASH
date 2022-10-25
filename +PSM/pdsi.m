@@ -48,7 +48,9 @@ classdef pdsi < PSM.Interface
     properties (Constant)
         estimatesR = false;                                     % PDSI cannot estimate R uncertainties
         description = ...                                       % Description of the PSM
-            "Palmer Drought-Severity Index using the Thornthwaite estimation";  
+            "Palmer Drought-Severity Index using the Thornthwaite estimation";
+        hasMemory = true;                                       % The PDSI model has significant memory
+
         repository = "JonKing93/pdsi";                          % Github repository for the PSM
         commit = "9a636117577f476a93f206897fb91dc94d4eddc2";    % The commit hash of the supported version
         commitComment = "Version 1.0.0. Most recent as of Oct. 25, 2022";       % Details about the commit

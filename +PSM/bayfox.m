@@ -42,6 +42,8 @@ classdef bayfox < PSM.Interface
     properties (Constant)
         estimatesR = true;
         description = "Bayesian model for d18Oc of planktic foraminifera";
+        hasMemory = false;           
+        
         repository = "jesstierney/bayfoxm";
         commit = "cb98a5259c7340c3b19669c45a599799b9a491c2";
         commitComment = "Most recent as of June 28, 2022. Code updated on March 6, 2020.";

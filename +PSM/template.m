@@ -23,6 +23,14 @@ classdef psmName < PSM.Interface
         % filling it in can help other people understand your PSM
         description = "";
 
+        % This property indicates whether the PSM maintains memory of
+        % previous time steps. It allows users to know whether their PSM
+        % will require a time-order ensemble. This property is optional,
+        % but filling it in can help other people understand your PSM.
+        % (Note: If your PSM *does* have memory, then you should change its
+        % value from false to true).
+        hasMemory = false;
+
         % These next properties are optional. They help describe the
         % location of the PSM codebase on Github for the "PSM.download"
         % command. If you don't need the PSM.download command, you can just leave
