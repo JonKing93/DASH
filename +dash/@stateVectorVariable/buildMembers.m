@@ -215,7 +215,7 @@ for m = 1:nMembers
     Xm = reshape(Xm, parameters.rawSize);
 
     % *** Notes on means ***
-    % 1. Take includenan means before omitnan means (if you took omitnan
+    % 1. Take includenan means/totals before omitnan (if you took omitnan
     %    first, there would be no NaNs to include)
     % 2. Taking includenan first also helps minimize size of weight
     %    propagation for weighted omitnan means
