@@ -46,7 +46,7 @@ psmName = dash.assert.strflag(psmName, 'psmName', header);
 supported = PSM.supported;
 dash.assert.strsInList(psmName, supported, 'psmName', 'name of a supported PSM codebase', header);
 
-% Explain the PSM is a built-in
+% Explain if the PSM is a built-in
 if ismember(psmName, ["linear","identity"])
     fprintf(['\nThe "%s" PSM is built-in directly to DASH. You do not need ',...
         'to download this PSM.\n\n'], psmName);

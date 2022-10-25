@@ -2,14 +2,15 @@ classdef vslite < PSM.Interface
     %% PSM.vslite  Implement the Vaganov-Shashkin Lite tree ring model
     % ----------
     %   The VS-Lite forward model uses monthly temperature and
-    %   precipitation to model tree ring widths. The model is described in
-    %   the paper:
+    %   precipitation to model annual tree ring widths. This model maintains
+    %   memory of previous years via its internal model of soil moistyre.
+    %   The model is described in the paper:
     %
     %   Tolwinski-Ward, S. E., Evans, M. N., Hughes, M. K., and 
     %   Anchukaitis, K.J. (2011) An efficient forward model of the climate 
     %   controls on interannual variation in tree-ring width, Clim. Dynam.,
     %   36, 2419–2439.
-    %   DOI:  https://doi.org/10.1007/s00382-010-0945-5
+    %   DOI:  https://doi.org/10.1007/s00382-010-0945-5z
     %
     %   Github Repository:  https://github.com/suztolwinskiward/VSLite
     % ----------
@@ -119,7 +120,7 @@ classdef vslite < PSM.Interface
             %   temperature and monthly precipitation inputs to the VS-Lite PSM. The
             %   input is a column vector with 24 elements. The first 12 elements should
             %   be monthly temperatures from January to December (in that order). The
-            %   last 12 elements should be monthly temperatures from January to
+            %   last 12 elements should be monthly precipitation from January to
             %   December (also in that order).
             %
             %   obj = <strong>obj.rows</strong>(memberRows)
@@ -220,7 +221,7 @@ classdef vslite < PSM.Interface
             for k = 1:nEvolving
                 TRW(:,:,k) = VSLite_v2_3(...
                     syear, eyear, obj.phi, obj.T1, obj.T2, obj.M1, obj.M2, ...
-                    T, P, obj.options{:});
+                    T(:,:,k), P(:,:,k), obj.options{:});
             end
         end
     end

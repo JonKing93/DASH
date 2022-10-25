@@ -17,6 +17,7 @@ names = [...
     "bayspline"
     "identity"
     "linear"
+    "pdsi"
 %    "prysm"
 %    "prysm.cellulose"
 %    "prysm.coral"
