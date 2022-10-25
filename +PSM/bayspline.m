@@ -43,7 +43,7 @@ classdef bayspline < PSM.Interface
     % Information about the forward model codebase
     properties (Constant, Hidden)
         estimatesR = true;                                      % The BaySpline PSM can estimate R uncertainties       
-        description = "Baysian model for UK'37";                % Description of the PSM
+        description = "Bayesian model for UK'37";                % Description of the PSM
         repository = "jesstierney/BAYSPLINE";                   % Github Repository holding the PSM
         commit = "3f0de3915a54f9fd539a67e242489491ddc6409c";    % The Github commit of the PSM that is supported by DASH
         commitComment = "Most recent as of Oct 19, 2022. Code updated Sept 22, 2022";  % Details about the supported commit

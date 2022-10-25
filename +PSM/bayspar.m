@@ -41,7 +41,7 @@ classdef bayspar < PSM.Interface
     % Information about the forward model codebase
     properties (Constant)
         estimatesR = true;                                      % The BaySpline PSM can estimate R uncertainties       
-        description = "Baysian model for TEX86";                % Description of the PSM
+        description = "Bayesian model for TEX86";                % Description of the PSM
         repository = "jesstierney/BAYSPAR";                     % Github Repository holding the PSM
         commit = "310e876513151bf01e7c39f5dbdde7b991ea7204";    % The Github commit of the PSM that is supported by DASH
         commitComment = "Most recent as of June 28, 2022. Code updated July 2, 2021";  % Details about the supported commit
