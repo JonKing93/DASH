@@ -1,4 +1,4 @@
-function[] = download(psmName, path)
+function[] = download(psmName, varargin)
 %% PSM.download  Download the codebase for a PSM from Github
 % ----------
 %   PSM.download(psmName)
@@ -13,24 +13,29 @@ function[] = download(psmName, path)
 %       1. An internet connection, and
 %       2. You have git installed and on your system path
 %
-%   PSM.download(psmName, path)
+%   PSM.download(..., 'path', path)
 %   Downloads the repository contents into the specified folder. The folder
 %   must be empty.
+%
+%   PSM.download(..., 'latest', useLatest)
+%   Specify whether the command should checkout the latest commit of the
+%   forward model - regardless of whether the latest commit is officially
+%   supported by the DASH toolbox. By default, checks out a supported
+%   commit.
 % ----------
 %   Inputs:
 %       psmName (string scalar): The name of a PSM codebase supported by
-%           DASH. Options are "bayfox", "baymag", "bayspar", "bayspline",
-%           "prysm", and "vslite". The general linear PSM is built-in
-%           directly to DASH and does not need to be downloaded. 
-%
-%           Note that you can also use "prysm.cellulose", "prysm.coral",
-%           "prysm.icecore", or "prysm.speleothem" to download the PRYSM
-%           suite of Python forward models. However, these options will
-%           download the entire PRYSM suite, and not just the single
-%           indicated forward model.
+%           DASH. You can see the names of supported PSMs using the
+%           "PSM.supported" command. The general linear PSM, and the identity
+%           PSM are built-in directly to DASH and do not need to be downloaded.
 %       path (string scalar | char row vector): The name of the folder in
 %           which to download the repository code. The folder must be
 %           empty. By default, uses the current folder.
+%       useLatest (scalar logical): Set to true if the command should
+%           checkout the latest forward model commit - regardless of
+%           whether the latest commit is officially supported by DASH. Set
+%           to false to checkout the supported commit. Default is to
+%           checkout the supported commit.
 %
 %   Downloads:
 %       Downloads the specified repository to the indicated folder and adds
@@ -41,10 +46,7 @@ function[] = download(psmName, path)
 % Error check the PSM name.
 header = "DASH:PSM:download";
 psmName = dash.assert.strflag(psmName, 'psmName', header);
-
-% Require a supported PSM
-supported = PSM.supported;
-dash.assert.strsInList(psmName, supported, 'psmName', 'name of a supported PSM codebase', header);
+dash.assert.strsInList(psmName, PSM.supported, 'psmName', 'name of a supported PSM codebase', header);
 
 % Explain if the PSM is a built-in
 if ismember(psmName, ["linear","identity"])
@@ -53,34 +55,22 @@ if ismember(psmName, ["linear","identity"])
     return
 end
 
-% Default and error check the path
-if ~exist('path','var') || isempty(path)
-    path = pwd;
-    userPath = false;
-else
-    path = dash.assert.strflag(path, 'path', header);
-    userPath = true;
-end
+% Parse the optional inputs
+[path, useLatest] = dash.parse.nameValue(varargin, ["path","latest"], {[], false}, 1, header);
+dash.assert.scalarType(useLatest, 'logical', 'useLatest', header);
 
 % Get the Github information for the PSM
 info = PSM.githubInfo(psmName);
 repo = sprintf('https://github.com/%s', info.Repository);
 
-% Get the default download path. If the folder exists, ensure it is empty
-if ~userPath
+% Default and error check path
+if isempty(path)
+    path = string(pwd);
     [~, folder] = fileparts(repo);
     path = fullfile(path, folder);
-end
-
-% Ensure that new folders and changes to location are reverted if the
-% download fails for any reason
-if isfolder(path)
-    newFolder = false;
 else
-    newFolder = true;
+    path = dash.assert.strflag(path, 'path', header);
 end
-home = pwd;
-reset = onCleanup( @()cleanup(home, path, newFolder) );
 
 % Create download folder if it does not exist
 if ~isfolder(path)
@@ -93,7 +83,7 @@ if ~isfolder(path)
 % Otherwise, ensure the folder is empty
 else
     contents = dir(path);
-    if ~strcmp([contents.name], "...")
+    if numel(contents) > 2
         folderNotEmptyError(path, header);
     end
 end
@@ -106,12 +96,19 @@ if status ~= 0
     downloadFailedError(info, header);
 end
 
-% Checkout the supported commit
-cd(path);
-checkout = sprintf("git checkout %s -q", info.Commit);
-status = system(checkout);
-if status ~= 0
-    checkoutFailedError(info, header);
+% If moving to the folder (to checkout the supported commit), ensure that
+% the current path is always restored
+if ~useLatest
+    home = pwd;
+    reset = onCleanup( @()cd(home) );
+    cd(path);
+
+    % Checkout the supported commit
+    checkout = sprintf("git checkout %s -q", info.Commit);
+    status = system(checkout);
+    if status ~= 0
+        checkoutFailedError(info, header);
+    end
 end
 
 % Add PSM to active path
@@ -119,23 +116,11 @@ addpath(genpath(path));
 
 end
 
-%% Utilities
-function[] = cleanup(home, path, newFolder)
-
-% Return to initial folder
-cd(home);
-
-% % Delete new folder
-% if newFolder && isfolder(path)
-%     rmdir(path, 's');
-% end
-
-end
 
 %% Error messages
 function[] = invalidPathError(path, header)
 id = sprintf('%s:invalidPath', header);
-ME = MException(id, ['The indicated download path:\n\t%s\n',...
+ME = MException(id, ['The requested download path:\n\t%s\n',...
     'is not a valid path.'], path);
 throwAsCaller(ME);
 end
