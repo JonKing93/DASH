@@ -116,7 +116,7 @@ if obj.meanType(d)~=0
     end
 end
 
-if obj.meanType==2
+if obj.meanType(d)==2
     s.type = 'weighted';
     s.weights = obj.weights{d};
 end
