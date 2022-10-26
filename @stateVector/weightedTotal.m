@@ -80,7 +80,7 @@ end
 
 % Update the variables
 method = 'weightedTotal';
-inputs = {weights};
+inputs = {weights, header};
 task = 'take a weighted total over';
 obj = obj.editVariables(v, d, method, inputs, task);
 obj = obj.updateLengths(v);
