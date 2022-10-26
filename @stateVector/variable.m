@@ -231,8 +231,8 @@ end
 function[] = conciseDimension(info, objName, v)
 
     % Initialize fields and link
-    fields = ["Mean","Sequence","Metadata"];
-    printField = [false, false, false];
+    fields = ["Mean","Sum Total","Sequence","Metadata"];
+    printField = [false, false, false, false];
     link = sprintf(['<a href="matlab:%s.variable(%.f, ''%s'', true, true)">',...
         'More details</a>'], objName, v, info.name);
 
@@ -240,11 +240,14 @@ function[] = conciseDimension(info, objName, v)
     if ~strcmp(info.mean.type, 'none')
         printField(1) = true;
     end
-    if ~isempty(info.sequence)
+    if ~strcmp(info.total.type, 'none')
         printField(2) = true;
     end
-    if ~strcmp(info.metadata.type, 'raw')
+    if ~isempty(info.sequence)
         printField(3) = true;
+    end
+    if ~strcmp(info.metadata.type, 'raw')
+        printField(4) = true;
     end
 
     % Print link and exit if no fields
@@ -262,10 +265,13 @@ function[] = conciseDimension(info, objName, v)
         fprintf(format, fields(1), cap(info.mean.type));
     end
     if printField(2)
-        fprintf(format, fields(2), 'True');
+        fprintf(format, fields(2), cap(info.total.type));
     end
     if printField(3)
-        fprintf(format, fields(3), cap(info.metadata.type));
+        fprintf(format, fields(3), 'True');
+    end
+    if printField(4)
+        fprintf(format, fields(4), cap(info.metadata.type));
     end
 
     % Add link and end with newline
@@ -283,6 +289,20 @@ else
     if isfield(info.mean, 'indices')
         fprintf('             Indices:');
         disp(info.mean.indices');
+    else
+        fprintf('\n');
+    end
+end
+
+% Total
+fprintf('        Sum Total: %s\n', cap(info.total.type));
+if strcmp(info.total.type, 'none')
+    fprintf('\n');
+else
+    fprintf('            NaN Flag: %s\n', info.total.nanflag);
+    if isfield(info.total, 'indices')
+        fprintf('             Indices:');
+        disp(info.total.indices');
     else
         fprintf('\n');
     end
