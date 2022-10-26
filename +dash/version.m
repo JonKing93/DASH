@@ -12,7 +12,7 @@ function[varargout] = version
 %
 % <a href="matlab:dash.doc('dash.version')">Documentation Page</a>
 
-version = "v4.0.0-beta-4";
+version = "v4.0.0";
 if nargout==0
     disp(version);
 else
