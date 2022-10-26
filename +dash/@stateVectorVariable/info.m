@@ -53,6 +53,15 @@ function[info] = info(obj)
 %                       over an ensemble dimension.
 %                   .weights (numeric vector): Weights for a weighted mean.
 %                       Only includes this field when taking a weighted mean.
+%               .total (scalar struct): Sum total parameters
+%                   .type (string scalar): none, standard, or weighted
+%                   .nanflag (string scalar): "omitnan" or "includenan".
+%                       Only includes this field when taking a total.
+%                   .indices (vector, integers): Total indices for ensemble
+%                       dimensions. Only includes this field when taking a
+%                       total over an ensemble dimension
+%                   .weights (numeric vector): Weights for a weighted sum.
+%                       Only includes this field when taking a weighted total
 %
 % <a href="matlab:dash.doc('dash.stateVectorVariable.info')">Documentation Page</a>
 
@@ -63,7 +72,7 @@ info = struct('length', prod(obj.stateSize), 'dimension_names', obj.dims,...
 % Initialize dimension information
 nDims = numel(obj.dims);
 dimensions = struct('name',[],'type',[],'length',[],'state_indices',[],...
-    'reference_indices',[],'sequence',[],'mean',[],'metadata',[]);
+    'reference_indices',[],'sequence',[],'mean',[],'total',[],'metadata',[]);
 dimensions = repmat(dimensions, nDims, 1);
 
 % Get the info for each dimension
@@ -86,6 +95,7 @@ for d = 1:nDims
     dimensions(d).length = obj.stateSize(d);
     dimensions(d).sequence = sequenceInfo(obj, d);
     dimensions(d).mean = meanInfo(obj, d);
+    dimensions(d).total = totalInfo(obj, d);
     dimensions(d).metadata = metaInfo(obj, d);
 end
 info.dimensions = dimensions;
@@ -103,22 +113,47 @@ function[s] = meanInfo(obj, d)
 
 s = struct('type','none');
 
-if obj.meanType(d)~=0
-    s.type = 'standard';
+if ismember(obj.meanType(d), [1 2])
     if obj.omitnan(d)
-        nanflag = "omitnan";
+        nanflag = 'omitnan';
     else
-        nanflag = "includenan";
+        nanflag = 'includenan';
     end
     s.nanflag = nanflag;
     if ~isempty(obj.meanIndices{d})
         s.indices = obj.meanIndices{d};
     end
+
+    if obj.meanType(d) == 1
+        s.type = 'standard';
+    else
+        s.type = 'weighted';
+        s.weights = obj.weights{d};
+    end
 end
 
-if obj.meanType(d)==2
-    s.type = 'weighted';
-    s.weights = obj.weights{d};
+end
+function[s] = totalInfo(obj, d)
+
+s = struct('type','none');
+
+if ismember(obj.meanType(d), [3 4])
+    if obj.omitnan(d)
+        nanflag = 'omitnan';
+    else
+        nanflag = 'includenan';
+    end
+    s.nanflag = nanflag;
+    if ~isempty(obj.meanIndices{d})
+        s.indices = obj.meanIndices{d};
+    end
+
+    if obj.meanType(d) == 3
+        s.type = 'standard';
+    else
+        s.type = 'weighted';
+        s.weights = obj.weights{d};
+    end
 end
 
 end

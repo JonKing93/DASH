@@ -81,6 +81,15 @@ function[info] = info(obj, variables)
 %                       over an ensemble dimension.
 %                   .weights (numeric vector): Weights for a weighted mean.
 %                       Only includes this field when taking a weighted mean.
+%               .total (scalar struct): Sum total parameters
+%                   .type (string scalar): none, standard, or weighted
+%                   .nanflag (string scalar): "omitnan" or "includenan".
+%                       Only includes this field when taking a total.
+%                   .indices (vector, integers): Total indices for ensemble
+%                       dimensions. Only includes this field when taking a
+%                       total over an ensemble dimension
+%                   .weights (numeric vector): Weights for a weighted sum.
+%                       Only includes this field when taking a weighted total
 %           .coupled_variables (string vector): A list of variables that
 %               are coupled to the variable
 %           .allow_overlap (scalar logical): Whether ensemble members for

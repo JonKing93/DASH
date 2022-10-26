@@ -34,6 +34,11 @@ for k = 1:numel(dims)
         continue;
     end
 
+    % Prevent conflict with totals
+    if ismember(obj.meanType(d), [3 4])
+        existingTotalError(obj, d, header);
+    end
+
     % Either disable mean, or set new values
     if isequal(indices, "none")
         obj = disableMean(obj, d);
@@ -107,9 +112,6 @@ else
     end
 
     % Update size
-    if obj.meanType(d)==0
-        obj.meanType(d) = 1;
-    end
     obj.meanSize(d) = nIndices;
     obj.meanIndices{d} = indices(:);
 end
@@ -123,6 +125,17 @@ obj.omitnan(d) = omitnan;
 end
 
 % Error messages
+function[] = existingTotalError(obj, d, header)
+dim = obj.dims(d);
+id = sprintf("%s:existingTotal", header);
+ME = MException(id, ...
+    ['You cannot call the "mean" command on the "%s" dimension because you are\n',...
+    'already implementing a sum total over the dimension. If you want to use\n',...
+    'the "mean" command for this dimension, you will first need to disable\n',...
+    'the total by calling the "total" command with the "none" option for "%s".'],...
+    dim, dim);
+throwAsCaller(ME);
+end
 function[] = noMeanToUnweightError(obj, d, header)
 dim = obj.dims(d);
 id = sprintf('%s:noMeanToUnweight', header);
@@ -155,7 +168,7 @@ ME = MException(id, ...
     ['You previously specified a weighted mean for the "%s" dimension, and\n',...
     'the number of mean indices (%.f) does not match the number of weights (%.f).\n',...
     'Either change the number of mean indices, disable the weighted mean, or\n',...
-    'updated the weights.'], dim, nIndices, nWeights);
+    'update the weights.'], dim, nIndices, nWeights);
 throwAsCaller(ME);
 end
 function[] = indexMagnitudeTooLargeError(obj, d, maxMagnitude, loc, header)

@@ -36,8 +36,19 @@ sizes = obj.stateSize(d);
 % Types (dimension + comment)
 if nargout>1
     types = strings(size(d));
+
+    % Sequence
     types(obj.hasSequence(d)) = " sequence";
-    types(obj.isState(d) & obj.meanType(d)~=0) = " mean";
+
+    % Mean
+    ismean = obj.isState(d) & ismember(obj.meanType(d), [1 2]);
+    types(ismean) = " mean";
+
+    % Total
+    istotal = obj.isState(d) & ismember(obj.meanType(d), [3 4]);
+    types(istotal) = " total";
+
+    % Combine dimensions into single string
     types = strcat(obj.dims(d), types);
 end
 

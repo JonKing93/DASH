@@ -37,9 +37,10 @@ classdef stateVector
     %     3. Use the "design" command to indicate the ensemble dimensions,
     %        and to select subsets of gridfile catalogues that should be
     %        used to build the state vector ensemble.
-    %     4. Use the "mean", "weightedMean", and "sequence" commands to
-    %        implement means and sequences in the state vector.
-    %     5. Use "build" to generate a state vector ensemble from the design.
+    %     4. Use the "sequence" command to implement sequences
+    %     5. Use the "mean", "total", "weightedMean", and "weightedTotal"
+    %        commands to implement means and totals in the state vector.
+    %     6. Use "build" to generate a state vector ensemble from the design.
     %
     %     The class also includes various methods that return information
     %     about the state vector. Among others, the "variables", "length",
@@ -62,9 +63,11 @@ classdef stateVector
     %   stateVector         - Create a new, empty state vector
     %   add                 - Add variables to a state vector
     %   design              - Design the dimensions of variables
-    %   mean                - Take means over dimensions of variables
-    %   weightedMean        - Take weighted means over the dimensions of variables
-    %   sequence            - Take a sequence over an ensemble dimension
+    %   sequence            - Use sequences over ensemble dimensions
+    %   mean                - Take means over variable dimensions
+    %   total               - Take the sum total over variable dimensions
+    %   weightedMean        - Take weighted means over variable dimensions
+    %   weightedTotal       - Take weighted totals over variable dimensions
     %   build               - Build a state vector ensemble from a design
     %
     %
@@ -85,9 +88,11 @@ classdef stateVector
     %
     % Design:
     %   design              - Design the dimensions of variables in a state vector
-    %   mean                - Take means over dimensions of variables
-    %   weightedMean        - Take weighted means over dimensions of variables
-    %   sequence            - Use a sequence over ensemble dimensions of variables
+    %   sequence            - Use sequences over ensemble dimensions
+    %   mean                - Take the mean over variable dimensions
+    %   total               - Take the sum total over variable dimensions
+    %   weightedMean        - Take weighted means over variable dimensions
+    %   weightedTotal       - Take weighted totals over variable dimensions
     %
     % Metadata:
     %   metadata            - Specify metadata options for dimensions of variables
@@ -232,6 +237,8 @@ classdef stateVector
         obj = sequence(obj, variables, dimensions, indices, metadata);
         obj = mean(obj, variables, dimensions, indices, NaNoptions);
         obj = weightedMean(obj, variables, dimensions, weights);
+        obj = total(obj, variables, dimensions, indices, NaNoptions);
+        obj = weightedTotal(obj, variables, dimensions, weights);
         obj = editVariables(obj, vars, d, method, inputs, task);
 
         % Metadata

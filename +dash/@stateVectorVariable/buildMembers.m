@@ -105,30 +105,46 @@ if ~source.isloaded && parameters.loadAllMembers
 end
 
 
-%% Setup tasks
+%% Setup tasks for means and totals
 
 % Identify standard omitnan and includenan dimensions
-includenan = obj.meanType==1 & ~obj.omitnan;
-includenan = parameters.meanDims(includenan);
-omitnan = obj.meanType==1 & obj.omitnan;
-omitnan = parameters.meanDims(omitnan);
+standardMean = obj.meanType==1;
+meanInclude = standardMean & ~obj.omitnan;
+meanOmit = standardMean & obj.omitnan;
+
+standardTotal = obj.meanType==3;
+totalInclude = standardTotal & ~obj.omitnan;
+totalOmit = standardTotal & obj.omitnan;
 
 % Identify weighted omitnan and includenan dimensions
-weightinclude = obj.meanType==2 & ~obj.omitnan;
-weightinclude = parameters.meanDims(weightinclude);
-weightomit = obj.meanType==2 & obj.omitnan;
-weightomit = parameters.meanDims(weightomit);
+weightedMean = obj.meanType==2;
+weightMeanInclude = weightedMean & ~obj.omitnan;
+weightMeanOmit = weightedMean & obj.omitnan;
 
-% Initialize parameters for processing weighted means.
+weightedTotal = obj.meanType==4;
+weightTotalInclude = weightedTotal & ~obj.omitnan;
+weightTotalOmit = weightedTotal & obj.omitnan;
+
+% Locate dimensions in raw loaded data array
+meanInclude = parameters.meanDims(meanInclude);
+meanOmit = parameters.meanDims(meanOmit);
+totalInclude = parameters.meanDims(totalInclude);
+totalOmit = parameters.meanDims(totalOmit);
+
+weightMeanInclude = parameters.meanDims(weightMeanInclude);
+weightMeanOmit = parameters.meanDims(weightMeanOmit);
+weightTotalInclude = parameters.meanDims(weightTotalInclude);
+weightTotalOmit = parameters.meanDims(weightTotalOmit);
+
+% Initialize parameters for weighted means and totals
 weightParameters = cell(1, nDims);
 wSize = parameters.rawSize;
-wSize(includenan) = 1;
-wSize(omitnan) = 1;
-wSize(weightinclude) = 1;
+broadcastWeights = [meanInclude, totalInclude, meanOmit, totalOmit, weightMeanInclude, weightTotalInclude];
+wSize(broadcastWeights) = 1;
 
-% Cycle through dimensions with weighted means
+% Cycle through dimensions with a weighted total or mean
 for d = 1:nDims
-    if obj.meanType(d)==2
+    if obj.meanType(d)==2 || obj.meanType(d)==4
         md = parameters.meanDims(d);
 
         % If including NaN, get weight sum for denominator
@@ -136,7 +152,7 @@ for d = 1:nDims
             weightParameters{d} = sum(obj.weights{d}, 'includenan');
 
         % If omitting NaN, get size for propagating over array. (This will
-        % also update weight size for later weighted mean omitnans).
+        % also update weight size for later weighted omitnans).
         else
             wSize(md) = 1;
             weightParameters{d} = wSize;
@@ -215,37 +231,52 @@ for m = 1:nMembers
     Xm = reshape(Xm, parameters.rawSize);
 
     % *** Notes on means ***
-    % 1. Take includenan means before omitnan means (if you took omitnan
+    % 1. Take includenan means/totals before omitnan (if you took omitnan
     %    first, there would be no NaNs to include)
     % 2. Taking includenan first also helps minimize size of weight
-    %    propagation for weighted omitnan means
+    %    propagation for weighted omitnan
 
-    % Take standard includenan means
-    if ~isempty(includenan)
-        Xm = mean(Xm, includenan, "includenan");
+    % Take standard includenans
+    if ~isempty(meanInclude)
+        Xm = mean(Xm, meanInclude, "includenan");
+    end
+    if ~isempty(totalInclude)
+        Xm = sum(Xm, totalInclude, "includenan");
     end
 
-    % Take weighted includenan
-    for k = 1:numel(weightinclude)
-        d = weightinclude(k);
+    % Weighted includenans
+    weightInclude = [weightMeanInclude, weightTotalInclude];
+    for k = 1:numel(weightInclude)
+        d = weightInclude(k);
         md = parameters.meanDims(d);
-        
+
+        % Weighted sum
         w = obj.weights{d};
-        denominator = weightParameters{d};
-        Xm = sum(w.*Xm, md, "includenan") ./ denominator;
+        Xm = sum(w.*Xm, md, "includenan");
+
+        % Weighted mean: divide by denominator
+        if ismember(d, weightMeanInclude)
+            denominator = weightParameters{d};
+            Xm = Xm ./ denominator;
+        end
     end
 
-    % Take standard omitnan
-    if ~isempty(omitnan)
-        Xm = mean(Xm, omitnan, "omitnan");
+    % Standard omitnans
+    if ~isempty(meanOmit)
+        Xm = mean(Xm, meanOmit, "omitnan");
+    end
+    if ~isempty(totalOmit)
+        Xm = sum(Xm, totalOmit, "omitnan");
     end
 
-    % Take weighted omitnan. Only propagate over array if necessary
-    for k = 1:numel(weightomit)
-        d = weightomit(k);
+    % Weighted omitnan.
+    weightOmit = [weightMeanOmit, weightTotalOmit];
+    for k = 1:numel(weightOmit)
+        d = weightOmit(k);
         md = parameters.meanDims(d);
         w = obj.weights{d};
 
+        % Only propagate weights over array if required for NaN elements
         nans = isnan(Xm);
         if any(nans, 'all')
             siz = weightParameters{d};
@@ -253,7 +284,11 @@ for m = 1:nMembers
             w(nans) = NaN;
         end
 
-        Xm = sum(w.*Xm, md, "omitnan") ./ sum(w, md, "omitnan");
+        % Weighted sum or mean
+        Xm = sum(w.*Xm, md, "omitnan");
+        if ismember(d, weightMeanOmit)
+            Xm = Xm ./ sum(w, md, "omitnan");
+        end
     end
 
     % Record state vector

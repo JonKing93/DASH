@@ -7,7 +7,7 @@ classdef stateVectorVariable
 %
 %       1. State and ensemble dimensions
 %       2. Sequences
-%       3. Means, and
+%       3. Means and totals, and
 %       4. Metadata options.
 %
 %   The class also implements a number of utilities for building state
@@ -38,6 +38,8 @@ classdef stateVectorVariable
 %   sequence            - Apply a sequence over ensemble dimensions of a variable
 %   mean                - Take a mean over dimensions of a variable
 %   weightedMean        - Apply a weighted mean over dimensions of a variable
+%   total               - Take the sum total over dimensions of a variable
+%   weightedTotal       - Apply a weighted total over dimensions of a variable
 %   metadata            - Set metadata options for ensemble dimensions of a variable
 %
 % Dimensions and Sizes:
@@ -96,13 +98,13 @@ properties
     sequenceIndices = cell(1,0);    % Sequence indices for ensemble dimensions
     sequenceMetadata = cell(1,0);   % Sequence metadata for each dimension
 
-    %% Means
+    %% Means and totals
 
-    meanType = zeros(1,0);          % 0: no mean, 1: unweighted mean, 2: weighted mean
-    meanSize = zeros(1,0);          % The size of the dimension after taking the mean
-    meanIndices = cell(1,0);        % Mean indices for ensemble dimensions
-    omitnan = false(1,0);           % Nanflag options for each mean
-    weights = cell(1,0);            % Weights for weighted means
+    meanType = zeros(1,0);          % 0: no summary, 1: unweighted mean, 2: weighted mean, 3: unweighted total, 4: weighted total
+    meanSize = zeros(1,0);          % The size of the dimension after taking the mean or total
+    meanIndices = cell(1,0);        % Mean/total indices for ensemble dimensions
+    omitnan = false(1,0);           % Nanflag options for each mean or total
+    weights = cell(1,0);            % Weights for weighted means or weighted totals
 
     %% Metadata
 
@@ -121,6 +123,8 @@ methods
     obj = metadata(obj, dims, type, arg1, arg2, header);
     obj = mean(obj, dims, indices, omitnan, header);
     obj = weightedMean(obj, dims, weights, header);
+    obj = total(obj, dims, indices, omitnan, header);
+    obj = weightedTotal(obj, dims, weights, header);
 
     % Gridfile interactions
     [metadata, failed, cause] = getMetadata(obj, d, grid, header);

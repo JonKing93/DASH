@@ -24,6 +24,11 @@ for k = 1:numel(dims)
         continue;
     end
 
+    % Prevent conflict with totals
+    if ismember(obj.meanType(d), [3 4])
+        existingTotalError(obj, d, header);
+    end
+
     % If a new mean, require state dimension. Update sizes and type
     if obj.meanType(d) == 0
         if ~obj.isState(d)
@@ -55,6 +60,17 @@ end
 end
 
 % Error messages
+function[] = existingTotalError(obj, d, header)
+dim = obj.dims(d);
+id = sprintf("%s:existingTotal", header);
+ME = MException(id, ...
+    ['You cannot call the "weightedMean" command on the "%s" dimension because you are\n',...
+    'already implementing a sum total over the dimension. If you want to use\n',...
+    'the "weightedMean" command for this dimension, you will first need to disable\n',...
+    'the total by calling the "total" command with the "none" option for "%s".'],...
+    dim, dim);
+throwAsCaller(ME);
+end
 function[] = noMeanIndicesError(obj, d, header)
 dim = obj.dims(d);
 id = sprintf('%s:noMeanIndices', header);
