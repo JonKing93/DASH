@@ -51,7 +51,7 @@ classdef coral < PSM.prysm
         lat;        % The latitude of the coral site
         lon;        % The longitude of the coral site
 
-        use_d18O;   % Whether the forward model uses d18O as an input
+        d18O;       % Whether the forward model uses d18O as an input
         species;    % The species of coral
         b1;         % Red Sea d18O-SSS slope
         b2;         % Tropical Pacific d18O-SSS slope
@@ -73,17 +73,13 @@ classdef coral < PSM.prysm
             %   function in the psm.coral.sensor module of PRYSM for
             %   additional details on the inputs.
             %
-            %   obj = PSM.prysm.coral(..., 'use_d18O', use_d18O)
+            %   obj = PSM.prysm.coral(..., 'd18O', d18O)
             %   Indicate whether the model should run using d18O as an
             %   input. Default is to not use it as an input.
             %
             %   obj = PSM.prysm.coral(..., 'species', species)
             %   Indicate the species of the coral. This sets the slope of
-            %   the coral-SST regression. See details below.Options are 
-            %   "Default" (-.22),
-            %   "Porites_sp" (-.26178)
-            %   "Porites_lob" (-.19646)
-            %   
+            %   the coral-SST regression. See details below.   
             %
             %   obj = PSM.prysm.coral(..., 'b1', b1)
             %   obj = PSM.prysm.coral(..., 'b2', b2)
@@ -95,7 +91,7 @@ classdef coral < PSM.prysm
             %   Inputs:
             %       lat (numeric scalar): The latitude of the site in decimal degrees
             %       lon (numeric scalar): The longitude of the site in decimal degrees
-            %       use_d18O (scalar logical): True if the model should use d18O as an
+            %       d18O (scalar logical): True if the model should use d18O as an
             %           input. Otherwise false (default).
             %       species (string scalar): The name of the coral species. This sets 
             %           the slope of the coral-SST regression.
@@ -123,10 +119,10 @@ classdef coral < PSM.prysm
             dash.assert.scalarType(lon, 'numeric', 'lon', header);
 
             % Parse optional inputs
-            [use_d18O, species, b1, b2, b3, b4, b5] = dash.parse.nameValue(varargin,...
-                ["use_d18O", "species", "b1", "b2", "b3", "b4", "b5"],...
+            [d18O, species, b1, b2, b3, b4, b5] = dash.parse.nameValue(varargin,...
+                ["d18O", "species", "b1", "b2", "b3", "b4", "b5"],...
                 {false,      "default", .31,  .27,   .45,  .16,  .15}, 2, header);
-            dash.assert.scalarType(use_d18O, 'logical', 'use_d18O', header);
+            dash.assert.scalarType(d18O, 'logical', 'use_d18O', header);
             species = dash.assert.strflag(species, 'species', header);
             dash.assert.scalarType(b1, 'numeric', 'b1', header);
             dash.assert.scalarType(b2, 'numeric', 'b2', header);
@@ -137,7 +133,7 @@ classdef coral < PSM.prysm
             % Record parameters
             obj.lat = lat;
             obj.lon = lon;
-            obj.use_d18O = use_d18O;
+            obj.d18O = d18O;
             obj.species = species;
             obj.b1 = b1;
             obj.b2 = b2;
@@ -214,7 +210,7 @@ classdef coral < PSM.prysm
             inputs = {};
             if exist('rows', 'var')
                 nRows = 2;
-                if obj.use_d18O
+                if obj.d18O
                     nRows = 3;
                 end
                 inputs = {rows, nRows};
@@ -225,7 +221,7 @@ classdef coral < PSM.prysm
             %% PSM.prysm.coral.estimate  Estimates coral d18O values from SST, SSS, and optional d18O
             % ----------
             %   d18O = obj.estimate(X)
-            %   Runs the PRYSM corla sensor module on a set of SST, SSS, and optional
+            %   Runs the PRYSM coral sensor module on a set of SST, SSS, and optional
             %   d18O values extracted from a state vector ensemble. Estimates d18O
             %   values of coral.
             % ----------
@@ -243,7 +239,7 @@ classdef coral < PSM.prysm
             % Split the variables
             SST = X(1,:,:);
             SSS = X(2,:,:);
-            if obj.use_d18O
+            if obj.d18O
                 d18Osw = X(3,:,:);
             end
             
@@ -255,13 +251,10 @@ classdef coral < PSM.prysm
             for k = 1:nEvolving
                 SSTpy = py.numpy.array(SST(:,:,k));
                 SSSpy = py.numpy.array(SSS(:,:,k));
-                if obj.use_d18O
-                    d18Osw_py = py.numpy.array(d18Osw(:,:,k));
-                end
-            
-                % Note whether running with d18O values
-                if obj.use_d18O
-                    input5 = d18Osw_py;
+
+                % Get d18O if appropriate
+                if obj.d18O
+                    input5 = py.numpy.array(d18Osw(:,:,k));
                 else
                     input5 = -1;
                 end
