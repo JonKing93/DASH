@@ -2,7 +2,7 @@
 % ----------
 % Equations:
 %   haversine       - Calculates distances between latitude-longitude coordinates
-%   gaspariCohn2D   - Implements a 5th order Gaspari-Cohn polynomial in 2-dimensions
+%   gaspariCohn     - Implements a 5th order Gaspari-Cohn polynomial
 %   unbias          - Computes the coefficient for an unbiased estimator
 %
 % Ensembles:

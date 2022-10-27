@@ -1,21 +1,21 @@
-function[weights] = gaspariCohn2D(distances, R, scale)
-%% dash.math.gaspariCohn2D  Implements a Gaspari-Cohn 5th order polynomial in 2 dimensions
+function[weights] = gaspariCohn(distances, R, scale)
+%% dash.math.gaspariCohn  Implements a Gaspari-Cohn 5th order polynomial
 % ----------
-%   weights = dash.math.gaspariCohn2D(distances, R)
+%   weights = dash.math.gaspariCohn(distances, R)
 %   Calculates covariance localization weights for a set of distances given
 %   a specified cutoff radius. Uses a length scale of 0.5.
 %
-%   weights = dash.math.gaspariCohn2D(distances, R, scale)
+%   weights = dash.math.gaspariCohn(distances, R, scale)
 %   Specify the length scale to use for the Gaspari-Cohn polynomial.
 %
-%   weights = dash.math.gaspariCohn2D(distances, R, 'optimal')
+%   weights = dash.math.gaspariCohn(distances, R, 'optimal')
 %   Uses a length scale of sqrt(10/3), which was described as optimal by Lorenc (2003).
 % ----------
 %   Inputs:
 %       distances (numeric array): A set of distances. The distances may be in any
 %           units, and should not contain negative values. NaN values are
 %           permitted.
-%       R (positive numeric scalar): The curoff radius. Must use the same
+%       R (positive numeric scalar): The cutoff radius. Must use the same
 %           units as the distances.
 %       scale (numeric scalar | 'optimal'): The length scale for the polynomial. Must
 %           be a value on the interval 0 < scale <= 0.5. By default, uses a
@@ -26,7 +26,7 @@ function[weights] = gaspariCohn2D(distances, R, scale)
 %       weights (numeric array): Covariance localization weights. Will have
 %           the same size as the distances input.
 %
-% <a href="matlab:dash.doc('dash.math.gaspariCohn2D')">Documentation Page</a>
+% <a href="matlab:dash.doc('dash.math.gaspariCohn')">Documentation Page</a>
 
 % Defaults
 if ~exist('scale','var') || isempty(scale)

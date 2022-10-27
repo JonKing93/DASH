@@ -78,8 +78,8 @@ wDistance = dash.math.haversine(stateCoordinates, siteCoordinates);
 yDistance = dash.math.haversine(siteCoordinates);
 
 % Apply the Gaspari-Cohn polynomial
-wloc = dash.math.gaspariCohn2D(wDistance, R, scale);
-yloc = dash.math.gaspariCohn2D(yDistance, R, scale);
+wloc = dash.math.gaspariCohn(wDistance, R, scale);
+yloc = dash.math.gaspariCohn(yDistance, R, scale);
 
 end
 
