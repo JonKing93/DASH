@@ -5,7 +5,8 @@
 %   localization weights for a Kalman Filter using different methods.
 % ----------
 % Gaspari-Cohn:
-%   gc2d    - Calculates localization weights using a 5th order Gaspari-Cohn polynomial in 2 dimensions
+%   gc2d    - Calculates localization weights over a 2D spatial field using a 5th order Gaspari-Cohn polynomial
+%   gc1d    - Calculates localization weights over a 1D depth/height/Z dimension using a Gaspari-Cohn 5th order polynomial
 %
 % Tests:
 %   tests   - Implements unit tests for the dash.localize package
