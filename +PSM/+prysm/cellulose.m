@@ -156,7 +156,7 @@ classdef cellulose < PSM.prysm
             %           The first row is temperature, second is precipitation, and third
             %           is relative humidity. Uses the same rows for
             %           all ensemble members and ensembles in an evolving set.
-            %       memberRows (row vector, linear indices [3 x nMembers]): Indicates
+            %       memberRows (matrix, linear indices [3 x nMembers]): Indicates
             %           which state vector rows to use for each ensemble member. Should
             %           be a matrix with 3 rows and one element per ensemble member. Uses
             %           the same rows for the ensemble members in different evolving ensembles.

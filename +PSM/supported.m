@@ -20,9 +20,8 @@ names = [...
     "pdsi"
     "prysm"
     "prysm.cellulose"
-%    "prysm.coral"
-%    "prysm.icecore"
-%    "prysm.speleothem"
+    "prysm.coral"
+    "prysm.icecore"
     "vslite"
     ];
 

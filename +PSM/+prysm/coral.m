@@ -31,7 +31,7 @@ classdef coral < PSM.prysm
     % users, and do not implement error checking on their inputs.
     %
     % Estimate:
-    %   estimate    - Estimates coral d18O values given SST and SSS extracted from a state vector ensemble
+    %   estimate    - Estimates coral d18O values given SST, SSS, and optionally d18O extracted from a state vector ensemble
     %
     % Inherited:
     %   name        - Returns an identifying name for use in error messages
@@ -158,10 +158,9 @@ classdef coral < PSM.prysm
             %   obj = obj.rows(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
-            %   ensemble members. The input is a matrix with 3 rows, and one
+            %   ensemble members. The input is a matrix with 2 or 3 rows, and one
             %   column per ensemble member. The rows should refer to the
-            %   temperature, precipitation, and relative humidity variables
-            %   (in that order).
+            %   SSS, SST, and optionally d18O variables (in that order).
             %
             %   obj = obj.rows(evolvingRows)
             %   This syntax allows you to use different state vector rows
@@ -184,9 +183,9 @@ classdef coral < PSM.prysm
             %           The first row is SST, second is SSS, and third
             %           is relative humidity. Uses the same rows for
             %           all ensemble members and ensembles in an evolving set.
-            %       memberRows (row vector, linear indices [2|3 x nMembers]): Indicates
+            %       memberRows (matrix, linear indices [2|3 x nMembers]): Indicates
             %           which state vector rows to use for each ensemble member. Should
-            %           be a matrix with 3 rows and one element per ensemble member. Uses
+            %           be a matrix with 2 or 3 rows and one element per ensemble member. Uses
             %           the same rows for the ensemble members in different evolving ensembles.
             %       evolvingRows (3D array, linear indices [2|3 x 1|nMembers x nEvolving]):
             %           Indicates which state vector row to use for different ensembles
