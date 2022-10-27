@@ -50,7 +50,7 @@ end
 
 % Flags: Non-duplicate (case-insensitive) string list
 flags = dash.assert.strlist(flags, "flags", header);
-lower(flags);
+flags = lower(flags);
 dash.assert.uniqueSet(flags, 'Flag', header);
 
 % Defaults: cell vector with one element per flag
