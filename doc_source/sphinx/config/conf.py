@@ -22,7 +22,7 @@ copyright = '2022, Jonathan King'
 author = 'Jonathan King'
 
 # The full version, including alpha/beta/rc tags
-release = '4.0.0-beta-3'
+release = '4.0.0'
 
 
 # -- General configuration ---------------------------------------------------

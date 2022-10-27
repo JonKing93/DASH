@@ -12,7 +12,7 @@ classdef cellulose < PSM.prysm
     %   Github Repository: https://github.com/sylvia-dee/PRYSM
     %
     %   Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM
-    %       docoumentation for additional details.
+    %       documentation for additional details.
     % ----------
     % cellulose Methods:
     %
@@ -48,32 +48,45 @@ classdef cellulose < PSM.prysm
 
     % Forward model parameters
     properties (SetAccess = private)
-        d18Os;
-        d18Op;
-        d18Ov;
-        flag;
-        iso;
+        d18Os;  % Isotope ratio of soil water
+        d18Op;  % Isotope ratio of precipitation
+        d18Ov;  % Isotope ratio of ambient vapor at surface layer
+
+        flag;   % The model to use
+        iso;    % Whether to use isotope-enabled model output        
     end
 
     methods
-        function[obj] = cellulose(d18Os, d18Op, d18Ov, flag, iso)
+        function[obj] = cellulose(d18Os, d18Op, d18Ov, varargin)
             %% PSM.prysm.cellulose  Create a new PRYSM Cellulose PSM object
             % ----------
-            %   obj = PSM.prysm.cellulose(d18Os, d18Op, d18Ov, flag, iso)
+            %   obj = PSM.prysm.cellulose(d18Os, d18Op, d18Ov)
             %   Creates a new PSM object that implements the PRYSM
-            %   cellulose sensor module. Please see the documentation of
-            %   the "cellulose_sensor.py" function in the
-            %   psm.cellulose.senosr module of the PRYSM Python package for
-            %   details about the inputs.
+            %   cellulose sensor module. Runs the PSM using isotope-enabled
+            %   model output and the Evans et al., 2007 model.
+            %
+            %   Please see the documentation of the "cellulose_sensor.py" 
+            %   function in the psm.cellulose.sensor module of the PRYSM
+            %   Python package for additional details about the inputs.
+            %
+            %   obj = PSM.prysm.cellulose(..., 'flag', flag)
+            %   Indicate whether to use the Evans et al., 2007 model or the
+            %   Roden et al., 2003 model. Default is Evans.
+            %
+            %   obj = PSM.prysm.cellulose(..., 'iso', iso)
+            %   Indicate whether to use isotope-enabled model output in the
+            %   calculation. Default is to use isotope-enabled output.
             % ----------
             %   Inputs:
             %       d18Os (numeric scalar): Isotope ratio of soil water
             %       d18Op (numeric scalar): Isotope ratio of precipitation
             %       d18Ov (numeric scalar): Isotope ratio of ambient vapor
             %           at surface layer
-            %       flag (numeric scalar): Flag for the type of cellulose model 
+            %       flag (0 | 1): Flag for the type of cellulose model
+            %           [0]: Roden et al., 2003
+            %           [1]: (Deafult) Evans et al., 2007
             %       iso (scalar logical): Whether to use isotope-ensabled model 
-            %           output (true) or not (false).
+            %           output (true) or not (false). Default is true.
             %
             %   Outputs:
             %       obj (scalar prysm.cellulose object): The new PRYSM
@@ -83,11 +96,17 @@ classdef cellulose < PSM.prysm
 
             % Error check
             header = "DASH:PSM:prysm:cellulose";
-            dash.assert.scalarType('d18Os', 'numeric', 'd18Os', header);
-            dash.assert.scalarType('d18Op', 'numeric', 'd18Op', header);
-            dash.assert.scalarType('d18Ov', 'numeric', 'd18Ov', header);
-            dash.assert.scalarType('flag', 'numeric', 'flag', header);
-            dash.assert.scalarType('iso', 'logical', 'iso', header);
+            dash.assert.scalarType(d18Os, 'numeric', 'd18Os', header);
+            dash.assert.scalarType(d18Op, 'numeric', 'd18Op', header);
+            dash.assert.scalarType(d18Ov, 'numeric', 'd18Ov', header);
+
+            % Parse optional inputs
+            [flag, iso] = dash.parse.nameValue(varargin, ["flag","iso"], {1, true}, 3, header);
+            dash.assert.scalarType(iso, 'logical', 'iso', header);
+            if ~ismember(flag, [0 1])
+                id = sprintf('%s:invalidFlag', header);
+                error(id, 'flag must either be 0 or 1');
+            end
 
             % Record parameters
             obj.d18Os = d18Os;
@@ -204,15 +223,15 @@ classdef cellulose < PSM.prysm
 
             % For each evolving ensemble, convert variables to numpy arrays
             for k = 1:nEvolving
-%                 Tpy = py.numpy.array(T(:,:,k));
-%                 Ppy = py.numpy.array(P(:,:,k));
-%                 RHpy = py.numpy.array(RH(:,:,k));
+                Tpy = py.numpy.array(T(:,:,k));
+                Ppy = py.numpy.array(P(:,:,k));
+                RHpy = py.numpy.array(RH(:,:,k));
 
                 % Run the forward model. Convert output back to Matlab
                 d18Opy = py.psm.cellulose.sensor.cellulose_sensor(...
                     time, Tpy, Ppy, RHpy, obj.d18Os, obj.d18Op, obj.d18Ov, ...
                     obj.flag, obj.iso);
-                d18O(:,:,k) = numeric(d18Opy);
+                d18O(:,:,k) = double(d18Opy);
             end
         end
     end

@@ -41,9 +41,15 @@ hasMemory = false(nNames, 1);
 % Get information
 for n = 1:nNames
     name = psmNames(n);
-    descriptions(n) = PSM.(name).description;
     estimatesR(n) = PSM.(name).estimatesR;
     hasMemory(n) = PSM.(name).hasMemory;
+
+    % Get description
+    description = PSM.(name).description;
+    if isempty(description)
+        description = PSM.(name).packageDescription;
+    end
+    descriptions(n) = description;
 end
 
 % Organize as a table
