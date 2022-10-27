@@ -42,7 +42,7 @@ classdef icecore < PSM.prysm
 
     % Description
     properties (Constant)
-        description = "Ice-core sensor module from the PYRSM Python package";
+        description = "Ice-core sensor module from the PRYSM Python package";
     end
 
     % Forward model parameters
