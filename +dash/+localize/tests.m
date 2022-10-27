@@ -9,5 +9,6 @@ function[] = tests
 % <a href="matlab:dash.doc('dash.localize.tests')">Documentation Page</a>
 
 gc2d;
+gc1d;
 
 end
