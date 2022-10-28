@@ -1,4 +1,4 @@
-classdef coral < PSM.prysm
+classdef coral < PSM.prysm.package
     %% PSM.prysm.coral  Implement the coral sensor module of the PRYSM package
     % ----------
     %   This PSM implements the coral sensor module from the PRYSM
@@ -62,9 +62,9 @@ classdef coral < PSM.prysm
 
     methods
         function[obj] = coral(lat, lon, varargin)
-            %% PSM.prysm.coral  Create a new PRYSM coral PSM object
+            %% PSM.prysm.coral.coral  Create a new PRYSM coral PSM object
             % ----------
-            %   obj = PSM.prysm.coral(lat, lon)
+            %   obj = <strong>PSM.prysm.coral</strong>(lat, lon)
             %   Creates a new PSM object that implements the PRYSM coral
             %   sensor module. Runs the model without d18O as an input
             %   using the default coral species and default d18O-SSS slope.
@@ -73,19 +73,19 @@ classdef coral < PSM.prysm
             %   function in the psm.coral.sensor module of PRYSM for
             %   additional details on the inputs.
             %
-            %   obj = PSM.prysm.coral(..., 'd18O', d18O)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'd18O', d18O)
             %   Indicate whether the model should run using d18O as an
             %   input. Default is to not use it as an input.
             %
-            %   obj = PSM.prysm.coral(..., 'species', species)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'species', species)
             %   Indicate the species of the coral. This sets the slope of
             %   the coral-SST regression. See details below.   
             %
-            %   obj = PSM.prysm.coral(..., 'b1', b1)
-            %   obj = PSM.prysm.coral(..., 'b2', b2)
-            %   obj = PSM.prysm.coral(..., 'b3', b3)
-            %   obj = PSM.prysm.coral(..., 'b4', b4)
-            %   obj = PSM.prysm.coral(..., 'b5', b5)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'b1', b1)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'b2', b2)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'b3', b3)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'b4', b4)
+            %   obj = <strong>PSM.prysm.coral</strong>(..., 'b5', b5)
             %   Set the d18O-SSS slope for different regions of the globe.
             % ----------
             %   Inputs:
@@ -144,7 +144,7 @@ classdef coral < PSM.prysm
         function[output] = rows(obj, rows)
             %% PSM.prysm.coral.rows  Indicate the stateVector rows used to run the PRYSM coral sensor module
             % ----------
-            %   obj = obj.rows(rows)
+            %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vectors row that should be used as the 
             %   SSS, SST, and optionally d18O inputs for the coral sensor
             %   module when calling the "PSM.estimate" command. The input is 
@@ -155,14 +155,14 @@ classdef coral < PSM.prysm
             %   Uses the same state vector rows for each
             %   ensemble member and each ensemble in an evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with 2 or 3 rows, and one
             %   column per ensemble member. The rows should refer to the
             %   SSS, SST, and optionally d18O variables (in that order).
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
             %   array of either size [2|3 x 1 x nEvolving] or of size 
@@ -171,10 +171,10 @@ classdef coral < PSM.prysm
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use different rows for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the object.
             % ----------
             %   Inputs:
@@ -219,7 +219,7 @@ classdef coral < PSM.prysm
         function[d18O] = estimate(obj, X)
             %% PSM.prysm.coral.estimate  Estimates coral d18O values from SST, SSS, and optional d18O
             % ----------
-            %   d18O = obj.estimate(X)
+            %   d18O = <strong>obj.estimate</strong>(X)
             %   Runs the PRYSM coral sensor module on a set of SST, SSS, and optional
             %   d18O values extracted from a state vector ensemble. Estimates d18O
             %   values of coral.

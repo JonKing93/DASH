@@ -57,7 +57,7 @@
 % Estimate:
 %   estimate            - Use PSMs to estimate proxy observations from a state vector ensemble
 %
-% Forwad model interface:
+% Forward model interface:
 %   Interface           - Defines a common interface for working with forward models
 %
 % Forward models:
@@ -65,7 +65,9 @@
 %   baymag              - A Bayesian model for Mg/Ca ratios of planktic foraminifera
 %   bayspar             - A Baysian model for TEX86
 %   bayspline           - A Baysian model for UK'37
+%   identity            - Returns inputs directly as outputs without running a forward model
 %   linear              - General linear models of form:  Y = a1*X1 + a2*X2 + ... an*Xn + b
+%   pdsi                - A Palmer Drought-Severity Index estimator
 %   prysm               - The PRYSM suite of Python forward models
 %   vslite              - The Vaganov-Shashkin Lite model of tree ring width
 %

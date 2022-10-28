@@ -32,6 +32,10 @@ else
     dash.assert.strsInList(psmNames, supported, 'psmNames', 'the name of a supported PSM', header);
 end
 
+% Alias prysm to the package superclass
+alias = strcmp(psmNames, "prysm");
+psmNames(alias) = "prysm.package";
+
 % Preallocate
 nNames = numel(psmNames);
 descriptions = strings(nNames, 1);
@@ -53,6 +57,7 @@ for n = 1:nNames
 end
 
 % Organize as a table
+psmNames(alias) = "prysm";
 info = table(psmNames(:), descriptions, estimatesR, hasMemory);
 info.Properties.VariableNames = ["Name", "Description","Can_Estimate_R","Has_Memory"];
 

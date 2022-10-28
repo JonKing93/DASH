@@ -1,17 +1,15 @@
-classdef (Abstract) prysm < PSM.Interface
-    %% PSM.prysm  Superclass for forward models in the PRYSM Python package
+classdef package < PSM.Interface
+    %% PSM.prysm.package  Superclass for forward models in the PRYSM Python suite
     % ----------
-    %   The PSM.prysm class provides a superclass for the individual
+    %   The PSM.prysm.package class provides a superclass for the individual
     %   forward models within the PRYSM suite. This superclass is primarily
-    %   used to hold information about the PRYSM suite for use with the
-    %   PSM.download and PSM information methods.
+    %   used to hold information about the PRYSM suite and Github repository
+    %   for use with the PSM.download and PSM information methods.
     %
     %   If you would like to actually implement a PRYSM forward model,
     %   please see the classes for specific PRYSM forward models.
-    %   Specifically: PSM.prysm.cellulose, PSM.prysm.coral,
-    %   PSM.prysm.icecore, PSM.prysm.speleothem.
     % ----------
-    % prysm Methods:
+    % package Methods:
     %
     % Abstract Inherited:
     %   label           - Optionally apply a label to a PSM object
@@ -21,7 +19,7 @@ classdef (Abstract) prysm < PSM.Interface
     %   name            - Return a name for a PSM object for use in error messages
     %   parseRows       - Process and error check the inputs to the "rows" command
     %
-    % <a href="matlab:dash.doc('PSM.prysm')">Documentation Page</a>
+    % <a href="matlab:dash.doc('PSM.prysm.package')">Documentation Page</a>
 
     properties (Constant)
         estimatesR = false;                                         % PRYSM modules do not estimate R uncertainties

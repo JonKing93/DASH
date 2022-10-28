@@ -1,4 +1,4 @@
-classdef icecore < PSM.prysm
+classdef icecore < PSM.prysm.package
     %% PSM.prysm.icecore  Implement the icecore sensor module of the PRYSM package
     % ----------
     %   This PSM implements the icecore sensor module from the PRYSM
@@ -52,13 +52,13 @@ classdef icecore < PSM.prysm
 
     methods
         function[obj] = icecore(alt_diff)
-            %% PSM.prysm.icecore  Create a new PRYSM icecore PSM
+            %% PSM.prysm.icecore.icecore  Create a new PRYSM icecore PSM
             % ----------
-            %   obj = PSM.prysm.icecore
+            %   obj = <strong>PSM.prysm.icecore</strong>
             %   Creates a new PSM object that implements the PRYSM icecore
             %   sensor module. Runs the model without an altitude correction.
             %   
-            %   obj = PSM.prysm.icecore(alt_diff)
+            %   obj = <strong>PSM.prysm.icecore</strong>(alt_diff)
             %   Specify an altitude correction (in meters) for the ice core.
             % ----------
             %   Inputs:
@@ -81,19 +81,19 @@ classdef icecore < PSM.prysm
         function[output] = rows(obj, rows)
             %% PSM.prysm.icecore.rows  Indicate the stateVector rows used to run the PRYSM icecore sensor module
             % ----------
-            %   obj = obj.rows(row)
+            %   obj = <strong>obj.rows</strong>(row)
             %   Indicate the state vectors row that should be used as the 
             %   d18O inputs for the icecore sensor module when calling the "PSM.estimate"
             %   command. The input is a scalar. Uses the same state vector row for each
             %   ensemble member and each ensemble in an evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with 1 row, and one
             %   column per ensemble member.
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
             %   array of either size [1 x 1 x nEvolving] or of size 
@@ -102,10 +102,10 @@ classdef icecore < PSM.prysm
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use different rows for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the object.
             % ----------
             %   Inputs:
@@ -144,7 +144,7 @@ classdef icecore < PSM.prysm
         function[d18O] = estimate(obj, X)
             %% PSM.prysm.icecore.estimate  Estimates precipitation-weghted d18O for an ice core
             % ----------
-            %   d18O = obj.estimate(X)
+            %   d18O = <strong>obj.estimate</strong>(X)
             %   Runs the PRYSM icecore sensor module on a set of
             %   precipitation d18O values. Estimates precipitation-weighted
             %   d18O values for the ice core.

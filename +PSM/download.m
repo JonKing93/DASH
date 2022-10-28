@@ -6,7 +6,7 @@ function[] = download(psmName, varargin)
 %   repository to the Matlab active path. The repository is downloaded to
 %   the current directory in a folder that matches the name of the
 %   repository. If the current directory already has a folder matching the
-%   name of the repostiory, then that folder must be empty. The downloaded
+%   name of the repository, then that folder must be empty. The downloaded
 %   repository is checked out at the commit supported by the DASH toolbox.  
 %
 %   This command requires:

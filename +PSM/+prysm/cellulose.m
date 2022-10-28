@@ -1,4 +1,4 @@
-classdef cellulose < PSM.prysm
+classdef cellulose < PSM.prysm.package
     %% PSM.prysm.cellulose  Implement the cellulose sensor module of the PRYSM package
     % ----------
     %   This PSM implements the cellulose sensor module from the PRYSM
@@ -16,7 +16,7 @@ classdef cellulose < PSM.prysm
     % ----------
     % cellulose Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   cellulose   - Creates a new PRYSM cellulose object
@@ -58,9 +58,9 @@ classdef cellulose < PSM.prysm
 
     methods
         function[obj] = cellulose(d18Os, d18Op, d18Ov, varargin)
-            %% PSM.prysm.cellulose  Create a new PRYSM Cellulose PSM object
+            %% PSM.prysm.cellulose.cellulose  Create a new PRYSM Cellulose PSM object
             % ----------
-            %   obj = PSM.prysm.cellulose(d18Os, d18Op, d18Ov)
+            %   obj = <strong>PSM.prysm.cellulose</strong>(d18Os, d18Op, d18Ov)
             %   Creates a new PSM object that implements the PRYSM
             %   cellulose sensor module. Runs the PSM using isotope-enabled
             %   model output and the Evans et al., 2007 model.
@@ -69,11 +69,11 @@ classdef cellulose < PSM.prysm
             %   function in the psm.cellulose.sensor module of the PRYSM
             %   Python package for additional details about the inputs.
             %
-            %   obj = PSM.prysm.cellulose(..., 'flag', flag)
+            %   obj = <strong>PSM.prysm.cellulose</strong>(..., 'flag', flag)
             %   Indicate whether to use the Evans et al., 2007 model or the
             %   Roden et al., 2003 model. Default is Evans.
             %
-            %   obj = PSM.prysm.cellulose(..., 'iso', iso)
+            %   obj = <strong>PSM.prysm.cellulose</strong>(..., 'iso', iso)
             %   Indicate whether to use isotope-enabled model output in the
             %   calculation. Default is to use isotope-enabled output.
             % ----------
@@ -118,7 +118,7 @@ classdef cellulose < PSM.prysm
         function[output] = rows(obj, rows)
             %% PSM.prysm.cellulose.rows  Indicate the stateVector rows used to run the PRYSM cellulose sensor module
             % ----------
-            %   obj = obj.rows(rows)
+            %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vectors row that should be used as the 
             %   temperature, precipitaion, and relative humidity inputs
             %   for the cellulose sensor module when calling the "PSM.estimate"
@@ -127,7 +127,7 @@ classdef cellulose < PSM.prysm
             %   relative humidity. Uses the same state vector rows for each
             %   ensemble member and each ensemble in an evolving set.
             %
-            %   obj = obj.rows(memberRows)
+            %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
             %   ensemble members. The input is a matrix with 3 rows, and one
@@ -135,7 +135,7 @@ classdef cellulose < PSM.prysm
             %   temperature, precipitation, and relative humidity variables
             %   (in that order).
             %
-            %   obj = obj.rows(evolvingRows)
+            %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
             %   array of either size [3 x 1 x nEvolving] or of size 
@@ -144,10 +144,10 @@ classdef cellulose < PSM.prysm
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use different rows for each ensemble member in each evolving ensemble.
             %
-            %   rows = obj.rows
+            %   rows = <strong>obj.rows</strong>
             %   Returns the current rows for the PSM object
             %
-            %   obj = obj.rows('delete')
+            %   obj = <strong>obj.rows</strong>('delete')
             %   Deletes any currently specified rows from the object.
             % ----------
             %   Inputs:
@@ -188,7 +188,7 @@ classdef cellulose < PSM.prysm
         function[d18O] = estimate(obj, X)
             %% PSM.prysm.cellulose.estimate  Estimates cellulose d18O values from T, P, and RH
             % ----------
-            %   d18O = obj.estimate(X)
+            %   d18O = <strong>obj.estimate</strong>(X)
             %   Runs the PRYSM cellulose sensor module on a set of
             %   temperatures, precipitations, and relative humidities
             %   extracted from a state vector ensemble. Estimate d18O
