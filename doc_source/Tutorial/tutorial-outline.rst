@@ -8,7 +8,7 @@ From the primer, we can see a few common tasks for implementing DA. These includ
 4. Estimating proxy uncertainties, and
 5. Running assimilation algorithms
 
-In this tutorial, we will use the DASH toolbox to implement all these tasks. We'll practice using DASH using some demo datasets, which we'll provide a bit later. The demo datasets are from published assimilations, and should give sense of typical DASH workflows. The remainder of the workshop is organized as follows:
+In this tutorial, we will use the DASH toolbox to implement all these tasks. We'll practice using DASH using some demo datasets, which we'll provide a bit later. The demo datasets are from published assimilations, and should give sense of typical DASH workflows. The remainder of the tutorial is organized as follows:
 
 :doc:`DASH Introduction <dash/outline>`
     We'll start by introducing the DASH toolbox. We'll briefly examine its command style, layout, and how to access the documentation.
@@ -17,7 +17,7 @@ In this tutorial, we will use the DASH toolbox to implement all these tasks. We'
     Next, we'll introduce and download the demo datasets. We'll also use a few DASH utilities to examine metadata for these datasets.
 
 :doc:`Catalogue Climate Datasets <gridfile/outline>`
-    At this point, we'll begin using DASH to implement an assimilation. We'll start by using DASH's ``gridMetadata`` and ``gridfile`` classes to catalogue some climate datasets.
+    At this point, we'll begin using DASH to implement an assimilation. We'll start by using DASH's ``gridMetadata`` and ``gridfile`` classes to describe and catalogue climate datasets.
 
 :doc:`Build a State Vector <stateVector/outline>`
     Once our data is catalogued, we'll use DASH's ``stateVector`` class to design and build a state vector ensemble.

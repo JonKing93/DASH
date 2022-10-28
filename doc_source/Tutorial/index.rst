@@ -24,9 +24,10 @@ We ran a DASH Hackathon in October 2022 that worked through a partial version of
     :hidden:
 
     DA Primer           <da-primer>
-    Workshop Outline    <workshop-outline>
+    Tutorial Outline    <tutorial-outline>
     Introducing DASH    <dash/outline>
-    Demos               <demos/outline>
+    Demos               <demos>
+    gridfile            <gridfile/outline>
     stateVector         <stateVector/outline>
     PSM                 <PSM/outline>
     kalmanFilter        <kalmanFilter/outline>
