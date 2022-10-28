@@ -16,7 +16,7 @@ classdef icecore < PSM.prysm.package
     % ----------
     % icecore Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   icecore     - Creates a new PRYSM icecore object

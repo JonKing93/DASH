@@ -16,7 +16,7 @@ classdef coral < PSM.prysm.package
     % ----------
     % coral Methods:
     %
-    % **ALL USER METHODS**
+    % *ALL USER METHODS*
     %
     % Create:
     %   coral       - Creates a new PRYSM coral object

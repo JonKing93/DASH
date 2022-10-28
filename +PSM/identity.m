@@ -15,9 +15,8 @@ classdef identity < PSM.Interface
     %   identity    - Creates a new identity PSM object
     %   label       - Apply a label to an identity PSM object
     %
-    % Estimate
+    % Estimate:
     %   rows        - Indicate the state vector row that holds the input for the identity PSM
-    %   run         - Run an identity PSM
     %
     %
     % ==UTILITY METHODS==
@@ -57,6 +56,8 @@ classdef identity < PSM.Interface
             % ----------
             %   Outputs:
             %       obj (scalar PSM.identity object): The new identity PSM object
+            %
+            % <a href="matlab:dash.doc('PSM.identity.identity')">Documentation Page</a>
         end
         function[output] = rows(obj, row)
             %% PSM.identity.rows  Indicate the stateVector row used to run an identity PSM
