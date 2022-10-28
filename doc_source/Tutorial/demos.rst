@@ -1,5 +1,7 @@
 Demo Descriptions
 =================
+In the tutorial, we'll be using the DASH toolbox to implement several data assimilation algorithms. To facilitate this, we've provided two demo datasets. Each demo is derived from a published assimilation and includes some climate model output, proxy records, and other data needed to implement the assimilation. Before continuing, you should choose and download one (or both) of these datasets. Be sure to extract the .zip file after downloading.
+
 
 Demo 1
 ------
@@ -18,7 +20,7 @@ The downloaded demo includes the following data files:
 
 The demo also includes two other files: ``ntrend.grid`` and ``temperature-cesm.grid``. These are the data catalogue files that we will examine in the next open coding session. ``ntrend.grid`` catalogues the tree-ring dataset, and ``temperature-cesm.grid`` catalogues the climate model output.
 
-.. _NTREND demo: https://drive.google.com/drive/folders/1vSE_tY9hRreW8hmvL2lnPVAL2NM0CtGs?usp=sharing
+.. _NTREND demo: https://drive.google.com/drive/folders/1JZqZCmgojmdS6LpiPtpcFoEUPtE0S-zi?usp=sharing
 
 
 Demo 2
@@ -35,4 +37,4 @@ The downloaded demo includes the following data files:
 
 The demo also includes two other files: ``UK37.grid`` and ``SST.grid``. These are the data catalogues that we'll examine in the next coding session. ``UK37.grid`` catalogues the proxy dataset, and ``SST.grid`` catalogues the climate model output.
 
-.. _LGM demo: https://drive.google.com/drive/folders/1kVBUbNv57wfwUjvn7Siw3uPS-DOw9yS9?usp=sharing
+.. _LGM demo: https://drive.google.com/drive/folders/1_cDyCiJfc1VxhW3Ivgsppj9wOe2EZfdo?usp=sharing
