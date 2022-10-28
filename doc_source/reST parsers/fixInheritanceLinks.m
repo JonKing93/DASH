@@ -10,7 +10,7 @@ function[] = fixInheritanceLinks
 % ----------
 
 % Get the list of inherited methods and their replacements. This list
-% excludes inherited methods in PSM subclasses, which are processed below
+% excludes inherited methods in PSM subclasses, which are processed below.
 % class, method, location
 inherited = [...
     "kalmanFilter", "dispFilter", "dash/ensembleFilter"
@@ -30,9 +30,6 @@ inherited = [...
     "dash/dataSource/nc", "setVariable", "hdf"
     "dash/dataSource/mat", "load", "hdf"
     "dash/dataSource/mat", "setVariable", "hdf"
-
-    "PSM/prysm", "rows", "Interface"
-    "PSM/prysm", "estimate", "Interface"
     ];
 
 % Iterate through each item
@@ -45,12 +42,28 @@ end
 
 % Also fix the PSM subclasses
 methods = ["label", "name", "parseRows", "disp"];
-subclasses = ["bayfox","baymag","bayspar","bayspline","linear","prysm","vslite"];
+subclasses = ["bayfox","baymag","bayspar","bayspline","identity","linear","pdsi","vslite"];
 for c = 1:numel(subclasses)
     class = strcat("PSM/", subclasses(c));
     for m = 1:numel(methods)
         fixLink(class, methods(m), "Interface");
     end
+end
+
+% And the PRYSM subclasses
+subclasses = ["cellulose","coral","icecore"];
+for c = 1:numel(subclasses)
+    class = strcat("PSM/prysm/", subclasses(c));
+    for m = 1:numel(methods)
+        fixLink(class, methods(m), "../Interface");
+    end
+end
+
+% And the PRYSM superclass
+class = "PSM/prysm/package";
+methods = [methods, "rows", "estimate"];
+for m = 1:numel(methods)
+    fixLink(class, methods(m), "../Interface");
 end
 
 end

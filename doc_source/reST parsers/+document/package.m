@@ -47,10 +47,10 @@ try
     codeRoot = which(packageInfo);
     codeRoot = fileparts(codeRoot);
     
-    % Get the contents of the package. Remove the ., .., and Contents.m items
+    % Get the contents of the package. Remove the ., .., Contents.m, and template.m items
     contents = dir(codeRoot);
     contents = string({contents.name});
-    remove = ismember(contents, [".","..","Contents.m"]);
+    remove = ismember(contents, [".","..","Contents.m","template.m"]);
     contents(remove) = [];
     
     % Get the absolute path to each item in the package

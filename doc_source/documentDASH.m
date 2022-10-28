@@ -20,9 +20,9 @@ function[] = documentDASH
 % File locations (relative to the location of this function)
 examplesLocation = "examples";
 rstDestination = "sphinx/source";
-sphinxConfig = "sphinx/config/conf.py";
-sphinxIndex = "sphinx/config/index.rst";
+sphinxConfig = "sphinx/config";
 htmlBuild = "build/html";
+doctrees = "build/doctrees";
 
 
 % Note the items to document and whether they are classes or packages
@@ -85,11 +85,9 @@ fixInheritanceLinks;
 % This section runs sphinx in order to generate HTML from the RST
 fprintf('Preparing sphinx\n');
 
-% Add the sphinx config and index rst to the sphinx reST source
+% Add the sphinx conf.py, index.rst, and _static folder to the source
 conf = fullfile(docSource, sphinxConfig);
 copyfile(conf, source);
-index = fullfile(docSource, sphinxIndex);
-copyfile(index, source);
 
 % Clear the HTML build
 build = fullfile(docSource, htmlBuild);
@@ -98,10 +96,22 @@ if isfolder(build)
 end
 mkdir(build);
 
+% Clear the doctrees
+doctrees = fullfile(docSource, doctrees);
+if isfolder(doctrees)
+    rmdir(doctrees, 's');
+end
+mkdir(doctrees);
+
 % Use sphinx to build the html pages
 fprintf('Running sphinx\n');
-command = sprintf('sphinx-build -qa %s %s', source, build);
+command = sprintf('sphinx-build -d %s -qEa %s %s', doctrees, source, build);
 system(command);
 fprintf('Documentation complete\n');
+
+% Delete the doctrees
+if isfolder(doctrees)
+    rmdir(doctrees, 's');
+end
 
 end
