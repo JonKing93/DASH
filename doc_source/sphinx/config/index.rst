@@ -3,6 +3,20 @@ Welcome to the DASH Docs!
 
 **DASH** is a Matlab toolbox that implements paleoclimate data assimilation.
 
+
+Getting Started
+---------------
+
+
+
+
+
+
+
+
+
+
+
 These docs are a reference guide for the toolbox. The docs contain usage information for every class, function, package, and method in the toolbox. The major components of the toolbox are as follows:
 
 | :doc:`gridMetadata <gridMetadata>`  - Helps define human-readable metadata to describe climate datasets

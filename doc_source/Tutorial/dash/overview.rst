@@ -5,7 +5,7 @@ DASH is a Matlab toolbox written to facilitate paleoclimate data assimilation. T
 DASH is organized into several different components, each implementing a particular task commonly required for paleoclimate data assimilation. The following list provides an overview of tasks supported by DASH, as well as the associated components of the toolbox
 
 * Organize and Catalogue Climate Data: ``gridfile``, ``gridMetadata``
-    Data assimilation requires diverse types of data. This can include climate proxy data sets, climate model output, and instrumental observational records. Often, these data are saved in a variety of different formats. DASH thus provides tools to load data from different formats, and to catalogue datasets with human-readable metadata.
+    Data assimilation requires diverse types of data. This can include climate proxy data sets, climate model output, and instrumental observational records. Often, these data are saved in a variety of different formats. DASH provides tools to load data from different formats, and to catalogue datasets with human-readable metadata.
 
 * Build State Vector Ensembles: ``stateVector``
     The state vector ensemble is a key component of any ensemble DA method. The ``stateVector`` class allows users to flexibly design and build ensembles in a variety of styles.
@@ -17,4 +17,4 @@ DASH is organized into several different components, each implementing a particu
     There are many different proxy forward models, written in a variety of styles. DASH provides the ``PSM`` interface to allow users to run external forward modeling codes within the DASH framework. A given forward model will require a unique set of climate variables, typically at a specific spatial location, as input. The ``ensembleMetadata`` class can assist users in locating these inputs within a state vector ensemble.
 
 * Data Assimilation Algorithms: ``kalmanFilter``, ``particleFilter``, and ``optimalSensor``
-    The DASH toolbox provides utilities to implement common paleoclimate DA algorithms (and different modifications of those algorithms). Currently, the toolbox includes components to implement offline Kalman filters, offline particle filters, and an optimal sensor algorithm.
+    The DASH toolbox provides utilities to implement common paleoclimate DA algorithms (and different modifications of those algorithms). Currently, the toolbox includes components to implement Kalman filters, particle filters, and an optimal sensor analyses.

@@ -1,6 +1,6 @@
 Object-Oriented Code
 ====================
-DASH is written in an object-oriented programming (OOP) style, which allows the toolbox to be separated into different components. DASH users do not need to be familiar with OOP to use the toolbox. However, we use a few OOP terms throughout the workshop, and so we define them here. We also introduce dot-indexing, which is how DASH users will access different functions in the toolbox. A :ref:`glossary <glossary>` of new vocabulary is provided at the bottom of the page.
+DASH is written in an object-oriented programming (OOP) style, which allows the toolbox to be separated into different components. DASH users do not need to be familiar with OOP to use the toolbox. However, we use a few OOP terms throughout the tutorial, and so we define them here. We also introduce dot-indexing, which is how DASH users will access different functions in the toolbox. A :ref:`glossary <glossary>` of new vocabulary is provided at the bottom of the page.
 
 
 Learning Objectives

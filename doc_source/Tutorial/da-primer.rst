@@ -1,6 +1,6 @@
 Data Assimilation Primer
 ========================
-Before beginning the workshop, it will be useful to have a basic understanding of data assimilation (DA). On this page, we'll provide an overview of DA and review some common tasks for these analyses. This workshop will focus on implementing a Kalman filter assimilation, so we'll also briefly review this method.
+Before beginning the tutorial, it will be useful to have a basic understanding of paleoclimate data assimilation (DA). On this page, we'll provide an overview of DA and review some common tasks for these analyses. DASH is often used to implement Kalman filters, so we'll also briefly review this method. (You can find a description of other DA algorithms in DASH here: MISSING LINK).
 
 
 Overview
@@ -106,7 +106,7 @@ Written formally, the Kalman Gain matrix is given by:
 
     \mathrm{K = cov(X, \hat{Y})[cov(\hat{Y}) + R]}^{-1}
 
-You won't need to remember this equation for the workshop, but it can be useful to understand how the assimilation works.
+You won't need to remember this equation for the tutorial, but it can be useful to understand how the assimilation works.
 
 Applying the Kalman Gain to the innovation produces a set of updates. Applying these updates to the prior ensemble (:math:`\mathrm{X_p}`) produces an updated (posterior) ensemble (:math:`\mathrm{X_a}`), such that the climate states (state vectors) in :math:`\mathrm{X_a}` more closely resemble those recorded by the real proxy records.
 
