@@ -13,7 +13,7 @@ In this tutorial, we will use the DASH toolbox to implement all these tasks. We'
 :doc:`DASH Introduction <dash/outline>`
     We'll start by introducing the DASH toolbox. We'll briefly examine its command style, layout, and how to access the documentation.
 
-:doc:`Demo Datasets <demos/outline>`
+:doc:`Demo Datasets <demos>`
     Next, we'll introduce and download the demo datasets. We'll also use a few DASH utilities to examine metadata for these datasets.
 
 :doc:`Catalogue Climate Datasets <gridfile/outline>`

@@ -99,11 +99,11 @@ Sequence indices are quite flexible. They do not need to be evenly spaced (and d
 
 .. _mean-indices:
 
-Mean Indices
+Mean/Total Indices
 ------------
-Implementing a mean over state dimensions is relatively straightforward, as ``stateVector`` can simply implement a mean over the data elements included in the state vector. However, you may also want to implement means over ensemble dimensions. For example, you may want each ensemble member to implement a temporal mean, or a mean over multiple model runs. We will use mean indices to implement means over ensemble dimensions.
+Implementing a mean or total over state dimensions is relatively straightforward, as ``stateVector`` can simply implement a mean/total over the data elements included in the state vector. However, you may also want to implement means/totals over ensemble dimensions. For example, you may want each ensemble member to implement a temporal mean, or a mean over multiple model runs. We will use mean/total indices to implement means/totals over ensemble dimensions.
 
-**Mean indices** function similarly to sequence indices and also list a series of offsets applied to :ref:`reference indices <ref-indices>`. However, ``stateVector`` then takes a mean over the indicated data elements, rather than implementing a sequence.
+**Mean/Total indices** function similarly to sequence indices and also list a series of offsets applied to :ref:`reference indices <ref-indices>`. However, ``stateVector`` then takes a mean/sum over the indicated data elements, rather than implementing a sequence.
 
 .. figure:: ../images/abstract-mean-indices.svg
     :alt: A series of black dots proceeds from left to right. The dots are labeled as the elements of an ensemble dimension. Black arrows, labeled as "Reference indices", point to a few elements along the dimension. A blue arrow proceeds from the end of each black arrow. These blue arrows, labeled as "mean indices", point to several data elements after each black arrow. There is a blue box around each set of data elements. The same blue arrow is applied to each black arrow.
@@ -128,19 +128,19 @@ Using these mean indices, each ensemble member will implement a mean over the as
 
     Figure 8: Mean indices (blue numbers) are applied as offsets to the reference index. The state vector variable will implement a mean over the selected data elements (data elements in blue boxes).
 
-As with sequence indices, mean indices do not need to be evenly spaced or sorted. They may contain negative values and do not need to contain zero. Note that if the mean indices do not contain zero, then the variable will not contain data from the reference point itself. It will only contain data from the indicated mean elements.
+As with sequence indices, mean/total indices do not need to be evenly spaced or sorted. They may contain negative values and do not need to contain zero. Note that if the mean/total indices do not contain zero, then the variable will not contain data from the reference point itself. It will only contain data from the indicated mean/total elements.
 
 .. note::
     The ``stateVector`` class will only select ensemble members that allow for complete means. The class will discard any ensemble members in which a mean requires data outside of the associated gridfile.
 
 
-Combining sequences and means
+Combining sequences and means/totals
 -----------------------------
-In some cases, you may want a state vector to implement a sequence of means. For example, a series of seasonal means within a year, or a series of decadal means following a climate event. When this occurs, you will need to use both sequence indices and mean indices. When you provide both sets of indices, ``stateVector`` uses the following procedure to build an ensemble member:
+In some cases, you may want a state vector to implement a sequence of means/totals. For example, a series of seasonal means/totals within a year, or a series of decadal means/totals following a climate event. When this occurs, you will need to use both sequence indices and mean/total indices. When you provide both sets of indices, ``stateVector`` uses the following procedure to build an ensemble member:
 
 1. Locate the ensemble member's reference point
 2. Apply sequence index offset to locate the sequence elements
-3. Apply mean indices to each individual sequence element
+3. Apply mean/total indices to each individual sequence element
 
 The procedure is summarized in the following figure:
 

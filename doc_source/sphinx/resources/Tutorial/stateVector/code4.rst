@@ -517,12 +517,12 @@ Afterwards, you can delete any sequences using::
 
 
 
-Step 5: Implement Means
------------------------
-
-You can use the ``stateVector.mean`` and ``stateVector.weightedMean`` commands to implement means in the state vector variables. The ``stateVector.mean`` command implements a basic, unweighted mean. Its syntax is::
+Step 5: Implement Means/Totals
+------------------------------
+You can use the ``stateVector`` class to implements means and totals (sums) within state vector variables. For example, to compute a global mean temperature index, or to compute total precipitation over a region. You can use the ``stateVector.mean`` and ``stateVector.total`` commands to implement a basic, unweighted mean or total. The syntax for these commands is::
 
     obj = obj.mean(variables, dimensions, indices)
+    obj = obj.total(variables, dimensions, indices)
 
 The inputs are as follows:
 
@@ -535,22 +535,24 @@ The inputs are as follows:
 **indices**
     A cell vector whose elements hold the ``LINK mean indices`` for the listed dimensions. State dimensions cannot have mean indices, so use an empty array for any state dimensions. If you only listed state dimensions, you can omit this input entirely. If you listed a single ensemble dimension, you may provide the indices directly, rather than in a cell.
 
-You can also use the optional fourth input to specify how to treat NaN values in any mean. See ``dash.doc('stateVector.mean')`` for details.
+You can also use the optional fourth input to specify how to treat NaN values in a mean or total. See the reference guide for details.
 
-The ``stateVector.weightedMean`` command has a similar syntax::
+----
+You can also implement weighted means and totals using the ``stateVector.weightedMean`` and ``stateVector.weightedTotal`` commands. These have a similar syntax::
 
     obj = obj.weightedMean(variables, dimensions, weights)
+    obj = obj.weightedTotal(variables, dimensions, weights)
 
 **variables** and **dimensions**
-    Here, the first two inputs are the same as described for the ``stateVector.mean`` method.
+    Here, the first two inputs are the same as described for the ``stateVector.mean`` and ``stateVector.total`` methods.
 
 **weights**
-    This input is a cell vector that lists the weights for the elements along each listed dimension. There should be one weight per state index (for state dimensions), or one weight per mean index (for ensemble dimensions). If you only list a single dimension, you may provide the indices directly, rather than in a cell.
+    This input is a cell vector that lists the weights for the elements along each listed dimension. There should be one weight per state index (for state dimensions), or one weight per mean/total index (for ensemble dimensions). If you only list a single dimension, you may provide the indices directly, rather than in a cell.
 
-Note that the ``weightedMean`` method does not allow you to specify :ref:`mean indices <mean-indices>` for ensemble dimensions. If you want to take a weighted mean over an ensemble dimension, you should:
+Note that the ``weightedMean`` and ``weightedTotal`` methods do not allow you to specify :ref:`mean/total indices <mean-indices>` for ensemble dimensions. If you want to take a weighted mean/total over an ensemble dimension, you should:
 
-1. Use ``stateVector.mean`` to specify the mean indices, and then
-2. Use ``weightedMean`` to specify the weights for those indices.
+1. Use ``stateVector.mean`` or ``stateVector.total`` to specify the mean indices, and then
+2. Use ``weightedMean`` or ``weightedTotal`` to specify the weights for those indices.
 
 
 ..
@@ -740,6 +742,40 @@ In this demo, we will build an ensemble using every possible ensemble member. We
 .. raw:: html
 
     </div></section>
+
+
+
+
+Step 7: Resolve Metadata Conflicts
+----------------------------------
+In some cases, the ``build`` command may not be able to select any ensemble members, and this can occur from a metadata conflict. A **metadata conflict** arises when
+
+* Variables are derived from different gridfiles, and
+* The gridfiles use different metadata formats along an ensemble dimension
+
+For example, if a variable from gridfile A has ``time`` metadata that uses a datetime format, and a variable from gridfile B has ``time`` metadata that uses a decimal-year format, then a metadata conflict will occur. These conflicts arise because the ``stateVector`` class uses metadata values to ensure that the variables in each ensemble member are derived from the same timestep and/or model run. When two variables use different metadata formats, ``stateVector`` is unable to compare the metadata from the different variables. However, you can use the ``stateVector.metadata`` command to resolve these conflicts.
+
+Essentially, the command allows you to provide alternate metadata for one or more variables. You can provide this metadata in one of two ways. Either (1) Provide the alternate metadata directly, or (2) Using a conversion function. If using a conversion function, then ``stateVector.build`` will apply the function to the gridfile metadata. The output of the function will be used as the alternate metadata. The base syntax for ``stateVector.metadata`` is::
+
+    obj = obj.metadata(variables, dimension, type, ...)
+
+Here, **variables** is a list of variable names or indices. These are the variables being given alternate metadata. The **dimension** input is the name of the dimension being given alternate metadata. The **type** input indicates how alternate metadata should be determined. Use ``'set'``, ``'s'``, or `1` to set the alternate metadata directly; use ``'convert'``, ``'c'``, or `2` to use a conversion function.
+
+If setting metadata directly, the syntax is::
+
+    obj = obj.metadata(variables, dimension, 'set', metadata)
+
+where **metadata** is the alternate metadata for the dimension. The number of rows should match the length of the gridfile dimension, and this metadata should use the same format as the other gridfiles.
+
+If using a conversion function, the syntax is::
+
+    obj = obj.metadata(variables, dimension, 'convert', functionHandle, functionArgs)
+
+where **functionHandle** is a function handle to the conversion function. The gridfile metadata will always be passed as the first input to this function, and the output will be used as the alternate metadata. The optional **functionArgs** input is a cell vector containing any additional inputs to the function (in the order they should be passed). You can read more details about ``stateVector.metadata`` using ``dash.doc('stateVector.metadata')``.
+
+
+
+
 
 
 
