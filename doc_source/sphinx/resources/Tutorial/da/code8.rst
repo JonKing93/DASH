@@ -1,5 +1,5 @@
-Open Coding 5
-=============
+Coding 8
+========
 
 Goal
 ----
@@ -135,8 +135,9 @@ Next, we'll use the ``prior``, ``observations``, ``estimates``, and ``uncertaint
 **R**
     The proxy uncertainties should be a data matrix holding either error-variances or a full error-covariance matrix. If using error variances, the uncertainties should be a column vector with one row per proxy record. If using error-covariances, the matrix should be symmetric with one row and one column per proxy record.
 
-You can also modify these commands to use different values in different assimilation time steps. (For example, to use an evolving prior). We will not discuss this syntax in the workshop, but you can read about it in the DASH documentation.
+You can also modify these commands to use different values in different assimilation time steps. (For example, to use an evolving prior). We will not discuss this syntax in the tutorial, but you can read about it in the DASH documentation.
 
+.. _ensemble.useVariables:
 
 *Select Reconstruction Targets*
 +++++++++++++++++++++++++++++++
@@ -303,7 +304,7 @@ we can see that the Kalman filter now includes all four essential inputs. We can
 
 Step 3: Covariance Adjustments
 ------------------------------
-In this workshop, we'll focus on covariance localization, but feel free to try out other covariance adjustments. You can implement localization using the ``kalmanFilter.localize`` command. It's syntax is::
+In this tutorial, we'll focus on covariance localization, but feel free to try out other covariance adjustments. You can implement localization using the ``kalmanFilter.localize`` command. It's syntax is::
 
     obj = obj.localize(wloc, yloc)
 
@@ -482,7 +483,7 @@ we can see that the object will now implement covariance localization when runni
 
 Step 4: Select outputs
 ----------------------
-As mentioned, you can use various commands to indicate that the Kalman filter should return specific outputs. In this workshop, we'll focus on the ``kalmanFilter.variance`` and ``kalmanFilter.deviations`` commands, which share a similar syntax. Use::
+As mentioned, you can use various commands to indicate that the Kalman filter should return specific outputs. In this tutorial, we'll focus on the ``kalmanFilter.variance`` and ``kalmanFilter.deviations`` commands, which share a similar syntax. Use::
 
     obj = obj.variance(true)
 
@@ -704,6 +705,7 @@ we can see it includes the updated ensemble mean (Amean), and the updated deviat
     </div></section>
 
 
+.. _regrid:
 
 Step 6: Regrid state vector variables
 -------------------------------------
@@ -827,7 +829,7 @@ That's it, the assimilation is complete! Try visualizing some of the outputs. Pl
 * `Matlab's mapping toolbox <https://www.mathworks.com/help/map/index.html>`_, and
 * `The m_map package <https://www.eoas.ubc.ca/~rich/map.html>`_
 
-and there are many other resources online.
+and there are many other resources built in to Matlab, as well as online.
 
 
 Full Demo
@@ -908,7 +910,7 @@ This section recaps all the essential code from the demos and may be useful as a
     ens = ensemble('lgm');
     ensMeta = ens.metadata;
 
-    % Create a Kalman fitler object
+    % Create a Kalman filter object
     kf = kalmanFilter('LGM Demo');
 
     % Collect essential inputs

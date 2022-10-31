@@ -1,5 +1,5 @@
-Open Coding 4
-=============
+Coding 7
+========
 
 Goal
 ----
@@ -330,7 +330,7 @@ for details. You can find the documentation on these syntaxes in the documentati
 
 .. note::
 
-    For the workshop, we've separated the discussion of the ``rows`` command from the creation of PSM objects. However, in real workflows, it's often easiest to combine these commands within the same loop.
+    For the tutorial, we've separated the discussion of the ``rows`` command from the creation of PSM objects. However, in real workflows, it's often easiest to combine these commands within the same loop.
 
 
 *Locate rows*
@@ -363,7 +363,7 @@ In some cases, you may have coordinate metadata stored along the ``site`` dimens
 ----
 
 
-We will only cover the ``closestLatLon`` command in the workshop, but the ``ensembleMetadata`` class includes a number of other commands which can help locate specific data elements within an ensemble. Depending on the complexity of your experiment, you may be interested in:
+We will only cover the ``closestLatLon`` command in the tutorial, but the ``ensembleMetadata`` class includes a number of other commands which can help locate specific data elements within an ensemble. Depending on the complexity of your experiment, you may be interested in:
 
 ``ensembleMetadata.rows``
     Returns metadata down the rows of the state vector (or at queried rows) for a queried dimension.

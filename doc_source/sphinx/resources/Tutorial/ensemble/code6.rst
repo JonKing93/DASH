@@ -60,6 +60,10 @@ Inspecting the object:
 
 we can see the saved state vector ensemble.
 
+.. raw:: html
+
+    </div></section>
+
 
 Step 2: Load data
 -----------------
@@ -127,6 +131,10 @@ we can see that the first output is a matrix with 56161 state vector elements, a
 
 records information about the loaded ensemble.
 
+.. raw:: html
+
+    </div></section>
+
 
 Step 3: Return Metadata
 -----------------------
@@ -172,6 +180,12 @@ Here, we'll return the metadata object for the saved ensemble:
                   T -  4320 rows   |   lon (144) x lat (30)
             T_index -     1 rows   |   lon (1) x lat (1)
           T_monthly - 51840 rows   |   lon (144) x lat (30) x time sequence (12)
+
+.. raw:: html
+
+    </div></section>
+
+
 
 
 Step 4: Select Variables
@@ -260,6 +274,13 @@ Likewise the metadata object only includes information on the loaded variables:
       Vector:
                 T - 4320 rows   |   lon (144) x lat (30)
           T_index -    1 rows   |   lon (1) x lat (1)
+
+.. raw:: html
+
+    </div></section>
+
+
+
 
 
 Step 5: Select Members
@@ -393,8 +414,9 @@ We can also use the ``ensembleMetadata.members`` command to see which members we
 
 We can see that the metadata includes metadata for 100 ensemble members, and that the ensemble members are randomly selected from the 1156 January reference points.
 
+.. raw:: html
 
-
+    </div></section>
 
 ..
     *NTREND Demo*
@@ -454,6 +476,10 @@ we can see it represents an ensemble with 1000 members. We can use the updated o
      15-Jan-1847
      15-Jan-1848
      15-Jan-1849
+
+.. raw:: html
+
+    </div></section>
 
 
 Step 6: Evolving Ensemble
@@ -633,6 +659,10 @@ We can also use the ``load`` method to load specific ensembles within the evolvi
       "Preindustrial"
       "Modern"
 
+.. raw:: html
+
+  </div></section>
+
 
 Full Demo
 ---------
@@ -681,3 +711,8 @@ Full Demo
 
     % Load specific ensembles in evolving set
     [X, metadata] = ens.load(["Preindustrial","Modern"]);
+
+
+.. raw:: html
+
+    </div></section>

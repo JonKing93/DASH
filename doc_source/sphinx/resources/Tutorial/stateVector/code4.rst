@@ -533,7 +533,7 @@ The inputs are as follows:
     Should list the names of dimensions that should be given a mean. May include both state and ensemble dimensions.
 
 **indices**
-    A cell vector whose elements hold the ``LINK mean indices`` for the listed dimensions. State dimensions cannot have mean indices, so use an empty array for any state dimensions. If you only listed state dimensions, you can omit this input entirely. If you listed a single ensemble dimension, you may provide the indices directly, rather than in a cell.
+    A cell vector whose elements hold the mean/total indices for the listed dimensions. State dimensions cannot have mean indices, so use an empty array for any state dimensions. If you only listed state dimensions, you can omit this input entirely. If you listed a single ensemble dimension, you may provide the indices directly, rather than in a cell.
 
 You can also use the optional fourth input to specify how to treat NaN values in a mean or total. See the reference guide for details.
 

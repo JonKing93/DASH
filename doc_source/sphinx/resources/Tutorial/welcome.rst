@@ -18,4 +18,5 @@ By the end of the tutorial, users should be able to use DASH to implement many t
     stateVector         <stateVector/outline>
     ensemble            <ensemble/outline>
     PSM                 <PSM/outline>
-    kalmanFilter        <kalmanFilter/outline>
+    DA Algorithms       <da/outline>
+    Next Steps          <next-steps>

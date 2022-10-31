@@ -12,7 +12,7 @@ In this section, we will examine two classes that facilitate working with state 
     Then, we'll do an coding session to practice two initial commands in the ``ensemble`` class and interact with our state vector ensembles.
 
 :doc:`Optional: Coding 6 <code6>`
-    We have also provided an optional coding session that explores the ``ensemble`` class in greater depth. However, we note that this section is optional, as many commands are detailed later in the tutorial.
+    We have also provided an optional coding section that explores the ``ensemble`` class in greater depth. However, we note that this section is not strictly necessary, as many commands are detailed later in the tutorial.
 
 
 .. toctree::
@@ -21,3 +21,4 @@ In this section, we will examine two classes that facilitate working with state 
     ensembleMetadata
     ensemble
     code5
+    code6

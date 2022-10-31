@@ -20,23 +20,25 @@ The ``DASH`` toolbox officially supports the following forward models:
 `BayMAG`_            Bayesian model of planktic foraminiferal Mg/Ca
 `BaySPAR`_           Bayesian model for TEX86
 `BaySPLINE`_         Bayesian model for UK'37
-linear               General multi-variance linear model
+identity             Returns inputs as outputs without running any model
+linear               General multi-variate linear model
 `PDSI`_              Palmer Drought-Severity Index estimator
 `PRYSM Cellulose`_   Cellulose δ\ :sup:`18`\ O sensor module
 `PRYSM Coral`_       Coral δ\ :sup:`18`\ O sensor module
 `PRYSM Ice-core`_    Ice-core  δ\ :sup:`18`\ O sensor module
-`PRYSM Speleothem`_  Speleothm  δ\ :sup:`18`\ O sensor module
 `VS-Lite`_           Vaganov-Shashkin Lite model of tree-ring width
 ===================  ===========
 
-As mentioned, ``PSM`` also includes a template for adding new forward models to the toolbox. We will not be covering this in the workshop, but if you are interested, enter::
+As mentioned, ``PSM`` also includes a template for adding new forward models to the toolbox. We will not be covering this in the tutorial, but if you are interested, enter::
 
     edit PSM.template
 
 in the console, and follow the instructions in the opened file.
 
 .. note::
-    The PRYSM forward models are written in Python and require some extra setup to run within Matlab. For the sake of time, we recommend not using the PRYSM PSM objects during the next open coding session. Instead, consider using the linear forward model as a practice run.
+    The PRYSM forward models are written in Python and require some extra setup to run within Matlab. You can read about setting up the PRYSM package using ``dash.doc('PSM.prysm')``
+
+
 
 .. _BayFOX: https://github.com/jesstierney/bayfoxm
 .. _BayMAG: https://github.com/jesstierney/BAYMAG
@@ -46,7 +48,6 @@ in the console, and follow the instructions in the opened file.
 .. _PRYSM Cellulose: https://github.com/sylvia-dee/PRYSM
 .. _PRYSM Coral: https://github.com/sylvia-dee/PRYSM
 .. _PRYSM Ice-core: https://github.com/sylvia-dee/PRYSM
-.. _PRYSM Speleothem: https://github.com/sylvia-dee/PRYSM
 .. _VS-Lite: https://github.com/suztolwinskiward/vslite
 
 
