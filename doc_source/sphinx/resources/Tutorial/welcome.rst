@@ -55,4 +55,3 @@ And there are many other resources online.
     stateVector         <stateVector/outline>
     PSM                 <PSM/outline>
     kalmanFilter        <kalmanFilter/outline>
-    Next Steps          <next-steps>

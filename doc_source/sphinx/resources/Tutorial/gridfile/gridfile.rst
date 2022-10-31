@@ -93,4 +93,4 @@ These transformations are often useful for converting the units of loaded data. 
 
 *And more!*
 +++++++++++
-The ``gridfile`` class supports a number of other methods that we will not detail in this workshop. However, you can read about all supported ``gridfile`` commands by entering ``dash.doc("gridfile")`` in the Matlab console.
+The ``gridfile`` class supports a number of other methods that we will not detail in this tutorial. However, you can read about all supported ``gridfile`` commands by entering ``dash.doc("gridfile")`` in the Matlab console.

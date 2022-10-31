@@ -56,3 +56,9 @@ or similarly::
 
     objectB = kalmanFilter('Experiment B');
     outputB = objectB.run
+
+
+
+Error Messages
+--------------
+DASH validates user inputs before running any commands. When these inputs are not valid, DASH will produce an error message. These error messages are written with the user in mind. They typically consist of one to two blocks of error text, and they often refer to the invalid input by name. You can use the reference guide to see the names of the inputs for various commands.

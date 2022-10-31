@@ -1,0 +1,73 @@
+/* This designs collapsible accordions */
+
+.accordion > input[name="collapse"] {
+  display: none;
+}
+
+.accordion label,
+.accordion .content{
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+ }
+
+ .accordion .content {
+   overflow: hidden;
+   max-height: 0;
+   transition: 0.3s;
+   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+ }
+
+ .accordion > input[name="collapse"]:checked ~ .content {
+   max-height: 10000px;
+   height: auto;
+   transition: max-height 0.3s ease-out;
+   padding-top: 10px;
+ }
+
+ .accordion label {
+   display: block;
+   background: #e3e3e3;
+   font-weight: bold;
+ }
+
+ .accordion {
+   margin-bottom: 1em;
+ }
+
+ .accordion > input[name="collapse"]:checked ~ .content {
+   border-top: 0;
+   transition: 0.3s;
+ }
+
+ .accordion .handle {
+   margin: 0;
+ }
+
+ .accordion label {
+   cursor: pointer;
+   padding: 10px;
+   user-select: none;
+ }
+
+ .accordion label:hover,
+ .accordion label:focus {
+   background: #c9c9c9;
+ }
+
+ .accordion .handle label:before {
+   font-family: FontAwesome;
+   content: "\f107";
+   display: inline-block;
+   margin-right: 10px;
+   font-size: 1em;
+   line-height: 1.556em;
+   vertical-align: middle;
+   transition: 0.4s;
+ }
+
+ .accordion > input[name="collapse"]:checked ~ .handle label:before {
+     transform: rotate(180deg);
+     transform-origin: center;
+     transition: 0.4s;
+ }

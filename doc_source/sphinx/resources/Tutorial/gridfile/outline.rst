@@ -13,10 +13,7 @@ In this section, we'll examine the ``gridfile`` class, which is used to catalogu
     With this background, we'll then examine the ``gridfile`` class, and overview its key features
 
 :doc:`code3`
-    Next, we'll examine some key ``gridfile`` commands, and we'll use the class to catalogue our climate proxy datasets.
-
-:doc:`code4`
-    We'll also do a separate coding session, this time using ``gridfile`` to catalogue our climate model output.
+    Next, we'll examine some key ``gridfile`` commands, and we'll use the class to catalogue our climate datasets.
 
 
 .. toctree::
@@ -26,4 +23,3 @@ In this section, we'll examine the ``gridfile`` class, which is used to catalogu
     code2
     gridfile
     code3
-    code4

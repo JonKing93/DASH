@@ -17,12 +17,12 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Paleo DA Hackathon'
+project = 'DASH Docs'
 copyright = '2022, Jonathan King'
 author = 'Jonathan King'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = '4.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -51,16 +51,13 @@ pygments_style = 'matlab'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-
+#
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ["_static"]
 html_css_files = ["css/matlab-io.css","css/accordion.css"]
 
 html_copy_source = False
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
 
 # The HTML header
 html_context = {

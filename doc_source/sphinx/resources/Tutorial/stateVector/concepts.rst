@@ -54,7 +54,7 @@ Here, each column is a different state vector (ensemble member). Each ensemble m
 
 State Vector Variables
 ----------------------
-The ``stateVector`` class uses data from ``gridfile`` data catalogues to build state vector ensembles. In this workshop, we will often refer to state vector variables. In the context of DASH, we define a **state vector variable** as some subset of data from a gridfile. Multiple variables can be derived from the same gridfile, and each individual variable forms a contiguous block of the state vector.
+The ``stateVector`` class uses data from ``gridfile`` data catalogues to build state vector ensembles. In this tutorial, we will often refer to state vector variables. In the context of DASH, we define a **state vector variable** as some subset of data from a gridfile. Multiple variables can be derived from the same gridfile, and each individual variable forms a contiguous block of the state vector.
 
 Returning to our earlier figure:
 

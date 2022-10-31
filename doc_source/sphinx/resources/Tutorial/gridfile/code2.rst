@@ -25,8 +25,14 @@ You can use the ``gridMetadata`` command to create a metadata object. The inputs
 Try using this command to create metadata objects for the demo datasets.
 
 
-**NTREND Demo: Proxy Records**
-++++++++++++++++++++++++++++++
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1a"><label for="ntrend-1a"><strong>NTREND Demo: Proxy Records</strong></label><div class="content">
+
 We'll start by creating a metadata object for the proxy record dataset. As a reminder, the proxy dataset consists of 54 tree ring records (proxy sites), and spans the interval from 750-2011 CE. The dataset is stored in the downloaded file ``ntrend.mat``.
 
 This dataset consists of various proxy sites over time, so we will want to define metadata for the ``site`` and ``time`` dimensions. If we load the contents of the ``ntrend.mat`` file:
@@ -63,9 +69,10 @@ We'll note that the IDs, latitudes, and longitudes all pertain to the proxy site
     lats = contents.latitudes;
     lons = contents.longitudes;
     years = contents.years;
+    seasons = contents.seasons;
 
     % Combine IDs, lats, and lons into "site" metadata
-    site = [IDs, lats, lons];
+    site = [IDs, lats, lons, seasons];
 
     % Create the metadata object
     proxyMetadata = gridMetadata('site', site, 'time', years);
@@ -82,17 +89,28 @@ Inspecting the metadata object:
 
     gridMetadata with metadata:
 
-      site: [54×3 string]
+      site: [54×4 string]
       time: [1262×1 double]
 
 we can see that it includes metadata for the ``site`` and ``time`` dimensions.
 
+.. raw:: html
 
-**LGM Demo: Proxy Records**
-+++++++++++++++++++++++++++
+    </div></section>
+
+
+
+..
+    *LGM Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="lgm-1a"><label for="lgm-1a"><strong>LGM Demo: Proxy Records</strong></label><div class="content">
+
 Here we'll create a metadata object for the LGM proxy dataset. As a reminder, this dataset consists of 89 Uk'37 records at the LGM. The dataset is stored in the downloaded file ``UK37.mat``.
 
-This dataset consists of various proxies sites over time, so we'll want to define metadata for the ``site`` and ``time`` dimensions. If we load the contents of the ``UK37.mat`` file::
+This dataset consists of various proxies sites over time, so we'll want to define metadata for the ``site`` and ``time`` dimensions. If we load the contents of the ``UK37.mat`` file:
 
 .. code::
     :class: input
@@ -149,9 +167,20 @@ Inspecting the metadata object:
 
 we can see that it includes metadata for the ``site`` and ``time`` dimensions.
 
+.. raw:: html
 
-*NTREND Demo: Climate Model Output*
------------------------------------
+    </div></section>
+
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1b"><label for="ntrend-1b"><strong>NTREND Demo: Climate Model Output</strong></label><div class="content">
+
 Next, we'll create a metadata object for our climate model output. As a reminder, the climate model output is stored in the two NetCDF files ````b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.085001-184912.nc`` and ````b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc``. This output in each file is a global temperature field on a monthly time step. The first file holds output from 850-1849 CE, and the second holds output from 1850-2005 CE.
 
 We can use Matlab's ``ncdisp`` command to display the contents of each file. For example::
@@ -198,7 +227,7 @@ Doing so, we can see that each file contains metadata for ``lat``, ``lon``, and 
       355.0000
       357.5000
 
-we can see that the NetCDF metadata holds latitude and longitude coordinates in decimal degrees. These metadata values are human-readable, so we'll go ahead and use them as our ``lat`` and ``lon`` metadata in DASH. Separately, we can use the ``ncdisp`` command to see that the time metadata in the NetCDF file is recorded in units of days since 0850-01-01::
+we can see that the NetCDF metadata holds latitude and longitude coordinates in decimal degrees. These metadata values are human-readable, so we'll go ahead and use them as our ``lat`` and ``lon`` metadata in DASH. Separately, we can use the ``ncdisp`` command to see that the time metadata in the NetCDF file is recorded in units of days since 0850-01-01:
 
 .. code::
     :class: input
@@ -269,6 +298,10 @@ Note that we converted the time metadata to a column vector in the second line o
          lat: [96×1 double]
         time: [13872×1 datetime]
 
+.. raw:: html
+
+    </div></section>
+
 
 
 Aside: Tripolar Spatial Fields
@@ -278,8 +311,14 @@ Not all climate models output spatial fields on a rectilinear spatial grid. This
 Ultimately, these tripolar arrays represent a collection of unique spatial sites, rather than a rectilinear latitude x longitude grid. As such, we'll typically use the ``site`` dimension to define spatial metadata for tripolar grids within DASH. To implement this, you'll usually want to reshape each of the ``latitude`` and ``longitude`` metadata arrays into a column vector. Then, concatenate the two vectors into a matrix with two columns. The two columns of the matrix record the unique (latitude, longitude) coordinate associated with each spatial site, and each row denotes a specific site.
 
 
-*LGM Demo: Climate Model Output*
-++++++++++++++++++++++++++++++++
+..
+    *LGM Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="lgm-1b"><label for="lgm-1b"><strong>LGM Demo: Climate Model Output</strong></label><div class="content">
+
 Here, we'll create a metadata object for the climate model output. As a reminder, this output is stored in the file ``SST.mat``. Inspecting the contents of this file:
 
 .. code::
@@ -339,14 +378,25 @@ To finish the metadata object for this dataset, we'll note that the tripolar SST
         time: [12×1 string]
          run: [16×1 double]
 
+.. raw:: html
+
+     </div></section>
+
+
 
 Step 2: Return Metadata
 -----------------------
 You can return the metadata for a dimension using dot-indexing. For a given metadata object, follow the object by ``.<dimension name>``, where ``<dimension name>`` is one of the dimension in DASH. For example, ``.lat``, ``.lon``, ``.time``, etc.
 
 
-*NTREND Demo*
--------------
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content">
+
 To return the latitude metadata for the climate model output, we could do:
 
 .. code::
@@ -401,10 +451,20 @@ To return the metadata for the time dimension, we can do:
     01-Nov-2005
     01-Dec-2005
 
+.. raw:: html
+
+    </div></section>
 
 
-*LGM Demo*
-----------
+
+..
+    *LGM Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="lgm-2"><label for="lgm-2"><strong>LGM Demo</strong></label><div class="content">
+
 To return the site metadata for the climate model output, we can do:
 
 .. code::
@@ -423,7 +483,7 @@ To return the site metadata for the climate model output, we can do:
      72.189       319.35
      72.186       319.78
 
- To return the metadata for the time dimension (which organizes the 12 monthly climatologies), we can do:
+To return the metadata for the time dimension (which organizes the 12 monthly climatologies), we can do:
 
 .. code::
     :class: input
@@ -456,22 +516,26 @@ To return the metadata for the 16 climate model runs, we can do:
 .. code::
     :class: output
 
-    1
-    2
-    3
-    4
-    5
-    6
-    7
-    8
-    9
-   10
-   11
-   12
-   13
-   14
-   15
-   16
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+    10
+    11
+    12
+    13
+    14
+    15
+    16
+
+.. raw:: html
+
+   </div></section>
 
 
 
@@ -484,8 +548,14 @@ You can use the ``gridMetadata.addAttributes`` to add non-dimensional attributes
 Each attribute name must be a valid Matlab variable name - it must begin with a letter, and may only include letters, numbers, and underscores. The metadata values can be anything at all. They may have any size and any data type, and have no formatting requirements. Use whatever you find useful!
 
 
-*NTREND Demo*
-+++++++++++++
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3"><label for="ntrend-3"><strong>NTREND Demo</strong></label><div class="content">
+
 We'll start by adding some attributes to metadata object for the climate model output. We'll note that this output is from the CESM 1.0 climate model, and that the units of the raw data set are in Kelvin:
 
 .. code::
@@ -535,10 +605,21 @@ We'll also add some attributes to the metadata object for the proxy records. Her
 
             site_metadata_columns: ["ID"    "Latitude"    "Longitude"    "Season"]
 
+.. raw:: html
+
+    </div></section>
 
 
-*LGM Demo*
-++++++++++
+
+
+..
+    *LGM Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="lgm-3"><label for="lgm-3"><strong>LGM Demo</strong></label><div class="content">
+
 Here, we'll start by adding some attributes to the metadata object for the climate model output. We'll start by noting that the output is from the iCESM model, and is in units of Kelvin. We'll also note that the model was run with boundary conditions matching the interval from 18-21 ka. Finally, we'll indicate that the columns of the spatial metadata correspond to the latitude and longitude of each spatial site, respectively:
 
 .. code::
@@ -593,23 +674,36 @@ We'll also add some attributes to the metadata object for the proxy records. Her
                              type: "UK'37"
             site_metadata_columns: ["ID"    "Latitude"    "Longitude"]
 
+.. raw:: html
+
+    </div></section>
+
 
 
 
 Additional Commands
 -------------------
-These are the key commands for the ``gridMetadata`` class, but there are a number of other commands not discussed in this tutorial. For example, the class includes commands to edit and remove metadata values and metadata attributes. You can read about the other commands in this class on the :doc:`gridMetadata reference page <../../gridMetadata>_:
+These are the key commands for the ``gridMetadata`` class, but there are a number of other commands not discussed in this tutorial. For example, the class includes commands to edit and remove metadata values and metadata attributes. You can read about the other commands in this class on the :doc:`gridMetadata reference page <../../gridMetadata>`::
 
     dash.doc('gridMetadata')
 
 
 
+.. _gridMetadata-full-demo:
+
 Full Demos
 ----------
 This section recaps all the essential code from the demos.
 
-*NTREND Demo*
-+++++++++++++
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-full"><label for="ntrend-full"><strong>NTREND Demo</strong></label><div class="content">
 
 ::
 
@@ -621,9 +715,10 @@ This section recaps all the essential code from the demos.
     lats = contents.latitudes;
     lons = contents.longitudes;
     years = contents.years;
+    seasons = contents.seasons
 
     % Combine IDs, lats, and lons into "site" metadata
-    site = [IDs, lats, lons];
+    site = [IDs, lats, lons, seasons];
 
     % Create the metadata object
     proxyMetadata = gridMetadata('site', site, 'time', years);
@@ -632,11 +727,6 @@ This section recaps all the essential code from the demos.
     name = 'site_metadata_columns';
     columns = ["ID", "Latitude", "Longitude", "Season"];
     proxyMetadata = proxyMetadata.addAttributes(name, columns);
-
-    % Add attributes
-    name = 'site_metadata_columns';
-    value = ["ID", "Latitude", "Longitude", "Season"];
-    proxyMetadata = proxyMetadata.addAttributes(name, value)
 
 
     %% Climate Model Output
@@ -656,11 +746,20 @@ This section recaps all the essential code from the demos.
     % Add Attributes
     modelMetadata = modelMetadata.addAttributes("Model", "CESM 1.0", "Units", "Kelvin")
 
+.. raw:: html
+
+    </div></section>
 
 
 
-*LGM Demo*
-++++++++++
+
+..
+    *LGM Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="lgm-full"><label for="lgm-full"><strong>LGM Demo</strong></label><div class="content">
 
 ::
 
@@ -680,7 +779,7 @@ This section recaps all the essential code from the demos.
     proxyMetadata = gridMetadata('site', site, 'time', time);
 
     % Add attributes
-    proxyMetaadata = proxyMetadata.addAttributes("time_units", "ka", "type", "UK'37", ...
+    proxyMetadata = proxyMetadata.addAttributes("time_units", "ka", "type", "UK'37", ...
                              'site_metadata_columns', ["ID","Latitude","Longitude"]);
 
 
@@ -706,3 +805,7 @@ This section recaps all the essential code from the demos.
     columns = ["Latitude", "Longitude"];
     modelMetadata = modelMetadata.addAttributes("Model", model, "Units", units, ...
         "time_span", time, "site_metadata_columns", columns);
+
+.. raw:: html
+
+    </div></section>
