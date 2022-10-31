@@ -1,5 +1,5 @@
-Open Coding 6
-=============
+Coding 5
+========
 In this section, we'll practice using some of the most common commands in the ``ensemble`` class. We'll see these commands again later in the workshop as we implement various other tasks.
 
 

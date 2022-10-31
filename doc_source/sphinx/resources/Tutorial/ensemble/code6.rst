@@ -25,8 +25,17 @@ If the ``stateVector`` object used to build the ensemble had a label, then the e
     You can also use the ``ensemble.label`` command at any later point to re-label the ensemble.
 
 
-*NTREND Demo*
-++++++
+
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1"><label for="ntrend-1"><strong>NTREND Demo</strong></label><div class="content">
+
 Recall that we saved the demo state vector ensemble in a file named ``ntrend.ens``. We'll create an ensemble object for the saved ensemble::
 
     file = "ntrend.ens";
@@ -65,8 +74,17 @@ Use the ``load`` command to load data from the saved ensemble. The syntax is::
     The second output is an ``ensembleMetadata`` object that describes the loaded array.
 
 
-*Demo*
-++++++
+
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content">
+
 We'll use the ``load`` command to load the saved state vector ensemble::
 
     ens = ensemble("ntrend.ens");
@@ -117,8 +135,16 @@ It's often useful to return the metadata object for an ensemble without actually
     metadata = obj.metadata
 
 
-*Demo*
-++++++
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3"><label for="ntrend-3"><strong>NTREND Demo</strong></label><div class="content">
+
 Here, we'll return the metadata object for the saved ensemble:
 
 .. code::
@@ -163,8 +189,17 @@ Use the ``useVariables`` command to limit the ensemble object to a specific set 
 After using the ``useVariables`` command, the ``load`` command will only load data for the specified variables. Likewise, the ``metadata`` command will only return metadata for these variables.
 
 
-*Demo*
-++++++
+
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-4"><label for="ntrend-4"><strong>NTREND Demo</strong></label><div class="content">
+
 We'll use the ``useVariables`` command to limit the ensemble to the reconstruction targets - the **T** and **T_index** variables::
 
     variables = ["T", "T_index"];
@@ -253,8 +288,18 @@ This command is often combined with the ``ensembleMetadata.members`` command, wh
     The output is the metadata at the reference point for each ensemble member. The metadata will be a matrix with one row per ensemble member.
 
 
-*Demo: Randomly selected members*
-+++++++++++++++++++++++++++++++++
+
+
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5a"><label for="ntrend-5a"><strong>NTREND Demo: Random Selection</strong></label><div class="content">
+
 Here, we'll limit the ensemble to 100 randomly selected ensemble members. We'll use Matlab's ``randsample`` command to select 100 members from the 1156 member ensemble::
 
     % (Reset the random number generator to make the demo reproducible)
@@ -349,8 +394,16 @@ We can also use the ``ensembleMetadata.members`` command to see which members we
 We can see that the metadata includes metadata for 100 ensemble members, and that the ensemble members are randomly selected from the 1156 January reference points.
 
 
-*Demo: Specific Members*
-++++++++++++++++++++++++
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5b"><label for="ntrend-5b"><strong>NTREND Demo: Specific Members</strong></label><div class="content">
+
 Here, we'll limit the ensemble to members from the pre-industrial era - that is, ensemble members from before 1850. We'll use the ``ensembleMetadata.members`` method to help locate these members::
 
     % Build an ensemble object and get its metadata object
@@ -436,8 +489,16 @@ Furthermore, you can now provide an optional input to the ``load`` and ``metadat
 and allows you to return values for specific ensembles in the evolving set. The **ensembles** input is a list of ensembles for which to return values. You can either list the labels associated with particular ensembles, or the indices of ensembles in the evolving set.
 
 
-*Demo*
-++++++
+
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-6"><label for="ntrend-6"><strong>NTREND Demo</strong></label><div class="content">
+
 We'll design an evolving ensemble with three individual ensembles. Each ensemble in the evolving set will be built from a different set of 100 ensemble members. Specifically, the three ensembles will correspond to the years 1200-1299, 1800-1899, and 1900-1999. We'll label the individual ensembles as "Preindustrial", "Mixed", and "Modern"
 
 ::
@@ -575,6 +636,14 @@ We can also use the ``load`` method to load specific ensembles within the evolvi
 
 Full Demo
 ---------
+
+..
+    *NTREND Demo*
+    +++++++++++++
+
+.. raw:: html
+
+    <section class="accordion"><input type="checkbox" name="collapse" id="ntrend-f"><label for="ntrend-f"><strong>NTREND Demo</strong></label><div class="content">
 
 ::
 
