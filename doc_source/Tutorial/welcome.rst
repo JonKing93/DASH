@@ -23,7 +23,7 @@ We ran a DASH workshop in October 2022 that worked through a partial version of 
 
 Reviewing Matlab
 ----------------
-The tutorial assumes that readers are familiar with the basics of Matlab. In particular, it will be useful to understand how to:
+The tutorial assumes that readers are familiar with some basic Matlab syntax. In particular, it will be useful to understand how to:
 
 * Create variables
 * Call functions,

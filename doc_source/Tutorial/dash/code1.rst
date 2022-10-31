@@ -1,5 +1,5 @@
-Open Coding 1
-=============
+Coding 1
+========
 
 Goals
 -----
@@ -18,7 +18,7 @@ Use the ``dash.version`` command to print the current version of DASH in the con
 
 .. note::
 
-    If this causes an error message, you may not have the toolbox installed correctly. Try :doc:`reinstalling the toolbox MISSING LINK`.
+    If this causes an error message, you may not have the toolbox installed correctly. Try :doc:`reinstalling the toolbox <../../installation>`.
 
 
 
