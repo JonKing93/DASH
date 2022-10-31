@@ -8,7 +8,7 @@ We're now ready to start implementing an assimilation. As a reminder, before we 
 :doc:`Indices <indices>`
     Next, we'll take a quick look "under-the-hood" to illustrate how the ``stateVector`` class builds and selects different ensemble members.
 
-:doc:`code3`
+:doc:`code4`
     Finally, we'll move into the next open-coding session. We'll examine some of the key methods in the ``stateVector`` class, and then use the class to build a state vector ensemble.
 
 
@@ -17,4 +17,4 @@ We're now ready to start implementing an assimilation. As a reminder, before we 
 
     Concepts <concepts>
     Indices <indices>
-    code3
+    code4

@@ -100,7 +100,7 @@ Sequence indices are quite flexible. They do not need to be evenly spaced (and d
 .. _mean-indices:
 
 Mean/Total Indices
-------------
+------------------
 Implementing a mean or total over state dimensions is relatively straightforward, as ``stateVector`` can simply implement a mean/total over the data elements included in the state vector. However, you may also want to implement means/totals over ensemble dimensions. For example, you may want each ensemble member to implement a temporal mean, or a mean over multiple model runs. We will use mean/total indices to implement means/totals over ensemble dimensions.
 
 **Mean/Total indices** function similarly to sequence indices and also list a series of offsets applied to :ref:`reference indices <ref-indices>`. However, ``stateVector`` then takes a mean/sum over the indicated data elements, rather than implementing a sequence.
@@ -135,7 +135,7 @@ As with sequence indices, mean/total indices do not need to be evenly spaced or 
 
 
 Combining sequences and means/totals
------------------------------
+------------------------------------
 In some cases, you may want a state vector to implement a sequence of means/totals. For example, a series of seasonal means/totals within a year, or a series of decadal means/totals following a climate event. When this occurs, you will need to use both sequence indices and mean/total indices. When you provide both sets of indices, ``stateVector`` uses the following procedure to build an ensemble member:
 
 1. Locate the ensemble member's reference point

@@ -538,6 +538,7 @@ The inputs are as follows:
 You can also use the optional fourth input to specify how to treat NaN values in a mean or total. See the reference guide for details.
 
 ----
+
 You can also implement weighted means and totals using the ``stateVector.weightedMean`` and ``stateVector.weightedTotal`` commands. These have a similar syntax::
 
     obj = obj.weightedMean(variables, dimensions, weights)
