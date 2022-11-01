@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>particleFilter &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 9" href="code9.html" />
+    <link rel="prev" title="Coding 8" href="code8.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">DA Algorithms</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="da-algorithms.html">DA Algorithms in DASH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code8.html">Coding 8</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">particleFilter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#essential-inputs">Essential Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#weighting-scheme">Weighting Scheme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code9.html">Coding 9</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code10.html">Coding 10</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>particleFilter</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="particlefilter">
+<h1>particleFilter<a class="headerlink" href="#particlefilter" title="Permalink to this heading"></a></h1>
+<p>YOu can use the <code class="docutils literal notranslate"><span class="pre">particleFilter</span></code> class to implement an offline particle filter assimilation algorithm. The class implements <code class="docutils literal notranslate"><span class="pre">particleFilter</span></code> objects. You can use these objects to set the experimental parameters and data inputs for a particular analysis, and then run the algorithm using the indicated settings. On the remainder of this page, we’ll examine some key commands and features of this class.</p>
+<section id="essential-inputs">
+<h2>Essential Inputs<a class="headerlink" href="#essential-inputs" title="Permalink to this heading"></a></h2>
+<p>Like the Kalman filter, the particle filter also requires 4 essential inputs. These are</p>
+<ol class="arabic simple">
+<li><p>A prior ensemble</p></li>
+<li><p>Proxy records (often called proxy <em>observations</em>)</p></li>
+<li><p>Proxy estimates, and</p></li>
+<li><p>Proxy uncertainties</p></li>
+</ol>
+<p>You can provide each of these inputs to a Kalman filter object using the associated <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> input command. These commands are <code class="docutils literal notranslate"><span class="pre">prior</span></code>, <code class="docutils literal notranslate"><span class="pre">observations</span></code>, <code class="docutils literal notranslate"><span class="pre">estimates</span></code>, and <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code>.</p>
+</section>
+<section id="weighting-scheme">
+<h2>Weighting Scheme<a class="headerlink" href="#weighting-scheme" title="Permalink to this heading"></a></h2>
+<p>When using a particle filter, the updated analysis for each assimilation time step consists of a weighted mean across the ensemble members. The <code class="docutils literal notranslate"><span class="pre">particleFilter</span></code> class allows you to select the weighting scheme used by the algorithm. Currently, the class supports two weighting schemes:</p>
+<dl class="simple">
+<dt><strong>Bayesian</strong></dt><dd><p>The default weighting scheme weights the ensemble members using a Bayes’ formula. This method conforms to the classical particle filter, but may suffer from degeneracy in some cases.</p>
+</dd>
+<dt><strong>Best N</strong></dt><dd><p>The “Best N” weighting scheme determines the N ensemble members that most closely match the proxy observations and assigns them equal weight. All other ensemble members are given a weight of 0. The case where N=1 is sometimes referred to as a “degenerate particle filter” or as the “analogue method”.</p>
+</dd>
+</dl>
+<p>You can select a weighting scheme using the <code class="docutils literal notranslate"><span class="pre">particleFilter.weights</span></code> command.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="code8.html" class="btn btn-neutral float-left" title="Coding 8" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code9.html" class="btn btn-neutral float-right" title="Coding 9" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

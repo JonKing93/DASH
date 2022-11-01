@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.useVariables &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.useMembers" href="useMembers.html" />
+    <link rel="prev" title="ensemble.label" href="label.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#subset">Subset</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">useVariables</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#scope">scope</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="useMembers.html">useMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#information">Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#sizes">Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#add-members">Add Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.useVariables</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-usevariables">
+<h1>ensemble.useVariables<a class="headerlink" href="#ensemble-usevariables" title="Permalink to this heading"></a></h1>
+<p>Indicate which variables should be used by an ensemble object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax1"><span class="std std-ref">obj = obj.useVariables(variableNames)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax1"><span class="std std-ref">obj = obj.useVariables(v)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax1"><span class="std std-ref">obj = obj.useVariables(-1)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax2"><span class="std std-ref">obj = obj.useVariables(variables, scope)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax2"><span class="std std-ref">obj = obj.useVariables(variables, “file”|”f”|true)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-syntax2"><span class="std std-ref">obj = obj.useVariables(variables, “used”|”u”|false)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-usevariables-syntax1">
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(<a class="reference internal" href="#ensemble-usevariables-inputs-variablenames"><span class="std std-ref">variableNames</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(<a class="reference internal" href="#ensemble-usevariables-inputs-v"><span class="std std-ref">v</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(-1)</div>
+</div>
+</pre><p>Indicates which variables should be used by the ensemble. The listed variables and indices are interpreted in the context of variables saved in the .ens file. If the index is -1, selects all variables saved in the .ens file.</p>
+<p>After using this command, the ensemble will only load these specified variables when the “ensemble.load” command is used. Unused variables will not be loaded into memory. By default, ensemble objects load all the variables saved in the .ens file, so use this command when you only want to load a subset of the saved variables.</p>
+<p>This command is most commonly used to design and load assimilation priors. Only the used variables will be loaded and assimilated, so this method can help select a subset of variables as reconstruction targets.</p>
+<p>Calling this command will also affect values returned by various ensemble methods. Typcially, ensemble methods will interpret inputs and return values in the context of the variables being used by the ensemble object, rather than the context of variables saved in the .ens file. However, you can change this behavior using the “scope” input of these commands. (Note that the “useVariables” command itself is an exception to this behavior. By default, it interprets inputs in the context of variables saved in the .ens file).</p>
+<p><strong>*Important*</strong> It is usually not necessary to use this command when running the “PSM.estimate” command, because “PSM.estimate” already implements memory optimizations. However, if you do apply this command to an ensemble object used as input to “PSM.estimate”, then you should call this command BEFORE determining the rows for each forward model. Essentially, you will need to determine forward models rows with respect to the subset of used/loaded variables, rather than the full set of variables saved in the .ens file.</p>
+<pre><div class="syntax line-block" id="ensemble-usevariables-syntax2">
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(variables, <a class="reference internal" href="#ensemble-usevariables-inputs-scope"><span class="std std-ref">scope</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(variables, “file”|”f”|true)</div>
+<div class="line"><a class="reference internal" href="#ensemble-usevariables-outputs-obj"><span class="std std-ref">obj</span></a> = obj.useVariables(variables, “used”|”u”|false)</div>
+</div>
+</pre><p>Indicate the scope in which to interpret the input variables. If “file”|”f”|true, behaves identically to the previous syntax and interprets inputs in the context of variables saved in the .ens file. If “used”|”u”|false, interprets inputs in the context of variables being used by the ensemble object.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="v">
+<span id="ensemble-usevariables-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>linear</em> <em>indices</em> | <em>logical</em> <em>vector</em></div>
+<div class="line">The indices of the variables that should be used by the ensemble object. If -1, selects all variables. Depending on scope, these indices are interpreted with respect to either the variables saved in the .ens file, or to the variables already being used by the ensemble.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="variablenames">
+<span id="ensemble-usevariables-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of variables for which to return lengths. Depending on scope, these names must either be the names of used variables, or the names of variables saved in the .ens file.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="scope">
+<span id="ensemble-usevariables-inputs-scope"></span><h3>scope<a class="headerlink" href="#scope" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>scope</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>logical</em> <em>scalar</em></div>
+<div class="line">The scope in which to interpret input variables</div>
+</div>
+<p>[“file”|”f|false (default)]: Interpret variables relative to the set of all variables stored in the .ens file.</p>
+<p>[“used”|”u”|true]: Interpret variables relative to the set of variables already being used by the ensemble.</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="ensemble-usevariables-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
+<div class="line">The ensemble with updated used variables</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="label.html" class="btn btn-neutral float-left" title="ensemble.label" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="useMembers.html" class="btn btn-neutral float-right" title="ensemble.useMembers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stateVector.add &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stateVector.remove" href="remove.html" />
+    <link rel="prev" title="stateVector.label" href="label.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stateVector.html">stateVector</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stateVector.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#create">Create</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVector.html#variables">Variables</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">add</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#grid">grid</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#grids">grids</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#autocouple">autocouple</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="remove.html">remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="extract.html">extract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="append.html">append</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rename.html">rename</a></li>
+<li class="toctree-l4"><a class="reference internal" href="relocate.html">relocate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#overlap">Overlap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#coupling">Coupling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#build">Build</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#size-information">Size Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#general-information">General Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stateVector.html">stateVector</a> &raquo;</li>
+      <li>stateVector.add</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statevector-add">
+<h1>stateVector.add<a class="headerlink" href="#statevector-add" title="Permalink to this heading"></a></h1>
+<p>Adds variables to a stateVector</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#statevector-add-syntax1"><span class="std std-ref">obj = obj.add(variableNames, grid)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-add-syntax2"><span class="std std-ref">obj = obj.add(variableNames, grids)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-add-syntax3"><span class="std std-ref">obj = obj.add(…, autocouple)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="statevector-add-syntax1">
+<div class="line"><a class="reference internal" href="#statevector-add-outputs-obj"><span class="std std-ref">obj</span></a> = obj.add(<a class="reference internal" href="#statevector-add-inputs-variablenames"><span class="std std-ref">variableNames</span></a>, <a class="reference internal" href="#statevector-add-inputs-grid"><span class="std std-ref">grid</span></a>)</div>
+</div>
+</pre><p>Adds variables to a state vector and specifies a single .grid file that contains the data for all the different variables.</p>
+<pre><div class="syntax line-block" id="statevector-add-syntax2">
+<div class="line"><a class="reference internal" href="#statevector-add-outputs-obj"><span class="std std-ref">obj</span></a> = obj.add(<a class="reference internal" href="#statevector-add-inputs-variablenames"><span class="std std-ref">variableNames</span></a>, <a class="reference internal" href="#statevector-add-inputs-grids"><span class="std std-ref">grids</span></a>)</div>
+</div>
+</pre><p>Specify different .grid files for the variables being added to the state vector. Each .grid file should contain the data for the corresponding new variable. You may repeat .grid files when several state vector variables are derived from the same .grid file.</p>
+<pre><div class="syntax line-block" id="statevector-add-syntax3">
+<div class="line"><a class="reference internal" href="#statevector-add-outputs-obj"><span class="std std-ref">obj</span></a> = obj.add(…, <a class="reference internal" href="#statevector-add-inputs-autocouple"><span class="std std-ref">autocouple</span></a>)</div>
+</div>
+</pre><p>Specify auto-coupling settings for the new variables. Use true, “a”, “auto”, or “automatic” to automatically couple the new variables to existing variables in the state vector (default); note that the new variables will not be coupled to existing variables that have autocoupling disabled. Use false, “m”, “man”, or “manual” to disable autocoupling.</p>
+<p>If autocouple has a single element, applies the same setting to all of the new variables. Otherwise, autocouple should have one element per new variable. Each element indicates the desired setting for the correpsonding variable. This vector syntax allows you to use different settings for different variables.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="variablenames">
+<span id="statevector-add-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nVariables</em>]</div>
+<div class="line">The names of the new variables being added to the state vector. Variable names <strong>DO NOT</strong> need to match the names of variables in data source files. Use any name you find meaningful. Names cannot duplicate the names of variables already in the state vector.</div>
+</div>
+<p>Variable names must be valid MATLAB variable names. They must 1. start with a letter, 2. only contain numbers, letters, and underscores, and 3. cannot match a MATLAB keyword.</p>
+</div></section></section>
+<section class="collapse-examples" id="grid">
+<span id="statevector-add-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>grid</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>gridfile</em> <em>object</em></div>
+<div class="line">A .grid file that contains the data for all the newly added variables. Either a gridfile object, or the filepath to a .grid file. The .grid file must have at least one dimension.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="grids">
+<span id="statevector-add-inputs-grids"></span><h3>grids<a class="headerlink" href="#grids" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>grids</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em> [<em>nVariables</em>], <em>string</em> | <em>gridfile</em></div>
+<div class="line">The collection of .grid files that contain the data for the new variables. Must have one element per new variable. May either be a vector of gridfile objects, or .grid filepaths.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="autocouple">
+<span id="statevector-add-inputs-autocouple"></span><h3>autocouple<a class="headerlink" href="#autocouple" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>autocouple</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em> [<em>nVariables</em>], <em>logical</em> | <em>string</em></div>
+<div class="line">Indicates the autocoupling setting to use for each new variable. If autocouple has a single element, applies the same setting to all the new variables.</div>
+</div>
+<p>[true|”a”|”auto”|”automatic” (Default)]: Automatically couple new variable to existing, auto-couple enabled variables.</p>
+<p>[false|”m”|”man”|”manual”]: Disable autocoupling for the new variable</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="statevector-add-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
+<div class="line">The stateVector object updated to include the new variables.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="label.html" class="btn btn-neutral float-left" title="stateVector.label" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="remove.html" class="btn btn-neutral float-right" title="stateVector.remove" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

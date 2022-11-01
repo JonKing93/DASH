@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stateVector.build &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="stateVector.addMembers" href="addMembers.html" />
+    <link rel="prev" title="stateVector.uncouple" href="uncouple.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stateVector.html">stateVector</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stateVector.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variables">Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#design">Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#overlap">Overlap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#coupling">Coupling</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVector.html#build">Build</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">build</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#nmembers">nMembers</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#buildsequentially">buildSequentially</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#filename">filename</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#overwrite">overwrite</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#precision">precision</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#x">X</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#ens">ens</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#saves">Saves</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="addMembers.html">addMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#size-information">Size Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variable-information">Variable Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#general-information">General Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVector.html#serialization">Serialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../stateVector.html">stateVector</a> &raquo;</li>
+      <li>stateVector.build</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statevector-build">
+<h1>stateVector.build<a class="headerlink" href="#statevector-build" title="Permalink to this heading"></a></h1>
+<p>Build a state vector ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#statevector-build-syntax1"><span class="std std-ref">[X, metadata, obj] = obj.build(nMembers)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax2"><span class="std std-ref">… = obj.build(‘all’)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax3"><span class="std std-ref">… = obj.build(…, ‘sequential’, true | false)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax3"><span class="std std-ref">… = obj.build(…, ‘sequential’, buildSequentially)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax4"><span class="std std-ref">[ens, metadata, obj] = obj.build(…, ‘file’, filename)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax5"><span class="std std-ref">… = obj.build(…, ‘file’, filename, ‘overwrite’, true | false)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax5"><span class="std std-ref">… = obj.build(…, ‘file’, filename, ‘overwrite’, overwrite)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax6"><span class="std std-ref">… = obj.build(…, ‘strict’, true | false)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax6"><span class="std std-ref">… = obj.build(…, ‘strict’, strict)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax7"><span class="std std-ref">… = obj.build(…, ‘precision’, ‘single’ | ‘double’)</span></a></div>
+<div class="line"><a class="reference internal" href="#statevector-build-syntax7"><span class="std std-ref">… = obj.build(…, ‘precision’, precision)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="statevector-build-syntax1">
+<div class="line">[<a class="reference internal" href="#statevector-build-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#statevector-build-outputs-metadata"><span class="std std-ref">metadata</span></a>, <a class="reference internal" href="#statevector-build-outputs-obj"><span class="std std-ref">obj</span></a>] = obj.build(<a class="reference internal" href="#statevector-build-inputs-nmembers"><span class="std std-ref">nMembers</span></a>)</div>
+</div>
+</pre><p>Builds a state vector ensemble with the specified number of ensemble members and returns the ensemble as output. If the state vector includes sequences or means, the method ensures that only ensemble members with complete sequences and means are built.</p>
+<p>The built ensemble is a matrix with one column per ensemble member. As the second output, the method returns an ensembleMeatdata object, which organizes metadata along the rows and columns of the ensemble. The final output is the state vector object for the built ensemble, which can be used to add more members to the ensemble if necessary.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax2">
+<div class="line">= obj.build(‘all’)</div>
+</div>
+</pre><p>Builds a state vector ensemble with as many ensemble members as possible. Reports the number of ensemble members being built to the console.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax3">
+<div class="line">= obj.build(…, ‘sequential’, true | false)</div>
+<div class="line">= obj.build(…, ‘sequential’, <a class="reference internal" href="#statevector-build-inputs-buildsequentially"><span class="std std-ref">buildSequentially</span></a>)</div>
+</div>
+</pre><p>Specify whether ensemble members should be selected sequentially along the ensemble dimensions, or at random. The default behavior is random selection. Use this option if, for example, you want the ensemble members to remain ordered in time.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax4">
+<div class="line">[<a class="reference internal" href="#statevector-build-outputs-ens"><span class="std std-ref">ens</span></a>, <a class="reference internal" href="#statevector-build-outputs-metadata"><span class="std std-ref">metadata</span></a>, <a class="reference internal" href="#statevector-build-outputs-obj"><span class="std std-ref">obj</span></a>] = obj.build(…, ‘file’, <a class="reference internal" href="#statevector-build-inputs-filename"><span class="std std-ref">filename</span></a>)</div>
+</div>
+</pre><p>Saves the state vector ensemble to a .ens file of the specified name. The saved ensemble can then be accessed at any time using the “ensemble” class. This option allows you to build ensembles that are too large to fit in active memory. When writing the ensemble to file, the first output is an ensemble object, which can be used to interact with the ensemble saved in the file.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax5">
+<div class="line">= obj.build(…, ‘file’, <a class="reference internal" href="#statevector-build-inputs-filename"><span class="std std-ref">filename</span></a>, ‘overwrite’, true | false)</div>
+<div class="line">= obj.build(…, ‘file’, <a class="reference internal" href="#statevector-build-inputs-filename"><span class="std std-ref">filename</span></a>, ‘overwrite’, <a class="reference internal" href="#statevector-build-inputs-overwrite"><span class="std std-ref">overwrite</span></a>)</div>
+</div>
+</pre><p>Specify whether the new .ens file can overwrite an existing file. Default is to not overwrite existing files.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax6">
+<div class="line">= obj.build(…, ‘strict’, true | false)</div>
+<div class="line">= obj.build(…, ‘strict’, strict)</div>
+</div>
+</pre><p>Specify how the method should respond if it cannot build the requested number of ensemble members. If true (default), throws an error when the requested number of ensemble members cannot be built. If false, issues a warning (but does not fail) when the requested number of ensemble members cannot be built. If this occurs, the output ensemble will have fewer columns than the requested number of ensemble members.</p>
+<pre><div class="syntax line-block" id="statevector-build-syntax7">
+<div class="line">= obj.build(…, ‘precision’, ‘single’ | ‘double’)</div>
+<div class="line">= obj.build(…, ‘precision’, <a class="reference internal" href="#statevector-build-inputs-precision"><span class="std std-ref">precision</span></a>)</div>
+</div>
+</pre><p>Specify the numerical precision of the ensemble. If no precision is specified, selects a precision based on the precision of the data used to build the ensemble.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="nmembers">
+<span id="statevector-build-inputs-nmembers"></span><h3>nMembers<a class="headerlink" href="#nmembers" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>nMembers</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em> | ‘<em>all</em>’</div>
+<div class="line">The number of ensemble members (columns) that should be in the built ensemble. Use ‘all’ to use every possible ensemble member.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="buildsequentially">
+<span id="statevector-build-inputs-buildsequentially"></span><h3>buildSequentially<a class="headerlink" href="#buildsequentially" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>buildSequentially</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">True if ensemble members should be selected sequentially along ensemble dimensions. False (default) if ensemble members should be selected at random.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="filename">
+<span id="statevector-build-inputs-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>filename</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the new “.ens” file. May be a filename, relative path, or absolute path. If not an absolute path, saves the new file relative to the current folder. Adds a “.ens” extension to the filename if it does not already have one.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="overwrite">
+<span id="statevector-build-inputs-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>overwrite</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">True if the new “.ens” file can overwrite existing files. False (default) if the method should not overwrite existing files.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="precision">
+<span id="statevector-build-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>precision</strong></label><div class="content"><div class="line-block">
+<div class="line">‘<em>single</em>’ | ‘<em>double</em>’</div>
+<div class="line">The desired numerical precision of the built state vector ensemble.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="x">
+<span id="statevector-build-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nState</em> <em>x</em> <em>nMembers</em>]</div>
+<div class="line">The built state vector ensemble. Has one row per state vector element. Each column is an ensemble member.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ens">
+<span id="statevector-build-outputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>ens</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
+<div class="line">An ensemble object that can be used to interact with the ensemble written to file. See &gt;&gt; dash.doc(‘ensemble’) for more details.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadata">
+<span id="statevector-build-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensembleMetadata</em> <em>object</em></div>
+<div class="line">An ensemble metadata object for the ensemble. Organizes metadata along the rows and columns of the ensemble. See &gt;&gt; dash.doc(‘ensembleMetadata’) for more details.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="obj">
+<span id="statevector-build-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
+<div class="line">The state vector object for the built ensemble. Can be used to add additional members to the ensemble. Cannot be edited in any way.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="saves">
+<h2>Saves<a class="headerlink" href="#saves" title="Permalink to this heading"></a></h2>
+<p>Optionally saves a .ens file holding the state vector ensemble.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uncouple.html" class="btn btn-neutral float-left" title="stateVector.uncouple" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="addMembers.html" class="btn btn-neutral float-right" title="stateVector.addMembers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

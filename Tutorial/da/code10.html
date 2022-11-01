@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding 10 &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Next Steps" href="../next-steps.html" />
+    <link rel="prev" title="optimalSensor" href="optimalSensor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">DA Algorithms</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="da-algorithms.html">DA Algorithms in DASH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code8.html">Coding 8</a></li>
+<li class="toctree-l3"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code9.html">Coding 9</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coding 10</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-create-optimalsensor-object">Step 1: Create <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-essential-inputs">Step 2: Essential Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-run-command">Step 3: run command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-evaluate-command">Step 4: evaluate command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-5-update-command">Step 5: update command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>Coding 10</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="coding-10">
+<h1>Coding 10<a class="headerlink" href="#coding-10" title="Permalink to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> class to implement an assimilation.</p>
+</section>
+<section id="step-1-create-optimalsensor-object">
+<h2>Step 1: Create <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> object<a class="headerlink" href="#step-1-create-optimalsensor-object" title="Permalink to this heading"></a></h2>
+<p>We’ll start by using the <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> command to create an object. The syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">optimalSensor</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>obj</strong> is the new <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> object. You can optionally use the second input to label the object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">optimalSensor</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>label</strong> is a string.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">optimalSensor.label</span></code> command to label the object at any later point.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1"><label for="ntrend-1"><strong>NTREND Demo</strong></label><div class="content"><p>Here, we’ll create a <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object for the NTREND demo. We’ll also apply a label to the object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;NTREND Demo&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">os</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">optimalSensor</span><span class="p">(</span><span class="n">label</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">os</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">optimalSensor</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Metric</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">        </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">    </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see the initialize <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> object. We can see that none of the essential inputs have been set yet.</p>
+</div></section></section>
+<section id="step-2-essential-inputs">
+<h2>Step 2: Essential Inputs<a class="headerlink" href="#step-2-essential-inputs" title="Permalink to this heading"></a></h2>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">metric</span></code>, <code class="docutils literal notranslate"><span class="pre">estimates</span></code>, and <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code> commands to provide the essential inputs to the optimal sensor. All three commands use a similar base syntax - each command takes a data array as input, and outputs an updated <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">metric</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">)</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>X</strong></dt><dd><p>The climate metric should be a vector with one element per ensemble member.</p>
+</dd>
+<dt><strong>Ye</strong></dt><dd><p>The proxy estimates should be a matrix with one row per proxy record, and one column per ensemble member.</p>
+</dd>
+<dt><strong>R</strong></dt><dd><p>The proxy uncertainties should be a data matrix holding either error-variances or a full error-covariance matrix. If using error variances, the uncertainties should be a column vector with one row per proxy record. If using error-covariances, the matrix should be symmetric with one row and one column per proxy record.</p>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content"><p>We’ll use the input commands to provide the data values for our optimal sensor analyses. We’ll start by providing the climate metric. Here, we’ll use the <strong>T_index</strong> variable from our ensemble. We can use the <code class="docutils literal notranslate"><span class="pre">ensemble.useVariables</span></code> and <code class="docutils literal notranslate"><span class="pre">ensemble.load</span></code> commands to load this metric directly. (You can find a detailed discussion of the <code class="docutils literal notranslate"><span class="pre">useVariables</span></code> command here: <a class="reference internal" href="code8.html#ensemble-usevariables"><span class="std std-ref">Select Reconstruction Targets</span></a>):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the &quot;T_index&quot; variable from the ensemble</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">useVariables</span><span class="p">(</span><span class="s">&quot;T_index&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">T_index</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Use as the optimal sensor metric</span><span class="w"></span>
+<span class="n">os</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">metric</span><span class="p">(</span><span class="n">T_index</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We previously generated the proxy estimates using the <code class="docutils literal notranslate"><span class="pre">PSM.estimate</span></code> command, so we’ll provide those next:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Provide proxy estimates</span><span class="w"></span>
+<span class="n">os</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Finally, we’ll provide proxy uncertainties - specifically, error variances. These values are provided in the <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code> file, and were produced by (1) running the forward models on instrumental observations, and then (2) comparing the instrumental proxy estimates to the real instrumental proxy records:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy uncertainties</span><span class="w"></span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;R&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">R</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Provide the uncertainties to the optimal sensor</span><span class="w"></span>
+<span class="n">os</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">os</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">optimalSensor</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">               </span><span class="n">Metric</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">            </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">        </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="p">(</span><span class="n">variances</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="w"></span>
+<span class="w">     </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">1156</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the optimal sensor now has all three essential inputs. The output also shows two key sizes - the number of observations sites, and the number of ensemble members.</p>
+</div></section></section>
+<section id="step-3-run-command">
+<h2>Step 3: run command<a class="headerlink" href="#step-3-run-command" title="Permalink to this heading"></a></h2>
+<p>We’ll next use the <code class="docutils literal notranslate"><span class="pre">optimalSensor.run</span></code> command to run the greedy algorithm. The base syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">optimalSites</span><span class="p">,</span><span class="w"> </span><span class="n">variance</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>optimalSites</strong></dt><dd><p>This vector indicates which site was the “optimal” site for each iteration of the algorithm. Each element holds the index of one of the sites in the proxy network. These indices are relative to the input proxy network, and are not affected by the decreasing size of the network with each algorithm iteration.</p>
+</dd>
+<dt><strong>variance</strong></dt><dd><p>This vector indicates the variance of the climate metric <em>after</em> each iteration of the algorithm.</p>
+</dd>
+<dt><strong>metric</strong></dt><dd><p>This matrix indicates the climate metric after each algorithm iteration. Each row holds the ensemble at the end of an iteration, and each column holds the values for an ensemble member.</p>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="lgm-3"><label for="lgm-3"><strong>LGM Demo</strong></label><div class="content"><p>Here, we’ll run the greedy algorithm:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">optimalSites</span><span class="p">,</span><span class="w"> </span><span class="n">variance</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the first 5 optimal sites:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">optimalSites</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">2</span><span class="w"></span>
+<span class="w"> </span><span class="s">3</span><span class="w"></span>
+<span class="n">52</span><span class="w"></span>
+<span class="w"> </span><span class="s">7</span><span class="w"></span>
+<span class="w"> </span><span class="mi">4</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that proxy site 2 was the most optimal site in the network. After site 2 is used to update the climate metric, site 3 is the next-most optimal site. After site 3 is used to updated the metric, site 52 is the next most valuable and so on.</p>
+<p>We can use the variance output to examine how the variance of the metric changes as each of these site is assimilated:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">variance</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mf">0.27035</span><span class="w"></span>
+<span class="mf">0.26537</span><span class="w"></span>
+<span class="mf">0.26079</span><span class="w"></span>
+<span class="mf">0.25839</span><span class="w"></span>
+<span class="mf">0.25629</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="step-4-evaluate-command">
+<h2>Step 4: evaluate command<a class="headerlink" href="#step-4-evaluate-command" title="Permalink to this heading"></a></h2>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> command to assess the ability of proxy site to reduce variance as the only proxy in the network. This will allow us to quantify proxy influence without the confounding variables of other covarying proxy sites. The syntax for this command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">deltaVariance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">evaluate</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>deltaVariance</strong></dt><dd><p>This vector indicates the total reduction in variance caused by each individual proxy site in the network.</p>
+</dd>
+</dl>
+<p>Note that the total variance reduced by a proxy network will be smaller than the sum of <strong>deltaVariance</strong>. This is because covariance between proxy sites reduces the effects of individual proxies.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="lgm-4"><label for="lgm-4"><strong>LGM Demo</strong></label><div class="content"><p>Here, we’ll run the evaluation algorithm:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">deltaVariance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mi">54</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">single</span><span class="w"> </span><span class="n">column</span><span class="w"> </span><span class="n">vector</span><span class="w"></span>
+
+<span class="w">  </span><span class="mf">0.0035785</span><span class="w"></span>
+<span class="w">   </span><span class="mf">0.010422</span><span class="w"></span>
+<span class="w">  </span><span class="mf">0.0075898</span><span class="w"></span>
+<span class="w">  </span><span class="k">...</span><span class="w"></span>
+<span class="w">  </span><span class="mf">0.0045732</span><span class="w"></span>
+<span class="w"> </span><span class="mf">1.7153e-06</span><span class="w"></span>
+<span class="w">  </span><span class="mf">0.0018802</span><span class="w"></span>
+</pre></div>
+</div>
+<p>If we rank the proxy sites by their ability to reduce variance:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">~</span><span class="p">,</span><span class="w"> </span><span class="nb">rank</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">sort</span><span class="p">(</span><span class="n">deltaVariance</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;descend&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>and examine the 5 best proxy sites:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">rank</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="n">2</span><span class="w"></span>
+<span class="w"> </span><span class="s">3</span><span class="w"></span>
+<span class="w"> </span><span class="mi">4</span><span class="w"></span>
+<span class="n">52</span><span class="w"></span>
+<span class="w"> </span><span class="s">8</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the sites differ slightly from the results of the greedy algorithm. In particular, sites 4 and 8 appear to have a higher rank in the evaluation than in the greedy algorithm. This is because sites 4 and 8 covary strongly with sites 2 and 3. Because of this covariance, these sites share a portion of the total variance reduction. However, in the greedy algorithm, all of this shared variance reduction is assigned to sites 2 and 3, because these sites are selected earlier in the algorithm. Consequently, sites 4 and 8 receive a lower rank.</p>
+<p>By contrast, the <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> command allows us to begin to disentangle the effects these covariances, and we can see that the individual influence of site 4 is the third-highest in the network. Similarly, site 8 has the 5th most influence in the network.</p>
+</div></section></section>
+<section id="step-5-update-command">
+<h2>Step 5: update command<a class="headerlink" href="#step-5-update-command" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">update</span></code> command allows you to assess the total reduction in variance that occurs for a proxy network. As mentioned, the <code class="docutils literal notranslate"><span class="pre">evaluate</span></code> command deliberately removes the effects of proxy covariance, and so cannot be used to accurately assess the total reduction of variance for a network. Similarly, each iteration of the greedy algorithm updates proxy estimates linearly via the Kalman Gain - this is not appropriate for non-linear forward models, and for covarying proxy uncertainties, so the <code class="docutils literal notranslate"><span class="pre">run</span></code> command should also not be used to evaluate total reduction of variance. Instead, use the <code class="docutils literal notranslate"><span class="pre">update</span></code> method, which accounts for these factors. Here the syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">variance</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">update</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>variance</strong></dt><dd><p>This scalar reports the final variance of the metric after the full proxy network is used to update the ensemble.</p>
+</dd>
+<dt><strong>metric</strong></dt><dd><p>This vector returns the updated metric across the ensemble.</p>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="lgm-5"><label for="lgm-5"><strong>LGM Demo</strong></label><div class="content"><p>Here, we’ll run the update:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">variance</span><span class="p">,</span><span class="w"> </span><span class="n">metric</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">update</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the final variance:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">variance</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="mf">0.24022</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that assimilating the entire proxy network will reduce metric variance to 0.24022.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="optimalSensor.html" class="btn btn-neutral float-left" title="optimalSensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../next-steps.html" class="btn btn-neutral float-right" title="Next Steps" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

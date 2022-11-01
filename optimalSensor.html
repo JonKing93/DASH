@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>optimalSensor &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="optimalSensor.optimalSensor" href="optimalSensor/optimalSensor.html" />
+    <link rel="prev" title="particleFilter.tests" href="particleFilter/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">optimalSensor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#outline">Outline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-following-is-a-sketch-for-using-the-optimalsensor-class">The Following Is A Sketch For Using The Optimalsensor Class</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#user-methods">User Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/label.html">label</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#data-inputs">Data Inputs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/metric.html">metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/estimates.html">estimates</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/uncertainties.html">uncertainties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#analyses">Analyses</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/run.html">run</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/evaluate.html">evaluate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/update.html">update</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#console-display">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/disp.html">disp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-methods">Utility Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#misc">Misc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/name.html">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/Rvariances.html">Rvariances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/assertFinalized.html">assertFinalized</a></li>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/varianceReduction.html">varianceReduction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="optimalSensor/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>optimalSensor</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimalsensor">
+<h1>optimalSensor<a class="headerlink" href="#optimalsensor" title="Permalink to this heading"></a></h1>
+<p>Implement optimal sensor analyses</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The optimalSensor class provides objects that implement an optimal sensor algorithm and related analyses. These analyses help to evaluate the influence of different observation sites on a Kalman filter assimilation, and can also help determine ideal locations for future proxy record development. Here we implement the optimal sensor algorithm described by Comboul et al., 2015. In this method, potential observation sites are ranked by their ability to constrain a metric. The metric is distributed across an ensemble, and the rankings are determined using each site’s ability to reduce the variance of the metric across the ensemble.</p>
+<p>Note that the optimal sensor algorithm does not assimilate observations in order to produce a reconstruction. Instead, the algorithm helps quantify the effects of individual observation on an assimilation. As such, optimal sensor analyses can help characterize recpmstructions produced using Kalman filters. Because they do not produce a reconstruction, optimal sensor analyses do not require observations. Aside from the sensor metric, they only require estimates and uncertainties.</p>
+<p>In the classical optimal sensor algorithm, the sites are ranked and the site that most strongly constrains the metric (i.e. most strongly reduces metric variance) is deemed the “optimal sensor”. This observation site is used to update the variance of the metric, and also the observation estimates. After updating, the optimal site is removed from the observation network, and the analysis repeats using the remaining observation sites. This algorithm iterates until the desired number of optimal sites have been selected. This algorithm is implemented using the “run” method.</p>
+<p>The optimalSensor class also provides two auxiliary methods for implementing optimal sensors. In many cases, it can be useful to quantify the influence of the observation sites relative to one another without implementing the iterative algorithm. The “evaluate” method provides this analysis. Additionally, the classical optimal sensor algorithm neglects the effects of covarying error uncertainties (R covariances). When observation records <em>do</em> have covarying error uncertainties, the classical algorithm will overestimate the total variance constrained by the proxy network. You can instead use the “update” method to update metric variance in a manner that accounts for these covariances.</p>
+<section id="outline">
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
+</section>
+<section id="the-following-is-a-sketch-for-using-the-optimalsensor-class">
+<h3>The Following Is A Sketch For Using The Optimalsensor Class<a class="headerlink" href="#the-following-is-a-sketch-for-using-the-optimalsensor-class" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Use the “optimalSensor” method to initialize a new optimalSensor object</p></li>
+<li><p>Use the “estimates”, “uncertainties”, and “metric” methods to provide essential data inputs for the optimal sensor.</p></li>
+<li><p>Use the “run”, “evaluate”, and “update” methods to implement optimal sensor analyses.</p></li>
+</ol>
+</section>
+</section>
+<hr class="docutils" />
+<section id="user-methods">
+<h2>User Methods<a class="headerlink" href="#user-methods" title="Permalink to this heading"></a></h2>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/optimalSensor.html"><span class="doc">optimalSensor</span></a> - Initializes a new optimalSensor object</div>
+<div class="line"><a class="reference internal" href="optimalSensor/label.html"><span class="doc">label</span></a> - Return or apply a label to an optimalSensor</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="data-inputs">
+<h3>Data Inputs<a class="headerlink" href="#data-inputs" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/metric.html"><span class="doc">metric</span></a> - Provide the metric for an optimal sensor</div>
+<div class="line"><a class="reference internal" href="optimalSensor/estimates.html"><span class="doc">estimates</span></a> - Provide the observation estimates for an optimal sensor</div>
+<div class="line"><a class="reference internal" href="optimalSensor/uncertainties.html"><span class="doc">uncertainties</span></a> - Provide the observation uncertainties for an optimal sensor</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="analyses">
+<h3>Analyses<a class="headerlink" href="#analyses" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/run.html"><span class="doc">run</span></a> - Iteratively identify optimal sites and update metric variance</div>
+<div class="line"><a class="reference internal" href="optimalSensor/evaluate.html"><span class="doc">evaluate</span></a> - Return the variance constrained by each site when assimilated alone</div>
+<div class="line"><a class="reference internal" href="optimalSensor/update.html"><span class="doc">update</span></a> - Update metric variance for a network of covarying observation records</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="console-display">
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/disp.html"><span class="doc">disp</span></a> - Display an optimalSensor object in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="utility-methods">
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
+<p>Utility methods that help the class run. They do not implement error checking and are not intended for users.</p>
+<section id="misc">
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/name.html"><span class="doc">name</span></a> - Return an identifying name for use in error messages</div>
+<div class="line"><a class="reference internal" href="optimalSensor/Rvariances.html"><span class="doc">Rvariances</span></a> - Return the error uncertainty variances for the observation sites</div>
+<div class="line"><a class="reference internal" href="optimalSensor/assertFinalized.html"><span class="doc">assertFinalized</span></a> - Throw error if an optimal sensor does not have estimates, uncertainties, and a metric</div>
+<div class="line"><a class="reference internal" href="optimalSensor/varianceReduction.html"><span class="doc">varianceReduction</span></a> - Calculate the metric variance reduced by each observation site</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="optimalSensor/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the optimalSensor class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="particleFilter/tests.html" class="btn btn-neutral float-left" title="particleFilter.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="optimalSensor/optimalSensor.html" class="btn btn-neutral float-right" title="optimalSensor.optimalSensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

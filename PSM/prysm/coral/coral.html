@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM.prysm.coral.coral &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="PSM.prysm.coral.rows" href="rows.html" />
+    <link rel="prev" title="PSM.prysm.coral" href="../coral.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../PSM.html">PSM</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#information">Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#estimate">Estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../../PSM.html#forward-models">Forward Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../bayfox.html">bayfox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../baymag.html">baymag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bayspar.html">bayspar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../identity.html">identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pdsi.html">pdsi</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../prysm.html">prysm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../prysm.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../prysm.html#id1">Abstract Superclass</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../../prysm.html#forward-model-classes">Forward Model Classes</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../cellulose.html">cellulose</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="../coral.html">coral</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="../coral.html#description">Description</a></li>
+<li class="toctree-l6 current"><a class="reference internal" href="../coral.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l7 current"><a class="reference internal" href="../coral.html#create">Create</a><ul class="current">
+<li class="toctree-l8 current"><a class="current reference internal" href="#">coral</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l9"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l9"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="#lat">lat</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#lon">lon</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#d18o">d18O</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#species">species</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#b1">b1</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#b2">b2</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#b3">b3</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#b4">b4</a></li>
+<li class="toctree-l10"><a class="reference internal" href="#b5">b5</a></li>
+</ul>
+</li>
+<li class="toctree-l9"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="../coral.html#estimate">Estimate</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="../coral.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../icecore.html">icecore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../vslite.html">vslite</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#template">Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../PSM.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../PSM.html">PSM</a> &raquo;</li>
+          <li><a href="../../prysm.html">PSM.prysm</a> &raquo;</li>
+          <li><a href="../coral.html">PSM.prysm.coral</a> &raquo;</li>
+      <li>PSM.prysm.coral.coral</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm-prysm-coral-coral">
+<h1>PSM.prysm.coral.coral<a class="headerlink" href="#psm-prysm-coral-coral" title="Permalink to this heading"></a></h1>
+<p>Create a new PRYSM coral PSM object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax1"><span class="std std-ref">obj = PSM.prysm.coral(lat, lon)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax2"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘d18O’, d18O)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax3"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘species’, species)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax4"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘b1’, b1)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax4"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘b2’, b2)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax4"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘b3’, b3)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax4"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘b4’, b4)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-syntax4"><span class="std std-ref">obj = PSM.prysm.coral(…, ‘b5’, b5)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="psm-prysm-coral-coral-syntax1">
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(<a class="reference internal" href="#psm-prysm-coral-coral-inputs-lat"><span class="std std-ref">lat</span></a>, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-lon"><span class="std std-ref">lon</span></a>)</div>
+</div>
+</pre><p>Creates a new PSM object that implements the PRYSM coral sensor module. Runs the model without d18O as an input using the default coral species and default d18O-SSS slope.</p>
+<p>Please see the documentation of the “pseudocoral.py” function in the psm.coral.sensor module of PRYSM for additional details on the inputs.</p>
+<pre><div class="syntax line-block" id="psm-prysm-coral-coral-syntax2">
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘d18O’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-d18o"><span class="std std-ref">d18O</span></a>)</div>
+</div>
+</pre><p>Indicate whether the model should run using d18O as an input. Default is to not use it as an input.</p>
+<pre><div class="syntax line-block" id="psm-prysm-coral-coral-syntax3">
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘species’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-species"><span class="std std-ref">species</span></a>)</div>
+</div>
+</pre><p>Indicate the species of the coral. This sets the slope of the coral-SST regression. See details below.</p>
+<pre><div class="syntax line-block" id="psm-prysm-coral-coral-syntax4">
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘b1’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-b1"><span class="std std-ref">b1</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘b2’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-b2"><span class="std std-ref">b2</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘b3’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-b3"><span class="std std-ref">b3</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘b4’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-b4"><span class="std std-ref">b4</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-prysm-coral-coral-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.prysm.coral(…, ‘b5’, <a class="reference internal" href="#psm-prysm-coral-coral-inputs-b5"><span class="std std-ref">b5</span></a>)</div>
+</div>
+</pre><p>Set the d18O-SSS slope for different regions of the globe.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="lat">
+<span id="psm-prysm-coral-coral-inputs-lat"></span><h3>lat<a class="headerlink" href="#lat" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>lat</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">The latitude of the site in decimal degrees</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="lon">
+<span id="psm-prysm-coral-coral-inputs-lon"></span><h3>lon<a class="headerlink" href="#lon" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>lon</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">The longitude of the site in decimal degrees</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="d18o">
+<span id="psm-prysm-coral-coral-inputs-d18o"></span><h3>d18O<a class="headerlink" href="#d18o" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>d18O</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">True if the model should use d18O as an input. Otherwise false (default).</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="species">
+<span id="psm-prysm-coral-coral-inputs-species"></span><h3>species<a class="headerlink" href="#species" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>species</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the coral species. This sets the slope of the coral-SST regression.</div>
+</div>
+<p>[“Default”]:      a = -0.22</p>
+<p>[“Porites_sp”]:   a = -.26178</p>
+<p>[“Porites_lob”]:  a = -.19646</p>
+<p>[“Porites_lut”]:  a = -.17391</p>
+<p>[“Porites_aus”]:  a = -.21</p>
+<p>[“Montast”]:      a = -.22124</p>
+<p>[“Diploas”]:      a = -.14992</p>
+</div></section></section>
+<section class="collapse-examples" id="b1">
+<span id="psm-prysm-coral-coral-inputs-b1"></span><h3>b1<a class="headerlink" href="#b1" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>b1</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Red sea d18O-SSS slope. Default is 0.31</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="b2">
+<span id="psm-prysm-coral-coral-inputs-b2"></span><h3>b2<a class="headerlink" href="#b2" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>b2</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Tropical Pacific d18O-SSS slope. Default is 0.27</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="b3">
+<span id="psm-prysm-coral-coral-inputs-b3"></span><h3>b3<a class="headerlink" href="#b3" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>b3</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">South Pacific d18O-SSS slope. Default is 0.45</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="b4">
+<span id="psm-prysm-coral-coral-inputs-b4"></span><h3>b4<a class="headerlink" href="#b4" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs8" checked="checked"><label for="inputs8"><strong>b4</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Indian Ocean d18O-SSS slope. Default is 0.16</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="b5">
+<span id="psm-prysm-coral-coral-inputs-b5"></span><h3>b5<a class="headerlink" href="#b5" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs9" checked="checked"><label for="inputs9"><strong>b5</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Tropical Atlantic/Caribbean d18O-SSS slope. Default is 0.15</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="psm-prysm-coral-coral-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>PSM</em>.*prysm*.*coral* <em>object</em></div>
+<div class="line">The new PRYSM coral PSM object</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../coral.html" class="btn btn-neutral float-left" title="PSM.prysm.coral" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rows.html" class="btn btn-neutral float-right" title="PSM.prysm.coral.rows" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.stateVectorVariable &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dash.stateVectorVariable.stateVectorVariable" href="stateVectorVariable/stateVectorVariable.html" />
+    <link rel="prev" title="dash.gridfileSources.tests" href="gridfileSources/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../dash.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="dataSource.html">dataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">stateVectorVariable</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#methods">Methods</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#create">Create</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/stateVectorVariable.html">stateVectorVariable</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#design">Design</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/design.html">design</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/sequence.html">sequence</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/mean.html">mean</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/weightedMean.html">weightedMean</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/total.html">total</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/weightedTotal.html">weightedTotal</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/metadata.html">metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#dimensions-and-sizes">Dimensions And Sizes</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/dimensions.html">dimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/dimensionIndices.html">dimensionIndices</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/ensembleSizes.html">ensembleSizes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/stateSizes.html">stateSizes</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#gridfile-interactions">Gridfile Interactions</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/validateGrid.html">validateGrid</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/getMetadata.html">getMetadata</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#utilities-for-build">Utilities For Build</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/finalize.html">finalize</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/addIndices.html">addIndices</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#select-ensemble-members">Select Ensemble Members</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/trim.html">trim</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/matchMetadata.html">matchMetadata</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/removeOverlap.html">removeOverlap</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#build-members">Build Members</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/indexLimits.html">indexLimits</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/parametersForBuild.html">parametersForBuild</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/buildMembers.html">buildMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#info">Info</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/info.html">info</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#serialization">Serialization</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/serialize.html">serialize</a></li>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/deserialize.html">deserialize</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#unit-tests">Unit Tests</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="stateVectorVariable/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ensembleFilter.html">ensembleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../dash.html">dash</a> &raquo;</li>
+      <li>dash.stateVectorVariable</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-statevectorvariable">
+<h1>dash.stateVectorVariable<a class="headerlink" href="#dash-statevectorvariable" title="Permalink to this heading"></a></h1>
+<p>Implement a variable in a state vector</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The stateVectorVariable class implements an object that describes a variable in a state vector. Each object holds the design parameters for a single variable. These design parameters include:</p>
+<ol class="arabic simple">
+<li><p>State and ensemble dimensions</p></li>
+<li><p>Sequences</p></li>
+<li><p>Means and totals, and</p></li>
+<li><p>Metadata options.</p></li>
+</ol>
+<p>The class also implements a number of utilities for building state vector ensembles; these include removing ensemble members with incomplete sequences/means, removing ensemble members that overlap previously built members, and processing metadata options.</p>
+<p>The stateVectorVariable class is designed to build variables from data catalogued in a gridfile. However, methods that update the variable’s design parameters do not require gridfile access. The gridfile is only required to initially create a variable, and when building a state vector ensemble.</p>
+<p>The class framework allows multiple stateVectorVariable objects to be stored as a vector, which is utilized by the stateVector class. However, such vectors are highly nested and can be slow to save directly. Instead, these vectors should be serialized before saving, and deserialized upon load. See the “serialize” and “deserialize” commands to implement these options.</p>
+</section>
+<hr class="docutils" />
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h2>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/stateVectorVariable.html"><span class="doc">stateVectorVariable</span></a> - Create a new stateVectorVariable object</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="design">
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/design.html"><span class="doc">design</span></a> - Design the dimensions of a state vector variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/sequence.html"><span class="doc">sequence</span></a> - Apply a sequence over ensemble dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/mean.html"><span class="doc">mean</span></a> - Take a mean over dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/weightedMean.html"><span class="doc">weightedMean</span></a> - Apply a weighted mean over dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/total.html"><span class="doc">total</span></a> - Take the sum total over dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/weightedTotal.html"><span class="doc">weightedTotal</span></a> - Apply a weighted total over dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/metadata.html"><span class="doc">metadata</span></a> - Set metadata options for ensemble dimensions of a variable</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="dimensions-and-sizes">
+<h3>Dimensions And Sizes<a class="headerlink" href="#dimensions-and-sizes" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/dimensions.html"><span class="doc">dimensions</span></a> - List the dimensions of a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/dimensionIndices.html"><span class="doc">dimensionIndices</span></a> - Return the indices of dimensions within a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/ensembleSizes.html"><span class="doc">ensembleSizes</span></a> - Return the sizes and names of ensemble dimensions</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/stateSizes.html"><span class="doc">stateSizes</span></a> - Return the sizes and types of non-trivial state dimensions</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="gridfile-interactions">
+<h3>Gridfile Interactions<a class="headerlink" href="#gridfile-interactions" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/validateGrid.html"><span class="doc">validateGrid</span></a> - Check that a gridfile matches a variable’s recorded gridfile parameters</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/getMetadata.html"><span class="doc">getMetadata</span></a> - Process and return metadata along a dimension</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="utilities-for-build">
+<h3>Utilities For Build<a class="headerlink" href="#utilities-for-build" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/finalize.html"><span class="doc">finalize</span></a> - Fill placeholder values in a variable</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/addIndices.html"><span class="doc">addIndices</span></a> - Propagate mean indices over sequence indices</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="select-ensemble-members">
+<h3>Select Ensemble Members<a class="headerlink" href="#select-ensemble-members" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/trim.html"><span class="doc">trim</span></a> - Remove reference indices that would cause an incomplete sequence or incomplete mean</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/matchMetadata.html"><span class="doc">matchMetadata</span></a> - Order reference indices so that ensemble metadata matches an ordering set</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/removeOverlap.html"><span class="doc">removeOverlap</span></a> - Remove ensemble members that overlap previous members</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="build-members">
+<h3>Build Members<a class="headerlink" href="#build-members" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/indexLimits.html"><span class="doc">indexLimits</span></a> - Return limits of gridfile dimension indices required to load ensemble members</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/parametersForBuild.html"><span class="doc">parametersForBuild</span></a> - Return parameters used for building ensemble members</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/buildMembers.html"><span class="doc">buildMembers</span></a> - Build a set of ensemble members</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="info">
+<h3>Info<a class="headerlink" href="#info" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/info.html"><span class="doc">info</span></a> - Return information about a stateVectorVariable</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="serialization">
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/serialize.html"><span class="doc">serialize</span></a> - Convert variables to a struct that supports fast saving / loading</div>
+<div class="line"><a class="reference internal" href="stateVectorVariable/deserialize.html"><span class="doc">deserialize</span></a> - Rebuild variables from a serialized struct</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="unit-tests">
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="stateVectorVariable/tests.html"><span class="doc">tests</span></a> - Unit tests for the dash.stateVectorVariable class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gridfileSources/tests.html" class="btn btn-neutral float-left" title="dash.gridfileSources.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="stateVectorVariable/stateVectorVariable.html" class="btn btn-neutral float-right" title="dash.stateVectorVariable.stateVectorVariable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

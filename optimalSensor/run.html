@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>optimalSensor.run &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="optimalSensor.evaluate" href="evaluate.html" />
+    <link rel="prev" title="optimalSensor.uncertainties" href="uncertainties.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../optimalSensor.html#description">Description</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../optimalSensor.html#user-methods">User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../optimalSensor.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../optimalSensor.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../optimalSensor.html#analyses">Analyses</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">run</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#n">N</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#optimalsites">optimalSites</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variance">variance</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metric">metric</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="evaluate.html">evaluate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="update.html">update</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../optimalSensor.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../optimalSensor.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../optimalSensor.html">optimalSensor</a> &raquo;</li>
+      <li>optimalSensor.run</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimalsensor-run">
+<h1>optimalSensor.run<a class="headerlink" href="#optimalsensor-run" title="Permalink to this heading"></a></h1>
+<p>Runs the optimal sensor algorithm</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#optimalsensor-run-syntax1"><span class="std std-ref">[optimalSites, variance, metric] = obj.run</span></a></div>
+<div class="line"><a class="reference internal" href="#optimalsensor-run-syntax2"><span class="std std-ref">[optimalSites, variance, metric] = obj.run(N)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="optimalsensor-run-syntax1">
+<div class="line">[<a class="reference internal" href="#optimalsensor-run-outputs-optimalsites"><span class="std std-ref">optimalSites</span></a>, <a class="reference internal" href="#optimalsensor-run-outputs-variance"><span class="std std-ref">variance</span></a>, <a class="reference internal" href="#optimalsensor-run-outputs-metric"><span class="std std-ref">metric</span></a>] = obj.run</div>
+</div>
+</pre><p>Runs the optimal sensor algorithm. Runs the algorithm until every observation site has been ranked and used to update the metric.</p>
+<pre><div class="syntax line-block" id="optimalsensor-run-syntax2">
+<div class="line">[<a class="reference internal" href="#optimalsensor-run-outputs-optimalsites"><span class="std std-ref">optimalSites</span></a>, <a class="reference internal" href="#optimalsensor-run-outputs-variance"><span class="std std-ref">variance</span></a>, <a class="reference internal" href="#optimalsensor-run-outputs-metric"><span class="std std-ref">metric</span></a>] = obj.run(<a class="reference internal" href="#optimalsensor-run-inputs-n"><span class="std std-ref">N</span></a>)</div>
+</div>
+</pre><p>Runs the optimal sensor algorithm for the N best sensors. The number of sensors cannot exceed the number of sites for the object.</p>
+<p>The following is an outline of the optimal sensor algorithm: The method begins by evaluating each observation site in the network. The sites are ranked by their ability to reduce the variance of the sensor metric across the ensemble. This evaluation only considers the variance reduction that occurs when the site is assimilated alone. The site that is most strongly reduces metric variance is deemed the “optimal sensor”, and that single site is then used to update the metric’s ensemble deviations. The optimal site is also used to update the observations estimates. The optimal sensor site is then removed from the network, and the algorithm is repeated using the remaining/updated estimates and the updated metric. This process iterates until the requested number of sensors have been selected and used to update the metric.</p>
+<p><strong>Important</strong> Because this method only assimilates a single site at a time, it only considers R uncertainty variances. If observation errors are strongly correlated (such that R uncertainty covariances are required), then this may not be the most suitable method. You can use the “optimalSensor.update” method to evaluate the change in variance that occurs when assimilating observation sites with correlated errors.</p>
+<p>Additionally, the method accounts for covariance between the proxy estimates by updating the estimates via the Kalman Gain. This is most appropriate when using linear (or approximately linear) forward models to generate proxy estimates, but may not be suitable for strongly non-linear forward models. You may want to combine the “optimalSensor.evaluate” command with output from “kalmanFilter.run” and the “PSM.estimate” command if running an optimal sensor for non-linear forward models.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="n">
+<span id="optimalsensor-run-inputs-n"></span><h3>N<a class="headerlink" href="#n" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>N</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em></div>
+<div class="line">Indicates the number of optimal sensors to select. Must be a positive integer between 1 and the number of observation sites. If not provided as input, sets N equal to the number of observation sites.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="optimalsites">
+<span id="optimalsensor-run-outputs-optimalsites"></span><h3>optimalSites<a class="headerlink" href="#optimalsites" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>optimalSites</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>N</em>]</div>
+<div class="line">Indicates the optimal observation site for each iteration of the optimal sensor algorithm. Has one element per selected optimal sensor. Each element is the index of the observation site selected as optimal for that iteration. The first element is the first optimal site, the second element is the next optimal site after the first site has been used to update the prior and removed from the network, etc.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="variance">
+<span id="optimalsensor-run-outputs-variance"></span><h3>variance<a class="headerlink" href="#variance" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>variance</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>N</em>]</div>
+<div class="line">The variance of the metric after each optimal site has been used to update the metric’s ensemble deviations. Essentially, the remaining metric variance after assimilating each optimal site. Has one element per iteration of the algorithm.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metric">
+<span id="optimalsensor-run-outputs-metric"></span><h3>metric<a class="headerlink" href="#metric" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>metric</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>N</em> <em>x</em> <em>nMembers</em>]</div>
+<div class="line">The updated metric after each iteration of the algorithm. Each row is the metric after an additional optimal site has been used to update the metric’s ensemble deviation. Each column is an ensemble member.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="uncertainties.html" class="btn btn-neutral float-left" title="optimalSensor.uncertainties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="evaluate.html" class="btn btn-neutral float-right" title="optimalSensor.evaluate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

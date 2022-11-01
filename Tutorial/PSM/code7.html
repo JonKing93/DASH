@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding 7 &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Outline" href="../da/outline.html" />
+    <link rel="prev" title="PSM" href="psm.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">PSM</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="psm.html">PSM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coding 7</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-download-models">Step 1: Download Models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-create-psm-objects">Step 2: Create PSM Objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-locate-inputs-in-ensemble">Step 3: Locate Inputs in Ensemble</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#specify-rows"><em>Specify rows</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#locate-rows"><em>Locate rows</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-estimate-proxies">Step 4: Estimate Proxies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#full-demo">Full Demo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>Coding 7</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="coding-7">
+<h1>Coding 7<a class="headerlink" href="#coding-7" title="Permalink to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">PSM</span></code> interface to generate proxy estimates.</p>
+</section>
+<section id="step-1-download-models">
+<h2>Step 1: Download Models<a class="headerlink" href="#step-1-download-models" title="Permalink to this heading"></a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">PSM.download</span></code> command to download any external forward model codes from Github. The syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">PSM</span><span class="p">.</span><span class="n">download</span><span class="p">(</span><span class="n">modelName</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>modelName</strong> is the name of a forward model recognized by DASH. (You can use the <code class="docutils literal notranslate"><span class="pre">PSM.supported</span></code> or <code class="docutils literal notranslate"><span class="pre">PSM.info</span></code> command to see the forward model names recognized by DASH). This command will download the codebase for the model to the current directory. You can also use the optional second input to download the model to a custom path:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">PSM</span><span class="p">.</span><span class="n">download</span><span class="p">(</span><span class="n">modelName</span><span class="p">,</span><span class="w"> </span><span class="nb">path</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">download</span></code> command will add the downloaded code to the active Matlab path so that the code is accessible to DASH. If you close Matlab and begin a new coding session, you will need to re-add the downloaded code to your path.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">download</span></code> command requires that you have (1) an internet connection, and (2) git installed on your operating system. If you don’t have git installed, you can use the <code class="docutils literal notranslate"><span class="pre">PSM.githubInfo</span></code> command to find the location of supported forward models on Github.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1"><label for="ntrend-1"><strong>NTREND Demo</strong></label><div class="content"><p>In this demo, we’ll be using the multi-variate linear forward model. The linear model is built-in directly to DASH, so we won’t need to download anything. If you still want to practice using the <code class="docutils literal notranslate"><span class="pre">PSM.download</span></code> command, see the LGM demo for an example using the BaySPLINE forward model.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-1"><label for="lgm-1"><strong>LGM Demo</strong></label><div class="content"><p>For this demo, we’ll need to download the BaySPLINE UK’37 forward model. Using the  <code class="docutils literal notranslate"><span class="pre">PSM.info</span></code> command:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">PSM</span><span class="p">.</span><span class="n">info</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="n">Name</span><span class="w">                                     </span><span class="s">Description</span><span class="w">                                  </span><span class="s">Can_Estimate_R</span><span class="w"></span>
+<span class="n">___________</span><span class="w">    </span><span class="s">______________________________________________________________________</span><span class="w">    </span><span class="s">______________</span><span class="w"></span>
+
+<span class="s">&quot;bayfox&quot;</span><span class="w">       </span><span class="s">&quot;Bayesian model for d18Oc of planktic foraminifera&quot;</span><span class="w">                           </span><span class="nb">true</span><span class="w"></span>
+<span class="s">&quot;baymag&quot;</span><span class="w">       </span><span class="s">&quot;Bayesian model for Mg/Ca of planktic foraminifera&quot;</span><span class="w">                           </span><span class="nb">true</span><span class="w"></span>
+<span class="s">&quot;bayspar&quot;</span><span class="w">      </span><span class="s">&quot;Baysian model for TEX86&quot;</span><span class="w">                                                     </span><span class="nb">true</span><span class="w"></span>
+<span class="s">&quot;bayspline&quot;</span><span class="w">    </span><span class="s">&quot;Baysian model for UK&#39;37&quot;</span><span class="w">                                                     </span><span class="nb">true</span><span class="w"></span>
+<span class="s">&quot;linear&quot;</span><span class="w">       </span><span class="s">&quot;General linear model of form:  Y = Y = a1*X1 + a2*X2 + ... an*Xn + b&quot;</span><span class="w">        </span><span class="nb">false</span><span class="w"></span>
+<span class="s">&quot;vslite&quot;</span><span class="w">       </span><span class="s">&quot;Vaganov-Shashkin Lite tree ring model&quot;</span><span class="w">                                       </span><span class="nb">false</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that DASH uses the name <code class="docutils literal notranslate"><span class="pre">bayspline</span></code> to identify this model. Try using the <code class="docutils literal notranslate"><span class="pre">download</span></code> command:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">PSM</span><span class="p">.</span><span class="n">download</span><span class="p">(</span><span class="s">&quot;vslite&quot;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>to download the code for this forward model. After running the command, your current directory should contain a folder named <code class="docutils literal notranslate"><span class="pre">BAYSPLINE</span></code>, which holds the code for the forward model.</p>
+</div></section></section>
+<section id="step-2-create-psm-objects">
+<h2>Step 2: Create PSM Objects<a class="headerlink" href="#step-2-create-psm-objects" title="Permalink to this heading"></a></h2>
+<p>Next, we’ll need to create a PSM object for each our proxy records. To create a PSM object for a particular forward model, use:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="o">&lt;</span><span class="n">model</span><span class="w"> </span><span class="n">name</span><span class="o">&gt;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>&lt;model name&gt;</strong> is the name of a supported forward model. For example, the <code class="docutils literal notranslate"><span class="pre">PSM.linear</span></code> command creates a linear forward model object, and <code class="docutils literal notranslate"><span class="pre">PSM.bayspar</span></code> creates a BaySPAR forward model object. We’ll refer to this command as the <strong>constructor</strong> for a given forward model. The inputs to the constructor are the parameters required to run the forward model for a particular proxy site. For example, the parameters of the linear forward model are the slopes and intercept of the linear model, and the parameters for the BaySPAR model are the latitude and longitude of the proxy site.</p>
+<p>Since every model has different parameters, you should read the documentation of the constructor to determine its inputs. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="w"></span>
+<span class="c">% or</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="p">(</span><span class="s">&#39;PSM.linear&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The DASH documentation should include a description of all required parameters, but you may find additional details in the forward model’s official documentation. As a general rule, you should be familiar with a forward model prior to using it in DASH.</p>
+<p>When building PSM objects for a group of proxies, it’s typically best to organize the collection of PSM objects in a cell vector. Each element of the cell vector should hold the PSM object for a particular proxy record. Consider using the <code class="docutils literal notranslate"><span class="pre">PSM.label</span></code> command to apply labels to the PSM objects, as this can help clarify what each model represents.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content"><p>In the demo, we’ll be using univariate linear forward models for the proxy records. Each forward model should be calibrated to the seasonal temperature mean for the associated proxy. Each proxy has a unique window of seasonal sensitivity, so the months used in the seasonal means will vary with the proxies. The slopes to use for the forward models are stored in the <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code> file (these slopes were calculated by calibrating the proxy records against instrumental seasonal means).</p>
+<p>Recall that the <strong>T_monthly</strong> variable stores the data required to run these forward models. We applied a sequence to <strong>T_monthly</strong> so that it stores data from each month in a given year. To run a given forward model, we’ll want to locate the climate model grid point closest to the associated proxy record, extract the months of seasonal sensitivity, take the mean temperature over those months, and then apply a linear slope to that mean temperature. Since we’re using a linear model, we can combine the last two steps into one. Specifically, we can divide the linear slope by the number of seasonally sensitive months (i.e. implementing a mean) and apply that slope to the temperature in each sensitive month.</p>
+<p>Reading the documentation of the linear constructor:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that function requires the linear slopes as input. In following code, we’ll create a linear PSM object for each of the 54 proxy records. We’ll label each object with both the name of the proxy and the seasonally sensitive months. Finally, we’ll group the set of PSM objects into a cell vector:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the parameters of the linear model</span><span class="w"></span>
+<span class="n">parameters</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;slopes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;intercepts&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">slopes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">parameters</span><span class="p">.</span><span class="n">slopes</span><span class="p">;</span><span class="w"></span>
+<span class="n">intercepts</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">parameters</span><span class="p">.</span><span class="n">intercepts</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Get the name and seasonal window for each proxy</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+<span class="n">names</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">seasons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Preallocate the cell vector for the PSM objects</span><span class="w"></span>
+<span class="n">nSite</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">names</span><span class="p">);</span><span class="w"></span>
+<span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nSite</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Loop over the proxy records. Get the months of seasonal sensitivity</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nSite</span><span class="w"></span>
+<span class="w">    </span><span class="n">months</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">seasons</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">nMonths</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">months</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Get monthly slopes</span><span class="w"></span>
+<span class="w">    </span><span class="n">slope</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">slopes</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nMonths</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">monthlySlopes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">repmat</span><span class="p">(</span><span class="n">slope</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">nMonths</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Create a linear forward model using the slopes</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">(</span><span class="n">monthlySlopes</span><span class="p">,</span><span class="w"> </span><span class="n">intercepts</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Label the model and store in the cell vector</span><span class="w"></span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">strcat</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">seasons</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">label</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="mi">54</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">cell</span><span class="w"> </span><span class="n">array</span><span class="w"></span>
+
+<span class="w">      </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="k">...</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">}</span><span class="w"></span>
+<span class="w">      </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that “models” is a cell vector with 54 elements, and that each element holds a linear PSM object for a particular proxy record. We can inspect the elements of the cell to see the individual PSMs. For example:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">linear</span><span class="w"> </span><span class="s">PSM</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTR</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="w"></span>
+<span class="w">     </span><span class="n">Rows</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">slopes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="n">intercept</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mf">4.3496</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the first PSM object is for the “NTR” proxy site, and that it implements a seasonal mean over July and August (months 7 and 8). Separately, the second model:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">linear</span><span class="w"> </span><span class="s">PSM</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">GOA</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="w"></span>
+<span class="w">     </span><span class="n">Rows</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">slopes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">9</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="n">intercept</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0675</span><span class="w"></span>
+</pre></div>
+</div>
+<p>is for the “GOA” proxy site, and it implements a seasonal mean from January to September.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-2"><label for="lgm-2"><strong>LGM Demo</strong></label><div class="content"><p>In this demo, we’ll be using the BAYSPLINE forward model for UKL’37. Reading the documentation of its constructor:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see the BAYSPLINE model does not require any site-specific parameteers. Thus, we can create a BAYSPLINE object for each proxy record without requiring any inputs.</p>
+<p>In the following code, we’ll create a BAYSPLINE PSM object for each of the 89 UK’37 records. We’ll label each object with the name of the associated proxy record, and we’ll group the set of PSM objects into a cell vector:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ID for each proxy record</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+<span class="n">ID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Preallocate the cell vector for the PSM objects</span><span class="w"></span>
+<span class="n">nSite</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">ID</span><span class="p">);</span><span class="w"></span>
+<span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nSite</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Build a BaySPLINE object for each proxy record</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nSite</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Label the model, and store in the cell vector</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">ID</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="n">Examining</span><span class="w"> </span><span class="s">the</span><span class="w"> </span><span class="s">output:</span><span class="w"></span>
+
+<span class="p">..</span><span class="w"> </span><span class="n">code</span><span class="p">::</span><span class="w"></span>
+<span class="w">    </span><span class="p">:</span><span class="nb">class</span><span class="p">:</span><span class="w"> </span><span class="nb">input</span><span class="w"></span>
+
+<span class="w">    </span><span class="nb">disp</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="w"></span>
+
+<span class="p">..</span><span class="w"> </span><span class="n">code</span><span class="p">::</span><span class="w"></span>
+<span class="w">    </span><span class="p">:</span><span class="nb">class</span><span class="p">:</span><span class="w"> </span><span class="n">output</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">      </span><span class="mi">89</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">cell</span><span class="w"> </span><span class="n">array</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that “models” is a cell vector with 89 elements, and that each element holds a bayspline PSM object for a particular proxy record. We can inspect the elements of the cell to see the individual PSMs. For example:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">bayspline</span><span class="w"> </span><span class="s">PSM</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">bs79</span><span class="o">-</span><span class="mi">33</span><span class="w"></span>
+<span class="w">     </span><span class="n">Rows</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">bayes</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="step-3-locate-inputs-in-ensemble">
+<h2>Step 3: Locate Inputs in Ensemble<a class="headerlink" href="#step-3-locate-inputs-in-ensemble" title="Permalink to this heading"></a></h2>
+<section id="specify-rows">
+<h3><em>Specify rows</em><a class="headerlink" href="#specify-rows" title="Permalink to this heading"></a></h3>
+<p>Next, we’ll need to indicate which state vector rows each forward model should use as input. The <code class="docutils literal notranslate"><span class="pre">PSM</span></code> interface includes a <code class="docutils literal notranslate"><span class="pre">rows</span></code> command, which allows you to indicate the state vector rows needed to run a given forward model. The syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>rows</strong></dt><dd><p>The first input is a vector of indices that indicates which state vector elements are required to run the forward model.</p>
+</dd>
+<dt><strong>obj</strong></dt><dd><p>The output is the updated PSM object.</p>
+</dd>
+</dl>
+<p>If a forward model requires multiple climate variables, then the <strong>rows</strong> input should point to state vector elements in a specific order. For example, the BayFOX forward model requires both sea-surface temperature (SST), and δ<sup>18</sup>O <sub>seawater</sub> as input. When using this model, the first element of the <strong>rows</strong> should point to the SST variable, and the second element should point to δ<sup>18</sup>O <sub>seawater</sub>. As a rule, you should always read the documentation of a forward model’s <code class="docutils literal notranslate"><span class="pre">rows</span></code> command before using it. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspar</span><span class="p">.</span><span class="n">rows</span><span class="w"></span>
+<span class="nb">help</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">.</span><span class="n">rows</span><span class="w"></span>
+<span class="c">% or</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="p">(</span><span class="s">&#39;PSM.bayspar.rows&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="p">(</span><span class="s">&#39;PSM.linear.rows&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Otherwise, if you pass rows in the wrong order, the forward model will mix up the input climate variables.</p>
+<p>You can also use different state vector elements as input for different ensemble members and/or different ensembles in an evolving set. This most often occurs when implementing a deep-time assimilation with changing continental boundary conditions. See the documentation on the syntaxes:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">memberRows</span><span class="p">)</span><span class="w"></span>
+<span class="c">% and</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">evolvingRows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>for details. You can find the documentation on these syntaxes in the documentation of any forward model’s <code class="docutils literal notranslate"><span class="pre">rows</span></code> command (for example, <code class="docutils literal notranslate"><span class="pre">dash.doc('PSM.bayspar.rows')</span></code>), and more general information in the documentation of the PSM interface (<code class="docutils literal notranslate"><span class="pre">dash.doc('PSM.Interface.rows')</span></code>).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the tutorial, we’ve separated the discussion of the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command from the creation of PSM objects. However, in real workflows, it’s often easiest to combine these commands within the same loop.</p>
+</div>
+</section>
+<section id="locate-rows">
+<h3><em>Locate rows</em><a class="headerlink" href="#locate-rows" title="Permalink to this heading"></a></h3>
+<p>However, before you can specify state vector elements to the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command, you’ll need to actually locate the forward model’s inputs within the ensemble. The <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.closestLatLon</span></code> command is most often used for this task, and allows you to search within a state vector variable for the data elements that are closest to a proxy record’s latitude-longitude coordinates. Essentially, this allows you to locate the climate model grid point that is closest to the proxy site, within a given state vector variable. The base syntax for this command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>obj</strong></dt><dd><p>Here, obj is the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> object for your ensemble.</p>
+</dd>
+<dt><strong>variable</strong></dt><dd><p>The first input indicates the variable in which to search. You may use either the name, or the index of a variable in the state vector.</p>
+</dd>
+<dt><strong>coordinates</strong></dt><dd><p>The second input lists the coordinates of the proxy site. It should be a vector with two elements - the first element is latitude, and the second element is longitude.</p>
+</dd>
+<dt><strong>rows</strong></dt><dd><p>The output is a the index of the state vector row closest to the proxy coordinates within the specified variable. If the state vector variable contains a sequence, then <strong>rows</strong> will be a vector, and will indicate the closest state vector row within each sequence element.</p>
+</dd>
+</dl>
+<p>In some cases, you may have coordinate metadata stored along the <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension (this most commonly occurs when using tripolar grids). In this case, you can use the <code class="docutils literal notranslate"><span class="pre">'site'</span></code> option to indicate that the command should extract coordinates from the <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension, rather than the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> dimensions. In this case, the syntax becomes:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">columns</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>columns</strong></dt><dd><p>This input is used to indicate which columns of the <code class="docutils literal notranslate"><span class="pre">site</span></code> metadata contain the latitude and longitude coordinates. It should be a vector with two elements. The first element is the index of the column containing latitude metadata, and the second element is the column with the longitude metadata.</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p>We will only cover the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command in the tutorial, but the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> class includes a number of other commands which can help locate specific data elements within an ensemble. Depending on the complexity of your experiment, you may be interested in:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ensembleMetadata.rows</span></code></dt><dd><p>Returns metadata down the rows of the state vector (or at queried rows) for a queried dimension.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ensembleMetadata.variable</span></code></dt><dd><p>Returns metadata at the state vector rows of a queried variable.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ensembleMetadata.find</span></code></dt><dd><p>Locates the state vector rows of a specific variable.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ensembleMetadata.identify</span></code></dt><dd><p>Identifies the state vector variables associated with queried rows.</p>
+</dd>
+</dl>
+<p>These functions are also helpful for locating data inputs when running forward models outside of the <code class="docutils literal notranslate"><span class="pre">DASH</span></code> framework.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3a"><label for="ntrend-3a"><strong>NTREND Demo: closestLatLon</strong></label><div class="content"><p>We’ll start with a quick exploration of the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command. In the demo, we need to search through the <strong>T_monthly</strong> variable for data from the climate model grid point closest to each proxy record. Since <strong>T_monthly</strong> implements a sequence for each month of the year, the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command should return 12 rows (one for each month of the year). We’ll then select the rows that correspond to the months of the proxy’s seasonal sensitivity.</p>
+<p>Here, we’ll demo the command for a single proxy record. We’ll also use several <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> commands to verify that the selected rows point to the correct data. We’ll start by getting the coordinates and seasonal sensitivity window of the NTR proxy record (this is the first proxy record in our dataset):</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(</span><span class="mi">1</span><span class="p">,:);</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">site</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">site</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="w"></span>
+<span class="n">season</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">site</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.2833</span><span class="w"></span>
+
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w"> </span><span class="o">-</span><span class="mf">161.6500</span><span class="w"></span>
+
+<span class="n">season</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">     </span><span class="mi">7</span><span class="w">     </span><span class="mi">8</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see that the site is located at 65.28N, 161.65W, and that its seasonal window is over July and August (months 7 and 8).</p>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command to locate the data elements in the <strong>T_monthly</strong> variable from the climate model grid point closest to this proxy site:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the ensemble metadata object</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Locate the closest data elements</span><span class="w"></span>
+<span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">];</span><span class="w"></span>
+<span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;T_monthly&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">        </span><span class="mi">6705</span><span class="w"></span>
+<span class="w">       </span><span class="mi">11025</span><span class="w"></span>
+<span class="w">       </span><span class="mi">15345</span><span class="w"></span>
+<span class="w">       </span><span class="mi">19665</span><span class="w"></span>
+<span class="w">       </span><span class="mi">23985</span><span class="w"></span>
+<span class="w">       </span><span class="mi">28305</span><span class="w"></span>
+<span class="w">       </span><span class="mi">32625</span><span class="w"></span>
+<span class="w">       </span><span class="mi">36945</span><span class="w"></span>
+<span class="w">       </span><span class="mi">41265</span><span class="w"></span>
+<span class="w">       </span><span class="mi">45585</span><span class="w"></span>
+<span class="w">       </span><span class="mi">49905</span><span class="w"></span>
+<span class="w">       </span><span class="mi">54225</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see that the command returned the indices of 12 rows within the state vector. This is because <strong>T_monthly</strong> includes a monthly sequence, so there are 12 rows associated with the closest climate model grid point (one per month). We can use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.rows</span></code> command to verify that these rows represent the different months of the year:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">timeMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">timeMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">    </span><span class="mi">12</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="n">array</span><span class="w"></span>
+
+<span class="w">      </span><span class="s">&quot;Jan&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Feb&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;March&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;April&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;May&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;June&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;July&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Aug&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Sept&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Oct&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Nov&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&quot;Dec&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>at the same spatial point:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">latMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">latMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+<span class="w">   </span><span class="mf">65.3684</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">lonMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">lonMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+<span class="w">  </span><span class="mf">197.5000</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Note that you can use a mix of (-180 to 180) and (0 to 360) longitude coordinate systems in DASH. In this example, the proxy longitude uses a (-180 to 180) coordinate system, but <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> still successfully locates the closest model grid point, despite the climate model longitude using a (0 to 360) coordinate system.</p>
+<p>Now that we’ve verified the rows point to the correct data elements, we can use the seasonal sensitivity indices to select rows in the months of seasonal sensitivity.</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rows</span><span class="p">(</span><span class="n">season</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">       </span><span class="mi">32625</span><span class="w"></span>
+<span class="w">       </span><span class="mi">36945</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can do a final verification to ensure that these rows represent July and August:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">timeMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rows</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">timeMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="mi">2</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">string</span><span class="w"> </span><span class="n">array</span><span class="w"></span>
+
+<span class="w">    </span><span class="s">&quot;July&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;August&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3b"><label for="ntrend-3b"><strong>NTREND Demo: Record rows</strong></label><div class="content"><p>Now that we’ve seen how to use the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command, we can combine it with the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command. Here, we need to update the forward model for each proxy record, so we’ll be using these commands within a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. Within each loop iteration, we’ll locate the appropriate state vector rows for the proxy record, and then pass these rows to the forward model using the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the coordinates and metadata for each proxy site</span><span class="w"></span>
+<span class="n">sites</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+<span class="n">seasons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sites</span><span class="p">(:,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get the metadata object for the ensemble</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Loop over the proxy sites / forward models</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">numel</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Search for data from the closest climate model grid point</span><span class="w"></span>
+<span class="w">    </span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">lons</span><span class="p">(</span><span class="n">s</span><span class="p">)];</span><span class="w"></span>
+<span class="w">    </span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;T_monthly&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Select the rows for the seasonally sensitive months</span><span class="w"></span>
+<span class="w">    </span><span class="n">season</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">seasons</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rows</span><span class="p">(</span><span class="n">season</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Provide the rows to the forward model</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">rows</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can double-check the forward models to ensure they know which state vector rows to use as input. For example, if we inspect the first forward model:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">linear</span><span class="w"> </span><span class="s">PSM</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTR</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="w"></span>
+<span class="w">     </span><span class="n">Rows</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">slopes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">2</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="n">intercept</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the state vector rows have been set.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-3a"><label for="lgm-3a"><strong>LGM Demo: closestLatLon</strong></label><div class="content"><p>We’ll start by exploring the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command. In the demo, we need to search through the <strong>SST</strong> variable for data from the climate model grid point closest to each proxy record.</p>
+<p>Here, we’ll demo the command for a single proxy record. We’ll also use several <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> commands to verify that the selected rows point to the correct data. We’ll start by getting the coordinates of the “bs79-33” proxy record (this is the first proxy record in our dataset):</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(</span><span class="mi">1</span><span class="p">,:);</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">site</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">site</span><span class="p">(</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mf">38.2617</span><span class="w"></span>
+
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mf">14.0300</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see that the site is located at 38.26N, 14.03E.</p>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command to locate the data elements in the <strong>SST</strong> variable from the climate model grid point closest to this proxy site. Since the <strong>SST</strong> dataset is on a tripolar grid, it uses the <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension to organize climate model grid points. Thus, we’ll use the “site” option with this command - note that the latitude coordinate is the first column of the site metadata in <code class="docutils literal notranslate"><span class="pre">SST.grid</span></code>, and that longitude is the second column:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the ensemble metadata object</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Locate the closest data elements</span><span class="w"></span>
+<span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">];</span><span class="w"></span>
+<span class="n">row</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;SST&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">row</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mi">94129</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see the command returned the state vector row of the climate model grid point closest to the proxy site. We can use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.rows</span></code> command to verify that this row is near the proxy site:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siteMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">row</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siteMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">   </span><span class="mf">38.1033</span><span class="w">   </span><span class="mf">13.7306</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-3b"><label for="lgm-3b"><strong>LGM Demo: Record rows</strong></label><div class="content"><p>Now that we’ve seen how to use the <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command, we can combine it with the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command. Here, we need to update the forward model for each proxy record, so we’ll be using these commands within a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop. Within each loop iteration, we’ll locate the appropriate state vector row for the proxy record, and then pass the row to the forward model using the <code class="docutils literal notranslate"><span class="pre">rows</span></code> command:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the coordinates for each proxy site</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+
+<span class="c">% Get the metadata object for the ensemble</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Loop over the proxy sites / forward models</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="nb">numel</span><span class="p">(</span><span class="n">models</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">};</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Search for the closest climate model grid point</span><span class="w"></span>
+<span class="w">    </span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">lons</span><span class="p">(</span><span class="n">s</span><span class="p">)];</span><span class="w"></span>
+<span class="w">    </span><span class="n">row</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;SST&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Provide the row to the forward model</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">row</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can double-check the forward models to ensure they know which state vector rows to use as input. For example, if we inspect the first forward model:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">models</span><span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">bayspline</span><span class="w"> </span><span class="s">PSM</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">bs79</span><span class="o">-</span><span class="mi">33</span><span class="w"></span>
+<span class="w">     </span><span class="n">Rows</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">bayes</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the state vector row has been set.</p>
+</div></section></section>
+</section>
+<section id="step-4-estimate-proxies">
+<h2>Step 4: Estimate Proxies<a class="headerlink" href="#step-4-estimate-proxies" title="Permalink to this heading"></a></h2>
+<p>You can run a set of forward models over an ensemble using the <code class="docutils literal notranslate"><span class="pre">PSM.estimate</span></code> command. Here, the base syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Ye</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">ensemble</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>models</strong></dt><dd><p>The first input is a cell vector of PSM objects. Every forward model must have its state vector rows set before running this command.</p>
+</dd>
+<dt><strong>ensemble</strong></dt><dd><p>The second input is the ensemble over which to run the forward models. This input may either be a an ensemble object, or a data array (a matrix for a static ensemble, or a 3D array for an evolving ensemble).</p>
+</dd>
+<dt><strong>Ye</strong></dt><dd><p>This first output is a numeric matrix that holds the proxy estimates. Each row holds the estimates for a particular proxy record, and each column holds the estimate for a particular ensemble member. If estimating proxies values for an evolving ensemble, then the output will be a 3D array with each element along the third dimension holding estimates for a particular ensemble in the evolving set.</p>
+</dd>
+<dt><strong>R</strong></dt><dd><p>The second output is a numeric array that holds error-variances for the proxy estimates. This array has the same size as the <strong>Ye</strong> output, and the rows, columns, and pages again correspond to proxy sites, ensemble members, and ensembles in an evolving set. Not all forward models can estimate error-variances, and these models will produce NaN error-variances for the associated proxy estimates.</p>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">PSM.info</span></code> method to see which forward models can estimate R variances.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-4"><label for="ntrend-4"><strong>NTREND Demo</strong></label><div class="content"><p>Here, we’ll run the forward models over the ensemble to produce the proxy estimates. The linear forward model does not estimate error-variances, so we’ll only compute proxy estimates here:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ensemble object</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Run the models over the ensemble</span><span class="w"></span>
+<span class="n">Ye</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">Ye</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">          </span><span class="mi">54</span><span class="w">        </span><span class="mi">1156</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that Ye is a matrix with one row for each of the 54 proxy records, and a column for each of the 1156 ensemble members.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-4"><label for="lgm-4"><strong>LGM Demo</strong></label><div class="content"><p>Here, we’ll run the forward models over the ensemble to produce proxy estimates. The BaySPLINE PSM is also able to estimate proxy uncertainties, so we’ll also obtain those (as the second output):</p>
+<blockquote>
+<div><p>% Get the ensemble object
+ens = ensemble(‘lgm’);</p>
+<p>% Run the models over the ensemble
+[Ye, R] = PSM.estimate(models, ens);</p>
+</div></blockquote>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">Ye</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mi">89</span><span class="w">    </span><span class="mi">16</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that Ye is a matrix with one row for each of the 89 proxy records, and a column for each of the 16 ensemble members. Similarly examining R:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">   </span><span class="mi">89</span><span class="w">    </span><span class="mi">16</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that R has an uncertainty estimate for each proxy record and ensemble member. In reality, we only want one uncertainty estimate per proxy record, so we’ll use the mean uncertainty estimates over the ensemble:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">mean</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="full-demo">
+<h2>Full Demo<a class="headerlink" href="#full-demo" title="Permalink to this heading"></a></h2>
+<p>This section recaps all the essential code from the demos and may be useful as a quick reference. Note that the code from several of the demo sections has been combined into a single loop.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-full"><label for="ntrend-full"><strong>NTREND Demo</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the linear model parameters</span><span class="w"></span>
+<span class="n">parameters</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;slopes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;intercepts&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">slopes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">parameters</span><span class="p">.</span><span class="n">slopes</span><span class="p">;</span><span class="w"></span>
+<span class="n">intercepts</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">parameters</span><span class="p">.</span><span class="n">intercepts</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Get metadata for each proxy site</span><span class="w"></span>
+<span class="n">sites</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">names</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sites</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+<span class="n">seasons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sites</span><span class="p">(:,</span><span class="mi">4</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get the ensemble and its metadata</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Preallocate the cell vector for the PSM objects</span><span class="w"></span>
+<span class="n">nSite</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">names</span><span class="p">);</span><span class="w"></span>
+<span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nSite</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Loop over the proxy records. Get the months of seasonal sensitivity</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nSite</span><span class="w"></span>
+<span class="w">    </span><span class="n">months</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2num</span><span class="p">(</span><span class="n">seasons</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">nMonths</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">months</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Get monthly slopes to implement a seasonal mean</span><span class="w"></span>
+<span class="w">    </span><span class="n">slope</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">slopes</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">nMonths</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">monthlySlopes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">repmat</span><span class="p">(</span><span class="n">slope</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">nMonths</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Create a linear forward model. Label the model</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">linear</span><span class="p">(</span><span class="n">monthlySlopes</span><span class="p">,</span><span class="w"> </span><span class="n">intercepts</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">strcat</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="s">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">seasons</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">label</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Locate data from the closest climate model grid point in the months of</span><span class="w"></span>
+<span class="w">    </span><span class="c">% seasonal sensitivity</span><span class="w"></span>
+<span class="w">    </span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">lons</span><span class="p">(</span><span class="n">s</span><span class="p">)];</span><span class="w"></span>
+<span class="w">    </span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;T_monthly&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">rows</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">rows</span><span class="p">(</span><span class="n">months</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Record the rows and save the model</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">rows</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="c">% Run the forward models over the ensemble to produce proxy estimates</span><span class="w"></span>
+<span class="n">Ye</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-full"><label for="lgm-full"><strong>LGM Demo</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Download the BaySPLINE forward model</span><span class="w"></span>
+<span class="n">PSM</span><span class="p">.</span><span class="n">download</span><span class="p">(</span><span class="s">&#39;bayspline&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get metadata for each proxy site</span><span class="w"></span>
+<span class="n">sites</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">names</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sites</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">sites</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+
+<span class="c">% Get the ensemble and its metadata</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Preallocate the cell vector for the PSM objects</span><span class="w"></span>
+<span class="n">nSite</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">numel</span><span class="p">(</span><span class="n">names</span><span class="p">);</span><span class="w"></span>
+<span class="n">models</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">cell</span><span class="p">(</span><span class="n">nSite</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Loop over the proxy records and create BaySPLINE PSM objects</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="n">nSite</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">bayspline</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">label</span><span class="p">(</span><span class="n">names</span><span class="p">(</span><span class="n">s</span><span class="p">));</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Locate data from the closest climate model grid point</span><span class="w"></span>
+<span class="w">    </span><span class="n">coordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">(</span><span class="n">s</span><span class="p">),</span><span class="w"> </span><span class="n">lons</span><span class="p">(</span><span class="n">s</span><span class="p">)];</span><span class="w"></span>
+<span class="w">    </span><span class="n">row</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">closestLatLon</span><span class="p">(</span><span class="s">&quot;SST&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">coordinates</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+
+<span class="w">    </span><span class="c">% Record the row and save the model</span><span class="w"></span>
+<span class="w">    </span><span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">row</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">models</span><span class="p">{</span><span class="n">s</span><span class="p">}</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">model</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+
+<span class="c">% Estimate proxy values and uncertainties</span><span class="w"></span>
+<span class="p">[</span><span class="n">Ye</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">PSM</span><span class="p">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">models</span><span class="p">,</span><span class="w"> </span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">mean</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="psm.html" class="btn btn-neutral float-left" title="PSM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../da/outline.html" class="btn btn-neutral float-right" title="Outline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

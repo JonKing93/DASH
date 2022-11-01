@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata.dimensions &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensembleMetadata.extract" href="extract.html" />
+    <link rel="prev" title="ensembleMetadata.length" href="length.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensembleMetadata.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#coordinates">Coordinates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#regrid">Regrid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#locate-variables">Locate Variables</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensembleMetadata.html#variable-information">Variable Information</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="variables.html">variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="length.html">length</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">dimensions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#variablenames">variableNames</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#type">type</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#celloutput">cellOutput</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#dimensions">dimensions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-varaibles">Manipulate Varaibles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#manipulate-members">Manipulate Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensembleMetadata.html">ensembleMetadata</a> &raquo;</li>
+      <li>ensembleMetadata.dimensions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata-dimensions">
+<h1>ensembleMetadata.dimensions<a class="headerlink" href="#ensemblemetadata-dimensions" title="Permalink to this heading"></a></h1>
+<p>Return the dimensions associated with variables in a state vector ensemble</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax1"><span class="std std-ref">dimensions = obj.dimensions</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax1"><span class="std std-ref">dimensions = obj.dimensions(-1)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax2"><span class="std std-ref">dimensions = obj.dimensions(v)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax2"><span class="std std-ref">dimensions = obj.dimensions(variableNames)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax3"><span class="std std-ref">dimensions = obj.dimensions(…, type)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax3"><span class="std std-ref">dimensions = obj.dimensions(…, 0|’a’|’all’|[])</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax3"><span class="std std-ref">dimensions = obj.dimensions(…, 1|’s’|’state’)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax3"><span class="std std-ref">dimensions = obj.dimensions(…, 2|’e’|’ens’|’ensemble’)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax4"><span class="std std-ref">dimensions = obj.dimensions(…, type, cellOutput)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax4"><span class="std std-ref">dimensions = obj.dimensions(…, type, true|’c’|’cell’)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-syntax4"><span class="std std-ref">dimensions = obj.dimensions(…, type, false|’d’|’default’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="ensemblemetadata-dimensions-syntax1">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(-1)</div>
+</div>
+</pre><p>Return the names of dimensions associated with each variable in the state vector.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-dimensions-syntax2">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(<a class="reference internal" href="#ensemblemetadata-dimensions-inputs-v"><span class="std std-ref">v</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(<a class="reference internal" href="#ensemblemetadata-dimensions-inputs-variablenames"><span class="std std-ref">variableNames</span></a>)</div>
+</div>
+</pre><p>Return the names of dimensions associated with the specified state vector variables.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-dimensions-syntax3">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, <a class="reference internal" href="#ensemblemetadata-dimensions-inputs-type"><span class="std std-ref">type</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, 0|’a’|’all’|[])</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, 1|’s’|’state’)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, 2|’e’|’ens’|’ensemble’)</div>
+</div>
+</pre><p>Specify the type of dimension to return for each variable. Options are all dimensions, state dimensions, or ensemble dimensions. By default, returns all dimensions for each variable.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-dimensions-syntax4">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, <a class="reference internal" href="#ensemblemetadata-dimensions-inputs-type"><span class="std std-ref">type</span></a>, <a class="reference internal" href="#ensemblemetadata-dimensions-inputs-celloutput"><span class="std std-ref">cellOutput</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, <a class="reference internal" href="#ensemblemetadata-dimensions-inputs-type"><span class="std std-ref">type</span></a>, true|’c’|’cell’)</div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions(…, <a class="reference internal" href="#ensemblemetadata-dimensions-inputs-type"><span class="std std-ref">type</span></a>, false|’d’|’default’)</div>
+</div>
+</pre><p>Specify whether output should always be organized in a cell. If false (default), dimensions for a single variable are returned as a string row vector. If true, dimensions for a single variable are returned as a string row vector within a scalar cell. Dimensions for multiple variables are always returned as a cell vector of string row vectors.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="variablenames">
+<span id="ensemblemetadata-dimensions-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableNames</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em></div>
+<div class="line">The names of variables for which to return dimension names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="v">
+<span id="ensemblemetadata-dimensions-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of variables in the state vector for which to return dimension names. If -1, selects all variables. If a logical vector, must have one element per variable in the state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="type">
+<span id="ensemblemetadata-dimensions-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>type</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>positive</em> <em>integer</em></div>
+<div class="line">Indicates which types of dimension names to return</div>
+</div>
+<p>[0|”all”|”a” (default)]: Returns the names of all dimensions for each variable</p>
+<p>[1|”state”|”s”]: Returns the names of state dimensions.</p>
+<p>[2|”ensemble”|”ens”|”e”]: Returns the names of ensemble dimensions</p>
+</div></section></section>
+<section class="collapse-examples" id="celloutput">
+<span id="ensemblemetadata-dimensions-inputs-celloutput"></span><h3>cellOutput<a class="headerlink" href="#celloutput" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>cellOutput</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
+<div class="line">Whether to always return output as a cell.</div>
+</div>
+<p>[“cell”|”c”|true]: Always returns outputs in a cell, even the dimensions for a single variable.</p>
+<p>[“default”|”d”|false]: Dimensions for a single variable are returned directly as a string vector.</p>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="dimensions">
+<span id="ensemblemetadata-dimensions-outputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>dimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> | <em>cell</em> <em>vector</em> [<em>nVariables</em>] {<em>string</em> <em>vector</em>}</div>
+<div class="line">The names of the dimensions for the listed variables. If a single variable is listed and cellOutput is on the default setting, a string vector with one element per listed dimension. If multiple variables are listed, a cell vector with one element per listed variable. Each element holds the names of the dimensions for a listed variable.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="length.html" class="btn btn-neutral float-left" title="ensembleMetadata.length" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="extract.html" class="btn btn-neutral float-right" title="ensembleMetadata.extract" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

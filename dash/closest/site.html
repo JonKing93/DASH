@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.closest.site &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.closest.tests" href="tests.html" />
+    <link rel="prev" title="dash.closest.latlon" href="latlon.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../closest.html">closest</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../closest.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../closest.html#functions">Functions</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="latlon.html">latlon</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">site</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#coordinates">coordinates</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#sitecoordinates">siteCoordinates</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#dash-closest-site-outputs-coordinates">coordinates</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#siteindices">siteIndices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../closest.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../localize.html">localize</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../closest.html">dash.closest</a> &raquo;</li>
+      <li>dash.closest.site</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-closest-site">
+<h1>dash.closest.site<a class="headerlink" href="#dash-closest-site" title="Permalink to this heading"></a></h1>
+<p>Returns the coordinates of sites closest to a set of coordinates</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-closest-site-syntax1"><span class="std std-ref">coordinates = dash.closest.site(coordinates, siteCoordinates)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-closest-site-syntax2"><span class="std std-ref">[coordinates, siteIndices] = dash.closest.site(…)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="dash-closest-site-syntax1">
+<div class="line"><a class="reference internal" href="#dash-closest-site-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = dash.closest.site(<a class="reference internal" href="#dash-closest-site-inputs-coordinates"><span class="std std-ref">coordinates</span></a>, <a class="reference internal" href="#dash-closest-site-inputs-sitecoordinates"><span class="std std-ref">siteCoordinates</span></a>)</div>
+</div>
+</pre><p>Searches through latitude-longitude points to find the points that are closest to a set of latitude-longitude coordinates. The first input is the set of coordinates for which to find the closest points. The second input lists the set of available latitude-longitude coordinates. This method is often used to locate the elements of a non-spatially gridded dataset that are closest to a specific set of coordinates.</p>
+<p>This function uses a haversine function to calculate the distance between sites. Since the haversine function is agnostic to longitude coordinate systems, you may use longitudes on -180:180, 0:360, or even a mix of both coordinate systems.</p>
+<pre><div class="syntax line-block" id="dash-closest-site-syntax2">
+<div class="line">[<a class="reference internal" href="#dash-closest-site-outputs-coordinates"><span class="std std-ref">coordinates</span></a>, <a class="reference internal" href="#dash-closest-site-outputs-siteindices"><span class="std std-ref">siteIndices</span></a>] = dash.closest.site(…)</div>
+</div>
+</pre><p>Also returns the index of the closest site within the set of examined points. These indices can be used to index into the closest element</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="coordinates">
+<span id="dash-closest-site-inputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nCoordinates</em> <em>x</em> 2]</div>
+<div class="line">A set of latitude-longitude coordinates in decimal degrees. The method will search for site coordinates that are closest to these points. A numeric matrix with two columns. The first column holds the latitude points, and the second column is longitude.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sitecoordinates">
+<span id="dash-closest-site-inputs-sitecoordinates"></span><h3>siteCoordinates<a class="headerlink" href="#sitecoordinates" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>siteCoordinates</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em></div>
+<div class="line">A second set of latitude-longitude coordinates in decimal degrees. The method will determine which of these site coordinates is closest to each of the coordinate in the first input.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="dash-closest-site-outputs-coordinates">
+<span id="id1"></span><h3>coordinates<a class="headerlink" href="#dash-closest-site-outputs-coordinates" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nCoordinates</em> <em>x</em> 2]</div>
+<div class="line">The site coordinate closest to each of the input coordinates. First column is latitude, second column is longitude.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="siteindices">
+<span id="dash-closest-site-outputs-siteindices"></span><h3>siteIndices<a class="headerlink" href="#siteindices" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>siteIndices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nCoordinates</em>]</div>
+<div class="line">The index of the site coordinate closest to each coordinate. These indices are relative to the rows of the “siteCoordinates” input.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="latlon.html" class="btn btn-neutral float-left" title="dash.closest.latlon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="dash.closest.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

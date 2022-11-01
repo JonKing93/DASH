@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile.buildSources &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridfile.loadedPrecision" href="loadedPrecision.html" />
+    <link rel="prev" title="gridfile.sourcesForLoad" href="sourcesForLoad.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridfile.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#file-interactions">File Interactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#console-display">Console Display</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfile.html#id1">Load</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="getLoadIndices.html">getLoadIndices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sourcesForLoad.html">sourcesForLoad</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">buildSources</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#fatal">fatal</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#filepaths">filepaths</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#datasources">dataSources</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#failed">failed</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#causes">causes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="loadedPrecision.html">loadedPrecision</a></li>
+<li class="toctree-l4"><a class="reference internal" href="loadInternal.html">loadInternal</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#id2">Arithmetic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfile.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridfile.html">gridfile</a> &raquo;</li>
+      <li>gridfile.buildSources</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile-buildsources">
+<h1>gridfile.buildSources<a class="headerlink" href="#gridfile-buildsources" title="Permalink to this heading"></a></h1>
+<p>Build dataSources for gridfile operations</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridfile-buildsources-syntax1"><span class="std std-ref">[dataSources, failed, causes] = obj.buildSources(s)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-buildsources-syntax2"><span class="std std-ref">… = obj.buildSources(s, fatal)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridfile-buildsources-syntax3"><span class="std std-ref">… = obj.buildSources(s, fatal, filepaths)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="gridfile-buildsources-syntax1">
+<div class="line">[<a class="reference internal" href="#gridfile-buildsources-outputs-datasources"><span class="std std-ref">dataSources</span></a>, <a class="reference internal" href="#gridfile-buildsources-outputs-failed"><span class="std std-ref">failed</span></a>, <a class="reference internal" href="#gridfile-buildsources-outputs-causes"><span class="std std-ref">causes</span></a>] = obj.buildSources(<a class="reference internal" href="#gridfile-buildsources-inputs-s"><span class="std std-ref">s</span></a>)</div>
+</div>
+</pre><p>Builds the dataSource objects for the specified sources. If a data source fails to build, or does not match the values recorded in the gridfile, exits immediately and reports the failed data source as well as the cause of the failure.</p>
+<pre><div class="syntax line-block" id="gridfile-buildsources-syntax2">
+<div class="line">= obj.buildSources(<a class="reference internal" href="#gridfile-buildsources-inputs-s"><span class="std std-ref">s</span></a>, <a class="reference internal" href="#gridfile-buildsources-inputs-fatal"><span class="std std-ref">fatal</span></a>)</div>
+</div>
+</pre><p>Specify whether the method should stop immediately when a data source fails. Default is true. If false, the method will continue through the full set of data sources, reporting all failed data sources and the causes of their failures.</p>
+<pre><div class="syntax line-block" id="gridfile-buildsources-syntax3">
+<div class="line">= obj.buildSources(<a class="reference internal" href="#gridfile-buildsources-inputs-s"><span class="std std-ref">s</span></a>, <a class="reference internal" href="#gridfile-buildsources-inputs-fatal"><span class="std std-ref">fatal</span></a>, <a class="reference internal" href="#gridfile-buildsources-inputs-filepaths"><span class="std std-ref">filepaths</span></a>)</div>
+</div>
+</pre><p>Builds data sources using the values recorded in the gridfile, but with custom filepaths.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="s">
+<span id="gridfile-buildsources-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nSources</em>]</div>
+<div class="line">The indices of the data sources in the gridfile for which to build dataSource objects.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="fatal">
+<span id="gridfile-buildsources-inputs-fatal"></span><h3>fatal<a class="headerlink" href="#fatal" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>fatal</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">Set to true (default) if the method should exit immediately when a data source fails. Set to false to continue and attempt to build all sources</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="filepaths">
+<span id="gridfile-buildsources-inputs-filepaths"></span><h3>filepaths<a class="headerlink" href="#filepaths" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>filepaths</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nSources</em>]</div>
+<div class="line">The absolute filepaths to use when building the dataSources</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="datasources">
+<span id="gridfile-buildsources-outputs-datasources"></span><h3>dataSources<a class="headerlink" href="#datasources" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>dataSources</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nSources</em>] {<em>scalar</em> <em>dataSource</em> <em>object</em> | []} | []</div>
+<div class="line">dataSource objects for the specified sources. If fatal is true, and a dataSource fails, dataSources is an empty array. If not fatal, the elements for failed sources are empty arrays.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="failed">
+<span id="gridfile-buildsources-outputs-failed"></span><h3>failed<a class="headerlink" href="#failed" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>failed</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>false</em> | <em>scalar</em> <em>integer</em> | <em>logical</em> <em>vector</em> [<em>nSources</em>]</div>
+<div class="line">Indicates whether any data sources failed. If fatal, failed is false or the index of the failed source. If not fatal, failed is a logical vector with one element per data source. If not fatal and there are no requested data sources, then failed will be false.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="causes">
+<span id="gridfile-buildsources-outputs-causes"></span><h3>causes<a class="headerlink" href="#causes" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>causes</strong></label><div class="content"><div class="line-block">
+<div class="line">[] | <em>scalar</em> <em>MException</em> | <em>cell</em> <em>vector</em> [<em>nSources</em>] {<em>scalar</em> <em>MException</em>}</div>
+<div class="line">If fatal and all sources succeeded, returns an empty array. If fatal and failed, a scalar MException. If not fatal, has one element per source. Elements of failed sources hold the MException reporting the cause of the failure. Elements of successful sources are empty arrays.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sourcesForLoad.html" class="btn btn-neutral float-left" title="gridfile.sourcesForLoad" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="loadedPrecision.html" class="btn btn-neutral float-right" title="gridfile.loadedPrecision" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

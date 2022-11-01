@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help and Documentation &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 1" href="code1.html" />
+    <link rel="prev" title="Object-Oriented Code" href="oop.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">Introducing DASH</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="overview.html">DASH Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oop.html">Object-Oriented Code</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Help and Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#console-help-text">Console Help Text</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reference-guide">Reference Guide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-note-on-syntax">A note on syntax</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#error-messages">Error Messages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code1.html">Coding 1</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Introducing DASH</a> &raquo;</li>
+      <li>Help and Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="help-and-documentation">
+<h1>Help and Documentation<a class="headerlink" href="#help-and-documentation" title="Permalink to this heading"></a></h1>
+<p>The DASH toolbox includes comprehensive documentation for every class and command. There are several ways to access this documentation.</p>
+<section id="console-help-text">
+<h2>Console Help Text<a class="headerlink" href="#console-help-text" title="Permalink to this heading"></a></h2>
+<p>You can display help text for components of the DASH toolbox using Matlab’s built-in <code class="docutils literal notranslate"><span class="pre">help</span></code> command. To print the help text, enter <code class="docutils literal notranslate"><span class="pre">help</span></code>, followed by the name of the DASH component, in the console. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="w"></span>
+</pre></div>
+</div>
+<p>will display the help text for the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class.</p>
+<p>To display help text for a specific function or method, use the full dot-indexing title of the method. For example, to display help for the <code class="docutils literal notranslate"><span class="pre">run</span></code> method of the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class, use:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">help</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="reference-guide">
+<h2>Reference Guide<a class="headerlink" href="#reference-guide" title="Permalink to this heading"></a></h2>
+<p>The DASH documentation also includes an HTML reference guide for every class and command in the toolbox. This reference guide is essentially an offline website - the reference guide will open in an internet browser, but does not require an internet connection to use. The reference guide is more comprehensive than the console help text, and it includes additional information such as usage examples, experiment demos, and tutorials.</p>
+<p>There are several ways to access the reference guide. The first is using the <code class="docutils literal notranslate"><span class="pre">dash.doc</span></code> command. Entering:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="w"></span>
+</pre></div>
+</div>
+<p>in the Matlab console will open the reference guide at its first page. Alternatively, you can open the documentation page for a particular class or method by using the class or method name as the first input. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="p">(</span><span class="s">&#39;kalmanFilter&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>will open the documentation page for the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class, and:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dash</span><span class="p">.</span><span class="n">doc</span><span class="p">(</span><span class="s">&#39;kalmanFilter.run&#39;</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>will open the documentation page for the <code class="docutils literal notranslate"><span class="pre">run</span></code> method.</p>
+<p>Alternatively, you can open specific documentation pages by clicking on the <strong>“Documentation Page”</strong> hyperlink at the end of console help text.</p>
+</section>
+<section id="a-note-on-syntax">
+<h2>A note on syntax<a class="headerlink" href="#a-note-on-syntax" title="Permalink to this heading"></a></h2>
+<p>Most of the commands in the DASH toolbox are <a class="reference internal" href="oop.html#classes"><span class="std std-ref">class methods</span></a> that act on individual <a class="reference internal" href="oop.html#objects"><span class="std std-ref">objects</span></a>. For example, we previously discussed how we could call the <code class="docutils literal notranslate"><span class="pre">run</span></code> method on different <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> objects to run the algorithm for different experimental parameters. In the documentation of these commands, you will often see the syntax <code class="docutils literal notranslate"><span class="pre">obj.&lt;method</span> <span class="pre">name&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;method</span> <span class="pre">name&gt;</span></code> is the name of the command. This indicates that you should call the command using dot-indexing from individual <em>objects</em>.</p>
+<p>For example, in the documentation <code class="docutils literal notranslate"><span class="pre">kalmanFilter.run</span></code>, the command syntax is listed as:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">obj</span></code> prefix indicates that you should call the <code class="docutils literal notranslate"><span class="pre">run</span></code> command on individual <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> objects. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">objectA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="s">&#39;Experiment A&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">outputA</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">objectA</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+<p>or similarly:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">objectB</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="s">&#39;Experiment B&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">outputB</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">objectB</span><span class="p">.</span><span class="n">run</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="error-messages">
+<h2>Error Messages<a class="headerlink" href="#error-messages" title="Permalink to this heading"></a></h2>
+<p>DASH validates user inputs before running any commands. When these inputs are not valid, DASH will produce an error message. These error messages are written with the user in mind. They typically consist of one to two blocks of error text, and they often refer to the invalid input by name. You can use the reference guide to see the names of the inputs for various commands.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="oop.html" class="btn btn-neutral float-left" title="Object-Oriented Code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code1.html" class="btn btn-neutral float-right" title="Coding 1" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

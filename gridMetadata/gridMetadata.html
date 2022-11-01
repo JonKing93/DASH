@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridMetadata.gridMetadata &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="gridMetadata.edit" href="edit.html" />
+    <link rel="prev" title="gridMetadata" href="../gridMetadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../gridMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../gridMetadata.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../gridMetadata.html#create-edit">Create / Edit</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">gridMetadata</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#dimensionn">dimensionN</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadatan">metadataN</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#attributes">attributes</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#dimensions">dimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#metadata">metadata</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#s">s</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="edit.html">edit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html">index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="setOrder.html">setOrder</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../gridMetadata.html#attribute-manipulation">Attribute Manipulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridMetadata.html#list-dimensions">List Dimensions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gridMetadata.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../gridMetadata.html">gridMetadata</a> &raquo;</li>
+      <li>gridMetadata.gridMetadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridmetadata-gridmetadata">
+<h1>gridMetadata.gridMetadata<a class="headerlink" href="#gridmetadata-gridmetadata" title="Permalink to this heading"></a></h1>
+<p>Creates a new gridMetadata object</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-syntax1"><span class="std std-ref">obj = gridMetadata(dimension1, metadata1, dimension2, metadata2, .., dimensionN, metadataN)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-syntax2"><span class="std std-ref">obj = gridMetadata(…, ‘attributes’, attributes)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-syntax3"><span class="std std-ref">obj = gridMetadata(dimensions, metadata)</span></a></div>
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-syntax4"><span class="std std-ref">obj = gridMetadata(s)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="gridmetadata-gridmetadata-syntax1">
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-outputs-obj"><span class="std std-ref">obj</span></a> = gridMetadata(dimension1, metadata1, dimension2, metadata2, .., <a class="reference internal" href="#gridmetadata-gridmetadata-inputs-dimensionn"><span class="std std-ref">dimensionN</span></a>, <a class="reference internal" href="#gridmetadata-gridmetadata-inputs-metadatan"><span class="std std-ref">metadataN</span></a>)</div>
+</div>
+</pre><p>Creates a metadata object for a gridded dataset.</p>
+<pre><div class="syntax line-block" id="gridmetadata-gridmetadata-syntax2">
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-outputs-obj"><span class="std std-ref">obj</span></a> = gridMetadata(…, ‘attributes’, <a class="reference internal" href="#gridmetadata-gridmetadata-inputs-attributes"><span class="std std-ref">attributes</span></a>)</div>
+</div>
+</pre><p>Include non-dimensional metadata attributes in the metadata object</p>
+<pre><div class="syntax line-block" id="gridmetadata-gridmetadata-syntax3">
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-outputs-obj"><span class="std std-ref">obj</span></a> = gridMetadata(<a class="reference internal" href="#gridmetadata-gridmetadata-inputs-dimensions"><span class="std std-ref">dimensions</span></a>, <a class="reference internal" href="#gridmetadata-gridmetadata-inputs-metadata"><span class="std std-ref">metadata</span></a>)</div>
+</div>
+</pre><p>Uses an alternate syntax to create a metadata object. In this syntax, collect all dimension names into a string vector, and corresponding metadata/attributes in a cell vector.</p>
+<pre><div class="syntax line-block" id="gridmetadata-gridmetadata-syntax4">
+<div class="line"><a class="reference internal" href="#gridmetadata-gridmetadata-outputs-obj"><span class="std std-ref">obj</span></a> = gridMetadata(<a class="reference internal" href="#gridmetadata-gridmetadata-inputs-s"><span class="std std-ref">s</span></a>)</div>
+</div>
+</pre><p>Creates a metadata object from a struct template. Fields of the struct that match dimension names or ‘attributes’ are copied as metadata.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="dimensionn">
+<span id="gridmetadata-gridmetadata-inputs-dimensionn"></span><h3>dimensionN<a class="headerlink" href="#dimensionn" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>dimensionN</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of a dimension of a gridded dataset. Must be a recognized grid dimension. (See gridMetadata.dimensions for a list of available dimensions)</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadatan">
+<span id="gridmetadata-gridmetadata-inputs-metadatan"></span><h3>metadataN<a class="headerlink" href="#metadatan" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>metadataN</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>numeric</em> | <em>logical</em> | <em>char</em> | <em>string</em> | <em>cellstring</em> | <em>datetime</em></div>
+<div class="line">The metadata for the dimension. Cannot have NaN or NaT elements.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="attributes">
+<span id="gridmetadata-gridmetadata-inputs-attributes"></span><h3>attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>attributes</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>struct</em></div>
+<div class="line">Non-dimensional metadata attributes for a gridded dataset. May contain any fields or contents useful for the user.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="dimensions">
+<span id="gridmetadata-gridmetadata-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>dimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
+<div class="line">The list of all dimensions to create in the metadata object. May also include the string “attributes” in order to create non-dimensional attributes.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="metadata">
+<span id="gridmetadata-gridmetadata-inputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {<em>metadata</em> <em>matrix</em> | <em>scalar</em> <em>struct</em>}</div>
+<div class="line">The metadata for each dimension listed in the “dimensions” input. Each metadata value should follow the format described for the “metadataN” input above. Metadata for  non-dimensional attributes should be a scalar struct, which may contain any fields or values.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="s">
+<span id="gridmetadata-gridmetadata-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>s</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>struct</em></div>
+<div class="line">A template for a gridMetadata object. May contain any fields, but fields that match dimension names or ‘attributes’ are copied as metadata for the new gridMetadata object.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="gridmetadata-gridmetadata-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>gridMetadata</em> <em>object</em></div>
+<div class="line">The metadata object for a gridded dataset. The properties/fields of the object are the dimensions with metadata (dimN). Each field holds the associated metadata matrix (metaN). Cellstring metadata are converted to string.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../gridMetadata.html" class="btn btn-neutral float-left" title="gridMetadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="edit.html" class="btn btn-neutral float-right" title="gridMetadata.edit" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

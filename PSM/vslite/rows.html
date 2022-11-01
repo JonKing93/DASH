@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM.vslite.rows &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PSM.vslite.estimate" href="estimate.html" />
+    <link rel="prev" title="PSM.vslite.vslite" href="vslite.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../PSM.html">PSM</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../identity.html">identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdsi.html">pdsi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prysm.html">prysm</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../vslite.html">vslite</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../vslite.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../vslite.html#user-methods">User Methods</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../vslite.html#create">Create</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="../vslite.html#estimate">Estimate</a><ul class="current">
+<li class="toctree-l6 current"><a class="current reference internal" href="#">rows</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#row">row</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#memberrows">memberRows</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#evolvingrows">evolvingRows</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#obj">obj</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#rows">rows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../vslite.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#template">Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../PSM.html">PSM</a> &raquo;</li>
+          <li><a href="../vslite.html">PSM.vslite</a> &raquo;</li>
+      <li>PSM.vslite.rows</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm-vslite-rows">
+<h1>PSM.vslite.rows<a class="headerlink" href="#psm-vslite-rows" title="Permalink to this heading"></a></h1>
+<p>Indicate the stateVector rows used to run a VS-Lite PSM</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-syntax1"><span class="std std-ref">obj = obj.rows(rows)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-syntax2"><span class="std std-ref">obj = obj.rows(memberRows)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-syntax3"><span class="std std-ref">obj = obj.rows(evolvingRows)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-syntax4"><span class="std std-ref">rows = obj.rows</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-syntax5"><span class="std std-ref">obj = obj.rows(‘delete’)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="psm-vslite-rows-syntax1">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(rows)</div>
+</div>
+</pre><p>Indicate the state vector rows that should be used as the monthly temperature and monthly precipitation inputs to the VS-Lite PSM. The input is a column vector with 24 elements. The first 12 elements should be monthly temperatures from January to December (in that order). The last 12 elements should be monthly precipitation from January to December (also in that order).</p>
+<pre><div class="syntax line-block" id="psm-vslite-rows-syntax2">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(<a class="reference internal" href="#psm-vslite-rows-inputs-memberrows"><span class="std std-ref">memberRows</span></a>)</div>
+</div>
+</pre><p>Indicate which state vector row to use for each ensemble member. This syntax allows you to use different state vector rows for different ensemble members. The input is a matrix with 24 rows and one element per ensemble member. The 24 rows should correspond to the climate variables described in the previous syntax.</p>
+<pre><div class="syntax line-block" id="psm-vslite-rows-syntax3">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(<a class="reference internal" href="#psm-vslite-rows-inputs-evolvingrows"><span class="std std-ref">evolvingRows</span></a>)</div>
+</div>
+</pre><p>Indicate which state vector row to use for different  ensembles in an evolving set. This syntax allows you to use different state vector rows for different ensembles in an evolving set. The input should be a 3D array of either size [24 x 1 x nEvolving] or of size [24 x nMembers x nEvolving]. If the second dimension has a size of 1, uses the same row for all the ensemble members in a particular evolving ensemble. If the second dimension has a size of nMembers, allows you to use a different row for each ensemble member in each evolving ensemble.</p>
+<pre><div class="syntax line-block" id="psm-vslite-rows-syntax4">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-outputs-rows"><span class="std std-ref">rows</span></a> = obj.rows</div>
+</div>
+</pre><p>Returns the current rows for the PSM object</p>
+<pre><div class="syntax line-block" id="psm-vslite-rows-syntax5">
+<div class="line"><a class="reference internal" href="#psm-vslite-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(‘delete’)</div>
+</div>
+</pre><p>Deletes any currently specified rows from the VS-Lite PSM object.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="row">
+<span id="psm-vslite-rows-inputs-row"></span><h3>row<a class="headerlink" href="#row" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>row</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>column</em> <em>vector</em>, <em>linear</em> <em>indices</em> [24 <em>x</em> 1]</div>
+<div class="line">The state vector rows that hold the monthly temperature and precipitation inputs required to run the VS-Lite PSM. The first 12 rows are monthly temperatures from January to December (in that order). The last 12 rows are monthly precipitation from January to December (also in that order).</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="memberrows">
+<span id="psm-vslite-rows-inputs-memberrows"></span><h3>memberRows<a class="headerlink" href="#memberrows" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>memberRows</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [24 <em>x</em> <em>nMembers</em>]</div>
+<div class="line">Indicates which state vector row to use for each ensemble member. Should be a matrix with 24 rows (the monthly temperature and precipitation inputs), and one element per ensemble member. Uses the same rows for the ensemble members in different evolving ensembles.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="evolvingrows">
+<span id="psm-vslite-rows-inputs-evolvingrows"></span><h3>evolvingRows<a class="headerlink" href="#evolvingrows" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>evolvingRows</strong></label><div class="content"><div class="line-block">
+<div class="line">3*D* <em>array</em>, <em>linear</em> <em>indices</em> [24 <em>x</em> 1|*nMembers* <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">Indicates which state vector rows to use for different ensembles in an evolving set. Should be a 3D array, and the number of elements along the third dimension should match the number of ensembles in the evolving set. If the second dimension has a length of 1, uses the same rows for all the ensemble members in each evolving ensemble. If the second dimension has a length equal to the number of ensemble members, allows you to indicate which state vector rows to use for each ensemble member in each evolving ensemble.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="psm-vslite-rows-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>vslite</em> <em>object</em></div>
+<div class="line">The VS-Lite PSM with updated rows</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="rows">
+<span id="psm-vslite-rows-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>rows</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>linear</em> <em>indices</em>, [24 <em>x</em> 1|*nMembers* <em>x</em> 1|*nEvolving*]</div>
+<div class="line">The current rows for the VS-Lite PSM.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="vslite.html" class="btn btn-neutral float-left" title="PSM.vslite.vslite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="estimate.html" class="btn btn-neutral float-right" title="PSM.vslite.estimate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

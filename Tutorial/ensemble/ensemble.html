@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 5" href="code5.html" />
+    <link rel="prev" title="ensembleMetadata" href="ensembleMetadata.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">ensemble</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ensemble</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ensemble-files">Ensemble Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ensemble-class"><code class="docutils literal notranslate"><span class="pre">ensemble</span></code> class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#placeholder-for-large-arrays">Placeholder for large arrays</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#load-saved-ensemble">Load Saved Ensemble</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#select-variables-and-members">Select Variables and Members</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#evolving-ensembles">Evolving Ensembles</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#regrid-variable">Regrid Variable</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code5.html">Coding 5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code6.html">Optional: Coding 6</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>ensemble</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble">
+<h1>ensemble<a class="headerlink" href="#ensemble" title="Permalink to this heading"></a></h1>
+<section id="ensemble-files">
+<h2>Ensemble Files<a class="headerlink" href="#ensemble-files" title="Permalink to this heading"></a></h2>
+<p>At the end of the last coding session, we discussed how the <code class="docutils literal notranslate"><span class="pre">stateVector.build</span></code> command can save a state vector ensemble to file, rather than returning the ensemble directly as an array. In general, we recommend saving ensembles to file because it affords several advantages:</p>
+<p>First, ensemble files allow DASH to conserve computer memory when conducting data assimilation. Most commands <strong>do not</strong> require using all the data within an ensemble. Instead, they typically require a small subset of ensemble data - ranging from a few variables (as reconstruction targets), to a few rows (used to run a forward model). Using ensemble files allows the <code class="docutils literal notranslate"><span class="pre">DASH</span></code> toolbox to optimize its use of computer memory and only load data that is strictly necessary for an operation. This can significantly increase the speed of assimilation algorithms later on.</p>
+<p>Other advantages of ensemble files pertain to using an ensemble over multiple coding session. Some ensembles can take a while to build (particularly ensembles with large state vectors). Saving to file allows you to reuse the same ensemble without waiting for it to rebuild. Furthermore, if you select ensemble members randomly, you may select different ensemble members when you rebuild the ensemble. Saving to file ensures that you use the same ensemble members over multiple coding sessions.</p>
+</section>
+<section id="ensemble-class">
+<h2><code class="docutils literal notranslate"><span class="pre">ensemble</span></code> class<a class="headerlink" href="#ensemble-class" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ensemble</span></code> class allows you to manipulate and interact with state vector ensembles saved in these ensemble files. The class implements ensemble objects - each object is associated with a particular ensemble file, and allows you to manipulate and load the data in that file. The class also helps several common routines for data assimilation, such as designing evolving (time-dependent) ensembles. We’ll use the remainder of this page to examine some key features of the <code class="docutils literal notranslate"><span class="pre">ensemble</span></code> class.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h2>
+<section id="placeholder-for-large-arrays">
+<h3>Placeholder for large arrays<a class="headerlink" href="#placeholder-for-large-arrays" title="Permalink to this heading"></a></h3>
+<p>You can use ensemble objects in lieu of data arrays within the <code class="docutils literal notranslate"><span class="pre">DASH</span></code> toolbox. A number of commands in <code class="docutils literal notranslate"><span class="pre">DASH</span></code> require an ensemble as input, but very large ensembles can be difficult to fit in a computer’s active memory. To circumvent this problem, you can use ensemble objects to input ensembles for <code class="docutils literal notranslate"><span class="pre">DASH</span></code> commands. Many <code class="docutils literal notranslate"><span class="pre">DASH</span></code> commands include memory optimizations for large ensembles, and they can use the ensemble object to load necessary data without overwhelming your computer. The ensemble object itself only contains a small amount of metadata about the saved array, so should easily fit in active memory.</p>
+</section>
+<section id="load-saved-ensemble">
+<h3>Load Saved Ensemble<a class="headerlink" href="#load-saved-ensemble" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">ensemble</span></code> class implements a <code class="docutils literal notranslate"><span class="pre">load</span></code> command, which returns the ensemble saved in a file. The ensemble is returned directly as a data array, and if necessary, you can manipulate this data array in the Matlab workspace prior to assimilation. You can also modify the output of the <code class="docutils literal notranslate"><span class="pre">load</span></code> command using the commands described below.</p>
+</section>
+<section id="select-variables-and-members">
+<h3>Select Variables and Members<a class="headerlink" href="#select-variables-and-members" title="Permalink to this heading"></a></h3>
+<p>Sometimes, you may only need a few of the variables saved in an ensemble file. For example, when running an assimilation algorithm, you only need to update the variables that represent reconstruction targets. By using the <code class="docutils literal notranslate"><span class="pre">useVariables</span></code> command, you can modify an ensemble object so that it only represents a subset of variables saved in the file. If you then use the <code class="docutils literal notranslate"><span class="pre">load</span></code> command, the output will only include the requested variables.</p>
+<p>Similarly, you may want an ensemble to use a specific set of ensemble members. For example, if you are implementing a Monte Carlo procedure and rerunning an assimilation using different sets of ensemble members. You can use the <code class="docutils literal notranslate"><span class="pre">useMembers</span></code> command to select specific ensemble members saved in the file. If you then use the <code class="docutils literal notranslate"><span class="pre">load</span></code> command, the output will only include the requested variables.</p>
+</section>
+<section id="evolving-ensembles">
+<h3>Evolving Ensembles<a class="headerlink" href="#evolving-ensembles" title="Permalink to this heading"></a></h3>
+<p>In some cases, you may want to design an evolving ensemble. This is typically the case when you want to use different prior ensembles for different assimilation time steps. You can use the <code class="docutils literal notranslate"><span class="pre">evolving</span></code> command to implement an evolving ensemble. This command allows you to select different sets of saved ensemble members. Each set of ensemble members is used to build a particular ensemble within an evolving set.</p>
+<p>In some cases, you may want to build an evolving ensemble from data saved in different ensemble files. If this is the case, you can build an ensemble by concatenating individual ensemble objects into an vector. Each element of the vector is a particular ensemble in the evolving set. Finally, you can also build evolving ensembles directly from a data array. See the documentation in <code class="docutils literal notranslate"><span class="pre">dash.doc('kalmanFilter')</span></code> and <code class="docutils literal notranslate"><span class="pre">dash.doc('kalmanFilter.prior')</span></code> for more details on these two cases.</p>
+</section>
+<section id="regrid-variable">
+<h3>Regrid Variable<a class="headerlink" href="#regrid-variable" title="Permalink to this heading"></a></h3>
+<p>In some cases, you might want to load a state vector variable on its original data grid, rather than as a state vector. You can use the <code class="docutils literal notranslate"><span class="pre">loadGrid</span></code> command to implement this behavior. This command is best used when you want to double check an ensemble and ensure that everything looks correct. In most other cases, we instead recommend the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.regrid</span></code> command, which provides a more powerful interface.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ensembleMetadata.html" class="btn btn-neutral float-left" title="ensembleMetadata" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code5.html" class="btn btn-neutral float-right" title="Coding 5" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

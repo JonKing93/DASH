@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.gridfileSources.indices &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.gridfileSources.unpack" href="unpack.html" />
+    <link rel="prev" title="dash.gridfileSources.remove" href="remove.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="../gridfileSources.html#methods">Methods</a><ul class="current">
+<li class="toctree-l5 current"><a class="reference internal" href="../gridfileSources.html#catalogue-management">Catalogue Management</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="add.html">add</a></li>
+<li class="toctree-l6"><a class="reference internal" href="remove.html">remove</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">indices</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#sources">sources</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#indices">indices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="unpack.html">unpack</a></li>
+<li class="toctree-l6"><a class="reference internal" href="info.html">info</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../gridfileSources.html#datasource-objects">Datasource Objects</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../gridfileSources.html#file-paths">File Paths</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../gridfileSources.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../stateVectorVariable.html">stateVectorVariable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleFilter.html">ensembleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../gridfileSources.html">dash.gridfileSources</a> &raquo;</li>
+      <li>dash.gridfileSources.indices</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-gridfilesources-indices">
+<h1>dash.gridfileSources.indices<a class="headerlink" href="#dash-gridfilesources-indices" title="Permalink to this heading"></a></h1>
+<p>Parse the indices of data sources in the catalogue</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-indices-syntax1"><span class="std std-ref">indices = obj.indices(sources, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="dash-gridfilesources-indices-syntax1">
+<div class="line"><a class="reference internal" href="#dash-gridfilesources-indices-outputs-indices"><span class="std std-ref">indices</span></a> = obj.indices(<a class="reference internal" href="#dash-gridfilesources-indices-inputs-sources"><span class="std std-ref">sources</span></a>, <a class="reference internal" href="#dash-gridfilesources-indices-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Parse the indices of data sources in the catalogue. Error checks array indices and locates source names. Returns linear indices to the specified sources. Throws error if sources are an unrecognized input type.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="sources">
+<span id="dash-gridfilesources-indices-inputs-sources"></span><h3>sources<a class="headerlink" href="#sources" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>sources</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>any</em> <em>data</em> <em>type</em></div>
+<div class="line">The input being parsed. If valid, should either be array indices or source names.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="dash-gridfilesources-indices-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="indices">
+<span id="dash-gridfilesources-indices-outputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of the specified data sources in the catalogue.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="remove.html" class="btn btn-neutral float-left" title="dash.gridfileSources.remove" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="unpack.html" class="btn btn-neutral float-right" title="dash.gridfileSources.unpack" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

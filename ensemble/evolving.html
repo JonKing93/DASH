@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble.evolving &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensemble.evolvingLabels" href="evolvingLabels.html" />
+    <link rel="prev" title="ensemble.static" href="static.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensemble.html">ensemble</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensemble.html#all-user-methods">All User Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#subset">Subset</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../ensemble.html#design">Design</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="static.html">static</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">evolving</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#members">members</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#e">e</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#enew">eNew</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#labels">labels</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#newlabels">newLabels</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#obj">obj</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="evolvingLabels.html">evolvingLabels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#metadata">Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#load">Load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#information">Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#sizes">Sizes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#add-members">Add Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensemble.html#console-display">Console Display</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble.html#utility-methods">Utility Methods</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensemble.html">ensemble</a> &raquo;</li>
+      <li>ensemble.evolving</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble-evolving">
+<h1>ensemble.evolving<a class="headerlink" href="#ensemble-evolving" title="Permalink to this heading"></a></h1>
+<p>Design evolving ensembles</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax1"><span class="std std-ref">obj = obj.evolving(members)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax2"><span class="std std-ref">obj = obj.evolving(members, newLabels)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax3"><span class="std std-ref">obj = obj.evolving(-1, members)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax3"><span class="std std-ref">obj = obj.evolving(e, members)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax3"><span class="std std-ref">obj = obj.evolving(labels, members)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax4"><span class="std std-ref">obj = obj.evolving(…, members, newLabels)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax5"><span class="std std-ref">obj = obj.evolving(eNew, members)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-syntax6"><span class="std std-ref">obj = obj.evolving(eNew, members, newLabels)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax1">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>)</div>
+</div>
+</pre><p>Designs a new evolving ensemble. Each column of the “members” input indicates the ensemble members that should be used in a particular ensemble, so the number of evolving ensembles will match the number of columns. If the ensemble object previously implemented an evolving ensemble, the evolving labels will all be reset.</p>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax2">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-newlabels"><span class="std std-ref">newLabels</span></a>)</div>
+</div>
+</pre><p>Also applies labels to the ensembles in the evolving ensemble. You must provide one label per evolving ensemble (one label per column of “members”). These evolving labels are distinct from any global label applied to the ensemble object. The evolving labels – accessed via the “evolvingLabels” command – refer to individual ensembles within the evolving ensemble. By contrast, the global label – accessed via the “ensemble.label” command – refers to the ensemble object as a whole.</p>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax3">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(-1, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-e"><span class="std std-ref">e</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>)</div>
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-labels"><span class="std std-ref">labels</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>)</div>
+</div>
+</pre><p>Replaces the ensemble members used for specific ensembles in an existing evolving ensemble. If the first input is -1, sets new ensemble members for all the ensembles in the current evolving ensemble. Unlike the first syntax, this does not reset the evolving labels. Otherwise, use the indices of ensembles in the evolving ensemble, or the labels of evolving ensembles to replace the members of specific ensembles. Note that you can only use evolving labels to reference ensembles that have unique labels. If you want to replace the members of ensembles with the same evolving label, then you will need to specify those ensembles using their indices.</p>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax4">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(…, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-newlabels"><span class="std std-ref">newLabels</span></a>)</div>
+</div>
+</pre><p>In addition to replacing ensemble members, also updates the evolving labels of the specified ensembles.</p>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax5">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-enew"><span class="std std-ref">eNew</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>)</div>
+</div>
+</pre><p>Adds additional ensembles to an evolving ensemble. As usual, the columns of “members” indicate the ensemble members to use for different ensembles. The first input indicates the indices of these new ensembles within the total set of evolving ensembles. Unlike the “e” input in syntax 3, the “eNew” input may include indices greater than the current number of ensembles in the evolving ensemble, and these indices are used to add new ensembles to the evolving set. The “eNew” input must include all indices on the interval: current number of ensembles + 1 : new number of ensembles The “eNew” input may also include the indices of existing ensembles, and these ensembles will have their ensemble members updated.</p>
+<pre><div class="syntax line-block" id="ensemble-evolving-syntax6">
+<div class="line"><a class="reference internal" href="#ensemble-evolving-outputs-obj"><span class="std std-ref">obj</span></a> = obj.evolving(<a class="reference internal" href="#ensemble-evolving-inputs-enew"><span class="std std-ref">eNew</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-members"><span class="std std-ref">members</span></a>, <a class="reference internal" href="#ensemble-evolving-inputs-newlabels"><span class="std std-ref">newLabels</span></a>)</div>
+</div>
+</pre><p>Also applies evolving labels to the new ensembles in the evolving ensemble. If the “eNew” input contains the indices of existing ensembles, updates the labels of those ensembles.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="members">
+<span id="ensemble-evolving-inputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>members</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nMembers</em> <em>x</em> <em>nEnsembles</em>] | <em>logical</em> [<em>nSavedMembers</em> <em>x</em> <em>nEnsembles</em>]</div>
+<div class="line">The ensemble members to use for the ensembles in an evolving ensemble. Each column indicates the ensemble members to use for a particular ensemble. If using linear indices, each element of “members” lists the index of a particular ensemble member saved in the .ens file. If using logical indices, must have one row per saved ensemble member, and the sum of each column must be the same.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="e">
+<span id="ensemble-evolving-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>e</strong></label><div class="content"><div class="line-block">
+<div class="line">-1 | <em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of ensembles in an existing evolving ensemble. If a logical vector, must have one element per ensemble in the evolving set. If a linear vector, cannot include repeat indices. If -1, selects all ensemble members in the current evolving set.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="enew">
+<span id="ensemble-evolving-inputs-enew"></span><h3>eNew<a class="headerlink" href="#enew" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>eNew</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The indices of new (and/or existing) ensembles in an evolving ensemble. Must include every index between the current number of ensembles and the new total number of ensembles. Cannot have repeat elements.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="labels">
+<span id="ensemble-evolving-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>labels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nEnsembles</em>]</div>
+<div class="line">The current labels of ensembles in the evolving set. Must have one element per column in members and cannot contain duplicate elements. You can only use labels to reference ensembles that have unique labels. If multiple ensembles in the evolving set share the same label, reference them using indices instead.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="newlabels">
+<span id="ensemble-evolving-inputs-newlabels"></span><h3>newLabels<a class="headerlink" href="#newlabels" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>newLabels</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [<em>nEnsembles</em>]</div>
+<div class="line">The new labels to apply to the ensembles in an evolving set. Must have one element per column of “members”.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="obj">
+<span id="ensemble-evolving-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
+<div class="line">The ensemble object with updated evolving ensembles.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="static.html" class="btn btn-neutral float-left" title="ensemble.static" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="evolvingLabels.html" class="btn btn-neutral float-right" title="ensemble.evolvingLabels" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

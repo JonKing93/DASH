@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensemble &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ensemble.ensemble" href="ensemble/ensemble.html" />
+    <link rel="prev" title="stateVector.tests" href="stateVector/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ensemble</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#outline">Outline</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#all-user-methods">All User Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/ensemble.html">ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/label.html">label</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#subset">Subset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/useVariables.html">useVariables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/useMembers.html">useMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#design">Design</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/static.html">static</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/evolving.html">evolving</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/evolvingLabels.html">evolvingLabels</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/metadata.html">metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#load">Load</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/load.html">load</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/loadGrid.html">loadGrid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/loadRows.html">loadRows</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#information">Information</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/length.html">length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/variables.html">variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/members.html">members</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sizes">Sizes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/nRows.html">nRows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/nVariables.html">nVariables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/nMembers.html">nMembers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/nEvolving.html">nEvolving</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#add-members">Add Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/addMembers.html">addMembers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/update.html">update</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#console-display">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/disp.html">disp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-methods">Utility Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#assertions">Assertions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/assertEvolvingMembers.html">assertEvolvingMembers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/assertStaticMembers.html">assertStaticMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#indices">Indices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/variableIndices.html">variableIndices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/evolvingIndices.html">evolvingIndices</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/dispEvolving.html">dispEvolving</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/dispVariables.html">dispVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#misc">Misc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/name.html">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/parseScope.html">parseScope</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/validateMatfile.html">validateMatfile</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensemble/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>ensemble</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemble">
+<h1>ensemble<a class="headerlink" href="#ensemble" title="Permalink to this heading"></a></h1>
+<p>Manipulate and load saved state vector ensembles</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The ensemble class implements objects that allow users to interact with a saved state vector ensemble, while minimizing the amount of data that is actually loaded into memory. To that end, the class includes methods that allow users to load select variables and ensemble members, rather than all the data stored in a .ens file. The ensemble class also implements evolving ensembles, and lets users select saved ensemble members to use in different ensembles of an evolving set.</p>
+<p>Ensemble objects can be provided to other commands in the DASH toolbox, such as “PSM.estimate” and “kalmanFilter.prior”. This allows these methods to utilize values in a saved state vector ensemble, without requiring users to load the ensembles into memory. These other commands include various memory optimizations so that even very large ensembles can be used to estimate proxies or used for assimilation.</p>
+<section id="outline">
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
+<p>The following is an outline for using the ensemble class.</p>
+<ol class="arabic simple" start="0">
+<li><p>Use “stateVector.build” with the ‘file’ option to save a state vector ensemble in a .ens file.</p></li>
+<li><p>Use the “ensemble” command to create an ensemble object for the .ens file.</p></li>
+<li><p>Use the “useVariables” command to select the state vector variables required for a particular task.</p></li>
+<li><p>Use “useMembers”, “static”, and/or “evolving” to implement static or evolving ensembles with particular members</p></li>
+<li><p>Use “load” to load the selected variables, ensemble members, or ensembles in an evolving set. Use “loadGrid” to load a variable and regrid it from a state vector to a gridded dataset. Use “loadRows” to load specific state vector rows.</p></li>
+</ol>
+<p>The class also includes various methods that return information about the state vector ensemble. Among others, the “variables”, “length”, “members”, “label”, and “evolvingLabels” commands can all help to facilitate workflows.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="key-methods">
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
+<p>The following methods are among the most essential for users</p>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/ensemble.html"><span class="doc">ensemble</span></a> - Create an ensemble object for a saved state vector ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/useVariables.html"><span class="doc">useVariables</span></a> - Use a subset of saved variables</div>
+<div class="line"><a class="reference internal" href="ensemble/useMembers.html"><span class="doc">useMembers</span></a> - Use a subset of saved ensemble members</div>
+<div class="line"><a class="reference internal" href="ensemble/evolving.html"><span class="doc">evolving</span></a> - Implement an evolving ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/metadata.html"><span class="doc">metadata</span></a> - Return the metadata for an ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/load.html"><span class="doc">load</span></a> - Load portions of a state vector ensemble into memory</div>
+<div class="line"><a class="reference internal" href="ensemble/loadGrid.html"><span class="doc">loadGrid</span></a> - Load a variable in a state vector ensemble as a gridded field</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="all-user-methods">
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
+<p>The complete list of methods for users.</p>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/ensemble.html"><span class="doc">ensemble</span></a> - Create an ensemble object for a saved state vector ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/label.html"><span class="doc">label</span></a> - Set or return a label for an ensemble object</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="subset">
+<h3>Subset<a class="headerlink" href="#subset" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/useVariables.html"><span class="doc">useVariables</span></a> - Use a subset of saved variables</div>
+<div class="line"><a class="reference internal" href="ensemble/useMembers.html"><span class="doc">useMembers</span></a> - Use a subset of saved ensemble members</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="design">
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/static.html"><span class="doc">static</span></a> - Implement a static ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/evolving.html"><span class="doc">evolving</span></a> - Implement an evolving ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/evolvingLabels.html"><span class="doc">evolvingLabels</span></a> - Label the different ensembles in an evolving ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="metadata">
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/metadata.html"><span class="doc">metadata</span></a> - Return the ensembleMetadata object for an ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="load">
+<h3>Load<a class="headerlink" href="#load" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/load.html"><span class="doc">load</span></a> - Loads a state vector ensemble into memory</div>
+<div class="line"><a class="reference internal" href="ensemble/loadGrid.html"><span class="doc">loadGrid</span></a> - Load a variable in a state vector ensemble as a gridded fields</div>
+<div class="line"><a class="reference internal" href="ensemble/loadRows.html"><span class="doc">loadRows</span></a> - Loads specific rows of a state vector ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="information">
+<h3>Information<a class="headerlink" href="#information" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/length.html"><span class="doc">length</span></a> - Return the state vector length of an ensemble and its variables</div>
+<div class="line"><a class="reference internal" href="ensemble/variables.html"><span class="doc">variables</span></a> - List the variables used in an ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/members.html"><span class="doc">members</span></a> - List the ensemble members used in an ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="sizes">
+<h3>Sizes<a class="headerlink" href="#sizes" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/nRows.html"><span class="doc">nRows</span></a> - Return the number of state vector rows for one or more ensemble objects</div>
+<div class="line"><a class="reference internal" href="ensemble/nVariables.html"><span class="doc">nVariables</span></a> - Return the number of state vector variables for one or more ensemble objects</div>
+<div class="line"><a class="reference internal" href="ensemble/nMembers.html"><span class="doc">nMembers</span></a> - Return the number of ensemble members for one or more ensemble objects</div>
+<div class="line"><a class="reference internal" href="ensemble/nEvolving.html"><span class="doc">nEvolving</span></a> - Return the number of ensembles implemented by static or evolving ensemble objects</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="add-members">
+<h3>Add Members<a class="headerlink" href="#add-members" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/addMembers.html"><span class="doc">addMembers</span></a> - Add more members to a saved state vector ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/update.html"><span class="doc">update</span></a> - Update an ensemble object to include new members added to a .ens file</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="console-display">
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/disp.html"><span class="doc">disp</span></a> - Displays an ensemble object in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="utility-methods">
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
+<p>Utility methods that help the class run. These do not implement error checking and are not intended for users.</p>
+<section id="assertions">
+<h3>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/assertEvolvingMembers.html"><span class="doc">assertEvolvingMembers</span></a> - Throw error if input is not a set of ensemble members for an evolving ensemble</div>
+<div class="line"><a class="reference internal" href="ensemble/assertStaticMembers.html"><span class="doc">assertStaticMembers</span></a> - Throw error if input is not ensemble members for a static ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="indices">
+<h3>Indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/variableIndices.html"><span class="doc">variableIndices</span></a> - Parse variables and return indices in state vector</div>
+<div class="line"><a class="reference internal" href="ensemble/evolvingIndices.html"><span class="doc">evolvingIndices</span></a> - Parse ensembles and return indices in the evolving set</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="id1">
+<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/dispEvolving.html"><span class="doc">dispEvolving</span></a> - Display the labels of evolving ensembles in the console</div>
+<div class="line"><a class="reference internal" href="ensemble/dispVariables.html"><span class="doc">dispVariables</span></a> - Display the names and lengths of variables in an ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="misc">
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/name.html"><span class="doc">name</span></a> - Return a name for use in error messages</div>
+<div class="line"><a class="reference internal" href="ensemble/parseScope.html"><span class="doc">parseScope</span></a> - Parse scope inputs</div>
+<div class="line"><a class="reference internal" href="ensemble/validateMatfile.html"><span class="doc">validateMatfile</span></a> - Check .ens file is valid and unaltered</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="unit-tests">
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensemble/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensemble class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stateVector/tests.html" class="btn btn-neutral float-left" title="stateVector.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensemble/ensemble.html" class="btn btn-neutral float-right" title="ensemble.ensemble" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

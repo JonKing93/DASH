@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ensembleMetadata.ensembleMetadata" href="ensembleMetadata/ensembleMetadata.html" />
+    <link rel="prev" title="ensemble.tests" href="ensemble/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ensembleMetadata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#all-user-methods">All User Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/label.html">label</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coordinates">Coordinates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/closestLatLon.html">closestLatLon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/latlon.html">latlon</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#regrid">Regrid</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/regrid.html">regrid</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/rows.html">rows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/members.html">members</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/variable.html">variable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#locate-variables">Locate Variables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/find.html">find</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/identify.html">identify</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-information">Variable Information</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/variables.html">variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/length.html">length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/dimensions.html">dimensions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#manipulate-varaibles">Manipulate Varaibles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/extract.html">extract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/remove.html">remove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/append.html">append</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#manipulate-members">Manipulate Members</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/extractMembers.html">extractMembers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/removeMembers.html">removeMembers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/appendMembers.html">appendMembers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#console-display">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/disp.html">disp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-methods">Utility Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#misc">Misc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/name.html">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/variableIndices.html">variableIndices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/subscriptRows.html">subscriptRows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/getLatLon.html">getLatLon</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/dispVariables.html">dispVariables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/dispEnsemble.html">dispEnsemble</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="ensembleMetadata/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>ensembleMetadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata">
+<h1>ensembleMetadata<a class="headerlink" href="#ensemblemetadata" title="Permalink to this heading"></a></h1>
+<p>Obtain metadata along the rows and members of a state vector ensemble</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The ensembleMetadata class provides functions that allow users to query and locate metadata at different points in a state vector ensemble. The class has several main purposes:</p>
+<ol class="upperalpha simple">
+<li><p>Locating data values needed to run proxy system models,</p></li>
+<li><p>Obtaining the coordinates of state vector elements for covariance localization, and</p></li>
+<li><p>Reshaping state vector variables back into gridded datasets.</p></li>
+</ol>
+<p>Additionally, by allowing users to locate different elements in an ensemble, the class can help facilitate miscellaneous scientific tasks not explicitly supported by the DASH toolbox.</p>
+<p>The following is an overview for using the ensembleMetadata class</p>
+<ol class="arabic simple">
+<li><p>Use the “ensemble.metadata” command to return an ensembleMetadata object for a saved state vector ensemble. Alternatively, use the “ensembleMetadata” command to build a metadata object from a stateVector object.</p></li>
+<li><p>Use “closestLatLon” to locate data values closest to proxy sites for generating proxy estimates.</p></li>
+<li><p>Use “latlon” to return latitude-longitude coordinates of state vector elements for covariance localization.</p></li>
+<li><p>Use “regrid” to reshape state vector variables back into gridded datasets.</p></li>
+<li><p>Use “rows”, “members” and “variable” to return metadata at state vector rows, ensemble members, and variables in the state vector ensemble.</p></li>
+<li><p>Use “find” and “identify” to locate variables within the overall state vector.</p></li>
+</ol>
+<p>The class also includes methods that return information about an ensemble. Among others, the “variables”, “length”, “members”, “label”, and “dimensions” commands can all facilitate workflows.</p>
+<p>The class also provides methods that facilitate splitting ensembles into multiple pieces (for example, variables required for proxy estimation, and variables used in an assimilation prior). The “extract”, “remove”, and “append” methods can assist with manipulating variables, while “extractMembers” ,”removeMembers”, and “appendMembers” can assist with manipulating ensemble members.</p>
+</section>
+<hr class="docutils" />
+<section id="key-methods">
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
+<p>The following methods are among the most essential for users</p>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/closestLatLon.html"><span class="doc">closestLatLon</span></a> - Locates data values closest to a set of coordinates</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/latlon.html"><span class="doc">latlon</span></a> - Return latitude-longitude coordinates for all state vector elements</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/regrid.html"><span class="doc">regrid</span></a> - Reshape state vectors back into gridded datasets</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="all-user-methods">
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
+<p>The complete list of methods for users.</p>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/ensembleMetadata.html"><span class="doc">ensembleMetadata</span></a> - Build an ensembleMetadata object for a stateVector object</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/label.html"><span class="doc">label</span></a> - Return and apply labels for a metadata object</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="coordinates">
+<h3>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/closestLatLon.html"><span class="doc">closestLatLon</span></a> - Locate data values closest to a set of coordinates</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/latlon.html"><span class="doc">latlon</span></a> - Return latitude-longitude coordinates for all state vector elements</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="regrid">
+<h3>Regrid<a class="headerlink" href="#regrid" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/regrid.html"><span class="doc">regrid</span></a> - Reshape state vectors back into gridded datasets</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="metadata">
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/rows.html"><span class="doc">rows</span></a> - Return metadata down the rows of the state vector</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/members.html"><span class="doc">members</span></a> - Return metadata across the ensemble members (columns) of a state vector ensemble</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/variable.html"><span class="doc">variable</span></a> - Return metadata for specific variables in a state vector ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="locate-variables">
+<h3>Locate Variables<a class="headerlink" href="#locate-variables" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/find.html"><span class="doc">find</span></a> - Locate state vector rows corresponding to specified variables</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/identify.html"><span class="doc">identify</span></a> - Determine which variables are associated with specified state vector rows</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="variable-information">
+<h3>Variable Information<a class="headerlink" href="#variable-information" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/variables.html"><span class="doc">variables</span></a> - List the variables in a state vector ensemble</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/length.html"><span class="doc">length</span></a> - Return the length of a state vector and its variables</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/dimensions.html"><span class="doc">dimensions</span></a> - List the state and ensemble dimensions of variables in an ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="manipulate-varaibles">
+<h3>Manipulate Varaibles<a class="headerlink" href="#manipulate-varaibles" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/extract.html"><span class="doc">extract</span></a> - Update metadata to only include specified variables</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/remove.html"><span class="doc">remove</span></a> - Remove specified variables from metadata</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/append.html"><span class="doc">append</span></a> - Add new variables to metadata</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="manipulate-members">
+<h3>Manipulate Members<a class="headerlink" href="#manipulate-members" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/extractMembers.html"><span class="doc">extractMembers</span></a> - Update metadata to only include specified ensemble members</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/removeMembers.html"><span class="doc">removeMembers</span></a> - Remove specified ensemble members from metadata</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/appendMembers.html"><span class="doc">appendMembers</span></a> - Add new ensemble members to metadata</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="console-display">
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/disp.html"><span class="doc">disp</span></a> - Displays an ensembleMetadata object in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="utility-methods">
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
+<p>Utility methods that help the class run. These do not implement error checking and are not intended for users.</p>
+<section id="misc">
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/name.html"><span class="doc">name</span></a> - Return a name for the metadata for use in error messages</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/variableIndices.html"><span class="doc">variableIndices</span></a> - Parse input variables and return indices</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/subscriptRows.html"><span class="doc">subscriptRows</span></a> - Return subscripted state dimension indices for specified state vector rows</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/getLatLon.html"><span class="doc">getLatLon</span></a> - Extract latitude-longitude coordinates for a variable</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="id1">
+<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/dispVariables.html"><span class="doc">dispVariables</span></a> - Display state vector variables in the console</div>
+<div class="line"><a class="reference internal" href="ensembleMetadata/dispEnsemble.html"><span class="doc">dispEnsemble</span></a> - Display ensemble dimensions in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="ensembleMetadata/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensembleMetadata class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ensemble/tests.html" class="btn btn-neutral float-left" title="ensemble.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensembleMetadata/ensembleMetadata.html" class="btn btn-neutral float-right" title="ensembleMetadata.ensembleMetadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

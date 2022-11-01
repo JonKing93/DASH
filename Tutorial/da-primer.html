@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Assimilation Primer &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial Outline" href="tutorial-outline.html" />
+    <link rel="prev" title="Before Starting" href="before-starting.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="before-starting.html">Before Starting</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DA Primer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#state-vectors">State Vectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ensembles">Ensembles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proxy-estimates">Proxy Estimates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proxy-uncertainties">Proxy Uncertainties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kalman-filter">Kalman Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+      <li>Data Assimilation Primer</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="data-assimilation-primer">
+<h1>Data Assimilation Primer<a class="headerlink" href="#data-assimilation-primer" title="Permalink to this heading"></a></h1>
+<p>Before beginning the tutorial, it will be useful to have a basic understanding of paleoclimate data assimilation (DA). On this page, we’ll provide an overview of DA and review some common tasks for these analyses. DASH is often used to implement Kalman filters, so we’ll also briefly review this method. (We'll also describe DASH's DA algorithms in greater detail later in the tutorial).</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>In the broadest terms, data assimilation combines climate model output (<span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span>) with proxy records (<span class="math notranslate nohighlight">\(\mathrm{Y}\)</span>) to create reconstruct a set of target climate variables (<span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span>). Formally, we can write this as:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{X_a} = f(\mathrm{X_p, Y})\]</div>
+<p>The reconstruction proceeds by updating climate variables in the climate model output (<span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span>) to more closely match the proxy records (<span class="math notranslate nohighlight">\(\mathrm{Y}\)</span>). The updated climate variables (<span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span>), sometimes called the (a)nalysis, form the reconstruction.</p>
+<p>Two of the most common paleoclimate DA techniques - the Kalman filter, and the particle filter - can be expressed as Bayesian filters. In this context, information from the climate proxy records <span class="math notranslate nohighlight">\(\mathrm{Y}\)</span> is used to update estimates of state parameters (climate variables) <span class="math notranslate nohighlight">\(\mathrm{X}\)</span>. Because of this, we will often refer to the initial climate model output <span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span> as the <strong>prior</strong>, and the updated output <span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span> as the <strong>posterior</strong>.</p>
+</section>
+<section id="state-vectors">
+<h2>State Vectors<a class="headerlink" href="#state-vectors" title="Permalink to this heading"></a></h2>
+<p>In general, the climate model output is organized into <strong>state vectors</strong>. These consist of spatiotemporal climate model output reshaped into a vector of data values:</p>
+<figure class="align-default" id="id1">
+<img alt="A blue grid overlies a map of the world. The map is unraveled into a single vector." src="../_images/state-vector.png" />
+<figcaption>
+<p><span class="caption-text">Figure 1: A spatial field is reshaped into a state vector. (Red triangles represent the locations of proxy sites).</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>There is no strict definition for the contents of a state vector, but they typically include data for one or more climate variables at a set of spatial points. A state vector might also contain a trajectory of successive points in time; for example, individual months of the year or a number of successive years following an event of interest. Essentially, <strong>a state vector serves as a possible description of the climate system</strong> for some period of time.</p>
+</section>
+<section id="ensembles">
+<h2>Ensembles<a class="headerlink" href="#ensembles" title="Permalink to this heading"></a></h2>
+<p>The DASH toolbox focuses on ensemble DA methods, which rely on state vector <strong>ensembles</strong>. A state vector ensemble is a collection of multiple state vectors organized in a matrix:</p>
+<figure class="align-default" id="id2">
+<img alt="Multiple maps of the world are reshaped into vectors. The vectors are grouped together, and the grouping is labeled as an ensemble." src="../_images/ensemble.png" />
+<figcaption>
+<p><span class="caption-text">Figure 2: Multiple state vectors are grouped together into an ensemble.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>An ensemble provides an empirical distribution of possible climate states.</strong> For paleoclimate DA, ensemble members are often selected from different points in time, different members of a model ensemble, or both.</p>
+<p>In a typical DA algorithm, the state vectors in an ensemble are compared to a set of proxy record values in a given time step. Essentially, the method compares potential descriptions of the climate system (taken from a climate model) to proxy values from the real past climate record. The similarity of each state vector to the proxy records is then informs the final reconstruction.</p>
+</section>
+<section id="proxy-estimates">
+<h2>Proxy Estimates<a class="headerlink" href="#proxy-estimates" title="Permalink to this heading"></a></h2>
+<p>In order to compare state vectors with a set of proxy record values, DA methods must transfer the state vectors and proxy records into a common unit space. This is accomplished by applying proxy forward models to relevant climate variables stored in each state vector. Applying a forward model to a state vector produces a value in the same units as the corresponding proxy record, which allows direct comparison of the state vector and observed proxy value.</p>
+<p>Typically, DA methods will run a forward model to estimate each proxy record for each state vector in an ensemble. The collective outputs are referred to as the <strong>proxy estimates</strong> (<span class="math notranslate nohighlight">\(\mathrm{\hat{Y}}\)</span>):</p>
+<figure class="align-default" id="id3">
+<img alt="The left side shows a group of state vectors. An arrow labeled as &quot;Forward Models&quot; points from left to right. The right side shows a cartoon depictions of a tree ring and an ice core for each state vector. These cartoons are labeled as the &quot;Estimates&quot;." src="../_images/estimates.png" />
+<figcaption>
+<p><span class="caption-text">Figure 3: Proxy estimates for a state vector ensemble. Forward models are used to estimate a tree-ring record and an ice-core record for each state vector in the ensemble.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Ultimately, these proxy estimates allow comparison of each state vector with the real proxy records. The difference between the proxy estimates and the real records is known as the <strong>innovation</strong>:</p>
+<figure class="align-default" id="id4">
+<img alt="The left side shows a set of cartoon tree rings and ice cores representing the proxy estimates for an ensemble. An arrow labeled &quot;Direct Comparison&quot; points from left to right. The right side shows a picture of a real tree ring record and a real ice core labeled as &quot;Real proxy records&quot;." src="../_images/innovation.png" />
+<figcaption>
+<p><span class="caption-text">Figure 4: Proxy estimates are compared directly to the real proxy records. The difference between the two is known as the <em>innovation</em>.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Written formally:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{innovation = Y - \hat{Y}}\]</div>
+<p>The innovation is then used to update the prior ensemble (<span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span>) so that it more closely resembles the observed proxy records.</p>
+</section>
+<section id="proxy-uncertainties">
+<h2>Proxy Uncertainties<a class="headerlink" href="#proxy-uncertainties" title="Permalink to this heading"></a></h2>
+<p>In addition to proxy innovations, the DA methods in DASH also consider proxy uncertainties (<span class="math notranslate nohighlight">\(\mathrm{R}\)</span>) when comparing state vector to proxy records. More formally:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{X_{a}} = f\mathrm{(X_p, Y, R)}\]</div>
+<p>In this way, proxy records with high uncertainties are given less weight in the reconstruction. In classical assimilation frameworks <span class="math notranslate nohighlight">\(\mathrm{R}\)</span> is usually derived from the uncertainty inherent in measuring an observed quantity (for example, the uncertainty of width measurements in a tree-ring chronology). However, in nearly all paleoclimate applications, measurement uncertainties are small compared to</p>
+<ol class="arabic simple">
+<li><p>The uncertainties of the proxy forward models, and</p></li>
+<li><p>Uncertainties from non-climatic noise in the proxy records</p></li>
+</ol>
+<p>Thus, in paleoclimate DA, the proxy uncertainties <span class="math notranslate nohighlight">\(\mathrm{R}\)</span> must account for proxy noise and forward model errors, as well as any covariance between different proxy uncertainties.</p>
+</section>
+<section id="kalman-filter">
+<h2>Kalman Filter<a class="headerlink" href="#kalman-filter" title="Permalink to this heading"></a></h2>
+<p>When using a Kalman filter, the update equation is:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{X_a = X_p + K( Y - \hat{Y})}\]</div>
+<p>The equation indicates that the innovation is weighted by the Kalman Gain matrix (K) in order to compute an update for each state vector. The Kalman Gain weighting considers multiple factors including:</p>
+<ol class="arabic simple">
+<li><p>The covariance of the proxy estimates (<span class="math notranslate nohighlight">\(\mathrm{\hat{Y}}\)</span>) with the target climate variables (<span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span>)</p></li>
+<li><p>The covariance of the proxy estimates (<span class="math notranslate nohighlight">\(\mathrm{\hat{Y}}\)</span>) with each other, and</p></li>
+<li><p>The proxy uncertainties (<span class="math notranslate nohighlight">\(\mathrm{R}\)</span>)</p></li>
+</ol>
+<p>Written formally, the Kalman Gain matrix is given by:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{K = cov(X, \hat{Y})[cov(\hat{Y}) + R]}^{-1}\]</div>
+<p>You won’t need to remember this equation for the tutorial, but it can be useful to understand how the assimilation works.</p>
+<p>Applying the Kalman Gain to the innovation produces a set of updates. Applying these updates to the prior ensemble (<span class="math notranslate nohighlight">\(\mathrm{X_p}\)</span>) produces an updated (posterior) ensemble (<span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span>), such that the climate states (state vectors) in <span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span> more closely resemble those recorded by the real proxy records.</p>
+<p>Typically, we use the mean of this updated ensemble as the final reconstruction. However, the ensemble nature of the posterior is also useful because the distribution of climate variables across <span class="math notranslate nohighlight">\(\mathrm{X_a}\)</span> can help quantify uncertainty in the reconstruction.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="before-starting.html" class="btn btn-neutral float-left" title="Before Starting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorial-outline.html" class="btn btn-neutral float-right" title="Tutorial Outline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

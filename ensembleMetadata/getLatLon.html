@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata.getLatLon &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ensembleMetadata.dispVariables" href="dispVariables.html" />
+    <link rel="prev" title="ensembleMetadata.subscriptRows" href="subscriptRows.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensembleMetadata.html#all-user-methods">All User Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../ensembleMetadata.html#utility-methods">Utility Methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../ensembleMetadata.html#misc">Misc</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="name.html">name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="variableIndices.html">variableIndices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="subscriptRows.html">subscriptRows</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">getLatLon</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#v">v</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#variablerows">variableRows</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#latlondimensions">latlonDimensions</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#sitedimension">siteDimension</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#columns">columns</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#coordinates">coordinates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#id1">Console Display</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleMetadata.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../ensembleMetadata.html">ensembleMetadata</a> &raquo;</li>
+      <li>ensembleMetadata.getLatLon</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata-getlatlon">
+<h1>ensembleMetadata.getLatLon<a class="headerlink" href="#ensemblemetadata-getlatlon" title="Permalink to this heading"></a></h1>
+<p>Return latitude-longitude coordinates for a variable</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-syntax1"><span class="std std-ref">coordinates = obj.getLatLon(v, variableRows, …)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-syntax2"><span class="std std-ref">coordinates = obj.getLatLon(v, variableRows, latlonDimensions)</span></a></div>
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-syntax3"><span class="std std-ref">coordinates = obj.getLatLon(v, variableRows, siteDimension, columns)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="ensemblemetadata-getlatlon-syntax1">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.getLatLon(<a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-variablerows"><span class="std std-ref">variableRows</span></a>, …)</div>
+</div>
+</pre><p>Obtains latitude-longitude coordinates at the specified rows of avariable in a state vector. Extracts coordinates from either the lat and lon dimensions, or from the site dimension. If the variable is missing the required dimensions, returns NaN coordinates. Also returns NaN coordinates if the variable implements a mean over the dimensions. Expects the lat/lon coordinate metadata for each row to either be a numeric scalar, string scalar, or char row vector. Returns NaN coordinates if the metadata does not follow this format. If the coordinate metadata is string or char, converts the coordinate to a numeric format using the “str2double” function. If the coordinate cannot be converted, uses a NaN coordinate for the row.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-getlatlon-syntax2">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.getLatLon(<a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-variablerows"><span class="std std-ref">variableRows</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-latlondimensions"><span class="std std-ref">latlonDimensions</span></a>)</div>
+</div>
+</pre><p>Extracts coordinate metadata from the lat and lon dimensions.</p>
+<pre><div class="syntax line-block" id="ensemblemetadata-getlatlon-syntax3">
+<div class="line"><a class="reference internal" href="#ensemblemetadata-getlatlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.getLatLon(<a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-variablerows"><span class="std std-ref">variableRows</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-sitedimension"><span class="std std-ref">siteDimension</span></a>, <a class="reference internal" href="#ensemblemetadata-getlatlon-inputs-columns"><span class="std std-ref">columns</span></a>)</div>
+</div>
+</pre><p>Extracts coordinate metadata from the site dimension. Coordinates are extracted from the indicated columns of the metadata. If the site metadata is missing a column, returns NaN for that coordinate.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="v">
+<span id="ensemblemetadata-getlatlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>linear</em> <em>index</em></div>
+<div class="line">The index of a variable in the state vector</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="variablerows">
+<span id="ensemblemetadata-getlatlon-inputs-variablerows"></span><h3>variableRows<a class="headerlink" href="#variablerows" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableRows</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">Rows of the variable at which to return latitude-longitude coordinates. These rows are interpreted relative to the variable, rather than the overall state vector.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="latlondimensions">
+<span id="ensemblemetadata-getlatlon-inputs-latlondimensions"></span><h3>latlonDimensions<a class="headerlink" href="#latlondimensions" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>latlonDimensions</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>vector</em> [2]</div>
+<div class="line">The names of the lat and lon dimension. First element is lat, and second element is lon.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sitedimension">
+<span id="ensemblemetadata-getlatlon-inputs-sitedimension"></span><h3>siteDimension<a class="headerlink" href="#sitedimension" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>siteDimension</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">The name of the site dimension</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="columns">
+<span id="ensemblemetadata-getlatlon-inputs-columns"></span><h3>columns<a class="headerlink" href="#columns" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>columns</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em> [2], <em>positive</em> <em>integers</em> | <em>NaN</em></div>
+<div class="line">If extracting coordinates from the site dimension, indicates which columns of site metadata hold the latitude and longitude coordinates. The first element is latitude and the second element is longitude. This input is ignored when extracting metadata from the lat and lon dimensions.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="coordinates">
+<span id="ensemblemetadata-getlatlon-outputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nVariableRows</em> <em>x</em> 2]</div>
+<div class="line">The latitude and longitude coordinate for each row of the variable. A matrix with two columns. The first column holds the latitude points, and the second column holds longitude.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="subscriptRows.html" class="btn btn-neutral float-left" title="ensembleMetadata.subscriptRows" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dispVariables.html" class="btn btn-neutral float-right" title="ensembleMetadata.dispVariables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

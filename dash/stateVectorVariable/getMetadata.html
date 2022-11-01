@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.stateVectorVariable.getMetadata &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.stateVectorVariable.finalize" href="finalize.html" />
+    <link rel="prev" title="dash.stateVectorVariable.validateGrid" href="validateGrid.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#classes">Classes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../dataSource.html">dataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../gridfileSources.html">gridfileSources</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../stateVectorVariable.html">stateVectorVariable</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../stateVectorVariable.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../stateVectorVariable.html#methods">Methods</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#create">Create</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#design">Design</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#dimensions-and-sizes">Dimensions And Sizes</a></li>
+<li class="toctree-l5 current"><a class="reference internal" href="../stateVectorVariable.html#gridfile-interactions">Gridfile Interactions</a><ul class="current">
+<li class="toctree-l6"><a class="reference internal" href="validateGrid.html">validateGrid</a></li>
+<li class="toctree-l6 current"><a class="current reference internal" href="#">getMetadata</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#d">d</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#grid">grid</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="#metadata">metadata</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#failed">failed</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#cause">cause</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#utilities-for-build">Utilities For Build</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#select-ensemble-members">Select Ensemble Members</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#build-members">Build Members</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#info">Info</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#serialization">Serialization</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../stateVectorVariable.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../ensembleFilter.html">ensembleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../posteriorCalculation.html">posteriorCalculation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../stateVectorVariable.html">dash.stateVectorVariable</a> &raquo;</li>
+      <li>dash.stateVectorVariable.getMetadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-statevectorvariable-getmetadata">
+<h1>dash.stateVectorVariable.getMetadata<a class="headerlink" href="#dash-statevectorvariable-getmetadata" title="Permalink to this heading"></a></h1>
+<p>Return metadata along a dimension of a state vector variable</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-statevectorvariable-getmetadata-syntax1"><span class="std std-ref">[metadata, failed, cause] = obj.getMetadata(d, grid, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="dash-statevectorvariable-getmetadata-syntax1">
+<div class="line">[<a class="reference internal" href="#dash-statevectorvariable-getmetadata-outputs-metadata"><span class="std std-ref">metadata</span></a>, <a class="reference internal" href="#dash-statevectorvariable-getmetadata-outputs-failed"><span class="std std-ref">failed</span></a>, <a class="reference internal" href="#dash-statevectorvariable-getmetadata-outputs-cause"><span class="std std-ref">cause</span></a>] = obj.getMetadata(<a class="reference internal" href="#dash-statevectorvariable-getmetadata-inputs-d"><span class="std std-ref">d</span></a>, <a class="reference internal" href="#dash-statevectorvariable-getmetadata-inputs-grid"><span class="std std-ref">grid</span></a>, <a class="reference internal" href="#dash-statevectorvariable-getmetadata-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Returns final metadata at the state or reference indices along the indexed dimension. Selects metadata from raw gridfile metadata, user-specified alternate metadata, or from the output of a conversion function, as appropriate.</p>
+<p>In some cases, the method can fail to return the metadata. This can occur if a gridfile fails to build, or if a metadata conversion function fails. In this case, the method notes the failure and returns the cause of the failure.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="d">
+<span id="dash-statevectorvariable-getmetadata-inputs-d"></span><h3>d<a class="headerlink" href="#d" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>d</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>linear</em> <em>index</em></div>
+<div class="line">The index of a dimension in the variable</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="grid">
+<span id="dash-statevectorvariable-getmetadata-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>grid</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>gridfile</em> <em>object</em></div>
+<div class="line">The gridfile object required to load the metadata. If grid is a string scalar, attempts to build the gridfile when gridfile metadata is required. If grid is a gridfile object, extracts metadata directly from the object without validating.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="dash-statevectorvariable-getmetadata-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for thrown error IDs.</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="metadata">
+<span id="dash-statevectorvariable-getmetadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>metadata</strong></label><div class="content"><div class="line-block">
+<div class="line">[] | <em>metadata</em> <em>matrix</em></div>
+<div class="line">Metadata for the dimension. If the method failed to obtain the metadata, returns an empty array.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="failed">
+<span id="dash-statevectorvariable-getmetadata-outputs-failed"></span><h3>failed<a class="headerlink" href="#failed" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>failed</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">True if the method failed to return the metadata. Otherwise false</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="cause">
+<span id="dash-statevectorvariable-getmetadata-outputs-cause"></span><h3>cause<a class="headerlink" href="#cause" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>cause</strong></label><div class="content"><div class="line-block">
+<div class="line">[] | <em>scalar</em> <em>MException</em></div>
+<div class="line">The cause of the metadata failure. If the metadata was returned successfully, an empty array.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="validateGrid.html" class="btn btn-neutral float-left" title="dash.stateVectorVariable.validateGrid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="finalize.html" class="btn btn-neutral float-right" title="dash.stateVectorVariable.finalize" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

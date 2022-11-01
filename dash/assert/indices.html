@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.assert.indices &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.assert.indexCollection" href="indexCollection.html" />
+    <link rel="prev" title="dash.assert.covariances" href="covariances.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../is.html">is</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../assert.html">assert</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#strings">Strings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#size-and-data-type">Size And Data Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#misc-size">Misc Size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#numeric">Numeric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#covariances">Covariances</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../assert.html#indices">Indices</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">indices</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#indices">indices</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#length">length</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#name">name</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#logicalrequirement">logicalRequirement</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#linearmaxname">linearMaxName</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#header">header</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#dash-assert-indices-outputs-indices">indices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="indexCollection.html">indexCollection</a></li>
+<li class="toctree-l5"><a class="reference internal" href="additiveIndices.html">additiveIndices</a></li>
+<li class="toctree-l5"><a class="reference internal" href="additiveIndexCollection.html">additiveIndexCollection</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#misc">Misc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../assert.html#unit-tests">Unit Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../parse.html">parse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../assert.html">dash.assert</a> &raquo;</li>
+      <li>dash.assert.indices</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-assert-indices">
+<h1>dash.assert.indices<a class="headerlink" href="#dash-assert-indices" title="Permalink to this heading"></a></h1>
+<p>Throw error if input is neither logical indices nor linear indices</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-syntax1"><span class="std std-ref">indices = dash.assert.indices(indices)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-indices-syntax2"><span class="std std-ref">indices = dash.assert.indices(indices, length)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-assert-indices-syntax3"><span class="std std-ref">indices = dash.assert.indices(indices, length, name, logicalRequirement, linearMaxName, header)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="dash-assert-indices-syntax1">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-outputs-indices"><span class="std std-ref">indices</span></a> = dash.assert.indices(<a class="reference internal" href="#dash-assert-indices-inputs-indices"><span class="std std-ref">indices</span></a>)</div>
+</div>
+</pre><p>Checks if input is a vector of logical or linear indices. If not throws an error message. If so, returns the input as linear indices.</p>
+<pre><div class="syntax line-block" id="dash-assert-indices-syntax2">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-outputs-indices"><span class="std std-ref">indices</span></a> = dash.assert.indices(<a class="reference internal" href="#dash-assert-indices-inputs-indices"><span class="std std-ref">indices</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-length"><span class="std std-ref">length</span></a>)</div>
+</div>
+</pre><p>Also requires indices to be compatible with a specified dimension length. To be valid, a vector logical indices must match the length of the array. For linear indices, the values of individual elements cannot exceed the length of the dimension.</p>
+<pre><div class="syntax line-block" id="dash-assert-indices-syntax3">
+<div class="line"><a class="reference internal" href="#dash-assert-indices-outputs-indices"><span class="std std-ref">indices</span></a> = dash.assert.indices(<a class="reference internal" href="#dash-assert-indices-inputs-indices"><span class="std std-ref">indices</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-length"><span class="std std-ref">length</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-name"><span class="std std-ref">name</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-logicalrequirement"><span class="std std-ref">logicalRequirement</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-linearmaxname"><span class="std std-ref">linearMaxName</span></a>, <a class="reference internal" href="#dash-assert-indices-inputs-header"><span class="std std-ref">header</span></a>)</div>
+</div>
+</pre><p>Customize the error message and error ID.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="indices">
+<span id="dash-assert-indices-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>any</em> <em>data</em> <em>type</em></div>
+<div class="line">The input being tested.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="length">
+<span id="dash-assert-indices-inputs-length"></span><h3>length<a class="headerlink" href="#length" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>length</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>positive</em> <em>integer</em> | []</div>
+<div class="line">The length of the array dimension that the indices are for. Logical indices must be a vector of this length, and linear indices cannot exceed this length. If an empty array, does not check indices against a dimension length</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="name">
+<span id="dash-assert-indices-inputs-name"></span><h3>name<a class="headerlink" href="#name" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>name</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name to use for the input in error messages Default is “input”.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="logicalrequirement">
+<span id="dash-assert-indices-inputs-logicalrequirement"></span><h3>logicalRequirement<a class="headerlink" href="#logicalrequirement" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>logicalRequirement</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name to use for the length requirement of logical index vectors in error messages. Default is “be the length of the dimension”.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="linearmaxname">
+<span id="dash-assert-indices-inputs-linearmaxname"></span><h3>linearMaxName<a class="headerlink" href="#linearmaxname" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>linearMaxName</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">A name to use for the maximum allowed linear index. Default is “the length of the dimension”.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="header">
+<span id="dash-assert-indices-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>header</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>string</em> <em>scalar</em></div>
+<div class="line">Header for error IDs. Default is “DASH:assert:indices”</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="dash-assert-indices-outputs-indices">
+<span id="id1"></span><h3>indices<a class="headerlink" href="#dash-assert-indices-outputs-indices" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>indices</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
+<div class="line">The input as linear indices.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="covariances.html" class="btn btn-neutral float-left" title="dash.assert.covariances" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="indexCollection.html" class="btn btn-neutral float-right" title="dash.assert.indexCollection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

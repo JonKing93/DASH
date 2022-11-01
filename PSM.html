@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="PSM.supported" href="PSM/supported.html" />
+    <link rel="prev" title="ensembleMetadata.tests" href="ensembleMetadata/tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PSM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#outline">Outline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-forward-models">Supported Forward Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-new-forward-models">Developing New Forward Models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#information">Information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/supported.html">supported</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/info.html">info</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/githubInfo.html">githubInfo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#download">Download</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/download.html">download</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#estimate">Estimate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/estimate.html">estimate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#forward-model-interface">Forward Model Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/Interface.html">Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#forward-models">Forward Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/bayfox.html">bayfox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/baymag.html">baymag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/bayspar.html">bayspar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/identity.html">identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/pdsi.html">pdsi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/prysm.html">prysm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PSM/vslite.html">vslite</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#template">Template</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/template.html">template</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="PSM/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>PSM</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm">
+<h1>PSM<a class="headerlink" href="#psm" title="Permalink to this heading"></a></h1>
+<p>Classes and functions that facilitate using forward models to estimate proxy observations</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The PSM package facilitates calculating proxy observation estimates. The package allows users to apply proxy forward models to state vector ensembles in order to estimate proxy values. The package has several main uses. In brief, the PSM package:</p>
+<ol class="upperalpha simple">
+<li><p>Provides classes that implement proxy forward models</p></li>
+<li><p>Downloads the codebases of supported models from Github, and</p></li>
+<li><p>Applies forward models to state vector ensembles.</p></li>
+</ol>
+<p>At its core, the PSM package provides an interface that allows users to run a variety of proxy forward models using the same set of commands. You can learn about the commen set of commands by reading the documentation for PSM.Interface.</p>
+<section id="outline">
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
+<p>The following is a outline for using the PSM package.</p>
+<ol class="arabic simple">
+<li><p>Use “info” to learn about the forward models supported by DASH</p></li>
+<li><p>Use “download” to download the code for the desired forward models</p></li>
+<li><p>Use the forward model interface to design a forward model for each of the proxy observation sites. a. Use PSM.&lt;model name&gt; to create a new PSM object for a site b. Optionally use “label” to label the forward model c. Use “rows” to indicate which state vector rows hold the inputs for the forward model</p></li>
+<li><p>Use “estimate” to apply all the forward models to a state vector ensemble and produce proxy observation estimates.</p></li>
+</ol>
+</section>
+<section id="supported-forward-models">
+<h3>Supported Forward Models<a class="headerlink" href="#supported-forward-models" title="Permalink to this heading"></a></h3>
+<p>DASH officially supports the Bay* suite of foraminiferal forward models, general linear forward models, the PRYSM suite of Python forward models, and the Vaganov-Shashkin Lite model of tree ring width. See the documentation on the forward model classes listed below for additional details about these models.</p>
+</section>
+<section id="developing-new-forward-models">
+<h3>Developing New Forward Models<a class="headerlink" href="#developing-new-forward-models" title="Permalink to this heading"></a></h3>
+<p>DASH anticipates that many users will want to develop and use additional forward models for data assimilation. To this end, the PSM package provides a template file that allows users to develop new forward models without needing to manipulate the internal code of the DASH toolbox. See “PSM.template” and read the documentation within for help adding new PSMs to DASH.</p>
+<p>We welcome contributions! If you would like DASH to officially support a new forward model, please send an email to <a class="reference external" href="mailto:DASH&#46;toolbox&#37;&#52;&#48;gmail&#46;com">DASH<span>&#46;</span>toolbox<span>&#64;</span>gmail<span>&#46;</span>com</a>, or submit a pull request to the DASH Github repository.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="information">
+<h2>Information<a class="headerlink" href="#information" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/supported.html"><span class="doc">supported</span></a> - Return the names of PSMs supported by the DASH toolbox</div>
+<div class="line"><a class="reference internal" href="PSM/info.html"><span class="doc">info</span></a> - Return a description of the PSMs supported by DASH</div>
+<div class="line"><a class="reference internal" href="PSM/githubInfo.html"><span class="doc">githubInfo</span></a> - Return information about the codebases of PSMs supported by DASH</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/download.html"><span class="doc">download</span></a> - Download the codebase of a PSM from Github and add to the active path</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="estimate">
+<h2>Estimate<a class="headerlink" href="#estimate" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/estimate.html"><span class="doc">estimate</span></a> - Use PSMs to estimate proxy observations from a state vector ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="forward-model-interface">
+<h2>Forward Model Interface<a class="headerlink" href="#forward-model-interface" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/Interface.html"><span class="doc">Interface</span></a> - Defines a common interface for working with forward models</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="forward-models">
+<h2>Forward Models<a class="headerlink" href="#forward-models" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/bayfox.html"><span class="doc">bayfox</span></a> - A Bayesian model for d18Oc of planktic foraminifera</div>
+<div class="line"><a class="reference internal" href="PSM/baymag.html"><span class="doc">baymag</span></a> - A Bayesian model for Mg/Ca ratios of planktic foraminifera</div>
+<div class="line"><a class="reference internal" href="PSM/bayspar.html"><span class="doc">bayspar</span></a> - A Baysian model for TEX86</div>
+<div class="line"><a class="reference internal" href="PSM/bayspline.html"><span class="doc">bayspline</span></a> - A Baysian model for UK’37</div>
+<div class="line"><a class="reference internal" href="PSM/identity.html"><span class="doc">identity</span></a> - Returns inputs directly as outputs without running a forward model</div>
+<div class="line"><a class="reference internal" href="PSM/linear.html"><span class="doc">linear</span></a> - General linear models of form:  Y = a1*X1 + a2*X2 + … an*Xn + b</div>
+<div class="line"><a class="reference internal" href="PSM/pdsi.html"><span class="doc">pdsi</span></a> - A Palmer Drought-Severity Index estimator</div>
+<div class="line"><a class="reference internal" href="PSM/prysm.html"><span class="doc">prysm</span></a> - The PRYSM suite of Python forward models</div>
+<div class="line"><a class="reference internal" href="PSM/vslite.html"><span class="doc">vslite</span></a> - The Vaganov-Shashkin Lite model of tree ring width</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="template">
+<h2>Template<a class="headerlink" href="#template" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/template.html"><span class="doc">template</span></a> - A template file for developing new PSMs</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h2>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="PSM/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the PSM package</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ensembleMetadata/tests.html" class="btn btn-neutral float-left" title="ensembleMetadata.tests" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="PSM/supported.html" class="btn btn-neutral float-right" title="PSM.supported" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

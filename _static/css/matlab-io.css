@@ -1,0 +1,27 @@
+/* Remove the margins from IO blocks so they fit closely together */
+.input div.highlight {
+    margin-bottom: 0;
+}
+.output div.highlight {
+    margin-top: 0;
+}
+.output div.highlight {
+    border: none;
+}
+
+
+/* Matlab output blocks should have a white background with black text */
+.output.highlight-matlab pre {
+    background: #fcfcfc;
+}
+.output.highlight-matlab span {
+    color: #000000
+}
+
+/* Matlab error messages use red text. Warning use orange */
+.output.m-error.highlight-matlab span {
+    color: #E60000;
+}
+.output.m-warning.highlight-matlab span {
+    color: #FF6400;
+}

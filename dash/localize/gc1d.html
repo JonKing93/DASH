@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dash.localize.gc1d &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="dash.localize.tests" href="tests.html" />
+    <link rel="prev" title="dash.localize.gc2d" href="gc2d.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../dash.html">dash</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#documentation">Documentation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../dash.html#miscellaneous">Miscellaneous</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../closest.html">closest</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../localize.html">localize</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../localize.html#description">Description</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../localize.html#gaspari-cohn">Gaspari-cohn</a><ul class="current">
+<li class="toctree-l5"><a class="reference internal" href="gc2d.html">gc2d</a></li>
+<li class="toctree-l5 current"><a class="current reference internal" href="#">gc1d</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#statedepths">stateDepths</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#sitedepths">siteDepths</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#distance">distance</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#scale">scale</a></li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#wloc">wloc</a></li>
+<li class="toctree-l7"><a class="reference internal" href="#yloc">yloc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="../localize.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#input-utilities">Input Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#data-specific-utilities">Data Specific Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#math">Math</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#console-notifications">Console Notifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#classes">Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dash.html#tests">Tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../dash.html">dash</a> &raquo;</li>
+          <li><a href="../localize.html">dash.localize</a> &raquo;</li>
+      <li>dash.localize.gc1d</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="dash-localize-gc1d">
+<h1>dash.localize.gc1d<a class="headerlink" href="#dash-localize-gc1d" title="Permalink to this heading"></a></h1>
+<p>Computes localization weights along a depth/height/Z dimension using a Gaspari-Cohn 5th order polynomial</p>
+<hr class="docutils" />
+<section id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block">
+<div class="line"><a class="reference internal" href="#dash-localize-gc1d-syntax1"><span class="std std-ref">[wloc, yloc] = dash.localize.gc1d(stateDepths, siteDepths, distance)</span></a></div>
+<div class="line"><a class="reference internal" href="#dash-localize-gc1d-syntax2"><span class="std std-ref">[wloc, yloc] = dash.localize.gc1d(stateDepths, siteDepths, distance, scale)</span></a></div>
+</div>
+</pre></section>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<pre><div class="syntax line-block" id="dash-localize-gc1d-syntax1">
+<div class="line">[<a class="reference internal" href="#dash-localize-gc1d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc1d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc1d(<a class="reference internal" href="#dash-localize-gc1d-inputs-statedepths"><span class="std std-ref">stateDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-sitedepths"><span class="std std-ref">siteDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-distance"><span class="std std-ref">distance</span></a>)</div>
+</div>
+</pre><p>Calculates covariance localization weights for an assimilation using a specified cutoff distance. The method proceeds by determining the distances between a set of depths/heights/Z-coordinates and then applying a Gaspari-Cohn 5th order polynomial to the distances. This can be used to implement localization along the depth/height/Z coordinate of an ensemble.</p>
+<pre><div class="syntax line-block" id="dash-localize-gc1d-syntax2">
+<div class="line">[<a class="reference internal" href="#dash-localize-gc1d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc1d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc1d(<a class="reference internal" href="#dash-localize-gc1d-inputs-statedepths"><span class="std std-ref">stateDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-sitedepths"><span class="std std-ref">siteDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-distance"><span class="std std-ref">distance</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-scale"><span class="std std-ref">scale</span></a>)</div>
+</div>
+</pre><p>Specifies the length scale for the polynomial. By default, uses a length scale of 0.5, which sets the localization distance equal to the cutoff distance.</p>
+</section>
+<hr class="docutils" />
+<section id="input-arguments">
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="statedepths">
+<span id="dash-localize-gc1d-inputs-statedepths"></span><h3>stateDepths<a class="headerlink" href="#statedepths" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>stateDepths</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>nState</em>]</div>
+<div class="line">The depth/height/Z coordinate of the state vector elements. Any units are permitted so long as the siteDepths and cutoff distance use the same units.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sitedepths">
+<span id="dash-localize-gc1d-inputs-sitedepths"></span><h3>siteDepths<a class="headerlink" href="#sitedepths" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>siteDepths</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>vector</em> [<em>nSite</em>]</div>
+<div class="line">The depth/height/Z coordinate of the proxy sites. Should use the same units as stateDepths.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="distance">
+<span id="dash-localize-gc1d-inputs-distance"></span><h3>distance<a class="headerlink" href="#distance" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>distance</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>positive</em> <em>numeric</em> <em>scalar</em></div>
+<div class="line">The localization cutoff distance.Should use the same units as stateDepths</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="scale">
+<span id="dash-localize-gc1d-inputs-scale"></span><h3>scale<a class="headerlink" href="#scale" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>scale</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">The length scale to use for the Gaspari-Cohn polynomial. Must be on the interval 0 &lt; scale &lt;= 0.5.  By default, uses a length scale of 0.5, which sets the localization distance equal to the cutoff distance</div>
+</div>
+</div></section></section>
+</section>
+<hr class="docutils" />
+<section id="output-arguments">
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
+<section class="collapse-examples" id="wloc">
+<span id="dash-localize-gc1d-outputs-wloc"></span><h3>wloc<a class="headerlink" href="#wloc" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>wloc</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nState</em> <em>x</em> <em>nSite</em>]</div>
+<div class="line">The covariance localization weights between the state vector elements and proxyobservation sites.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="yloc">
+<span id="dash-localize-gc1d-outputs-yloc"></span><h3>yloc<a class="headerlink" href="#yloc" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>yloc</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> <em>nSite</em>]</div>
+<div class="line">The covariance localization weights between the proxy/observation sites and one another.</div>
+</div>
+</div></section></section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gc2d.html" class="btn btn-neutral float-left" title="dash.localize.gc2d" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="dash.localize.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridMetadata &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="gridMetadata.gridMetadata" href="gridMetadata/gridMetadata.html" />
+    <link rel="prev" title="Contact" href="contact.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">gridMetadata</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-methods">Key Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#all-user-methods">All User Methods</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-edit">Create / Edit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/edit.html">edit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/index.html">index</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/setOrder.html">setOrder</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#attribute-manipulation">Attribute Manipulation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/addAttributes.html">addAttributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/removeAttributes.html">removeAttributes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/editAttributes.html">editAttributes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#list-dimensions">List Dimensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/dimensions.html">dimensions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/defined.html">defined</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#console-display">Console Display</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/disp.html">disp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/dispAttributes.html">dispAttributes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#assertions">Assertions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/assertField.html">assertField</a></li>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/assertUnique.html">assertUnique</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#unit-tests">Unit Tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="gridMetadata/tests.html">tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>gridMetadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridmetadata">
+<h1>gridMetadata<a class="headerlink" href="#gridmetadata" title="Permalink to this heading"></a></h1>
+<p>Organize metadata for gridded datasets</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>gridMetadata objects help define the metadata for an N-dimensional gridded dataset. Each object supports metadata for the following dimensions:</p>
+<ol class="arabic simple">
+<li><p>lon: longitude / x-coordinate</p></li>
+<li><p>lat: latitude / y-coordinate</p></li>
+<li><p>lev: level / height / z-coordinate</p></li>
+<li><p>site: non-cartesian spatial coordinate</p></li>
+<li><p>time: time</p></li>
+<li><p>run: run / ensemble member</p></li>
+<li><p>var: climate variable</p></li>
+</ol>
+<p>although datasets are not required to implement all 7 dimensions. The class can also be customized to include additional dimensions or to rename the default dimensions.</p>
+<p>gridMetadata objects also include support for non-dimensional metadata via an “attributes” field, which can include data of any type.</p>
+</section>
+<hr class="docutils" />
+<section id="key-methods">
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
+<p>The following are the most essential methods for users.</p>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/gridMetadata.html"><span class="doc">gridMetadata</span></a> - Create a new gridMetdata object</div>
+<div class="line"><a class="reference internal" href="gridMetadata/edit.html"><span class="doc">edit</span></a> - Edit the metadata for a gridded dataset</div>
+<div class="line"><a class="reference internal" href="gridMetadata/index.html"><span class="doc">index</span></a> - Return metadata at indexed rows</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="all-user-methods">
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
+<p>The complete list of gridMetadata methods for users.</p>
+<section id="create-edit">
+<h3>Create / Edit<a class="headerlink" href="#create-edit" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/gridMetadata.html"><span class="doc">gridMetadata</span></a> - Create a new gridMetdata object</div>
+<div class="line"><a class="reference internal" href="gridMetadata/edit.html"><span class="doc">edit</span></a> - Edit the metadata for a gridded dataset</div>
+<div class="line"><a class="reference internal" href="gridMetadata/index.html"><span class="doc">index</span></a> - Return metadata at specified indices</div>
+<div class="line"><a class="reference internal" href="gridMetadata/setOrder.html"><span class="doc">setOrder</span></a> - Specify a dimension order for a gridded dataset</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="attribute-manipulation">
+<h3>Attribute Manipulation<a class="headerlink" href="#attribute-manipulation" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/addAttributes.html"><span class="doc">addAttributes</span></a> - Add non-dimensional attributes to the metadata for a gridded dataset</div>
+<div class="line"><a class="reference internal" href="gridMetadata/removeAttributes.html"><span class="doc">removeAttributes</span></a> - Remove attributes from the metadata of a gridded dataset</div>
+<div class="line"><a class="reference internal" href="gridMetadata/editAttributes.html"><span class="doc">editAttributes</span></a> - Replace non-dimensional attributes with new values</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="list-dimensions">
+<h3>List Dimensions<a class="headerlink" href="#list-dimensions" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/dimensions.html"><span class="doc">dimensions</span></a> - Return the list of supported gridMetadata dimensions</div>
+<div class="line"><a class="reference internal" href="gridMetadata/defined.html"><span class="doc">defined</span></a> - Return a list of dimensions with defined metadata</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading"></a></h2>
+<p>Under the hood methods that help the class run. These are not intended for most users.</p>
+<section id="console-display">
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/disp.html"><span class="doc">disp</span></a> - Display gridMetadata object in console</div>
+<div class="line"><a class="reference internal" href="gridMetadata/dispAttributes.html"><span class="doc">dispAttributes</span></a> - Display metadata attributes in the console</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="assertions">
+<h3>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/assertField.html"><span class="doc">assertField</span></a> - Throw error if input is not a valid metadata field</div>
+<div class="line"><a class="reference internal" href="gridMetadata/assertUnique.html"><span class="doc">assertUnique</span></a> - Throw error if metadata rows are not unique</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="unit-tests">
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="gridMetadata/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the gridMetadata class</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="contact.html" class="btn btn-neutral float-left" title="Contact" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gridMetadata/gridMetadata.html" class="btn btn-neutral float-right" title="gridMetadata.gridMetadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

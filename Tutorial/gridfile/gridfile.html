@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gridfile &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 3" href="code3.html" />
+    <link rel="prev" title="Coding 2" href="code2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">gridfile</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code2.html">Coding 2</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">gridfile</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-it-works">How it works</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#n-dimensional-grid"><em>N-dimensional grid</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#unique-metadata"><em>Unique Metadata</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#data-source-files"><em>Data source files</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#grid-files"><code class="docutils literal notranslate"><span class="pre">.grid</span></code> <em>files</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#features">Features</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#load-interface"><em>Load Interface</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#fill-value-and-valid-range"><em>Fill value and valid range</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#data-transformations"><em>Data transformations</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#cross-catalogue-arithmetic"><em>Cross-catalogue arithmetic</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#and-more"><em>And more!</em></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code3.html">Coding 3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>gridfile</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="gridfile">
+<h1>gridfile<a class="headerlink" href="#gridfile" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> class is the core class used to organize climate date. The class creates <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> objects, which catalogue data stored in various data source files. Each catalogue can span multiple different data files and allows users to load any subset of the catalogued data using a common interface.</p>
+<section id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this heading"></a></h2>
+<section id="n-dimensional-grid">
+<h3><em>N-dimensional grid</em><a class="headerlink" href="#n-dimensional-grid" title="Permalink to this heading"></a></h3>
+<p>Each <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object catalogues data on an abstract N-dimensional data grid. This data grid does not actually exist. Rather, the data grid is an abstraction that describes how the data in different files fits together. The dimensions of this grid and their sizes are defined using a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object:</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../../_images/grid-empty.svg"><img alt="Axes for three dimensions in an empty space. The axes are labeled as latitude, longitude, and time." src="../../_images/grid-empty.svg" width="75%" /></a>
+<figcaption>
+<p><span class="caption-text">An empty, 3-dimensional gridfile catalogue.</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="unique-metadata">
+<h3><em>Unique Metadata</em><a class="headerlink" href="#unique-metadata" title="Permalink to this heading"></a></h3>
+<p>The dimensions of the grid are associated with the metadata from the <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object. This way, each data point on the grid is associated with a particular set of metadata values - essentially, a metadata coordinate:</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../../_images/grid-metadata.svg"><img alt="Axes for three dimensions in an empty space. The first axis is labeled as latitude and has tick marks from -90 to 90. The second axis is labeled as longitude and has tick marks from 0 to 270. The third axis is labeled as time and has tick marks for years 1, 2, and 3." src="../../_images/grid-metadata.svg" width="75%" /></a>
+<figcaption>
+<p><span class="caption-text">An empty, 3-dimensional gridfile catalogue with dimensional metadata.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p><code class="docutils literal notranslate"><span class="pre">gridfile</span></code> requires that each data point is associated with a <em>unique</em> metadata coordinate. Thus, although it’s fine to repeat metadata values across different dimensions, each individual dimension must use unique metadata values along its length.</p>
+<p>Because of this uniqueness, each data point on the grid is associated with a unique set of metadata values. This allows users to load specific data arrays from the grid by querying the associated metadata values. We’ll look at loading data in more detail in the next coding session.</p>
+</section>
+<section id="data-source-files">
+<h3><em>Data source files</em><a class="headerlink" href="#data-source-files" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p>When you create a new <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> catalogue, its N-dimensional grid is initially empty. However, you can fill the grid with values by adding data source files to the catalogue. A data source file is a file with some data saved in it. When you add a source file to a catalogue, the contents of the source file are associated with a portion of the N-dimensional grid.</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../../_images/grid-sources.svg"><img alt="Axes for latitude, longitude, and time dimensions define the outline of a large cube in three dimensional space. Two smaller cubes are nestled within the outline of the large cube. The first is colored red and labeled as File 1. The second is colored blue and labeled as File 2. The two small cubes do not overlap, and regions of empty space remain in the large cube." src="../../_images/grid-sources.svg" width="75%" /></a>
+<figcaption>
+<p><span class="caption-text">A 3-dimensional gridfile catalogue with two data source files.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</div></blockquote>
+<p>Currently, DASH supports the following data file formats: NetCDF, MAT-files, delimited text files, and NetCDF files accessed via OPeNDAP URLs.</p>
+</section>
+<section id="grid-files">
+<h3><code class="docutils literal notranslate"><span class="pre">.grid</span></code> <em>files</em><a class="headerlink" href="#grid-files" title="Permalink to this heading"></a></h3>
+<p>Each <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> catalogue is stored in a file with a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> extension. This allows you to reuse data catalogues between different coding sessions. Note that <code class="docutils literal notranslate"><span class="pre">.grid</span></code> files do not store the actual data for a gridded dataset (only metadata and the location of source files), so datasets are not duplicated when added to a catalogue.</p>
+</section>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this heading"></a></h2>
+<p>Now we’ll take a quick look at some features of the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> class. This section is just meant as an overview - we’ll go in further depth in the next open coding session.</p>
+<section id="load-interface">
+<h3><em>Load Interface</em><a class="headerlink" href="#load-interface" title="Permalink to this heading"></a></h3>
+<p>One of the most useful feature of <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> catalogues is the ability to load data from any portion of the catalogue using the <code class="docutils literal notranslate"><span class="pre">load</span></code> command. This command allows users to load data arrays that may span multiple files, and even multiple file formats, without needing to interact with any of the individual files.</p>
+<p>Furthermore, the <code class="docutils literal notranslate"><span class="pre">load</span></code> command allows users to load specific subsets of the data catalogue by querying specific metadata values. The use of human-readable metadata, rather than array indices or other syntaxes, helps make code more readable and easier to use.</p>
+</section>
+<section id="fill-value-and-valid-range">
+<h3><em>Fill value and valid range</em><a class="headerlink" href="#fill-value-and-valid-range" title="Permalink to this heading"></a></h3>
+<p>You can specify fill values and/or a valid data range for <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogues. If you specify a fill value, data matching the fill value is converted to NaN when loaded. Similarly, if you specify a valid data range, values outside of the range are converted to NaN upon load. When setting fill values and valid ranges, you can set values for the entire catalogue, or for data in individual source files.</p>
+</section>
+<section id="data-transformations">
+<h3><em>Data transformations</em><a class="headerlink" href="#data-transformations" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">gridfile</span></code> allows you to apply various mathematical transformations to data loaded from a catalogue. The class currently supports:</p>
+<ol class="arabic simple">
+<li><p>Addition: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">X</span></code></p></li>
+<li><p>Multiplication: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">X</span></code></p></li>
+<li><p>Linear transform:  <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B*X</span></code></p></li>
+<li><p>Exponential: <code class="docutils literal notranslate"><span class="pre">exp(X)</span></code></p></li>
+<li><p>Power: <code class="docutils literal notranslate"><span class="pre">X^A</span></code></p></li>
+<li><p>Natural log: <code class="docutils literal notranslate"><span class="pre">ln(X)</span></code></p></li>
+<li><p>Base-10 log: <code class="docutils literal notranslate"><span class="pre">log10(X)</span></code></p></li>
+</ol>
+<p>These transformations are often useful for converting the units of loaded data. You can apply transformations to an entire <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> catalogue, or to data in individual source files.</p>
+</section>
+<section id="cross-catalogue-arithmetic">
+<h3><em>Cross-catalogue arithmetic</em><a class="headerlink" href="#cross-catalogue-arithmetic" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">gridfile</span></code> includes support for applying arithmetic operations across multiple catalogues. This functionality is similar to <a class="reference external" href="https://nco.sourceforge.net/">NetCDF Operator</a> (NCO) commands, but can be applied to any <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> catalogue, regardless of the formats of data source files. These arithmetic commands are often used when a climate variable of interest must be calculated using multiple output variables from a climate model.</p>
+</section>
+<section id="and-more">
+<h3><em>And more!</em><a class="headerlink" href="#and-more" title="Permalink to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> class supports a number of other methods that we will not detail in this tutorial. However, you can read about all supported <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> commands by entering <code class="docutils literal notranslate"><span class="pre">dash.doc(&quot;gridfile&quot;)</span></code> in the Matlab console.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="code2.html" class="btn btn-neutral float-left" title="Coding 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code3.html" class="btn btn-neutral float-right" title="Coding 3" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

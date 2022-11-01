@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demo Descriptions &mdash; DASH 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Outline" href="gridfile/outline.html" />
+    <link rel="prev" title="Coding 1" href="dash/code1.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DASH
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Demos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#demo-1">Demo 1</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#demo-2">Demo 2</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DASH</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+      <li>Demo Descriptions</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="demo-descriptions">
+<h1>Demo Descriptions<a class="headerlink" href="#demo-descriptions" title="Permalink to this heading"></a></h1>
+<p>In the tutorial, we’ll be using the DASH toolbox to implement several data assimilation algorithms. To facilitate this, we’ve provided two demo datasets. Each demo is derived from a published assimilation and includes some climate model output, proxy records, and other data needed to implement the assimilation. Before continuing, you should choose and download one (or both) of these datasets. Be sure to extract the .zip file after downloading.</p>
+<section id="demo-1">
+<h2>Demo 1<a class="headerlink" href="#demo-1" title="Permalink to this heading"></a></h2>
+<p>The first demo dataset is designed for a Common Era assimilation. This demo uses a set of temperature-sensitive tree-ring records to reconstruct surface temperature in the Northern Hemisphere over the last millennium. The demo relies on (1) climate model output from the CESM Last Millennium Ensemble, and (2) the NTREND tree-ring network. To generate proxy estimates, we will use univariate linear forward models trained on the temperature at each site. You can download the files for this demo here: <a class="reference external" href="https://drive.google.com/drive/folders/1JZqZCmgojmdS6LpiPtpcFoEUPtE0S-zi?usp=sharing">NTREND demo</a>. We will refer to this demo as the <strong>NTREND Demo</strong> in the remainder of the workshop.</p>
+<p>The downloaded demo includes the following data files:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code></dt><dd><p>This MAT-file holds the data records and some metadata the NTREND tree-ring network. It also includes linear slopes for the forward models, and proxy uncertainties for the Kalman filter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.085001-184912.nc</span></code></dt><dd><p>The two NetCDF files hold surface temperatures (TREFHT) output from the CESM Last Millennium Ensemble. (Specifically, output from full-forcing run 2). This output is a spatial field with a 1.9 x 2.5 (latitude x longitude) resolution. The output is provided on a monthly time step. This first file holds output from 850-1849 CE.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc</span></code></dt><dd><p>This second model output file holds output from 1850-2005 CE.</p>
+</dd>
+</dl>
+<p>The demo also includes two other files: <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code> and <code class="docutils literal notranslate"><span class="pre">temperature-cesm.grid</span></code>. These are the data catalogue files that we will examine in the next open coding session. <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code> catalogues the tree-ring dataset, and <code class="docutils literal notranslate"><span class="pre">temperature-cesm.grid</span></code> catalogues the climate model output.</p>
+</section>
+<section id="demo-2">
+<h2>Demo 2<a class="headerlink" href="#demo-2" title="Permalink to this heading"></a></h2>
+<p>The second demo is designed for a Last Glacial Maximum (LGM) assimilation. This demo uses a set of UK’37 records to reconstruct sea surface temperatures (SSTs) at the LGM. The demo relies on (1) climate model output from 16 iCESM LGM simulations, and (2) 89 UK’37 proxy records. To generate proxy estimates, we will use the BaySPLINE forward model for UK’37. For the sake of simplicity, we will ignore seasonal considerations in this demo. You can download the files for this demo here: <a class="reference external" href="https://drive.google.com/drive/folders/1_cDyCiJfc1VxhW3Ivgsppj9wOe2EZfdo?usp=sharing">LGM demo</a>. We will refer to this demo as the <strong>LGM Demo</strong> for the remainder of the workshop.</p>
+<p>The downloaded demo includes the following data files:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">UK37.mat</span></code></dt><dd><p>This MAT-file holds data and metadata for the UK’37 proxy records. It also includes proxy uncertainties for the Kalman filter. The proxy records are time-averaged over the interval 18-21 ka.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">SST.mat</span></code></dt><dd><p>This MAT-file holds sea-surface temperature (SST) climate model output from iCESM. The dataset includes output from 16 model runs, each using an LGM boundary condition. The output consists of the monthly climatologies for each model run. The output is provided on a tripolar ocean grid.</p>
+</dd>
+</dl>
+<p>The demo also includes two other files: <code class="docutils literal notranslate"><span class="pre">UK37.grid</span></code> and <code class="docutils literal notranslate"><span class="pre">SST.grid</span></code>. These are the data catalogues that we’ll examine in the next coding session. <code class="docutils literal notranslate"><span class="pre">UK37.grid</span></code> catalogues the proxy dataset, and <code class="docutils literal notranslate"><span class="pre">SST.grid</span></code> catalogues the climate model output.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="dash/code1.html" class="btn btn-neutral float-left" title="Coding 1" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="gridfile/outline.html" class="btn btn-neutral float-right" title="Outline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
