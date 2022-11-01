@@ -12,15 +12,15 @@ We'll start by using the ``particleFilter`` command to create an object. The syn
 
     obj = particleFilter
 
-    where **obj** is the new ``particleFilter`` object. You can optionally use the second input to label the object::
+where **obj** is the new ``particleFilter`` object. You can optionally use the second input to label the object::
 
-        obj = particleFilter(label)
+    obj = particleFilter(label)
 
-    where **label** is a string.
+where **label** is a string.
 
-    .. tip::
+.. tip::
 
-        You can also use the ``particleFilter.label`` command to label the object at any later point.
+    You can also use the ``particleFilter.label`` command to label the object at any later point.
 
 
 

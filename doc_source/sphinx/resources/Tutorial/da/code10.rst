@@ -141,8 +141,8 @@ we can see that the optimal sensor now has all three essential inputs. The outpu
     </div></section>
 
 
-Step 3: ``optimalSensor.run``
------------------------------
+Step 3: run command
+-------------------
 We'll next use the ``optimalSensor.run`` command to run the greedy algorithm. The base syntax is::
 
     [optimalSites, variance, metric] = obj.run
@@ -209,8 +209,8 @@ We can use the variance output to examine how the variance of the metric changes
 
 
 
-Step 4: ``optimalSensor.evaluate``
-----------------------------------
+Step 4: evaluate command
+------------------------
 Next, we'll use the ``evaluate`` command to assess the ability of proxy site to reduce variance as the only proxy in the network. This will allow us to quantify proxy influence without the confounding variables of other covarying proxy sites. The syntax for this command is::
 
     deltaVariance = os.evaluate
@@ -280,8 +280,8 @@ By contrast, the ``evaluate`` command allows us to begin to disentangle the effe
 
 
 
-Step 5: ``optimalSensor.update``
---------------------------------
+Step 5: update command
+----------------------
 The ``update`` command allows you to assess the total reduction in variance that occurs for a proxy network. As mentioned, the ``evaluate`` command deliberately removes the effects of proxy covariance, and so cannot be used to accurately assess the total reduction of variance for a network. Similarly, each iteration of the greedy algorithm updates proxy estimates linearly via the Kalman Gain - this is not appropriate for non-linear forward models, and for covarying proxy uncertainties, so the ``run`` command should also not be used to evaluate total reduction of variance. Instead, use the ``update`` method, which accounts for these factors. Here the syntax is::
 
     [variance, metric] = os.update
