@@ -31,7 +31,7 @@ classdef cellulose < PSM.prysm.package
     % users, and do not implement error checking on their inputs.
     %
     % Estimate:
-    %   estimate    - Estimates cellulose d18O values from T, P, and RH extracted from a state vector ensemble
+    %   estimate    - Estimates cellulose d18O using variables extracted from a state vector ensemble
     %
     % Inherited:
     %   name        - Returns an identifying name for use in error messages
@@ -48,10 +48,6 @@ classdef cellulose < PSM.prysm.package
 
     % Forward model parameters
     properties (SetAccess = private)
-        d18Os;  % Isotope ratio of soil water
-        d18Op;  % Isotope ratio of precipitation
-        d18Ov;  % Isotope ratio of ambient vapor at surface layer
-
         flag;   % The model to use
         iso;    % Whether to use isotope-enabled model output        
     end
@@ -60,7 +56,7 @@ classdef cellulose < PSM.prysm.package
         function[obj] = cellulose(d18Os, d18Op, d18Ov, varargin)
             %% PSM.prysm.cellulose.cellulose  Create a new PRYSM Cellulose PSM object
             % ----------
-            %   obj = <strong>PSM.prysm.cellulose</strong>(d18Os, d18Op, d18Ov)
+            %   obj = <strong>PSM.prysm.cellulose</strong>
             %   Creates a new PSM object that implements the PRYSM
             %   cellulose sensor module. Runs the PSM using isotope-enabled
             %   model output and the Evans et al., 2007 model.
@@ -75,13 +71,9 @@ classdef cellulose < PSM.prysm.package
             %
             %   obj = <strong>PSM.prysm.cellulose</strong>(..., 'iso', iso)
             %   Indicate whether to use isotope-enabled model output in the
-            %   calculation. Default is to use isotope-enabled output.
+            %   calculation of dS and dV. Default is to use isotope-enabled output.
             % ----------
             %   Inputs:
-            %       d18Os (numeric scalar): Isotope ratio of soil water
-            %       d18Op (numeric scalar): Isotope ratio of precipitation
-            %       d18Ov (numeric scalar): Isotope ratio of ambient vapor
-            %           at surface layer
             %       flag (0 | 1): Flag for the type of cellulose model
             %           [0]: Roden et al., 2003
             %           [1]: (Deafult) Evans et al., 2007
@@ -96,11 +88,6 @@ classdef cellulose < PSM.prysm.package
 
             % Error check
             header = "DASH:PSM:prysm:cellulose";
-            dash.assert.scalarType(d18Os, 'numeric', 'd18Os', header);
-            dash.assert.scalarType(d18Op, 'numeric', 'd18Op', header);
-            dash.assert.scalarType(d18Ov, 'numeric', 'd18Ov', header);
-
-            % Parse optional inputs
             [flag, iso] = dash.parse.nameValue(varargin, ["flag","iso"], {1, true}, 3, header);
             dash.assert.scalarType(iso, 'logical', 'iso', header);
             if ~ismember(flag, [0 1])
@@ -109,9 +96,6 @@ classdef cellulose < PSM.prysm.package
             end
 
             % Record parameters
-            obj.d18Os = d18Os;
-            obj.d18Op = d18Op;
-            obj.d18Ov = d18Ov;
             obj.flag = flag;
             obj.iso = iso;
         end
@@ -122,24 +106,25 @@ classdef cellulose < PSM.prysm.package
             %   Indicate the state vectors row that should be used as the 
             %   temperature, precipitaion, and relative humidity inputs
             %   for the cellulose sensor module when calling the "PSM.estimate"
-            %   command. The input is a column vector with 3 rows. The first
+            %   command. The input is a column vector with 5 rows. The first
             %   row is temperature, second is precipitation, third is
-            %   relative humidity. Uses the same state vector rows for each
+            %   relative humidity, fourth is d18Os, fifth is d18Ov. 
+            %   Uses the same state vector rows for each
             %   ensemble member and each ensemble in an evolving set.
             %
             %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
-            %   ensemble members. The input is a matrix with 3 rows, and one
+            %   ensemble members. The input is a matrix with 5 rows, and one
             %   column per ensemble member. The rows should refer to the
-            %   temperature, precipitation, and relative humidity variables
-            %   (in that order).
+            %   temperature, precipitation, relative humidity, d18Os, and 
+            %   d18Ov variables (in that order).
             %
             %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
-            %   array of either size [3 x 1 x nEvolving] or of size 
-            %   [3 x nMembers x nEvolving]. If the second dimension has a size of 1,
+            %   array of either size [5 x 1 x nEvolving] or of size 
+            %   [5 x nMembers x nEvolving]. If the second dimension has a size of 1,
             %   uses the same rows for all the ensemble members in a particular evolving
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use different rows for each ensemble member in each evolving ensemble.
@@ -151,16 +136,16 @@ classdef cellulose < PSM.prysm.package
             %   Deletes any currently specified rows from the object.
             % ----------
             %   Inputs:
-            %       rows (linear indices, column vector [3]): The state vector rows that hold
+            %       rows (linear indices, column vector [5]): The state vector rows that hold
             %           the climate variables required to run the cellulose sensor module.
-            %           The first row is temperature, second is precipitation, and third
-            %           is relative humidity. Uses the same rows for
+            %           The first row is temperature, second is precipitation, third
+            %           is relative humidity, fourth is d18Os, and fifth is d18Ov. Uses the same rows for
             %           all ensemble members and ensembles in an evolving set.
-            %       memberRows (matrix, linear indices [3 x nMembers]): Indicates
+            %       memberRows (matrix, linear indices [5 x nMembers]): Indicates
             %           which state vector rows to use for each ensemble member. Should
-            %           be a matrix with 3 rows and one element per ensemble member. Uses
+            %           be a matrix with 5 rows and one element per ensemble member. Uses
             %           the same rows for the ensemble members in different evolving ensembles.
-            %       evolvingRows (3D array, linear indices [3 x 1|nMembers x nEvolving]):
+            %       evolvingRows (3D array, linear indices [5 x 1|nMembers x nEvolving]):
             %           Indicates which state vector row to use for different ensembles
             %           in an evolving set. Should be a 3D array, and the number of
             %           elements along the third dimension should match the number of
@@ -181,25 +166,26 @@ classdef cellulose < PSM.prysm.package
             % Parse the rows
             inputs = {};
             if exist('rows', 'var')
-                inputs = {rows, 1};
+                inputs = {rows, 5};
             end
             output = obj.parseRows(inputs{:});
         end
         function[d18O] = estimate(obj, X)
-            %% PSM.prysm.cellulose.estimate  Estimates cellulose d18O values from T, P, and RH
+            %% PSM.prysm.cellulose.estimate  Estimates cellulose d18O values from T, P, RH, d18Os, and d18Ov
             % ----------
             %   d18O = <strong>obj.estimate</strong>(X)
             %   Runs the PRYSM cellulose sensor module on a set of
-            %   temperatures, precipitations, and relative humidities
-            %   extracted from a state vector ensemble. Estimate d18O
-            %   values of cellulose.
+            %   temperatures, precipitations, relative humidities, d18Os,
+            %   and d18Ov values extracted from a state vector ensemble.
+            %   Estimates d18O values of cellulose.
             % ----------
             %   Inputs:
-            %       X (numeric array [3 x nMembers x nEvolving]): The
-            %           temperature, precipitation, and relative humidity
-            %           inputs used to run the PRYSM cellulose sensor module.
-            %           The first row is temperature, second row is
-            %           precipitation, and third row is relative humidity.
+            %       X (numeric array [5 x nMembers x nEvolving]): The
+            %           temperature, precipitation, relative humidity,
+            %           d18Os, and d18Ov inputs used to run the PRYSM cellulose
+            %           sensor module. The first row is temperature, second row is
+            %           precipitation, third row is relative humidity,
+            %           fourth row is d18Os, and fifth is d18Ov.
             %
             %   Outputs:
             %       d18O (numeric matrix [1 x nMembers x nEvolving]):
@@ -212,6 +198,8 @@ classdef cellulose < PSM.prysm.package
             T  = X(1,:,:);
             P  = X(2,:,:);
             RH = X(3,:,:);
+            d18Os = X(4,:,:);
+            d18Ov = X(5,:,:);
 
             % Preallocate outputs for each evolving ensemble
             [nMembers, nEvolving] = size(T, 2:3);
@@ -226,10 +214,12 @@ classdef cellulose < PSM.prysm.package
                 Tpy = py.numpy.array(T(:,:,k));
                 Ppy = py.numpy.array(P(:,:,k));
                 RHpy = py.numpy.array(RH(:,:,k));
+                dSpy = py.numpy.array(d18Os(:,:,k));
+                dVpy = py.numpy.array(d18Ov(:,:,k));
 
                 % Run the forward model. Convert output back to Matlab
                 d18Opy = py.psm.cellulose.sensor.cellulose_sensor(...
-                    time, Tpy, Ppy, RHpy, obj.d18Os, obj.d18Op, obj.d18Ov, ...
+                    time, Tpy, Ppy, RHpy, dSpy, 0, dVpy, ...
                     obj.flag, obj.iso);
                 d18O(:,:,k) = double(d18Opy);
             end

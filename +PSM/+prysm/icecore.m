@@ -161,7 +161,7 @@ classdef icecore < PSM.prysm.package
             % <a href="matlab:dash.doc('PSM.prysm.icecore.estimate')">Documentation Page</a>
             
             % Preallocate outputs for evolving ensembles
-            [nMembers, nEvolving] = size(T, 2:3);
+            [nMembers, nEvolving] = size(X, 2:3);
             d18O = NaN(1, nMembers, nEvolving);
 
             % Get time placeholder as numpy array
