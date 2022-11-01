@@ -7,7 +7,7 @@
     <param.summary>A Matlab toolbox for paleoclimate data assimilation.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>4.0.0.4</param.version>
+    <param.version>4.0.0</param.version>
     <param.output>${PROJECT_ROOT}\DASH.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -55,7 +55,10 @@ todo.md</param.exclude.filters>
     <param.registered.apps />
     <param.docs />
     <param.getting.started.guide>${PROJECT_ROOT}\doc\GettingStarted.mlx</param.getting.started.guide>
-    <param.matlabpath.excludes />
+    <param.matlabpath.excludes>
+      <item>/doc_source</item>
+      <item>/doc_source/reST parsers</item>
+    </param.matlabpath.excludes>
     <param.javaclasspath.excludes />
     <param.exported.on.package>false</param.exported.on.package>
     <param.required.addons />
@@ -89,7 +92,6 @@ todo.md</param.exclude.filters>
       <param.apps />
       <param.registered.apps />
       <param.docs />
-      <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
       <param.exported.on.package />
       <param.required.addons />
