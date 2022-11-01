@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'DASH Docs'
+project = 'DASH'
 copyright = '2022, Jonathan King'
 author = 'Jonathan King'
 
