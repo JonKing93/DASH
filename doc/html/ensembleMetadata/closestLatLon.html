@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensembleMetadata.closestLatLon &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensembleMetadata.closestLatLon &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -114,11 +125,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemblemetadata-closestlatlon">
-<h1>ensembleMetadata.closestLatLon<a class="headerlink" href="#ensemblemetadata-closestlatlon" title="Permalink to this headline"></a></h1>
+<h1>ensembleMetadata.closestLatLon<a class="headerlink" href="#ensemblemetadata-closestlatlon" title="Permalink to this heading"></a></h1>
 <p>Locate the rows of a variable that are closest to a latitude-longitude coordinate</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-closestlatlon-syntax1"><span class="std std-ref">rows = obj.closestLatLon(variableName, coordinates)</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-closestlatlon-syntax1"><span class="std std-ref">rows = obj.closestLatLon(v, coordinates)</span></a></div>
@@ -128,7 +139,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemblemetadata-closestlatlon-syntax1">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-closestlatlon-outputs-rows"><span class="std std-ref">rows</span></a> = obj.closestLatLon(<a class="reference internal" href="#ensemblemetadata-closestlatlon-inputs-variablename"><span class="std std-ref">variableName</span></a>, <a class="reference internal" href="#ensemblemetadata-closestlatlon-inputs-coordinates"><span class="std std-ref">coordinates</span></a>)</div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-closestlatlon-outputs-rows"><span class="std std-ref">rows</span></a> = obj.closestLatLon(<a class="reference internal" href="#ensemblemetadata-closestlatlon-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-closestlatlon-inputs-coordinates"><span class="std std-ref">coordinates</span></a>)</div>
@@ -148,37 +159,37 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="variablename">
-<span id="ensemblemetadata-closestlatlon-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of the variable for which to find the closest latitude-longitude points.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="v">
-<span id="ensemblemetadata-closestlatlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>scalar</em> <em>linear</em> <em>index</em></div>
 <div class="line">The index of the variable in the state vector. If a logical vector, must have one element per variable in the state vector and exactly one true element.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="coordinates">
-<span id="ensemblemetadata-closestlatlon-inputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-inputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>coordinates</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>vector</em> [2]</div>
 <div class="line">The coordinate for which to find the closest point (in decimal degrees). A vector with two elements. The first element is latitude and the second is longitude.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="columns">
-<span id="ensemblemetadata-closestlatlon-inputs-columns"></span><h3>columns<a class="headerlink" href="#columns" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-inputs-columns"></span><h3>columns<a class="headerlink" href="#columns" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>columns</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em> <em>positive</em> <em>integers</em> [2]</div>
 <div class="line">Indicates which columns of the “site” metadata for the variable hold the latitude and longitude coordinates. The first element is the latitude column, and the second element is the longitude column.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablerows">
-<span id="ensemblemetadata-closestlatlon-inputs-variablerows"></span><h3>variableRows<a class="headerlink" href="#variablerows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-inputs-variablerows"></span><h3>variableRows<a class="headerlink" href="#variablerows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>variableRows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">Indicates the rows of the variable that should be excluded from consideration as the closest point. Either a logical vector with one element per row of the variable, or a vector of linear indices.</div>
@@ -187,9 +198,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="rows">
-<span id="ensemblemetadata-closestlatlon-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-closestlatlon-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>rows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The rows of the overall state vector that correspond to the closest latitude-longitude points for the listed variable.</div>

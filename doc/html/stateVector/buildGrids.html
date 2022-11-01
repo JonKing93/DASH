@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.buildGrids &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.buildGrids &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -113,18 +124,18 @@
            <div itemprop="articleBody">
              
   <section id="statevector-buildgrids">
-<h1>stateVector.buildGrids<a class="headerlink" href="#statevector-buildgrids" title="Permalink to this headline"></a></h1>
+<h1>stateVector.buildGrids<a class="headerlink" href="#statevector-buildgrids" title="Permalink to this heading"></a></h1>
 <p>Build unique gridfile objects</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-buildgrids-syntax1"><span class="std std-ref">[grids, failed, cause] = stateVector.buildGrids(files)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-buildgrids-syntax1">
 <div class="line">[<a class="reference internal" href="#statevector-buildgrids-outputs-grids"><span class="std std-ref">grids</span></a>, <a class="reference internal" href="#statevector-buildgrids-outputs-failed"><span class="std std-ref">failed</span></a>, <a class="reference internal" href="#statevector-buildgrids-outputs-cause"><span class="std std-ref">cause</span></a>] = stateVector.buildGrids(<a class="reference internal" href="#statevector-buildgrids-inputs-files"><span class="std std-ref">files</span></a>)</div>
 </div>
@@ -132,9 +143,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="files">
-<span id="statevector-buildgrids-inputs-files"></span><h3>files<a class="headerlink" href="#files" title="Permalink to this headline"></a></h3>
+<span id="statevector-buildgrids-inputs-files"></span><h3>files<a class="headerlink" href="#files" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>files</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nVariables</em>] | <em>string</em> <em>scalar</em></div>
 <div class="line">The absolute file paths to a set of gridfiles</div>
@@ -143,9 +154,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="grids">
-<span id="statevector-buildgrids-outputs-grids"></span><h3>grids<a class="headerlink" href="#grids" title="Permalink to this headline"></a></h3>
+<span id="statevector-buildgrids-outputs-grids"></span><h3>grids<a class="headerlink" href="#grids" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>grids</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>struct</em></div>
 <div class="line">Organizes the gridfile objects</div>
@@ -154,14 +165,14 @@
 <p><strong>.whichGrid</strong> (vector, linear indices [nVariables]): The index of the unique gridfile object associated with each input filepath. Indices are on the interval 1:nGrids</p>
 </div></section></section>
 <section class="collapse-examples" id="failed">
-<span id="statevector-buildgrids-outputs-failed"></span><h3>failed<a class="headerlink" href="#failed" title="Permalink to this headline"></a></h3>
+<span id="statevector-buildgrids-outputs-failed"></span><h3>failed<a class="headerlink" href="#failed" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>failed</strong></label><div class="content"><div class="line-block">
 <div class="line">0 | <em>scalar</em> <em>linear</em> <em>index</em></div>
 <div class="line">Set to 0 if all gridfiles built successfully. If not, the index of the first failed file path. Index is on the interval 1:nFiles</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="cause">
-<span id="statevector-buildgrids-outputs-cause"></span><h3>cause<a class="headerlink" href="#cause" title="Permalink to this headline"></a></h3>
+<span id="statevector-buildgrids-outputs-cause"></span><h3>cause<a class="headerlink" href="#cause" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>cause</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>MException</em></div>
 <div class="line">The cause of the failed gridfile</div>

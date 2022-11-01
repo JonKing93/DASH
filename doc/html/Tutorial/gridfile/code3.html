@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding 3 &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Outline" href="../stateVector/outline.html" />
+    <link rel="prev" title="gridfile" href="gridfile.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">gridfile</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code2.html">Coding 2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridfile.html">gridfile</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coding 3</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-create-a-grid-file">Step 1: Create a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-load-existing-gridfile">Step 2: Load existing <code class="docutils literal notranslate"><span class="pre">gridfile</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-add-data-sources">Step 3: Add data sources</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#delimited-text-files"><em>Delimited text files</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#netcdf-and-mat-files"><em>NetCDF and MAT-files</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#aside-merging-dimensions">Aside: Merging Dimensions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-data-adjustments">Step 4: Data adjustments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#fill-value"><em>Fill value</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#valid-range"><em>Valid Range</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#transformation"><em>Transformation</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#step-5-load-data">Step 5: Load data</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#load-entire-catalogue"><em>Load entire catalogue</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#custom-dimension-order"><em>Custom dimension order</em></a></li>
+<li class="toctree-l5"><a class="reference internal" href="#data-subsets"><em>Data subsets</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#full-demo">Full Demo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>Coding 3</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="coding-3">
+<h1>Coding 3<a class="headerlink" href="#coding-3" title="Permalink to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> to create a data catalogue for climate proxy records.</p>
+</section>
+<section id="step-1-create-a-grid-file">
+<h2>Step 1: Create a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file<a class="headerlink" href="#step-1-create-a-grid-file" title="Permalink to this heading"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">gridfile.new</span></code> command to create a new, empty gridfile. The syntax of the command is as follows:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>filename</strong></dt><dd><p>The first input is a string listing the name of the new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file. If the file name does not end in a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> extension, DASH adds the extension automatically. The file name may be an absolute or relative path - relative paths are interpreted relative to the current directory.</p>
+</dd>
+<dt><strong>metadata</strong></dt><dd><p>The second input is a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object that defines the scope of the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object’s N-dimensional grid. If your dataset spans multiple data source files, then this metadata should span the values for all those files.</p>
+</dd>
+<dt><strong>grid</strong></dt><dd><p>The output is a <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object for the new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file. We can use this output to add data source files to the catalogue, load values from the dataset, and implement other tasks.</p>
+</dd>
+</dl>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">new</span></code> command will not overwrite an existing gridfile. However, you can use the optional third argument to alter this behavior. Set it to <code class="docutils literal notranslate"><span class="pre">true</span></code> to enable overwriting:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1a"><label for="ntrend-1a"><strong>NTREND Demo: Proxy Records</strong></label><div class="content"><p>As a reminder, the demo proxy dataset consists of 54 proxy records that span most of Common Era at annual resolution. We <a class="reference internal" href="code2.html#gridmetadata-full-demo"><span class="std std-ref">previously showed</span></a> how to build a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object for this dataset:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load metadata fields from the proxy records file</span><span class="w"></span>
+<span class="n">contents</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">IDs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">IDs</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">latitudes</span><span class="p">;</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">longitudes</span><span class="p">;</span><span class="w"></span>
+<span class="nb">years</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">years</span><span class="p">;</span><span class="w"></span>
+<span class="n">seasons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">seasons</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Combine IDs, lats, and lons into &quot;site&quot; metadata</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">IDs</span><span class="p">,</span><span class="w"> </span><span class="n">lats</span><span class="p">,</span><span class="w"> </span><span class="n">lons</span><span class="p">,</span><span class="w"> </span><span class="n">seasons</span><span class="p">];</span><span class="w"></span>
+
+<span class="c">% Create the metadata object</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">years</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add metadata attributes</span><span class="w"></span>
+<span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;site_metadata_columns&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">columns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Longitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Season&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">columns</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Now, we’ll use the metadata object to define the scope of a new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file that will catalogue the proxy database. Here, we’ll name the new file <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Initialize a new .grid file</span><span class="w"></span>
+<span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ntrend.grid&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can inspect the new <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object in the console to verify that it manages the expected data catalogue:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">proxies</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">ntrend</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w">   </span><span class="mi">54</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w">    </span><span class="p">(</span><span class="mi">750</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2011</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="w">    </span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="w">    </span><span class="s">&quot;Season&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see that the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file matches our expectations and catalogues a dataset with 54 proxy sites, and 1262 time steps (ranging from 750 CE to 2011 CE). We can also see that the new catalogue does not have any data source files associated with it yet.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1b"><label for="ntrend-1b"><strong>NTREND Demo: Climate Model Outputs</strong></label><div class="content"><p>Next, we’ll create a gridfile for the climate model output. We previously showed how to build a metadata object for this dataset:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Use NetCDF metadata for lat and lon</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ncread</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ncread</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Create time metadata</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">datetime</span><span class="p">(</span><span class="mi">850</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nb">calmonths</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nb">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">time</span><span class="o">&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Create the metadata object</span><span class="w"></span>
+<span class="n">modelMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;lat&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add Attributes</span><span class="w"></span>
+<span class="n">modelMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">modelMetadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CESM 1.0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;raw_units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Kelvin&quot;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Now, we’ll use the metadata object to define the scope of a new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file that will catalogue the output temperature field from the climate model. Here, we’ll name the new file <code class="docutils literal notranslate"><span class="pre">temperature-cesm.grid</span></code>:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;temperature-cesm&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">modelMetadata</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can inspect the new gridfile in the console to check that it matches our expectations:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="nb">grid</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">temperature</span><span class="o">-</span><span class="n">cesm</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">lon</span><span class="p">:</span><span class="w">   </span><span class="mi">144</span><span class="w">    </span><span class="p">(</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mf">357.5</span><span class="w">      </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="n">lat</span><span class="p">:</span><span class="w">    </span><span class="mi">96</span><span class="w">    </span><span class="p">(</span><span class="w">        </span><span class="o">-</span><span class="mi">90</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">90</span><span class="w">         </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">13872</span><span class="w">    </span><span class="p">(</span><span class="mi">01</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">0850</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">01</span><span class="o">-</span><span class="n">Dec</span><span class="o">-</span><span class="mi">2005</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CESM 1.0&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">raw_units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kelvin&quot;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we can see that the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file matches our expectations and catalogues a dataset for a global temperature field that ranges from 850-2005 CE. We can also see that the new catalogue does not have any data source files associated with it yet.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-1a"><label for="lgm-1a"><strong>LGM Demo: Proxy Records</strong></label><div class="content"><p>Here, we’ll create a gridfile data catalogue for our proxy records. We previously discussed how to build a metadata object for this dataset:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the metadata</span><span class="w"></span>
+<span class="n">contents</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;UK37.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">IDs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lat</span><span class="p">;</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lon</span><span class="p">;</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">time</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Combine IDs, lats, and lons into &quot;site&quot; metadata</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">IDs</span><span class="p">,</span><span class="w"> </span><span class="n">lats</span><span class="p">,</span><span class="w"> </span><span class="n">lons</span><span class="p">];</span><span class="w"></span>
+
+<span class="c">% Create the metadata object</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">);</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;time_units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ka&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;UK&#39;37&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">                         </span><span class="s">&#39;site_metadata_columns&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="s">&quot;Longitude&quot;</span><span class="p">]);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We’ll use this metadata to define the scope of a new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file that will catalogue these proxy records. We’ll name the new file <code class="docutils literal notranslate"><span class="pre">UK37.grid</span></code>:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;UK37.grid&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">UK37</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w">  </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                 </span><span class="n">time_units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ka&quot;</span><span class="w"></span>
+<span class="w">                       </span><span class="nb">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UK&#39;37&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="w">    </span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can see that the file <code class="docutils literal notranslate"><span class="pre">UK37.grid</span></code> manages a data catalogue for the 89 proxy sites during a single time step.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-1b"><label for="lgm-1b"><strong>LGM Demo: Climate Model Output</strong></label><div class="content"><p>Here, we’ll create a gridfile data catalogue for the climate model output. We previously discussed how to create a metadata object for this data set:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the file metadata</span><span class="w"></span>
+<span class="n">contents</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;SST.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lat</span><span class="p">;</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lon</span><span class="p">;</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">month</span><span class="p">;</span><span class="w"></span>
+<span class="nb">run</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Reshape tripolar metadata</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lat</span><span class="p">(:),</span><span class="w"> </span><span class="n">lon</span><span class="p">(:)];</span><span class="w"></span>
+
+<span class="c">% Build metadata object</span><span class="w"></span>
+<span class="n">modelMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;run&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">run</span><span class="p">)</span><span class="w"></span>
+
+<span class="c">% Add attributes</span><span class="w"></span>
+<span class="n">model</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;iCESM&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">units</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;18-21 ka&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">columns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Longitude&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">modelMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">modelMetadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Units&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">units</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;time_span&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site_metadata_columns&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">columns</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We’ll use this metadata to define the scope of a new gridfile for the climate model output. We’ll name the new file <code class="docutils literal notranslate"><span class="pre">SST.grid</span></code>:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">modelMetadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">SST</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="nb">run</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w">     </span><span class="mi">12</span><span class="w">    </span><span class="p">(</span><span class="n">Jan</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Dec</span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="nb">run</span><span class="p">:</span><span class="w">     </span><span class="mi">16</span><span class="w">    </span><span class="p">(</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iCESM&quot;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">time_span</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;18-21 ka&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here, we can see that the new file manages a data catalogue for 122880 spatial sites. The catalogue includes data for 12 monthly climatologies, and data from 16 climate model runs. We can also see that the new file does not yet have any data sources associated with it.</p>
+</div></section></section>
+<section id="step-2-load-existing-gridfile">
+<h2>Step 2: Load existing <code class="docutils literal notranslate"><span class="pre">gridfile</span></code><a class="headerlink" href="#step-2-load-existing-gridfile" title="Permalink to this heading"></a></h2>
+<p>Since they are saved to file, you can reuse <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogues between different coding sessions. Use the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> command to return a <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object for an existing <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here, the input <strong>filename</strong> is the name of a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file on your machine. As before, the filename may be either an absolute path, or a file on the active path. The output, <strong>grid</strong>, is the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object for the existing <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file.</p>
+<p>Try using the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> command on your new <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file. The output <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object should match the object produced by the <code class="docutils literal notranslate"><span class="pre">gridfile.new</span></code> command.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content"><p>We can use the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> command to return a <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> object for our new proxy dataset. Here, we’ll call the command on the new <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code> file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ntrend.grid&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can inspect the new <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> in the console to verify that it matches our expectations:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">proxies</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">ntrend</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w">   </span><span class="mi">54</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w">    </span><span class="p">(</span><span class="mi">750</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2011</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="w">    </span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="w">    </span><span class="s">&quot;Season&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-2"><label for="lgm-2"><strong>LGM Demo</strong></label><div class="content"><p>We can use the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> command to load a gridfile object for our climate model dataset:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">grid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;SST&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can inspect the output gridfile object to ensure that it matches our expectations:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="nb">grid</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">SST</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="nb">run</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w">     </span><span class="mi">12</span><span class="w">    </span><span class="p">(</span><span class="n">Jan</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Dec</span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="nb">run</span><span class="p">:</span><span class="w">     </span><span class="mi">16</span><span class="w">    </span><span class="p">(</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iCESM&quot;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">time_span</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;18-21 ka&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="step-3-add-data-sources">
+<h2>Step 3: Add data sources<a class="headerlink" href="#step-3-add-data-sources" title="Permalink to this heading"></a></h2>
+<p>After creating a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file, you can add data source files to the catalogue using the <code class="docutils literal notranslate"><span class="pre">gridfile.add</span></code> command. The basic syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="c">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>or alternatively:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">opendapURL</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="c">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>for files accessed via OPeNDAP.</p>
+<dl>
+<dt><strong>type</strong></dt><dd><p>The first input is a string that indicates the type of file being added to the catalogue. The following options are supported:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">&quot;netcdf&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;nc&quot;</span></code>: A NetCDF file</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">&quot;mat&quot;</span></code>: A MAT-file</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">&quot;text&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;txt&quot;</span></code>: A delimited text file (such as a .csv file)</div>
+</div>
+</dd>
+<dt><strong>filename</strong> / <strong>opendapURL</strong></dt><dd><p>The second input is the name of the data source file. As before, you may either use an absolute path, or the name of a file on the active path. If using OPeNDAP, then the second input should be the full OPeNDAP URL used to access the file.</p>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">add</span></code> command requires at least 4 inputs, and the first two are always the file type, and the file name/OPeNDAP URL. However, the remaining inputs will vary depending on the type of file being added to the catalogue. The syntaxes for different file formats are described below.</p>
+<section id="delimited-text-files">
+<h3><em>Delimited text files</em><a class="headerlink" href="#delimited-text-files" title="Permalink to this heading"></a></h3>
+<p>Delimited text files are treated as a data matrix when added to a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue. Each new line is a row of the matrix, and each delimiter indicates a new column. The base syntax for delimited text files is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl>
+<dt><strong>dimensions</strong></dt><dd><p>This input is a string vector with two elements. The first element lists the name of the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> dimension associated with the rows of the matrix, and the second element is the dimension associated with the columns.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The dimensions of a proxy dataset are often <code class="docutils literal notranslate"><span class="pre">&quot;site&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;time&quot;</span></code>. The order of these dimensions will vary with the structure of your text file.</p>
+</div>
+</dd>
+<dt><strong>metadata</strong></dt><dd><p>This input is another <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object. This metadata object should list the metadata values associated with the data in the file. The metadata should include values for every dimension in the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalgoue. If the proxy dataset is stored as a single data array in a single file, then <strong>metadata</strong> will be the same metadata object used to create the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file. If the file holds a subset of the full proxy dataset, then <strong>metadata</strong> should only have the metadata for those records.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">gridfile.metadata</span></code> command to return the metadata object for a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">gridMetadata.index</span></code> to isolate the metadata for specific data files.</p>
+</div>
+</dd>
+</dl>
+<p>The <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> class also supports any options used by Matlab’s <code class="docutils literal notranslate"><span class="pre">readmatrix</span></code> command when reading data from a text file. These options should be specified after the first four inputs. For example:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="s">&#39;NumHeaderLines&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Delimiter&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;|&#39;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>indicates that the first 3 lines of the text file should be skipped when reading data, and that the <code class="docutils literal notranslate"><span class="pre">|</span></code> character should be used as a delimiter. See the documentation of the <code class="docutils literal notranslate"><span class="pre">readmatrix</span></code> function for a complete list of options.</p>
+</section>
+<section id="netcdf-and-mat-files">
+<h3><em>NetCDF and MAT-files</em><a class="headerlink" href="#netcdf-and-mat-files" title="Permalink to this heading"></a></h3>
+<p>The syntax for NetCDF and MAT-files is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<dl>
+<dt><strong>variable</strong></dt><dd><p>This input is a string listing the name of the variable in the source file that holds the relevant data.</p>
+</dd>
+<dt><strong>dimensions</strong></dt><dd><p>As with text files, the <strong>dimensions</strong> input is a string vector that list the names of the <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> dimensions for the variable. Unlike text files, variables in NetCDF and MAT-files may store N-dimensional arrays, so the <strong>dimensions</strong> input may have more than 2 dimensions. The input should list each dimension of the variable, in the order they occur.</p>
+</dd>
+<dt><strong>metadata</strong></dt><dd><p>This input behaves similarly as for text files. Essentially, it is a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object that describes the scope of the data stored in the file variable. Again, we note that if the proxy dataset is stored as a single data array in a single file, then <strong>metadata</strong> will be the same metadata object used to create the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file. If the file holds a subset of the full proxy dataset, then <strong>metadata</strong> should only have the metadata for those records.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">gridfile.metadata</span></code> command to return the metadata object for a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">gridMetadata.index</span></code> to isolate the metadata for specific data files.</p>
+</div>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3a"><label for="ntrend-3a"><strong>NTREND Demo: Proxy Records</strong></label><div class="content"><p>The proxy dataset for the demo is stored in the MAT-file <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code>. The dataset is located in the <code class="docutils literal notranslate"><span class="pre">crn</span></code> variable, which has dimensions of (time x site). In this example, the entire proxy dataset is located in the <code class="docutils literal notranslate"><span class="pre">crn</span></code> variable. Thus, we can reuse the metadata for the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file as the metadata for the data source file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the gridfile and its metadata</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend.grid&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Add the data source file</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ntrend.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;crn&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the gridfile in the console:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">proxies</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">ntrend</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w">   </span><span class="mi">54</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w">    </span><span class="p">(</span><span class="mi">750</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2011</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="w">    </span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="w">    </span><span class="s">&quot;Season&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="n">Show</span><span class="w"> </span><span class="s">data</span><span class="w"> </span><span class="s">sources</span><span class="w"></span>
+
+<span class="w">      </span><span class="mf">1.</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">ntrend</span><span class="p">.</span><span class="n">mat</span><span class="w">   </span><span class="n">Show</span><span class="w"> </span><span class="nb">details</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the catalogue now includes the <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code> data source file.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3b"><label for="ntrend-3b"><strong>NTREND Demo: Climate Model Output</strong></label><div class="content"><p>The temperature output from the climate model is located in two NetCDF files.  In both files, the associated temperature data is stored in a variable named <code class="docutils literal notranslate"><span class="pre">TREFHT</span></code>. The <code class="docutils literal notranslate"><span class="pre">TREFHT</span></code> variable is organized as (<code class="docutils literal notranslate"><span class="pre">lon</span></code> x <code class="docutils literal notranslate"><span class="pre">lat</span></code> x <code class="docutils literal notranslate"><span class="pre">time</span></code>). The first file contains outputs from 850 CE to 1849 CE (the pre-industrial period), and the second file contains temperatures from 1850 CE to 2005 CE (post-industrial). We will use the <code class="docutils literal notranslate"><span class="pre">gridMetadata.index</span></code> command to return the metadata for each data source file, and then catalogue the file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the output files, variable name, and dimensions</span><span class="w"></span>
+<span class="n">file1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.085001-184912.nc&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">file2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;TREFHT&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">];</span><span class="w"></span>
+
+<span class="c">% Get the gridfile and its metadata</span><span class="w"></span>
+<span class="n">temperature</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;temperature-cesm.grid&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">temperature</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Get the metadata for the first file and add to the catalogue</span><span class="w"></span>
+<span class="n">preindustrial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">year</span><span class="p">(</span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1850</span><span class="p">;</span><span class="w"></span>
+<span class="n">metadata1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">preindustrial</span><span class="p">);</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;netcdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">file1</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get metadata for the second file and add to the catalogue</span><span class="w"></span>
+<span class="n">postindustrial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">year</span><span class="p">(</span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1850</span><span class="p">;</span><span class="w"></span>
+<span class="n">metadata2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">postindustrial</span><span class="p">);</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;netcdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">file2</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata2</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the gridfile:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">temperature</span><span class="o">-</span><span class="n">cesm</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">lon</span><span class="p">:</span><span class="w">   </span><span class="mi">144</span><span class="w">    </span><span class="p">(</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mf">357.5</span><span class="w">      </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="n">lat</span><span class="p">:</span><span class="w">    </span><span class="mi">96</span><span class="w">    </span><span class="p">(</span><span class="w">        </span><span class="o">-</span><span class="mi">90</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">90</span><span class="w">         </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">13872</span><span class="w">    </span><span class="p">(</span><span class="mi">01</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">0850</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">01</span><span class="o">-</span><span class="n">Dec</span><span class="o">-</span><span class="mi">2005</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CESM 1.0&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">raw_units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kelvin&quot;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+
+<span class="n">Show</span><span class="w"> </span><span class="s">data</span><span class="w"> </span><span class="s">sources</span><span class="w"></span>
+
+<span class="w">      </span><span class="mf">1.</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">b</span><span class="p">.</span><span class="n">e11</span><span class="p">.</span><span class="n">BLMTRC5CN</span><span class="p">.</span><span class="n">f19_g16</span><span class="p">.</span><span class="mi">002</span><span class="p">.</span><span class="n">cam</span><span class="p">.</span><span class="n">h0</span><span class="p">.</span><span class="n">TREFHT</span><span class="p">.</span><span class="mi">085001</span><span class="o">-</span><span class="mi">184912</span><span class="p">.</span><span class="n">nc</span><span class="w">   </span><span class="n">Show</span><span class="w"> </span><span class="nb">details</span><span class="w"></span>
+<span class="w">      </span><span class="mf">2.</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">b</span><span class="p">.</span><span class="n">e11</span><span class="p">.</span><span class="n">BLMTRC5CN</span><span class="p">.</span><span class="n">f19_g16</span><span class="p">.</span><span class="mi">002</span><span class="p">.</span><span class="n">cam</span><span class="p">.</span><span class="n">h0</span><span class="p">.</span><span class="n">TREFHT</span><span class="p">.</span><span class="mi">185001</span><span class="o">-</span><span class="mi">200512</span><span class="p">.</span><span class="n">nc</span><span class="w">   </span><span class="n">Show</span><span class="w"> </span><span class="nb">details</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see it now catalogues data for the two NetCDF data sources.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-3a"><label for="lgm-3a"><strong>LGM Demo: Proxy Records</strong></label><div class="content"><p>The proxy dataset for the demo is stored in the MAT-file <code class="docutils literal notranslate"><span class="pre">UK37.mat</span></code>. The dataset is located in the <code class="docutils literal notranslate"><span class="pre">Y</span></code> variable, which has dimensions of (time x site). In this example, the entire proxy dataset is located in the <code class="docutils literal notranslate"><span class="pre">Y</span></code> variable. Thus, we can reuse the metadata for the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file as the metadata for the data source file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the gridfile and its metadata</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;UK37.grid&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Add the data source file</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;UK37.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Y&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the gridfile in the console:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">proxies</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">jonki</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Hackathon</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">UK37</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w">  </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                 </span><span class="n">time_units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ka&quot;</span><span class="w"></span>
+<span class="w">                       </span><span class="nb">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;UK&#39;37&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="w">    </span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="n">Show</span><span class="w"> </span><span class="s">data</span><span class="w"> </span><span class="s">sources</span><span class="w"></span>
+
+<span class="w">      </span><span class="mf">1.</span><span class="w"> </span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">jonki</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Hackathon</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">UK37</span><span class="p">.</span><span class="n">mat</span><span class="w">   </span><span class="n">Show</span><span class="w"> </span><span class="nb">details</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see it now catalogues data in the <code class="docutils literal notranslate"><span class="pre">UK37.mat</span></code> data source file.</p>
+</div></section></section>
+</section>
+<section id="aside-merging-dimensions">
+<h2>Aside: Merging Dimensions<a class="headerlink" href="#aside-merging-dimensions" title="Permalink to this heading"></a></h2>
+<p>In some cases, the data in a data source file may have more dimensions than the gridfile. This can occur when two or more dimensions of the raw data are combined into a single dimension in DASH.</p>
+<p>This situation is common when working with tripolar model output. As mentioned, tripolar output describes a collection of unique spatial sites, but the output is often reported on a “latitude x longitude” array. In the demos, we saw that we could create a metadata object for a tripolar field by combining the latitude and longitude metadata into a single <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension.</p>
+<p>When such a situation occurs, you will need to indicate which dimensions of the raw data are being combined into a single dimension. We will refer to this process as <strong>merging</strong> dimensions. You can use the <code class="docutils literal notranslate"><span class="pre">dimensions</span></code> input of the <code class="docutils literal notranslate"><span class="pre">gridfile.add</span></code> command to merge dimensions. To do so, use the name of the new dimension for each of the raw, merged dimensions in the list. Continuing the tripolar example, you would use <code class="docutils literal notranslate"><span class="pre">&quot;site&quot;</span></code> as the name of the dimension for both the <code class="docutils literal notranslate"><span class="pre">&quot;lat&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;lon&quot;</span></code> dimensions of the raw data.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="lgm-3b"><label for="lgm-3b"><strong>LGM Demo: Climate Model Output</strong></label><div class="content"><p>The climate model output is stored in the file <code class="docutils literal notranslate"><span class="pre">SST.mat</span></code> in the <code class="docutils literal notranslate"><span class="pre">SST</span></code> variable. This variable has dimensions of (lat x lon x time x run), but we want to merge the <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> dimension into a single <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension. In this example, the entire climate model output is located in the <code class="docutils literal notranslate"><span class="pre">SST.mat</span></code> file, so we can reuse the metadata for the entire gridfile as the metadata object for the file:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the gridfile and its metadata</span><span class="w"></span>
+<span class="n">sst</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;SST&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sst</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Add the data source file</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;run&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">sst</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the gridfile:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">sst</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">SST</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="nb">run</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w">     </span><span class="mi">12</span><span class="w">    </span><span class="p">(</span><span class="n">Jan</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">Dec</span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="nb">run</span><span class="p">:</span><span class="w">     </span><span class="mi">16</span><span class="w">    </span><span class="p">(</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;iCESM&quot;</span><span class="w"></span>
+<span class="w">                      </span><span class="n">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">time_span</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;18-21 ka&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">site_metadata_columns</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Latitude&quot;</span><span class="w">    </span><span class="s">&quot;Longitude&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="n">Show</span><span class="w"> </span><span class="s">data</span><span class="w"> </span><span class="s">sources</span><span class="w"></span>
+
+<span class="w">      </span><span class="mf">1.</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">demos</span><span class="o">/</span><span class="n">SST</span><span class="p">.</span><span class="n">mat</span><span class="w">   </span><span class="n">Show</span><span class="w"> </span><span class="nb">details</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see the catalogue now uses <code class="docutils literal notranslate"><span class="pre">SST.mat</span></code> as a data source file.</p>
+</div></section></section>
+<section id="step-4-data-adjustments">
+<h2>Step 4: Data adjustments<a class="headerlink" href="#step-4-data-adjustments" title="Permalink to this heading"></a></h2>
+<p>Now we’ll specify any adjustments that need to be made to our dataset. The <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> class supports 3 main data adjustments - fill values, valid ranges, and data transformations.</p>
+<section id="fill-value">
+<h3><em>Fill value</em><a class="headerlink" href="#fill-value" title="Permalink to this heading"></a></h3>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">gridfile.fillValue</span></code> to specify a fill value for the catalogue. When data is loaded from the catalogue, any values matching the fill value are converted to NaN. The syntax for the command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">fillValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>value</strong> is the desired fill value. This syntax applies a common fill value to all data sources in the gridfile. Alternatively, you can apply a fill value to specific data sources using:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">fillValue</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">sources</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>sources</strong> is the name or index of a data source file in the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">gridfile.sources</span></code> command to return the list of data source files for a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file.</p>
+</div>
+</section>
+<section id="valid-range">
+<h3><em>Valid Range</em><a class="headerlink" href="#valid-range" title="Permalink to this heading"></a></h3>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">gridfile.validRange</span></code> to specify a valid data range for the catalogue. When data is loaded, any values outside this range are converted to NaN. The syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">validRange</span><span class="p">(</span><span class="n">range</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>range</strong> is the desired range. The <strong>range</strong> input should be a vector with two elements - the first element is the lower bound of the range, and the second element in the upper bound.</p>
+<p>This syntax applies a common valid range to all data sources in the catalogue. Alternatively, you can apply a valid range to specific data sources using:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">validRange</span><span class="p">(</span><span class="n">range</span><span class="p">,</span><span class="w"> </span><span class="n">sources</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>sources</strong> is the name or index of a data source file in the <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">gridfile.sources</span></code> command to return the list of data source files for a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> file.</p>
+</div>
+</section>
+<section id="transformation">
+<h3><em>Transformation</em><a class="headerlink" href="#transformation" title="Permalink to this heading"></a></h3>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">gridfile.transform</span></code> to apply a mathematical transformation to data loaded from the catalogue. <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> currently supports the following transformations:</p>
+<div class="line-block">
+<div class="line">Addition: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">X</span></code></div>
+<div class="line">Multiplication: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">*</span> <span class="pre">X</span></code></div>
+<div class="line">Linear transform:  <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">+</span> <span class="pre">B</span> <span class="pre">*</span> <span class="pre">X</span></code></div>
+<div class="line">Exponential: <code class="docutils literal notranslate"><span class="pre">exp(X)</span></code></div>
+<div class="line">Power: <code class="docutils literal notranslate"><span class="pre">X^A</span></code></div>
+<div class="line">Natural log: <code class="docutils literal notranslate"><span class="pre">ln(X)</span></code></div>
+<div class="line">Base-10 log: <code class="docutils literal notranslate"><span class="pre">log10(X)</span></code></div>
+</div>
+<p>The syntax for the command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">parameters</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>type</strong> is a string that lists the type of transformation. Recognized types are as follows:</p>
+<div class="line-block">
+<div class="line">Addition: <code class="docutils literal notranslate"><span class="pre">&quot;add&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;plus&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code></div>
+<div class="line">Multiplication: <code class="docutils literal notranslate"><span class="pre">&quot;times&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;multiply&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;*&quot;</span></code></div>
+<div class="line">Linear: <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code></div>
+<div class="line">Exponential: <code class="docutils literal notranslate"><span class="pre">&quot;exp&quot;</span></code></div>
+<div class="line">Power: <code class="docutils literal notranslate"><span class="pre">&quot;power&quot;</span></code></div>
+<div class="line">Natural Log: <code class="docutils literal notranslate"><span class="pre">&quot;ln&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code></div>
+<div class="line">Base-10 Log: <code class="docutils literal notranslate"><span class="pre">&quot;log10&quot;</span></code></div>
+</div>
+<p>The second input, <strong>parameters</strong>, includes any mathematical parameters needed to implement the transformation. See <code class="docutils literal notranslate"><span class="pre">dash.doc('gridfile.transform')</span></code> for details. If a transformation does not require any parameters, you can either neglect the second input, or use an empty array.</p>
+<p>The previous syntax will apply a common data transformation to all data sources in a catalogue. Alternatively, you can use:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span><span class="w"> </span><span class="n">parameters</span><span class="p">,</span><span class="w"> </span><span class="n">sources</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>to apply different transformations to specific data source files.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gridfile.addAttributes</span></code> command can be useful for recording changes to the units of a data catalogue.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-4a"><label for="ntrend-4a"><strong>NTREND Demo: Fill Value</strong></label><div class="content"><p>In the demo, the proxy dataset (located in the <code class="docutils literal notranslate"><span class="pre">crn</span></code> variable of <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code>) uses a -999 fill value to indicate missing values. We’ll add this fill value to the catalogue so that -999 values are converted to NaN upon load:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&quot;ntrend.grid&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">fillValue</span><span class="p">(</span><span class="o">-</span><span class="mi">999</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the gridfile:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">proxies</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">gridfile</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="nb">properties</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">          </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">jonki</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">Hackathon</span><span class="o">/</span><span class="nb">demo</span><span class="o">/</span><span class="n">ntrend</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">    </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">site</span><span class="p">:</span><span class="w">   </span><span class="mi">54</span><span class="w"></span>
+<span class="w">        </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w">    </span><span class="p">(</span><span class="mi">750</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">2011</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Fill</span><span class="w"> </span><span class="n">Value</span><span class="p">:</span><span class="w"> </span><span class="o">-</span><span class="mf">999.000000</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see it now implements a -999 fill value.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="ntrend-4b"><label for="ntrend-4b"><strong>NTREND Demo: Transform</strong></label><div class="content"><p>In the demo, our climate model temperature output is provided in units of Kelvin. However, we’d prefer to use units of Celsius, so we’ll apply a data transformation to convert Kelvin to Celsius:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Add the data conversion</span><span class="w"></span>
+<span class="n">temperature</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&quot;temperature-cesm.grid&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="s">&quot;plus&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">273.15</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Note the conversion in the metadata attributes</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;converted_units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the gridfile:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridfile</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">File</span><span class="p">:</span><span class="w"> </span><span class="nb">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">Hackathon</span><span class="o">/</span><span class="nb">demo</span><span class="o">/</span><span class="n">temperature</span><span class="o">-</span><span class="n">cesm</span><span class="p">.</span><span class="n">grid</span><span class="w"></span>
+<span class="w">  </span><span class="n">Dimensions</span><span class="p">:</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Dimension</span><span class="w"> </span><span class="n">Sizes</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">Metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">       </span><span class="n">lon</span><span class="p">:</span><span class="w">   </span><span class="mi">144</span><span class="w">    </span><span class="p">(</span><span class="w">          </span><span class="mi">0</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mf">357.5</span><span class="w">      </span><span class="p">)</span><span class="w"></span>
+<span class="w">       </span><span class="n">lat</span><span class="p">:</span><span class="w">    </span><span class="mi">96</span><span class="w">    </span><span class="p">(</span><span class="w">        </span><span class="o">-</span><span class="mi">90</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">90</span><span class="w">         </span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="mi">13872</span><span class="w">    </span><span class="p">(</span><span class="mi">15</span><span class="o">-</span><span class="n">Jan</span><span class="o">-</span><span class="mi">0850</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="n">Dec</span><span class="o">-</span><span class="mi">2005</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">                </span><span class="n">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Kelvin&quot;</span><span class="w"></span>
+<span class="w">                </span><span class="n">Model</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;CESM 1.0&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="n">converted_units</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Celsius&quot;</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Transform</span><span class="p">:</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="o">-</span><span class="mf">273.150000</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">Data</span><span class="w"> </span><span class="n">Sources</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that loaded values will be converted from Kelvin to Celsius.</p>
+</div></section></section>
+</section>
+<section id="step-5-load-data">
+<h2>Step 5: Load data<a class="headerlink" href="#step-5-load-data" title="Permalink to this heading"></a></h2>
+<section id="load-entire-catalogue">
+<h3><em>Load entire catalogue</em><a class="headerlink" href="#load-entire-catalogue" title="Permalink to this heading"></a></h3>
+<p>Now let’s take a look at the <code class="docutils literal notranslate"><span class="pre">load</span></code> command, which is used to load data from a catalogue. The most basic syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">load</span><span class="w"></span>
+</pre></div>
+</div>
+<p>which loads the entire data catalogue. Here, the <strong>X</strong> output is the loaded data array for the entire catalogue. The <strong>metadata</strong> output is a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object for the loaded data array.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5a"><label for="ntrend-5a"><strong>NTREND Demo</strong></label><div class="content"><p>We can load the entire proxy dataset using:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">          </span><span class="mi">54</span><span class="w">        </span><span class="mi">1262</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that X is a matrix with 54 rows (proxy sites), and 1262 columns (time steps). The metadata for these dimensions is provided in the <strong>metadata</strong> output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">54</span>×<span class="mi">4</span><span class="w"> </span><span class="nb">string</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1262</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-5a"><label for="lgm-5a"><strong>LGM Demo</strong></label><div class="content"><p>We can load the entire proxy dataset using:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;UK37&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="p">[</span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">    </span><span class="mi">89</span><span class="w">     </span><span class="mi">1</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that <strong>Y</strong> is a matrix with 89 rows (proxy sites), and one column (time step). The metadata for these dimensions is provided in the <strong>metadata</strong> output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">89</span>×<span class="mi">3</span><span class="w"> </span><span class="nb">string</span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">18.001</span><span class="w"> </span><span class="mi">21</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">attributes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">struct</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="custom-dimension-order">
+<h3><em>Custom dimension order</em><a class="headerlink" href="#custom-dimension-order" title="Permalink to this heading"></a></h3>
+<p>It’s often useful to load data in a specific dimension order. You can specify the order of dimensions of the loaded data using the first input:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here, <strong>dimensions</strong> is a string vector that lists a requested order for loaded dimensions.</p>
+<p>Try loading your proxy dataset with a different dimension order.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You don’t need to list the name of every dimension in a <code class="docutils literal notranslate"><span class="pre">.grid</span></code> catalogue. Any unlisted data dimensions are automatically grouped at the end of the listed dimensions.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5b"><label for="ntrend-5b"><strong>NTREND Demo</strong></label><div class="content"><p>In the previous demo, we saw that the data loaded as a (site x time) matrix. Let’s instead load the data as a (time x site) matrix. We’ll indicate the requested order as the first input:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">    </span><span class="mi">1262</span><span class="w">          </span><span class="mi">54</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that X is now a matrix with 1262 rows (time steps) and 54 columns (proxy sites). Note that the order of dimensions in the metadata object has likewise changed:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">  </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1262</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">54</span>×<span class="mi">4</span><span class="w"> </span><span class="nb">string</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+<section id="data-subsets">
+<h3><em>Data subsets</em><a class="headerlink" href="#data-subsets" title="Permalink to this heading"></a></h3>
+<p>Often, we’ll only want to load a subset of the data in a catalogue. You can request a subset of data along a dimension using the second input:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here, <strong>indices</strong> is a cell vector with one element per listed dimension. Each element holds the requested indices along that data dimension. Loaded data will match the order of requested indices. This syntax will also load data in the listed dimension order. If you want to include a dimension in the custom order, but don’t want to load a subset of that dimension, use an empty array for the dimension’s indices.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Although you can specify data indices directly, we strongly recommend using metadata to select indices. This keeps your code more readable.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5c"><label for="ntrend-5c"><strong>NTREND Demo</strong></label><div class="content"><p>Let’s start by loading data for proxy sites NTR (site 1), TYR (site 19), and WRAx (site 3). Let’s limit the data for these sites to the years 1970-1980 CE (time steps 1221-1231). Although we <em>could</em> select these indices directly:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">indices</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="p">{[</span><span class="mi">1</span><span class="w"> </span><span class="mi">19</span><span class="w"> </span><span class="mi">3</span><span class="p">],</span><span class="w">  </span><span class="mi">1221</span><span class="p">:</span><span class="mi">1231</span><span class="p">};</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>this is poor practice because the code does not clearly indicate what data is being loaded. Instead, we should select the indices using the gridfile’s metadata:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the metadata for the catalogue</span><span class="w"></span>
+<span class="n">meta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Locate the requested sites</span><span class="w"></span>
+<span class="n">sites</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;NTR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;TYR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;WRAx&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">siteNames</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">meta</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="p">[</span><span class="o">~</span><span class="p">,</span><span class="w"> </span><span class="n">siteIndices</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ismember</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span><span class="w"> </span><span class="n">siteNames</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Locate the requested time steps</span><span class="w"></span>
+<span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1970</span><span class="p">:</span><span class="mi">1980</span><span class="p">;</span><span class="w"></span>
+<span class="n">timeIndices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ismember</span><span class="p">(</span><span class="n">meta</span><span class="p">.</span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Load the data</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">siteIndices</span><span class="p">,</span><span class="w"> </span><span class="n">timeIndices</span><span class="p">};</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">     </span><span class="mi">3</span><span class="w">    </span><span class="mi">11</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that X is a matrix with 3 rows (proxy sites), and 11 columns (time steps). Investigating the returned metadata, we can see that the metadata describes a dataset with 3 proxy-site rows, and 11 time-step columns:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>3<span class="n">x4</span><span class="w"> </span><span class="nb">string</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>11<span class="n">x1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The three rows correspond to sites NTR, TYR, and WRAx (in that order):</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">    </span><span class="s">&quot;NTR&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;TYR&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;WRAx&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>And the columns correspond to the years from 1970-1980 CE:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">        </span><span class="mi">1970</span><span class="w"></span>
+<span class="w">        </span><span class="mi">1971</span><span class="w"></span>
+<span class="w">        </span><span class="mi">1972</span><span class="w"></span>
+<span class="w">        </span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="mi">1978</span><span class="w"></span>
+<span class="w">        </span><span class="mi">1979</span><span class="w"></span>
+<span class="w">        </span><span class="mi">1980</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Now let’s suppose that we want to load all time steps for the three proxy sites, and that we want the loaded data matrix to have dimensions of (time x site). Here, we can use an empty array to load all elements along the time dimension:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">indices</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="p">{[],</span><span class="w"> </span><span class="n">siteIndices</span><span class="p">};</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">size</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">        </span><span class="mi">1262</span><span class="w">           </span><span class="mi">3</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that X is a (time x site) matrix with values in all 1262 time steps for the three proxy sites. We can use the returned metadata to verify the loaded data is (time x site):</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">  </span><span class="nb">time</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>1262<span class="n">x1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">site</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>3<span class="n">x4</span><span class="w"> </span><span class="nb">string</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>and that the loaded data covers the years from 750-2011 CE:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">ans</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+
+<span class="w">         </span><span class="mi">750</span><span class="w"></span>
+<span class="w">         </span><span class="mi">751</span><span class="w"></span>
+<span class="w">         </span><span class="mi">752</span><span class="w"></span>
+<span class="w">         </span><span class="k">...</span><span class="w"></span>
+<span class="w">        </span><span class="mi">2009</span><span class="w"></span>
+<span class="w">        </span><span class="mi">2010</span><span class="w"></span>
+<span class="w">        </span><span class="mi">2011</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+<section id="full-demo">
+<h2>Full Demo<a class="headerlink" href="#full-demo" title="Permalink to this heading"></a></h2>
+<p>This section recaps all the essential code from the demos. You can use it as a quick reference:</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-fa"><label for="ntrend-fa"><strong>NTREND Demo: Proxy Records</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load metadata for the proxy dataset</span><span class="w"></span>
+<span class="n">proxyFile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ntrend.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">info</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="n">proxyFile</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;IDs&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;latitudes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;longitudes&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;seasons&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;years&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Build a gridMetadata object</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">info</span><span class="p">.</span><span class="n">IDs</span><span class="p">,</span><span class="w"> </span><span class="n">info</span><span class="p">.</span><span class="n">latitudes</span><span class="p">,</span><span class="w"> </span><span class="n">info</span><span class="p">.</span><span class="n">longitudes</span><span class="p">,</span><span class="w"> </span><span class="n">info</span><span class="p">.</span><span class="n">seasons</span><span class="p">];</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">info</span><span class="p">.</span><span class="n">years</span><span class="p">;</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Initialize a new .grid file</span><span class="w"></span>
+<span class="n">filename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;ntrend.grid&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add the data source file</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;crn&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">proxyFile</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+
+<span class="c">% Implement a fill value</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">fillValue</span><span class="p">(</span><span class="o">-</span><span class="mi">999</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Load a subset of the catalogue in a specific dimension order</span><span class="w"></span>
+<span class="c">% (all proxy sites in time steps after 1950 CE)</span><span class="w"></span>
+<span class="n">order</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">times</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1950</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="n">times</span><span class="p">,</span><span class="w"> </span><span class="p">[]});</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="ntrend-fb"><label for="ntrend-fb"><strong>NTREND Demo: Climate Model Output</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the output files</span><span class="w"></span>
+<span class="n">outputFile1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.085001-184912.nc&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">outputFile2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;b.e11.BLMTRC5CN.f19_g16.002.cam.h0.TREFHT.185001-200512.nc&#39;</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Define metadata that spans the climate model output dataset</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ncread</span><span class="p">(</span><span class="n">outputFile1</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">ncread</span><span class="p">(</span><span class="n">outputFile1</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;lon&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">datetime</span><span class="p">(</span><span class="mi">850</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">15</span><span class="p">):</span><span class="nb">calmonths</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span><span class="nb">datetime</span><span class="p">(</span><span class="mi">2005</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">15</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Create a metadata object</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">lon</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="o">&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;raw_units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Kelvin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CESM 1.0&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Use the metadata to initialize a new gridfile catalogue</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;temperature-cesm.grid&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">temperature</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get the name and dimensions of the data variable in the output files</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;TREFHT&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time&quot;</span><span class="p">];</span><span class="w"></span>
+
+<span class="c">% Add the first output file to the catalogue</span><span class="w"></span>
+<span class="n">preindustrial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">year</span><span class="p">(</span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1850</span><span class="p">;</span><span class="w"></span>
+<span class="n">metadata1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">preindustrial</span><span class="p">)</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;netcdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">outputFile1</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata1</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get metadata for the second file and add to the catalogue</span><span class="w"></span>
+<span class="n">postindustrial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">year</span><span class="p">(</span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1850</span><span class="p">;</span><span class="w"></span>
+<span class="n">metadata2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">postindustrial</span><span class="p">);</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;netcdf&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">outputFile2</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata2</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Apply a conversion from Kelvin to Celsius. Record the conversion</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">transform</span><span class="p">(</span><span class="s">&#39;plus&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="mf">273.15</span><span class="p">);</span><span class="w"></span>
+<span class="n">temperature</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&#39;converted_units&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Celsius&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Load a subset of the catalogue</span><span class="w"></span>
+<span class="c">% (Northern Hemisphere, pre-1850 in a time x lon x lat order)</span><span class="w"></span>
+<span class="n">nh</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">lat</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">preindustrial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">year</span><span class="p">(</span><span class="n">metadata</span><span class="p">.</span><span class="n">time</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1850</span><span class="p">;</span><span class="w"></span>
+<span class="n">order</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lon&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;lat&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">indices</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">{</span><span class="n">preindustrial</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="n">nh</span><span class="p">};</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">temperature</span><span class="p">.</span><span class="n">load</span><span class="p">(</span><span class="n">order</span><span class="p">,</span><span class="w"> </span><span class="n">indices</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-fa"><label for="lgm-fa"><strong>LGM Demo: Proxy Records</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the metadata</span><span class="w"></span>
+<span class="n">contents</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;UK37.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">IDs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lat</span><span class="p">;</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lon</span><span class="p">;</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">time</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Combine IDs, lats, and lons into &quot;site&quot; metadata</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">IDs</span><span class="p">,</span><span class="w"> </span><span class="n">lats</span><span class="p">,</span><span class="w"> </span><span class="n">lons</span><span class="p">];</span><span class="w"></span>
+
+<span class="c">% Create the metadata object</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">);</span><span class="w"></span>
+<span class="n">proxyMetadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;time_units&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ka&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;UK&#39;37&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">                         </span><span class="s">&#39;site_metadata_columns&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;ID&quot;</span><span class="p">,</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="s">&quot;Longitude&quot;</span><span class="p">]);</span><span class="w"></span>
+
+<span class="c">% Initialize a new gridfile</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&#39;UK37.grid&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">proxyMetadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add data source file</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;UK37.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Y&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxies</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Load the catalogue</span><span class="w"></span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-fb"><label for="lgm-fb"><strong>LGM Demo: Climate Model Output</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the file metadata</span><span class="w"></span>
+<span class="n">contents</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;SST.mat&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lat</span><span class="p">;</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">lon</span><span class="p">;</span><span class="w"></span>
+<span class="nb">time</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">month</span><span class="p">;</span><span class="w"></span>
+<span class="nb">run</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">contents</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Reshape tripolar metadata</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lat</span><span class="p">(:),</span><span class="w"> </span><span class="n">lon</span><span class="p">(:)];</span><span class="w"></span>
+
+<span class="c">% Build metadata object</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridMetadata</span><span class="p">(</span><span class="s">&#39;site&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">site</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;time&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">time</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;run&#39;</span><span class="p">,</span><span class="w"> </span><span class="nb">run</span><span class="p">)</span><span class="w"></span>
+<span class="n">metadata</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">metadata</span><span class="p">.</span><span class="n">addAttributes</span><span class="p">(</span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;iCESM&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Units&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;Celsius&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;time_span&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;18-21 ka&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;site_metadata_columns&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Latitude&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Longitude&quot;</span><span class="p">]);</span><span class="w"></span>
+
+<span class="c">% Initialize a new gridfile</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST.grid&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">sst</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add data source file</span><span class="w"></span>
+<span class="n">file</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST.mat&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">variable</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;SST&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">dimensions</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="s">&quot;site&quot;</span><span class="p">,</span><span class="s">&quot;time&quot;</span><span class="p">,</span><span class="s">&quot;run&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">sst</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;mat&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">file</span><span class="p">,</span><span class="w"> </span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">dimensions</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Load the catalogue</span><span class="w"></span>
+<span class="p">[</span><span class="n">SST</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">sst</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="gridfile.html" class="btn btn-neutral float-left" title="gridfile" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../stateVector/outline.html" class="btn btn-neutral float-right" title="Outline" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

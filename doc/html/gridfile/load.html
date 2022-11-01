@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.load &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.load &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -112,11 +123,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-load">
-<h1>gridfile.load<a class="headerlink" href="#gridfile-load" title="Permalink to this headline"></a></h1>
+<h1>gridfile.load<a class="headerlink" href="#gridfile-load" title="Permalink to this heading"></a></h1>
 <p>Load data from the sources catalogued in a gridfile.</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-load-syntax1"><span class="std std-ref">[X, meta] = obj.load</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-load-syntax2"><span class="std std-ref">[X, meta] = obj.load(dimensions)</span></a></div>
@@ -126,7 +137,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-load-syntax1">
 <div class="line">[<a class="reference internal" href="#gridfile-load-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#gridfile-load-outputs-meta"><span class="std std-ref">meta</span></a>] = obj.load</div>
 </div>
@@ -146,16 +157,16 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="dimensions">
-<span id="gridfile-load-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="gridfile-load-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nDims</em>]</div>
 <div class="line">The requested order of dimensions in the loaded data. Each element must be the name of a dimension in the gridfile. Dimension names cannot be repeated.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="indices">
-<span id="gridfile-load-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<span id="gridfile-load-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>indices</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDims</em>] {[] | <em>logical</em> <em>vector</em> [<em>dimension</em> <em>length</em>] | <em>vector</em>, <em>linear</em> <em>indices</em>}</div>
 <div class="line">The indices of data elements to load. A cell vector with a set of indices for each dimension listed in the dimension order. Each set of indices must either be a logical vector the length of the dimension, a set of linear indices, or an empty array. If the indices for a dimension are an empty array, all elements along the dimension are loaded.</div>
@@ -164,7 +175,7 @@
 <p>Note: Any dimensions not listed in the dimension order will be loaded in full.</p>
 </div></section></section>
 <section class="collapse-examples" id="precision">
-<span id="gridfile-load-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<span id="gridfile-load-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>precision</strong></label><div class="content"><div class="line-block">
 <div class="line">[] | ‘<em>single</em>’ | ‘<em>double</em>’</div>
 <div class="line">Indicates the required numeric precision of the loaded data. If ‘single’ or ‘double’, uses the specified type. If unset or an empty array, uses double unless all requested data has a single, char, logical, (u)int8, or (u)int16 data type.</div>
@@ -173,16 +184,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="gridfile-load-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="gridfile-load-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>double</em> <em>array</em> | <em>single</em> <em>array</em></div>
 <div class="line">The loaded data. If specified, dimensions are in the requested order. Will only include specified elements along each dimension if dimension indices are provided.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="meta">
-<span id="gridfile-load-outputs-meta"></span><h3>meta<a class="headerlink" href="#meta" title="Permalink to this headline"></a></h3>
+<span id="gridfile-load-outputs-meta"></span><h3>meta<a class="headerlink" href="#meta" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>meta</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>gridMetadata</em> <em>object</em></div>
 <div class="line">Metadata for the loaded array. The metadata for each dimension will only include values for loaded data elements.</div>

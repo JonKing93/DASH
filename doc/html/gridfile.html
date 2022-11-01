@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">gridfile</a><ul>
@@ -169,11 +180,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile">
-<h1>gridfile<a class="headerlink" href="#gridfile" title="Permalink to this headline"></a></h1>
+<h1>gridfile<a class="headerlink" href="#gridfile" title="Permalink to this heading"></a></h1>
 <p>Catalogue and load gridded data sets</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The gridfile class creates and manages gridfile objects. These objects catalogue metadata and data source files for a gridded dataset. The catalogue is stored in a file with a “.grid” extension.</p>
 <p>A key function of gridfile is to provide an interface for loading data from data source files with diverse formatting. This interface allows the user to efficiently:</p>
 <ol class="arabic simple">
@@ -196,7 +207,7 @@
 </section>
 <hr class="docutils" />
 <section id="key-methods">
-<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this headline"></a></h2>
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
 <p>The following methods are the most essential methods for users.</p>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/new.html"><span class="doc">new</span></a> - Create a new, empty .grid file</div>
@@ -208,10 +219,10 @@
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <p>The complete list of gridfile methods for users.</p>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/new.html"><span class="doc">new</span></a> - Create a new, empty .grid file</div>
 <div class="line"><a class="reference internal" href="gridfile/gridfile.html"><span class="doc">gridfile</span></a> - Return a gridfile object for a .grid file.</div>
@@ -220,7 +231,7 @@
 </div>
 </section>
 <section id="metadata">
-<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/metadata.html"><span class="doc">metadata</span></a> - Return the metadata for a gridfile</div>
 <div class="line"><a class="reference internal" href="gridfile/edit.html"><span class="doc">edit</span></a> - Rewrite gridfile metadata</div>
@@ -231,7 +242,7 @@
 </div>
 </section>
 <section id="metadata-attributes">
-<h3>Metadata Attributes<a class="headerlink" href="#metadata-attributes" title="Permalink to this headline"></a></h3>
+<h3>Metadata Attributes<a class="headerlink" href="#metadata-attributes" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/attributes.html"><span class="doc">attributes</span></a> - Return the metadata attributes for a gridfile</div>
 <div class="line"><a class="reference internal" href="gridfile/addAttributes.html"><span class="doc">addAttributes</span></a> - Add attributes to gridfile metadata</div>
@@ -242,7 +253,7 @@
 </div>
 </section>
 <section id="data-sources">
-<h3>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this headline"></a></h3>
+<h3>Data Sources<a class="headerlink" href="#data-sources" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/add.html"><span class="doc">add</span></a> - Catalogue a data source in a .grid file</div>
 <div class="line"><a class="reference internal" href="gridfile/remove.html"><span class="doc">remove</span></a> - Remove data sources from a .grid file’s catalogue</div>
@@ -253,7 +264,7 @@
 </div>
 </section>
 <section id="data-adjustments">
-<h3>Data Adjustments<a class="headerlink" href="#data-adjustments" title="Permalink to this headline"></a></h3>
+<h3>Data Adjustments<a class="headerlink" href="#data-adjustments" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/fillValue.html"><span class="doc">fillValue</span></a> - Specify a fill value for data catalogued in a .grid file</div>
 <div class="line"><a class="reference internal" href="gridfile/validRange.html"><span class="doc">validRange</span></a> - Specify a valid range for data catalogued in a .grid file</div>
@@ -263,7 +274,7 @@
 </div>
 </section>
 <section id="load">
-<h3>Load<a class="headerlink" href="#load" title="Permalink to this headline"></a></h3>
+<h3>Load<a class="headerlink" href="#load" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/load.html"><span class="doc">load</span></a> - Load data from the sources catalogued in a gridfile</div>
 </div>
@@ -271,7 +282,7 @@
 </div>
 </section>
 <section id="arithmetic">
-<h3>Arithmetic<a class="headerlink" href="#arithmetic" title="Permalink to this headline"></a></h3>
+<h3>Arithmetic<a class="headerlink" href="#arithmetic" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/plus.html"><span class="doc">plus</span></a> - Sum the data in two gridfiles</div>
 <div class="line"><a class="reference internal" href="gridfile/minus.html"><span class="doc">minus</span></a> - Subtract the data in a gridfile from the current gridfile</div>
@@ -282,7 +293,7 @@
 </div>
 </section>
 <section id="return-information">
-<h3>Return Information<a class="headerlink" href="#return-information" title="Permalink to this headline"></a></h3>
+<h3>Return Information<a class="headerlink" href="#return-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/info.html"><span class="doc">info</span></a> - Return information about a gridfile object and data source files</div>
 <div class="line"><a class="reference internal" href="gridfile/dimensions.html"><span class="doc">dimensions</span></a> - Return the dimensions of a gridfile and their sizes</div>
@@ -293,7 +304,7 @@
 </div>
 </section>
 <section id="print-information">
-<h3>Print Information<a class="headerlink" href="#print-information" title="Permalink to this headline"></a></h3>
+<h3>Print Information<a class="headerlink" href="#print-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/disp.html"><span class="doc">disp</span></a> - Displays a gridfile object in the console</div>
 <div class="line"><a class="reference internal" href="gridfile/source.html"><span class="doc">source</span></a> - Displays a gridfile data source in the console</div>
@@ -304,10 +315,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Under-the-hood methods that help the class run. These are not intended for users, and do not implement error checking on their inputs.</p>
 <section id="file-interactions">
-<h3>File Interactions<a class="headerlink" href="#file-interactions" title="Permalink to this headline"></a></h3>
+<h3>File Interactions<a class="headerlink" href="#file-interactions" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/update.html"><span class="doc">update</span></a> - Update a gridfile object to match the contents of its .grid file</div>
 <div class="line"><a class="reference internal" href="gridfile/save.html"><span class="doc">save</span></a> - Save a gridfile object to a .grid file</div>
@@ -317,7 +328,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/dispDimensions.html"><span class="doc">dispDimensions</span></a> - Print dimension sizes and metadata to the console</div>
 <div class="line"><a class="reference internal" href="gridfile/dispSources.html"><span class="doc">dispSources</span></a> - List gridfile data sources in the console</div>
@@ -327,7 +338,7 @@
 </div>
 </section>
 <section id="id1">
-<h3>Load<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Load<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/getLoadIndices.html"><span class="doc">getLoadIndices</span></a> - Organize the dimension indices required to implement a load operation</div>
 <div class="line"><a class="reference internal" href="gridfile/sourcesForLoad.html"><span class="doc">sourcesForLoad</span></a> - Return the indices of data sources needed to load requested data</div>
@@ -339,7 +350,7 @@
 </div>
 </section>
 <section id="id2">
-<h3>Arithmetic<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>Arithmetic<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/arithmetic.html"><span class="doc">arithmetic</span></a> - Arithmetic operations across two gridfiles</div>
 </div>
@@ -347,7 +358,7 @@
 </div>
 </section>
 <section id="unit-tests">
-<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h3>
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="gridfile/tests.html"><span class="doc">tests</span></a> - Unit tests for the gridfile class</div>
 </div>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSM.prysm.cellulose &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="PSM.prysm.cellulose.cellulose" href="cellulose/cellulose.html" />
+    <link rel="prev" title="PSM.prysm.package" href="package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../PSM.html">PSM</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../identity.html">identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdsi.html">pdsi</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../prysm.html">prysm</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../prysm.html#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../prysm.html#id1">Abstract Superclass</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../prysm.html#forward-model-classes">Forward Model Classes</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">cellulose</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#all-user-methods">All User Methods</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#create">Create</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="cellulose/cellulose.html">cellulose</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#estimate">Estimate</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="cellulose/rows.html">rows</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="#utility-methods">Utility Methods</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#id1">Estimate</a><ul>
+<li class="toctree-l8"><a class="reference internal" href="cellulose/estimate.html">estimate</a></li>
+</ul>
+</li>
+<li class="toctree-l7"><a class="reference internal" href="#inherited">Inherited</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="coral.html">coral</a></li>
+<li class="toctree-l5"><a class="reference internal" href="icecore.html">icecore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../vslite.html">vslite</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#template">Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../PSM.html">PSM</a> &raquo;</li>
+          <li><a href="../prysm.html">PSM.prysm</a> &raquo;</li>
+      <li>PSM.prysm.cellulose</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="psm-prysm-cellulose">
+<h1>PSM.prysm.cellulose<a class="headerlink" href="#psm-prysm-cellulose" title="Permalink to this heading"></a></h1>
+<p>Implement the cellulose sensor module of the PRYSM package</p>
+<hr class="docutils" />
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>This PSM implements the cellulose sensor module from the PRYSM Python package. The package is described in the paper:</p>
+<p>Dee, S. G., Russell, J. M., Morrill, C., Chen, Z., &amp; Neary, A. (2018). PRYSM v2. 0: A proxy system model for lacustrine archives. Paleoceanography and Paleoclimatology, 33(11), 1250-1269. DOI:  <a class="reference external" href="https://doi.org/10.1029/2018PA003413">https://doi.org/10.1029/2018PA003413</a></p>
+<p>Github Repository: <a class="reference external" href="https://github.com/sylvia-dee/PRYSM">https://github.com/sylvia-dee/PRYSM</a></p>
+<p>Prerequisites: Python 3.4, numpy, scipy, and rpy2. See the PRYSM documentation for additional details.</p>
+</section>
+<hr class="docutils" />
+<section id="all-user-methods">
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
+<section id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="cellulose/cellulose.html"><span class="doc">cellulose</span></a> - Creates a new PRYSM cellulose object</div>
+<div class="line"><a class="reference internal" href="../Interface/label.html"><span class="doc">label</span></a> - Apply a label to a PRYSM cellulose object</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="estimate">
+<h3>Estimate<a class="headerlink" href="#estimate" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="cellulose/rows.html"><span class="doc">rows</span></a> - Indicate the state vector rows that hold cellulose sensor module inputs</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="utility-methods">
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
+<p>Utility methods that help the class run. These are not intended for users, and do not implement error checking on their inputs.</p>
+<section id="id1">
+<h3>Estimate<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="cellulose/estimate.html"><span class="doc">estimate</span></a> - Estimates cellulose d18O using variables extracted from a state vector ensemble</div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="inherited">
+<h3>Inherited<a class="headerlink" href="#inherited" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="../Interface/name.html"><span class="doc">name</span></a> - Returns an identifying name for use in error messages</div>
+<div class="line"><a class="reference internal" href="../Interface/parseRows.html"><span class="doc">parseRows</span></a> - Error checks and parses state vector rows</div>
+<div class="line"><a class="reference internal" href="../Interface/disp.html"><span class="doc">disp</span></a> - Display the PSM in the console</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="package.html" class="btn btn-neutral float-left" title="PSM.prysm.package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cellulose/cellulose.html" class="btn btn-neutral float-right" title="PSM.prysm.cellulose.cellulose" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

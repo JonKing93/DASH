@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.bayfox &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.bayfox &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -49,7 +60,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#information">Information</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#estimate">Estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../PSM.html#forward-models">Forward Models</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bayfox</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
@@ -77,7 +88,9 @@
 <li class="toctree-l3"><a class="reference internal" href="baymag.html">baymag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bayspar.html">bayspar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="identity.html">identity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pdsi.html">pdsi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="prysm.html">prysm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="vslite.html">vslite</a></li>
 </ul>
@@ -118,20 +131,20 @@
            <div itemprop="articleBody">
              
   <section id="psm-bayfox">
-<h1>PSM.bayfox<a class="headerlink" href="#psm-bayfox" title="Permalink to this headline"></a></h1>
+<h1>PSM.bayfox<a class="headerlink" href="#psm-bayfox" title="Permalink to this heading"></a></h1>
 <p>Implements the BayFOX PSM, a Bayesian forward model for d18Oc of planktic foraminifera</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The BayFOX PSM is a Bayesian forward model that estimates d18Oc values of planktic foraminifera. The forward model is described in the paper:</p>
 <p>Malevich, S. B., Vetter, L., &amp; Tierney, J. E. (2019). Global Core Top Calibration of δ18O in Planktic Foraminifera to Sea Surface Temperature. Paleoceanography and Paleoclimatology, 34(8), 1292-1315. DOI:  <a class="reference external" href="https://doi.org/10.1029/2019PA003576">https://doi.org/10.1029/2019PA003576</a></p>
 <p>Github Repository:  <a class="reference external" href="https://github.com/jesstierney/bayfoxm">https://github.com/jesstierney/bayfoxm</a></p>
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="bayfox/bayfox.html"><span class="doc">bayfox</span></a> - Creates a new BayFOX PSM object</div>
 <div class="line"><a class="reference internal" href="Interface/label.html"><span class="doc">label</span></a> - Apply a label to a BayFOX object</div>
@@ -140,7 +153,7 @@
 </div>
 </section>
 <section id="estimate">
-<h3>Estimate<a class="headerlink" href="#estimate" title="Permalink to this headline"></a></h3>
+<h3>Estimate<a class="headerlink" href="#estimate" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="bayfox/rows.html"><span class="doc">rows</span></a> - Indicate the state vector rows that hold BayFOX SST inputs</div>
 </div>
@@ -150,10 +163,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Utility methods that help the class run. These are not intended for users, and do not implement error checking on their inputs.</p>
 <section id="id1">
-<h3>Estimate<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Estimate<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="bayfox/estimate.html"><span class="doc">estimate</span></a> - Estimates d18Oc values using SST values extracted from an ensemble</div>
 </div>
@@ -161,7 +174,7 @@
 </div>
 </section>
 <section id="inherited">
-<h3>Inherited<a class="headerlink" href="#inherited" title="Permalink to this headline"></a></h3>
+<h3>Inherited<a class="headerlink" href="#inherited" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="Interface/name.html"><span class="doc">name</span></a> - Returns an identifying name for use in error messages</div>
 <div class="line"><a class="reference internal" href="Interface/parseRows.html"><span class="doc">parseRows</span></a> - Error checks and parses state vector rows</div>

@@ -15,7 +15,7 @@
 %   The PRYSM forward models are written in Python, and so require some
 %   extra setup to run in Matlab. You will need to complete the following to
 %   run the PRYSM forward models in DASH:
-%   1. Install Python 3.7, 3.8, or 3.9 **directly** on your computer. You
+%   1. Install Python 3.7, 3.8, or 3.9 **directly** on your computer. 
 %      DO NOT use conda to install python, as Matlab is unable to locate
 %      Python within a conda distribution. Instead, download the language
 %      from python.org and install it.

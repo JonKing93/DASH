@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.ensembleFilter.estimates &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.ensembleFilter.estimates &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -131,11 +142,11 @@
            <div itemprop="articleBody">
              
   <section id="dash-ensemblefilter-estimates">
-<h1>dash.ensembleFilter.estimates<a class="headerlink" href="#dash-ensemblefilter-estimates" title="Permalink to this headline"></a></h1>
+<h1>dash.ensembleFilter.estimates<a class="headerlink" href="#dash-ensemblefilter-estimates" title="Permalink to this heading"></a></h1>
 <p>Process the estimates for a filter object</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-ensemblefilter-estimates-syntax1"><span class="std std-ref">[outputs, type] = obj.estimates(header, …)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-ensemblefilter-estimates-syntax2"><span class="std std-ref">[estCell, ‘return’] = obj.estimates(header)</span></a></div>
@@ -146,7 +157,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-ensemblefilter-estimates-syntax1">
 <div class="line">[<a class="reference internal" href="#dash-ensemblefilter-estimates-outputs-outputs"><span class="std std-ref">outputs</span></a>, <a class="reference internal" href="#dash-ensemblefilter-estimates-outputs-type"><span class="std std-ref">type</span></a>] = obj.estimates(<a class="reference internal" href="#dash-ensemblefilter-estimates-inputs-header"><span class="std std-ref">header</span></a>, …)</div>
 </div>
@@ -167,23 +178,23 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="header">
-<span id="dash-ensemblefilter-estimates-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>header</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">Header for thrown error IDs</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ye">
-<span id="dash-ensemblefilter-estimates-inputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-inputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>Ye</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nPrior</em>]</div>
 <div class="line">Estimates for the filter</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="whichprior">
-<span id="dash-ensemblefilter-estimates-inputs-whichprior"></span><h3>whichPrior<a class="headerlink" href="#whichprior" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-inputs-whichprior"></span><h3>whichPrior<a class="headerlink" href="#whichprior" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>whichPrior</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>]</div>
 <div class="line">Indicates which prior (set of estimates) to use in each time step.</div>
@@ -192,30 +203,30 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="outputs">
-<span id="dash-ensemblefilter-estimates-outputs-outputs"></span><h3>outputs<a class="headerlink" href="#outputs" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-outputs-outputs"></span><h3>outputs<a class="headerlink" href="#outputs" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>outputs</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>scalar</em></div>
 <div class="line">Varargout-style outputs</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="type">
-<span id="dash-ensemblefilter-estimates-outputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-outputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line">‘<em>return</em>’|’<em>set</em>’|’<em>delete</em>’</div>
 <div class="line">Indicates the type of operation</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="estcell">
-<span id="dash-ensemblefilter-estimates-outputs-estcell"></span><h3>estCell<a class="headerlink" href="#estcell" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-outputs-estcell"></span><h3>estCell<a class="headerlink" href="#estcell" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>estCell</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [2] {<em>Y</em>, <em>whichPrior</em>}</div>
 <div class="line">The current estimates and whichPrior in a cell</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="objcell">
-<span id="dash-ensemblefilter-estimates-outputs-objcell"></span><h3>objCell<a class="headerlink" href="#objcell" title="Permalink to this headline"></a></h3>
+<span id="dash-ensemblefilter-estimates-outputs-objcell"></span><h3>objCell<a class="headerlink" href="#objcell" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>objCell</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>scalar</em> {<em>obj</em>}</div>
 <div class="line">The updated object in a cell</div>

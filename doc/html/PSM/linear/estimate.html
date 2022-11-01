@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.linear.estimate &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.linear.estimate &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,11 +16,13 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="PSM.prysm" href="../prysm.html" />
+    <link rel="next" title="PSM.pdsi" href="../pdsi.html" />
     <link rel="prev" title="PSM.linear.run" href="run.html" /> 
 </head>
 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -49,12 +60,13 @@
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../identity.html">identity</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../linear.html">linear</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../linear.html#description">Description</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../linear.html#all-user-methods">All User Methods</a></li>
@@ -80,6 +92,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="../pdsi.html">pdsi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../prysm.html">prysm</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../vslite.html">vslite</a></li>
 </ul>
@@ -121,18 +134,18 @@
            <div itemprop="articleBody">
              
   <section id="psm-linear-estimate">
-<h1>PSM.linear.estimate<a class="headerlink" href="#psm-linear-estimate" title="Permalink to this headline"></a></h1>
+<h1>PSM.linear.estimate<a class="headerlink" href="#psm-linear-estimate" title="Permalink to this heading"></a></h1>
 <p>Estimates observations using a general linear model</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#psm-linear-estimate-syntax1"><span class="std std-ref">Y = obj.estimate(X)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-linear-estimate-syntax1">
 <div class="line"><a class="reference internal" href="#psm-linear-estimate-outputs-y"><span class="std std-ref">Y</span></a> = obj.estimate(<a class="reference internal" href="#psm-linear-estimate-inputs-x"><span class="std std-ref">X</span></a>)</div>
 </div>
@@ -140,9 +153,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="psm-linear-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="psm-linear-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>array</em> [<em>nSlopes</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The variables used as input to the linear model. Each row holds a variable. The order of variables should match the order of slopes for the linear model.</div>
@@ -151,9 +164,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="y">
-<span id="psm-linear-estimate-outputs-y"></span><h3>Y<a class="headerlink" href="#y" title="Permalink to this headline"></a></h3>
+<span id="psm-linear-estimate-outputs-y"></span><h3>Y<a class="headerlink" href="#y" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>Y</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [1 <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">Observation estimates generated by running the linear forward model on the variables from the state vector ensemble</div>
@@ -167,7 +180,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="run.html" class="btn btn-neutral float-left" title="PSM.linear.run" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../prysm.html" class="btn btn-neutral float-right" title="PSM.prysm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../pdsi.html" class="btn btn-neutral float-right" title="PSM.pdsi" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

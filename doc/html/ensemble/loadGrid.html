@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensemble.loadGrid &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensemble.loadGrid &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -117,11 +128,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemble-loadgrid">
-<h1>ensemble.loadGrid<a class="headerlink" href="#ensemble-loadgrid" title="Permalink to this headline"></a></h1>
+<h1>ensemble.loadGrid<a class="headerlink" href="#ensemble-loadgrid" title="Permalink to this heading"></a></h1>
 <p>Load a gridded variable from a saved state vector ensemble</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemble-loadgrid-syntax1"><span class="std std-ref">[X, metadata] = obj.loadGrid(variableName)</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemble-loadgrid-syntax1"><span class="std std-ref">[X, metadata] = obj.loadGrid(v)</span></a></div>
@@ -133,7 +144,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemble-loadgrid-syntax1">
 <div class="line">[<a class="reference internal" href="#ensemble-loadgrid-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#ensemble-loadgrid-outputs-metadata"><span class="std std-ref">metadata</span></a>] = obj.loadGrid(<a class="reference internal" href="#ensemble-loadgrid-inputs-variablename"><span class="std std-ref">variableName</span></a>)</div>
 <div class="line">[<a class="reference internal" href="#ensemble-loadgrid-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#ensemble-loadgrid-outputs-metadata"><span class="std std-ref">metadata</span></a>] = obj.loadGrid(<a class="reference internal" href="#ensemble-loadgrid-inputs-v"><span class="std std-ref">v</span></a>)</div>
@@ -155,30 +166,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="variablename">
-<span id="ensemble-loadgrid-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of a variable being used by the ensemble object.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="v">
-<span id="ensemble-loadgrid-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>scalar</em> <em>linear</em> <em>index</em></div>
 <div class="line">The index of a variable being used by the ensemble object. If a logical vector, must have a single true element.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="e">
-<span id="ensemble-loadgrid-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>e</strong></label><div class="content"><div class="line-block">
 <div class="line">-1 | <em>vector</em>, <em>linear</em> <em>indices</em> | <em>logical</em> <em>vector</em></div>
 <div class="line">Indicates the ensembles to load. If -1, loads all ensembles in the evolving set. If a logical vector, must have one element per ensemble in the evolving set. Otherwise, use the linear indices of ensembles in the evolving set.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="labels">
-<span id="ensemble-loadgrid-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>labels</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The labels of specific ensembles in the evolving set. You can only use labels to reference ensembles that have unique labels. Use linear indices to reference ensembles that share the same label.</div>
@@ -187,23 +198,23 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="ensemble-loadgrid-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>array</em> [? <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The regridded loaded variable. Has one dimension for each state dimension, followed by ensemble members, and then evolving ensembles.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="metadata">
-<span id="ensemble-loadgrid-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>gridMetadata</em> <em>object</em></div>
 <div class="line">A gridMetadata object for the regridded variable. Has information for each state dimension of the regridded variable. Metadata fields are in the same order as the leading dimensions of the output X. If the state vector implements a mean along a state dimension, the metadata for the dimension has a row for each element used in the mean.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="members">
-<span id="ensemble-loadgrid-outputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this headline"></a></h3>
+<span id="ensemble-loadgrid-outputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>members</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>array</em>, <em>positive</em> <em>integers</em>, [<em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The ensemble members for the loaded ensembles. Each element of “members” lists the index of an ensemble member saved in the</div>
@@ -211,7 +222,7 @@
 <p><strong>.ens</strong> file. The columns of “members” list the ensemble members for different loaded evolving ensembles.</p>
 </div></section></section>
 <section class="collapse-examples" id="ensemble-loadgrid-outputs-labels">
-<span id="id1"></span><h3>labels<a class="headerlink" href="#ensemble-loadgrid-outputs-labels" title="Permalink to this headline"></a></h3>
+<span id="id1"></span><h3>labels<a class="headerlink" href="#ensemble-loadgrid-outputs-labels" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>labels</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nEvolving</em>]</div>
 <div class="line">The labels of the loaded ensembles in the evolving set.</div>

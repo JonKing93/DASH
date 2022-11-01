@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.dataSource &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.dataSource &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -113,17 +124,17 @@
            <div itemprop="articleBody">
              
   <section id="dash-datasource">
-<h1>dash.dataSource<a class="headerlink" href="#dash-datasource" title="Permalink to this headline"></a></h1>
+<h1>dash.dataSource<a class="headerlink" href="#dash-datasource" title="Permalink to this heading"></a></h1>
 <p>Classes that read data from different types of sources files</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The Interface class implements an interface for loading data from source files. Subclasses actually implement the steps needed to extract data from different types of files.</p>
 <p>These classes are used by gridfile objects to load data from different files within a common framework.</p>
 </section>
 <hr class="docutils" />
 <section id="abstract-superclasses">
-<h2>Abstract Superclasses<a class="headerlink" href="#abstract-superclasses" title="Permalink to this headline"></a></h2>
+<h2>Abstract Superclasses<a class="headerlink" href="#abstract-superclasses" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="dataSource/Interface.html"><span class="doc">Interface</span></a> - Interface for objects that read data from a source file</div>
 <div class="line"><a class="reference internal" href="dataSource/hdf.html"><span class="doc">hdf</span></a> - Superclass for objects that read data from HDF5 files</div>
@@ -132,7 +143,7 @@
 </div>
 </section>
 <section id="concrete-subclasses">
-<h2>Concrete Subclasses<a class="headerlink" href="#concrete-subclasses" title="Permalink to this headline"></a></h2>
+<h2>Concrete Subclasses<a class="headerlink" href="#concrete-subclasses" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="dataSource/mat.html"><span class="doc">mat</span></a> - Objects that read data from MAT-files</div>
 <div class="line"><a class="reference internal" href="dataSource/nc.html"><span class="doc">nc</span></a> - Objects that read data from NetCDF files</div>
@@ -142,7 +153,7 @@
 </div>
 </section>
 <section id="tests">
-<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h2>
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="dataSource/tests.html"><span class="doc">tests</span></a> - Unit tests for classes in the package</div>
 </div>

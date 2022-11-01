@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.stateVectorVariable.metadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.stateVectorVariable.metadata &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,12 +16,14 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="dash.stateVectorVariable.dimensions" href="dimensions.html" />
-    <link rel="prev" title="dash.stateVectorVariable.weightedMean" href="weightedMean.html" /> 
+    <link rel="prev" title="dash.stateVectorVariable.weightedTotal" href="weightedTotal.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -68,6 +79,8 @@
 <li class="toctree-l6"><a class="reference internal" href="sequence.html">sequence</a></li>
 <li class="toctree-l6"><a class="reference internal" href="mean.html">mean</a></li>
 <li class="toctree-l6"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
+<li class="toctree-l6"><a class="reference internal" href="total.html">total</a></li>
+<li class="toctree-l6"><a class="reference internal" href="weightedTotal.html">weightedTotal</a></li>
 <li class="toctree-l6 current"><a class="current reference internal" href="#">metadata</a><ul>
 <li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
@@ -135,11 +148,11 @@
            <div itemprop="articleBody">
              
   <section id="dash-statevectorvariable-metadata">
-<h1>dash.stateVectorVariable.metadata<a class="headerlink" href="#dash-statevectorvariable-metadata" title="Permalink to this headline"></a></h1>
+<h1>dash.stateVectorVariable.metadata<a class="headerlink" href="#dash-statevectorvariable-metadata" title="Permalink to this heading"></a></h1>
 <p>Sets metadata options for dimensions of a state vector variable</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-metadata-syntax1"><span class="std std-ref">obj = obj.metadata(dims, 0, [], [], header)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-metadata-syntax2"><span class="std std-ref">obj = obj.metadata(dims, 1, metadata, [], header)</span></a></div>
@@ -148,7 +161,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-statevectorvariable-metadata-syntax1">
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-metadata-outputs-obj"><span class="std std-ref">obj</span></a> = obj.metadata(<a class="reference internal" href="#dash-statevectorvariable-metadata-inputs-dims"><span class="std std-ref">dims</span></a>, 0, [], [], <a class="reference internal" href="#dash-statevectorvariable-metadata-inputs-header"><span class="std std-ref">header</span></a>)</div>
 </div>
@@ -164,37 +177,37 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="dims">
-<span id="dash-statevectorvariable-metadata-inputs-dims"></span><h3>dims<a class="headerlink" href="#dims" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-inputs-dims"></span><h3>dims<a class="headerlink" href="#dims" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>dims</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nDimensions</em>]</div>
 <div class="line">The dimensions that should have their metadata options updated.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="metadata">
-<span id="dash-statevectorvariable-metadata-inputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-inputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {<em>metadata</em> <em>matrix</em>}</div>
 <div class="line">Alternate metadata to use for each dimension.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="conversionfunctions">
-<span id="dash-statevectorvariable-metadata-inputs-conversionfunctions"></span><h3>conversionFunctions<a class="headerlink" href="#conversionfunctions" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-inputs-conversionfunctions"></span><h3>conversionFunctions<a class="headerlink" href="#conversionfunctions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>conversionFunctions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {<em>function*_*handle</em>}</div>
 <div class="line">Handle to the conversion function to use for each dimension.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="conversionargs">
-<span id="dash-statevectorvariable-metadata-inputs-conversionargs"></span><h3>conversionArgs<a class="headerlink" href="#conversionargs" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-inputs-conversionargs"></span><h3>conversionArgs<a class="headerlink" href="#conversionargs" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>conversionArgs</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {<em>cell</em> <em>vector</em>}</div>
 <div class="line">Additional input arguments to the conversion function for each dimension.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="header">
-<span id="dash-statevectorvariable-metadata-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>header</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">Header for thrown error IDs.</div>
@@ -203,9 +216,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="dash-statevectorvariable-metadata-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-metadata-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>dash</em>.*stateVectorVariable* <em>object</em></div>
 <div class="line">The variable with updated metadata parameters.</div>
@@ -218,7 +231,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="weightedMean.html" class="btn btn-neutral float-left" title="dash.stateVectorVariable.weightedMean" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="weightedTotal.html" class="btn btn-neutral float-left" title="dash.stateVectorVariable.weightedTotal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="dimensions.html" class="btn btn-neutral float-right" title="dash.stateVectorVariable.dimensions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

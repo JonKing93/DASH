@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.times &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.times &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -114,11 +125,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-times">
-<h1>gridfile.times<a class="headerlink" href="#gridfile-times" title="Permalink to this headline"></a></h1>
+<h1>gridfile.times<a class="headerlink" href="#gridfile-times" title="Permalink to this heading"></a></h1>
 <p>Multiply the data in two gridfiles</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-times-syntax1"><span class="std std-ref">obj.times(grid2, filename)</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-times-syntax2"><span class="std std-ref">obj.times(…, ‘overwrite’, overwrite)</span></a></div>
@@ -129,7 +140,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-times-syntax1">
 <div class="line">obj.times(<a class="reference internal" href="#gridfile-times-inputs-grid2"><span class="std std-ref">grid2</span></a>, <a class="reference internal" href="#gridfile-times-inputs-filename"><span class="std std-ref">filename</span></a>)</div>
 </div>
@@ -156,37 +167,37 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="grid2">
-<span id="gridfile-times-inputs-grid2"></span><h3>grid2<a class="headerlink" href="#grid2" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-grid2"></span><h3>grid2<a class="headerlink" href="#grid2" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>grid2</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>gridfile</em> <em>object</em></div>
 <div class="line">The second gridfile to multiply with the current gridfile</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="filename">
-<span id="gridfile-times-inputs-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>filename</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>string</em> <em>vector</em> [2]</div>
 <div class="line">The name to use for the new .mat and .grid files. If a single file name, the name will be used for both files. If two file names, the first name is used for the .mat file, and the second name is used for the .grid file.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="overwrite">
-<span id="gridfile-times-inputs-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>overwrite</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>logical</em> | <em>logical</em> <em>vector</em> [2]</div>
 <div class="line">Whether to overwrite existing .mat and .grid files. True allows overwriting, false does not. If scalar, uses the same option for both files. If two elements, uses the first option for the .mat file, and the second option for the .grid file. Default is false.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="attributes">
-<span id="gridfile-times-inputs-attributes"></span><h3>attributes<a class="headerlink" href="#attributes" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-attributes"></span><h3>attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>attributes</strong></label><div class="content"><div class="line-block">
 <div class="line">1 | 2 | <em>scalar</em> <em>struct</em> | <em>empty</em> <em>array</em></div>
 <div class="line">Options for setting metadata attributes in the new .grid file. If 1, copies the attributes from the first gridfile to the new file. If 2, copies the attributes from grid2 to the new file. If a scalar struct, uses the struct directly as the attributes. If unset or an empty array, the new file will have no metadata attributes.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="type">
-<span id="gridfile-times-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line">1 | 2 | 3</div>
 <div class="line">Options for matching gridfile metadata and sizes.</div>
@@ -196,7 +207,7 @@
 <p>[3]: Does not compare dimensional metadata. Loads all data elements from both files and applies arithmetic directly. Requires data dimensions to have compatible sizes.</p>
 </div></section></section>
 <section class="collapse-examples" id="precision">
-<span id="gridfile-times-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<span id="gridfile-times-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>precision</strong></label><div class="content"><div class="line-block">
 <div class="line">[] | ‘<em>single</em>’ | ‘<em>double</em>’</div>
 <div class="line">The required numerical precision of the data used for multiplication. If ‘single’ or ‘double’, uses the specified type. If an empty array, uses double unless all data used for addition is loaded as single by default.</div>
@@ -205,7 +216,7 @@
 </section>
 <hr class="docutils" />
 <section id="saves">
-<h2>Saves<a class="headerlink" href="#saves" title="Permalink to this headline"></a></h2>
+<h2>Saves<a class="headerlink" href="#saves" title="Permalink to this heading"></a></h2>
 <p>A .mat and .grid file with the specified names</p>
 </section>
 </section>

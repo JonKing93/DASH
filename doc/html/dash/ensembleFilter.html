@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.ensembleFilter &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.ensembleFilter &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -132,18 +143,18 @@
            <div itemprop="articleBody">
              
   <section id="dash-ensemblefilter">
-<h1>dash.ensembleFilter<a class="headerlink" href="#dash-ensemblefilter" title="Permalink to this headline"></a></h1>
+<h1>dash.ensembleFilter<a class="headerlink" href="#dash-ensemblefilter" title="Permalink to this heading"></a></h1>
 <p>Implement common utilities for ensemble-based data assimilation filters</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The ensembleFilter class implements utilities that are used by both the Kalman Filter, and the particle filter. The primary purpose of this class is to parse and error check the essential data inputs to these filters. Specifically, the observations, uncertainties, estimates, and prior. The class also includes a utilities for loading specific priors or R covariances, and also for checking that a filter object has the inputs required to run an algorithm</p>
 </section>
 <hr class="docutils" />
 <section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h2>
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h2>
 <section id="general">
-<h3>General<a class="headerlink" href="#general" title="Permalink to this headline"></a></h3>
+<h3>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/label.html"><span class="doc">label</span></a> - Set or return a label for the filter</div>
 <div class="line"><a class="reference internal" href="ensembleFilter/name.html"><span class="doc">name</span></a> - Return a name for use in error messages</div>
@@ -153,7 +164,7 @@
 </div>
 </section>
 <section id="inputs">
-<h3>Inputs<a class="headerlink" href="#inputs" title="Permalink to this headline"></a></h3>
+<h3>Inputs<a class="headerlink" href="#inputs" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/observations.html"><span class="doc">observations</span></a> - Parse and process observations for a filter</div>
 <div class="line"><a class="reference internal" href="ensembleFilter/prior.html"><span class="doc">prior</span></a> - Parse and process priors for a filter</div>
@@ -164,7 +175,7 @@
 </div>
 </section>
 <section id="error-checking">
-<h3>Error Checking<a class="headerlink" href="#error-checking" title="Permalink to this headline"></a></h3>
+<h3>Error Checking<a class="headerlink" href="#error-checking" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/processWhich.html"><span class="doc">processWhich</span></a> - Processes whichR and whichPrior inputs</div>
 <div class="line"><a class="reference internal" href="ensembleFilter/assertValidR.html"><span class="doc">assertValidR</span></a> - Ensures that observations do not have NaN uncertainties</div>
@@ -173,7 +184,7 @@
 </div>
 </section>
 <section id="query">
-<h3>Query<a class="headerlink" href="#query" title="Permalink to this headline"></a></h3>
+<h3>Query<a class="headerlink" href="#query" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/Rcovariance.html"><span class="doc">Rcovariance</span></a> - Returns an R covariance matrix for queried time steps and sites</div>
 <div class="line"><a class="reference internal" href="ensembleFilter/loadPrior.html"><span class="doc">loadPrior</span></a> - Loads a prior from an evolving set</div>
@@ -182,7 +193,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/dispFilter.html"><span class="doc">dispFilter</span></a> - Display details about a filter object in the console</div>
 </div>
@@ -190,7 +201,7 @@
 </div>
 </section>
 <section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleFilter/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensembleFilter class</div>
 </div>

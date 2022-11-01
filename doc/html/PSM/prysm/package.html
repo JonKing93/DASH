@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.prysm.description &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.prysm.package &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,11 +16,13 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="PSM.vslite" href="../vslite.html" />
+    <link rel="next" title="PSM.prysm.cellulose" href="cellulose.html" />
     <link rel="prev" title="PSM.prysm" href="../prysm.html" /> 
 </head>
 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -49,31 +60,29 @@
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../identity.html">identity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdsi.html">pdsi</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../prysm.html">prysm</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../prysm.html#description">Description</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../prysm.html#methods">Methods</a><ul class="current">
-<li class="toctree-l5 current"><a class="reference internal" href="../prysm.html#information">Information</a><ul class="current">
-<li class="toctree-l6 current"><a class="current reference internal" href="#">description</a><ul>
-<li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
-<li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
-<li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="#info">info</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../prysm.html#id1">Abstract Superclass</a><ul class="current">
+<li class="toctree-l5 current"><a class="current reference internal" href="#">package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l6"><a class="reference internal" href="#methods">Methods</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="#abstract-inherited">Abstract Inherited</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="../prysm.html#abstract-inherited">Abstract Inherited</a></li>
-</ul>
-</li>
+<li class="toctree-l4"><a class="reference internal" href="../prysm.html#forward-model-classes">Forward Model Classes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../vslite.html">vslite</a></li>
@@ -105,7 +114,7 @@
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../PSM.html">PSM</a> &raquo;</li>
           <li><a href="../prysm.html">PSM.prysm</a> &raquo;</li>
-      <li>PSM.prysm.description</li>
+      <li>PSM.prysm.package</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -115,34 +124,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="psm-prysm-description">
-<h1>PSM.prysm.description<a class="headerlink" href="#psm-prysm-description" title="Permalink to this headline"></a></h1>
-<p>Returns the description of the PRYSM code suite</p>
-<hr class="docutils" />
-<section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
-<pre><div class="syntax line-block">
-<div class="line"><a class="reference internal" href="#psm-prysm-description-syntax1"><span class="std std-ref">info = PSM.prysm.description</span></a></div>
-</div>
-</pre></section>
+  <section id="psm-prysm-package">
+<h1>PSM.prysm.package<a class="headerlink" href="#psm-prysm-package" title="Permalink to this heading"></a></h1>
+<p>Superclass for forward models in the PRYSM Python suite</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
-<pre><div class="syntax line-block" id="psm-prysm-description-syntax1">
-<div class="line"><a class="reference internal" href="#psm-prysm-description-outputs-info"><span class="std std-ref">info</span></a> = PSM.prysm.description</div>
-</div>
-</pre><p>Returns the description of the PRYSM code suite.</p>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
+<p>The PSM.prysm.package class provides a superclass for the individual forward models within the PRYSM suite. This superclass is primarily used to hold information about the PRYSM suite and Github repository for use with the PSM.download and PSM information methods.</p>
+<p>If you would like to actually implement a PRYSM forward model, please see the classes for specific PRYSM forward models.</p>
 </section>
 <hr class="docutils" />
-<section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
-<section class="collapse-examples" id="info">
-<span id="psm-prysm-description-outputs-info"></span><h3>info<a class="headerlink" href="#info" title="Permalink to this headline"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>info</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>string</em> <em>scalar</em></div>
-<div class="line">The description of the PRSYM code suite.</div>
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h2>
+<section id="abstract-inherited">
+<h3>Abstract Inherited<a class="headerlink" href="#abstract-inherited" title="Permalink to this heading"></a></h3>
+<div class="package-links line-block">
+<div class="line"><a class="reference internal" href="../Interface/label.html"><span class="doc">label</span></a> - Optionally apply a label to a PSM object</div>
+<div class="line"><a class="reference internal" href="../Interface/rows.html"><span class="doc">rows</span></a> - Indicate the state vector rows required to run a forward model</div>
+<div class="line"><a class="reference internal" href="../Interface/disp.html"><span class="doc">disp</span></a> - Display a PSM object in the console</div>
+<div class="line"><a class="reference internal" href="../Interface/estimate.html"><span class="doc">estimate</span></a> - Run a forward model on inputs extracted from a state vector ensemble</div>
+<div class="line"><a class="reference internal" href="../Interface/name.html"><span class="doc">name</span></a> - Return a name for a PSM object for use in error messages</div>
+<div class="line"><a class="reference internal" href="../Interface/parseRows.html"><span class="doc">parseRows</span></a> - Process and error check the inputs to the “rows” command</div>
 </div>
-</div></section></section>
+</section>
 </section>
 </section>
 
@@ -151,7 +155,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../prysm.html" class="btn btn-neutral float-left" title="PSM.prysm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../vslite.html" class="btn btn-neutral float-right" title="PSM.vslite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cellulose.html" class="btn btn-neutral float-right" title="PSM.prysm.cellulose" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

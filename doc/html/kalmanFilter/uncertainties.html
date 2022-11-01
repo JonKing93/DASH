@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kalmanFilter.uncertainties &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>kalmanFilter.uncertainties &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -115,11 +126,11 @@
            <div itemprop="articleBody">
              
   <section id="kalmanfilter-uncertainties">
-<h1>kalmanFilter.uncertainties<a class="headerlink" href="#kalmanfilter-uncertainties" title="Permalink to this headline"></a></h1>
+<h1>kalmanFilter.uncertainties<a class="headerlink" href="#kalmanfilter-uncertainties" title="Permalink to this heading"></a></h1>
 <p>Set or return the proxy uncertainties for a Kalman filter</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#kalmanfilter-uncertainties-syntax1"><span class="std std-ref">obj = obj.uncertainties(Rvar)</span></a></div>
 <div class="line"><a class="reference internal" href="#kalmanfilter-uncertainties-syntax2"><span class="std std-ref">obj = obj.uncertainties(Rcov)</span></a></div>
@@ -134,7 +145,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="kalmanfilter-uncertainties-syntax1">
 <div class="line"><a class="reference internal" href="#kalmanfilter-uncertainties-outputs-obj"><span class="std std-ref">obj</span></a> = obj.uncertainties(<a class="reference internal" href="#kalmanfilter-uncertainties-inputs-rvar"><span class="std std-ref">Rvar</span></a>)</div>
 </div>
@@ -165,30 +176,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="rvar">
-<span id="kalmanfilter-uncertainties-inputs-rvar"></span><h3>Rvar<a class="headerlink" href="#rvar" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-uncertainties-inputs-rvar"></span><h3>Rvar<a class="headerlink" href="#rvar" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>Rvar</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> 1|*nTime*|*nR*]</div>
 <div class="line">Error variances for the proxies. A numeric matrix with one row per site. Each column is a unique set of variances. If there is a single column, uses the same set of error variances in all assimilation time steps. If the number of sets of variances matches the number of time steps, uses the indicated set of variances in each time step. If the number of sets of variances is neither 1 nor the number of time steps, use the whichR input to indicate which set of variances to use in each assimilation time step. For a given set of variances, a NaN value is permitted for a site if the site has no observations in all time steps associated with that set of error variances.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="rcov">
-<span id="kalmanfilter-uncertainties-inputs-rcov"></span><h3>Rcov<a class="headerlink" href="#rcov" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-uncertainties-inputs-rcov"></span><h3>Rcov<a class="headerlink" href="#rcov" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>Rcov</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nR*]</div>
 <div class="line">Error covariances for the proxies. A numeric array with one row and one column per site. Each element along the third dimension is a unique set of covariances. Each set of covariances must be a symmetric matrix. If there is a single set of covariances (i.e. Rcov is a matrix), uses the same set of covariances for all assimilation time step. If the number of sets of covariances matches the number of time steps, uses the indicated set of covariances in each time step. If the number of sets of covariances is neither 1 nor the number of time steps, use the whichR input to indicate which set of covariances to use in each assimilated time step. For a given set of covariances, NaN values are permitted between two sites if at least one of the sites is missing an observation in all time steps associated with the that set of covariances.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="whichr">
-<span id="kalmanfilter-uncertainties-inputs-whichr"></span><h3>whichR<a class="headerlink" href="#whichr" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-uncertainties-inputs-whichr"></span><h3>whichR<a class="headerlink" href="#whichr" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>whichR</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>positive</em> <em>integers</em> [<em>nTime</em>]</div>
 <div class="line">Indicates which set of R variances or covariances to use in each time step. Must have one element per assimilation time step. Each element of whichR is the index of a set of R variances or covariances. If using R variances, these indices are for the columns of Rvar. If using R covariances, these indices are for the thrid dimension of Rcov.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="type">
-<span id="kalmanfilter-uncertainties-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-uncertainties-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
 <div class="line">Indicates whether the uncertainties are variances or covariances</div>
@@ -199,30 +210,30 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="kalmanfilter-uncertainties-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-uncertainties-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
 <div class="line">The kalmanFilter object with updated R uncertainties</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="kalmanfilter-uncertainties-outputs-rvar">
-<span id="id1"></span><h3>Rvar<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-rvar" title="Permalink to this headline"></a></h3>
+<span id="id1"></span><h3>Rvar<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-rvar" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>Rvar</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> 1|*nTime*|*nR*]</div>
 <div class="line">The current error variances for a kalmanFilter object. If you have not provided R uncertainties, an empty array.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="kalmanfilter-uncertainties-outputs-rcov">
-<span id="id2"></span><h3>Rcov<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-rcov" title="Permalink to this headline"></a></h3>
+<span id="id2"></span><h3>Rcov<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-rcov" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>Rcov</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> 1|*nTime*|*nR*]</div>
 <div class="line">The current error covariances for the kalmanFilter object. If you have not provided R uncertainties, an empty array.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="kalmanfilter-uncertainties-outputs-whichr">
-<span id="id3"></span><h3>whichR<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-whichr" title="Permalink to this headline"></a></h3>
+<span id="id3"></span><h3>whichR<a class="headerlink" href="#kalmanfilter-uncertainties-outputs-whichr" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>whichR</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>positive</em> <em>integers</em> [<em>nTime</em>] | []</div>
 <div class="line">Indicates which set of R variances or covariances is used in each assimilation time step. If there is a single set of R variances or covariances, returns an empty array.</div>

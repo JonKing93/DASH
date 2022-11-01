@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.design &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.design &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,11 +16,13 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="stateVector.mean" href="mean.html" />
+    <link rel="next" title="stateVector.sequence" href="sequence.html" />
     <link rel="prev" title="stateVector.relocate" href="relocate.html" /> 
 </head>
 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -65,9 +76,11 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l4"><a class="reference internal" href="mean.html">mean</a></li>
-<li class="toctree-l4"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sequence.html">sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mean.html">mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="total.html">total</a></li>
+<li class="toctree-l4"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="weightedTotal.html">weightedTotal</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
@@ -118,11 +131,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-design">
-<h1>stateVector.design<a class="headerlink" href="#statevector-design" title="Permalink to this headline"></a></h1>
+<h1>stateVector.design<a class="headerlink" href="#statevector-design" title="Permalink to this heading"></a></h1>
 <p>Design the dimensions of variables in a state vector</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-design-syntax1"><span class="std std-ref">obj = obj.design(-1, …)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-design-syntax1"><span class="std std-ref">obj = obj.design(v, …)</span></a></div>
@@ -136,7 +149,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-design-syntax1">
 <div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(-1, …)</div>
 <div class="line"><a class="reference internal" href="#statevector-design-outputs-obj"><span class="std std-ref">obj</span></a> = obj.design(<a class="reference internal" href="#statevector-design-inputs-v"><span class="std std-ref">v</span></a>, …)</div>
@@ -158,30 +171,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="v">
-<span id="statevector-design-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em> | -1</div>
 <div class="line">The indices of variables in the state vector that should be designed. Either a logical vector with one element per state vector variable, or a vector of linear indices. If linear indices, may not contain repeated indices. If -1, selects all variables in the state vector.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablenames">
-<span id="statevector-design-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The names of variables in the state vector whose dimensions should be designed. May not contain repeated variable names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimensions">
-<span id="statevector-design-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
 <div class="line">The names of dimensions that should be designed. Each dimension must occur in all listed variables. Cannot have repeated dimension names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="types">
-<span id="statevector-design-inputs-types"></span><h3>types<a class="headerlink" href="#types" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-inputs-types"></span><h3>types<a class="headerlink" href="#types" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>types</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> | <em>vector</em> [<em>nDimensions</em>], <em>string</em> | <em>integer</em></div>
 <div class="line">The type of each dimension. Options are:</div>
@@ -192,7 +205,7 @@
 <p>If types is scalar, uses the same setting for all indicated dimensions. Otherwise, types must have one element per listed dimension.</p>
 </div></section></section>
 <section class="collapse-examples" id="indices">
-<span id="statevector-design-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>indices</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {[] | <em>logical</em> <em>vector</em> [<em>dimension</em> <em>length</em>] | <em>vector</em>, <em>linear</em> <em>indices</em>}</div>
 <div class="line">State and reference indices for the designed dimensions. State indices are used for state dimensions; they indicate which elements along the dimension should be included in the state vector. Reference indices are used for ensemble dimensions; they indicate the elements along the dimension that can be used as reference elements for ensemble members.%</div>
@@ -203,9 +216,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="statevector-design-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="statevector-design-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
 <div class="line">The state vector updated with the designed variables and dimensions.</div>
@@ -219,7 +232,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="relocate.html" class="btn btn-neutral float-left" title="stateVector.relocate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="mean.html" class="btn btn-neutral float-right" title="stateVector.mean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sequence.html" class="btn btn-neutral float-right" title="stateVector.sequence" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

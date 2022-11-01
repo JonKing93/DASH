@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.getMetadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.getMetadata &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -114,11 +125,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-getmetadata">
-<h1>stateVector.getMetadata<a class="headerlink" href="#statevector-getmetadata" title="Permalink to this headline"></a></h1>
+<h1>stateVector.getMetadata<a class="headerlink" href="#statevector-getmetadata" title="Permalink to this heading"></a></h1>
 <p>Return the metadata along a dimension of a state vector variable</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-getmetadata-syntax1"><span class="std std-ref">metadata = obj.getMetadata(v, dimension)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-getmetadata-syntax1"><span class="std std-ref">metadata = obj.getMetadata(variableName, dimension)</span></a></div>
@@ -126,7 +137,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-getmetadata-syntax1">
 <div class="line"><a class="reference internal" href="#statevector-getmetadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.getMetadata(<a class="reference internal" href="#statevector-getmetadata-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#statevector-getmetadata-inputs-dimension"><span class="std std-ref">dimension</span></a>)</div>
 <div class="line"><a class="reference internal" href="#statevector-getmetadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.getMetadata(<a class="reference internal" href="#statevector-getmetadata-inputs-variablename"><span class="std std-ref">variableName</span></a>, <a class="reference internal" href="#statevector-getmetadata-inputs-dimension"><span class="std std-ref">dimension</span></a>)</div>
@@ -135,23 +146,23 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="v">
-<span id="statevector-getmetadata-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="statevector-getmetadata-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>linear</em> <em>index</em> | <em>logical</em> <em>vector</em></div>
 <div class="line">The index of a variable in the state vector for which to return metadata. Either a scalar linear index or a logical vector with one element per state vector variable. If a logical vector, must have exactly one true element.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablename">
-<span id="statevector-getmetadata-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this headline"></a></h3>
+<span id="statevector-getmetadata-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of a variable in the state vector for which to return metadata.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimension">
-<span id="statevector-getmetadata-inputs-dimension"></span><h3>dimension<a class="headerlink" href="#dimension" title="Permalink to this headline"></a></h3>
+<span id="statevector-getmetadata-inputs-dimension"></span><h3>dimension<a class="headerlink" href="#dimension" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimension</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of a dimension of the variable for which to return metadata.</div>
@@ -160,9 +171,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="metadata">
-<span id="statevector-getmetadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="statevector-getmetadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>matrix</em>, <em>numeric</em> | <em>logical</em> | <em>char</em> | <em>string</em> | <em>datetime</em></div>
 <div class="line">The metadata of data elements along the dimension that will be used in the state vector.</div>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensembleMetadata.variable &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensembleMetadata.variable &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -116,11 +127,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemblemetadata-variable">
-<h1>ensembleMetadata.variable<a class="headerlink" href="#ensemblemetadata-variable" title="Permalink to this headline"></a></h1>
+<h1>ensembleMetadata.variable<a class="headerlink" href="#ensemblemetadata-variable" title="Permalink to this heading"></a></h1>
 <p>Return metadata for a variable in a state vector ensemble</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-variable-syntax1"><span class="std std-ref">metadata = obj.variable(v, dimension)</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-variable-syntax1"><span class="std std-ref">metadata = obj.variable(variableName, dimension)</span></a></div>
@@ -136,7 +147,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemblemetadata-variable-syntax1">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-variable-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.variable(<a class="reference internal" href="#ensemblemetadata-variable-inputs-v"><span class="std std-ref">v</span></a>, <a class="reference internal" href="#ensemblemetadata-variable-inputs-dimension"><span class="std std-ref">dimension</span></a>)</div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-variable-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.variable(<a class="reference internal" href="#ensemblemetadata-variable-inputs-variablename"><span class="std std-ref">variableName</span></a>, <a class="reference internal" href="#ensemblemetadata-variable-inputs-dimension"><span class="std std-ref">dimension</span></a>)</div>
@@ -162,44 +173,44 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="v">
-<span id="ensemblemetadata-variable-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>scalar</em> <em>linear</em> <em>index</em></div>
 <div class="line">The index of a single variable in the state vector. If a logical vector, must have one element per variable in the state vector and a single true element. Otherwise, use a scalar linear index.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablename">
-<span id="ensemblemetadata-variable-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-variablename"></span><h3>variableName<a class="headerlink" href="#variablename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>char</em> <em>row</em> <em>vector</em></div>
 <div class="line">The name of the variable.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimension">
-<span id="ensemblemetadata-variable-inputs-dimension"></span><h3>dimension<a class="headerlink" href="#dimension" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-dimension"></span><h3>dimension<a class="headerlink" href="#dimension" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimension</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>char</em> <em>row</em> <em>vector</em></div>
 <div class="line">The name of a dimension for the variable.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablerows">
-<span id="ensemblemetadata-variable-inputs-variablerows"></span><h3>variableRows<a class="headerlink" href="#variablerows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-variablerows"></span><h3>variableRows<a class="headerlink" href="#variablerows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>variableRows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The rows of the variable at which to return metadata. If a logical vector, must have one element per row in the variable. If a vector of linear indices, elements should be between 1 and the length of the variable.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="members">
-<span id="ensemblemetadata-variable-inputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-members"></span><h3>members<a class="headerlink" href="#members" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>members</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The ensemble members for which to return metadata. If a logical vector, must have one element per ensemble member. Otherwise, a vector of linear indices.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="type">
-<span id="ensemblemetadata-variable-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">Indicates which type of metadata to return</div>
@@ -211,9 +222,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="metadata">
-<span id="ensemblemetadata-variable-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-variable-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>matrix</em> | 3*D* <em>array</em></div>
 <div class="line">The metadata for the dimension. If returning metadata for an ensemble dimension, the metadata is a matrix with one row per selected ensemble member. If returning metadata for a sequence or for a state dimension that does not implement a mean, the metadata is a matrix with one row per selected row. If returning metadata for a state dimension that implements a mean, the metadata will be a 3D array. The number of rows will match the number of requested rows, and each row will be identical. The metadata of elements used to implement the mean are organized along the third dimension.</div>

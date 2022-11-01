@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.dimensions &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.dimensions &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -109,11 +120,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-dimensions">
-<h1>gridfile.dimensions<a class="headerlink" href="#gridfile-dimensions" title="Permalink to this headline"></a></h1>
+<h1>gridfile.dimensions<a class="headerlink" href="#gridfile-dimensions" title="Permalink to this heading"></a></h1>
 <p>Return the dimensions in gridfile and their sizes</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-dimensions-syntax1"><span class="std std-ref">dimensions = obj.dimensions</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-dimensions-syntax2"><span class="std std-ref">[dimensions, sizes] = obj.dimensions</span></a></div>
@@ -121,7 +132,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-dimensions-syntax1">
 <div class="line"><a class="reference internal" href="#gridfile-dimensions-outputs-dimensions"><span class="std std-ref">dimensions</span></a> = obj.dimensions</div>
 </div>
@@ -133,16 +144,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="dimensions">
-<span id="gridfile-dimensions-outputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="gridfile-dimensions-outputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The dimensions in a gridfile</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="sizes">
-<span id="gridfile-dimensions-outputs-sizes"></span><h3>sizes<a class="headerlink" href="#sizes" title="Permalink to this headline"></a></h3>
+<span id="gridfile-dimensions-outputs-sizes"></span><h3>sizes<a class="headerlink" href="#sizes" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>sizes</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>positive</em> <em>integers</em></div>
 <div class="line">The size of each dimension in the gridfile.</div>

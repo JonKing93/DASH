@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensembleMetadata.latlon &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensembleMetadata.latlon &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -112,11 +123,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemblemetadata-latlon">
-<h1>ensembleMetadata.latlon<a class="headerlink" href="#ensemblemetadata-latlon" title="Permalink to this headline"></a></h1>
+<h1>ensembleMetadata.latlon<a class="headerlink" href="#ensemblemetadata-latlon" title="Permalink to this heading"></a></h1>
 <p>Return latitude-longitude coordinates for state vector elements</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax1"><span class="std std-ref">coordinates = obj.latlon</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-syntax2"><span class="std std-ref">coordinates = obj.latlon(siteColumns)</span></a></div>
@@ -126,7 +137,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemblemetadata-latlon-syntax1">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-latlon-outputs-coordinates"><span class="std std-ref">coordinates</span></a> = obj.latlon</div>
 </div>
@@ -147,9 +158,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="sitecolumns">
-<span id="ensemblemetadata-latlon-inputs-sitecolumns"></span><h3>siteColumns<a class="headerlink" href="#sitecolumns" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-latlon-inputs-sitecolumns"></span><h3>siteColumns<a class="headerlink" href="#sitecolumns" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>siteColumns</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>positive</em> <em>integers</em>, <em>vector</em> [2] | <em>matrix</em> [<em>nVariables</em> <em>x</em> 2]</div>
 <div class="line">Indicates the columns of “site” metadata that should be used as latitude and longitude coordinates. If a vector, uses the same columns for all variables with “site” metadata. The first element is the latitude column, and the second element is the longitude column. siteColumns must be vector when no variables are specified.</div>
@@ -157,14 +168,14 @@
 <p>If site variables are also listed, siteColumns may either be a vector or a matrix. If a matrix, must have one row per listed variable and two columns. The first column lists latitude columns in the site metadata, and the second column lists longitude columns for each variable.</p>
 </div></section></section>
 <section class="collapse-examples" id="variablenames">
-<span id="ensemblemetadata-latlon-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-latlon-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nVariables</em>]</div>
 <div class="line">The names of variables that should use “site” metadata to determine latitude-longitude coordinates. Cannot have repeated names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="v">
-<span id="ensemblemetadata-latlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-latlon-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line">-1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The indices of variable that should use “site” metadata to determine latitude-longitude coordinates. If -1, selects all variables. If a logical vector, must have one element per variable in the state vector. If linear indices, cannot have repeated elements.</div>
@@ -173,9 +184,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="coordinates">
-<span id="ensemblemetadata-latlon-outputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-latlon-outputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nRows</em> <em>x</em> 2]</div>
 <div class="line">Latitude-longtidue coordinates for each row of the state vector. First column is latitude and second column is longitude. If coordinate metadata for a row is not an expected format, returns a NaN coordinate for that row. NaN coordinates are returned for rows that: are missing a required dimension, implement a mean over a dimension, use coordinates that are not numeric scalars / string scalars / char row vectors, or have string metadata that cannot be converted to numeric values.</div>

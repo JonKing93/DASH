@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.loadInternal &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.loadInternal &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -114,11 +125,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-loadinternal">
-<h1>gridfile.loadInternal<a class="headerlink" href="#gridfile-loadinternal" title="Permalink to this headline"></a></h1>
+<h1>gridfile.loadInternal<a class="headerlink" href="#gridfile-loadinternal" title="Permalink to this heading"></a></h1>
 <p>Load requested data from pre-built dataSource objects</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-loadinternal-syntax1"><span class="std std-ref">[X, meta] = obj.loadInternal(userDimOrder, loadIndices, s, dataSources)</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-loadinternal-syntax2"><span class="std std-ref">… = obj.loadInternal(…, precision)</span></a></div>
@@ -126,7 +137,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-loadinternal-syntax1">
 <div class="line">[<a class="reference internal" href="#gridfile-loadinternal-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#gridfile-loadinternal-outputs-meta"><span class="std std-ref">meta</span></a>] = obj.loadInternal(<a class="reference internal" href="#gridfile-loadinternal-inputs-userdimorder"><span class="std std-ref">userDimOrder</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-loadindices"><span class="std std-ref">loadIndices</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-s"><span class="std std-ref">s</span></a>, <a class="reference internal" href="#gridfile-loadinternal-inputs-datasources"><span class="std std-ref">dataSources</span></a>)</div>
 </div>
@@ -138,37 +149,37 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="userdimorder">
-<span id="gridfile-loadinternal-inputs-userdimorder"></span><h3>userDimOrder<a class="headerlink" href="#userdimorder" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-inputs-userdimorder"></span><h3>userDimOrder<a class="headerlink" href="#userdimorder" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>userDimOrder</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nUserDims</em>]</div>
 <div class="line">The locations of the user-requested output dimensions in the full set of gridfile dimensions.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="loadindices">
-<span id="gridfile-loadinternal-inputs-loadindices"></span><h3>loadIndices<a class="headerlink" href="#loadindices" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-inputs-loadindices"></span><h3>loadIndices<a class="headerlink" href="#loadindices" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>loadIndices</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nGridDims</em>] {<em>vector</em>, <em>linear</em> <em>indices</em>}</div>
 <div class="line">The elements along each gridfile dimension that are required to implement the load operation. Includes all gridfile dimensions in the gridfile’s dimension order.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="s">
-<span id="gridfile-loadinternal-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>s</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nSource</em>]</div>
 <div class="line">The indices of data sources that are required in order to load the requested data.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="datasources">
-<span id="gridfile-loadinternal-inputs-datasources"></span><h3>dataSources<a class="headerlink" href="#datasources" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-inputs-datasources"></span><h3>dataSources<a class="headerlink" href="#datasources" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>dataSources</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nSource</em>] {<em>scalar</em> <em>dataSource</em> <em>object</em>}</div>
 <div class="line">dataSource objects for the data sources at the specified indices.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="precision">
-<span id="gridfile-loadinternal-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>precision</strong></label><div class="content"><div class="line-block">
 <div class="line">[] | ‘<em>single</em>’ | ‘<em>double</em>’</div>
 <div class="line">Indicates the required numeric precision of the loaded data. If ‘single’ or ‘double’, uses the specified type. If unset or an empty array, uses double unless all requested data has a single, char, logical, (u)int8, or (u)int16 data type.</div>
@@ -177,16 +188,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="gridfile-loadinternal-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>double</em> <em>array</em> | <em>single</em> <em>array</em></div>
 <div class="line">The loaded data array</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="meta">
-<span id="gridfile-loadinternal-outputs-meta"></span><h3>meta<a class="headerlink" href="#meta" title="Permalink to this headline"></a></h3>
+<span id="gridfile-loadinternal-outputs-meta"></span><h3>meta<a class="headerlink" href="#meta" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>meta</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>gridMetadata</em> <em>object</em></div>
 <div class="line">Metadata for the loaded array.</div>

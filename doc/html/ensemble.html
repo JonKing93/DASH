@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensemble &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensemble &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
@@ -162,15 +173,15 @@
            <div itemprop="articleBody">
              
   <section id="ensemble">
-<h1>ensemble<a class="headerlink" href="#ensemble" title="Permalink to this headline"></a></h1>
+<h1>ensemble<a class="headerlink" href="#ensemble" title="Permalink to this heading"></a></h1>
 <p>Manipulate and load saved state vector ensembles</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The ensemble class implements objects that allow users to interact with a saved state vector ensemble, while minimizing the amount of data that is actually loaded into memory. To that end, the class includes methods that allow users to load select variables and ensemble members, rather than all the data stored in a .ens file. The ensemble class also implements evolving ensembles, and lets users select saved ensemble members to use in different ensembles of an evolving set.</p>
 <p>Ensemble objects can be provided to other commands in the DASH toolbox, such as “PSM.estimate” and “kalmanFilter.prior”. This allows these methods to utilize values in a saved state vector ensemble, without requiring users to load the ensembles into memory. These other commands include various memory optimizations so that even very large ensembles can be used to estimate proxies or used for assimilation.</p>
 <section id="outline">
-<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this headline"></a></h3>
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
 <p>The following is an outline for using the ensemble class.</p>
 <ol class="arabic simple" start="0">
 <li><p>Use “stateVector.build” with the ‘file’ option to save a state vector ensemble in a .ens file.</p></li>
@@ -184,7 +195,7 @@
 </section>
 <hr class="docutils" />
 <section id="key-methods">
-<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this headline"></a></h2>
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
 <p>The following methods are among the most essential for users</p>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/ensemble.html"><span class="doc">ensemble</span></a> - Create an ensemble object for a saved state vector ensemble</div>
@@ -198,10 +209,10 @@
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <p>The complete list of methods for users.</p>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/ensemble.html"><span class="doc">ensemble</span></a> - Create an ensemble object for a saved state vector ensemble</div>
 <div class="line"><a class="reference internal" href="ensemble/label.html"><span class="doc">label</span></a> - Set or return a label for an ensemble object</div>
@@ -210,7 +221,7 @@
 </div>
 </section>
 <section id="subset">
-<h3>Subset<a class="headerlink" href="#subset" title="Permalink to this headline"></a></h3>
+<h3>Subset<a class="headerlink" href="#subset" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/useVariables.html"><span class="doc">useVariables</span></a> - Use a subset of saved variables</div>
 <div class="line"><a class="reference internal" href="ensemble/useMembers.html"><span class="doc">useMembers</span></a> - Use a subset of saved ensemble members</div>
@@ -219,7 +230,7 @@
 </div>
 </section>
 <section id="design">
-<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline"></a></h3>
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/static.html"><span class="doc">static</span></a> - Implement a static ensemble</div>
 <div class="line"><a class="reference internal" href="ensemble/evolving.html"><span class="doc">evolving</span></a> - Implement an evolving ensemble</div>
@@ -229,7 +240,7 @@
 </div>
 </section>
 <section id="metadata">
-<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/metadata.html"><span class="doc">metadata</span></a> - Return the ensembleMetadata object for an ensemble</div>
 </div>
@@ -237,7 +248,7 @@
 </div>
 </section>
 <section id="load">
-<h3>Load<a class="headerlink" href="#load" title="Permalink to this headline"></a></h3>
+<h3>Load<a class="headerlink" href="#load" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/load.html"><span class="doc">load</span></a> - Loads a state vector ensemble into memory</div>
 <div class="line"><a class="reference internal" href="ensemble/loadGrid.html"><span class="doc">loadGrid</span></a> - Load a variable in a state vector ensemble as a gridded fields</div>
@@ -247,7 +258,7 @@
 </div>
 </section>
 <section id="information">
-<h3>Information<a class="headerlink" href="#information" title="Permalink to this headline"></a></h3>
+<h3>Information<a class="headerlink" href="#information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/length.html"><span class="doc">length</span></a> - Return the state vector length of an ensemble and its variables</div>
 <div class="line"><a class="reference internal" href="ensemble/variables.html"><span class="doc">variables</span></a> - List the variables used in an ensemble</div>
@@ -257,7 +268,7 @@
 </div>
 </section>
 <section id="sizes">
-<h3>Sizes<a class="headerlink" href="#sizes" title="Permalink to this headline"></a></h3>
+<h3>Sizes<a class="headerlink" href="#sizes" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/nRows.html"><span class="doc">nRows</span></a> - Return the number of state vector rows for one or more ensemble objects</div>
 <div class="line"><a class="reference internal" href="ensemble/nVariables.html"><span class="doc">nVariables</span></a> - Return the number of state vector variables for one or more ensemble objects</div>
@@ -268,7 +279,7 @@
 </div>
 </section>
 <section id="add-members">
-<h3>Add Members<a class="headerlink" href="#add-members" title="Permalink to this headline"></a></h3>
+<h3>Add Members<a class="headerlink" href="#add-members" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/addMembers.html"><span class="doc">addMembers</span></a> - Add more members to a saved state vector ensemble</div>
 <div class="line"><a class="reference internal" href="ensemble/update.html"><span class="doc">update</span></a> - Update an ensemble object to include new members added to a .ens file</div>
@@ -277,7 +288,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/disp.html"><span class="doc">disp</span></a> - Displays an ensemble object in the console</div>
 </div>
@@ -287,10 +298,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Utility methods that help the class run. These do not implement error checking and are not intended for users.</p>
 <section id="assertions">
-<h3>Assertions<a class="headerlink" href="#assertions" title="Permalink to this headline"></a></h3>
+<h3>Assertions<a class="headerlink" href="#assertions" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/assertEvolvingMembers.html"><span class="doc">assertEvolvingMembers</span></a> - Throw error if input is not a set of ensemble members for an evolving ensemble</div>
 <div class="line"><a class="reference internal" href="ensemble/assertStaticMembers.html"><span class="doc">assertStaticMembers</span></a> - Throw error if input is not ensemble members for a static ensemble</div>
@@ -299,7 +310,7 @@
 </div>
 </section>
 <section id="indices">
-<h3>Indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<h3>Indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/variableIndices.html"><span class="doc">variableIndices</span></a> - Parse variables and return indices in state vector</div>
 <div class="line"><a class="reference internal" href="ensemble/evolvingIndices.html"><span class="doc">evolvingIndices</span></a> - Parse ensembles and return indices in the evolving set</div>
@@ -308,7 +319,7 @@
 </div>
 </section>
 <section id="id1">
-<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/dispEvolving.html"><span class="doc">dispEvolving</span></a> - Display the labels of evolving ensembles in the console</div>
 <div class="line"><a class="reference internal" href="ensemble/dispVariables.html"><span class="doc">dispVariables</span></a> - Display the names and lengths of variables in an ensemble</div>
@@ -317,7 +328,7 @@
 </div>
 </section>
 <section id="misc">
-<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this headline"></a></h3>
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/name.html"><span class="doc">name</span></a> - Return a name for use in error messages</div>
 <div class="line"><a class="reference internal" href="ensemble/parseScope.html"><span class="doc">parseScope</span></a> - Parse scope inputs</div>
@@ -327,7 +338,7 @@
 </div>
 </section>
 <section id="unit-tests">
-<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h3>
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensemble/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensemble class</div>
 </div>

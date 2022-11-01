@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.metadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.metadata &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,12 +16,14 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="stateVector.getMetadata" href="getMetadata.html" />
-    <link rel="prev" title="stateVector.sequence" href="sequence.html" /> 
+    <link rel="prev" title="stateVector.weightedTotal" href="weightedTotal.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -118,11 +129,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-metadata">
-<h1>stateVector.metadata<a class="headerlink" href="#statevector-metadata" title="Permalink to this headline"></a></h1>
+<h1>stateVector.metadata<a class="headerlink" href="#statevector-metadata" title="Permalink to this heading"></a></h1>
 <p>Specify how to process metadata along dimensions of state vector variables</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-metadata-syntax1"><span class="std std-ref">obj = obj.metadata(-1, …)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-metadata-syntax1"><span class="std std-ref">obj = obj.metadata(v, …)</span></a></div>
@@ -136,7 +147,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-metadata-syntax1">
 <div class="line"><a class="reference internal" href="#statevector-metadata-outputs-obj"><span class="std std-ref">obj</span></a> = obj.metadata(-1, …)</div>
 <div class="line"><a class="reference internal" href="#statevector-metadata-outputs-obj"><span class="std std-ref">obj</span></a> = obj.metadata(<a class="reference internal" href="#statevector-metadata-inputs-v"><span class="std std-ref">v</span></a>, …)</div>
@@ -167,30 +178,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="v">
-<span id="statevector-metadata-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em> | -1</div>
 <div class="line">The indices of variables in the state vector that should have metadata updated. Either a logical vector with one element per state vector variable, or a vector of linear indices. If linear indices, may not contain repeated indices. If -1, selects all variables in the state vector.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablenames">
-<span id="statevector-metadata-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The names of variables in the state vector that should have metadata updated. May not contain repeated variable names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimensions">
-<span id="statevector-metadata-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
 <div class="line">The names of the ensemble dimensions that should have their metadata updated. Each dimension must be an ensemble dimension in all listed variables. Cannot have repeated dimension names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="metadatatype">
-<span id="statevector-metadata-inputs-metadatatype"></span><h3>metadataType<a class="headerlink" href="#metadatatype" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-metadatatype"></span><h3>metadataType<a class="headerlink" href="#metadatatype" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>metadataType</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>integer</em> | <em>scalar</em> <em>string</em></div>
 <div class="line">Specifies how the metadata for the dimensions should be processed.</div>
@@ -200,7 +211,7 @@
 <p>[2|”c”|”convert”]: Apply a conversion function to gridfile metadata</p>
 </div></section></section>
 <section class="collapse-examples" id="alternatemetadata">
-<span id="statevector-metadata-inputs-alternatemetadata"></span><h3>alternateMetadata<a class="headerlink" href="#alternatemetadata" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-alternatemetadata"></span><h3>alternateMetadata<a class="headerlink" href="#alternatemetadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>alternateMetadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>]{<em>matadata</em> <em>matrix</em> [<em>nIndices</em> <em>x</em> ?]}</div>
 <div class="line">Alternate metadata to use for the dimensions. Each element should hold a metadata matrix, and the number of metadata rows for each matrix should match the length of the corresponding gridfile dimension. Each metadata matrix should have unique rows.</div>
@@ -209,14 +220,14 @@
 <p>If only a single dimension is indicated, you may provide the alternate metadata directly, instead of as a scalar cell. However, the scalar cell syntax is also permitted.</p>
 </div></section></section>
 <section class="collapse-examples" id="conversionfunction">
-<span id="statevector-metadata-inputs-conversionfunction"></span><h3>conversionFunction<a class="headerlink" href="#conversionfunction" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-conversionfunction"></span><h3>conversionFunction<a class="headerlink" href="#conversionfunction" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>conversionFunction</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>], {<em>scalar</em> <em>function*_*handle</em>}</div>
 <div class="line">The conversion functions to use for each of the indicated dimensions. A cell vector with one element per listed dimension. Each element holds a function handle for the conversion function to use for the dimension. If only a single dimension is listed, you may also provide the function handle directly, instead of in a scalar cell.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="conversionargs">
-<span id="statevector-metadata-inputs-conversionargs"></span><h3>conversionArgs<a class="headerlink" href="#conversionargs" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-inputs-conversionargs"></span><h3>conversionArgs<a class="headerlink" href="#conversionargs" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>conversionArgs</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>, {<em>cell</em> <em>vector</em> {<em>function</em> <em>args</em>}}</div>
 <div class="line">Additional arguments to each conversion function. A cell vector with one element per conversion function handle. Each element holds the additional arguments to the conversion function. If a conversion function has no additional arguments, the corresponding element of conversionArgs should hold an empty cell. If only a single dimension is listed, you may provide the additional arguments for the conversion function directly as a cell vector, instead of within a scalar cell.</div>
@@ -225,9 +236,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="statevector-metadata-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="statevector-metadata-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
 <div class="line">The state vector with updated metadata specifications.</div>
@@ -240,7 +251,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="sequence.html" class="btn btn-neutral float-left" title="stateVector.sequence" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="weightedTotal.html" class="btn btn-neutral float-left" title="stateVector.weightedTotal" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="getMetadata.html" class="btn btn-neutral float-right" title="stateVector.getMetadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

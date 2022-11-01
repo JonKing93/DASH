@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.localize.gc2d &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.localize.gc2d &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,11 +16,13 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="dash.localize.tests" href="tests.html" />
+    <link rel="next" title="dash.localize.gc1d" href="gc1d.html" />
     <link rel="prev" title="dash.localize" href="../localize.html" /> 
 </head>
 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -73,6 +84,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l5"><a class="reference internal" href="gc1d.html">gc1d</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../localize.html#tests">Tests</a></li>
@@ -117,11 +129,11 @@
            <div itemprop="articleBody">
              
   <section id="dash-localize-gc2d">
-<h1>dash.localize.gc2d<a class="headerlink" href="#dash-localize-gc2d" title="Permalink to this headline"></a></h1>
+<h1>dash.localize.gc2d<a class="headerlink" href="#dash-localize-gc2d" title="Permalink to this heading"></a></h1>
 <p>Computes localization weights using a Gaspari-Cohn 5th order polynomial in 2 dimensions</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-localize-gc2d-syntax1"><span class="std std-ref">[wloc, yloc] = dash.localize.gc2d(ensCoords, siteCoords, R)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-localize-gc2d-syntax2"><span class="std std-ref">[wloc, yloc] = dash.localize.gc2d(ensCoords, siteCoords, R, scale)</span></a></div>
@@ -129,7 +141,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-localize-gc2d-syntax1">
 <div class="line">[<a class="reference internal" href="#dash-localize-gc2d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc2d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc2d(ensCoords, siteCoords, <a class="reference internal" href="#dash-localize-gc2d-inputs-r"><span class="std std-ref">R</span></a>)</div>
 </div>
@@ -141,30 +153,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="statecoordinates">
-<span id="dash-localize-gc2d-inputs-statecoordinates"></span><h3>stateCoordinates<a class="headerlink" href="#statecoordinates" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-inputs-statecoordinates"></span><h3>stateCoordinates<a class="headerlink" href="#statecoordinates" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>stateCoordinates</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nState</em> <em>x</em> 2]</div>
 <div class="line">The coordinates of the state vector elements (in decimal degrees). A matrix with two columns. The first column holds the latitude points, and the second column holds longitude. The method is agnostic to longitudes on -180:180 and 0:360 coordinates systems, so you may use either system or even a mix of both.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="sitecoordinates">
-<span id="dash-localize-gc2d-inputs-sitecoordinates"></span><h3>siteCoordinates<a class="headerlink" href="#sitecoordinates" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-inputs-sitecoordinates"></span><h3>siteCoordinates<a class="headerlink" href="#sitecoordinates" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>siteCoordinates</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> 2]</div>
 <div class="line">The coordinates of the proxy / observation sites (in decimal degrees). A matrix with two columns. The first column holds the latitude points, and the second column holds longitude. The method is agnostic to longitudes on -180:180 and 0:360 coordinates systems, so you may use either system or even a mix of both.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="r">
-<span id="dash-localize-gc2d-inputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-inputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>R</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>positive</em> <em>numeric</em> <em>scalar</em></div>
 <div class="line">The localization radius (in kilometers).</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="scale">
-<span id="dash-localize-gc2d-inputs-scale"></span><h3>scale<a class="headerlink" href="#scale" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-inputs-scale"></span><h3>scale<a class="headerlink" href="#scale" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>scale</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">The length scale to use for the Gaspari-Cohn polynomial. Must be on the interval 0 &lt; scale &lt;= 0.5.  By default, uses a length scale of 0.5, which sets the localization radius equal to the cutoff radius.</div>
@@ -173,16 +185,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="wloc">
-<span id="dash-localize-gc2d-outputs-wloc"></span><h3>wloc<a class="headerlink" href="#wloc" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-outputs-wloc"></span><h3>wloc<a class="headerlink" href="#wloc" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>wloc</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nState</em> <em>x</em> <em>nSite</em>]</div>
 <div class="line">The covariance localization weights between the state vector elements and proxyobservation sites.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="yloc">
-<span id="dash-localize-gc2d-outputs-yloc"></span><h3>yloc<a class="headerlink" href="#yloc" title="Permalink to this headline"></a></h3>
+<span id="dash-localize-gc2d-outputs-yloc"></span><h3>yloc<a class="headerlink" href="#yloc" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>yloc</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nSite</em> <em>x</em> <em>nSite</em>]</div>
 <div class="line">The covariance localization weights between the proxy/observation sites and one another.</div>
@@ -196,7 +208,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../localize.html" class="btn btn-neutral float-left" title="dash.localize" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tests.html" class="btn btn-neutral float-right" title="dash.localize.tests" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gc1d.html" class="btn btn-neutral float-right" title="dash.localize.gc1d" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

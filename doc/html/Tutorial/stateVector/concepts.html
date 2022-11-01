@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>stateVector Concepts &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="stateVector Indices" href="indices.html" />
+    <link rel="prev" title="Outline" href="outline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">stateVector</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Concepts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#state-vectors">State Vectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ensembles">Ensembles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#state-vector-variables">State Vector Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ensemble-and-state-dimensions">Ensemble and State Dimensions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequences">Sequences</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="indices.html">Indices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code4.html">Coding 4</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li><code class="docutils literal notranslate"><span class="pre">stateVector</span></code> Concepts</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="statevector-concepts">
+<h1><code class="docutils literal notranslate"><span class="pre">stateVector</span></code> Concepts<a class="headerlink" href="#statevector-concepts" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">stateVector</span></code> class is used to design and build state vector ensembles. The class implements <code class="docutils literal notranslate"><span class="pre">stateVector</span></code> objects, which act as design templates for state vector ensembles. Users can edit a template to describe an ensemble that matches their requirements. When finished, they can then use the template to automatically build a state vector ensemble that conforms to its design.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">stateVector</span></code> design templates allow you to design a state vector in a flexible manner, while limiting the manipulation of large data arrays. To facilitate the design process, we will need some vocabulary to help us describe state vector ensembles in a systematic way. The remainder of this page introduces some key concepts that will allow us to flexibly design diverse state vector ensembles.</p>
+<section id="state-vectors">
+<h2>State Vectors<a class="headerlink" href="#state-vectors" title="Permalink to this heading"></a></h2>
+<p>State vectors are a fundamental concept for ensemble-based assimilation methods. In brief, a <strong>state vector</strong> is a collection of climate variables and parameters that describe the state of the climate system over some period of time. These variables are reshaped into a vector of data values, hence a “state vector”. Typically, state vectors are constructed from climate model output, so each state vector provides one <strong>potential</strong> description of the climate system (or at least, the part of the system that we’re interested in). There is no strict definition for the contents of a state vector, but they often contain one or more climate variables at a set of spatial points. In some cases, a state vector may include a trajectory of several points in time - for example, successive months of the year, or successive years after a volcanic event.</p>
+<p>In the context of assimilation, state vectors will generally include two types of variables:</p>
+<ol class="arabic simple">
+<li><p>Reconstruction targets, and</p></li>
+<li><p>Climate variables used to run proxy forward models</p></li>
+</ol>
+<p>In some cases, a variable can fall into both categories.</p>
+<p>Whatever the application, a state vector can include data from a variety of climate variables at different spatial and temporal resolutions. Figure 1 illustrates an example state vector.</p>
+<figure class="align-default" id="id2">
+<img alt="A single column runs from the top of the figure to the bottom and is labeled as a state vector. The column has three colored sections. A long, light-orange section runs from the top to the center and is labeled as monthly, gridded temperature. A short, dark-orange section in the center is labeled as annual, global mean temperature. A long, blue section runs from the center to the bottom and is labeled as monthly, gridded precipitation." src="../../_images/state-vector.svg" /><figcaption>
+<p><span class="caption-text">Figure 1: A state vector with temperature, mean temperature, and precipitation variables.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>This example state vector includes data derived from two different climate variables (temperature and precipitation), data with different spatial resolutions (global-mean and spatial gridded), and different temporal resolutions (annual and monthly). Most likely, this state vector describes the state of the climate system for some modeled year.</p>
+</section>
+<section id="ensembles">
+<h2>Ensembles<a class="headerlink" href="#ensembles" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">DASH</span></code> toolbox focuses on <em>ensemble</em> DA methods, which rely on state vector ensembles. A state vector <strong>ensemble</strong> is a collection of multiple state vectors organized into a matrix. Since each individual state vector represents a possible description of the climate system, an ensemble provides an empirical <em>distribution</em> of possible climate states. For paleoclimate applications, the state vectors in an ensemble are typically selected from:</p>
+<ol class="upperalpha simple">
+<li><p>Different time steps,</p></li>
+<li><p>Different climate models, and/or</p></li>
+<li><p>Different model runs</p></li>
+</ol>
+<p>and we often refer to the different state vectors in an ensemble as <strong>ensemble members</strong>.</p>
+<p>Continuing the previous example, a small ensemble for our state vector might look like:</p>
+<figure class="align-default" id="id3">
+<img alt="Five state vector columns are aligned into a matrix. The first column is labeled as Year 1, Run 1. The second is Year 5, Run 1. The third is Year 19, Run 1. The fourth is Year 27, Run 1. The fifth is Year 1, Run 2." src="../../_images/ensemble.svg" /><figcaption>
+<p><span class="caption-text">Figure 2: An example ensemble (N=5) selected from different time points and/or model runs.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Here, each column is a different state vector (ensemble member). Each ensemble member has data for the temperature, mean temperature, and precipitation variables, but from different time steps. In the case of ensemble member 5, the ensemble member is from the same time step as ensemble member 1, but from a different climate model run.</p>
+</section>
+<section id="state-vector-variables">
+<span id="svv"></span><h2>State Vector Variables<a class="headerlink" href="#state-vector-variables" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">stateVector</span></code> class uses data from <code class="docutils literal notranslate"><span class="pre">gridfile</span></code> data catalogues to build state vector ensembles. In this tutorial, we will often refer to state vector variables. In the context of DASH, we define a <strong>state vector variable</strong> as some subset of data from a gridfile. Multiple variables can be derived from the same gridfile, and each individual variable forms a contiguous block of the state vector.</p>
+<p>Returning to our earlier figure:</p>
+<figure class="align-default" id="id4">
+<img alt="A single column runs from the top of the figure to the bottom and is labeled as a state vector. The column has three colored sections. A long, light-orange section runs from the top to the center and is labeled as monthly, gridded temperature. A short, dark-orange section in the center is labeled as annual, global mean temperature. A long, blue section runs from the center to the bottom and is labeled as monthly, gridded precipitation." src="../../_images/state-vector.svg" /><figcaption>
+<p><span class="caption-text">Figure 1: A state vector with temperature, mean temperature, and precipitation variables.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>we can see that the example state vector includes three variables: temperature (<strong>T</strong>), global mean temperature (<strong>Tmean</strong>), and precipitation (<strong>P</strong>). The <strong>T</strong> and <strong>Tmean</strong> variables are probably derived from the same gridfile (and possibly the <strong>P</strong> variable as well).</p>
+<p>Note that the definition of a state vector variable says nothing about specific <em>climate</em> variables. In fact, a given state vector variable can even include multiple climate variables, so long as those climate variables are derived from the same gridfile. (This can occur when a gridfile includes a <code class="docutils literal notranslate"><span class="pre">var</span></code> dimension with multiple variables). We’ll discuss state vector variables again in the <a class="reference internal" href="code4.html#sv-add"><span class="std std-ref">next coding session</span></a>. For now, the important point is that each variable is built from data in an associated gridfile.</p>
+</section>
+<section id="ensemble-and-state-dimensions">
+<h2>Ensemble and State Dimensions<a class="headerlink" href="#ensemble-and-state-dimensions" title="Permalink to this heading"></a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">DASH</span></code> toolbox, we will often refer to “state dimensions” and “ensemble dimensions”. These dimensions refer to the gridfile dimensions associated with each state vector variable. In brief, an <strong>ensemble dimension</strong> is a gridfile dimension used to select different ensemble members. For example, the <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> dimensions are often ensemble dimensions, because we often select different ensemble members from different time steps and/or model runs. Ensemble dimensions have constant metadata values along each column of an ensemble. Equivalently, ensemble dimensions have constant metadata values for each ensemble member. Ultimately, the metadata values over all the ensemble dimensions forms a unique metadata coordinate for each ensemble member.</p>
+<p>Zooming in on the temperature (<strong>T</strong>) variable in our example ensemble:</p>
+<figure class="align-default" id="id5">
+<img alt="The top of the figure is labeled as &quot;Ensemble Dimensions&quot;. A matrix representing an ensemble is divided into 5 columns representing ensemble members. Above the matrix are metadata values for the time and run dimensions. Each column has a specific metadata value for time, and a specific metadata value for run. The lines dividing the columns indicate that each set of metadata values is fixed along each column." src="../../_images/ensemble-dimensions.svg" /><figcaption>
+<p><span class="caption-text">Figure 3: Ensemble dimensions for a state vector ensemble.</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>we can see that <code class="docutils literal notranslate"><span class="pre">time</span></code> and <code class="docutils literal notranslate"><span class="pre">run</span></code> are the ensemble dimensions, because individual ensemble members are selected from different (time, run) coordinates. Each ensemble member (column) is associated with fixed <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata and fixed <code class="docutils literal notranslate"><span class="pre">run</span></code> metadata, although these metadata values change between individual ensemble members (columns). Note that the <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">=</span> <span class="pre">1</span></code> metadata value is repeated in ensemble members 1 and 5, but that the total metadata coordinate (time=1, run=1) and (time=1, run=2) is unique to each ensemble member.</p>
+<p id="state-dims">By contrast, <strong>state dimensions</strong> are the remaining gridfile dimensions - that is, they are the dimensions that <strong>are not</strong> used to select ensemble members. State dimensions have constant metadata values along each row of a state vector ensemble (this is somewhat the inverse of ensemble dimensions). Continuing the example:</p>
+<figure class="align-default" id="id6">
+<img alt="The top of the figure is labeled as &quot;State Dimensions&quot;. A matrix representing an ensemble is divided into five rows. Along the matrix's rows are metadata values for the lat and lon dimensions. Each row has a specific metadata value for lat, and a specific metadata value for lon. The lines dividing the rows indicate that each set of metadata values is fixed along each row." src="../../_images/state-dimensions.svg" /><figcaption>
+<p><span class="caption-text">Figure 4: State dimensions for a state vector ensemble.</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>we can see that <code class="docutils literal notranslate"><span class="pre">lat</span></code> and <code class="docutils literal notranslate"><span class="pre">lon</span></code> are the state dimensions, because each individual state vector elements are selected from different (lat, lon) coordinates. Each state vector element (rows) is associated with fixed <code class="docutils literal notranslate"><span class="pre">lat</span></code> metadata and fixed <code class="docutils literal notranslate"><span class="pre">lon</span></code> metadata, although these metadata values can change between individual rows.</p>
+<p>As you design variables in a state vector ensemble, you will eventually specify each gridfile dimension as either a state dimension or an ensemble dimension. This specification will help the <code class="docutils literal notranslate"><span class="pre">stateVector</span></code> class to automatically build a state vector ensemble from a particular design template. A common breakdown of dimensions is:</p>
+<ul class="simple">
+<li><p><strong>State Dimensions</strong>: <code class="docutils literal notranslate"><span class="pre">lon</span></code>, <code class="docutils literal notranslate"><span class="pre">lat</span></code>, <code class="docutils literal notranslate"><span class="pre">lev</span></code>, <code class="docutils literal notranslate"><span class="pre">site</span></code>, and/or <code class="docutils literal notranslate"><span class="pre">var</span></code></p></li>
+<li><p><strong>Ensemble Dimensions</strong>: <code class="docutils literal notranslate"><span class="pre">time</span></code> and/or <code class="docutils literal notranslate"><span class="pre">run</span></code></p></li>
+</ul>
+<p>However, this is just a rule of thumb and not a strict requirement. Depending on your application, any dimension could be a state dimension or ensemble dimension.</p>
+</section>
+<section id="sequences">
+<span id="id1"></span><h2>Sequences<a class="headerlink" href="#sequences" title="Permalink to this heading"></a></h2>
+<p>In some cases, you may want an ensemble dimension to also have some structure down the state vector. This most often occurs when you want a state vector to include several sequential points in time, and so we refer to this case as a <strong>sequence</strong>.</p>
+<p>For example, you may want a state vector to include data from each month of the year. Although the <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata associated with each ensemble member will refer to a particular year, individual state vector elements will also be associated with some <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata - in this case, the month of the ensemble member’s year.</p>
+<p>Analogously, you may want a state vector to include data from several years following a major event (such as a volcanic eruption). Although the <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata associated with each ensemble member will refer to the eruption, individual state vector elements will also be associated with <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata - in this case, the number of elapsed years since the event.</p>
+<p>Returning to the previous figures, let’s say I want the <strong>T</strong> temperature variable to include the spatial temperature grid from each of June, July, and August. In this case, the state vector ensemble for the <strong>T</strong> variable would have the following structure:</p>
+<figure class="align-default" id="id7">
+<img alt="A matrix is divided into 5 columns and 3 rows. The columns represent ensemble members and are labeled with time and run metadata. The time metadata for each column indicates the year associated with the ensemble member. The rows represent blocks of data associated with particular months. Each row has time metadata associated with it, and the rows are labeled as June, July, and August. Each row also has lat and lon metadata. The lat and lon metadata indicate that each row contains data values for all N spatial points." src="../../_images/sequence.svg" /><figcaption>
+<p><span class="caption-text">Figure 5: An example of a sequence for the time dimension. Each ensemble member (column) has time metadata listing the associated year. Each state vector element (row) has time metadata indicating a particular month.</span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>We can see that <code class="docutils literal notranslate"><span class="pre">time</span></code> is an ensemble dimension and each ensemble member (column) has fixed <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata listing the associated year. However, each state vector element (row) <em>also</em> has fixed <code class="docutils literal notranslate"><span class="pre">time</span></code> metadata listing the associated month. Because <code class="docutils literal notranslate"><span class="pre">time</span></code> is an ensemble dimension, but also has structure along the state vector, this state vector exhibits a sequence for the <code class="docutils literal notranslate"><span class="pre">time</span></code> dimensions.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="outline.html" class="btn btn-neutral float-left" title="Outline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="indices.html" class="btn btn-neutral float-right" title="stateVector Indices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

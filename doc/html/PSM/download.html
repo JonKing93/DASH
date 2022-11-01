@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.download &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.download &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -54,6 +65,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#psmname">psmName</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#path">path</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#uselatest">useLatest</a></li>
 </ul>
 </li>
 </ul>
@@ -61,7 +73,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#estimate">Estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-models">Forward Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#template">Template</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#tests">Tests</a></li>
@@ -99,45 +111,56 @@
            <div itemprop="articleBody">
              
   <section id="psm-download">
-<h1>PSM.download<a class="headerlink" href="#psm-download" title="Permalink to this headline"></a></h1>
+<h1>PSM.download<a class="headerlink" href="#psm-download" title="Permalink to this heading"></a></h1>
 <p>Download the codebase for a PSM from Github</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#psm-download-syntax1"><span class="std std-ref">PSM.download(psmName)</span></a></div>
-<div class="line"><a class="reference internal" href="#psm-download-syntax2"><span class="std std-ref">PSM.download(psmName, path)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-download-syntax2"><span class="std std-ref">PSM.download(…, ‘path’, path)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-download-syntax3"><span class="std std-ref">PSM.download(…, ‘latest’, useLatest)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-download-syntax1">
 <div class="line">PSM.download(<a class="reference internal" href="#psm-download-inputs-psmname"><span class="std std-ref">psmName</span></a>)</div>
 </div>
-</pre><p>Downloads the repository for the specified PSM from Github and adds the repository to the Matlab active path. The repository is downloaded to the current directory in a folder that matches the name of the repository. If the current directory already has a folder matching the name of the repostiory, then that folder must be empty. The downloaded repository is checked out at the commit supported by the DASH toolbox.</p>
+</pre><p>Downloads the repository for the specified PSM from Github and adds the repository to the Matlab active path. The repository is downloaded to the current directory in a folder that matches the name of the repository. If the current directory already has a folder matching the name of the repository, then that folder must be empty. The downloaded repository is checked out at the commit supported by the DASH toolbox.</p>
 <p>This command requires: 1. An internet connection, and 2. You have git installed and on your system path</p>
 <pre><div class="syntax line-block" id="psm-download-syntax2">
-<div class="line">PSM.download(<a class="reference internal" href="#psm-download-inputs-psmname"><span class="std std-ref">psmName</span></a>, <a class="reference internal" href="#psm-download-inputs-path"><span class="std std-ref">path</span></a>)</div>
+<div class="line">PSM.download(…, ‘path’, <a class="reference internal" href="#psm-download-inputs-path"><span class="std std-ref">path</span></a>)</div>
 </div>
 </pre><p>Downloads the repository contents into the specified folder. The folder must be empty.</p>
+<pre><div class="syntax line-block" id="psm-download-syntax3">
+<div class="line">PSM.download(…, ‘latest’, <a class="reference internal" href="#psm-download-inputs-uselatest"><span class="std std-ref">useLatest</span></a>)</div>
+</div>
+</pre><p>Specify whether the command should checkout the latest commit of the forward model - regardless of whether the latest commit is officially supported by the DASH toolbox. By default, checks out a supported commit.</p>
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="psmname">
-<span id="psm-download-inputs-psmname"></span><h3>psmName<a class="headerlink" href="#psmname" title="Permalink to this headline"></a></h3>
+<span id="psm-download-inputs-psmname"></span><h3>psmName<a class="headerlink" href="#psmname" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>psmName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
-<div class="line">The name of a PSM codebase supported by DASH. Options are “bayfox”, “baymag”, “bayspar”, “bayspline”, “prysm”, and “vslite”. The general linear PSM is built-in directly to DASH and does not need to be downloaded.</div>
+<div class="line">The name of a PSM codebase supported by DASH. You can see the names of supported PSMs using the “PSM.supported” command. The general linear PSM, and the identity PSM are built-in directly to DASH and do not need to be downloaded.</div>
 </div>
-<p>Note that you can also use “prysm.cellulose”, “prysm.coral”, “prysm.icecore”, or “prysm.speleothem” to download the PRYSM suite of Python forward models. However, these options will download the entire PRYSM suite, and not just the single indicated forward model.</p>
 </div></section></section>
 <section class="collapse-examples" id="path">
-<span id="psm-download-inputs-path"></span><h3>path<a class="headerlink" href="#path" title="Permalink to this headline"></a></h3>
+<span id="psm-download-inputs-path"></span><h3>path<a class="headerlink" href="#path" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>path</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>char</em> <em>row</em> <em>vector</em></div>
 <div class="line">The name of the folder in which to download the repository code. The folder must be empty. By default, uses the current folder.</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="uselatest">
+<span id="psm-download-inputs-uselatest"></span><h3>useLatest<a class="headerlink" href="#uselatest" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>useLatest</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>scalar</em> <em>logical</em></div>
+<div class="line">Set to true if the command should checkout the latest forward model commit - regardless of whether the latest commit is officially supported by DASH. Set to false to checkout the supported commit. Default is to checkout the supported commit.</div>
 </div>
 </div></section></section>
 </section>

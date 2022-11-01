@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coding 8 &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="particleFilter" href="particleFilter.html" />
+    <link rel="prev" title="kalmanFilter" href="kalmanFilter.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">DA Algorithms</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="da-algorithms.html">DA Algorithms in DASH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Coding 8</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-1-create-kalmanfilter-object">Step 1: Create <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-2-essential-inputs">Step 2: Essential Inputs</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#select-reconstruction-targets"><em>Select Reconstruction Targets</em></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="#step-3-covariance-adjustments">Step 3: Covariance Adjustments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-4-select-outputs">Step 4: Select outputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-5-run-the-filter">Step 5: Run the filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-6-regrid-state-vector-variables">Step 6: Regrid state vector variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#step-7-visualize">Step 7: Visualize!</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#full-demo">Full Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code9.html">Coding 9</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code10.html">Coding 10</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>Coding 8</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="coding-8">
+<h1>Coding 8<a class="headerlink" href="#coding-8" title="Permalink to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Permalink to this heading"></a></h2>
+<p>In this session, we will use the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class to run an assimilation.</p>
+</section>
+<section id="step-1-create-kalmanfilter-object">
+<h2>Step 1: Create <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object<a class="headerlink" href="#step-1-create-kalmanfilter-object" title="Permalink to this heading"></a></h2>
+<p>We’ll start by using the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> command to create an object. The syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>obj</strong> is the new <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object. You can optionally use the second input to label the object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>label</strong> is a string.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.label</span></code> command to label the object at any later point.</p>
+</div>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-1"><label for="ntrend-1"><strong>NTREND Demo</strong></label><div class="content"><p>Here, we’ll create a <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object for the NTREND demo. We’ll also apply a label to the object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;NTREND Demo&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="n">label</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">     </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">            </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">        </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">    </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see the initialized Kalman filter. We can see that none of the 4 essential inputs (observations, prior, estimates, and uncertainties) have been set yet. We can also see that the object will only update and return the ensemble mean when running the Kalman filter algorithm.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-1"><label for="lgm-1"><strong>LGM Demo</strong></label><div class="content"><p>Here, we’ll create a <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object for the LGM temperature assimilation. We’ll also apply a label to the object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;LGM Demo&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="n">label</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">            </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">LGM</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">     </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">            </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">        </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+<span class="w">    </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">        </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see the initialized Kalman filter. We can see that none of the 4 essential inputs (observations, prior, estimates, and uncertainties) have been set yet. We can also see that the object will only update and return the ensemble mean when running the Kalman filter algorithm.</p>
+</div></section></section>
+<section id="step-2-essential-inputs">
+<h2>Step 2: Essential Inputs<a class="headerlink" href="#step-2-essential-inputs" title="Permalink to this heading"></a></h2>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">prior</span></code>, <code class="docutils literal notranslate"><span class="pre">observations</span></code>, <code class="docutils literal notranslate"><span class="pre">estimates</span></code>, and <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code> commands to provide essential inputs to the Kalman filter. All four commands use a similar base syntax - each command takes a data array as input, and outputs an updated <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">observations</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">)</span><span class="w"></span>
+<span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>X</strong></dt><dd><p>The prior may either be provided via an <code class="docutils literal notranslate"><span class="pre">ensemble</span></code> object or as a data matrix. If using a matrix, each row should be an element of the state vector, and each column should be an ensemble member.</p>
+</dd>
+<dt><strong>Y</strong></dt><dd><p>The proxy observations should be a data matrix. Each row holds a particular proxy record and each column holds the values for an assimilation time step. You can use a NaN value when a proxy record does not have values for a particular time step.</p>
+</dd>
+<dt><strong>Ye</strong></dt><dd><p>The proxy estimates should be a matrix with one row per proxy record, and one column per ensemble member.</p>
+</dd>
+<dt><strong>R</strong></dt><dd><p>The proxy uncertainties should be a data matrix holding either error-variances or a full error-covariance matrix. If using error variances, the uncertainties should be a column vector with one row per proxy record. If using error-covariances, the matrix should be symmetric with one row and one column per proxy record.</p>
+</dd>
+</dl>
+<p>You can also modify these commands to use different values in different assimilation time steps. (For example, to use an evolving prior). We will not discuss this syntax in the tutorial, but you can read about it in the DASH documentation.</p>
+<section id="select-reconstruction-targets">
+<span id="ensemble-usevariables"></span><h3><em>Select Reconstruction Targets</em><a class="headerlink" href="#select-reconstruction-targets" title="Permalink to this heading"></a></h3>
+<p>When providing an assimilation prior, the prior only needs to contain state vector variables that represent reconstruction targets. Since we already generated proxy estimates, we don’t need to assimilate variables used only as forward model inputs. You can use the <code class="docutils literal notranslate"><span class="pre">ensemble.useVariables</span></code> command to restrict an ensemble object to specific state vector variables. The syntax for the command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">useVariables</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>variables</strong></dt><dd><p>The input should list the names or indices of specific variables in the state vector ensemble.</p>
+</dd>
+<dt><strong>obj</strong></dt><dd><p>The output is an updated ensemble object.</p>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-2"><label for="ntrend-2"><strong>NTREND Demo</strong></label><div class="content"><p>We’ll use the four input commands to provide the essential data values for our assimilation. We’ll start by providing the prior. Our prior will consist of the reconstruction targets <strong>T</strong> and <strong>T_index</strong>. We’ll use the <code class="docutils literal notranslate"><span class="pre">ensemble.useVariables</span></code> command to limit the reconstruction to these two variables:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get an ensemble object</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Restrict the object to reconstruction target variables</span><span class="w"></span>
+<span class="n">variables</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;T_index&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">useVariables</span><span class="p">(</span><span class="n">variables</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Provide the ensemble to the Kalman filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll provide the proxy records. The proxy records are catalogued in <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code>, so we’ll first use the <code class="docutils literal notranslate"><span class="pre">gridfile.load</span></code> command to load them as a data array:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy estimates</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Provide the proxy records to the Kalman filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">observations</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll provide the proxy estimates (Ye). We generated these proxy estimates in the previous open coding session:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Provide the proxy estimates</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Finally, we’ll provide proxy uncertainties - specifically, error variances. These values are provided in the <code class="docutils literal notranslate"><span class="pre">ntrend.mat</span></code> file, and were produced by (1) running the forward models on instrumental observations, and then (2) comparing the instrumental proxy estimates to the real instrumental proxy records:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy uncertainties</span><span class="w"></span>
+<span class="n">data</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;R&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">data</span><span class="p">.</span><span class="n">R</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Provide the uncertainties to the Kalman filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">4321</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">1156</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the Kalman filter now includes all four essential inputs. We can see it uses a static (time-independent) prior, and error-variances for the uncertainties. The output also shows a few key sizes, such as the number of observations sites, prior, assimilation time steps, etc.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-2"><label for="lgm-2"><strong>LGM Demo</strong></label><div class="content"><p>We’ll use the four input commands to provide the essential data values for our assimilation. We’ll start by providing the prior using an ensemble object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ensemble object</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Provide the ensemble to the Kalman filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll provide the proxy records. The proxy records are catalogued in <code class="docutils literal notranslate"><span class="pre">uk37.grid</span></code>, so we’ll first use the <code class="docutils literal notranslate"><span class="pre">gridfile.load</span></code> command to load them as a data array:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy records</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Provide the proxy records to the Kalman filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">observations</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll provide the proxy estimates (Ye) and uncertainties (R). We generated both of these in the previous coding session:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Provide proxy estimates and uncertainties</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">LGM</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the Kalman filter now includes all four essential inputs. We can see it uses a static (time-independent) prior, and error-variances for the uncertainties. The output also shows a few key sizes, such as the number of observations sites, prior, assimilation time steps, etc.</p>
+</div></section></section>
+</section>
+<section id="step-3-covariance-adjustments">
+<h2>Step 3: Covariance Adjustments<a class="headerlink" href="#step-3-covariance-adjustments" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, we’ll focus on covariance localization, but feel free to try out other covariance adjustments. You can implement localization using the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.localize</span></code> command. It’s syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where <strong>wloc</strong> and <strong>yloc</strong> are the localization weights between (1) the proxy estimates and state vector elements, and (2) the proxy estimates and one another. The <code class="docutils literal notranslate"><span class="pre">dash.localize</span></code> package contains functions for calculating localization weights. We’ll use the <code class="docutils literal notranslate"><span class="pre">gc2d</span></code> function, which implements a Gaspari-Cohn 5th order polynomial in 2 dimensions (this is a standard localization scheme for paleoclimate DA). The syntax for this command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">localize</span><span class="p">.</span><span class="n">gc2d</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">proxyCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>stateCoordinates</strong></dt><dd><p>The first input lists the latitude-longitude coordinate of each element in the state vector. This is a matrix with one row per state vector element, and 2 columns. The first column is latitude, and the second is longitude.</p>
+</dd>
+<dt><strong>proxyCoordinates</strong></dt><dd><p>The second input lists the latitude-longitude coordinate of each proxy site. This is a matrix with one row per proxy record and 2 columns. As before, the first column is latitude, and the second is longitude.</p>
+</dd>
+<dt><strong>R</strong></dt><dd><p>The third input lists the localization radius in kilometers.</p>
+</dd>
+</dl>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-3"><label for="ntrend-3"><strong>NTREND Demo</strong></label><div class="content"><p>In this demo, we’ll implement covariance localization with a localization radius of 15,000 km. We’ll start by using the metadata in <code class="docutils literal notranslate"><span class="pre">ntrend.grid</span></code> to obtain the proxy coordinates:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the metadata for each site</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+
+<span class="c">% Get the proxy coordinates</span><span class="w"></span>
+<span class="n">proxyCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">,</span><span class="w"> </span><span class="n">lons</span><span class="p">];</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.latlon</span></code> command to return latitude-longitude coordinates for each element in the state vector. (Note that we’ll first use the <code class="docutils literal notranslate"><span class="pre">ensemble.useVariables</span></code> command to restrict the ensemble to the <strong>T</strong> and <strong>T_index</strong> reconstruction targets):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ensemble object for the reconstruction targets</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">useVariables</span><span class="p">([</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;T_index&quot;</span><span class="p">]);</span><span class="w"></span>
+
+<span class="c">% Get the ensembleMetadata object</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Get the latitude-longitude coordinates for the state vector</span><span class="w"></span>
+<span class="n">stateCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">latlon</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>With these coordinates, we’ll use the <code class="docutils literal notranslate"><span class="pre">dash.localize.gc2d</span></code> function to calculate localization weights:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Calculate localization weights for a 15000 km radius</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">15000</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">localize</span><span class="p">.</span><span class="n">gc2d</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">proxyCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Finally, we’ll provide the localization weights to the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">4321</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">1156</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Covariance</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Localization</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the object will now implement covariance localization when running a Kalman filter.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-3"><label for="lgm-3"><strong>LGM Demo</strong></label><div class="content"><p>In this demo, we’ll implement covariance localization with a localization radius of 22,000 km. We’ll start by using the metadata in <code class="docutils literal notranslate"><span class="pre">UK37.grid</span></code> to obtain the proxy coordinates:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the metadata for each site</span><span class="w"></span>
+<span class="n">site</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;uk37&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">;</span><span class="w"></span>
+<span class="n">lats</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">2</span><span class="p">));</span><span class="w"></span>
+<span class="n">lons</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="n">site</span><span class="p">(:,</span><span class="mi">3</span><span class="p">));</span><span class="w"></span>
+
+<span class="c">% Get the proxy coordinates</span><span class="w"></span>
+<span class="n">proxyCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">lats</span><span class="p">,</span><span class="w"> </span><span class="n">lons</span><span class="p">];</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next, we’ll use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.latlon</span></code> command to return latitude-longitude coordinates for each element in the state vector. Our <strong>SST</strong> variable is located on a tripolar grid, so DASH treats the climate model output as a collection of unique spatial sites. The spatial metadata is thus organized along the “site” dimension, rather than “lat” and “lon”. Because of this we’ll use the first input to the <code class="docutils literal notranslate"><span class="pre">latlon</span></code> command to indicate that the first column of “site” metadata corresponds to latitude, and the second column is longitude:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ensembleMetadata object</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Get the latitude-longitude coordinates</span><span class="w"></span>
+<span class="n">siteColumns</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">];</span><span class="w"></span>
+<span class="n">stateCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">latlon</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>With these coordinates, we’ll use the <code class="docutils literal notranslate"><span class="pre">dash.localize.gc2d</span></code> function to calculate localization weights:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Calculate localization weights for a 15000 km radius</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">22000</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">localize</span><span class="p">.</span><span class="n">gc2d</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">proxyCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Finally, we’ll provide the localization weights to the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> object:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">LGM</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Covariance</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Localization</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the object will now implement covariance localization when running a Kalman filter.</p>
+</div></section></section>
+<section id="step-4-select-outputs">
+<h2>Step 4: Select outputs<a class="headerlink" href="#step-4-select-outputs" title="Permalink to this heading"></a></h2>
+<p>As mentioned, you can use various commands to indicate that the Kalman filter should return specific outputs. In this tutorial, we’ll focus on the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.variance</span></code> and <code class="docutils literal notranslate"><span class="pre">kalmanFilter.deviations</span></code> commands, which share a similar syntax. Use:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">variance</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>to return the variance of the posterior ensemble and:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">deviations</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>to return the full ensemble deviations. These outputs will be labeled as <strong>Avar</strong> and <strong>Adev</strong> in the Kalman filter output.</p>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.percentiles</span></code> command to return specific percentiles of the posterior ensemble. Here the syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">obj</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">percentiles</span><span class="p">(</span><span class="n">percentages</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>where the <strong>percentages</strong> input is a vector of percentages for which to compute percentiles. The percentiles will be labeled as <strong>Aperc</strong> in the Kalman filter output.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-4"><label for="ntrend-4"><strong>NTREND Demo</strong></label><div class="content"><p>In this demo, we’ll return the variance and quartiles of the posterior ensemble. First, we’ll use the <code class="docutils literal notranslate"><span class="pre">variance</span></code> command to indicate that the algorithm should update the ensemble deviations and return ensemble variance:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">variance</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Then, we’ll use the <code class="docutils literal notranslate"><span class="pre">percentiles</span></code> command to also request the quartiles of the ensemble as output:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">percentages</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">25</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="mi">75</span><span class="p">];</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">percentiles</span><span class="p">(</span><span class="n">percentages</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">NTREND</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">4321</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">1156</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1262</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Covariance</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Localization</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Variance</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Percentiles</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the object will return the variance of the ensemble, as well as the 3 requested percentiles, when the object runs the Kalman filter algorithm.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-4"><label for="lgm-4"><strong>LGM Demo</strong></label><div class="content"><p>In this demo, we’ll return the full ensemble deviations. This is possible because we are only assimilating a single time step, so the output ensemble won’t be too large. We’ll use the <code class="docutils literal notranslate"><span class="pre">deviations</span></code> command to indicate that the algorithm should update and return the ensemble deviations:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">deviations</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Inspecting the updated object:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">kalmanFilter</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">properties:</span><span class="w"></span>
+
+<span class="w">                  </span><span class="n">Label</span><span class="p">:</span><span class="w"> </span><span class="n">LGM</span><span class="w"> </span><span class="n">Demo</span><span class="w"></span>
+
+<span class="w">           </span><span class="n">Observations</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Prior</span><span class="p">:</span><span class="w"> </span><span class="n">static</span><span class="w"></span>
+<span class="w">              </span><span class="n">Estimates</span><span class="p">:</span><span class="w"> </span><span class="nb">set</span><span class="w"></span>
+<span class="w">          </span><span class="n">Uncertainties</span><span class="p">:</span><span class="w"> </span><span class="n">variances</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">Observation</span><span class="w"> </span><span class="n">Sites</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="w"></span>
+<span class="w">    </span><span class="n">State</span><span class="w"> </span><span class="n">Vector</span><span class="w"> </span><span class="n">Length</span><span class="p">:</span><span class="w"> </span><span class="mi">122880</span><span class="w"></span>
+<span class="w">       </span><span class="n">Ensemble</span><span class="w"> </span><span class="n">Members</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="w"></span>
+<span class="w">                 </span><span class="n">Priors</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">             </span><span class="n">Time</span><span class="w"> </span><span class="n">Steps</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Covariance</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Localization</span><span class="w"></span>
+
+<span class="w">              </span><span class="n">Returning</span><span class="p">:</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Mean</span><span class="w"></span>
+<span class="w">                  </span><span class="n">Deviations</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the object will now return both the ensemble mean and deviations when running a Kalman filter.</p>
+</div></section></section>
+<section id="step-5-run-the-filter">
+<h2>Step 5: Run the filter<a class="headerlink" href="#step-5-run-the-filter" title="Permalink to this heading"></a></h2>
+<p>We’re finally ready to run the Kalman filter algorithm. We’ll do this using the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.run</span></code> command. The base syntax for this command is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The output is a struct with fields for the requested outputs. These may include:</p>
+<ul class="simple">
+<li><p>Amean: The updated ensemble mean</p></li>
+<li><p>Adev: The updated ensemble deviations</p></li>
+<li><p>Avar: The variance of the posterior ensemble</p></li>
+<li><p>Aperc: Requested percentiles of the posterior ensemble</p></li>
+</ul>
+<p>as well as other output fields.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-5"><label for="ntrend-5"><strong>NTREND Demo</strong></label><div class="content"><p>We’ll use the <code class="docutils literal notranslate"><span class="pre">run</span></code> command to run the Kalman filter algorithm. As a reminder, the object will implement covariance localization with a localization radius of 15,000 km. Also, the algorithm should return the updated ensemble mean, ensemble variance, and ensemble quartiles for each assimilated time step:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">struct</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">fields</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Amean</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4321</span>×<span class="mi">1262</span><span class="w"> </span><span class="nb">single</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">calibrationRatio</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">54</span>×<span class="mi">1262</span><span class="w"> </span><span class="nb">single</span><span class="p">]</span><span class="w"></span>
+<span class="w">              </span><span class="n">Avar</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4321</span>×<span class="mi">1262</span><span class="w"> </span><span class="nb">single</span><span class="p">]</span><span class="w"></span>
+<span class="w">             </span><span class="n">Aperc</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4321</span>×<span class="mi">3</span>×<span class="mi">1262</span><span class="w"> </span><span class="nb">single</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see it includes the updated ensemble mean for each of the 1262 assimilated time steps (Amean), the ensemble variance in each time step (Avar), and the 3 ensemble quartiles in each time step (Aperc). The output also includes the calibration ratio for each proxy record in each time step.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-5"><label for="lgm-5"><strong>LGM Demo</strong></label><div class="content"><p>We’ll use the <code class="docutils literal notranslate"><span class="pre">run</span></code> command to run the Kalman filter algorithm. As a reminder, the object will implement covariance localization with a localization radius of 15,000 km. Also, the algorithm should return both the updated ensemble mean and deviations:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Examining the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">struct</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">fields</span><span class="p">:</span><span class="w"></span>
+
+<span class="w">             </span><span class="n">Amean</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">122880</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">calibrationRatio</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">89</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">              </span><span class="n">Adev</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">122880</span>×<span class="mi">16</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see it includes the updated ensemble mean (Amean), and the updated deviations from the ensemble mean for each ensemble member (Adev). The output also includes the calibration ratio for each proxy record in each time step.</p>
+</div></section></section>
+<section id="step-6-regrid-state-vector-variables">
+<span id="regrid"></span><h2>Step 6: Regrid state vector variables<a class="headerlink" href="#step-6-regrid-state-vector-variables" title="Permalink to this heading"></a></h2>
+<p>At this point, you’ll typically want to start mapping and visualizing the assimilation outputs. However, the assimilated variables are still organized as state vectors, which can hinder visualization. You can use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata.regrid</span></code> command to (1) extract a variable from a state vector, and (2) return the variable to its original data grid. The base syntax is:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">V</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">obj</span><span class="p">.</span><span class="n">regrid</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span><span class="w"> </span><span class="n">X</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt><strong>variable</strong></dt><dd><p>The first input is the name or index of a variable in the state vector.</p>
+</dd>
+<dt><strong>X</strong></dt><dd><p>The second input is a data array with a dimension that proceeds along the state vector. Most of the output fields from <code class="docutils literal notranslate"><span class="pre">kalmanFilter.run</span></code> use the first dimension as the state vector dimension.</p>
+</dd>
+<dt><strong>obj</strong></dt><dd><p>The object is an <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> object for the prior ensemble.</p>
+</dd>
+<dt><strong>V</strong></dt><dd><p>The first output is the regridded variable. The state vector dimension will be reshaped to the original grid dimensions. All other data dimensions are left unaltered.</p>
+</dd>
+<dt><strong>metadata</strong></dt><dd><p>The second output is a <code class="docutils literal notranslate"><span class="pre">gridMetadata</span></code> object for the regridded variable. Note that this metadata is only for the reshaped state vector dimension. Other data array dimensions (such as assimilation time steps) are not included in this metadata.</p>
+</dd>
+</dl>
+<p>A note on tripolar grids: DASH usually represents tripolar grids as a collection of unique spatial sites. The <code class="docutils literal notranslate"><span class="pre">regrid</span></code> command will reshape these spatial sites into a single <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension, so you’ll often want to reshape the regridded <code class="docutils literal notranslate"><span class="pre">site</span></code> dimension to the size of the original tripolar output.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-6"><label for="ntrend-6"><strong>NTREND Demo</strong></label><div class="content"><p>Here, we’ll regrid the updated ensemble mean of the temperature field (the <strong>T</strong> variable):</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the ensembleMetadata object for the prior</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">useVariables</span><span class="p">([</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;T_index&quot;</span><span class="p">]);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Regrid the ensemble mean of the temperature field</span><span class="w"></span>
+<span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">regrid</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">.</span><span class="n">Amean</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Investigating the output:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">size</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">siz</span><span class="w"> </span><span class="p">=</span><span class="w"></span>
+<span class="w">         </span><span class="mi">144</span><span class="w">          </span><span class="mi">30</span><span class="w">        </span><span class="mi">1262</span><span class="w"></span>
+</pre></div>
+</div>
+<p>we can see that the regridded output has dimensions of (longitude x latitude x assimilation time steps). The returned metadata:</p>
+<div class="input highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="output highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">gridMetadata</span><span class="w"> </span><span class="s">with</span><span class="w"> </span><span class="s">metadata:</span><span class="w"></span>
+
+<span class="w">  </span><span class="n">lon</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">144</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+<span class="w">  </span><span class="n">lat</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">30</span>×<span class="mi">1</span><span class="w"> </span><span class="nb">double</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>includes values for the regridded lon and lat dimensions. The metadata does not include values for the third dimension, because assimilation time steps were not a dimension of the original data grid.</p>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-6"><label for="lgm-6"><strong>LGM Demo</strong></label><div class="content"><p>Here, we don’t actually need to regrid the output. This is for two reasons. First, we assimilated a single state vector variable, so we don’t need to extract the variable from the rest of the state vector. Second, because our variable is on a tripolar grid, the variable has a single <code class="docutils literal notranslate"><span class="pre">site</span></code> spatial dimension - as such, the variable would just be regridded as the current state vector. Instead, we will use Matlab’s <code class="docutils literal notranslate"><span class="pre">reshape</span></code> command to return the tripolar grid to its original shape. Note that the original tripolar model output was organized on a 320 x 384 spatial grid:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Reshape the updated SST field</span><span class="w"></span>
+<span class="n">SST</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">output</span><span class="p">.</span><span class="n">Amean</span><span class="p">,</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">384</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We will also want to reshape the latitude and longitude metadata. We can use the <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> object for the prior to obtain this metadata:</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Get the latitude and longitude metadata</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">).</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+<span class="n">latlon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">latlon</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+
+<span class="c">% Reshape the metadata</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">latlon</span><span class="p">(:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">384</span><span class="p">);</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">latlon</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="mi">320</span><span class="p">,</span><span class="w"> </span><span class="mi">384</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>We can now use the regridded variable and metadata with various mapping utilties.</p>
+</div></section></section>
+<section id="step-7-visualize">
+<h2>Step 7: Visualize!<a class="headerlink" href="#step-7-visualize" title="Permalink to this heading"></a></h2>
+<p>That’s it, the assimilation is complete! Try visualizing some of the outputs. Plotting data is outside of the scope of DASH, so use whatever mapping and visualization tools you prefer. You may be interested in:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.mathworks.com/help/map/index.html">Matlab’s mapping toolbox</a>, and</p></li>
+<li><p><a class="reference external" href="https://www.eoas.ubc.ca/~rich/map.html">The m_map package</a></p></li>
+</ul>
+<p>and there are many other resources built in to Matlab, as well as online.</p>
+</section>
+<section id="full-demo">
+<h2>Full Demo<a class="headerlink" href="#full-demo" title="Permalink to this heading"></a></h2>
+<p>This section recaps all the essential code from the demos and may be useful as a quick reference.</p>
+<section class="accordion"><input type="checkbox" name="collapse" id="ntrend-full"><label for="ntrend-full"><strong>NTREND Demo</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy data catalogue, and the prior ensemble/its metadata</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;ntrend&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">useVariables</span><span class="p">([</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;T_monthly&quot;</span><span class="p">]);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Create a kalman filter object</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="s">&quot;NTREND Demo&quot;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Collect essential inputs</span><span class="w"></span>
+<span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">;</span><span class="w"></span>
+<span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Ye    (from PSM.estimate)</span><span class="w"></span>
+<span class="n">R</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">load</span><span class="p">(</span><span class="s">&#39;ntrend.mat&#39;</span><span class="p">,</span><span class="s">&#39;R&#39;</span><span class="p">).</span><span class="n">R</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Provide essential inputs to the filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="n">X</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">observations</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Get localization weights</span><span class="w"></span>
+<span class="n">stateCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">latlon</span><span class="p">;</span><span class="w"></span>
+<span class="n">proxyCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="n">radius</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">22000</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">localize</span><span class="p">.</span><span class="n">gc2d</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">proxyCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">radius</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add localization to the filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Return ensemble variance and percentiles</span><span class="w"></span>
+<span class="n">percentages</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">25</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="mi">75</span><span class="p">];</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">percentiles</span><span class="p">(</span><span class="n">percentages</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">variance</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Run the filter</span><span class="w"></span>
+<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Extract and regrid variables</span><span class="w"></span>
+<span class="p">[</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">metadata</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">regrid</span><span class="p">(</span><span class="s">&quot;T&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">output</span><span class="p">.</span><span class="n">Amean</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section><section class="accordion"><input type="checkbox" name="collapse" id="lgm-full"><label for="lgm-full"><strong>LGM Demo</strong></label><div class="content"><div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Load the proxy data catalogue, and the prior ensemble/its metadata</span><span class="w"></span>
+<span class="n">proxies</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">gridfile</span><span class="p">(</span><span class="s">&#39;UK37&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ens</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensemble</span><span class="p">(</span><span class="s">&#39;lgm&#39;</span><span class="p">);</span><span class="w"></span>
+<span class="n">ensMeta</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">.</span><span class="n">metadata</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Create a Kalman filter object</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kalmanFilter</span><span class="p">(</span><span class="s">&#39;LGM Demo&#39;</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Collect essential inputs</span><span class="w"></span>
+<span class="n">X</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ens</span><span class="p">;</span><span class="w"></span>
+<span class="n">Y</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">load</span><span class="p">;</span><span class="w"></span>
+<span class="c">% Ye     (from PSM.estimate)</span><span class="w"></span>
+<span class="c">% R      (from PSM.estimate)</span><span class="w"></span>
+
+<span class="c">% Provide essential inputs to the filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">prior</span><span class="p">(</span><span class="n">ens</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">observations</span><span class="p">(</span><span class="n">Y</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">estimates</span><span class="p">(</span><span class="n">Ye</span><span class="p">);</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">uncertainties</span><span class="p">(</span><span class="n">R</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Compute localization weights</span><span class="w"></span>
+<span class="n">stateCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">ensMeta</span><span class="p">.</span><span class="n">latlon</span><span class="p">([</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="p">]);</span><span class="w"></span>
+<span class="n">proxyCoordinates</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">str2double</span><span class="p">(</span><span class="w"> </span><span class="n">proxies</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">site</span><span class="p">(:,</span><span class="w"> </span><span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+<span class="n">radius</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">22000</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">localize</span><span class="p">.</span><span class="n">gc2d</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">proxyCoordinates</span><span class="p">,</span><span class="w"> </span><span class="n">radius</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Add localization to the filter</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">localize</span><span class="p">(</span><span class="n">wloc</span><span class="p">,</span><span class="w"> </span><span class="n">yloc</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Return the full ensemble deviations</span><span class="w"></span>
+<span class="n">kf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">deviations</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span><span class="w"></span>
+
+<span class="c">% Run the filter</span><span class="w"></span>
+<span class="n">output</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kf</span><span class="p">.</span><span class="n">run</span><span class="p">;</span><span class="w"></span>
+
+<span class="c">% Reshape tripolar output</span><span class="w"></span>
+<span class="n">gridSize</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">320</span><span class="w"> </span><span class="mi">384</span><span class="p">];</span><span class="w"></span>
+<span class="n">SST</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">output</span><span class="p">.</span><span class="n">Amean</span><span class="p">,</span><span class="w"> </span><span class="n">gridSize</span><span class="p">);</span><span class="w"></span>
+<span class="n">lat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">(:,</span><span class="mi">1</span><span class="p">),</span><span class="w"> </span><span class="n">gridSize</span><span class="p">);</span><span class="w"></span>
+<span class="n">lon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">reshape</span><span class="p">(</span><span class="n">stateCoordinates</span><span class="p">(:,</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">gridSize</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+</div></section></section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="kalmanFilter.html" class="btn btn-neutral float-left" title="kalmanFilter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="particleFilter.html" class="btn btn-neutral float-right" title="particleFilter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

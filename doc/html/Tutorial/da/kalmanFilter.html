@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>kalmanFilter &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 8" href="code8.html" />
+    <link rel="prev" title="DA Algorithms in DASH" href="da-algorithms.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">DA Algorithms</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="da-algorithms.html">DA Algorithms in DASH</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">kalmanFilter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#essential-inputs">Essential Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#covariance-adjustments">Covariance Adjustments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#output-options">Output Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-the-filter">Run the filter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code8.html">Coding 8</a></li>
+<li class="toctree-l3"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code9.html">Coding 9</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code10.html">Coding 10</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>kalmanFilter</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kalmanfilter">
+<h1>kalmanFilter<a class="headerlink" href="#kalmanfilter" title="Permalink to this heading"></a></h1>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class to implement an offline ensemble Kalman filter assimilation algorithm. The class implements <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> objects. You can use these objects to set the experimental parameters and data inputs for a particular analysis, and then run the algorithm using the indicated settings. On the remainder of this page, we’ll examine key commands and features for this class.</p>
+<section id="essential-inputs">
+<h2>Essential Inputs<a class="headerlink" href="#essential-inputs" title="Permalink to this heading"></a></h2>
+<p>There are 4 essential data inputs required to run a Kalman filter in DASH. These are</p>
+<ol class="arabic simple">
+<li><p>A prior ensemble</p></li>
+<li><p>Proxy records (often called proxy <em>observations</em>)</p></li>
+<li><p>Proxy estimates, and</p></li>
+<li><p>Proxy uncertainties</p></li>
+</ol>
+<p>You can provide each of these inputs to a Kalman filter object using the associated <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> input command. These commands are <code class="docutils literal notranslate"><span class="pre">prior</span></code>, <code class="docutils literal notranslate"><span class="pre">observations</span></code>, <code class="docutils literal notranslate"><span class="pre">estimates</span></code>, and <code class="docutils literal notranslate"><span class="pre">uncertainties</span></code>.</p>
+</section>
+<section id="covariance-adjustments">
+<h2>Covariance Adjustments<a class="headerlink" href="#covariance-adjustments" title="Permalink to this heading"></a></h2>
+<p>The Kalman filter algorithm estimates the covariance between proxy records and state vector elements and relies on this covariance to update the ensemble. As such, a number of studies have implemented algorithm variants that modify these covariance estimates. To facilitate these variant algorithms, the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class supports the following covariance adjustments:</p>
+<dl class="simple">
+<dt><strong>Inflation</strong></dt><dd><p>Multiplies the covariance estimate by a scalar to increase the magnitude of updates. See the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.inflate</span></code> command.</p>
+</dd>
+<dt><strong>Localization</strong></dt><dd><p>Restricts proxy influence within a specific geographical region. This can reduce sampling errors at reconstructed sites far from the proxy network. See the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.localize</span></code> command and also the localization schemes in the <code class="docutils literal notranslate"><span class="pre">dash.localize</span></code> subpackage.</p>
+</dd>
+<dt><strong>Blending</strong></dt><dd><p>Covariance blending combines each covariance estimate with a second covariance. The second covariance is typically a “climatological” covariance calculated from an ensemble larger than the ensemble used for assimilation. This approach can help reduce sampling errors when using a small evolving ensemble. See <code class="docutils literal notranslate"><span class="pre">kalmanFilter.blend</span></code> to implement blending.</p>
+</dd>
+<dt><strong>Set Covariance Directly</strong></dt><dd><p>In some cases, covariance is poorly defined (for example, for changing continental configurations). Alternatively, you may want to implement a new algorithm variant not supported by DASH. In either case, you can use the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.setCovariance</span></code> command to directly modify the covariance estimates. See also the <code class="docutils literal notranslate"><span class="pre">kalmanFilter.covariance</span></code> command to return the unmodified covariance estimates.</p>
+</dd>
+</dl>
+</section>
+<section id="output-options">
+<h2>Output Options<a class="headerlink" href="#output-options" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class relies on an ensemble square root Kalman filter, which updates the ensemble mean separately from the ensemble deviations. Updating the deviations is computationally intensive, and the updated deviations can quickly overwhelm computer memory. Often, you’ll only need the variance of the deviations, or a few select percentiles, so the <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class includes several commands that allow you to select the quantities output by the algorithm.</p>
+<p>By default, the class will only update and return the ensemble mean when you run the algorithm. This updated ensemble mean is typically sufficient for exploratory analyses, and this approach is significantly faster than also updating the deviations. However, the updated deviations are important for uncertainty analyses, and you’ll typically want to use them in conjunction with a final reconstruction. The following <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> commands will cause the algorithm to update the ensemble deviations and return an associated output field.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">deviations</span></code></dt><dd><p>Returns the full set of updated ensemble deviations. This option allows the most flexibility for uncertainty analyses. However, updated deviations can overwhelm computer memory when assimilating a large state vector or many time steps, so this option may not always be the most appropriate.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">variance</span></code></dt><dd><p>Returns the variance of the deviations across the updated ensemble.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">percentiles</span></code></dt><dd><p>Return specified percentiles of the updated ensemble</p>
+</dd>
+</dl>
+<hr class="docutils" />
+<p>Sometimes, you may be interested in using an updated climate field to reconstruct a climate index. For example, you might assimilate a global temperature field and then use the updated field to calculate a global temperature index. In this case, the updated deviations of the reconstructed climate index are often useful for uncertainty analysis. However, calculating the deviations for the index requires the deviations for the full field, and field deviations can quickly overwhelm computer memory. The <code class="docutils literal notranslate"><span class="pre">kalmanFilter</span></code> class provides the <code class="docutils literal notranslate"><span class="pre">index</span></code> command to resolve this issue.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">index</span></code></dt><dd><p>Return the full set of deviations for a climate index calculated from the updated ensemble, without needing to return the deviations for the full state vector.</p>
+</dd>
+</dl>
+</section>
+<section id="run-the-filter">
+<h2>Run the filter<a class="headerlink" href="#run-the-filter" title="Permalink to this heading"></a></h2>
+<p>After providing the essential inputs (prior, observations, estimates, and uncertainties), you can run the Kalman filter algorithm using the <code class="docutils literal notranslate"><span class="pre">run</span></code> command. The algorithm will implement any specified covariance adjustments and output options.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="da-algorithms.html" class="btn btn-neutral float-left" title="DA Algorithms in DASH" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code8.html" class="btn btn-neutral float-right" title="Coding 8" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

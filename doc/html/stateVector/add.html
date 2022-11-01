@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.add &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.add &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -119,11 +130,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-add">
-<h1>stateVector.add<a class="headerlink" href="#statevector-add" title="Permalink to this headline"></a></h1>
+<h1>stateVector.add<a class="headerlink" href="#statevector-add" title="Permalink to this heading"></a></h1>
 <p>Adds variables to a stateVector</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-add-syntax1"><span class="std std-ref">obj = obj.add(variableNames, grid)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-add-syntax2"><span class="std std-ref">obj = obj.add(variableNames, grids)</span></a></div>
@@ -132,7 +143,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-add-syntax1">
 <div class="line"><a class="reference internal" href="#statevector-add-outputs-obj"><span class="std std-ref">obj</span></a> = obj.add(<a class="reference internal" href="#statevector-add-inputs-variablenames"><span class="std std-ref">variableNames</span></a>, <a class="reference internal" href="#statevector-add-inputs-grid"><span class="std std-ref">grid</span></a>)</div>
 </div>
@@ -149,9 +160,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="variablenames">
-<span id="statevector-add-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="statevector-add-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nVariables</em>]</div>
 <div class="line">The names of the new variables being added to the state vector. Variable names <strong>DO NOT</strong> need to match the names of variables in data source files. Use any name you find meaningful. Names cannot duplicate the names of variables already in the state vector.</div>
@@ -159,21 +170,21 @@
 <p>Variable names must be valid MATLAB variable names. They must 1. start with a letter, 2. only contain numbers, letters, and underscores, and 3. cannot match a MATLAB keyword.</p>
 </div></section></section>
 <section class="collapse-examples" id="grid">
-<span id="statevector-add-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this headline"></a></h3>
+<span id="statevector-add-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>grid</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>gridfile</em> <em>object</em></div>
 <div class="line">A .grid file that contains the data for all the newly added variables. Either a gridfile object, or the filepath to a .grid file. The .grid file must have at least one dimension.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="grids">
-<span id="statevector-add-inputs-grids"></span><h3>grids<a class="headerlink" href="#grids" title="Permalink to this headline"></a></h3>
+<span id="statevector-add-inputs-grids"></span><h3>grids<a class="headerlink" href="#grids" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>grids</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em> [<em>nVariables</em>], <em>string</em> | <em>gridfile</em></div>
 <div class="line">The collection of .grid files that contain the data for the new variables. Must have one element per new variable. May either be a vector of gridfile objects, or .grid filepaths.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="autocouple">
-<span id="statevector-add-inputs-autocouple"></span><h3>autocouple<a class="headerlink" href="#autocouple" title="Permalink to this headline"></a></h3>
+<span id="statevector-add-inputs-autocouple"></span><h3>autocouple<a class="headerlink" href="#autocouple" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>autocouple</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em> [<em>nVariables</em>], <em>logical</em> | <em>string</em></div>
 <div class="line">Indicates the autocoupling setting to use for each new variable. If autocouple has a single element, applies the same setting to all the new variables.</div>
@@ -184,9 +195,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="statevector-add-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="statevector-add-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
 <div class="line">The stateVector object updated to include the new variables.</div>

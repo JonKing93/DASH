@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensembleMetadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensembleMetadata &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
@@ -149,11 +160,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemblemetadata">
-<h1>ensembleMetadata<a class="headerlink" href="#ensemblemetadata" title="Permalink to this headline"></a></h1>
+<h1>ensembleMetadata<a class="headerlink" href="#ensemblemetadata" title="Permalink to this heading"></a></h1>
 <p>Obtain metadata along the rows and members of a state vector ensemble</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The ensembleMetadata class provides functions that allow users to query and locate metadata at different points in a state vector ensemble. The class has several main purposes:</p>
 <ol class="upperalpha simple">
 <li><p>Locating data values needed to run proxy system models,</p></li>
@@ -175,7 +186,7 @@
 </section>
 <hr class="docutils" />
 <section id="key-methods">
-<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this headline"></a></h2>
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
 <p>The following methods are among the most essential for users</p>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/closestLatLon.html"><span class="doc">closestLatLon</span></a> - Locates data values closest to a set of coordinates</div>
@@ -185,10 +196,10 @@
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <p>The complete list of methods for users.</p>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/ensembleMetadata.html"><span class="doc">ensembleMetadata</span></a> - Build an ensembleMetadata object for a stateVector object</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/label.html"><span class="doc">label</span></a> - Return and apply labels for a metadata object</div>
@@ -197,7 +208,7 @@
 </div>
 </section>
 <section id="coordinates">
-<h3>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline"></a></h3>
+<h3>Coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/closestLatLon.html"><span class="doc">closestLatLon</span></a> - Locate data values closest to a set of coordinates</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/latlon.html"><span class="doc">latlon</span></a> - Return latitude-longitude coordinates for all state vector elements</div>
@@ -206,7 +217,7 @@
 </div>
 </section>
 <section id="regrid">
-<h3>Regrid<a class="headerlink" href="#regrid" title="Permalink to this headline"></a></h3>
+<h3>Regrid<a class="headerlink" href="#regrid" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/regrid.html"><span class="doc">regrid</span></a> - Reshape state vectors back into gridded datasets</div>
 </div>
@@ -214,7 +225,7 @@
 </div>
 </section>
 <section id="metadata">
-<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/rows.html"><span class="doc">rows</span></a> - Return metadata down the rows of the state vector</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/members.html"><span class="doc">members</span></a> - Return metadata across the ensemble members (columns) of a state vector ensemble</div>
@@ -224,7 +235,7 @@
 </div>
 </section>
 <section id="locate-variables">
-<h3>Locate Variables<a class="headerlink" href="#locate-variables" title="Permalink to this headline"></a></h3>
+<h3>Locate Variables<a class="headerlink" href="#locate-variables" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/find.html"><span class="doc">find</span></a> - Locate state vector rows corresponding to specified variables</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/identify.html"><span class="doc">identify</span></a> - Determine which variables are associated with specified state vector rows</div>
@@ -233,7 +244,7 @@
 </div>
 </section>
 <section id="variable-information">
-<h3>Variable Information<a class="headerlink" href="#variable-information" title="Permalink to this headline"></a></h3>
+<h3>Variable Information<a class="headerlink" href="#variable-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/variables.html"><span class="doc">variables</span></a> - List the variables in a state vector ensemble</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/length.html"><span class="doc">length</span></a> - Return the length of a state vector and its variables</div>
@@ -243,7 +254,7 @@
 </div>
 </section>
 <section id="manipulate-varaibles">
-<h3>Manipulate Varaibles<a class="headerlink" href="#manipulate-varaibles" title="Permalink to this headline"></a></h3>
+<h3>Manipulate Varaibles<a class="headerlink" href="#manipulate-varaibles" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/extract.html"><span class="doc">extract</span></a> - Update metadata to only include specified variables</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/remove.html"><span class="doc">remove</span></a> - Remove specified variables from metadata</div>
@@ -253,7 +264,7 @@
 </div>
 </section>
 <section id="manipulate-members">
-<h3>Manipulate Members<a class="headerlink" href="#manipulate-members" title="Permalink to this headline"></a></h3>
+<h3>Manipulate Members<a class="headerlink" href="#manipulate-members" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/extractMembers.html"><span class="doc">extractMembers</span></a> - Update metadata to only include specified ensemble members</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/removeMembers.html"><span class="doc">removeMembers</span></a> - Remove specified ensemble members from metadata</div>
@@ -263,7 +274,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/disp.html"><span class="doc">disp</span></a> - Displays an ensembleMetadata object in the console</div>
 </div>
@@ -273,10 +284,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Utility methods that help the class run. These do not implement error checking and are not intended for users.</p>
 <section id="misc">
-<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this headline"></a></h3>
+<h3>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/name.html"><span class="doc">name</span></a> - Return a name for the metadata for use in error messages</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/variableIndices.html"><span class="doc">variableIndices</span></a> - Parse input variables and return indices</div>
@@ -287,7 +298,7 @@
 </div>
 </section>
 <section id="id1">
-<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/dispVariables.html"><span class="doc">dispVariables</span></a> - Display state vector variables in the console</div>
 <div class="line"><a class="reference internal" href="ensembleMetadata/dispEnsemble.html"><span class="doc">dispEnsemble</span></a> - Display ensemble dimensions in the console</div>
@@ -296,7 +307,7 @@
 </div>
 </section>
 <section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="ensembleMetadata/tests.html"><span class="doc">tests</span></a> - Unit tests for the ensembleMetadata class</div>
 </div>

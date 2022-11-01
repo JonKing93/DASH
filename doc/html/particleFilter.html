@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>particleFilter &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>particleFilter &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
@@ -137,19 +148,19 @@
            <div itemprop="articleBody">
              
   <section id="particlefilter">
-<h1>particleFilter<a class="headerlink" href="#particlefilter" title="Permalink to this headline"></a></h1>
+<h1>particleFilter<a class="headerlink" href="#particlefilter" title="Permalink to this heading"></a></h1>
 <p>Implement a particle filter assimilation</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The particleFilter class provides objects that perform particle filter assimilations. This assimilation method uses a Bayesian formula to quantify the similarity of ensemble members (particles) to a set of proxy observations. The state vector is then updated using a weighted mean of the ensemble members. The weight of each ensemble member is a function of its similarity to the proxy observations. A more detailed sketch of the algorithm is provided below.</p>
 <p>Classical particle filters are often degenerate in paleoclimate contexts. Essentially, the best ensemble member receives a weight near 1, and the weights for all other ensemble members are near 0. When this occurs, the updated state vector is nearly identical to the best particle. This behavior is not always desirable, because the updated state vector is not informed by the other members of the ensemble. Thus, many particle filter implementations modify the particle weighting scheme to try and reduce this degeneracy.</p>
 <p>In the DASH toolbox, the particleFilter class provides objects that help implement the particle filter algorithm. These objects provide methods that allow users to provide data inputs (such as observations) to the filter, select algorithm parameters (such as the weighting scheme), and run particle filter algorithms.</p>
 <section id="outline">
-<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this headline"></a></h3>
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
 </section>
 <section id="the-following-is-a-sketch-for-using-the-particlefilter-class">
-<h3>The Following Is A Sketch For Using The Particlefilter Class<a class="headerlink" href="#the-following-is-a-sketch-for-using-the-particlefilter-class" title="Permalink to this headline"></a></h3>
+<h3>The Following Is A Sketch For Using The Particlefilter Class<a class="headerlink" href="#the-following-is-a-sketch-for-using-the-particlefilter-class" title="Permalink to this heading"></a></h3>
 <ol class="arabic simple">
 <li><p>Use the “particleFilter” method to initialize a new particle filter</p></li>
 <li><p>Use the “observations”, “estimates”, “prior”, and “uncertainties” methods to provide essential data inputs to the particle filter.</p></li>
@@ -159,20 +170,20 @@
 <p>You can also use the “computeWeights” method to calculate particle weights, without needing to update a state vector. This reduces the computational expense of tasks that only require particle weights – for example, testing a particle filter for degeneracy, or selecting ensemble members for use in an evolving prior.</p>
 </section>
 <section id="algorithm">
-<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this headline"></a></h3>
+<h3>Algorithm<a class="headerlink" href="#algorithm" title="Permalink to this heading"></a></h3>
 </section>
 <section id="the-following-is-a-sketch-of-the-particle-filter-algorithm">
-<h3>The Following Is A Sketch Of The Particle Filter Algorithm<a class="headerlink" href="#the-following-is-a-sketch-of-the-particle-filter-algorithm" title="Permalink to this headline"></a></h3>
+<h3>The Following Is A Sketch Of The Particle Filter Algorithm<a class="headerlink" href="#the-following-is-a-sketch-of-the-particle-filter-algorithm" title="Permalink to this heading"></a></h3>
 <p>For an assimilated time step, the method determines the differences between proxy observations and estimates (known as the innovations). These innovations are then weighted by the proxy uncertainties, and the algorithm computes the sum of these weighted innovations for each member of the ensemble. The result is the sum of squared errors (SSE) for each ensemble member. The SSE values measure the similarity of each ensemble member to the observations - the lower its SSE value, the more closesly an ensemble member resembles the observations. Next, the method applies a weighting scheme to the SSE values to determine a weight for each ensemble member. Finally, the method uses these weights to take a weighted mean across the ensemble. The final weighted mean is the updated state vector for that time step.</p>
 </section>
 <section id="troubleshooting-large-state-vectors">
-<h3>Troubleshooting Large State Vectors<a class="headerlink" href="#troubleshooting-large-state-vectors" title="Permalink to this headline"></a></h3>
+<h3>Troubleshooting Large State Vectors<a class="headerlink" href="#troubleshooting-large-state-vectors" title="Permalink to this heading"></a></h3>
 <p>Large state vector ensembles can overwhelm computer memory and may prevent a particle filter assimilation from running. If this occurs, it is useful to note that the update for each state vector element is independent of all other state vector elements. Thus, you can often circumvent memory issues by splitting the state vector into several smaller pieces and then assimilating each piece individually. The built-in “matfile” command can be helpful for saving/loading pieces of large ensembles iteratively.</p>
 </section>
 </section>
 <hr class="docutils" />
 <section id="key-methods">
-<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this headline"></a></h2>
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
 <p>These methods are the most essential for users.</p>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/particleFilter.html"><span class="doc">particleFilter</span></a> - Initializes a new particleFilter object</div>
@@ -186,9 +197,9 @@
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/particleFilter.html"><span class="doc">particleFilter</span></a> - Initializes a new particleFilter object</div>
 <div class="line"><a class="reference internal" href="particleFilter/label.html"><span class="doc">label</span></a> - Return or apply a label for a particleFilter</div>
@@ -197,7 +208,7 @@
 </div>
 </section>
 <section id="data-inputs">
-<h3>Data Inputs<a class="headerlink" href="#data-inputs" title="Permalink to this headline"></a></h3>
+<h3>Data Inputs<a class="headerlink" href="#data-inputs" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/observations.html"><span class="doc">observations</span></a> - Provide the observations for a particle filter</div>
 <div class="line"><a class="reference internal" href="particleFilter/estimates.html"><span class="doc">estimates</span></a> - Provide the observation estimates for a particle filter</div>
@@ -208,7 +219,7 @@
 </div>
 </section>
 <section id="weights">
-<h3>Weights<a class="headerlink" href="#weights" title="Permalink to this headline"></a></h3>
+<h3>Weights<a class="headerlink" href="#weights" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/weights.html"><span class="doc">weights</span></a> - Select the weighting scheme for a particle filter</div>
 </div>
@@ -216,7 +227,7 @@
 </div>
 </section>
 <section id="calculations">
-<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline"></a></h3>
+<h3>Calculations<a class="headerlink" href="#calculations" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/run.html"><span class="doc">run</span></a> - Runs a particle filter assimilation</div>
 <div class="line"><a class="reference internal" href="particleFilter/computeWeights.html"><span class="doc">computeWeights</span></a> - Calculate the particle weights in each time step</div>
@@ -226,7 +237,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/disp.html"><span class="doc">disp</span></a> - Display a particleFilter object in the console</div>
 </div>
@@ -236,10 +247,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Utility methods that help the class run. They do not implement error checking and are not intended for users.</p>
 <section id="name">
-<h3>Name<a class="headerlink" href="#name" title="Permalink to this headline"></a></h3>
+<h3>Name<a class="headerlink" href="#name" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/name.html"><span class="doc">name</span></a> - Returns a name for use in error messages</div>
 </div>
@@ -247,7 +258,7 @@
 </div>
 </section>
 <section id="weighting-schemes">
-<h3>Weighting Schemes<a class="headerlink" href="#weighting-schemes" title="Permalink to this headline"></a></h3>
+<h3>Weighting Schemes<a class="headerlink" href="#weighting-schemes" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/bayesWeights.html"><span class="doc">bayesWeights</span></a> - Calculates particle weights using the classical Bayesian scheme</div>
 <div class="line"><a class="reference internal" href="particleFilter/bestNWeights.html"><span class="doc">bestNWeights</span></a> - Calculate weights that implement an average over the best N particles</div>
@@ -256,7 +267,7 @@
 </div>
 </section>
 <section id="size-validation">
-<h3>Size Validation<a class="headerlink" href="#size-validation" title="Permalink to this headline"></a></h3>
+<h3>Size Validation<a class="headerlink" href="#size-validation" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/validateBestN.html"><span class="doc">validateBestN</span></a> - Ensure that “Best N” weighting scheme is valid</div>
 </div>
@@ -264,7 +275,7 @@
 </div>
 </section>
 <section id="inherited">
-<h3>Inherited<a class="headerlink" href="#inherited" title="Permalink to this headline"></a></h3>
+<h3>Inherited<a class="headerlink" href="#inherited" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="dash/ensembleFilter/dispFilter.html"><span class="doc">dispFilter</span></a> - Display size and data input details in the console</div>
 <div class="line"><a class="reference internal" href="dash/ensembleFilter/assertValidR.html"><span class="doc">assertValidR</span></a> - Throw error if observations are missing R values in required time steps</div>
@@ -275,7 +286,7 @@
 </div>
 </section>
 <section id="tests">
-<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this headline"></a></h3>
+<h3>Tests<a class="headerlink" href="#tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="particleFilter/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the particleFilter class</div>
 </div>

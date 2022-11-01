@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>optimalSensor &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Coding 10" href="code10.html" />
+    <link rel="prev" title="Coding 9" href="code9.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ensemble/outline.html">ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">DA Algorithms</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="da-algorithms.html">DA Algorithms in DASH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code8.html">Coding 8</a></li>
+<li class="toctree-l3"><a class="reference internal" href="particleFilter.html">particleFilter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code9.html">Coding 9</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">optimalSensor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#essential-inputs">Essential Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#algorithms">Algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="code10.html">Coding 10</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>optimalSensor</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="optimalsensor">
+<h1>optimalSensor<a class="headerlink" href="#optimalsensor" title="Permalink to this heading"></a></h1>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> class to implement optimal sensor analyses. The optimal sensor algorithm is derived from a Kalman filter, and quantifies the ability of each proxy record to reduce uncertainty in a climate index. Here, uncertainty is defined as the variance of the climate index across an ensemble. Given a set of proxy estimates, the algorithm will update the ensemble deviations of the climate index for each proxy in the network. The amount of variance reduced by each proxy determines the proxy’s ability to reduce uncertainty. As the optimal sensor is couched in a Kalman filter framework, variance reduction is primarily influenced by a proxy’s uncertainties (R), and the proxy’s covariance with the climate index of interest.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> class implements objects that run variants of this algorithm. You can use these objects to set the experimental parameters, and then run the algorithm using the indicated settings. On the remainder of this page, we’ll examine the key commands and features of this class.</p>
+<section id="essential-inputs">
+<h2>Essential Inputs<a class="headerlink" href="#essential-inputs" title="Permalink to this heading"></a></h2>
+<p>There are 3 essential inputs required to run an optimal sensor in DASH. These are:</p>
+<ol class="arabic simple">
+<li><p>A climate index/metric</p></li>
+<li><p>Proxy estimates, and</p></li>
+<li><p>Proxy uncertainties</p></li>
+</ol>
+<p>We have discussed proxy estimates and uncertainties already in this tutorial, but the climate metric deserves discussion. Essentially, this metric is some climate index assessed across an ensemble. The metric is a vector with one element per ensemble member. Possible metrics include a global-mean temperature index, or a climate mode index like Nino 3, and there are many others.</p>
+<p>The optimal sensor algorithm is based on an ensemble square-root Kalman filter, but only updates the ensemble deviations. As such, the method does not require actual proxy records (observations). Instead, the optimal sensor only requires proxy estimates, as these are used to estimate the covariance of each proxy record with the climate metric.</p>
+</section>
+<section id="algorithms">
+<h2>Algorithms<a class="headerlink" href="#algorithms" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">optimalSensor</span></code> class supports 3 variations of the optimal sensor algorithm.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">optimalSensor.run</span></code></dt><dd><p>This variation uses an iterative greedy algorithm to rank the proxy records in a network. In each iteration, the algorithm first determines the proxy site most able to reduce metric variance. This record is used to update the metric’s variance, and the proxy site is removed from the network. The algorithm then repeats with the remaining proxy sites. This algorithm can help rank the proxies in a network, and help quantify the variance constrained by assimilating successive proxies.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">optimalSensor.evaluate</span></code></dt><dd><p>This method assesses the variance constrained by each proxy when the proxy is the only site in the network. This method can help quantify the influence of individual proxies, even when proxy records strongly covary.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">optimalSensor.update</span></code></dt><dd><p>This method updates the ensemble deviations of the climate metric given a particular proxy network. This method is best used to assess the cumulative effect of a proxy network on metric uncertainty. Unlike the previous two methods, the <code class="docutils literal notranslate"><span class="pre">update</span></code> command accounts for proxy covariances, and so provides the most accurate assessment of variance reduction for a full proxy network.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="code9.html" class="btn btn-neutral float-left" title="Coding 9" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="code10.html" class="btn btn-neutral float-right" title="Coding 10" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

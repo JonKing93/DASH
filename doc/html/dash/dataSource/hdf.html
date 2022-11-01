@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.dataSource.hdf &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.dataSource.hdf &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -121,18 +132,18 @@
            <div itemprop="articleBody">
              
   <section id="dash-datasource-hdf">
-<h1>dash.dataSource.hdf<a class="headerlink" href="#dash-datasource-hdf" title="Permalink to this headline"></a></h1>
+<h1>dash.dataSource.hdf<a class="headerlink" href="#dash-datasource-hdf" title="Permalink to this heading"></a></h1>
 <p>Superclass for objects that read data from HDF5 files</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>dash.dataSource.hdf is abstract. It’s primary function is to check that the variable being read from the HDF file actually exists in the file. It also enables strided loading.</p>
 </section>
 <hr class="docutils" />
 <section id="methods">
-<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline"></a></h2>
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this heading"></a></h2>
 <section id="concrete">
-<h3>Concrete<a class="headerlink" href="#concrete" title="Permalink to this headline"></a></h3>
+<h3>Concrete<a class="headerlink" href="#concrete" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="hdf/setVariable.html"><span class="doc">setVariable</span></a> - Ensure a variable exists in an HDF file</div>
 <div class="line"><a class="reference internal" href="hdf/load.html"><span class="doc">load</span></a> - Load data from a HDF5 source</div>
@@ -141,7 +152,7 @@
 </div>
 </section>
 <section id="abstract">
-<h3>Abstract<a class="headerlink" href="#abstract" title="Permalink to this headline"></a></h3>
+<h3>Abstract<a class="headerlink" href="#abstract" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="hdf/loadStrided.html"><span class="doc">loadStrided</span></a> - Load data from a HDF source at strided indices</div>
 </div>

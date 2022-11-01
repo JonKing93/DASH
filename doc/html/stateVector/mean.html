@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.mean &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.mean &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,12 +16,14 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="stateVector.weightedMean" href="weightedMean.html" />
-    <link rel="prev" title="stateVector.design" href="design.html" /> 
+    <link rel="next" title="stateVector.total" href="total.html" />
+    <link rel="prev" title="stateVector.sequence" href="sequence.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -49,6 +60,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../stateVector.html#variables">Variables</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../stateVector.html#design">Design</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="design.html">design</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sequence.html">sequence</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">mean</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#syntax">Syntax</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#description">Description</a></li>
@@ -66,8 +78,9 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l4"><a class="reference internal" href="total.html">total</a></li>
 <li class="toctree-l4"><a class="reference internal" href="weightedMean.html">weightedMean</a></li>
-<li class="toctree-l4"><a class="reference internal" href="sequence.html">sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="weightedTotal.html">weightedTotal</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../stateVector.html#metadata">Metadata</a></li>
@@ -118,11 +131,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-mean">
-<h1>stateVector.mean<a class="headerlink" href="#statevector-mean" title="Permalink to this headline"></a></h1>
+<h1>stateVector.mean<a class="headerlink" href="#statevector-mean" title="Permalink to this heading"></a></h1>
 <p>Take a mean over dimensions of variables in a state vector</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-mean-syntax1"><span class="std std-ref">obj = obj.mean(-1, …)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-mean-syntax1"><span class="std std-ref">obj = obj.mean(v, …)</span></a></div>
@@ -139,7 +152,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-mean-syntax1">
 <div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(-1, …)</div>
 <div class="line"><a class="reference internal" href="#statevector-mean-outputs-obj"><span class="std std-ref">obj</span></a> = obj.mean(<a class="reference internal" href="#statevector-mean-inputs-v"><span class="std std-ref">v</span></a>, …)</div>
@@ -175,30 +188,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="v">
-<span id="statevector-mean-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> | <em>linear</em> <em>indices</em> | -1</div>
 <div class="line">The indices of variables in the state vector over which to take a mean. Either a logical vector with one element per state vector variable, or a vector of linear indices. If linear indices, may not contain repeated indices. If -1, selects every variable in the state vector.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variablenames">
-<span id="statevector-mean-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The names of variables in the state vector over which to take a mean. May not contain repeated variable names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimensions">
-<span id="statevector-mean-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nDimensions</em>]</div>
 <div class="line">The names of the dimensions over which to take a mean. Cannot have repeated dimension names.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="indices">
-<span id="statevector-mean-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-inputs-indices"></span><h3>indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>indices</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> [<em>nDimensions</em>] {[] | <em>mean</em> <em>indices</em>}</div>
 <div class="line">Mean indices for ensemble dimensions. A cell vector with one element per listed dimension. Each element should hold either an empty array (if the dimension is a state dimension), or a vector of mean indices (if the dimension is an ensemble dimension). Mean indices are 0-indexed from the reference elements of each ensemble member.</div>
@@ -207,7 +220,7 @@
 <p>If a single dimension is listed, and the dimension is a state dimension, you do not need to provide mean indices as an input. If the single dimension is an ensemble dimension, you may provide the mean indices directly as a vector, rather than in a scalar cell. However, the scalar cell syntax is also permitted.</p>
 </div></section></section>
 <section class="collapse-examples" id="omitnan">
-<span id="statevector-mean-inputs-omitnan"></span><h3>omitnan<a class="headerlink" href="#omitnan" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-inputs-omitnan"></span><h3>omitnan<a class="headerlink" href="#omitnan" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>omitnan</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> | <em>string</em>, <em>scalar</em> | <em>vector</em> [<em>nDimensions</em>]</div>
 <div class="line">Indicates how to treat NaN elements when taking means. If a scalar, applies the same setting to all listed dimensions. Use a vector with one element per listed dimension to specify different settings for the different dimensions.</div>
@@ -218,9 +231,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="statevector-mean-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="statevector-mean-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
 <div class="line">The state vector updated with the specified dimensional means.</div>
@@ -233,8 +246,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="design.html" class="btn btn-neutral float-left" title="stateVector.design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="weightedMean.html" class="btn btn-neutral float-right" title="stateVector.weightedMean" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sequence.html" class="btn btn-neutral float-left" title="stateVector.sequence" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="total.html" class="btn btn-neutral float-right" title="stateVector.total" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.add &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.add &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -115,11 +126,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-add">
-<h1>gridfile.add<a class="headerlink" href="#gridfile-add" title="Permalink to this headline"></a></h1>
+<h1>gridfile.add<a class="headerlink" href="#gridfile-add" title="Permalink to this heading"></a></h1>
 <p>Catalogue a data source in a .grid file</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-add-syntax1"><span class="std std-ref">obj.add(type, file, …)</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-add-syntax2"><span class="std std-ref">obj.add(‘nc’, file, variable, dimensions, metadata)</span></a></div>
@@ -134,7 +145,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-add-syntax1">
 <div class="line">obj.add(<a class="reference internal" href="#gridfile-add-inputs-type"><span class="std std-ref">type</span></a>, <a class="reference internal" href="#gridfile-add-inputs-file"><span class="std std-ref">file</span></a>, …)</div>
 </div>
@@ -159,9 +170,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="type">
-<span id="gridfile-add-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The type of data source file. Options are:</div>
@@ -171,49 +182,49 @@
 <p>[‘txt’ | ‘text’]: Delimited text file</p>
 </div></section></section>
 <section class="collapse-examples" id="file">
-<span id="gridfile-add-inputs-file"></span><h3>file<a class="headerlink" href="#file" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-file"></span><h3>file<a class="headerlink" href="#file" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>file</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of a data source file. Name may either be an absolute file path, or the name of a file on the active path.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="opendapurl">
-<span id="gridfile-add-inputs-opendapurl"></span><h3>opendapURL<a class="headerlink" href="#opendapurl" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-opendapurl"></span><h3>opendapURL<a class="headerlink" href="#opendapurl" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>opendapURL</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">An OPENDAP url to a data source file</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="variable">
-<span id="gridfile-add-inputs-variable"></span><h3>variable<a class="headerlink" href="#variable" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-variable"></span><h3>variable<a class="headerlink" href="#variable" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>variable</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of a variable in a NetCDF or MAT-file. Only this variable is catalogued in the gridfile.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="dimensions">
-<span id="gridfile-add-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-dimensions"></span><h3>dimensions<a class="headerlink" href="#dimensions" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>dimensions</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The order of dimensions for data in the data source. Dimensions with repeated names are merged when loading data from the gridfile.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="metadata">
-<span id="gridfile-add-inputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>gridMetadata</em> <em>object</em></div>
 <div class="line">Dimensional metadata for the data source. The number of rows must match the length the size of the dimension in the data source. Must include metadata for all non-singleton dimensions in both the gridfile and data source. Metadata values for gridfile dimensions must exactly match a sequence of gridfile metadata for the dimension. If the metadata has non-dimensional attributes and/or a set dimension order, the attributes and/or dimension order will be ignored.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="opts">
-<span id="gridfile-add-inputs-opts"></span><h3>opts<a class="headerlink" href="#opts" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-opts"></span><h3>opts<a class="headerlink" href="#opts" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>opts</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>ImportOptions</em> <em>object</em></div>
 <div class="line">Additional options for importing data from delimited text files using the builtin “readmatrix” function.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="name-value">
-<span id="gridfile-add-inputs-name-value"></span><h3>Name,Value<a class="headerlink" href="#name-value" title="Permalink to this headline"></a></h3>
+<span id="gridfile-add-inputs-name-value"></span><h3>Name,Value<a class="headerlink" href="#name-value" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs8" checked="checked"><label for="inputs8"><strong>Name,Value</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>name</em>-<em>value</em> <em>pairs</em></div>
 <div class="line">Additional import options for reading data from a delimited text file using the builtin “readmatrix” functions. (See the readmatrix reference page for supported pairs.)</div>

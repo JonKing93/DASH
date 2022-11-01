@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensemble.metadata &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensemble.metadata &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -110,11 +121,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemble-metadata">
-<h1>ensemble.metadata<a class="headerlink" href="#ensemble-metadata" title="Permalink to this headline"></a></h1>
+<h1>ensemble.metadata<a class="headerlink" href="#ensemble-metadata" title="Permalink to this heading"></a></h1>
 <p>Return the ensembleMetadata object for a saved ensemble</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemble-metadata-syntax1"><span class="std std-ref">metadata = obj.metadata</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemble-metadata-syntax2"><span class="std std-ref">metadata = obj.metadata(labels)</span></a></div>
@@ -125,7 +136,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemble-metadata-syntax1">
 <div class="line"><a class="reference internal" href="#ensemble-metadata-outputs-metadata"><span class="std std-ref">metadata</span></a> = obj.metadata</div>
 </div>
@@ -143,16 +154,16 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="e">
-<span id="ensemble-metadata-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this headline"></a></h3>
+<span id="ensemble-metadata-inputs-e"></span><h3>e<a class="headerlink" href="#e" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>e</strong></label><div class="content"><div class="line-block">
 <div class="line">0 | -1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">If 0, returns the metadata for the data saved in the .ens file. Otherwise, indicates which ensembles in the evolving set to return metadata for. If -1, selects all evolving ensembles. If a logical vector, must have one element per evolving ensemble.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="labels">
-<span id="ensemble-metadata-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this headline"></a></h3>
+<span id="ensemble-metadata-inputs-labels"></span><h3>labels<a class="headerlink" href="#labels" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>labels</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nEvolving</em>]</div>
 <div class="line">The labels of ensembles in an evolving set. You can only use labels to refer to ensembles that have unique labels. If multiple ensembles share the same label, reference them using ensemble indices instead.</div>
@@ -161,9 +172,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="metadata">
-<span id="ensemble-metadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="ensemble-metadata-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>ensembleMetadata</em> <em>objects</em></div>
 <div class="line">The ensembleMetadata objects for the indicated ensembles. Has one element per listed ensemble. Each metadata object holds information on the used variables and ensemble members for a particular ensemble.</div>

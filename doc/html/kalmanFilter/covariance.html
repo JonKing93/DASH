@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kalmanFilter.covariance &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>kalmanFilter.covariance &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -112,11 +123,11 @@
            <div itemprop="articleBody">
              
   <section id="kalmanfilter-covariance">
-<h1>kalmanFilter.covariance<a class="headerlink" href="#kalmanfilter-covariance" title="Permalink to this headline"></a></h1>
+<h1>kalmanFilter.covariance<a class="headerlink" href="#kalmanfilter-covariance" title="Permalink to this heading"></a></h1>
 <p>Return the current covariance for assimilated time steps</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax1"><span class="std std-ref">[C, Ycov] = obj.covariance</span></a></div>
 <div class="line"><a class="reference internal" href="#kalmanfilter-covariance-syntax1"><span class="std std-ref">[C, Ycov] = obj.covariance([])</span></a></div>
@@ -128,7 +139,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="kalmanfilter-covariance-syntax1">
 <div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance</div>
 <div class="line">[<a class="reference internal" href="#kalmanfilter-covariance-outputs-c"><span class="std std-ref">C</span></a>, <a class="reference internal" href="#kalmanfilter-covariance-outputs-ycov"><span class="std std-ref">Ycov</span></a>] = obj.covariance([])</div>
@@ -151,16 +162,16 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="t">
-<span id="kalmanfilter-covariance-inputs-t"></span><h3>t<a class="headerlink" href="#t" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-covariance-inputs-t"></span><h3>t<a class="headerlink" href="#t" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>t</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>] | <em>logical</em> <em>vector</em> | []</div>
 <div class="line">The indices of assimilation time steps for which to return covariance values. If a vector of linear indices, elements should refer to specific time steps in the assimilation. If a logical vector, must have one element per assimilation time step. An empty array is only permitted if the filter uses a static prior and/or time-independent covariance options.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="s">
-<span id="kalmanfilter-covariance-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-covariance-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>s</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nSite</em>] | <em>logical</em> <em>vector</em></div>
 <div class="line">The indices of observation sites for which to return covariance values. If a vector of linear indices, elements should refer to specific observation sites in the assimilation. If a logical vector, must have one element per site.</div>
@@ -169,16 +180,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="c">
-<span id="kalmanfilter-covariance-outputs-c"></span><h3>C<a class="headerlink" href="#c" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-covariance-outputs-c"></span><h3>C<a class="headerlink" href="#c" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>C</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nSite</em> <em>x</em> <em>nTime</em>]</div>
 <div class="line">The covariance between the state vector elements and observation sites in the queried time steps.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ycov">
-<span id="kalmanfilter-covariance-outputs-ycov"></span><h3>Ycov<a class="headerlink" href="#ycov" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-covariance-outputs-ycov"></span><h3>Ycov<a class="headerlink" href="#ycov" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>Ycov</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nSite</em> <em>x</em> <em>nTime</em>]</div>
 <div class="line">The covariance between the observation sites and one another in the queried time steps.</div>

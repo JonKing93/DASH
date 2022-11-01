@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>gridfile.transform &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>gridfile.transform &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../gridfile.html">gridfile</a><ul class="current">
@@ -121,11 +132,11 @@
            <div itemprop="articleBody">
              
   <section id="gridfile-transform">
-<h1>gridfile.transform<a class="headerlink" href="#gridfile-transform" title="Permalink to this headline"></a></h1>
+<h1>gridfile.transform<a class="headerlink" href="#gridfile-transform" title="Permalink to this heading"></a></h1>
 <p>Transform data loaded from a .grid file.</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#gridfile-transform-syntax1"><span class="std std-ref">[transform, parameters] = obj.transform</span></a></div>
 <div class="line"><a class="reference internal" href="#gridfile-transform-syntax1"><span class="std std-ref">[transform, parameters] = obj.transform(‘default’)</span></a></div>
@@ -156,7 +167,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="gridfile-transform-syntax1">
 <div class="line">[<a class="reference internal" href="#gridfile-transform-outputs-transform"><span class="std std-ref">transform</span></a>, <a class="reference internal" href="#gridfile-transform-outputs-parameters"><span class="std std-ref">parameters</span></a>] = obj.transform</div>
 <div class="line">[<a class="reference internal" href="#gridfile-transform-outputs-transform"><span class="std std-ref">transform</span></a>, <a class="reference internal" href="#gridfile-transform-outputs-parameters"><span class="std std-ref">parameters</span></a>] = obj.transform(‘default’)</div>
@@ -221,9 +232,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="type">
-<span id="gridfile-transform-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The type of transformation to apply to the data. Options are as follows:</div>
@@ -238,49 +249,49 @@
 <p>[‘none’]: No data transformation</p>
 </div></section></section>
 <section class="collapse-examples" id="params">
-<span id="gridfile-transform-inputs-params"></span><h3>params<a class="headerlink" href="#params" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-params"></span><h3>params<a class="headerlink" href="#params" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>params</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em> | <em>numeric</em> <em>vector</em> | []</div>
 <div class="line">The parameters for the transformation. Use an empty array when applying transformation with no parameters (e.g. ln, log, log10, exp, or none) to specific data sources. See the entries on the “power”, “plus”, “times”, and “coeffs” inputs for more details.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="power">
-<span id="gridfile-transform-inputs-power"></span><h3>power<a class="headerlink" href="#power" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-power"></span><h3>power<a class="headerlink" href="#power" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>power</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">The exponent that should be applied to data</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="plus">
-<span id="gridfile-transform-inputs-plus"></span><h3>plus<a class="headerlink" href="#plus" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-plus"></span><h3>plus<a class="headerlink" href="#plus" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>plus</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">A value that should be added to data</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="times">
-<span id="gridfile-transform-inputs-times"></span><h3>times<a class="headerlink" href="#times" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-times"></span><h3>times<a class="headerlink" href="#times" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>times</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">A value that data should be multiplied by</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="coeffs">
-<span id="gridfile-transform-inputs-coeffs"></span><h3>coeffs<a class="headerlink" href="#coeffs" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-coeffs"></span><h3>coeffs<a class="headerlink" href="#coeffs" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>coeffs</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>vector</em> [2]</div>
 <div class="line">Coefficients for a linear transformation. The first element is the multiplicative constant, and the second element is the additive constant. Linear transformations are applied via: Y = coeffs(1) + coeffs(2) * X</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="s">
-<span id="gridfile-transform-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-s"></span><h3>s<a class="headerlink" href="#s" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>s</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>logical</em> <em>vector</em> [<em>nSources</em>] | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The indices of the data sources that should be receive the transformation.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="sourcename">
-<span id="gridfile-transform-inputs-sourcename"></span><h3>sourceName<a class="headerlink" href="#sourcename" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-inputs-sourcename"></span><h3>sourceName<a class="headerlink" href="#sourcename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs8" checked="checked"><label for="inputs8"><strong>sourceName</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The names of the data sources that should receive the transformation. Names may either be just file names, or the full file path / opendap url to the source.</div>
@@ -289,30 +300,30 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="transform">
-<span id="gridfile-transform-outputs-transform"></span><h3>transform<a class="headerlink" href="#transform" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-outputs-transform"></span><h3>transform<a class="headerlink" href="#transform" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>transform</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The default transformation for the gridfile</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="parameters">
-<span id="gridfile-transform-outputs-parameters"></span><h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-outputs-parameters"></span><h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>parameters</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>row</em> <em>vector</em> [2]</div>
 <div class="line">Parameters for the default transformation</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="sourcetransform">
-<span id="gridfile-transform-outputs-sourcetransform"></span><h3>sourceTransform<a class="headerlink" href="#sourcetransform" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-outputs-sourcetransform"></span><h3>sourceTransform<a class="headerlink" href="#sourcetransform" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>sourceTransform</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em> [<em>nSource</em>]</div>
 <div class="line">The transformations for the specified data sources</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="sourceparameters">
-<span id="gridfile-transform-outputs-sourceparameters"></span><h3>sourceParameters<a class="headerlink" href="#sourceparameters" title="Permalink to this headline"></a></h3>
+<span id="gridfile-transform-outputs-sourceparameters"></span><h3>sourceParameters<a class="headerlink" href="#sourceparameters" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>sourceParameters</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nSource</em>, 2]</div>
 <div class="line">Parameters for the data source transformations</div>

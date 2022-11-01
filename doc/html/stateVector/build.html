@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector.build &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector.build &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -120,11 +131,11 @@
            <div itemprop="articleBody">
              
   <section id="statevector-build">
-<h1>stateVector.build<a class="headerlink" href="#statevector-build" title="Permalink to this headline"></a></h1>
+<h1>stateVector.build<a class="headerlink" href="#statevector-build" title="Permalink to this heading"></a></h1>
 <p>Build a state vector ensemble</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#statevector-build-syntax1"><span class="std std-ref">[X, metadata, obj] = obj.build(nMembers)</span></a></div>
 <div class="line"><a class="reference internal" href="#statevector-build-syntax2"><span class="std std-ref">… = obj.build(‘all’)</span></a></div>
@@ -141,7 +152,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="statevector-build-syntax1">
 <div class="line">[<a class="reference internal" href="#statevector-build-outputs-x"><span class="std std-ref">X</span></a>, <a class="reference internal" href="#statevector-build-outputs-metadata"><span class="std std-ref">metadata</span></a>, <a class="reference internal" href="#statevector-build-outputs-obj"><span class="std std-ref">obj</span></a>] = obj.build(<a class="reference internal" href="#statevector-build-inputs-nmembers"><span class="std std-ref">nMembers</span></a>)</div>
 </div>
@@ -178,37 +189,37 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="nmembers">
-<span id="statevector-build-inputs-nmembers"></span><h3>nMembers<a class="headerlink" href="#nmembers" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-inputs-nmembers"></span><h3>nMembers<a class="headerlink" href="#nmembers" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>nMembers</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>positive</em> <em>integer</em> | ‘<em>all</em>’</div>
 <div class="line">The number of ensemble members (columns) that should be in the built ensemble. Use ‘all’ to use every possible ensemble member.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="buildsequentially">
-<span id="statevector-build-inputs-buildsequentially"></span><h3>buildSequentially<a class="headerlink" href="#buildsequentially" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-inputs-buildsequentially"></span><h3>buildSequentially<a class="headerlink" href="#buildsequentially" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>buildSequentially</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>logical</em></div>
 <div class="line">True if ensemble members should be selected sequentially along ensemble dimensions. False (default) if ensemble members should be selected at random.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="filename">
-<span id="statevector-build-inputs-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-inputs-filename"></span><h3>filename<a class="headerlink" href="#filename" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>filename</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">The name of the new “.ens” file. May be a filename, relative path, or absolute path. If not an absolute path, saves the new file relative to the current folder. Adds a “.ens” extension to the filename if it does not already have one.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="overwrite">
-<span id="statevector-build-inputs-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-inputs-overwrite"></span><h3>overwrite<a class="headerlink" href="#overwrite" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>overwrite</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>logical</em></div>
 <div class="line">True if the new “.ens” file can overwrite existing files. False (default) if the method should not overwrite existing files.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="precision">
-<span id="statevector-build-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>precision</strong></label><div class="content"><div class="line-block">
 <div class="line">‘<em>single</em>’ | ‘<em>double</em>’</div>
 <div class="line">The desired numerical precision of the built state vector ensemble.</div>
@@ -217,30 +228,30 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="statevector-build-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nState</em> <em>x</em> <em>nMembers</em>]</div>
 <div class="line">The built state vector ensemble. Has one row per state vector element. Each column is an ensemble member.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ens">
-<span id="statevector-build-outputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-outputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>ens</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
 <div class="line">An ensemble object that can be used to interact with the ensemble written to file. See &gt;&gt; dash.doc(‘ensemble’) for more details.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="metadata">
-<span id="statevector-build-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-outputs-metadata"></span><h3>metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>metadata</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>ensembleMetadata</em> <em>object</em></div>
 <div class="line">An ensemble metadata object for the ensemble. Organizes metadata along the rows and columns of the ensemble. See &gt;&gt; dash.doc(‘ensembleMetadata’) for more details.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="obj">
-<span id="statevector-build-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="statevector-build-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>stateVector</em> <em>object</em></div>
 <div class="line">The state vector object for the built ensemble. Can be used to add additional members to the ensemble. Cannot be edited in any way.</div>
@@ -249,7 +260,7 @@
 </section>
 <hr class="docutils" />
 <section id="saves">
-<h2>Saves<a class="headerlink" href="#saves" title="Permalink to this headline"></a></h2>
+<h2>Saves<a class="headerlink" href="#saves" title="Permalink to this heading"></a></h2>
 <p>Optionally saves a .ens file holding the state vector ensemble.</p>
 </section>
 </section>

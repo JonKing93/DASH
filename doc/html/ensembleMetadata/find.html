@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ensembleMetadata.find &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>ensembleMetadata.find &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -115,11 +126,11 @@
            <div itemprop="articleBody">
              
   <section id="ensemblemetadata-find">
-<h1>ensembleMetadata.find<a class="headerlink" href="#ensemblemetadata-find" title="Permalink to this headline"></a></h1>
+<h1>ensembleMetadata.find<a class="headerlink" href="#ensemblemetadata-find" title="Permalink to this heading"></a></h1>
 <p>Locate the rows corresponding to specific variables in a state vector</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#ensemblemetadata-find-syntax1"><span class="std std-ref">… = obj.find(variableNames)</span></a></div>
 <div class="line"><a class="reference internal" href="#ensemblemetadata-find-syntax1"><span class="std std-ref">… = obj.find(v)</span></a></div>
@@ -135,7 +146,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="ensemblemetadata-find-syntax1">
 <div class="line">= obj.find(<a class="reference internal" href="#ensemblemetadata-find-inputs-variablenames"><span class="std std-ref">variableNames</span></a>)</div>
 <div class="line">= obj.find(<a class="reference internal" href="#ensemblemetadata-find-inputs-v"><span class="std std-ref">v</span></a>)</div>
@@ -173,23 +184,23 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="variablenames">
-<span id="ensemblemetadata-find-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-inputs-variablenames"></span><h3>variableNames<a class="headerlink" href="#variablenames" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>variableNames</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>vector</em></div>
 <div class="line">The names of the variables for which to return rows.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="v">
-<span id="ensemblemetadata-find-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-inputs-v"></span><h3>v<a class="headerlink" href="#v" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>v</strong></label><div class="content"><div class="line-block">
 <div class="line">-1 | <em>logical</em> <em>vector</em> | <em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The indices of the variables in the state vector for which to return rows. If -1, selects all variables. If a logical vector, must have one element per variable in the state vector.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="type">
-<span id="ensemblemetadata-find-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-inputs-type"></span><h3>type<a class="headerlink" href="#type" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>type</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>positive</em> <em>integer</em></div>
 <div class="line">Indicates the type of output to return for the listed variables.</div>
@@ -202,30 +213,30 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="rows">
-<span id="ensemblemetadata-find-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>rows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em></div>
 <div class="line">The indices of all the state vector rows associated with a particular variable.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="rowlimits">
-<span id="ensemblemetadata-find-outputs-rowlimits"></span><h3>rowLimits<a class="headerlink" href="#rowlimits" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-outputs-rowlimits"></span><h3>rowLimits<a class="headerlink" href="#rowlimits" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>rowLimits</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>matrix</em> [<em>nVariables</em> <em>x</em> 2], <em>linear</em> <em>indices</em></div>
 <div class="line">The first and the last row for each of the listed variables. The first column lists the starting rows, and the second column lists the ending rows.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="startrows">
-<span id="ensemblemetadata-find-outputs-startrows"></span><h3>startRows<a class="headerlink" href="#startrows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-outputs-startrows"></span><h3>startRows<a class="headerlink" href="#startrows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>startRows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nVariables</em>]</div>
 <div class="line">The first state vector row for each of the listed variables.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="endrows">
-<span id="ensemblemetadata-find-outputs-endrows"></span><h3>endRows<a class="headerlink" href="#endrows" title="Permalink to this headline"></a></h3>
+<span id="ensemblemetadata-find-outputs-endrows"></span><h3>endRows<a class="headerlink" href="#endrows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs4" checked="checked"><label for="outputs4"><strong>endRows</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nVariables</em>]</div>
 <div class="line">The final state vector row of each of the listed variables.</div>

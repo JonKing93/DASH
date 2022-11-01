@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.stateVectorVariable.validateGrid &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.stateVectorVariable.validateGrid &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -130,11 +141,11 @@
            <div itemprop="articleBody">
              
   <section id="dash-statevectorvariable-validategrid">
-<h1>dash.stateVectorVariable.validateGrid<a class="headerlink" href="#dash-statevectorvariable-validategrid" title="Permalink to this headline"></a></h1>
+<h1>dash.stateVectorVariable.validateGrid<a class="headerlink" href="#dash-statevectorvariable-validategrid" title="Permalink to this heading"></a></h1>
 <p>Check that a gridfile object matches a variable’s recorded gridfile parameters</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-validategrid-syntax1"><span class="std std-ref">[isvalid, cause] = obj.validateGrid(grid)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-validategrid-syntax2"><span class="std std-ref">[isvalid, cause] = obj.validateGrid(grid, header)</span></a></div>
@@ -142,7 +153,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-statevectorvariable-validategrid-syntax1">
 <div class="line">[<a class="reference internal" href="#dash-statevectorvariable-validategrid-outputs-isvalid"><span class="std std-ref">isvalid</span></a>, <a class="reference internal" href="#dash-statevectorvariable-validategrid-outputs-cause"><span class="std std-ref">cause</span></a>] = obj.validateGrid(<a class="reference internal" href="#dash-statevectorvariable-validategrid-inputs-grid"><span class="std std-ref">grid</span></a>)</div>
 </div>
@@ -154,16 +165,16 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="grid">
-<span id="dash-statevectorvariable-validategrid-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-validategrid-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>grid</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>gridfile</em> <em>object</em></div>
 <div class="line">The gridfile object being compared to the variable’s recorded gridfile parameters.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="header">
-<span id="dash-statevectorvariable-validategrid-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-validategrid-inputs-header"></span><h3>header<a class="headerlink" href="#header" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>header</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
 <div class="line">Header for thrown error IDs.</div>
@@ -172,16 +183,16 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="isvalid">
-<span id="dash-statevectorvariable-validategrid-outputs-isvalid"></span><h3>isvalid<a class="headerlink" href="#isvalid" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-validategrid-outputs-isvalid"></span><h3>isvalid<a class="headerlink" href="#isvalid" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>isvalid</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>logical</em></div>
 <div class="line">True is the gridfile object matches the recorded values. False if not.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="cause">
-<span id="dash-statevectorvariable-validategrid-outputs-cause"></span><h3>cause<a class="headerlink" href="#cause" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-validategrid-outputs-cause"></span><h3>cause<a class="headerlink" href="#cause" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>cause</strong></label><div class="content"><div class="line-block">
 <div class="line">[] | <em>scalar</em> <em>MException</em></div>
 <div class="line">If the gridfile does not match the recorded values, an MException reporting the cause of the mismatch. If the grid matches recorded values, an empty array.</div>

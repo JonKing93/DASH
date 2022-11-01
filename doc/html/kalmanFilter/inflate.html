@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kalmanFilter.inflate &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>kalmanFilter.inflate &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -113,11 +124,11 @@
            <div itemprop="articleBody">
              
   <section id="kalmanfilter-inflate">
-<h1>kalmanFilter.inflate<a class="headerlink" href="#kalmanfilter-inflate" title="Permalink to this headline"></a></h1>
+<h1>kalmanFilter.inflate<a class="headerlink" href="#kalmanfilter-inflate" title="Permalink to this heading"></a></h1>
 <p>Provide inflation factors for a Kalman Filter</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#kalmanfilter-inflate-syntax1"><span class="std std-ref">obj = obj.inflate(factor)</span></a></div>
 <div class="line"><a class="reference internal" href="#kalmanfilter-inflate-syntax2"><span class="std std-ref">obj = obj.inflate(factor, whichFactor)</span></a></div>
@@ -127,7 +138,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="kalmanfilter-inflate-syntax1">
 <div class="line"><a class="reference internal" href="#kalmanfilter-inflate-outputs-obj"><span class="std std-ref">obj</span></a> = obj.inflate(<a class="reference internal" href="#kalmanfilter-inflate-inputs-factor"><span class="std std-ref">factor</span></a>)</div>
 </div>
@@ -148,16 +159,16 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="factor">
-<span id="kalmanfilter-inflate-inputs-factor"></span><h3>factor<a class="headerlink" href="#factor" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-inflate-inputs-factor"></span><h3>factor<a class="headerlink" href="#factor" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>factor</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>vector</em> [1|*nTime*|*nInflate*]</div>
 <div class="line">The inflation factors to use for the Kalman Filter. All elements must be greater than 1. If scalar, uses the same factor for all time steps. If a vector with one element per time step, uses the indicated inflation factor in each time step. If the number of factors is neither 1 nor the number of time steps, use the whichFactor input to indicate which factor to use in each time step.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="whichfactor">
-<span id="kalmanfilter-inflate-inputs-whichfactor"></span><h3>whichFactor<a class="headerlink" href="#whichfactor" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-inflate-inputs-whichfactor"></span><h3>whichFactor<a class="headerlink" href="#whichfactor" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>whichFactor</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>]</div>
 <div class="line">Indicates which inflation factor to use in each time step. Must have one element per assimilation time step. Each element if the index to one of the input inflation factors.</div>
@@ -166,23 +177,23 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="kalmanfilter-inflate-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="kalmanfilter-inflate-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>kalmanFilter</em> <em>object</em></div>
 <div class="line">The kalmanFilter object with updated inflation factor.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="kalmanfilter-inflate-outputs-factor">
-<span id="id1"></span><h3>factor<a class="headerlink" href="#kalmanfilter-inflate-outputs-factor" title="Permalink to this headline"></a></h3>
+<span id="id1"></span><h3>factor<a class="headerlink" href="#kalmanfilter-inflate-outputs-factor" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>factor</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>vector</em> [1|*nTime*|*nInflate*] | []</div>
 <div class="line">The current inflation factors for the Kalman Filter. If there is no inflation factor, returns an empty array.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="kalmanfilter-inflate-outputs-whichfactor">
-<span id="id2"></span><h3>whichFactor<a class="headerlink" href="#kalmanfilter-inflate-outputs-whichfactor" title="Permalink to this headline"></a></h3>
+<span id="id2"></span><h3>whichFactor<a class="headerlink" href="#kalmanfilter-inflate-outputs-whichfactor" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>whichFactor</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nTime</em>] | []</div>
 <div class="line">Indicates which which inflation factor is used in each assimilation time step. If there is a single inflation factor, retruns an empty array.</div>

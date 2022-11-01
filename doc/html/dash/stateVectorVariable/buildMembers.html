@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.stateVectorVariable.buildMembers &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.stateVectorVariable.buildMembers &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -134,18 +145,18 @@
            <div itemprop="articleBody">
              
   <section id="dash-statevectorvariable-buildmembers">
-<h1>dash.stateVectorVariable.buildMembers<a class="headerlink" href="#dash-statevectorvariable-buildmembers" title="Permalink to this headline"></a></h1>
+<h1>dash.stateVectorVariable.buildMembers<a class="headerlink" href="#dash-statevectorvariable-buildmembers" title="Permalink to this heading"></a></h1>
 <p>Builds a set of ensemble members for a state vector variable</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-buildmembers-syntax1"><span class="std std-ref">X = obj.buildMembers(dims, subMembers, grid, source, parameters)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-statevectorvariable-buildmembers-syntax1">
 <div class="line"><a class="reference internal" href="#dash-statevectorvariable-buildmembers-outputs-x"><span class="std std-ref">X</span></a> = obj.buildMembers(<a class="reference internal" href="#dash-statevectorvariable-buildmembers-inputs-dims"><span class="std std-ref">dims</span></a>, <a class="reference internal" href="#dash-statevectorvariable-buildmembers-inputs-submembers"><span class="std std-ref">subMembers</span></a>, <a class="reference internal" href="#dash-statevectorvariable-buildmembers-inputs-grid"><span class="std std-ref">grid</span></a>, <a class="reference internal" href="#dash-statevectorvariable-buildmembers-inputs-source"><span class="std std-ref">source</span></a>, <a class="reference internal" href="#dash-statevectorvariable-buildmembers-inputs-parameters"><span class="std std-ref">parameters</span></a>)</div>
 </div>
@@ -154,30 +165,30 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="dims">
-<span id="dash-statevectorvariable-buildmembers-inputs-dims"></span><h3>dims<a class="headerlink" href="#dims" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-dims"></span><h3>dims<a class="headerlink" href="#dims" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>dims</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>vector</em>, <em>linear</em> <em>indices</em> [<em>nEnsDims</em>]</div>
 <div class="line">The dimension indices for the variable that correspond to the columns of subMembers.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="submembers">
-<span id="dash-statevectorvariable-buildmembers-inputs-submembers"></span><h3>subMembers<a class="headerlink" href="#submembers" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-submembers"></span><h3>subMembers<a class="headerlink" href="#submembers" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>subMembers</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [<em>nInitial</em> <em>x</em> <em>nEnsDims</em>]</div>
 <div class="line">A set of dimensionally-subscripted ensemble members for the variable.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="grid">
-<span id="dash-statevectorvariable-buildmembers-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>grid</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>gridfile</em> <em>object</em></div>
 <div class="line">The gridfile object for the variable</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="source">
-<span id="dash-statevectorvariable-buildmembers-inputs-source"></span><h3>source<a class="headerlink" href="#source" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-source"></span><h3>source<a class="headerlink" href="#source" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>source</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>struct</em></div>
 <div class="line">Data source parameters for the gridfile. Output from stateVector.buildEnsemble/gridSources.</div>
@@ -189,7 +200,7 @@
 <p><strong>.indices</strong> (vector, linear indices [nBuilt]): The indices of the built dataSource objects within the full set of gridfile sources</p>
 </div></section></section>
 <section class="collapse-examples" id="parameters">
-<span id="dash-statevectorvariable-buildmembers-inputs-parameters"></span><h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-parameters"></span><h3>parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>parameters</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>struct</em></div>
 <div class="line">Build-parameters for the variable. Created in stateVector.buildEnsemble</div>
@@ -203,7 +214,7 @@
 <p><strong>.dims</strong> (vector, linear indices [nDimensions]): The indices of the ensemble dimensions in the variable</p>
 </div></section></section>
 <section class="collapse-examples" id="precision">
-<span id="dash-statevectorvariable-buildmembers-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-inputs-precision"></span><h3>precision<a class="headerlink" href="#precision" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>precision</strong></label><div class="content"><div class="line-block">
 <div class="line">‘<em>single</em>’ | ‘<em>double</em>’</div>
 <div class="line">The numerical precision of the output data array</div>
@@ -212,9 +223,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="x">
-<span id="dash-statevectorvariable-buildmembers-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="dash-statevectorvariable-buildmembers-outputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em></div>
 <div class="line">The loaded data array</div>

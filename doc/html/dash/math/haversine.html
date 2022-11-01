@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.math.haversine &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.math.haversine &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,11 +16,13 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="dash.math.gaspariCohn2D" href="gaspariCohn2D.html" />
+    <link rel="next" title="dash.math.gaspariCohn" href="gaspariCohn.html" />
     <link rel="prev" title="dash.math" href="../math.html" /> 
 </head>
 
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -70,7 +81,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="gaspariCohn2D.html">gaspariCohn2D</a></li>
+<li class="toctree-l5"><a class="reference internal" href="gaspariCohn.html">gaspariCohn</a></li>
 <li class="toctree-l5"><a class="reference internal" href="unbias.html">unbias</a></li>
 </ul>
 </li>
@@ -115,11 +126,11 @@
            <div itemprop="articleBody">
              
   <section id="dash-math-haversine">
-<h1>dash.math.haversine<a class="headerlink" href="#dash-math-haversine" title="Permalink to this headline"></a></h1>
+<h1>dash.math.haversine<a class="headerlink" href="#dash-math-haversine" title="Permalink to this heading"></a></h1>
 <p>Returns the distances between latitude-longitude coordinates</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#dash-math-haversine-syntax1"><span class="std std-ref">distances = dash.math.haversine(coordinates)</span></a></div>
 <div class="line"><a class="reference internal" href="#dash-math-haversine-syntax2"><span class="std std-ref">distances = dash.math.haversine(coordinates1, coordinates2)</span></a></div>
@@ -127,7 +138,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="dash-math-haversine-syntax1">
 <div class="line"><a class="reference internal" href="#dash-math-haversine-outputs-distances"><span class="std std-ref">distances</span></a> = dash.math.haversine(<a class="reference internal" href="#dash-math-haversine-inputs-coordinates"><span class="std std-ref">coordinates</span></a>)</div>
 </div>
@@ -139,9 +150,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="coordinates">
-<span id="dash-math-haversine-inputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this headline"></a></h3>
+<span id="dash-math-haversine-inputs-coordinates"></span><h3>coordinates<a class="headerlink" href="#coordinates" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>coordinates</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em> [<em>nCoordinates</em> <em>x</em> 2]</div>
 <div class="line">A set of latitude-longitude coordinates in decimal degrees. A numeric matrix with two columns. The first column is the latitude coordinates, and the second column is the longitude coordinates.</div>
@@ -150,9 +161,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="distances">
-<span id="dash-math-haversine-outputs-distances"></span><h3>distances<a class="headerlink" href="#distances" title="Permalink to this headline"></a></h3>
+<span id="dash-math-haversine-outputs-distances"></span><h3>distances<a class="headerlink" href="#distances" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>distances</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>matrix</em></div>
 <div class="line">The distance between each pair of coordinates in kilometers. If you input a single coordinate matrix, then distances is a symmetric matrix with one row and one column per latitude-longitude coordinate . If you input two coordinate matrices, then distances will have one row per coordinate in the first input, and one column per coordinate in the second input.</div>
@@ -166,7 +177,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../math.html" class="btn btn-neutral float-left" title="dash.math" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="gaspariCohn2D.html" class="btn btn-neutral float-right" title="dash.math.gaspariCohn2D" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="gaspariCohn.html" class="btn btn-neutral float-right" title="dash.math.gaspariCohn" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

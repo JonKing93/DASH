@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.vslite.vslite &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.vslite.vslite &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
@@ -49,13 +60,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#information">Information</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#download">Download</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../PSM.html#estimate">Estimate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../../PSM.html#forward-models">Forward Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../bayfox.html">bayfox</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../baymag.html">baymag</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspar.html">bayspar</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../bayspline.html">bayspline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../identity.html">identity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../linear.html">linear</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../pdsi.html">pdsi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../prysm.html">prysm</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../vslite.html">vslite</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../vslite.html#description">Description</a></li>
@@ -126,11 +139,11 @@
            <div itemprop="articleBody">
              
   <section id="psm-vslite-vslite">
-<h1>PSM.vslite.vslite<a class="headerlink" href="#psm-vslite-vslite" title="Permalink to this headline"></a></h1>
+<h1>PSM.vslite.vslite<a class="headerlink" href="#psm-vslite-vslite" title="Permalink to this heading"></a></h1>
 <p>Creates a new VSLite PSM object</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#psm-vslite-vslite-syntax1"><span class="std std-ref">obj = PSM.vslite(phi, T1, T2, M1, M2)</span></a></div>
 <div class="line"><a class="reference internal" href="#psm-vslite-vslite-syntax2"><span class="std std-ref">obj = PSM.vslite(phi, T1, T2, M1, M2, options)</span></a></div>
@@ -138,7 +151,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-vslite-vslite-syntax1">
 <div class="line"><a class="reference internal" href="#psm-vslite-vslite-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.vslite(<a class="reference internal" href="#psm-vslite-vslite-inputs-phi"><span class="std std-ref">phi</span></a>, <a class="reference internal" href="#psm-vslite-vslite-inputs-t1"><span class="std std-ref">T1</span></a>, <a class="reference internal" href="#psm-vslite-vslite-inputs-t2"><span class="std std-ref">T2</span></a>, <a class="reference internal" href="#psm-vslite-vslite-inputs-m1"><span class="std std-ref">M1</span></a>, <a class="reference internal" href="#psm-vslite-vslite-inputs-m2"><span class="std std-ref">M2</span></a>)</div>
 </div>
@@ -150,44 +163,44 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="phi">
-<span id="psm-vslite-vslite-inputs-phi"></span><h3>phi<a class="headerlink" href="#phi" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-phi"></span><h3>phi<a class="headerlink" href="#phi" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>phi</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">The latitude of the tree-ring site in decimal degrees</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="t1">
-<span id="psm-vslite-vslite-inputs-t1"></span><h3>T1<a class="headerlink" href="#t1" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-t1"></span><h3>T1<a class="headerlink" href="#t1" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>T1</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">Lower temperature threshold below which growth is 0. (Celsius)</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="t2">
-<span id="psm-vslite-vslite-inputs-t2"></span><h3>T2<a class="headerlink" href="#t2" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-t2"></span><h3>T2<a class="headerlink" href="#t2" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>T2</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">Upper temperature threshold above which growth is 1. (Celsius)</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="m1">
-<span id="psm-vslite-vslite-inputs-m1"></span><h3>M1<a class="headerlink" href="#m1" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-m1"></span><h3>M1<a class="headerlink" href="#m1" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>M1</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">Lower soil moisture threshold below which growth is 0. (v/v)</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="m2">
-<span id="psm-vslite-vslite-inputs-m2"></span><h3>M2<a class="headerlink" href="#m2" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-m2"></span><h3>M2<a class="headerlink" href="#m2" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>M2</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">Upper soil moisture threshold above which growth is 1. (v/v)</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="options">
-<span id="psm-vslite-vslite-inputs-options"></span><h3>options<a class="headerlink" href="#options" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-inputs-options"></span><h3>options<a class="headerlink" href="#options" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>options</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em></div>
 <div class="line">Optional arguments for the VS-Lite model</div>
@@ -196,9 +209,9 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="obj">
-<span id="psm-vslite-vslite-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this headline"></a></h3>
+<span id="psm-vslite-vslite-outputs-obj"></span><h3>obj<a class="headerlink" href="#obj" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>obj</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>PSM</em>.*vslite* <em>object</em></div>
 <div class="line">The new VS-Lite PSM object</div>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ensembleMetadata &mdash; DASH Docs 4.0.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/accordion.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ensemble" href="ensemble.html" />
+    <link rel="prev" title="Outline" href="outline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> DASH Docs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../welcome.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../before-starting.html">Before Starting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da-primer.html">DA Primer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial-outline.html">Tutorial Outline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dash/outline.html">Introducing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../gridfile/outline.html">gridfile</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../stateVector/outline.html">stateVector</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="outline.html">ensemble</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ensembleMetadata</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#locate-forward-model-inputs">Locate forward model inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#coordinates-for-localization">Coordinates for localization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#regrid-state-vector-variables">Regrid state vector variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#identify-ensemble-members">Identify ensemble members</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#and-more">And more…</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ensemble.html">ensemble</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code5.html">Coding 5</a></li>
+<li class="toctree-l3"><a class="reference internal" href="code6.html">Optional: Coding 6</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM/outline.html">PSM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../da/outline.html">DA Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../next-steps.html">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../gridMetadata.html">gridMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gridfile.html">gridfile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stateVector.html">stateVector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensemble.html">ensemble</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ensembleMetadata.html">ensembleMetadata</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../PSM.html">PSM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../kalmanFilter.html">kalmanFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../particleFilter.html">particleFilter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimalSensor.html">optimalSensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../dash.html">dash</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">DASH Docs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../welcome.html">Welcome to the DASH Tutorial!</a> &raquo;</li>
+          <li><a href="outline.html">Outline</a> &raquo;</li>
+      <li>ensembleMetadata</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/JonKing93/DASH" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ensemblemetadata">
+<h1>ensembleMetadata<a class="headerlink" href="#ensemblemetadata" title="Permalink to this heading"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> class organizes and records metadata values along the rows and columns of a state vector ensemble. The class uses this metadata to provide a number of utility functions for working with state vector ensembles. In addition to normal workflows, these utilities can help you extend <code class="docutils literal notranslate"><span class="pre">DASH</span></code> to create new routines and analyses.</p>
+<p>We’ll be seeing <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> commands throughout the rest of the tutorial, and we’ll introduce the commands as they become relevant. For now, we’ll just give a brief overview of some of the class’s capabilities.</p>
+<section id="locate-forward-model-inputs">
+<h2>Locate forward model inputs<a class="headerlink" href="#locate-forward-model-inputs" title="Permalink to this heading"></a></h2>
+<p>You can use the class to locate the variables needed to run proxy forward models. The <code class="docutils literal notranslate"><span class="pre">closestLatLon</span></code> command locates data values nearest to a set of coordinates, and the <code class="docutils literal notranslate"><span class="pre">find</span></code> command locates state vector rows corresponding to a specific variable. Also, you can use the <code class="docutils literal notranslate"><span class="pre">variable</span></code> command to return metadata values for specific state vector variables.</p>
+</section>
+<section id="coordinates-for-localization">
+<h2>Coordinates for localization<a class="headerlink" href="#coordinates-for-localization" title="Permalink to this heading"></a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">latlon</span></code> command to return a latitude-longitude coordinate for every state vector element. These coordinates are often useful for implementing covariance localization.</p>
+</section>
+<section id="regrid-state-vector-variables">
+<h2>Regrid state vector variables<a class="headerlink" href="#regrid-state-vector-variables" title="Permalink to this heading"></a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">regrid</span></code> command to reshape state vector variables into their original data grids. This can be useful for mapping assimilated variables, or for double checking that an ensemble appears correct.</p>
+</section>
+<section id="identify-ensemble-members">
+<h2>Identify ensemble members<a class="headerlink" href="#identify-ensemble-members" title="Permalink to this heading"></a></h2>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">members</span></code> command to return metadata for each ensemble member in the state vector. This can be useful when designing evolving (time-dependent) ensembles.</p>
+</section>
+<section id="and-more">
+<h2>And more…<a class="headerlink" href="#and-more" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">ensembleMetadata</span></code> class has a number of other utilities that we will not discuss here. However, we encourage reading the documentation at <code class="docutils literal notranslate"><span class="pre">dash.doc('ensembleMetadata')</span></code>. If you plan on writing new routines to manipulate ensembles, then this documentation is a good place to start.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="outline.html" class="btn btn-neutral float-left" title="Outline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ensemble.html" class="btn btn-neutral float-right" title="ensemble" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jonathan King.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

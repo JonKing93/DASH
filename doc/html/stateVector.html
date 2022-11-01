@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>stateVector &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>stateVector &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gridfile.html">gridfile</a></li>
@@ -66,9 +77,11 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#design">Design</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="stateVector/design.html">design</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stateVector/mean.html">mean</a></li>
-<li class="toctree-l4"><a class="reference internal" href="stateVector/weightedMean.html">weightedMean</a></li>
 <li class="toctree-l4"><a class="reference internal" href="stateVector/sequence.html">sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stateVector/mean.html">mean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stateVector/total.html">total</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stateVector/weightedMean.html">weightedMean</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stateVector/weightedTotal.html">weightedTotal</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#metadata">Metadata</a><ul>
@@ -197,54 +210,57 @@
            <div itemprop="articleBody">
              
   <section id="statevector">
-<h1>stateVector<a class="headerlink" href="#statevector" title="Permalink to this headline"></a></h1>
+<h1>stateVector<a class="headerlink" href="#statevector" title="Permalink to this heading"></a></h1>
 <p>Design and build state vector ensembles</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The state vector class is used to design and build state vector ensembles. The class implements an object that describes how a state vector ensemble should look. Thus, the class allows users to design a state vector ensemble without manipulating any data. Once a user finishes designing a state vector ensemble, they can call the “build” command to automatically build the state vector ensemble from a set of gridfile data catalogues.</p>
 <section id="concepts">
-<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline"></a></h3>
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this heading"></a></h3>
 <p>The following is some vocabulary useful for designing state vector ensembles. <strong>Ensemble Dimensions</strong> are the data dimensions used to select different ensemble members - often, these are the time and run dimensions. <strong>State Dimensions</strong> are the data dimensions that are organized down the state vector. These are often the spatial dimensions used to describe the dataset. In general, state dimensions will have the same metadata value at a state vector element, regardless of the ensemble member. By contrast, ensemble dimensions will have different values for different ensemble members.</p>
 <p>Sometimes, an ensemble dimension will also have elements down the state vector (for example, successive months of the year). This is referred to as a <strong>sequence</strong>. The term <strong>coupled variables</strong> indicates that, within an ensemble member, the variables should be selected from the same points along the ensemble dimensions (for example, from the same points in time or from the same climate model run). In most cases, all the variables in an ensemble should be coupled to one another.</p>
 </section>
 <section id="outline">
-<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this headline"></a></h3>
+<h3>Outline<a class="headerlink" href="#outline" title="Permalink to this heading"></a></h3>
 <p>The following is a rough sketch for using the stateVector class.</p>
 <ol class="arabic simple">
 <li><p>Use the “stateVector” command to initialize the design for a state vector.</p></li>
 <li><p>Use the “add” command to add variables to the state vector</p></li>
 <li><p>Use the “design” command to indicate the ensemble dimensions, and to select subsets of gridfile catalogues that should be used to build the state vector ensemble.</p></li>
-<li><p>Use the “mean”, “weightedMean”, and “sequence” commands to implement means and sequences in the state vector.</p></li>
+<li><p>Use the “sequence” command to implement sequences</p></li>
+<li><p>Use the “mean”, “total”, “weightedMean”, and “weightedTotal” commands to implement means and totals in the state vector.</p></li>
 <li><p>Use “build” to generate a state vector ensemble from the design.</p></li>
 </ol>
 <p>The class also includes various methods that return information about the state vector. Among others, the “variables”, “length”, “members”, and “label” commands can all help facilitate workflows.</p>
 </section>
 <section id="troubleshooting-metadata">
-<h3>Troubleshooting Metadata<a class="headerlink" href="#troubleshooting-metadata" title="Permalink to this headline"></a></h3>
+<h3>Troubleshooting Metadata<a class="headerlink" href="#troubleshooting-metadata" title="Permalink to this heading"></a></h3>
 <p>Sometimes, variables have different metadata formats along the ensemble dimensions (for example, annual and monthly time metadata). This can prevent stateVector from building an ensemble, because the class will not be able to check that the values in different ensemble members align to the same points. If this occurs, use the “metadata” command to allow comparison of the variables with different metadata formats.</p>
 </section>
 </section>
 <hr class="docutils" />
 <section id="key-methods">
-<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this headline"></a></h2>
+<h2>Key Methods<a class="headerlink" href="#key-methods" title="Permalink to this heading"></a></h2>
 <p>The following methods are the most essential for users.</p>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/stateVector.html"><span class="doc">stateVector</span></a> - Create a new, empty state vector</div>
 <div class="line"><a class="reference internal" href="stateVector/add.html"><span class="doc">add</span></a> - Add variables to a state vector</div>
 <div class="line"><a class="reference internal" href="stateVector/design.html"><span class="doc">design</span></a> - Design the dimensions of variables</div>
-<div class="line"><a class="reference internal" href="stateVector/mean.html"><span class="doc">mean</span></a> - Take means over dimensions of variables</div>
-<div class="line"><a class="reference internal" href="stateVector/weightedMean.html"><span class="doc">weightedMean</span></a> - Take weighted means over the dimensions of variables</div>
-<div class="line"><a class="reference internal" href="stateVector/sequence.html"><span class="doc">sequence</span></a> - Take a sequence over an ensemble dimension</div>
+<div class="line"><a class="reference internal" href="stateVector/sequence.html"><span class="doc">sequence</span></a> - Use sequences over ensemble dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/mean.html"><span class="doc">mean</span></a> - Take means over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/total.html"><span class="doc">total</span></a> - Take the sum total over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/weightedMean.html"><span class="doc">weightedMean</span></a> - Take weighted means over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/weightedTotal.html"><span class="doc">weightedTotal</span></a> - Take weighted totals over variable dimensions</div>
 <div class="line"><a class="reference internal" href="stateVector/build.html"><span class="doc">build</span></a> - Build a state vector ensemble from a design</div>
 </div>
 </section>
 <hr class="docutils" />
 <section id="all-user-methods">
-<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this headline"></a></h2>
+<h2>All User Methods<a class="headerlink" href="#all-user-methods" title="Permalink to this heading"></a></h2>
 <p>The complete list of methods for users.</p>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/stateVector.html"><span class="doc">stateVector</span></a> - Create a new, empty state vector</div>
 <div class="line"><a class="reference internal" href="stateVector/label.html"><span class="doc">label</span></a> - Return or specify a label for a state vector</div>
@@ -253,7 +269,7 @@
 </div>
 </section>
 <section id="variables">
-<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this headline"></a></h3>
+<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/add.html"><span class="doc">add</span></a> - Add new variables to a state vector</div>
 <div class="line"><a class="reference internal" href="stateVector/remove.html"><span class="doc">remove</span></a> - Remove variables from a state vector</div>
@@ -266,18 +282,20 @@
 </div>
 </section>
 <section id="design">
-<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline"></a></h3>
+<h3>Design<a class="headerlink" href="#design" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/design.html"><span class="doc">design</span></a> - Design the dimensions of variables in a state vector</div>
-<div class="line"><a class="reference internal" href="stateVector/mean.html"><span class="doc">mean</span></a> - Take means over dimensions of variables</div>
-<div class="line"><a class="reference internal" href="stateVector/weightedMean.html"><span class="doc">weightedMean</span></a> - Take weighted means over dimensions of variables</div>
-<div class="line"><a class="reference internal" href="stateVector/sequence.html"><span class="doc">sequence</span></a> - Use a sequence over ensemble dimensions of variables</div>
+<div class="line"><a class="reference internal" href="stateVector/sequence.html"><span class="doc">sequence</span></a> - Use sequences over ensemble dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/mean.html"><span class="doc">mean</span></a> - Take the mean over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/total.html"><span class="doc">total</span></a> - Take the sum total over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/weightedMean.html"><span class="doc">weightedMean</span></a> - Take weighted means over variable dimensions</div>
+<div class="line"><a class="reference internal" href="stateVector/weightedTotal.html"><span class="doc">weightedTotal</span></a> - Take weighted totals over variable dimensions</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>
 </section>
 <section id="metadata">
-<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this headline"></a></h3>
+<h3>Metadata<a class="headerlink" href="#metadata" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/metadata.html"><span class="doc">metadata</span></a> - Specify metadata options for dimensions of variables</div>
 <div class="line"><a class="reference internal" href="stateVector/getMetadata.html"><span class="doc">getMetadata</span></a> - Return the metadata that will be used along a dimension of a state vector variable</div>
@@ -286,7 +304,7 @@
 </div>
 </section>
 <section id="overlap">
-<h3>Overlap<a class="headerlink" href="#overlap" title="Permalink to this headline"></a></h3>
+<h3>Overlap<a class="headerlink" href="#overlap" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/overlap.html"><span class="doc">overlap</span></a> - Update the overlap settings of variables in a state vector</div>
 </div>
@@ -294,7 +312,7 @@
 </div>
 </section>
 <section id="coupling">
-<h3>Coupling<a class="headerlink" href="#coupling" title="Permalink to this headline"></a></h3>
+<h3>Coupling<a class="headerlink" href="#coupling" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/autocouple.html"><span class="doc">autocouple</span></a> - Specify if variables should be automatically coupled to new variables</div>
 <div class="line"><a class="reference internal" href="stateVector/couple.html"><span class="doc">couple</span></a> - Couple indicated variables</div>
@@ -304,7 +322,7 @@
 </div>
 </section>
 <section id="build">
-<h3>Build<a class="headerlink" href="#build" title="Permalink to this headline"></a></h3>
+<h3>Build<a class="headerlink" href="#build" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/build.html"><span class="doc">build</span></a> - Build a new state vector ensemble</div>
 <div class="line"><a class="reference internal" href="stateVector/addMembers.html"><span class="doc">addMembers</span></a> - Add members to an existing state vector ensemble</div>
@@ -313,7 +331,7 @@
 </div>
 </section>
 <section id="size-information">
-<h3>Size Information<a class="headerlink" href="#size-information" title="Permalink to this headline"></a></h3>
+<h3>Size Information<a class="headerlink" href="#size-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/length.html"><span class="doc">length</span></a> - Return the length of the state vector and its variables</div>
 <div class="line"><a class="reference internal" href="stateVector/members.html"><span class="doc">members</span></a> - Return the number of ensemble members associated with a state vector object</div>
@@ -322,7 +340,7 @@
 </div>
 </section>
 <section id="variable-information">
-<h3>Variable Information<a class="headerlink" href="#variable-information" title="Permalink to this headline"></a></h3>
+<h3>Variable Information<a class="headerlink" href="#variable-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/variable.html"><span class="doc">variable</span></a> - Display a state vector variable in the console</div>
 <div class="line"><a class="reference internal" href="stateVector/variables.html"><span class="doc">variables</span></a> - List the names of variables in a state vector</div>
@@ -333,7 +351,7 @@
 </div>
 </section>
 <section id="general-information">
-<h3>General Information<a class="headerlink" href="#general-information" title="Permalink to this headline"></a></h3>
+<h3>General Information<a class="headerlink" href="#general-information" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/disp.html"><span class="doc">disp</span></a> - Display the state vector in the console</div>
 <div class="line"><a class="reference internal" href="stateVector/info.html"><span class="doc">info</span></a> - Return information about a state vector or its variables</div>
@@ -342,7 +360,7 @@
 </div>
 </section>
 <section id="serialization">
-<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this headline"></a></h3>
+<h3>Serialization<a class="headerlink" href="#serialization" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/serialize.html"><span class="doc">serialize</span></a> - Serialize a stateVector object for fast saving/loading</div>
 <div class="line"><a class="reference internal" href="stateVector/deserialize.html"><span class="doc">deserialize</span></a> - Restore a stateVector object from a serialized state</div>
@@ -353,10 +371,10 @@
 </section>
 <hr class="docutils" />
 <section id="utility-methods">
-<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this headline"></a></h2>
+<h2>Utility Methods<a class="headerlink" href="#utility-methods" title="Permalink to this heading"></a></h2>
 <p>Utility methods that help the class run. They are not intended for users.</p>
 <section id="general">
-<h3>General<a class="headerlink" href="#general" title="Permalink to this headline"></a></h3>
+<h3>General<a class="headerlink" href="#general" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/name.html"><span class="doc">name</span></a> - Return a name for the state vector for use in error messages</div>
 <div class="line"><a class="reference internal" href="stateVector/assertEditable.html"><span class="doc">assertEditable</span></a> - Throw error if state vector is no longer editable</div>
@@ -366,7 +384,7 @@
 </div>
 </section>
 <section id="id1">
-<h3>Variables<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<h3>Variables<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/updateLengths.html"><span class="doc">updateLengths</span></a> - Update the lengths of indicated variables</div>
 <div class="line"><a class="reference internal" href="stateVector/assertValidNames.html"><span class="doc">assertValidNames</span></a> - Throw error if variable names are not valid</div>
@@ -376,7 +394,7 @@
 </div>
 </section>
 <section id="indices">
-<h3>Indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h3>
+<h3>Indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/variableIndices.html"><span class="doc">variableIndices</span></a> - Parse variables and return indices in state vector</div>
 <div class="line"><a class="reference internal" href="stateVector/dimensionIndices.html"><span class="doc">dimensionIndices</span></a> - Parse dimensions and return indices in variables</div>
@@ -385,7 +403,7 @@
 </div>
 </section>
 <section id="id2">
-<h3>Coupling<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h3>
+<h3>Coupling<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/coupleDimensions.html"><span class="doc">coupleDimensions</span></a> - Update state and ensemble dimensions to match a template variable</div>
 <div class="line"><a class="reference internal" href="stateVector/coupledIndices.html"><span class="doc">coupledIndices</span></a> - Return sets of coupled variable indices</div>
@@ -395,7 +413,7 @@
 </div>
 </section>
 <section id="id3">
-<h3>Build<a class="headerlink" href="#id3" title="Permalink to this headline"></a></h3>
+<h3>Build<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/buildEnsemble.html"><span class="doc">buildEnsemble</span></a> - Builds members of a state vector ensemble</div>
 </div>
@@ -403,7 +421,7 @@
 </div>
 </section>
 <section id="console-display">
-<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this headline"></a></h3>
+<h3>Console Display<a class="headerlink" href="#console-display" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/dispVariables.html"><span class="doc">dispVariables</span></a> - Display a list of state vector variables in the console</div>
 <div class="line"><a class="reference internal" href="stateVector/dispCoupled.html"><span class="doc">dispCoupled</span></a> - Display sets of coupled variables in the console</div>
@@ -412,7 +430,7 @@
 </div>
 </section>
 <section id="gridfile-interactions">
-<h3>Gridfile Interactions<a class="headerlink" href="#gridfile-interactions" title="Permalink to this headline"></a></h3>
+<h3>Gridfile Interactions<a class="headerlink" href="#gridfile-interactions" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/parseGrids.html"><span class="doc">parseGrids</span></a> - Parse inputs that are either gridfile objects or .grid file paths</div>
 <div class="line"><a class="reference internal" href="stateVector/prepareGrids.html"><span class="doc">prepareGrids</span></a> - Build and validate the gridfile objects for the state vector variables</div>
@@ -423,7 +441,7 @@
 </div>
 </section>
 <section id="unit-tests">
-<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h3>
+<h3>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h3>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="stateVector/tests.html"><span class="doc">tests</span></a> - Implement unit tests for the stateVector class</div>
 </div>

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSM.estimate &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>PSM.estimate &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -70,7 +81,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forwad-model-interface">Forwad Model Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-model-interface">Forward Model Interface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#forward-models">Forward Models</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#template">Template</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../PSM.html#tests">Tests</a></li>
@@ -108,11 +119,11 @@
            <div itemprop="articleBody">
              
   <section id="psm-estimate">
-<h1>PSM.estimate<a class="headerlink" href="#psm-estimate" title="Permalink to this headline"></a></h1>
+<h1>PSM.estimate<a class="headerlink" href="#psm-estimate" title="Permalink to this heading"></a></h1>
 <p>Compute observation estimates by applying forward models to a state vector ensemble</p>
 <hr class="docutils" />
 <section id="syntax">
-<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline"></a></h2>
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#psm-estimate-syntax1"><span class="std std-ref">Ye = PSM.estimate(F, X)</span></a></div>
 <div class="line"><a class="reference internal" href="#psm-estimate-syntax1"><span class="std std-ref">Ye = PSM.estimate(F, ens)</span></a></div>
@@ -128,7 +139,7 @@
 </pre></section>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-estimate-syntax1">
 <div class="line"><a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a> = PSM.estimate(<a class="reference internal" href="#psm-estimate-inputs-f"><span class="std std-ref">F</span></a>, <a class="reference internal" href="#psm-estimate-inputs-x"><span class="std std-ref">X</span></a>)</div>
 <div class="line"><a class="reference internal" href="#psm-estimate-outputs-ye"><span class="std std-ref">Ye</span></a> = PSM.estimate(<a class="reference internal" href="#psm-estimate-inputs-f"><span class="std std-ref">F</span></a>, <a class="reference internal" href="#psm-estimate-inputs-ens"><span class="std std-ref">ens</span></a>)</div>
@@ -158,9 +169,9 @@
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
-<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this headline"></a></h2>
+<h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="f">
-<span id="psm-estimate-inputs-f"></span><h3>F<a class="headerlink" href="#f" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-inputs-f"></span><h3>F<a class="headerlink" href="#f" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>F</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em> | <em>PSM</em> <em>vector</em> [<em>nSite</em>]</div>
 <div class="line">The forward models for the observation sites. Either a cell vector or a PSM vector with one element per observation site. If a cell vector, each element must hold a scalar PSM object. The PSM objects must all have previously used the “rows” command to define the state vector rows that hold the forward model inputs.</div>
@@ -168,21 +179,21 @@
 <p>If any PSM objects define different rows for different ensemble members, then all PSM objects must either 1. Define rows for the same number of ensemnble members, or 2. Use the same rows for all ensemble members. If any PSM object define different rows for different ensembles in an evolving set, then all PSM objects must either 1. Define rows for the same number of evolving ensembles, or 2. Use the same rows for all evolving ensembles.</p>
 </div></section></section>
 <section class="collapse-examples" id="x">
-<span id="psm-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>X</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nState</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The state vector ensemble provided directly as a numeric array. Each row is a state vector element, each column is an ensemble member, and each element along the third dimension is an ensemble in an evolving set.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="ens">
-<span id="psm-estimate-inputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-inputs-ens"></span><h3>ens<a class="headerlink" href="#ens" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>ens</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>ensemble</em> <em>object</em></div>
 <div class="line">The state vector ensemble provided as an ensemble object. May implement either a static or an evolving ensemble.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="failureresponse">
-<span id="psm-estimate-inputs-failureresponse"></span><h3>failureResponse<a class="headerlink" href="#failureresponse" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-inputs-failureresponse"></span><h3>failureResponse<a class="headerlink" href="#failureresponse" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>failureResponse</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>numeric</em> <em>scalar</em></div>
 <div class="line">Indicates how the method should respond when a PSM fails to run.</div>
@@ -192,7 +203,7 @@
 <p>[2|’w’|’warn’]: Issue a warning in the console and skip the PSM</p>
 </div></section></section>
 <section class="collapse-examples" id="reportstatus">
-<span id="psm-estimate-inputs-reportstatus"></span><h3>reportStatus<a class="headerlink" href="#reportstatus" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-inputs-reportstatus"></span><h3>reportStatus<a class="headerlink" href="#reportstatus" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>reportStatus</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em> | <em>scalar</em> <em>logical</em></div>
 <div class="line">Indicates whether the method should return a status report for the PSMs.</div>
@@ -203,23 +214,23 @@
 </section>
 <hr class="docutils" />
 <section id="output-arguments">
-<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this headline"></a></h2>
+<h2>Output Arguments<a class="headerlink" href="#output-arguments" title="Permalink to this heading"></a></h2>
 <section class="collapse-examples" id="ye">
-<span id="psm-estimate-outputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-outputs-ye"></span><h3>Ye<a class="headerlink" href="#ye" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs1" checked="checked"><label for="outputs1"><strong>Ye</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The observation estimates generated by applying the forward models to the state vector ensemble.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="r">
-<span id="psm-estimate-outputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-outputs-r"></span><h3>R<a class="headerlink" href="#r" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>R</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> 3*D* <em>array</em> [<em>nSite</em> <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">The R error variances estimated by the forward models.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="status">
-<span id="psm-estimate-outputs-status"></span><h3>status<a class="headerlink" href="#status" title="Permalink to this headline"></a></h3>
+<span id="psm-estimate-outputs-status"></span><h3>status<a class="headerlink" href="#status" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs3" checked="checked"><label for="outputs3"><strong>status</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>scalar</em> <em>struct</em></div>
 <div class="line">A status report for the PSMs</div>

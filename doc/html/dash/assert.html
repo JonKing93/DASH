@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>dash.assert &mdash; DASH Docs 4.0.0-beta-3 documentation</title>
+  <title>dash.assert &mdash; DASH Docs 4.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/matlab-io.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/accordion.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,7 +41,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Resources</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../welcome.html">Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Install DASH</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../gridMetadata.html">gridMetadata</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gridfile.html">gridfile</a></li>
@@ -145,17 +156,17 @@
            <div itemprop="articleBody">
              
   <section id="dash-assert">
-<h1>dash.assert<a class="headerlink" href="#dash-assert" title="Permalink to this headline"></a></h1>
+<h1>dash.assert<a class="headerlink" href="#dash-assert" title="Permalink to this heading"></a></h1>
 <p>Functions that assert inputs meet required conditions</p>
 <hr class="docutils" />
 <section id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline"></a></h2>
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <p>The dash.assert subpackage facilitates the creation of informative error messages and helps provide consistent error ID handling for common input error checks. These functions produce error messages that appear to originate from higher level calling functions.</p>
 <p>Some functions also return inputs converted to specific formats to ensure consistent internal handling of different input types.</p>
 </section>
 <hr class="docutils" />
 <section id="strings">
-<h2>Strings<a class="headerlink" href="#strings" title="Permalink to this headline"></a></h2>
+<h2>Strings<a class="headerlink" href="#strings" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/string.html"><span class="doc">string</span></a> - Throw error if input is not a string array, cellstring array, or character row vector</div>
 <div class="line"><a class="reference internal" href="assert/strflag.html"><span class="doc">strflag</span></a> - Throw error if input is not a string scalar, cellstring scalar, or character row vector</div>
@@ -166,7 +177,7 @@
 </div>
 </section>
 <section id="size-and-data-type">
-<h2>Size And Data Type<a class="headerlink" href="#size-and-data-type" title="Permalink to this headline"></a></h2>
+<h2>Size And Data Type<a class="headerlink" href="#size-and-data-type" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/type.html"><span class="doc">type</span></a> - Throw error if input is not required type</div>
 <div class="line"><a class="reference internal" href="assert/scalarType.html"><span class="doc">scalarType</span></a> - Throw error if input is not a scalar of a required data type</div>
@@ -178,7 +189,7 @@
 </div>
 </section>
 <section id="misc-size">
-<h2>Misc Size<a class="headerlink" href="#misc-size" title="Permalink to this headline"></a></h2>
+<h2>Misc Size<a class="headerlink" href="#misc-size" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/scalarObj.html"><span class="doc">scalarObj</span></a> - Throw error if method object is not scalar</div>
 <div class="line"><a class="reference internal" href="assert/sameSize.html"><span class="doc">sameSize</span></a> - Throw error if arrays are not the same size</div>
@@ -187,7 +198,7 @@
 </div>
 </section>
 <section id="numeric">
-<h2>Numeric<a class="headerlink" href="#numeric" title="Permalink to this headline"></a></h2>
+<h2>Numeric<a class="headerlink" href="#numeric" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/integers.html"><span class="doc">integers</span></a> - Throw error if numeric array does not consist entirely of integers</div>
 <div class="line"><a class="reference internal" href="assert/positiveIntegers.html"><span class="doc">positiveIntegers</span></a> - Throw error if numeric array does not consist entirely of positive integers</div>
@@ -197,7 +208,7 @@
 </div>
 </section>
 <section id="covariances">
-<h2>Covariances<a class="headerlink" href="#covariances" title="Permalink to this headline"></a></h2>
+<h2>Covariances<a class="headerlink" href="#covariances" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/symmetricMatrices.html"><span class="doc">symmetricMatrices</span></a> - Throw error if element along third dimension are not symmetric matrices</div>
 <div class="line"><a class="reference internal" href="assert/positiveDiagonals.html"><span class="doc">positiveDiagonals</span></a> - Throw error if diagonal elements of matrices along the third dimension are not positive</div>
@@ -207,7 +218,7 @@
 </div>
 </section>
 <section id="indices">
-<h2>Indices<a class="headerlink" href="#indices" title="Permalink to this headline"></a></h2>
+<h2>Indices<a class="headerlink" href="#indices" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/indices.html"><span class="doc">indices</span></a> - Throw error if input is neither logical indices nor linear indices</div>
 <div class="line"><a class="reference internal" href="assert/indexCollection.html"><span class="doc">indexCollection</span></a> - Throw error if input is not a collection of indices</div>
@@ -218,7 +229,7 @@
 </div>
 </section>
 <section id="misc">
-<h2>Misc<a class="headerlink" href="#misc" title="Permalink to this headline"></a></h2>
+<h2>Misc<a class="headerlink" href="#misc" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/fileExists.html"><span class="doc">fileExists</span></a> - Throw error if a file does not exist</div>
 <div class="line"><a class="reference internal" href="assert/nameValue.html"><span class="doc">nameValue</span></a> - Throw error if inputs are not Name,Value pairs</div>
@@ -228,7 +239,7 @@
 </div>
 </section>
 <section id="unit-tests">
-<h2>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this headline"></a></h2>
+<h2>Unit Tests<a class="headerlink" href="#unit-tests" title="Permalink to this heading"></a></h2>
 <div class="package-links line-block">
 <div class="line"><a class="reference internal" href="assert/tests.html"><span class="doc">tests</span></a> - Unit testing for the dash.assert subpackage</div>
 </div>
