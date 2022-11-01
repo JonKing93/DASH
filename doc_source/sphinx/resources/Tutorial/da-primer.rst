@@ -1,6 +1,6 @@
 Data Assimilation Primer
 ========================
-Before beginning the tutorial, it will be useful to have a basic understanding of paleoclimate data assimilation (DA). On this page, we'll provide an overview of DA and review some common tasks for these analyses. DASH is often used to implement Kalman filters, so we'll also briefly review this method. (You can find a description of other DA algorithms in DASH here: MISSING LINK).
+Before beginning the tutorial, it will be useful to have a basic understanding of paleoclimate data assimilation (DA). On this page, we'll provide an overview of DA and review some common tasks for these analyses. DASH is often used to implement Kalman filters, so we'll also briefly review this method. (We'll also describe DASH's DA algorithms in greater detail later in the tutorial).
 
 
 Overview
