@@ -52,19 +52,35 @@ classdef bayfox < PSM.Interface
     % Forward model parameters
     properties (SetAccess = private)
         species;    % The target species
+        d18Osw;     % A fixed d18Osw value in VSMOW
+        sst;        % A fixed SST value in Celsius
     end
 
     methods
-        function[obj] = bayfox(species)
+        function[obj] = bayfox(species, varargin)
             %% PSM.bayfox.bayfox  Creates a new BayFOX PSM object
             % ----------
             %   obj = <strong>PSM.bayfox</strong>(species)
-            %   Initializes a new BayFOX PSM object. Please see the
-            %   documentation of bayfox_forward.m in the BayFOX
-            %   repository for details about the inputs.
+            %   Initializes a new BayFOX PSM object for a particular
+            %   foraminiferal species. The PSM will require both SST and
+            %   d18Osw inputs from the state vector ensemble. 
+            % 
+            %   obj = <strong>PSM.bayfox</strong>(species, 'd18O', d18Osw)
+            %   Uses a fixed value of d18O when running the model. The PSM
+            %   will only require SST inputs from the state vector ensemble.
+            % 
+            %   obj = <strong>PSM.bayfox</strong>(species, 'SST', sst)
+            %   Uses a fixed SST value when running the model. The PSM will
+            %   only require d18Osw inputs from the state vector ensemble.
             % ----------
             %   Inputs:
-            %       species (string scalar): Name of the target species
+            %       species (string scalar): Name of the target species.
+            %           Please see the documentation of the "bayfox_forward.m" function
+            %           in the "bayfoxm" repository for valid species strings
+            %       d18Osw (numeric scalar): A fixed d18O_sea-water value (in VSMOW) to use
+            %           when running the PSM
+            %       sst (numeric scalar): A fixed SST value (in Celsius) to
+            %           use when running the PSM
             %
             %   Outputs:
             %       obj (scalar PSM.bayfox object): The new BayFOX PSM object
@@ -75,32 +91,53 @@ classdef bayfox < PSM.Interface
             header = "DASH:PSM:bayfox";
             dash.assert.strflag(species, 'species', header);
 
+            % Error check fixed values
+            [d18Osw, sst] = dash.parse.nameValue(varargin, ["d18O", "sst"], {[],[]}, 1, header);
+            if ~isempty(d18Osw) && ~isempty(sst)
+                id = sprintf('%s:allVariablesFixed', header);
+                error(id, 'You cannot use a fixed value for both d18Osw and SST. At least one variable must vary across the ensemble.');
+            elseif ~isempty(d18Osw)
+                dash.assert.scalarType(d18Osw, 'numeric', 'd18Osw', header);
+            elseif ~isempty(sst)
+                dash.assert.scalarType(sst, 'numeric', 'sst', header);
+            end
+
             % Record parameters
             obj.species = species;
+            obj.d18Osw = d18Osw;
+            obj.sst = sst;
         end
         function[output] = rows(obj, rows)
             %% PSM.bayfox.rows  Indicate the stateVector rows used to run a BayFOX PSM
             % ----------
             %   obj = <strong>obj.rows</strong>(rows)
             %   Indicate the state vector rows that should be used as input
-            %   for the BayFOX PSM when calling "PSM.estimate". The input
-            %   is a column vector with two elements. The first element is
+            %   for the BayFOX PSM when calling "PSM.estimate". By default,
+            %   the input should be a column vector with two element. The first element is
             %   the row of the SST input, and the second element is the row
             %   of the d18O (seawater) input.
+            %
+            %   If you provided a fixed value of d18Osw, then the input
+            %   should be scalar and should indicate the row of the SST
+            %   input. Similarly, if you provided a fixed SST value, then
+            %   the input should be scalar and should indicate the row of
+            %   the d18Osw input.
             %
             %   obj = <strong>obj.rows</strong>(memberRows)
             %   Indicate which state vector rows to use for each ensemble member. This 
             %   syntax allows you to use different state vector rows for different
-            %   ensemble members. The input is a matrix with 2 rows and
-            %   one column per ensemble member. The first row is for the
-            %   SST inputs, and the second row is the d18O (seawater) inputs.
+            %   ensemble members. The input is a matrix with either 1 row (when there
+            %   is fixed d18O or SST), or 2 rows  (when neither variable is fixed)
+            %   and one column per ensemble member. If the matrix has two
+            %   rows, the the first row indicates SST inputs, and the second
+            %   row is the d18O (seawater) inputs.
             %
             %   obj = <strong>obj.rows</strong>(evolvingRows)
             %   Indicate which state vector row to use for different  ensembles in an 
             %   evolving set. This syntax allows you to use different state vector rows
             %   for different ensembles in an evolving set. The input should be a 3D 
-            %   array of either size [2 x 1 x nEvolving] or of size 
-            %   [2 x nMembers x nEvolving]. If the second dimension has a size of 1,
+            %   array of either size [1|2 x 1 x nEvolving] or of size 
+            %   [1|2 x nMembers x nEvolving]. If the second dimension has a size of 1,
             %   uses the same row for all the ensemble members in a particular evolving
             %   ensemble. If the second dimension has a size of nMembers, allows you to
             %   use a different row for each ensemble member in each evolving ensemble.
@@ -112,16 +149,20 @@ classdef bayfox < PSM.Interface
             %   Deletes any currently specified rows from the BayFOX PSM object.
             % ----------
             %   Inputs:
-            %       rows (column vector, linear indices [2]): The state vector rows
-            %           required to run the PSM. A column vector with two elements. The
+            %       rows (column vector, linear indices [1|2]): The state vector rows
+            %           required to run the PSM. If either d18Osw or SST is fixed,
+            %           then rows is a scalar and indicates the state vector row 
+            %           holding the unfixed input. If neither variable is fixed, 
+            %           then rows is a column vector with two elements. The
             %           first element is the row of the SST inputs and the second
             %           element is the row of the d18O_seawater inputs.
-            %       memberRows (matrix, linear indices [2 x nMembers]): Indicates
+            %       memberRows (matrix, linear indices [1|2 x nMembers]): Indicates
             %           which state vector rows to use for each ensemble member. Should
-            %           be a matrix with two rows and one column per ensemble member.
-            %           The first row is the SST inputs, and the second row is the
+            %           be a matrix with one (fixed d18O or SST) or two rows (neither variable fixed)
+            %           and one column per ensemble member. If using two rows,  
+            %           the first row is the SST inputs, and the second row is the
             %           d18O_seawater inputs.
-            %       evolvingRows (3D array, linear indices [2 x 1|nMembers x nEvolving]):
+            %       evolvingRows (3D array, linear indices [1|2 x 1|nMembers x nEvolving]):
             %           Indicates which state vector row to use for different ensembles
             %           in an evolving set. Should be a 3D array, and the number of
             %           elements along the third dimension should match the number of
@@ -134,7 +175,7 @@ classdef bayfox < PSM.Interface
             %
             %   Outputs:
             %       obj (scalar bayfox object): The BayFOX PSM with updated rows
-            %       rows (linear indices, [2 x 1|nMembers x 1|nEvolving]): The current
+            %       rows (linear indices, [1|2 x 1|nMembers x 1|nEvolving]): The current
             %           rows for the BayFOX PSM.
             %
             % <a href="matlab:dash.doc('PSM.bayfox.rows')">Documentation Page</a>
@@ -142,7 +183,12 @@ classdef bayfox < PSM.Interface
             % Parse the rows
             inputs = {};
             if exist('rows', 'var')
-                inputs = {rows, 2};
+                if isempty(obj.d18Osw) && isempty(obj.sst)
+                    nRows = 2;
+                else
+                    nRows = 1;
+                end
+                inputs = {rows, nRows};
             end
             output = obj.parseRows(inputs{:});
         end
@@ -155,8 +201,8 @@ classdef bayfox < PSM.Interface
             %   and optionally estimates uncertainties for the estimated values.
             % ----------
             %   Inputs:
-            %       X (numeric array [2 x nMembers x nEvolving]):
-            %           Sea surface temperatures and d18O_seawater values
+            %       X (numeric array [1|2 x nMembers x nEvolving]):
+            %           Sea surface temperatures and/or d18O_seawater values
             %           used as inputs to the BayFOX PSM.
             %
             %   Outputs:
@@ -169,8 +215,16 @@ classdef bayfox < PSM.Interface
             % <a href="matlab:dash.doc('PSM.bayfox.estimate')">Documentation Page</a>
 
             % Get the climate inputs
-            SST = X(1,:,:);
-            d18O_sw = X(2,:,:);
+            if isempty(obj.d18Osw) && isempty(obj.sst)
+                SST = X(1,:,:);
+                d18O_sw = X(2,:,:);
+            elseif ~isempty(obj.d18Osw)
+                SST = X;
+                d18O_sw = obj.d18Osw;
+            else
+                SST = obj.sst;
+                d18O_sw = X;
+            end
 
             % Run the forward model
             d18Oc_posterior = bayfox_forward(SST, d18O_sw, obj.species);
