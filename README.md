@@ -54,7 +54,7 @@ To get started with the DASH toolbox, enter:
 ```
 in the MATLAB console. This will open the DASH documentation set, which includes resources for starting with DASH. In particular, we recommend checking out the DASH tutorial. The tutorial begins with an overview of the DASH toolbox, and then provides step-by-step instructions and examples for using the components of DASH. We recommend budgeting several hours to complete the tutorial.
 
-If you have not yet installed the toolbox, you can find the DASH documentation online here: [DASH Documentation](#https://jonking93.github.io/DASH/welcome.html)
+If you have not yet installed the toolbox, you can find the DASH documentation online here: [DASH Documentation](https://jonking93.github.io/DASH/welcome.html)
 
 And the tutorial is available here: [DASH Tutorial](https://jonking93.github.io/DASH/Tutorial/welcome.html)
 
