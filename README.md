@@ -13,7 +13,7 @@ This README includes instructions for:
 
 * [Installing DASH](#install-dash),
 * [Getting started with the toolbox](#getting-started)
-* [Providing feedback and contributions](#feedback-contributions), and
+* [Providing feedback and contributions](#feedback--contributions), and
 * [A summary of repository branches](#branches)
 
 
