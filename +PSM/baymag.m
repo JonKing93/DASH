@@ -46,8 +46,8 @@ classdef baymag < PSM.Interface
         hasMemory = false;                                                  % No memory of previous time steps
         
         repository = "jesstierney/BAYMAG";                                  % Github repository holding the BayMAG PSM
-        commit = "358de1545d47cbde328fa543c66ab50a20680b00";                % Commit hash of the supported version of the PS<
-        commitComment = "Most recent as of June 28, 2022. Code updated Jan 22, 2020";               % Details about the supported commit
+        commit = "635490f13b5de3d44d32274a689b77c101d2aa4e";                % Commit hash of the supported version of the PS<
+        commitComment = "Version 1.1";               % Details about the supported commit
     end
 
     % Forward model parameters
