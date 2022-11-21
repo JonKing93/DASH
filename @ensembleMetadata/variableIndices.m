@@ -51,7 +51,7 @@ try
     
     % Check for repeats
     if ~allowRepeats
-        dash.assert.uniqueSet(variables, 'Variable', header);
+        dash.assert.uniqueSet(v, 'Variable', header);
     end
 
 % Minimize error stack
