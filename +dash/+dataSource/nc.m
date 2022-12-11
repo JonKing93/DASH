@@ -12,6 +12,10 @@ classdef nc < dash.dataSource.hdf
     %   setVariable - Ensure the variable exists in the NetCDF file
     %
     % <a href="matlab:dash.doc('dash.dataSource.nc')">Documentation Page</a>
+
+    properties (SetAccess = private)
+        hasdims = true;  % Whether the variable has dimensions
+    end
     
     methods
         function[obj] = nc(source, var)
@@ -58,12 +62,17 @@ classdef nc < dash.dataSource.hdf
                            'is not a valid NetCDF file.'], obj.source);
             end
             
-            % Check the variable is valid
+            % Check the variable is valid. Get its index
             fileVars = string({info.Variables.Name});
             obj = obj.setVariable(var, fileVars);
-            
-            % Get data type and size
             [~,v] = ismember(obj.var, fileVars);
+
+            % Note if the variable has no dimensions
+            if isempty(info.Variables(v).Dimensions)
+                obj.hasdims = false;
+            end
+
+            % Get the data type and size
             obj.dataType = info.Variables(v).Datatype;
             obj.size = info.Variables(v).Size;
         end
@@ -83,6 +92,12 @@ classdef nc < dash.dataSource.hdf
         %       X (array): The loaded data
         %
         % <a href="matlab:dash.doc('dash.dataSource.nc.loadStrided')">Documentation Page</a>
+
+            % Load dimensionless scalars directly to avoid start/count/stride bugs in ncread 
+            if ~obj.hasdims
+                X = ncread(obj.source, obj.var);
+                return
+            end
             
             % Add any missing indices for trailing singletons
             nMissing = numel(obj.size) - numel(indices);
