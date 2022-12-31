@@ -51,7 +51,7 @@ dash.assert.defined(siteDepths, 4, name, header);
 % Check cutoff distance
 name = 'localization distance';
 dash.assert.scalarType(distance, 'numeric', name, header);
-dash.assert.defined(distance, 1, name, header);
+dash.assert.defined(distance, 3, name, header);
 if distance<=0
     invalidDistanceError(header);
 end
@@ -65,6 +65,15 @@ else
     if scale<=0 || scale>0.5
         invalidScaleError(header);
     end
+end
+
+% Infinite distance is no localization
+if isinf(distance)
+    nState = length(stateDepths);
+    nSite = length(siteDepths);
+    wloc = ones(nState, nSite);
+    yloc = ones(nSite, nSite);
+    return
 end
 
 % Begin with column vectors to ensure correct sizing

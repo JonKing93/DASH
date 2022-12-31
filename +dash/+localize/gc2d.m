@@ -56,7 +56,7 @@ dash.assert.defined(siteCoordinates, 4, name, header);
 % Error check cutoff radius
 name = 'localization radius (R)';
 dash.assert.scalarType(R, 'numeric', name, header);
-dash.assert.defined(R, 1, name, header);
+dash.assert.defined(R, 3, name, header);
 if R<=0
     invalidRadiusError(header);
 end
@@ -70,6 +70,15 @@ else
     if scale<=0 || scale>0.5
         invalidScaleError(header);
     end
+end
+
+% Infinite radius is no localization
+if isinf(R)
+    nState = size(stateCoordinates, 1);
+    nSite = size(siteCoordinates, 1);
+    wloc = ones(nState, nSite);
+    yloc = ones(nSite, nSite);
+    return
 end
 
 % Compute distances between 1. the sites and state vector elements, and
