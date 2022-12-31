@@ -37,7 +37,7 @@ end
 
 % Get the length scale and localization radius
 c = scale * R;
-Rloc = 2*c;  % Note that, depending on scale, Rloc <= R -- they are not strictly equal
+Rloc = 2*c;  % Note that Rloc <= R -- they are not strictly equal
 
 % Find points inside and outside the radius and length scale
 outsideRadius = distances > Rloc;
@@ -50,10 +50,8 @@ weights = ones( size(distances) );
 % Apply the polynomial to the distances
 X = distances / c;
 weights(outsideRadius) = 0;
+weights(inBetween) = polyval([1/12,-.5,.625,5/3,-5,4], X(inBetween)) - 2./(3*X(inBetween));
 weights(insideScale) = polyval([-.25,.5,.625,-5/3,0,1], X(insideScale));
-
-tapered = X(inBetween) - 2 ./ (3 * X(inBetween));
-weights(inBetween) = polyval([1/12,-.5,.625,5/3,-5,4], tapered);
 
 % Weights should never be negative. Remove near-zero negative weights
 % resulting from rounding errors.
