@@ -14,19 +14,45 @@ DASH requires Matlab 2020b or higher, so you will need to install a recent versi
 
 Installing DASH
 ---------------
-To install the latest version of DASH in your Matlab environment:
+There are several different ways to install DASH:
+
+1. Using Github
+2. Using MATLAB File Exchange, or
+3. Via MATLAB's Add-On explorer
+
+Use whichever method you find easiest.
+
+Github
+++++++
 
 1. Navigate to the `latest DASH release`_.
-2. From the "Assets" section, download the ``DASH-<version>.mltbx`` file.
+2. Under the release assets, download the file: ``DASH-<version>.mltbx``
 3. Open the downloaded file. This should automatically install the toolbox in your Matlab environment.
-4. That's it, you're done! You can optionally verify your installation by entering::
 
-    >> dash.version
 
-   in the Matlab console. If the toolbox installed successfully, this will display the current DASH version.
+MATLAB File Exchange
+++++++++++++++++++++
 
+1. Navigate to the submission for the toolbox: `DASH on FileExchange <https://www.mathworks.com/matlabcentral/fileexchange/120453-dash>`_
+2. Click on the ``Download`` button in the top right corner and select the ``Toolbox`` option. This should download a file with the name ``DASH-<version>.mltbx``.
+3. Open the downloaded file. This should automatically install the DASH toolbox in your MATLAB environment.
+
+
+MATLAB Add-On Explorer
+++++++++++++++++++++++
+
+1. Click on the ``Home`` tab in the MATLAB editor,
+2. Click on the ``Add-Ons`` or ``Get Add-Ons`` button
+3. Search for ``DASH`` and click on the entry for the toolbox (Its tagline is "A Matlab toolbox for paleoclimate data assimilation")
+4. Click on the ``Add`` button in the top-right corner and follow the instructions.
 
 .. _latest DASH release: https://github.com/JonKing93/DASH/releases/latest
+
+
+Verify Installation
+-------------------
+You can verify your installation by entering ``dash.version`` in the MATLAB console. If the toolbox installed correctly, then this will display the current version of the toolbox in the console.
+
 
 
 Updating DASH
