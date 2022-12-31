@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -156,15 +157,15 @@
 <pre><div class="syntax line-block" id="psm-baymag-rows-syntax1">
 <div class="line"><a class="reference internal" href="#psm-baymag-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(<a class="reference internal" href="#psm-baymag-rows-inputs-row"><span class="std std-ref">row</span></a>)</div>
 </div>
-</pre><p>Indicate the state vector row that should be used as the SST input for the BayMAG PSM when calling the “PSM.estimate” command. The input is a scalar. Uses the same state vector row for each ensemble member and each ensemble in an evolving set.</p>
+</pre><p>Indicate the state vector row that should be used as the SST input for the BayMAG PSM when calling the “PSM.estimate” command. The input is a column vector with one element per climate variable that varies across the ensemble. The order of rows should be SST, SSS, Omega, and pH, excluding any variables that are fixed. Uses the same state vector row for each ensemble member and each ensemble in an evolving set.</p>
 <pre><div class="syntax line-block" id="psm-baymag-rows-syntax2">
 <div class="line"><a class="reference internal" href="#psm-baymag-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(<a class="reference internal" href="#psm-baymag-rows-inputs-memberrows"><span class="std std-ref">memberRows</span></a>)</div>
 </div>
-</pre><p>Indicate which state vector row to use for each ensemble member. This syntax allows you to use different state vector rows for different ensemble members. The input is a row vector with one element per ensemble member.</p>
+</pre><p>Indicate which state vector rows to use for each ensemble member. This syntax allows you to use different state vector rows for different ensemble members. The input is a matrix with one column per ensemble member, and one row per climate variable that varies across the ensemble. The order of rows should be SST, SSS, Omega, and pH, excluding any variables that are fixed.</p>
 <pre><div class="syntax line-block" id="psm-baymag-rows-syntax3">
 <div class="line"><a class="reference internal" href="#psm-baymag-rows-outputs-obj"><span class="std std-ref">obj</span></a> = obj.rows(<a class="reference internal" href="#psm-baymag-rows-inputs-evolvingrows"><span class="std std-ref">evolvingRows</span></a>)</div>
 </div>
-</pre><p>Indicate which state vector row to use for different  ensembles in an evolving set. This syntax allows you to use different state vector rows for different ensembles in an evolving set. The input should be a 3D array of either size [1 x 1 x nEvolving] or of size [1 x nMembers x nEvolving]. If the second dimension has a size of 1, uses the same row for all the ensemble members in a particular evolving ensemble. If the second dimension has a size of nMembers, allows you to use a different row for each ensemble member in each evolving ensemble.</p>
+</pre><p>Indicate which state vector row to use for different  ensembles in an evolving set. This syntax allows you to use different state vector rows for different ensembles in an evolving set. The input should be a 3D array of either size [1-4 x 1 x nEvolving] or of size [1-4 x nMembers x nEvolving]. If the second dimension has a size of 1, uses the same row for all the ensemble members in a particular evolving ensemble. If the second dimension has a size of nMembers, allows you to use a different row for each ensemble member in each evolving ensemble.</p>
 <pre><div class="syntax line-block" id="psm-baymag-rows-syntax4">
 <div class="line"><a class="reference internal" href="#psm-baymag-rows-outputs-rows"><span class="std std-ref">rows</span></a> = obj.rows</div>
 </div>
@@ -180,21 +181,21 @@
 <section class="collapse-examples" id="row">
 <span id="psm-baymag-rows-inputs-row"></span><h3>row<a class="headerlink" href="#row" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>row</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>scalar</em> <em>linear</em> <em>index</em></div>
-<div class="line">The state vector row that holds the SST input required to run the BayMAG PSM. Uses the same row for all ensemble members and ensembles in an evolving set.</div>
+<div class="line"><em>column</em> <em>vector</em>, <em>linear</em> <em>indices</em> [1-4]</div>
+<div class="line">The state vector row that holds the climate variables required to run the BayMAG PSM. Uses the same row for all ensemble members and ensembles in an evolving set. The order of rows should be SST, SSS, omega, and pH, excluding any variables that are fixed.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="memberrows">
 <span id="psm-baymag-rows-inputs-memberrows"></span><h3>memberRows<a class="headerlink" href="#memberrows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>memberRows</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>row</em> <em>vector</em>, <em>linear</em> <em>indices</em> [1 <em>x</em> <em>nMembers</em>]</div>
-<div class="line">Indicates which state vector row to use for each ensemble member. Should be a row vector with one element per ensemble member. Uses the same rows for the ensemble members in different evolving ensembles.</div>
+<div class="line"><em>matrix</em>, <em>linear</em> <em>indices</em> [1-4 <em>x</em> <em>nMembers</em>]</div>
+<div class="line">Indicates which state vector row to use for each ensemble member. Should be a matrix with one column per ensemble member, and one row per variable. The order of rows should be SST, SSS, Omega, and pH, excluding any variables that are fixed. Uses the same rows for the ensemble members in different evolving ensembles.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="evolvingrows">
 <span id="psm-baymag-rows-inputs-evolvingrows"></span><h3>evolvingRows<a class="headerlink" href="#evolvingrows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>evolvingRows</strong></label><div class="content"><div class="line-block">
-<div class="line">3*D* <em>array</em>, <em>linear</em> <em>indices</em> [1 <em>x</em> 1|*nMembers* <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">3*D* <em>array</em>, <em>linear</em> <em>indices</em> [1-4 <em>x</em> 1|*nMembers* <em>x</em> <em>nEvolving</em>]</div>
 <div class="line">Indicates which state vector row to use for different ensembles in an evolving set. Should be a 3D array, and the number of elements along the third dimension should match the number of ensembles in the evolving set. If the second dimension has a length of 1, uses the same row for all the ensemble members in each evolving ensemble. If the second dimension has a length equal to the number of ensemble members, allows you to indicate which state vector row to use for each ensemble member in each evolving ensemble.</div>
 </div>
 </div></section></section>
@@ -212,7 +213,7 @@
 <section class="collapse-examples" id="rows">
 <span id="psm-baymag-rows-outputs-rows"></span><h3>rows<a class="headerlink" href="#rows" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="outputs2" checked="checked"><label for="outputs2"><strong>rows</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>linear</em> <em>indices</em>, [1 <em>x</em> 1|*nMembers* <em>x</em> 1|*nEvolving*]</div>
+<div class="line"><em>linear</em> <em>indices</em>, [1-4 <em>x</em> 1|*nMembers* <em>x</em> 1|*nEvolving*]</div>
 <div class="line">The current rows for the BayMAG PSM.</div>
 </div>
 </div></section></section>

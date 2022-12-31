@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -71,6 +72,8 @@
 <li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
 <li class="toctree-l8"><a class="reference internal" href="#species">species</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#d18osw">d18Osw</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#sst">sst</a></li>
 </ul>
 </li>
 <li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
@@ -141,6 +144,8 @@
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
 <div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-syntax1"><span class="std std-ref">obj = PSM.bayfox(species)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-syntax2"><span class="std std-ref">obj = PSM.bayfox(species, ‘d18O’, d18Osw)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-syntax3"><span class="std std-ref">obj = PSM.bayfox(species, ‘SST’, sst)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
@@ -149,7 +154,15 @@
 <pre><div class="syntax line-block" id="psm-bayfox-bayfox-syntax1">
 <div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.bayfox(<a class="reference internal" href="#psm-bayfox-bayfox-inputs-species"><span class="std std-ref">species</span></a>)</div>
 </div>
-</pre><p>Initializes a new BayFOX PSM object. Please see the documentation of bayfox_forward.m in the BayFOX repository for details about the inputs.</p>
+</pre><p>Initializes a new BayFOX PSM object for a particular foraminiferal species. The PSM will require both SST and d18Osw inputs from the state vector ensemble.</p>
+<pre><div class="syntax line-block" id="psm-bayfox-bayfox-syntax2">
+<div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.bayfox(<a class="reference internal" href="#psm-bayfox-bayfox-inputs-species"><span class="std std-ref">species</span></a>, ‘d18O’, <a class="reference internal" href="#psm-bayfox-bayfox-inputs-d18osw"><span class="std std-ref">d18Osw</span></a>)</div>
+</div>
+</pre><p>Uses a fixed value of d18O when running the model. The PSM will only require SST inputs from the state vector ensemble.</p>
+<pre><div class="syntax line-block" id="psm-bayfox-bayfox-syntax3">
+<div class="line"><a class="reference internal" href="#psm-bayfox-bayfox-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.bayfox(<a class="reference internal" href="#psm-bayfox-bayfox-inputs-species"><span class="std std-ref">species</span></a>, ‘SST’, <a class="reference internal" href="#psm-bayfox-bayfox-inputs-sst"><span class="std std-ref">sst</span></a>)</div>
+</div>
+</pre><p>Uses a fixed SST value when running the model. The PSM will only require d18Osw inputs from the state vector ensemble.</p>
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
@@ -158,7 +171,21 @@
 <span id="psm-bayfox-bayfox-inputs-species"></span><h3>species<a class="headerlink" href="#species" title="Permalink to this heading"></a></h3>
 <section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>species</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
-<div class="line">Name of the target species</div>
+<div class="line">Name of the target species. Please see the documentation of the “bayfox_forward.m” function in the “bayfoxm” repository for valid species strings</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="d18osw">
+<span id="psm-bayfox-bayfox-inputs-d18osw"></span><h3>d18Osw<a class="headerlink" href="#d18osw" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>d18Osw</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">A fixed d18O_sea-water value (in VSMOW) to use when running the PSM</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sst">
+<span id="psm-bayfox-bayfox-inputs-sst"></span><h3>sst<a class="headerlink" href="#sst" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>sst</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">A fixed SST value (in Celsius) to use when running the PSM</div>
 </div>
 </div></section></section>
 </section>
