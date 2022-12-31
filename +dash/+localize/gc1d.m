@@ -21,7 +21,7 @@ function[wloc, yloc] = gc1d(stateDepths, siteDepths, distance, scale)
 %       siteDepths (numeric vector [nSite]): The depth/height/Z coordinate
 %           of the proxy sites. Should use the same units as stateDepths.
 %       distance (positive numeric scalar): The localization cutoff
-%           distance.Should use the same units as stateDepths
+%           distance. Should use the same units as stateDepths
 %       scale (numeric scalar): The length scale to use for the
 %           Gaspari-Cohn polynomial. Must be on the interval
 %           0 < scale <= 0.5.  By default, uses a length scale of 0.5,

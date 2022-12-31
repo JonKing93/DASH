@@ -12,8 +12,8 @@ Note that you don't need to run these parsers directly. Instead, use the documen
 3. sphinx
 Resources needed for sphinx (v4.2.0) to build the documentation pages. This includes
 
-    A. config
-    The conf.py configuration file and the top-level index.rst
+    A. resources
+    Includes all assets required by sphinx that are not the reference reST files. This includes the conf.py configuration file, the tutorial, and any other non-reference rst files for the documentation.
 
     B. source
     The reST files built by the parsers.
