@@ -7,7 +7,7 @@
     <param.summary>A Matlab toolbox for paleoclimate data assimilation.</param.summary>
     <param.description />
     <param.screenshot />
-    <param.version>4.0.0</param.version>
+    <param.version>4.1.0</param.version>
     <param.output>${PROJECT_ROOT}\DASH.mltbx</param.output>
     <param.products.name />
     <param.products.id />
@@ -125,6 +125,7 @@ todo.md</param.exclude.filters>
       <file>${PROJECT_ROOT}\@stateVector</file>
       <file>${PROJECT_ROOT}\Contents.m</file>
       <file>${PROJECT_ROOT}\doc</file>
+      <file>${PROJECT_ROOT}\LICENSE.md</file>
       <file>${PROJECT_ROOT}\README.md</file>
     </fileset.rootfiles>
     <fileset.depfun.included />
