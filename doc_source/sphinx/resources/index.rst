@@ -12,6 +12,7 @@ If you are not redirected, please click on the "Next" button at the bottom of th
     Install DASH    <installation>
     Tutorial        <Tutorial/welcome>
     Contact         <contact>
+    License         <license>
 
 
 .. toctree::
