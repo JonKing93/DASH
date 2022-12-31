@@ -31,6 +31,7 @@ obj.variables_(v,:) = [];
 obj.lengths(v,:) = [];
 obj.stateDimensions(v,:) = [];
 obj.stateSize(v,:) = [];
+obj.stateType(v,:) = [];
 obj.state(v,:) = [];
 
 % Remove the coupling set indices
