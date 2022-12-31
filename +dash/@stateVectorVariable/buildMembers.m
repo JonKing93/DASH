@@ -228,7 +228,9 @@ for m = 1:nMembers
     %% Process ensemble member
 
     % Separate means from sequences
-    Xm = reshape(Xm, parameters.rawSize);
+    if ~(isscalar(Xm) && isequal(parameters.rawSize,1))
+        Xm = reshape(Xm, parameters.rawSize);
+    end
 
     % *** Notes on means ***
     % 1. Take includenan means/totals before omitnan (if you took omitnan
