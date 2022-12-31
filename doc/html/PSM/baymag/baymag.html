@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -72,12 +73,13 @@
 <li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
 <li class="toctree-l8"><a class="reference internal" href="#age">age</a></li>
-<li class="toctree-l8"><a class="reference internal" href="#omega">omega</a></li>
-<li class="toctree-l8"><a class="reference internal" href="#salinity">salinity</a></li>
-<li class="toctree-l8"><a class="reference internal" href="#ph">pH</a></li>
 <li class="toctree-l8"><a class="reference internal" href="#clean">clean</a></li>
 <li class="toctree-l8"><a class="reference internal" href="#species">species</a></li>
 <li class="toctree-l8"><a class="reference internal" href="#options">options</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#ph">pH</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#omega">omega</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#salinity">salinity</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#sst">sst</a></li>
 </ul>
 </li>
 <li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
@@ -146,21 +148,25 @@
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
-<div class="line"><a class="reference internal" href="#psm-baymag-baymag-syntax1"><span class="std std-ref">obj = PSM.baymag(age, omega, salinity, pH, clean, species)</span></a></div>
-<div class="line"><a class="reference internal" href="#psm-baymag-baymag-syntax2"><span class="std std-ref">obj = PSM.baymag(…, options)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-baymag-baymag-syntax1"><span class="std std-ref">obj = PSM.baymag(age, clean, species)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-baymag-baymag-syntax2"><span class="std std-ref">obj = PSM.baymag(…, ‘options’, options)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-baymag-baymag-syntax1">
-<div class="line"><a class="reference internal" href="#psm-baymag-baymag-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.baymag(<a class="reference internal" href="#psm-baymag-baymag-inputs-age"><span class="std std-ref">age</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-omega"><span class="std std-ref">omega</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-salinity"><span class="std std-ref">salinity</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-ph"><span class="std std-ref">pH</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-clean"><span class="std std-ref">clean</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-species"><span class="std std-ref">species</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-baymag-baymag-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.baymag(<a class="reference internal" href="#psm-baymag-baymag-inputs-age"><span class="std std-ref">age</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-clean"><span class="std std-ref">clean</span></a>, <a class="reference internal" href="#psm-baymag-baymag-inputs-species"><span class="std std-ref">species</span></a>)</div>
 </div>
-</pre><p>Initializes a new BayMAG PSM object. Please see the documentation of baymag_forward_ln.m in the BayMAG repository for details about the inputs.</p>
+</pre><p>Initializes a new BayMAG PSM object. The PSM will require SST, SSS, Omega, and pH inputs from the ensemble. Please see the documentation of baymag_forward_ln.m in the BayMAG repository for details about the inputs.</p>
 <pre><div class="syntax line-block" id="psm-baymag-baymag-syntax2">
-<div class="line"><a class="reference internal" href="#psm-baymag-baymag-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.baymag(…, <a class="reference internal" href="#psm-baymag-baymag-inputs-options"><span class="std std-ref">options</span></a>)</div>
+<div class="line"><a class="reference internal" href="#psm-baymag-baymag-outputs-obj"><span class="std std-ref">obj</span></a> = PSM.baymag(…, ‘options’, <a class="reference internal" href="#psm-baymag-baymag-inputs-options"><span class="std std-ref">options</span></a>)</div>
 </div>
-</pre><p>Provide optional arguments to the BayMAG forward model.</p>
+</pre><p>Provide optional arguments to the BayMAG forward model. See the documentation of baymag_forward_ln.m in the BayMAG repository for details.</p>
+<p>obj = PSM.baymag(…, ‘pH’, pH) Uses a fixed value for pH, rather than values from the ensemble.</p>
+<p>obj = PSM.baymag(…, ‘omega’, omega) Uses a fixed value for Omega, rather than values from the ensemble.</p>
+<p>obj = PSM.baymag(…, ‘salinity’, salinity) Uses a fixed value for sea-surface salinity, rather than values from the ensemble.</p>
+<p>obj = PSM.baymag(…, ‘sst’, sst) Uses a fixed value for sea-surface temperatures, rather than values from the ensemble.</p>
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
@@ -172,46 +178,53 @@
 <div class="line">Age of the observation</div>
 </div>
 </div></section></section>
-<section class="collapse-examples" id="omega">
-<span id="psm-baymag-baymag-inputs-omega"></span><h3>omega<a class="headerlink" href="#omega" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>omega</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>numeric</em> <em>scalar</em></div>
-<div class="line">Bottom water saturation state</div>
-</div>
-</div></section></section>
-<section class="collapse-examples" id="salinity">
-<span id="psm-baymag-baymag-inputs-salinity"></span><h3>salinity<a class="headerlink" href="#salinity" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>salinity</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>numeric</em> <em>scalar</em></div>
-<div class="line">Salinity (psu)</div>
-</div>
-</div></section></section>
-<section class="collapse-examples" id="ph">
-<span id="psm-baymag-baymag-inputs-ph"></span><h3>pH<a class="headerlink" href="#ph" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>pH</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>numeric</em> <em>scalar</em></div>
-<div class="line">pH (total scale)</div>
-</div>
-</div></section></section>
 <section class="collapse-examples" id="clean">
 <span id="psm-baymag-baymag-inputs-clean"></span><h3>clean<a class="headerlink" href="#clean" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>clean</strong></label><div class="content"><div class="line-block">
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs2" checked="checked"><label for="inputs2"><strong>clean</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>numeric</em> <em>scalar</em></div>
 <div class="line">Describes the cleaning technique</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="species">
 <span id="psm-baymag-baymag-inputs-species"></span><h3>species<a class="headerlink" href="#species" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>species</strong></label><div class="content"><div class="line-block">
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs3" checked="checked"><label for="inputs3"><strong>species</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>string</em> <em>scalar</em></div>
-<div class="line">Name of the target species</div>
+<div class="line">Name of the target species.</div>
 </div>
 </div></section></section>
 <section class="collapse-examples" id="options">
 <span id="psm-baymag-baymag-inputs-options"></span><h3>options<a class="headerlink" href="#options" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>options</strong></label><div class="content"><div class="line-block">
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs4" checked="checked"><label for="inputs4"><strong>options</strong></label><div class="content"><div class="line-block">
 <div class="line"><em>cell</em> <em>vector</em></div>
 <div class="line">Optional arguments for the BayMAG PSM</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="ph">
+<span id="psm-baymag-baymag-inputs-ph"></span><h3>pH<a class="headerlink" href="#ph" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs5" checked="checked"><label for="inputs5"><strong>pH</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">pH (total scale)</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="omega">
+<span id="psm-baymag-baymag-inputs-omega"></span><h3>omega<a class="headerlink" href="#omega" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs6" checked="checked"><label for="inputs6"><strong>omega</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Bottom water saturation state</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="salinity">
+<span id="psm-baymag-baymag-inputs-salinity"></span><h3>salinity<a class="headerlink" href="#salinity" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs7" checked="checked"><label for="inputs7"><strong>salinity</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Sea surface salinity (in psu)</div>
+</div>
+</div></section></section>
+<section class="collapse-examples" id="sst">
+<span id="psm-baymag-baymag-inputs-sst"></span><h3>sst<a class="headerlink" href="#sst" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs8" checked="checked"><label for="inputs8"><strong>sst</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>scalar</em></div>
+<div class="line">Sea surface temperature (Celsius)</div>
 </div>
 </div></section></section>
 </section>

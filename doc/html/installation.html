@@ -46,12 +46,19 @@
 <li class="toctree-l1"><a class="reference internal" href="welcome.html">Welcome!</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Install DASH</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-dash">Installing DASH</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installing-dash">Installing DASH</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#github">Github</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#matlab-file-exchange">MATLAB File Exchange</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#matlab-add-on-explorer">MATLAB Add-On Explorer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#verify-installation">Verify Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#updating-dash">Updating DASH</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Tutorial/welcome.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
@@ -104,18 +111,42 @@
 </section>
 <section id="installing-dash">
 <h2>Installing DASH<a class="headerlink" href="#installing-dash" title="Permalink to this heading"></a></h2>
-<p>To install the latest version of DASH in your Matlab environment:</p>
-<ol class="arabic">
-<li><p>Navigate to the <a class="reference external" href="https://github.com/JonKing93/DASH/releases/latest">latest DASH release</a>.</p></li>
-<li><p>From the “Assets” section, download the <code class="docutils literal notranslate"><span class="pre">DASH-&lt;version&gt;.mltbx</span></code> file.</p></li>
-<li><p>Open the downloaded file. This should automatically install the toolbox in your Matlab environment.</p></li>
-<li><p>That’s it, you’re done! You can optionally verify your installation by entering:</p>
-<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">dash</span><span class="p">.</span><span class="n">version</span><span class="w"></span>
-</pre></div>
-</div>
-<p>in the Matlab console. If the toolbox installed successfully, this will display the current DASH version.</p>
-</li>
+<p>There are several different ways to install DASH:</p>
+<ol class="arabic simple">
+<li><p>Using Github</p></li>
+<li><p>Using MATLAB File Exchange, or</p></li>
+<li><p>Via MATLAB’s Add-On explorer</p></li>
 </ol>
+<p>Use whichever method you find easiest.</p>
+<section id="github">
+<h3>Github<a class="headerlink" href="#github" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Navigate to the <a class="reference external" href="https://github.com/JonKing93/DASH/releases/latest">latest DASH release</a>.</p></li>
+<li><p>Under the release assets, download the file: <code class="docutils literal notranslate"><span class="pre">DASH-&lt;version&gt;.mltbx</span></code></p></li>
+<li><p>Open the downloaded file. This should automatically install the toolbox in your Matlab environment.</p></li>
+</ol>
+</section>
+<section id="matlab-file-exchange">
+<h3>MATLAB File Exchange<a class="headerlink" href="#matlab-file-exchange" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Navigate to the submission for the toolbox: <a class="reference external" href="https://www.mathworks.com/matlabcentral/fileexchange/120453-dash">DASH on FileExchange</a></p></li>
+<li><p>Click on the <code class="docutils literal notranslate"><span class="pre">Download</span></code> button in the top right corner and select the <code class="docutils literal notranslate"><span class="pre">Toolbox</span></code> option. This should download a file with the name <code class="docutils literal notranslate"><span class="pre">DASH-&lt;version&gt;.mltbx</span></code>.</p></li>
+<li><p>Open the downloaded file. This should automatically install the DASH toolbox in your MATLAB environment.</p></li>
+</ol>
+</section>
+<section id="matlab-add-on-explorer">
+<h3>MATLAB Add-On Explorer<a class="headerlink" href="#matlab-add-on-explorer" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Click on the <code class="docutils literal notranslate"><span class="pre">Home</span></code> tab in the MATLAB editor,</p></li>
+<li><p>Click on the <code class="docutils literal notranslate"><span class="pre">Add-Ons</span></code> or <code class="docutils literal notranslate"><span class="pre">Get</span> <span class="pre">Add-Ons</span></code> button</p></li>
+<li><p>Search for <code class="docutils literal notranslate"><span class="pre">DASH</span></code> and click on the entry for the toolbox (Its tagline is “A Matlab toolbox for paleoclimate data assimilation”)</p></li>
+<li><p>Click on the <code class="docutils literal notranslate"><span class="pre">Add</span></code> button in the top-right corner and follow the instructions.</p></li>
+</ol>
+</section>
+</section>
+<section id="verify-installation">
+<h2>Verify Installation<a class="headerlink" href="#verify-installation" title="Permalink to this heading"></a></h2>
+<p>You can verify your installation by entering <code class="docutils literal notranslate"><span class="pre">dash.version</span></code> in the MATLAB console. If the toolbox installed correctly, then this will display the current version of the toolbox in the console.</p>
 </section>
 <section id="updating-dash">
 <h2>Updating DASH<a class="headerlink" href="#updating-dash" title="Permalink to this heading"></a></h2>

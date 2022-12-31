@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul class="current">
@@ -72,7 +73,7 @@
 <li class="toctree-l7"><a class="reference internal" href="#syntax">Syntax</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#description">Description</a></li>
 <li class="toctree-l7"><a class="reference internal" href="#input-arguments">Input Arguments</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="#sst">SST</a></li>
+<li class="toctree-l8"><a class="reference internal" href="#x">X</a></li>
 </ul>
 </li>
 <li class="toctree-l7"><a class="reference internal" href="#output-arguments">Output Arguments</a><ul>
@@ -141,25 +142,25 @@
 <section id="syntax">
 <h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block">
-<div class="line"><a class="reference internal" href="#psm-baymag-estimate-syntax1"><span class="std std-ref">[MgCa, R] = obj.estimate(SST)</span></a></div>
+<div class="line"><a class="reference internal" href="#psm-baymag-estimate-syntax1"><span class="std std-ref">[MgCa, R] = obj.estimate(X)</span></a></div>
 </div>
 </pre></section>
 <hr class="docutils" />
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading"></a></h2>
 <pre><div class="syntax line-block" id="psm-baymag-estimate-syntax1">
-<div class="line">[<a class="reference internal" href="#psm-baymag-estimate-outputs-mgca"><span class="std std-ref">MgCa</span></a>, <a class="reference internal" href="#psm-baymag-estimate-outputs-r"><span class="std std-ref">R</span></a>] = obj.estimate(<a class="reference internal" href="#psm-baymag-estimate-inputs-sst"><span class="std std-ref">SST</span></a>)</div>
+<div class="line">[<a class="reference internal" href="#psm-baymag-estimate-outputs-mgca"><span class="std std-ref">MgCa</span></a>, <a class="reference internal" href="#psm-baymag-estimate-outputs-r"><span class="std std-ref">R</span></a>] = obj.estimate(<a class="reference internal" href="#psm-baymag-estimate-inputs-x"><span class="std std-ref">X</span></a>)</div>
 </div>
-</pre><p>Runs the BayMAG forward model on a set of SSTs. Returns an estimate of Mg/Ca values and optionally estimates uncertainties for the estimated values.</p>
+</pre><p>Runs the BayMAG forward model on data extracted from a state vector ensemble. Returns an estimate of Mg/Ca values and optionally estimates uncertainties for the estimated values.</p>
 </section>
 <hr class="docutils" />
 <section id="input-arguments">
 <h2>Input Arguments<a class="headerlink" href="#input-arguments" title="Permalink to this heading"></a></h2>
-<section class="collapse-examples" id="sst">
-<span id="psm-baymag-estimate-inputs-sst"></span><h3>SST<a class="headerlink" href="#sst" title="Permalink to this heading"></a></h3>
-<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>SST</strong></label><div class="content"><div class="line-block">
-<div class="line"><em>numeric</em> <em>array</em> [1 <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
-<div class="line">Sea surface temperatures used as input for the BayMAG PSM.</div>
+<section class="collapse-examples" id="x">
+<span id="psm-baymag-estimate-inputs-x"></span><h3>X<a class="headerlink" href="#x" title="Permalink to this heading"></a></h3>
+<section class="accordion"><input type="checkbox" name="collapse" id="inputs1" checked="checked"><label for="inputs1"><strong>X</strong></label><div class="content"><div class="line-block">
+<div class="line"><em>numeric</em> <em>array</em> [1-4 <em>x</em> <em>nMembers</em> <em>x</em> <em>nEvolving</em>]</div>
+<div class="line">Sea surface temperatures, sea surface salinities, omegas, and/or pH inputs required to run the BayMAG PSM.</div>
 </div>
 </div></section></section>
 </section>
