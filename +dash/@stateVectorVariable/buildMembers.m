@@ -204,7 +204,7 @@ for m = 1:nMembers
 
         % Adjust indices for index limits if pre-loaded or all members
         if source.isloaded
-            indices{d} = indices{d} - parameters.indexLimits(d,1) + 1;
+            indices{d} = indices{d} - source.limits(d,1) + 1;
         elseif allLoaded
             indices{d} = indices{d} - parameters.indexLimits(k,1) + 1;
         end
