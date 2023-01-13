@@ -7,7 +7,9 @@ function[wloc, yloc] = gc2d(stateCoordinates, siteCoordinates, R, scale)
 %   function to dtermine the distances between 1. proxy sites and state
 %   vector elements, and 2. proxy sites with one another. Then, covariance
 %   localization weights are calculated by applying a 5th order,
-%   Gaspari-Cohn polynomial in 2 dimensions to the distances.
+%   Gaspari-Cohn polynomial in 2 dimensions to the distances. If the
+%   distance between two points is NaN, returns a weight of 1 (i.e. no
+%   localization).
 %
 %   [wloc, yloc] = dash.localize.gc2d(ensCoords, siteCoords, R, scale)
 %   Also specifies the length scale for the polynomial. By default, uses a
@@ -89,6 +91,10 @@ yDistance = dash.math.haversine(siteCoordinates);
 % Apply the Gaspari-Cohn polynomial
 wloc = dash.math.gaspariCohn(wDistance, R, scale);
 yloc = dash.math.gaspariCohn(yDistance, R, scale);
+
+% NaN weights receive no localization
+wloc(isnan(wloc)) = 1;
+yloc(isnan(yloc)) = 1;
 
 end
 

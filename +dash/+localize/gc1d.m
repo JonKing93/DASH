@@ -7,7 +7,8 @@ function[wloc, yloc] = gc1d(stateDepths, siteDepths, distance, scale)
 %   distances between a set of depths/heights/Z-coordinates and then applying 
 %   a Gaspari-Cohn 5th order polynomial to the distances. This can be used 
 %   to implement localization along the depth/height/Z coordinate of 
-%   an ensemble.
+%   an ensemble. If the distance between two depths/heights/Z-coordinates
+%   is NaN, returns a weight of 1 (i.e. no localization).
 %
 %   [wloc, yloc] = dash.localize.gc1d(stateDepths, siteDepths, distance, scale)
 %   Specifies the length scale for the polynomial. By default, uses a
@@ -92,6 +93,10 @@ yDistance = abs(siteDepths - siteDepths');
 % Apply the Gaspari-Cohn polynomial
 wloc = dash.math.gaspariCohn(wDistance, distance, scale);
 yloc = dash.math.gaspariCohn(yDistance, distance, scale);
+
+% NaN weights receive no localization
+wloc(isnan(wloc)) = 1;
+yloc(isnan(yloc)) = 1;
 
 end
 
