@@ -117,9 +117,9 @@ if strcmpi(type, 'delete')
     end
 
     % Remove from object
-    obj.calculations(k,1) = [];
-    obj.calculationNames(k,1) = [];
-    obj.calculationTypes(k,1) = [];
+    obj.calculations(k,:) = [];
+    obj.calculationNames(k,:) = [];
+    obj.calculationTypes(k,:) = [];
     
 % Set. Check the type
 else
