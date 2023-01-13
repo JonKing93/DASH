@@ -196,7 +196,7 @@ classdef ensembleMetadata
         function[obj] = ensembleMetadata(svs, labels)
             %% ensembleMetadata.ensembleMetadata  Create a new ensembleMetadata object
             % ----------
-            %   obj = <strong>ensembleMetadata</strong>(sv)
+            %   obj = <strong>ensembleMetadata</strong>(svs)
             %   Returns an array of ensembleMetadata objects for an array of stateVector objects.
             %   Each ensembleMetadata object organizes the metadata down the state vector, as well
             %   as the metadata for any built ensemble members. (Note that only stateVector objects
@@ -209,7 +209,7 @@ classdef ensembleMetadata
             %   Specify the label that should be applied to the ensembleMetadata object
             % ----------
             %   Inputs:
-            %       sv (scalar stateVector objects): An array of stateVector objects for
+            %       svs (scalar stateVector objects): An array of stateVector objects for
             %           which to build ensembleMetadata objects.
             %       labels (string scalar | cellstring scalar | char row vector):
             %           The labels to apply to the ensembleMetadata object.
@@ -318,7 +318,7 @@ classdef ensembleMetadata
                                 end
         
                                 % Permute if taking a mean. Record type
-                                if svv.meanType(d)==0 || obj(q).stateSize{v}(k)==1
+                                if svv.meanType(d)==0 || svv.meanSize(d)==1
                                     obj(q).stateType{v}(k) = 0;
                                 else
                                     metadata = permute(metadata, [3 2 1]);
