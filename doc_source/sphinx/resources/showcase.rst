@@ -19,6 +19,9 @@ This page describes and provides links to published assimilations that rely on t
     * Glacial cooling and climate sensitivity revisited
 
 
+
+----
+
 .. _showcase-5:
 
 Tierney et al. (2022)
@@ -39,6 +42,9 @@ Links
 
 
 
+
+----
+
 .. _showcase-4:
 
 King et al. (2022)
@@ -57,6 +63,8 @@ Links
 * `Preprint <https://www.researchsquare.com/article/rs-1958191/latest.pdf>`__
 
 
+
+----
 
 .. _showcase-3:
 
@@ -77,6 +85,9 @@ Links
 
 
 
+
+----
+
 .. _showcase-2:
 
 King et al. (2021)
@@ -96,6 +107,8 @@ Links
 * `Preprint <https://eartharxiv.org/repository/view/1705/>`__
 
 
+
+----
 
 .. _showcase-1:
 
