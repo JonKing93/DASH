@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -146,7 +147,7 @@
 <pre><div class="syntax line-block" id="dash-localize-gc2d-syntax1">
 <div class="line">[<a class="reference internal" href="#dash-localize-gc2d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc2d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc2d(ensCoords, siteCoords, <a class="reference internal" href="#dash-localize-gc2d-inputs-r"><span class="std std-ref">R</span></a>)</div>
 </div>
-</pre><p>Calculates covariance localization weights for an assimilation using a specified cutoff radius. The method proceeds by using a haversine function to dtermine the distances between 1. proxy sites and state vector elements, and 2. proxy sites with one another. Then, covariance localization weights are calculated by applying a 5th order, Gaspari-Cohn polynomial in 2 dimensions to the distances.</p>
+</pre><p>Calculates covariance localization weights for an assimilation using a specified cutoff radius. The method proceeds by using a haversine function to dtermine the distances between 1. proxy sites and state vector elements, and 2. proxy sites with one another. Then, covariance localization weights are calculated by applying a 5th order, Gaspari-Cohn polynomial in 2 dimensions to the distances. If the distance between two points is NaN, returns a weight of 1 (i.e. no localization).</p>
 <pre><div class="syntax line-block" id="dash-localize-gc2d-syntax2">
 <div class="line">[<a class="reference internal" href="#dash-localize-gc2d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc2d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc2d(ensCoords, siteCoords, <a class="reference internal" href="#dash-localize-gc2d-inputs-r"><span class="std std-ref">R</span></a>, <a class="reference internal" href="#dash-localize-gc2d-inputs-scale"><span class="std std-ref">scale</span></a>)</div>
 </div>
