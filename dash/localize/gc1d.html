@@ -46,6 +46,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../welcome.html">Welcome!</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Install DASH</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Tutorial/welcome.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase.html">Showcase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 </ul>
@@ -146,7 +147,7 @@
 <pre><div class="syntax line-block" id="dash-localize-gc1d-syntax1">
 <div class="line">[<a class="reference internal" href="#dash-localize-gc1d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc1d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc1d(<a class="reference internal" href="#dash-localize-gc1d-inputs-statedepths"><span class="std std-ref">stateDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-sitedepths"><span class="std std-ref">siteDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-distance"><span class="std std-ref">distance</span></a>)</div>
 </div>
-</pre><p>Calculates covariance localization weights for an assimilation using a specified cutoff distance. The method proceeds by determining the distances between a set of depths/heights/Z-coordinates and then applying a Gaspari-Cohn 5th order polynomial to the distances. This can be used to implement localization along the depth/height/Z coordinate of an ensemble.</p>
+</pre><p>Calculates covariance localization weights for an assimilation using a specified cutoff distance. The method proceeds by determining the distances between a set of depths/heights/Z-coordinates and then applying a Gaspari-Cohn 5th order polynomial to the distances. This can be used to implement localization along the depth/height/Z coordinate of an ensemble. If the distance between two depths/heights/Z-coordinates is NaN, returns a weight of 1 (i.e. no localization).</p>
 <pre><div class="syntax line-block" id="dash-localize-gc1d-syntax2">
 <div class="line">[<a class="reference internal" href="#dash-localize-gc1d-outputs-wloc"><span class="std std-ref">wloc</span></a>, <a class="reference internal" href="#dash-localize-gc1d-outputs-yloc"><span class="std std-ref">yloc</span></a>] = dash.localize.gc1d(<a class="reference internal" href="#dash-localize-gc1d-inputs-statedepths"><span class="std std-ref">stateDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-sitedepths"><span class="std std-ref">siteDepths</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-distance"><span class="std std-ref">distance</span></a>, <a class="reference internal" href="#dash-localize-gc1d-inputs-scale"><span class="std std-ref">scale</span></a>)</div>
 </div>
