@@ -4,8 +4,7 @@ function[] = documentDASH(rebuildReference)
 %   documentDASH
 %   Builds the reference guide for the DASH toolbox. Requires that the DASH
 %   reST parsers in the doc_source folder are added to the active path.
-%   Currently requires that the PSM.template and PSM.prysm.* contents are
-%   temporarily removed from the toolbox. 
+%   Currently requires that "PSM.template" is temporarily removed from the toolbox. 
 % 
 %   Builds reST markup for each item in the toolbox and saves the reST in
 %   the doc_source/sphinx/source folder. Then, runs sphinx on the reST
