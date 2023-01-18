@@ -11,5 +11,8 @@
     - Write examples for new functionality
     - Run "buildDocs" to build the HTML documentation set
 
-4. Toolbox
+4. HTML Redirect
+    - Add the redirect to the index page of the docs
+
+5. Toolbox
     - Build the .mtlbx file for the release and push to Github
