@@ -7,12 +7,9 @@
     - Update the version string in dash.version
 
 3. Documentation
-    - Add in-function documentation to any new commands
-    - Write examples for new functionality
-    - Run "buildDocs" to build the HTML documentation set
+    - Rebuild docs
+    - Update DASH version in sphinx config
+    - Add the HTML redirect to the index page
 
-4. HTML Redirect
-    - Add the redirect to the index page of the docs
-
-5. Toolbox
+4. Toolbox
     - Build the .mtlbx file for the release and push to Github
