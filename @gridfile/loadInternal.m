@@ -329,14 +329,13 @@ end
 undefined = ~ismember(sourceDims, outputDims);
 reorder = [reorder, order(undefined)];
 
-% Exit if the array is scalar and not being permuted. (No further action is
-% required and scalar/matrix size checks will cause an error in "permute")
-if isscalar(Xsource) && isequal(reorder,1) && isequal(resize,1)
-    return
+% Permute to match output array
+if ~isequal(reorder, 1)
+    Xsource = permute(Xsource, reorder);
 end
 
-% Permute to match output array. Reshape to merge dimensions.
-Xsource = permute(Xsource, reorder);
+% Reshape to merge dimensions
+resize = [resize, 1];
 Xsource = reshape(Xsource, resize);
 
 end
