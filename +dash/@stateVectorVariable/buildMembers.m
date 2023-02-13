@@ -227,10 +227,9 @@ for m = 1:nMembers
 
     %% Process ensemble member
 
-    % Separate means from sequences
-    if ~(isscalar(Xm) && isequal(parameters.rawSize,1))
-        Xm = reshape(Xm, parameters.rawSize);
-    end
+    % Separate means from sequences. (Include trailing 1 in new size in
+    % case of scalars or a single dimension).
+    Xm = reshape(Xm, [parameters.rawSize, 1]);
 
     % *** Notes on means ***
     % 1. Take includenan means/totals before omitnan (if you took omitnan
