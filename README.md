@@ -1,25 +1,36 @@
 # DASH
-A package for paleoclimate data assimilation workflow.
+A Matlab toolbox for paleoclimate data assimilation workflow.
 
-DASH is a Matlab package to help implement paleoclimate data assimilation. It includes modules to help
-1. Catalogue and organize climate data,
-2. Design state vector ensembles,
-3. Implement proxy system models, and
-4. Run Kalman filter, particle filter, and optimal sensor algorithms.
+* [Citation](#citation)
+* [Summary](#summary)
+* [Install DASH](#install-dash),
+* [Getting started](#getting-started)
+* [Feedback and contributions](#feedback--contributions)
+* [Repository branches](#branches)
 
-----
+## Citation
 
-This README includes instructions for:
+Please cite:
 
-* [Installing DASH](#install-dash),
-* [Getting started with the toolbox](#getting-started)
-* [Providing feedback and contributions](#feedback--contributions), and
-* [A summary of repository branches](#branches)
+King, J. M., Tierney, J., Osman, M., Judd, E. J., & Anchukaitis, K. J. (2023). 
+DASH: A MATLAB Toolbox for Paleoclimate Data Assimilation. 
+*Geoscientific Model Development*, (in review).
+
+when using the toolbox.
+
+
+## Summary
+DASH is a Matlab toolbox designed to facilitate paleoclimate data assimilation. It includes modules to help:
+
+* Catalogue and organize climate data,
+* Design state vector ensembles,
+* Implement proxy system models, and
+* Run Kalman filter, particle filter, and optimal sensor algorithms.
 
 
 ## Install DASH
 
-There are 3 different ways to install DASH:
+There are 3 ways to install DASH:
 
 1. [Using Github](#github),
 2. [Via MATLAB's Add-On explorer](#matlab-add-on-explorer), or
@@ -52,7 +63,7 @@ To get started with the DASH toolbox, enter:
 ```
 >> dash.doc
 ```
-in the MATLAB console. This will open the DASH documentation set, which includes resources for starting with DASH. In particular, we recommend checking out the DASH tutorial. The tutorial begins with an overview of the DASH toolbox, and then provides step-by-step instructions and examples for using the components of DASH. We recommend budgeting several hours to complete the tutorial.
+in the MATLAB console. This will open the DASH documentation, which includes resources for starting with DASH. In particular, we recommend checking out the DASH tutorial. The tutorial begins with an overview of the DASH toolbox, and then provides step-by-step instructions and examples for using the components of DASH. We recommend budgeting several hours to complete the tutorial.
 
 If you have not yet installed the toolbox, you can find the DASH documentation online here: [DASH Documentation](https://jonking93.github.io/DASH/welcome.html)
 
