@@ -11,6 +11,7 @@ If you are not redirected, please click on the "Next" button at the bottom of th
     Welcome!        <welcome>
     Install DASH    <installation>
     Tutorial        <Tutorial/welcome>
+    Citation        <citation>
     Showcase        <showcase>
     Contact         <contact>
     License         <license>
