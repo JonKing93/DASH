@@ -7,9 +7,10 @@
     - Update the version string in dash.version
 
 3. Documentation
-    - Rebuild docs
     - Update DASH version in sphinx config
+    - Rebuild docs
     - Add the HTML redirect to the index page
+    - Update the website
 
 4. Toolbox
     - Build the .mtlbx file for the release and push to Github
