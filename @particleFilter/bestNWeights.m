@@ -21,7 +21,8 @@ function[weights] = bestNWeights(sse, N)
 
 % Find the best N particles in each time step
 [nMembers, nTime] = size(sse);
-[~, rank] = sort(sse, 1);
+[~, ii] = sort(sse, 1);
+[~, rank] = sort(ii, 1);
 best = ismember(rank, 1:N);
 
 % Apply equal weights summing to 1 to each of the best N particles in each
