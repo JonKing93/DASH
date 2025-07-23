@@ -40,6 +40,11 @@ end
 nDims = numel(siz);
 subscriptIndices = cell(1, nDims);
 
+% Handle scalar sizes for call to ind2sub
+if nDims == 1
+    siz = [siz, 1];
+end
+
 % Collect subscripts in all dimensions
 [subscriptIndices{:}] = ind2sub(siz, linearIndices);
 
