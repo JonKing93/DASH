@@ -101,8 +101,9 @@ varOutputLimits = dash.indices.limits(obj.lengths(v));
 
 % Get blocks of contiguous variables. These variables occupy adjacent
 % memory blocks in the .ens file, and can be loaded using strided loading
-lastVars = find( diff(v)~=1 )';
-blockLimits = [[1;lastVars+1], [lastVars;nVariables]];
+lastVars = find(diff(v)~=1);
+lastVars = lastVars(:);   % ensure column vector
+blockLimits = [[1; lastVars+1], [lastVars; nVariables]];
 nBlocks = size(blockLimits, 1);
 
 % Load each block of contiguous variables. Get the index of the variable
