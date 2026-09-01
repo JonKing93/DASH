@@ -54,7 +54,7 @@ for k = 1:numel(dims)
 
     % Update type and weights
     obj.meanType(d) = 2;
-    obj.weights{d} = weights{k}(:);
+    obj.weights{d} = double(weights{k}(:));   % cast to double: avoids single/double mix in serialize cell2mat (pre-R2025a)
 end
 
 end
