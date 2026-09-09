@@ -75,7 +75,7 @@ try
     
     % Set uncertainties. Get defaults
     else
-        if ~exist('whichR','var') || isempty(whichVar)
+        if ~exist('whichR','var') || isempty(whichR)
             whichR = [];
         end
     
