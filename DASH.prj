@@ -47,7 +47,8 @@ doc/html/.doctrees
 doc_source
 testdata
 new-release-checklist.txt
-todo.md</param.exclude.filters>
+todo.md
+build_release.m</param.exclude.filters>
     <param.exclude.pcodedmfiles>true</param.exclude.pcodedmfiles>
     <param.examples />
     <param.demosxml />
